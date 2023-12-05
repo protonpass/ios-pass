@@ -44,43 +44,43 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     }
     // MARK: - getItemsState
     public var getItemsStateThrowableError: Error?
-    public var closureGetItemsState: () -> () = {}
-    public var invokedGetItemsState = false
-    public var invokedGetItemsStateCount = 0
-    public var invokedGetItemsStateParameters: (state: ItemState, Void)?
-    public var invokedGetItemsStateParametersList = [(state: ItemState, Void)]()
-    public var stubbedGetItemsStateResult: [SymmetricallyEncryptedItem]!
+    public var closureGetItemsStateAsync: () -> () = {}
+    public var invokedGetItemsStateAsync = false
+    public var invokedGetItemsStateAsyncCount = 0
+    public var invokedGetItemsStateAsyncParameters: (state: ItemState, Void)?
+    public var invokedGetItemsStateAsyncParametersList = [(state: ItemState, Void)]()
+    public var stubbedGetItemsStateAsyncResult: [SymmetricallyEncryptedItem]!
 
     public func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        invokedGetItemsState = true
-        invokedGetItemsStateCount += 1
-        invokedGetItemsStateParameters = (state, ())
-        invokedGetItemsStateParametersList.append((state, ()))
+        invokedGetItemsStateAsync = true
+        invokedGetItemsStateAsyncCount += 1
+        invokedGetItemsStateAsyncParameters = (state, ())
+        invokedGetItemsStateAsyncParametersList.append((state, ()))
         if let error = getItemsStateThrowableError {
             throw error
         }
-        closureGetItemsState()
-        return stubbedGetItemsStateResult
+        closureGetItemsStateAsync()
+        return stubbedGetItemsStateAsyncResult
     }
     // MARK: - getItemsShareIdState
     public var getItemsShareIdStateThrowableError: Error?
-    public var closureGetItemsShareIdState: () -> () = {}
-    public var invokedGetItemsShareIdState = false
-    public var invokedGetItemsShareIdStateCount = 0
-    public var invokedGetItemsShareIdStateParameters: (shareId: String, state: ItemState)?
-    public var invokedGetItemsShareIdStateParametersList = [(shareId: String, state: ItemState)]()
-    public var stubbedGetItemsShareIdStateResult: [SymmetricallyEncryptedItem]!
+    public var closureGetItemsShareIdStateAsync: () -> () = {}
+    public var invokedGetItemsShareIdStateAsync = false
+    public var invokedGetItemsShareIdStateAsyncCount = 0
+    public var invokedGetItemsShareIdStateAsyncParameters: (shareId: String, state: ItemState)?
+    public var invokedGetItemsShareIdStateAsyncParametersList = [(shareId: String, state: ItemState)]()
+    public var stubbedGetItemsShareIdStateAsyncResult: [SymmetricallyEncryptedItem]!
 
     public func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        invokedGetItemsShareIdState = true
-        invokedGetItemsShareIdStateCount += 1
-        invokedGetItemsShareIdStateParameters = (shareId, state)
-        invokedGetItemsShareIdStateParametersList.append((shareId, state))
+        invokedGetItemsShareIdStateAsync = true
+        invokedGetItemsShareIdStateAsyncCount += 1
+        invokedGetItemsShareIdStateAsyncParameters = (shareId, state)
+        invokedGetItemsShareIdStateAsyncParametersList.append((shareId, state))
         if let error = getItemsShareIdStateThrowableError {
             throw error
         }
-        closureGetItemsShareIdState()
-        return stubbedGetItemsShareIdStateResult
+        closureGetItemsShareIdStateAsync()
+        return stubbedGetItemsShareIdStateAsyncResult
     }
     // MARK: - getItem
     public var getItemShareIdItemIdThrowableError: Error?
@@ -144,39 +144,39 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     }
     // MARK: - upsertItemsItems
     public var upsertItemsThrowableError: Error?
-    public var closureUpsertItemsItems: () -> () = {}
-    public var invokedUpsertItemsItems = false
-    public var invokedUpsertItemsItemsCount = 0
-    public var invokedUpsertItemsItemsParameters: (items: [SymmetricallyEncryptedItem], Void)?
-    public var invokedUpsertItemsItemsParametersList = [(items: [SymmetricallyEncryptedItem], Void)]()
+    public var closureUpsertItemsItemsAsync: () -> () = {}
+    public var invokedUpsertItemsItemsAsync = false
+    public var invokedUpsertItemsItemsAsyncCount = 0
+    public var invokedUpsertItemsItemsAsyncParameters: (items: [SymmetricallyEncryptedItem], Void)?
+    public var invokedUpsertItemsItemsAsyncParametersList = [(items: [SymmetricallyEncryptedItem], Void)]()
 
     public func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        invokedUpsertItemsItems = true
-        invokedUpsertItemsItemsCount += 1
-        invokedUpsertItemsItemsParameters = (items, ())
-        invokedUpsertItemsItemsParametersList.append((items, ()))
+        invokedUpsertItemsItemsAsync = true
+        invokedUpsertItemsItemsAsyncCount += 1
+        invokedUpsertItemsItemsAsyncParameters = (items, ())
+        invokedUpsertItemsItemsAsyncParametersList.append((items, ()))
         if let error = upsertItemsThrowableError {
             throw error
         }
-        closureUpsertItemsItems()
+        closureUpsertItemsItemsAsync()
     }
     // MARK: - upsertItemsItemsModifiedItems
     public var upsertItemsModifiedItemsThrowableError: Error?
-    public var closureUpsertItemsItemsModifiedItems: () -> () = {}
-    public var invokedUpsertItemsItemsModifiedItems = false
-    public var invokedUpsertItemsItemsModifiedItemsCount = 0
-    public var invokedUpsertItemsItemsModifiedItemsParameters: (items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem])?
-    public var invokedUpsertItemsItemsModifiedItemsParametersList = [(items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem])]()
+    public var closureUpsertItemsItemsModifiedItemsAsync: () -> () = {}
+    public var invokedUpsertItemsItemsModifiedItemsAsync = false
+    public var invokedUpsertItemsItemsModifiedItemsAsyncCount = 0
+    public var invokedUpsertItemsItemsModifiedItemsAsyncParameters: (items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem])?
+    public var invokedUpsertItemsItemsModifiedItemsAsyncParametersList = [(items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem])]()
 
     public func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws {
-        invokedUpsertItemsItemsModifiedItems = true
-        invokedUpsertItemsItemsModifiedItemsCount += 1
-        invokedUpsertItemsItemsModifiedItemsParameters = (items, modifiedItems)
-        invokedUpsertItemsItemsModifiedItemsParametersList.append((items, modifiedItems))
+        invokedUpsertItemsItemsModifiedItemsAsync = true
+        invokedUpsertItemsItemsModifiedItemsAsyncCount += 1
+        invokedUpsertItemsItemsModifiedItemsAsyncParameters = (items, modifiedItems)
+        invokedUpsertItemsItemsModifiedItemsAsyncParametersList.append((items, modifiedItems))
         if let error = upsertItemsModifiedItemsThrowableError {
             throw error
         }
-        closureUpsertItemsItemsModifiedItems()
+        closureUpsertItemsItemsModifiedItemsAsync()
     }
     // MARK: - update
     public var updateLastUseItemsShareIdThrowableError: Error?
@@ -198,71 +198,71 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     }
     // MARK: - deleteItemsItems
     public var deleteItemsThrowableError: Error?
-    public var closureDeleteItemsItems: () -> () = {}
-    public var invokedDeleteItemsItems = false
-    public var invokedDeleteItemsItemsCount = 0
-    public var invokedDeleteItemsItemsParameters: (items: [SymmetricallyEncryptedItem], Void)?
-    public var invokedDeleteItemsItemsParametersList = [(items: [SymmetricallyEncryptedItem], Void)]()
+    public var closureDeleteItemsItemsAsync: () -> () = {}
+    public var invokedDeleteItemsItemsAsync = false
+    public var invokedDeleteItemsItemsAsyncCount = 0
+    public var invokedDeleteItemsItemsAsyncParameters: (items: [SymmetricallyEncryptedItem], Void)?
+    public var invokedDeleteItemsItemsAsyncParametersList = [(items: [SymmetricallyEncryptedItem], Void)]()
 
     public func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        invokedDeleteItemsItems = true
-        invokedDeleteItemsItemsCount += 1
-        invokedDeleteItemsItemsParameters = (items, ())
-        invokedDeleteItemsItemsParametersList.append((items, ()))
+        invokedDeleteItemsItemsAsync = true
+        invokedDeleteItemsItemsAsyncCount += 1
+        invokedDeleteItemsItemsAsyncParameters = (items, ())
+        invokedDeleteItemsItemsAsyncParametersList.append((items, ()))
         if let error = deleteItemsThrowableError {
             throw error
         }
-        closureDeleteItemsItems()
+        closureDeleteItemsItemsAsync()
     }
     // MARK: - deleteItemsItemIdsShareId
     public var deleteItemsItemIdsShareIdThrowableError: Error?
-    public var closureDeleteItemsItemIdsShareId: () -> () = {}
-    public var invokedDeleteItemsItemIdsShareId = false
-    public var invokedDeleteItemsItemIdsShareIdCount = 0
-    public var invokedDeleteItemsItemIdsShareIdParameters: (itemIds: [String], shareId: String)?
-    public var invokedDeleteItemsItemIdsShareIdParametersList = [(itemIds: [String], shareId: String)]()
+    public var closureDeleteItemsItemIdsShareIdAsync: () -> () = {}
+    public var invokedDeleteItemsItemIdsShareIdAsync = false
+    public var invokedDeleteItemsItemIdsShareIdAsyncCount = 0
+    public var invokedDeleteItemsItemIdsShareIdAsyncParameters: (itemIds: [String], shareId: String)?
+    public var invokedDeleteItemsItemIdsShareIdAsyncParametersList = [(itemIds: [String], shareId: String)]()
 
     public func deleteItems(itemIds: [String], shareId: String) async throws {
-        invokedDeleteItemsItemIdsShareId = true
-        invokedDeleteItemsItemIdsShareIdCount += 1
-        invokedDeleteItemsItemIdsShareIdParameters = (itemIds, shareId)
-        invokedDeleteItemsItemIdsShareIdParametersList.append((itemIds, shareId))
+        invokedDeleteItemsItemIdsShareIdAsync = true
+        invokedDeleteItemsItemIdsShareIdAsyncCount += 1
+        invokedDeleteItemsItemIdsShareIdAsyncParameters = (itemIds, shareId)
+        invokedDeleteItemsItemIdsShareIdAsyncParametersList.append((itemIds, shareId))
         if let error = deleteItemsItemIdsShareIdThrowableError {
             throw error
         }
-        closureDeleteItemsItemIdsShareId()
+        closureDeleteItemsItemIdsShareIdAsync()
     }
     // MARK: - removeAllItems
     public var removeAllItemsThrowableError: Error?
-    public var closureRemoveAllItems: () -> () = {}
-    public var invokedRemoveAllItems = false
-    public var invokedRemoveAllItemsCount = 0
+    public var closureRemoveAllItemsAsync: () -> () = {}
+    public var invokedRemoveAllItemsAsync = false
+    public var invokedRemoveAllItemsAsyncCount = 0
 
     public func removeAllItems() async throws {
-        invokedRemoveAllItems = true
-        invokedRemoveAllItemsCount += 1
+        invokedRemoveAllItemsAsync = true
+        invokedRemoveAllItemsAsyncCount += 1
         if let error = removeAllItemsThrowableError {
             throw error
         }
-        closureRemoveAllItems()
+        closureRemoveAllItemsAsync()
     }
     // MARK: - removeAllItemsShareId
     public var removeAllItemsShareIdThrowableError: Error?
-    public var closureRemoveAllItemsShareId: () -> () = {}
-    public var invokedRemoveAllItemsShareId = false
-    public var invokedRemoveAllItemsShareIdCount = 0
-    public var invokedRemoveAllItemsShareIdParameters: (shareId: String, Void)?
-    public var invokedRemoveAllItemsShareIdParametersList = [(shareId: String, Void)]()
+    public var closureRemoveAllItemsShareIdAsync: () -> () = {}
+    public var invokedRemoveAllItemsShareIdAsync = false
+    public var invokedRemoveAllItemsShareIdAsyncCount = 0
+    public var invokedRemoveAllItemsShareIdAsyncParameters: (shareId: String, Void)?
+    public var invokedRemoveAllItemsShareIdAsyncParametersList = [(shareId: String, Void)]()
 
     public func removeAllItems(shareId: String) async throws {
-        invokedRemoveAllItemsShareId = true
-        invokedRemoveAllItemsShareIdCount += 1
-        invokedRemoveAllItemsShareIdParameters = (shareId, ())
-        invokedRemoveAllItemsShareIdParametersList.append((shareId, ()))
+        invokedRemoveAllItemsShareIdAsync = true
+        invokedRemoveAllItemsShareIdAsyncCount += 1
+        invokedRemoveAllItemsShareIdAsyncParameters = (shareId, ())
+        invokedRemoveAllItemsShareIdAsyncParametersList.append((shareId, ()))
         if let error = removeAllItemsShareIdThrowableError {
             throw error
         }
-        closureRemoveAllItemsShareId()
+        closureRemoveAllItemsShareIdAsync()
     }
     // MARK: - getActiveLogInItems
     public var getActiveLogInItemsThrowableError: Error?

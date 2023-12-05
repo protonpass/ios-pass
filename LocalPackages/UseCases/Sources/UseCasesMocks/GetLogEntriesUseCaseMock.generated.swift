@@ -23,12 +23,12 @@ import Core
 import Entities
 
 public final class GetLogEntriesUseCaseMock: @unchecked Sendable, GetLogEntriesUseCase {
+
     public init() {}
 
     // MARK: - execute
-
     public var executeForThrowableError: Error?
-    public var closureExecute: () -> Void = {}
+    public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (module: PassModule, Void)?

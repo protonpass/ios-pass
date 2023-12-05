@@ -31,7 +31,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData)
-    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
+    func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable)
 }
 
 @MainActor
@@ -274,7 +274,7 @@ private extension BaseItemDetailViewModel {
         }
     }
 
-    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
+    func getItemTask(item: any ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PassError.deallocatedSelf

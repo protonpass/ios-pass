@@ -23,12 +23,12 @@ import Core
 import Foundation
 
 public final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLogsToFileUseCase {
+
     public init() {}
 
     // MARK: - execute
-
     public var executeForInThrowableError: Error?
-    public var closureExecute: () -> Void = {}
+    public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (entries: [LogEntry], fileName: String)?

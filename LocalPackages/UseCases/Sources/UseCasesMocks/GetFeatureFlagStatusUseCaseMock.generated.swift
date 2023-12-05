@@ -24,11 +24,11 @@ import Core
 import ProtonCoreFeatureFlags
 
 public final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
+
     public init() {}
 
     // MARK: - execute
-
-    public var closureExecute: () -> Void = {}
+    public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (flag: any FeatureFlagTypeProtocol, Void)?

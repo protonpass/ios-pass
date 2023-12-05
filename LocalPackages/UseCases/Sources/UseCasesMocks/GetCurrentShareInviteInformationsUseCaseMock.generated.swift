@@ -22,13 +22,12 @@
 import Client
 import Entities
 
-public final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable,
-    GetCurrentShareInviteInformationsUseCase {
+public final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable, GetCurrentShareInviteInformationsUseCase {
+
     public init() {}
 
     // MARK: - execute
-
-    public var closureExecute: () -> Void = {}
+    public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
     public var stubbedExecuteResult: SharingInfos!

@@ -25,8 +25,8 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemSwipeModifier: ViewModifier {
-    @Binding var itemToBePermanentlyDeleted: ItemTypeIdentifiable?
-    let item: ItemTypeIdentifiable
+    @Binding var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
+    let item: any ItemTypeIdentifiable
     let isTrashed: Bool
     let itemContextMenuHandler: ItemContextMenuHandler
 
