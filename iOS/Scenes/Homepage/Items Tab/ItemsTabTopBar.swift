@@ -76,7 +76,7 @@ private extension ItemsTabTopBar {
 
             // Search bar
             ZStack {
-                Color(uiColor: PassColor.backgroundStrong)
+                PassColor.backgroundStrong.toColor
                 HStack {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
@@ -86,7 +86,7 @@ private extension ItemsTabTopBar {
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                 }
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

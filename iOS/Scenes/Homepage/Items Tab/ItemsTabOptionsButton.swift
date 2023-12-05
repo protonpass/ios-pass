@@ -29,80 +29,97 @@ struct ItemsTabOptionsButton: View {
 
     var body: some View {
         Menu(content: {
-            if viewModel.selectable {
-                Button(action: {
-                    isEditMode = true
-                }, label: {
-                    Label(title: {
-                        Text("Select items")
-                    }, icon: {
-                        IconProvider.checkmarkCircle
-                    })
-                })
-            }
-
-            // Filter options
-            let selectedFilterOption = viewModel.selectedFilterOption
-            let itemCount = viewModel.itemCount
-            Menu(content: {
-                ForEach(ItemTypeFilterOption.allCases, id: \.self) { option in
-                    let uiModel = option.uiModel(from: itemCount)
-                    Button(action: {
-                        viewModel.updateFilterOption(option)
-                    }, label: {
-                        Label(title: {
-                            text(for: uiModel)
-                        }, icon: {
-                            if option == selectedFilterOption {
-                                Image(systemName: "checkmark")
-                            }
-                        })
-                    })
-                    // swiftformat:disable:next isEmpty
-                    .disabled(uiModel.count == 0) // swiftlint:disable:this empty_count
-                }
-            }, label: {
-                Label(title: {
-                    // Use Button to trick SwiftUI into rendering option with title and subtitle
-                    Button(action: {}, label: {
-                        Text("Show")
-                        text(for: selectedFilterOption.uiModel(from: itemCount))
-                    })
-                }, icon: {
-                    Image(uiImage: IconProvider.filter)
-                })
-            })
-
-            // Sort options
-            let selectedSortType = viewModel.selectedSortType
-            Menu(content: {
-                ForEach(SortType.allCases, id: \.self) { type in
-                    Button(action: {
-                        viewModel.selectedSortType = type
-                    }, label: {
-                        HStack {
-                            Text(type.title)
-                            Spacer()
-                            if type == selectedSortType {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    })
-                }
-            }, label: {
-                Label(title: {
-                    Button(action: {}, label: {
-                        Text("Sort By")
-                        Text(verbatim: selectedSortType.title)
-                    })
-                }, icon: {
-                    Image(uiImage: IconProvider.arrowDownArrowUp)
-                })
-            })
+            selectItemsButton
+            filterOptions
+            sortOptions
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,
                          iconColor: viewModel.highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
                          backgroundColor: viewModel.highlighted ? PassColor.interactionNormMajor2 : .clear)
+        })
+    }
+}
+
+private extension ItemsTabOptionsButton {
+    @ViewBuilder
+    var selectItemsButton: some View {
+        if viewModel.selectable {
+            Button(action: {
+                isEditMode = true
+            }, label: {
+                Label(title: {
+                    Text("Select items")
+                }, icon: {
+                    IconProvider.checkmarkCircle
+                })
+            })
+        }
+    }
+}
+
+private extension ItemsTabOptionsButton {
+    @ViewBuilder
+    var filterOptions: some View {
+        let selectedFilterOption = viewModel.selectedFilterOption
+        let itemCount = viewModel.itemCount
+        Menu(content: {
+            ForEach(ItemTypeFilterOption.allCases, id: \.self) { option in
+                let uiModel = option.uiModel(from: itemCount)
+                Button(action: {
+                    viewModel.updateFilterOption(option)
+                }, label: {
+                    Label(title: {
+                        text(for: uiModel)
+                    }, icon: {
+                        if option == selectedFilterOption {
+                            Image(systemName: "checkmark")
+                        }
+                    })
+                })
+                // swiftformat:disable:next isEmpty
+                .disabled(uiModel.count == 0) // swiftlint:disable:this empty_count
+            }
+        }, label: {
+            Label(title: {
+                // Use Button to trick SwiftUI into rendering option with title and subtitle
+                Button(action: {}, label: {
+                    Text("Show")
+                    text(for: selectedFilterOption.uiModel(from: itemCount))
+                })
+            }, icon: {
+                Image(uiImage: IconProvider.filter)
+            })
+        })
+    }
+}
+
+private extension ItemsTabOptionsButton {
+    @ViewBuilder
+    var sortOptions: some View {
+        let selectedSortType = viewModel.selectedSortType
+        Menu(content: {
+            ForEach(SortType.allCases, id: \.self) { type in
+                Button(action: {
+                    viewModel.selectedSortType = type
+                }, label: {
+                    HStack {
+                        Text(type.title)
+                        Spacer()
+                        if type == selectedSortType {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                })
+            }
+        }, label: {
+            Label(title: {
+                Button(action: {}, label: {
+                    Text("Sort By")
+                    Text(verbatim: selectedSortType.title)
+                })
+            }, icon: {
+                Image(uiImage: IconProvider.arrowDownArrowUp)
+            })
         })
     }
 }
