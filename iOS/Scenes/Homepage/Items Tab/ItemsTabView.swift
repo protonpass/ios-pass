@@ -199,11 +199,7 @@ struct ItemsTabView: View {
         let isSelectable = viewModel.isSelectable(item)
         let isSelected = viewModel.isSelected(item)
         Button(action: {
-            if viewModel.isEditMode {
-                viewModel.selectOrDeselect(item)
-            } else {
-                viewModel.viewDetail(of: item)
-            }
+            viewModel.handleSelection(item)
         }, label: {
             GeneralItemRow(thumbnailView: {
                                if viewModel.isEditMode, isSelected {
@@ -211,10 +207,7 @@ struct ItemsTabView: View {
                                } else {
                                    ItemSquircleThumbnail(data: item.thumbnailData())
                                        .onTapGesture {
-                                           if isSelectable {
-                                               viewModel.selectOrDeselect(item)
-                                               viewModel.isEditMode = true
-                                           }
+                                           viewModel.handleThumbnailSelection(item)
                                        }
                                }
                            },

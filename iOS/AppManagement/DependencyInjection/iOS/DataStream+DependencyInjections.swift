@@ -33,7 +33,7 @@ final class DataStreamContainer: SharedContainer, AutoRegistering {
 }
 
 extension DataStreamContainer {
-    var currentSelectedItems: Factory<CurrentValueSubject<[ItemTypeIdentifiable], Never>> {
+    var currentSelectedItems: Factory<CurrentValueSubject<[ItemIdentifiable], Never>> {
         self { .init([]) }
     }
 }
