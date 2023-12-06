@@ -156,6 +156,10 @@ extension SharedUseCasesContainer {
     var sanitizeTotpUriForSaving: Factory<SanitizeTotpUriForSavingUseCase> {
         self { SanitizeTotpUriForSaving() }
     }
+
+    var generateTotpToken: Factory<GenerateTotpTokenUseCase> {
+        self { GenerateTotpToken(currentDateProvider: SharedToolingContainer.shared.currentDateProvider()) }
+    }
 }
 
 // MARK: Password Utils

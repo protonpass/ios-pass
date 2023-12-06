@@ -20,29 +20,29 @@
 
 import Foundation
 
-public enum TotpAlgorithm {
-    case sha1, sha256, sha512
+public enum TOTPState: Equatable {
+    case loading
+    case empty
+    case valid(TOTPData)
+    case invalid
 }
 
-public struct TotpComponents {
-    public let secret: String
-    public let label: String?
-    public let issuer: String?
-    public let algorithm: TotpAlgorithm
-    public let digits: Int
-    public let period: Int
+public struct TOTPTimerData: Hashable {
+    public let total: Int
+    public let remaining: Int
 
-    public init(secret: String,
-                label: String?,
-                issuer: String?,
-                algorithm: TotpAlgorithm,
-                digits: Int,
-                period: Int) {
-        self.secret = secret
-        self.label = label
-        self.issuer = issuer
-        self.algorithm = algorithm
-        self.digits = digits
-        self.period = period
+    public init(total: Int, remaining: Int) {
+        self.total = total
+        self.remaining = remaining
+    }
+}
+
+public struct TOTPData: Equatable {
+    public let code: String
+    public let timerData: TOTPTimerData
+
+    public init(code: String, timerData: TOTPTimerData) {
+        self.code = code
+        self.timerData = timerData
     }
 }
