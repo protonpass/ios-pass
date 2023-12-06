@@ -30,7 +30,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public init() {}
 
     // MARK: - getShareKey
-    public var getShareKeyShareIdKeyRotationThrowableError: Error?
+    public var getShareKeyShareIdKeyRotationThrowableError1: Error?
     public var closureGetShareKey: () -> () = {}
     public var invokedGetShareKeyfunction = false
     public var invokedGetShareKeyCount = 0
@@ -43,14 +43,14 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetShareKeyCount += 1
         invokedGetShareKeyParameters = (shareId, keyRotation)
         invokedGetShareKeyParametersList.append((shareId, keyRotation))
-        if let error = getShareKeyShareIdKeyRotationThrowableError {
+        if let error = getShareKeyShareIdKeyRotationThrowableError1 {
             throw error
         }
         closureGetShareKey()
         return stubbedGetShareKeyResult
     }
     // MARK: - getLatestShareKey
-    public var getLatestShareKeyShareIdThrowableError: Error?
+    public var getLatestShareKeyShareIdThrowableError2: Error?
     public var closureGetLatestShareKey: () -> () = {}
     public var invokedGetLatestShareKeyfunction = false
     public var invokedGetLatestShareKeyCount = 0
@@ -63,14 +63,14 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetLatestShareKeyCount += 1
         invokedGetLatestShareKeyParameters = (shareId, ())
         invokedGetLatestShareKeyParametersList.append((shareId, ()))
-        if let error = getLatestShareKeyShareIdThrowableError {
+        if let error = getLatestShareKeyShareIdThrowableError2 {
             throw error
         }
         closureGetLatestShareKey()
         return stubbedGetLatestShareKeyResult
     }
     // MARK: - getLatestItemKey
-    public var getLatestItemKeyShareIdItemIdThrowableError: Error?
+    public var getLatestItemKeyShareIdItemIdThrowableError3: Error?
     public var closureGetLatestItemKey: () -> () = {}
     public var invokedGetLatestItemKeyfunction = false
     public var invokedGetLatestItemKeyCount = 0
@@ -83,7 +83,7 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetLatestItemKeyCount += 1
         invokedGetLatestItemKeyParameters = (shareId, itemId)
         invokedGetLatestItemKeyParametersList.append((shareId, itemId))
-        if let error = getLatestItemKeyShareIdItemIdThrowableError {
+        if let error = getLatestItemKeyShareIdItemIdThrowableError3 {
             throw error
         }
         closureGetLatestItemKey()

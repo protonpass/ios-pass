@@ -27,7 +27,7 @@ public final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLog
     public init() {}
 
     // MARK: - execute
-    public var executeForInThrowableError: Error?
+    public var executeForInThrowableError1: Error?
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
@@ -40,7 +40,7 @@ public final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLog
         invokedExecuteCount += 1
         invokedExecuteParameters = (entries, fileName)
         invokedExecuteParametersList.append((entries, fileName))
-        if let error = executeForInThrowableError {
+        if let error = executeForInThrowableError1 {
             throw error
         }
         closureExecute()

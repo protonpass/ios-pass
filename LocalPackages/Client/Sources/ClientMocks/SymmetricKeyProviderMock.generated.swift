@@ -26,7 +26,7 @@ public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyPr
     public init() {}
 
     // MARK: - getSymmetricKey
-    public var getSymmetricKeyThrowableError: Error?
+    public var getSymmetricKeyThrowableError1: Error?
     public var closureGetSymmetricKey: () -> () = {}
     public var invokedGetSymmetricKeyfunction = false
     public var invokedGetSymmetricKeyCount = 0
@@ -35,7 +35,7 @@ public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyPr
     public func getSymmetricKey() throws -> SymmetricKey {
         invokedGetSymmetricKeyfunction = true
         invokedGetSymmetricKeyCount += 1
-        if let error = getSymmetricKeyThrowableError {
+        if let error = getSymmetricKeyThrowableError1 {
             throw error
         }
         closureGetSymmetricKey()

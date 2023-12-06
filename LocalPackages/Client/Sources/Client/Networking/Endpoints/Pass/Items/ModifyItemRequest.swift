@@ -44,8 +44,7 @@ public struct ModifyItemRequest: Encodable {
 }
 
 public struct ModifyItemResponse: Decodable {
-    public let code: Int
-    public let items: [ModifiedItem]
+    let items: [ModifiedItem]
 }
 
 /// To be deleted/trashed/untrashed

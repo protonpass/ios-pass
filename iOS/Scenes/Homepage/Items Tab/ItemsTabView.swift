@@ -70,10 +70,16 @@ struct ItemsTabView: View {
     @ViewBuilder
     private func vaultContent(_ items: [ItemUiModel]) -> some View {
         GeometryReader { proxy in
-            VStack {
-                topBar
+            VStack(spacing: 0) {
+                ItemsTabTopBar(isEditMode: $viewModel.isEditMode,
+                               onSearch: { viewModel.search() },
+                               onShowVaultList: { viewModel.presentVaultList() },
+                               onMove: { viewModel.presentVaultListToMoveSelectedItems() },
+                               onTrash: { viewModel.trashSelectedItems() },
+                               onRestore: { viewModel.restoreSelectedItems() },
+                               onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() })
 
-                if !viewModel.banners.isEmpty {
+                if !viewModel.banners.isEmpty, !viewModel.isEditMode {
                     InfoBannerViewStack(banners: viewModel.banners,
                                         dismiss: { viewModel.dismiss(banner: $0) },
                                         action: { viewModel.handleAction(banner: $0) })
@@ -88,7 +94,14 @@ struct ItemsTabView: View {
                 }
 
                 if items.isEmpty {
-                    emptyViews
+                    switch viewModel.vaultsManager.vaultSelection {
+                    case .all, .precise:
+                        EmptyVaultView(onCreate: viewModel.createNewItem(type:))
+                            .padding(.bottom, safeAreaInsets.bottom)
+                    case .trash:
+                        EmptyTrashView()
+                            .padding(.bottom, safeAreaInsets.bottom)
+                    }
                 } else {
                     itemList(items)
                     Spacer()
@@ -108,95 +121,9 @@ struct ItemsTabView: View {
             }
         }
     }
-}
 
-// MARK: - Top Bar
-
-private extension ItemsTabView {
-    var topBar: some View {
-        HStack {
-            switch viewModel.vaultsManager.vaultSelection {
-            case .all:
-                CircleButton(icon: PassIcon.brandPass,
-                             iconColor: VaultSelection.all.color,
-                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
-                             type: .big,
-                             action: viewModel.presentVaultList)
-                    .frame(width: kSearchBarHeight)
-
-            case let .precise(vault):
-                CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                             iconColor: vault.displayPreferences.color.color.color,
-                             backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
-                             action: viewModel.presentVaultList)
-                    .frame(width: kSearchBarHeight)
-
-            case .trash:
-                CircleButton(icon: IconProvider.trash,
-                             iconColor: VaultSelection.trash.color,
-                             backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16),
-                             action: viewModel.presentVaultList)
-                    .frame(width: kSearchBarHeight)
-            }
-
-            ZStack {
-                Color(uiColor: PassColor.backgroundStrong)
-                HStack {
-                    Image(uiImage: IconProvider.magnifier)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
-                }
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .contentShape(Rectangle())
-            .onTapGesture { viewModel.search() }
-        }
-        .padding(.horizontal)
-        .frame(height: kSearchBarHeight)
-    }
-}
-
-// MARK: - Empty View
-
-private extension ItemsTabView {
     @ViewBuilder
-    var emptyViews: some View {
-        switch viewModel.vaultsManager.vaultSelection {
-        case .all, .precise:
-            EmptyVaultView(onCreate: viewModel.createNewItem(type:))
-                .padding(.bottom, safeAreaInsets.bottom)
-        case .trash:
-            EmptyTrashView()
-                .padding(.bottom, safeAreaInsets.bottom)
-        }
-    }
-}
-
-// MARK: - Items list
-
-private extension ItemsTabView {
-    @ViewBuilder
-    func itemList(_ items: [ItemUiModel]) -> some View {
-        HStack {
-            ItemTypeFilterButton(itemCount: viewModel.vaultsManager.itemCount,
-                                 selectedOption: viewModel.vaultsManager.filterOption,
-                                 onSelect: viewModel.vaultsManager.updateItemTypeFilterOption,
-                                 onTap: { viewModel.showFilterOptions() })
-
-            Spacer()
-
-            SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                           action: { viewModel.presentSortTypeList() })
-        }
-        .padding([.top, .horizontal])
-
+    private func itemList(_ items: [ItemUiModel]) -> some View {
         switch viewModel.selectedSortType {
         case .mostRecent:
             itemList(items.mostRecentSortResult())
@@ -223,7 +150,7 @@ private extension ItemsTabView {
                          section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
                          section(for: result.others, headerTitle: #localized("More than 90 days"))
                      },
-                     onRefresh: viewModel.forceSync)
+                     onRefresh: viewModel.forceSyncIfNotEditMode)
     }
 
     func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
@@ -237,7 +164,7 @@ private extension ItemsTabView {
                                      .id(bucket.letter.character)
                              }
                          },
-                         onRefresh: viewModel.forceSync)
+                         onRefresh: viewModel.forceSyncIfNotEditMode)
                 .overlay {
                     HStack {
                         Spacer()
@@ -254,7 +181,7 @@ private extension ItemsTabView {
                              section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
                          }
                      },
-                     onRefresh: viewModel.forceSync)
+                     onRefresh: viewModel.forceSyncIfNotEditMode)
     }
 
     @ViewBuilder
@@ -265,7 +192,9 @@ private extension ItemsTabView {
             Section(content: {
                 ForEach(items) { item in
                     itemRow(for: item)
-                        .plainListRow()
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(.init(top: 4, leading: -10, bottom: 4, trailing: -10))
+                        .listRowBackground(Color.clear)
                 }
             }, header: {
                 Text(headerTitle)
@@ -278,25 +207,44 @@ private extension ItemsTabView {
     @ViewBuilder
     func itemRow(for item: ItemUiModel) -> some View {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
+        let isSelectable = viewModel.isSelectable(item)
+        let isSelected = viewModel.isSelected(item)
         Button(action: {
-            viewModel.viewDetail(of: item)
+            viewModel.handleSelection(item)
         }, label: {
-            GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
+            GeneralItemRow(thumbnailView: {
+                               if viewModel.isEditMode, isSelected {
+                                   SquircleCheckbox()
+                               } else {
+                                   ItemSquircleThumbnail(data: item.thumbnailData())
+                                       .onTapGesture {
+                                           viewModel.handleThumbnailSelection(item)
+                                       }
+                               }
+                           },
                            title: item.title,
                            description: item.description)
-                .itemContextMenu(item: item,
-                                 isTrashed: isTrashed,
-                                 onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
-                                 handler: viewModel.itemContextMenuHandler)
+                .if(!viewModel.isEditMode) { view in
+                    view.itemContextMenu(item: item,
+                                         isTrashed: isTrashed,
+                                         onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
+                                         handler: viewModel.itemContextMenuHandler)
+                }
+                .padding(.horizontal)
+                .background(isSelected ? PassColor.interactionNormMinor1.toColor : .clear)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .animation(.default, value: isSelected)
         })
         .padding(.horizontal, 16)
         .frame(height: 64)
         .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                                     item: item,
+                                    isEditMode: viewModel.isEditMode,
                                     isTrashed: isTrashed,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
+        .disabled(!isSelectable && viewModel.isEditMode)
     }
 }
 

@@ -27,8 +27,8 @@ public struct EmptyRequest: Encodable {}
 
 /// Holds responses that only have `code` field
 public struct CodeOnlyResponse: Decodable {
-    public let code: Int
-    public var isSuccessful: Bool { code == 1_000 }
+    let code: Int
+    var isSuccessful: Bool { code == 1_000 }
 }
 
 public protocol Endpoint: Request {

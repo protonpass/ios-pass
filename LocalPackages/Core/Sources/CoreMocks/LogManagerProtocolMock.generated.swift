@@ -61,7 +61,7 @@ public actor LogManagerProtocolMock: LogManagerProtocol {
         closureLog()
     }
     // MARK: - getLogEntries
-    public var getLogEntriesThrowableError: Error?
+    public var getLogEntriesThrowableError2: Error?
     public var closureGetLogEntries: () -> () = {}
     public var invokedGetLogEntriesfunction = false
     public var invokedGetLogEntriesCount = 0
@@ -70,7 +70,7 @@ public actor LogManagerProtocolMock: LogManagerProtocol {
     public func getLogEntries() async throws -> [LogEntry] {
         invokedGetLogEntriesfunction = true
         invokedGetLogEntriesCount += 1
-        if let error = getLogEntriesThrowableError {
+        if let error = getLogEntriesThrowableError2 {
             throw error
         }
         closureGetLogEntries()

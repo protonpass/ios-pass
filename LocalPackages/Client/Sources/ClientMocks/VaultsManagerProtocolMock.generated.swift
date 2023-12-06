@@ -97,7 +97,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         closureRefresh()
     }
     // MARK: - fullSync
-    public var fullSyncThrowableError: Error?
+    public var fullSyncThrowableError2: Error?
     public var closureFullSync: () -> () = {}
     public var invokedFullSyncfunction = false
     public var invokedFullSyncCount = 0
@@ -105,7 +105,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public func fullSync() async throws {
         invokedFullSyncfunction = true
         invokedFullSyncCount += 1
-        if let error = fullSyncThrowableError {
+        if let error = fullSyncThrowableError2 {
             throw error
         }
         closureFullSync()
@@ -171,7 +171,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         return stubbedVaultHasTrashedItemsResult
     }
     // MARK: - delete
-    public var deleteVaultThrowableError: Error?
+    public var deleteVaultThrowableError7: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -183,13 +183,13 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         invokedDeleteCount += 1
         invokedDeleteParameters = (vault, ())
         invokedDeleteParametersList.append((vault, ()))
-        if let error = deleteVaultThrowableError {
+        if let error = deleteVaultThrowableError7 {
             throw error
         }
         closureDelete()
     }
     // MARK: - restoreAllTrashedItems
-    public var restoreAllTrashedItemsThrowableError: Error?
+    public var restoreAllTrashedItemsThrowableError8: Error?
     public var closureRestoreAllTrashedItems: () -> () = {}
     public var invokedRestoreAllTrashedItemsfunction = false
     public var invokedRestoreAllTrashedItemsCount = 0
@@ -197,13 +197,13 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public func restoreAllTrashedItems() async throws {
         invokedRestoreAllTrashedItemsfunction = true
         invokedRestoreAllTrashedItemsCount += 1
-        if let error = restoreAllTrashedItemsThrowableError {
+        if let error = restoreAllTrashedItemsThrowableError8 {
             throw error
         }
         closureRestoreAllTrashedItems()
     }
     // MARK: - permanentlyDeleteAllTrashedItems
-    public var permanentlyDeleteAllTrashedItemsThrowableError: Error?
+    public var permanentlyDeleteAllTrashedItemsThrowableError9: Error?
     public var closurePermanentlyDeleteAllTrashedItems: () -> () = {}
     public var invokedPermanentlyDeleteAllTrashedItemsfunction = false
     public var invokedPermanentlyDeleteAllTrashedItemsCount = 0
@@ -211,7 +211,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public func permanentlyDeleteAllTrashedItems() async throws {
         invokedPermanentlyDeleteAllTrashedItemsfunction = true
         invokedPermanentlyDeleteAllTrashedItemsCount += 1
-        if let error = permanentlyDeleteAllTrashedItemsThrowableError {
+        if let error = permanentlyDeleteAllTrashedItemsThrowableError9 {
             throw error
         }
         closurePermanentlyDeleteAllTrashedItems()

@@ -28,31 +28,31 @@ public final class GetAllPinnedItemsUseCaseMock: @unchecked Sendable, GetAllPinn
     public init() {}
 
     // MARK: - execute
-    public var closureExecute: () -> () = {}
-    public var invokedExecute = false
-    public var invokedExecuteCount = 0
-    public var stubbedExecuteResult: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>!
+    public var closureExecute1: () -> () = {}
+    public var invokedExecute1 = false
+    public var invokedExecuteCount1 = 0
+    public var stubbedExecuteResult1: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>!
 
     public func execute() -> CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> {
-        invokedExecute = true
-        invokedExecuteCount += 1
-        closureExecute()
-        return stubbedExecuteResult
+        invokedExecute1 = true
+        invokedExecuteCount1 += 1
+        closureExecute1()
+        return stubbedExecuteResult1
     }
     // MARK: - execute
-    public var executeThrowableError: Error?
-    public var closureExecuteAsync: () -> () = {}
-    public var invokedExecuteAsync = false
-    public var invokedExecuteAsyncCount = 0
-    public var stubbedExecuteAsyncResult: [SymmetricallyEncryptedItem]!
+    public var executeThrowableError2: Error?
+    public var closureExecuteAsync2: () -> () = {}
+    public var invokedExecuteAsync2 = false
+    public var invokedExecuteAsyncCount2 = 0
+    public var stubbedExecuteAsyncResult2: [SymmetricallyEncryptedItem]!
 
     public func execute() async throws -> [SymmetricallyEncryptedItem] {
-        invokedExecuteAsync = true
-        invokedExecuteAsyncCount += 1
-        if let error = executeThrowableError {
+        invokedExecuteAsync2 = true
+        invokedExecuteAsyncCount2 += 1
+        if let error = executeThrowableError2 {
             throw error
         }
-        closureExecuteAsync()
-        return stubbedExecuteAsyncResult
+        closureExecuteAsync2()
+        return stubbedExecuteAsyncResult2
     }
 }

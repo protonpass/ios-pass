@@ -1,7 +1,6 @@
 //
-//
-// GetVaultInfos.swift
-// Proton Pass - Created on 08/09/2023.
+// TrashSelectedItems.swift
+// Proton Pass - Created on 02/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,29 +20,26 @@
 //
 
 import Client
-import Combine
 import Entities
 
-public protocol GetVaultInfosUseCase: Sendable {
-    func execute(for id: String) -> AnyPublisher<Vault?, Never>
+public protocol TrashSelectedItemsUseCase: Sendable {
+    func execute(_ items: [any ItemIdentifiable]) async throws
 }
 
-public extension GetVaultInfosUseCase {
-    func callAsFunction(for id: String) -> AnyPublisher<Vault?, Never> {
-        execute(for: id)
+public extension TrashSelectedItemsUseCase {
+    func callAsFunction(_ items: [any ItemIdentifiable]) async throws {
+        try await execute(items)
     }
 }
 
-public final class GetVaultInfos: GetVaultInfosUseCase {
-    private let vaultsManager: any VaultsManagerProtocol
+public final class TrashSelectedItems: TrashSelectedItemsUseCase {
+    private let repository: any ItemRepositoryProtocol
 
-    public init(vaultsManager: any VaultsManagerProtocol) {
-        self.vaultsManager = vaultsManager
+    public init(repository: any ItemRepositoryProtocol) {
+        self.repository = repository
     }
 
-    public func execute(for id: String) -> AnyPublisher<Vault?, Never> {
-        vaultsManager.currentVaults
-            .map { $0.first(where: { $0.shareId == id }) }
-            .eraseToAnyPublisher()
+    public func execute(_ items: [any ItemIdentifiable]) async throws {
+        try await repository.trashItems(items)
     }
 }

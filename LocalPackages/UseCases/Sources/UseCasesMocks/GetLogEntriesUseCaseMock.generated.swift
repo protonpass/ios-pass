@@ -27,7 +27,7 @@ public final class GetLogEntriesUseCaseMock: @unchecked Sendable, GetLogEntriesU
     public init() {}
 
     // MARK: - execute
-    public var executeForThrowableError: Error?
+    public var executeForThrowableError1: Error?
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
@@ -40,7 +40,7 @@ public final class GetLogEntriesUseCaseMock: @unchecked Sendable, GetLogEntriesU
         invokedExecuteCount += 1
         invokedExecuteParameters = (module, ())
         invokedExecuteParametersList.append((module, ()))
-        if let error = executeForThrowableError {
+        if let error = executeForThrowableError1 {
             throw error
         }
         closureExecute()

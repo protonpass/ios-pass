@@ -28,7 +28,7 @@ public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepo
     public init() {}
 
     // MARK: - sendBug
-    public var sendBugWithAndOptionalThrowableError: Error?
+    public var sendBugWithAndOptionalThrowableError1: Error?
     public var closureSendBug: () -> () = {}
     public var invokedSendBugfunction = false
     public var invokedSendBugCount = 0
@@ -41,14 +41,14 @@ public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepo
         invokedSendBugCount += 1
         invokedSendBugParameters = (title, description, logs)
         invokedSendBugParametersList.append((title, description, logs))
-        if let error = sendBugWithAndOptionalThrowableError {
+        if let error = sendBugWithAndOptionalThrowableError1 {
             throw error
         }
         closureSendBug()
         return stubbedSendBugResult
     }
     // MARK: - sendFeedback
-    public var sendFeedbackWithAndThrowableError: Error?
+    public var sendFeedbackWithAndThrowableError2: Error?
     public var closureSendFeedback: () -> () = {}
     public var invokedSendFeedbackfunction = false
     public var invokedSendFeedbackCount = 0
@@ -61,7 +61,7 @@ public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepo
         invokedSendFeedbackCount += 1
         invokedSendFeedbackParameters = (title, description)
         invokedSendFeedbackParametersList.append((title, description))
-        if let error = sendFeedbackWithAndThrowableError {
+        if let error = sendFeedbackWithAndThrowableError2 {
             throw error
         }
         closureSendFeedback()
