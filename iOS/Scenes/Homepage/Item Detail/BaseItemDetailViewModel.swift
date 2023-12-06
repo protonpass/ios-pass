@@ -302,6 +302,6 @@ extension ItemRevision {
     }
 
     var pinMessage: String {
-        pinned ? #localized("Item Successfully pinned") : #localized("Item Successfully unpinned")
+        pinned ? #localized("Item successfully pinned") : #localized("Item successfully unpinned")
     }
 }

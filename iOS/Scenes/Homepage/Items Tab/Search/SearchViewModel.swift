@@ -79,7 +79,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SearchViewModelDelegate?
 
     var searchBarPlaceholder: String {
-        searchMode.vaultSelection?.searchBarPlacehoder ?? #localized("Search In pinned Items")
+        searchMode.vaultSelection?.searchBarPlacehoder ?? #localized("Search pinned items")
     }
 
     var isTrash: Bool {

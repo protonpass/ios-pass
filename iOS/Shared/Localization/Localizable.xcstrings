@@ -26250,21 +26250,29 @@
         }
       }
     },
-    "Item Successfully pinned" : {
+    "Item successfully pinned" : {
       "comment" : "Message displayed to user after pinning an item",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item Successfully pinned"
+            "value" : "Item successfully pinned"
           }
         }
       }
     },
-    "Item Successfully unpinned" : {
+    "Item successfully unpinned" : {
       "comment" : "Message displayed to user after unpinning an item",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully unpinned"
+          }
+        }
+      }
     },
     "Items" : {
       "localizations" : {
@@ -41337,18 +41345,6 @@
         }
       }
     },
-    "Search In pinned Items" : {
-      "comment" : "Pinned item search bar placeholder",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search in pinned Items"
-          }
-        }
-      }
-    },
     "Search in Trash..." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -41482,6 +41478,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm trong thùng rác..."
+          }
+        }
+      }
+    },
+    "Search pinned items" : {
+      "comment" : "Pinned item search bar placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search pinned items"
           }
         }
       }
