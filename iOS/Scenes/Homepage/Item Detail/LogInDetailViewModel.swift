@@ -48,7 +48,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
     @Published private(set) var passwordStrength: PasswordStrength?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
-    @Published private(set) var totpManager: TOTPManager
+    @Published private(set) var totpManager = resolve(\ServiceContainer.totpManager)
     @Published private var aliasItem: SymmetricallyEncryptedItem?
 
     var isAlias: Bool { aliasItem != nil }
@@ -67,8 +67,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
                   upgradeChecker: UpgradeCheckerProtocol) {
-        let logManager = resolve(\SharedToolingContainer.logManager)
-        totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
