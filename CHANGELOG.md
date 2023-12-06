@@ -1,3 +1,9 @@
+## Version 1.6.1
+- Added support for Norwegian language
+- Improved passwords display
+- Fixed occasional crashes after creating items
+- Fixed copying notes for login items with 2FA secrets
+
 ## Version 1.6.0
 Features:
 - Added password vulnerability score
