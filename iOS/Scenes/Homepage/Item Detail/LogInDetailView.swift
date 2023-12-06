@@ -113,12 +113,13 @@ struct LogInDetailView: View {
                 totpNotAllowedRow
 
             case .allowed:
-                switch viewModel.totpManager.state {
-                case .empty:
+                if viewModel.totpUri.isEmpty {
                     EmptyView()
-                default:
+                } else {
                     PassSectionDivider()
-                    totpAllowedRow
+                    TOTPRow(uri: viewModel.totpUri,
+                            tintColor: iconTintColor,
+                            onCopyTotpToken: { viewModel.copyTotpToken($0) })
                 }
             }
         }
@@ -245,44 +246,6 @@ struct LogInDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, kItemDetailSectionPadding)
-    }
-
-    private var totpAllowedRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("2FA token (TOTP)")
-                    .sectionTitleText()
-
-                switch viewModel.totpManager.state {
-                case .empty:
-                    EmptyView()
-                case .loading:
-                    ProgressView()
-                case let .valid(data):
-                    TOTPText(code: data.code)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                case .invalid:
-                    Text("Invalid TOTP URI")
-                        .font(.caption)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyTotpCode)
-
-            switch viewModel.totpManager.state {
-            case let .valid(data):
-                TOTPCircularTimer(data: data.timerData)
-                    .animation(nil, value: isShowingPassword)
-            default:
-                EmptyView()
-            }
-        }
-        .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: viewModel.totpManager.state)
     }
 
     private var urlsSection: some View {

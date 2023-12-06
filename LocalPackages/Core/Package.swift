@@ -29,7 +29,6 @@ let package = Package(name: "Core",
                                    targets: ["Core"])
                       ],
                       dependencies: [
-                          .package(url: "https://github.com/protonpass/OneTimePassword", exact: "0.1.1"),
                           .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "14.0.1"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro")
@@ -48,7 +47,6 @@ let package = Package(name: "Core",
                                       .product(name: "ProtonCoreLoginUI", package: "protoncore"),
                                       .product(name: "ProtonCoreNetworking", package: "protoncore"),
                                       .product(name: "ProtonCoreSettings", package: "protoncore"),
-                                      .product(name: "OneTimePassword", package: "OneTimePassword"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "Macro", package: "Macro")
                                   ],
