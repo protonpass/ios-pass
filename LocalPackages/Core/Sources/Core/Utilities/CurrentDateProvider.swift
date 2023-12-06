@@ -21,7 +21,7 @@
 import Foundation
 
 /// Make operations depending on date more testable by using this protocol to inject current date
-public protocol CurrentDateProviderProtocol {
+public protocol CurrentDateProviderProtocol: Sendable {
     func getCurrentDate() -> Date
 }
 
