@@ -68,6 +68,7 @@ let package = Package(name: "Client",
                           .testTarget(name: "ClientTests",
                                       dependencies: ["Client",
                                                      .product(name: "CoreMocks", package: "Core"),
+                                                     .product(name: "EntitiesMocks", package: "Entities"),
                                                      "ClientMocks"
                                                     ])
                       ])

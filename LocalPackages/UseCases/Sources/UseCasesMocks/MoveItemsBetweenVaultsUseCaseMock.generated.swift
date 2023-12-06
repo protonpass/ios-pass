@@ -26,19 +26,19 @@ public final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveI
     public init() {}
 
     // MARK: - execute
-    public var executeMovingContextThrowableError: Error?
+    public var executeContextToThrowableError1: Error?
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
-    public var invokedExecuteParameters: (movingContext: MovingContext, Void)?
-    public var invokedExecuteParametersList = [(movingContext: MovingContext, Void)]()
+    public var invokedExecuteParameters: (context: MovingContext, shareId: ShareID)?
+    public var invokedExecuteParametersList = [(context: MovingContext, shareId: ShareID)]()
 
-    public func execute(movingContext: MovingContext) async throws {
+    public func execute(context: MovingContext, to shareId: ShareID) async throws {
         invokedExecutefunction = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (movingContext, ())
-        invokedExecuteParametersList.append((movingContext, ()))
-        if let error = executeMovingContextThrowableError {
+        invokedExecuteParameters = (context, shareId)
+        invokedExecuteParametersList.append((context, shareId))
+        if let error = executeContextToThrowableError1 {
             throw error
         }
         closureExecute()

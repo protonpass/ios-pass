@@ -22,7 +22,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetEventsResponse: Decodable {
-    let code: Int
     let events: SyncEvents
 }
 

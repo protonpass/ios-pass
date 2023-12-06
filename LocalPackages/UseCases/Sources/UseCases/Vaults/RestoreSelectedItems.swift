@@ -1,6 +1,6 @@
 //
-// GetUserSettingsEndpoint.swift
-// Proton Pass - Created on 28/05/2023.
+// RestoreSelectedItems.swift
+// Proton Pass - Created on 02/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,23 +17,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import ProtonCoreNetworking
-import ProtonCoreServices
+import Client
+import Entities
 
-public struct GetUserSettingsResponse: Decodable {
-    let userSettings: UserSettings
+public protocol RestoreSelectedItemsUseCase: Sendable {
+    func execute(_ items: [any ItemIdentifiable]) async throws
 }
 
-public struct GetUserSettingsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetUserSettingsResponse
+public extension RestoreSelectedItemsUseCase {
+    func callAsFunction(_ items: [any ItemIdentifiable]) async throws {
+        try await execute(items)
+    }
+}
 
-    public var debugDescription: String
-    public var path: String
+public final class RestoreSelectedItems: RestoreSelectedItemsUseCase {
+    private let repository: any ItemRepositoryProtocol
 
-    public init() {
-        debugDescription = "Get user settings"
-        path = "/core/v4/settings"
+    public init(repository: any ItemRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    public func execute(_ items: [any ItemIdentifiable]) async throws {
+        try await repository.untrashItems(items)
     }
 }

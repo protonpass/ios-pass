@@ -39,13 +39,9 @@ import ProtonCoreServices
 import SwiftUI
 import UIKit
 
-protocol APIManagerProtocol {
+final class APIManager {
     typealias SessionUID = String
 
-    var sessionWasInvalidated: PassthroughSubject<SessionUID, Never> { get }
-}
-
-final class APIManager: APIManagerProtocol {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
     private let appData = resolve(\SharedDataContainer.appData)

@@ -21,8 +21,8 @@
 @testable import Client
 import Combine
 import Entities
-import ProtonCoreLogin
 import CryptoKit
+import ProtonCoreLogin
 
 public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider, UserDataProvider {
 
@@ -30,7 +30,7 @@ public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, Symmet
 
     // MARK: - ⚡️ SymmetricKeyProvider
     // MARK: - getSymmetricKey
-    public var getSymmetricKeyThrowableError: Error?
+    public var getSymmetricKeyThrowableError1: Error?
     public var closureGetSymmetricKey: () -> () = {}
     public var invokedGetSymmetricKeyfunction = false
     public var invokedGetSymmetricKeyCount = 0
@@ -39,7 +39,7 @@ public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, Symmet
     public func getSymmetricKey() throws -> SymmetricKey {
         invokedGetSymmetricKeyfunction = true
         invokedGetSymmetricKeyCount += 1
-        if let error = getSymmetricKeyThrowableError {
+        if let error = getSymmetricKeyThrowableError1 {
             throw error
         }
         closureGetSymmetricKey()

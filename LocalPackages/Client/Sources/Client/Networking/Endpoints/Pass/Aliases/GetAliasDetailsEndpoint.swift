@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetAliasDetailsResponse: Decodable {
-    let code: Int
     let alias: Alias
 }
 

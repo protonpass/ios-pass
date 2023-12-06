@@ -27,7 +27,7 @@ public final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCa
     public init() {}
 
     // MARK: - execute
-    public var executeWithThrowableError: Error?
+    public var executeWithThrowableError1: Error?
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
@@ -40,7 +40,7 @@ public final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCa
         invokedExecuteCount += 1
         invokedExecuteParameters = (vault, ())
         invokedExecuteParametersList.append((vault, ()))
-        if let error = executeWithThrowableError {
+        if let error = executeWithThrowableError1 {
             throw error
         }
         closureExecute()

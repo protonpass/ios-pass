@@ -34,6 +34,8 @@ enum HomepageTab {
 protocol HomepageTabDelegete: AnyObject {
     func homepageTabShouldChange(tab: HomepageTab)
     func homepageTabShouldRefreshTabIcons()
+    func homepageTabShouldHideTabbar()
+    func homepageTabShouldShowTabbar()
 }
 
 struct HomepageTabbarView: UIViewControllerRepresentable {
@@ -64,6 +66,14 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
 
         func homepageTabShouldRefreshTabIcons() {
             homepageTabBarController?.refreshTabBarIcons()
+        }
+
+        func homepageTabShouldHideTabbar() {
+            homepageTabBarController?.hideTabBar(true)
+        }
+
+        func homepageTabShouldShowTabbar() {
+            homepageTabBarController?.hideTabBar(false)
         }
     }
 }
@@ -179,6 +189,22 @@ extension HomepageTabBarController {
             } catch {
                 self.logger.error(error)
             }
+        }
+    }
+
+    func hideTabBar(_ isHidden: Bool) {
+        UIView.animate(withDuration: 0.7,
+                       delay: 0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.7,
+                       options: .curveEaseOut) { [weak self] in
+            guard let self else { return }
+            if isHidden {
+                tabBar.frame.origin.y = view.frame.maxY + tabBar.frame.height
+            } else {
+                tabBar.frame.origin.y = view.frame.maxY - tabBar.frame.height
+            }
+            view.layoutIfNeeded()
         }
     }
 }

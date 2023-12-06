@@ -1,6 +1,6 @@
 //
-// GetUserSettingsEndpoint.swift
-// Proton Pass - Created on 28/05/2023.
+// DataStream+DependencyInjections.swift
+// Proton Pass - Created on 30/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreNetworking
-import ProtonCoreServices
+import Combine
+import Entities
+import Factory
+import Foundation
 
-public struct GetUserSettingsResponse: Decodable {
-    let userSettings: UserSettings
+final class DataStreamContainer: SharedContainer, AutoRegistering {
+    static let shared = DataStreamContainer()
+    let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
+    }
 }
 
-public struct GetUserSettingsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetUserSettingsResponse
-
-    public var debugDescription: String
-    public var path: String
-
-    public init() {
-        debugDescription = "Get user settings"
-        path = "/core/v4/settings"
+extension DataStreamContainer {
+    var currentSelectedItems: Factory<CurrentValueSubject<[any ItemIdentifiable], Never>> {
+        self { .init([]) }
     }
 }

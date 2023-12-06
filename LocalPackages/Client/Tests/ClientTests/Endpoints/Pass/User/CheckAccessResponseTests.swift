@@ -46,8 +46,7 @@ final class CheckAccessResponseTests: XCTestCase {
 }
 """
         let expectedResult =
-        CheckAccessResponse(code: 1000,
-                            access: Access(plan: .init(type: "free",
+        CheckAccessResponse(access: Access(plan: .init(type: "free",
                                                        internalName: "bundle2022",
                                                        displayName: "Unlimited",
                                                        hideUpgrade: true,

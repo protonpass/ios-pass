@@ -27,7 +27,7 @@ public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, 
     public init() {}
 
     // MARK: - execute
-    public var executeVaultItemContentThrowableError: Error?
+    public var executeVaultItemContentThrowableError1: Error?
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
@@ -40,7 +40,7 @@ public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, 
         invokedExecuteCount += 1
         invokedExecuteParameters = (vault, itemContent)
         invokedExecuteParametersList.append((vault, itemContent))
-        if let error = executeVaultItemContentThrowableError {
+        if let error = executeVaultItemContentThrowableError1 {
             throw error
         }
         closureExecute()
