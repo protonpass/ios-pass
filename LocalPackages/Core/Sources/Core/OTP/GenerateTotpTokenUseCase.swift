@@ -1,6 +1,6 @@
 //
-// TOTP.swift
-// Proton Pass - Created on 20/07/2023.
+// GenerateTotpTokenUseCase.swift
+// Proton Pass - Created on 06/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,32 +17,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Entities
 
-public enum TOTPState: Equatable {
-    case loading
-    case empty
-    case valid(TOTPData)
-    case invalid
+public protocol GenerateTotpTokenUseCase: Sendable {
+    func execute(uri: String) throws -> TOTPData
 }
 
-public struct TOTPTimerData: Hashable {
-    public let total: Int
-    public let remaining: Int
-
-    public init(total: Int, remaining: Int) {
-        self.total = total
-        self.remaining = remaining
-    }
-}
-
-public struct TOTPData: Equatable {
-    public let code: String
-    public let timerData: TOTPTimerData
-
-    public init(code: String, timerData: TOTPTimerData) {
-        self.code = code
-        self.timerData = timerData
+public extension GenerateTotpTokenUseCase {
+    func callAsFunction(uri: String) throws -> TOTPData {
+        try execute(uri: uri)
     }
 }
