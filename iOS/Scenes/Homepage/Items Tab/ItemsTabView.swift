@@ -83,7 +83,7 @@ struct ItemsTabView: View {
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty {
                     PinnedItemsView(pinnedItems: pinnedItems,
                                     onSearch: { viewModel.search(pinnedItems: true) },
-                                    action: { item in viewModel.viewDetail(of: item) })
+                                    action: { viewModel.viewDetail(of: $0) })
                     Divider()
                 }
 
@@ -193,7 +193,7 @@ private extension ItemsTabView {
             Spacer()
 
             SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                           action: { viewModel.presentSortTypeList() } )
+                           action: { viewModel.presentSortTypeList() })
         }
         .padding([.top, .horizontal])
 

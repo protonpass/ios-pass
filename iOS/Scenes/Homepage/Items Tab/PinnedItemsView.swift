@@ -57,7 +57,7 @@ struct PinnedItemsView: View {
                     } label: {
                         Text("See all")
                             .font(.callout.weight(.medium))
-                            .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                             .padding(.trailing, 8)
                     }
                 }
