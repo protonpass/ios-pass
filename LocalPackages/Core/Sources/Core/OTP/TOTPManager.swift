@@ -49,12 +49,6 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
         return nil
     }
 
-    public func reset() {
-        timer?.invalidate()
-        uri = ""
-        state = .empty
-    }
-
     public func bind(uri: String) {
         self.uri = uri
         timer?.invalidate()
