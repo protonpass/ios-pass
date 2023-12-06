@@ -56,7 +56,7 @@ struct TOTPRow: View {
                 case .invalid:
                     Text("Invalid TOTP URI")
                         .font(.caption)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                        .foregroundStyle(PassColor.signalDanger.toColor)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
