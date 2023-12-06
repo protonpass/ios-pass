@@ -22,19 +22,26 @@
 import Core
 import Entities
 import Foundation
-import PassRustCore
+
+@preconcurrency import PassRustCore
 
 public final class GenerateTotpToken: GenerateTotpTokenUseCase {
     private let currentDateProvider: any CurrentDateProviderProtocol
+    private let parser: any TotpUriParserProtocol
+    private let generator: any TotpTokenGeneratorProtocol
 
-    public init(currentDateProvider: any CurrentDateProviderProtocol) {
+    public init(currentDateProvider: any CurrentDateProviderProtocol,
+                parser: any TotpUriParserProtocol = TotpUriParser(),
+                generator: any TotpTokenGeneratorProtocol = TotpTokenGenerator()) {
         self.currentDateProvider = currentDateProvider
+        self.parser = parser
+        self.generator = generator
     }
 
     public func execute(uri: String) throws -> TOTPData {
         let totp: Totp
         if uri.contains("otpauth") {
-            totp = try TotpUriParser().parse(uriString: uri)
+            totp = try parser.parse(uriString: uri)
         } else {
             // Treat the whole URI as secret
             totp = Totp(label: nil,
@@ -46,8 +53,7 @@ public final class GenerateTotpToken: GenerateTotpTokenUseCase {
         }
 
         let date = currentDateProvider.getCurrentDate()
-        let genenator = TotpTokenGenerator()
-        let token = try genenator.generateCurrentToken(totp: totp,
+        let token = try generator.generateCurrentToken(totp: totp,
                                                        currentTime: UInt64(date.timeIntervalSince1970))
         let period = Double(totp.period ?? 30)
         let remainingSeconds = period - date.timeIntervalSince1970.truncatingRemainder(dividingBy: period)
