@@ -158,7 +158,7 @@ struct HiddenCustomFieldSection: View {
 }
 
 struct TotpCustomFieldSection: View {
-    @StateObject private var totpManager: TOTPManager
+    @StateObject private var totpManager = resolve(\ServiceContainer.totpManager)
     let title: String
     let content: String
     let itemContentType: ItemContentType
@@ -172,8 +172,6 @@ struct TotpCustomFieldSection: View {
          isFreeUser: Bool,
          onSelectTotpToken: @escaping (String) -> Void,
          onUpgrade: @escaping () -> Void) {
-        let logManager = resolve(\SharedToolingContainer.logManager)
-        _totpManager = .init(wrappedValue: .init(logManager: logManager))
         self.title = title
         self.content = content
         self.itemContentType = itemContentType
