@@ -56,6 +56,7 @@ extension AutoFillUseCaseContainer {
     var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(preferences: self.preferences,
                                       logManager: self.logManager,
+                                      generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
                                       notificationService: SharedServiceContainer.shared.notificationService(),
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
