@@ -25,9 +25,9 @@ import Foundation
 import PassRustCore
 
 public final class GenerateTotpToken: GenerateTotpTokenUseCase {
-    private let currentDateProvider: CurrentDateProviderProtocol
+    private let currentDateProvider: any CurrentDateProviderProtocol
 
-    public init(currentDateProvider: CurrentDateProviderProtocol) {
+    public init(currentDateProvider: any CurrentDateProviderProtocol) {
         self.currentDateProvider = currentDateProvider
     }
 
