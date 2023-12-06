@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct PinItemResponse: Decodable {
-    let code: Int
     let item: ItemRevision
 }
 
