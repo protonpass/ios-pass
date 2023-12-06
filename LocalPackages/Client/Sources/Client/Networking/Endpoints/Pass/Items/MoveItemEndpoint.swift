@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct MoveItemResponse: Decodable {
-    let code: Int
     let item: ItemRevision
 }
 

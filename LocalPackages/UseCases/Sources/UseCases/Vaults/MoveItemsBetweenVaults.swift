@@ -24,12 +24,12 @@ import Client
 
 // sourcery: AutoMockable
 public protocol MoveItemsBetweenVaultsUseCase: Sendable {
-    func execute(movingContext: MovingContext) async throws
+    func execute(context: MovingContext, to shareId: ShareID) async throws
 }
 
 public extension MoveItemsBetweenVaultsUseCase {
-    func callAsFunction(movingContext: MovingContext) async throws {
-        try await execute(movingContext: movingContext)
+    func callAsFunction(context: MovingContext, to shareId: ShareID) async throws {
+        try await execute(context: context, to: shareId)
     }
 }
 
@@ -40,12 +40,14 @@ public final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
         self.repository = repository
     }
 
-    public func execute(movingContext: MovingContext) async throws {
-        switch movingContext {
-        case let .item(itemToMove, newShareId):
-            try await repository.move(item: itemToMove, toShareId: newShareId)
-        case let .vault(currentSharedId, newShareId):
-            try await repository.move(currentShareId: currentSharedId, toShareId: newShareId)
+    public func execute(context: MovingContext, to shareId: ShareID) async throws {
+        switch context {
+        case let .singleItem(item):
+            try await repository.move(item: item, toShareId: shareId)
+        case let .allItems(fromVault):
+            try await repository.move(currentShareId: fromVault.shareId, toShareId: shareId)
+        case let .selectedItems(items):
+            try await repository.move(items: items, toShareId: shareId)
         }
     }
 }

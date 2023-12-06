@@ -29,7 +29,7 @@ public final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicK
     public init() {}
 
     // MARK: - getPublicKeys
-    public var getPublicKeysEmailThrowableError: Error?
+    public var getPublicKeysEmailThrowableError1: Error?
     public var closureGetPublicKeys: () -> () = {}
     public var invokedGetPublicKeysfunction = false
     public var invokedGetPublicKeysCount = 0
@@ -42,7 +42,7 @@ public final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicK
         invokedGetPublicKeysCount += 1
         invokedGetPublicKeysParameters = (email, ())
         invokedGetPublicKeysParametersList.append((email, ()))
-        if let error = getPublicKeysEmailThrowableError {
+        if let error = getPublicKeysEmailThrowableError1 {
             throw error
         }
         closureGetPublicKeys()

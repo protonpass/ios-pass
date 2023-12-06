@@ -1,6 +1,6 @@
 //
-// GetUserSettingsEndpoint.swift
-// Proton Pass - Created on 28/05/2023.
+// SquircleCheckbox.swift
+// Proton Pass - Created on 30/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,23 +17,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import ProtonCoreNetworking
-import ProtonCoreServices
+import ProtonCoreUIFoundations
+import SwiftUI
 
-public struct GetUserSettingsResponse: Decodable {
-    let userSettings: UserSettings
-}
+public struct SquircleCheckbox: View {
+    private let height: CGFloat
 
-public struct GetUserSettingsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetUserSettingsResponse
+    public init(height: CGFloat = 40) {
+        self.height = height
+    }
 
-    public var debugDescription: String
-    public var path: String
+    public var body: some View {
+        ZStack {
+            Color(uiColor: PassColor.interactionNorm)
+                .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
 
-    public init() {
-        debugDescription = "Get user settings"
-        path = "/core/v4/settings"
+            Image(uiImage: IconProvider.checkmark)
+                .resizable()
+                .scaledToFit()
+                .frame(width: height / 2)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }
+        .frame(width: height, height: height)
     }
 }
