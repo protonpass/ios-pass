@@ -38,15 +38,18 @@ extension CopyTotpTokenAndNotifyUseCase {
 final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyUseCase {
     private let preferences: Preferences
     private let logger: Logger
+    private let generateTotpToken: GenerateTotpTokenUseCase
     private let notificationService: LocalNotificationServiceProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
 
     init(preferences: Preferences,
          logManager: LogManagerProtocol,
+         generateTotpToken: GenerateTotpTokenUseCase,
          notificationService: LocalNotificationServiceProtocol,
          upgradeChecker: UpgradeCheckerProtocol) {
         self.preferences = preferences
         logger = .init(manager: logManager)
+        self.generateTotpToken = generateTotpToken
         self.notificationService = notificationService
         self.upgradeChecker = upgradeChecker
     }
@@ -74,7 +77,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
             // No URI
             return
         }
-        let totpData = try TOTPData(uri: data.totpUri)
+        let totpData = try generateTotpToken(uri: data.totpUri)
         clipboardManager.copy(text: totpData.code, bannerMessage: "")
         logger.trace("Copied TOTP token \(itemContent.debugDescription)")
 

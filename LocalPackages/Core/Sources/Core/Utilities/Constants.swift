@@ -29,12 +29,6 @@ public enum Constants {
     public static let existingUserSharingSignatureContext = "pass.invite.vault.existing-user"
     public static let newUserSharingSignatureContext = "pass.invite.vault.new-user"
 
-    enum TotpBase {
-        public static let timer: Double = 30.0
-        public static let digit: Int = 6
-        public static let algo: OTPComponents.Algorithm = .sha1
-    }
-
     public enum PINCode {
         public static let minLength = 4
         public static let maxLength = 100
