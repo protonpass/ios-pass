@@ -23,22 +23,6 @@ import LocalAuthentication
 import Macro
 
 extension LocalAuthenticationMethodUiModel {
-    var iconSystemName: String? {
-        if case let .biometric(type) = self {
-            switch type {
-            case .faceID:
-                return "faceid"
-            case .touchID:
-                return "touchid"
-            default:
-                assertionFailure("Not usable biometric type")
-                return nil
-            }
-        } else {
-            return nil
-        }
-    }
-
     var title: String {
         switch self {
         case .none:

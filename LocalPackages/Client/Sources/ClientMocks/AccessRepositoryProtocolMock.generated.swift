@@ -48,7 +48,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         }
     }
     // MARK: - getAccess
-    public var getAccessThrowableError: Error?
+    public var getAccessThrowableError1: Error?
     public var closureGetAccess: () -> () = {}
     public var invokedGetAccessfunction = false
     public var invokedGetAccessCount = 0
@@ -57,14 +57,14 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public func getAccess() async throws -> Access {
         invokedGetAccessfunction = true
         invokedGetAccessCount += 1
-        if let error = getAccessThrowableError {
+        if let error = getAccessThrowableError1 {
             throw error
         }
         closureGetAccess()
         return stubbedGetAccessResult
     }
     // MARK: - getPlan
-    public var getPlanThrowableError: Error?
+    public var getPlanThrowableError2: Error?
     public var closureGetPlan: () -> () = {}
     public var invokedGetPlanfunction = false
     public var invokedGetPlanCount = 0
@@ -73,14 +73,14 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public func getPlan() async throws -> Plan {
         invokedGetPlanfunction = true
         invokedGetPlanCount += 1
-        if let error = getPlanThrowableError {
+        if let error = getPlanThrowableError2 {
             throw error
         }
         closureGetPlan()
         return stubbedGetPlanResult
     }
     // MARK: - refreshAccess
-    public var refreshAccessThrowableError: Error?
+    public var refreshAccessThrowableError3: Error?
     public var closureRefreshAccess: () -> () = {}
     public var invokedRefreshAccessfunction = false
     public var invokedRefreshAccessCount = 0
@@ -89,7 +89,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public func refreshAccess() async throws -> Access {
         invokedRefreshAccessfunction = true
         invokedRefreshAccessCount += 1
-        if let error = refreshAccessThrowableError {
+        if let error = refreshAccessThrowableError3 {
             throw error
         }
         closureRefreshAccess()

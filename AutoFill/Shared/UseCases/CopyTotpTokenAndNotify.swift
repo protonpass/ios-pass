@@ -25,12 +25,12 @@ import Macro
 import UserNotifications
 
 protocol CopyTotpTokenAndNotifyUseCase: Sendable {
-    func execute(itemContent: ItemContent, clipboardManager: ClipboardManager) async throws
+    func execute(itemContent: ItemContent, clipboardManager: ClipboardManagerProtocol) async throws
 }
 
 extension CopyTotpTokenAndNotifyUseCase {
     func callAsFunction(itemContent: ItemContent,
-                        clipboardManager: ClipboardManager) async throws {
+                        clipboardManager: ClipboardManagerProtocol) async throws {
         try await execute(itemContent: itemContent, clipboardManager: clipboardManager)
     }
 }
@@ -52,7 +52,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
     }
 
     @MainActor
-    func execute(itemContent: ItemContent, clipboardManager: ClipboardManager) async throws {
+    func execute(itemContent: ItemContent, clipboardManager: ClipboardManagerProtocol) async throws {
         guard preferences.automaticallyCopyTotpCode else {
             // Not opted in
             return

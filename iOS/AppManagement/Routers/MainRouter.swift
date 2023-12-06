@@ -60,7 +60,6 @@ enum SheetDismissal {
 enum SheetDestination: Equatable, Hashable {
     case sharingFlow(SheetDismissal)
     case manageShareVault(Vault, SheetDismissal)
-    case filterItems
     case acceptRejectInvite(UserInvite)
     case vaultCreateEdit(vault: Vault?)
     case upgradeFlow
@@ -69,7 +68,7 @@ enum SheetDestination: Equatable, Hashable {
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
-    case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
+    case moveItemsBetweenVaults(MovingContext)
     case fullSync
     case shareVaultFromItemDetail(VaultListUiModel, ItemContent)
     case customizeNewVault(VaultProtobuf, ItemContent)
@@ -85,10 +84,15 @@ enum UIElementDisplay {
     case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
 }
 
+enum AlertDestination {
+    case bulkPermanentDeleteConfirmation(itemCount: Int)
+}
+
 final class MainUIKitSwiftUIRouter: Sendable {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
+    let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
 
     func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
@@ -100,6 +104,10 @@ final class MainUIKitSwiftUIRouter: Sendable {
 
     func display(element: UIElementDisplay) {
         globalElementDisplay.send(element)
+    }
+
+    func alert(_ destination: AlertDestination) {
+        alertDestination.send(destination)
     }
 }
 

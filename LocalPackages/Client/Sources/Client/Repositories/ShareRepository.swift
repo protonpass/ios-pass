@@ -278,9 +278,7 @@ public extension ShareRepository {
         logger.trace("Editing vault \(oldVault.id) for user \(userId)")
         let shareId = oldVault.shareId
         let shareKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
-        let request = try UpdateVaultRequest(vault: newVault,
-                                             shareKey: shareKey,
-                                             userData: userData)
+        let request = try UpdateVaultRequest(vault: newVault, shareKey: shareKey)
         let updatedVault = try await remoteDatasouce.updateVault(request: request, shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
         let encryptedShare = try await symmetricallyEncrypt(updatedVault)

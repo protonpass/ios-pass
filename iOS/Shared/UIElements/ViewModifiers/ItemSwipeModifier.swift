@@ -27,6 +27,7 @@ import SwiftUI
 struct ItemSwipeModifier: ViewModifier {
     @Binding var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     let item: any ItemTypeIdentifiable
+    let isEditMode: Bool
     let isTrashed: Bool
     let itemContextMenuHandler: ItemContextMenuHandler
 
@@ -35,7 +36,9 @@ struct ItemSwipeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .swipeActions(edge: .leading) {
-                if isTrashed {
+                if isEditMode {
+                    EmptyView()
+                } else if isTrashed {
                     Button(action: {
                         itemContextMenuHandler.restore(item)
                     }, label: {
@@ -51,7 +54,9 @@ struct ItemSwipeModifier: ViewModifier {
                 }
             }
             .swipeActions(edge: .trailing) {
-                if isTrashed {
+                if isEditMode {
+                    EmptyView()
+                } else if isTrashed {
                     Button(action: {
                         itemToBePermanentlyDeleted = item
                     }, label: {
