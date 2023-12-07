@@ -27,23 +27,24 @@ import Macro
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
-    func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
     func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
 
+@MainActor
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
+    @Published private(set) var pinnedItems: [ItemUiModel]?
     @Published private(set) var banners: [InfoBanner] = []
     @Published var isEditMode = false
     @Published var shouldShowSyncProgress = false
-    @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
+    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
         didSet {
             if itemToBePermanentlyDeleted != nil {
                 showingPermanentDeletionAlert = true
@@ -64,6 +65,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
     private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
+    private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
@@ -79,6 +83,14 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     init() {
         setUp()
+    }
+
+    func loadPinnedItems() async {
+        guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
+              let newPinnedItems = try? await getAllPinnedItems()
+              .compactMap({ try? $0.toItemUiModel(symmetricKey) })
+        else { return }
+        pinnedItems = Array(newPinnedItems.prefix(5))
     }
 }
 
@@ -122,6 +134,20 @@ private extension ItemsTabViewModel {
                 shouldShowSyncProgress = true
             }
         }
+
+        getAllPinnedItems()
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] pinnedItems in
+                guard let self,
+                      let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
+                      let pinnedItems else {
+                    return
+                }
+                let firstPinnedItems = Array(pinnedItems.prefix(5))
+                self.pinnedItems = firstPinnedItems.compactMap { try? $0.toItemUiModel(symmetricKey) }
+            }
+            .store(in: &cancellables)
     }
 
     func refreshBanners(_ invites: [UserInvite]? = nil) {
@@ -173,7 +199,7 @@ private extension ItemsTabViewModel {
         }
     }
 
-    func selectOrDeselect(_ item: ItemIdentifiable) {
+    func selectOrDeselect(_ item: any ItemIdentifiable) {
         var items = currentSelectedItems.value
         if items.contains(item) {
             items.removeAll(where: { $0.isEqual(with: item) })
@@ -197,15 +223,19 @@ extension ItemsTabViewModel {
         }
     }
 
-    func search() {
-        delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
+    func search(pinnedItems: Bool = false) {
+        if pinnedItems {
+            router.present(for: .search(.pinned))
+        } else {
+            router.present(for: .search(.all(vaultsManager.vaultSelection)))
+        }
     }
 
-    func isSelected(_ item: ItemIdentifiable) -> Bool {
+    func isSelected(_ item: any ItemIdentifiable) -> Bool {
         currentSelectedItems.value.contains(item)
     }
 
-    func isSelectable(_ item: ItemIdentifiable) -> Bool {
+    func isSelectable(_ item: any ItemIdentifiable) -> Bool {
         let editableVaults = vaultsManager.getAllEditableVaultContents()
         return editableVaults.contains { $0.vault.shareId == item.shareId }
     }
@@ -314,7 +344,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func viewDetail(of item: ItemIdentifiable) {
+    func viewDetail(of item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -328,7 +358,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func handleSelection(_ item: ItemIdentifiable) {
+    func handleSelection(_ item: any ItemIdentifiable) {
         if isEditMode {
             selectOrDeselect(item)
         } else {
@@ -336,7 +366,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func handleThumbnailSelection(_ item: ItemIdentifiable) {
+    func handleThumbnailSelection(_ item: any ItemIdentifiable) {
         if isSelectable(item) {
             selectOrDeselect(item)
             isEditMode = true
@@ -346,6 +376,14 @@ extension ItemsTabViewModel {
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
+    }
+}
+
+// MARK: - SortTypeListViewModelDelegate
+
+extension ItemsTabViewModel: SortTypeListViewModelDelegate {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
+        selectedSortType = sortType
     }
 }
 
@@ -364,7 +402,7 @@ private extension [UserInvite] {
 }
 
 private extension [ItemIdentifiable] {
-    func contains(_ otherItem: ItemIdentifiable) -> Bool {
+    func contains(_ otherItem: any ItemIdentifiable) -> Bool {
         contains(where: { $0.isEqual(with: otherItem) })
     }
 }

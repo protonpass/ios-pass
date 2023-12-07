@@ -48,7 +48,7 @@ private extension UseCasesContainer {
         SharedDataContainer.shared.userDataProvider()
     }
 
-    var itemRepository: ItemRepositoryProtocol {
+    var itemRepository: any ItemRepositoryProtocol {
         SharedRepositoryContainer.shared.itemRepository()
     }
 }
@@ -276,6 +276,21 @@ extension UseCasesContainer {
     var reachedVaultLimit: Factory<ReachedVaultLimitUseCase> {
         self { ReachedVaultLimit(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                  vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+}
+
+// MARK: - items
+
+extension UseCasesContainer {
+    var getAllPinnedItems: Factory<GetAllPinnedItemsUseCase> {
+        self { GetAllPinnedItems(itemRepository: self.itemRepository) }
+    }
+
+    var getSearchableItems: Factory<GetSearchableItemsUseCase> {
+        self { GetSearchableItems(itemRepository: self.itemRepository,
+                                  shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                  getAllPinnedItems: self.getAllPinnedItems(),
+                                  symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
     }
 }
 

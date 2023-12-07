@@ -329,6 +329,8 @@ private extension HomepageCoordinator {
                     createEditItemViewModelWantsToChangeVault()
                 case .setPINCode:
                     presentSetPINCodeView()
+                case let .search(selection):
+                    presentSearchScreen(selection)
                 }
             }
             .store(in: &cancellables)
@@ -554,6 +556,15 @@ private extension HomepageCoordinator {
         alert.addAction(deleteAction)
         alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
         present(alert)
+    }
+
+    func presentSearchScreen(_ searchMode: SearchMode) {
+        let viewModel = SearchViewModel(searchMode: searchMode)
+        viewModel.delegate = self
+        searchViewModel = viewModel
+        let view = SearchView(viewModel: viewModel)
+        present(view)
+        addNewEvent(type: .searchTriggered)
     }
 
     func startUpgradeFlow() {
@@ -858,15 +869,6 @@ extension HomepageCoordinator: ItemTypeListViewModelDelegate {
 // MARK: - ItemsTabViewModelDelegate
 
 extension HomepageCoordinator: ItemsTabViewModelDelegate {
-    func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(vaultSelection: vaultSelection)
-        viewModel.delegate = self
-        searchViewModel = viewModel
-        let view = SearchView(viewModel: viewModel)
-        present(view)
-        addNewEvent(type: .searchTriggered)
-    }
-
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType) {
         presentCreateItemView(for: type.type)
     }
@@ -1238,7 +1240,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         showFullScreen(data: data, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
+    func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable) {
         refresh()
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }

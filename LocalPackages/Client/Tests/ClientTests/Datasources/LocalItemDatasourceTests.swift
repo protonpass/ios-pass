@@ -66,6 +66,29 @@ extension LocalItemDatasourceTests {
                        Set(givenItems.map(\.itemId)))
     }
     
+
+    func testGetAllPinnedItems() async throws {
+        // Given
+        var givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
+        givenItems.append(SymmetricallyEncryptedItem.random(item: .random(pinned: true)))
+        try await sut.upsertItems(givenItems)
+        
+        // When
+        let pinnedItems = try await sut.getAllPinnedItems()
+        
+        // Then
+        XCTAssertEqual(pinnedItems.count, 1)
+        
+        givenItems.append(SymmetricallyEncryptedItem.random(item: .random(pinned: true)))
+        try await sut.upsertItems(givenItems)
+        
+        // When
+        let pinnedItems2 = try await sut.getAllPinnedItems()
+        
+        // Then
+        XCTAssertEqual(pinnedItems2.count, 2)
+    }
+    
     func testGetItem() async throws {
         // Given
         let givenShareId = String.random()

@@ -24,6 +24,7 @@ import Core
 import CryptoKit
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 enum SearchViewState {
@@ -59,20 +60,17 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     // Injected properties
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
 
-    // Self-intialized properties
-    private(set) var vaultSelection: VaultSelection
+    private(set) var searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
     private var lastTask: Task<Void, Never>?
     private var filteringTask: Task<Void, Never>?
-    private var allItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
     private var results = [ItemSearchResult]()
@@ -80,10 +78,16 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: SearchViewModelDelegate?
 
-    var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
+    var searchBarPlaceholder: String {
+        searchMode.searchBarPlacehoder
+    }
 
-    init(vaultSelection: VaultSelection) {
-        self.vaultSelection = vaultSelection
+    var isTrash: Bool {
+        searchMode.vaultSelection == .trash
+    }
+
+    init(searchMode: SearchMode) {
+        self.searchMode = searchMode
         setup()
     }
 }
@@ -97,19 +101,7 @@ private extension SearchViewModel {
                 state = .initializing
             }
 
-            let vaults = try await shareRepository.getVaults()
-
-            switch vaultSelection {
-            case .all:
-                allItems = try await itemRepository.getItems(state: .active)
-            case let .precise(vault):
-                allItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
-            case .trash:
-                allItems = try await itemRepository.getItems(state: .trashed)
-            }
-            searchableItems = try allItems.map { try SearchableItem(from: $0,
-                                                                    symmetricKey: getSymmetricKey(),
-                                                                    allVaults: vaults) }
+            searchableItems = try await getSearchableItems(for: searchMode)
             try await refreshSearchHistory()
         } catch {
             state = .error(error)
@@ -118,20 +110,22 @@ private extension SearchViewModel {
 
     @MainActor
     func refreshSearchHistory() async throws {
+        guard let vaultSelection = searchMode.vaultSelection else {
+            return
+        }
         var shareId: String?
         if case let .precise(vault) = vaultSelection {
             shareId = vault.shareId
         }
 
         let searchEntries = try await searchEntryDatasource.getAllEntries(shareId: shareId)
-        history = try searchEntries.compactMap { entry in
-            if let item = allItems.first(where: {
+        history = searchEntries.compactMap { entry in
+            guard let item = searchableItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID
-            }) {
-                try item.toSearchEntryUiModel(getSymmetricKey())
-            } else {
-                nil
+            }) else {
+                return nil
             }
+            return item.toSearchEntryUiModel
         }
 
         switch state {
@@ -148,15 +142,23 @@ private extension SearchViewModel {
 
     func doSearch(query: String) {
         lastSearchQuery = query
-        guard !query.isEmpty else {
-            if history.isEmpty {
-                state = .empty
-            } else {
-                state = .history(history)
+        switch searchMode {
+        case .pinned:
+            if query.isEmpty {
+                results = searchableItems.toItemSearchResults
+                filterAndSortResults()
+                return
             }
-            return
+        case .all:
+            guard !query.isEmpty else {
+                if history.isEmpty {
+                    state = .empty
+                } else {
+                    state = .history(history)
+                }
+                return
+            }
         }
-
         lastTask?.cancel()
         lastTask = Task { @MainActor [weak self] in
             guard let self else {
@@ -230,7 +232,7 @@ extension SearchViewModel {
         }
     }
 
-    func viewDetail(of item: ItemIdentifiable) {
+    func viewDetail(of item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -246,7 +248,7 @@ extension SearchViewModel {
         }
     }
 
-    func removeFromHistory(_ item: ItemIdentifiable) {
+    func removeFromHistory(_ item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -276,7 +278,10 @@ extension SearchViewModel {
     }
 
     func searchInAllVaults() {
-        vaultSelection = .all
+        guard searchMode != .pinned else {
+            return
+        }
+        searchMode = .all(.all)
         refreshResults()
     }
 }
@@ -304,10 +309,6 @@ private extension SearchViewModel {
                 filterAndSortResults()
             }
             .store(in: &cancellables)
-    }
-
-    func getSymmetricKey() throws -> SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
     }
 }
 

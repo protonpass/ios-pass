@@ -72,24 +72,31 @@ struct ItemsTabView: View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
                 ItemsTabTopBar(isEditMode: $viewModel.isEditMode,
-                               onSearch: viewModel.search,
-                               onShowVaultList: viewModel.presentVaultList,
-                               onMove: viewModel.presentVaultListToMoveSelectedItems,
-                               onTrash: viewModel.trashSelectedItems,
-                               onRestore: viewModel.restoreSelectedItems,
-                               onPermanentlyDelete: viewModel.askForBulkPermanentDeleteConfirmation)
+                               onSearch: { viewModel.search() },
+                               onShowVaultList: { viewModel.presentVaultList() },
+                               onMove: { viewModel.presentVaultListToMoveSelectedItems() },
+                               onTrash: { viewModel.trashSelectedItems() },
+                               onRestore: { viewModel.restoreSelectedItems() },
+                               onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() })
 
                 if !viewModel.banners.isEmpty, !viewModel.isEditMode {
                     InfoBannerViewStack(banners: viewModel.banners,
-                                        dismiss: viewModel.dismiss(banner:),
-                                        action: viewModel.handleAction(banner:))
+                                        dismiss: { viewModel.dismiss(banner: $0) },
+                                        action: { viewModel.handleAction(banner: $0) })
                         .padding([.horizontal, .top])
+                }
+
+                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode {
+                    PinnedItemsView(pinnedItems: pinnedItems,
+                                    onSearch: { viewModel.search(pinnedItems: true) },
+                                    action: { viewModel.viewDetail(of: $0) })
+                    Divider()
                 }
 
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
                     case .all, .precise:
-                        EmptyVaultView(onCreate: viewModel.createNewItem(type:))
+                        EmptyVaultView(onCreate: { viewModel.createNewItem(type: $0) })
                             .padding(.bottom, safeAreaInsets.bottom)
                     case .trash:
                         EmptyTrashView()
@@ -105,6 +112,11 @@ struct ItemsTabView: View {
             .animation(.default, value: viewModel.vaultsManager.state)
             .animation(.default, value: viewModel.vaultsManager.filterOption)
             .animation(.default, value: viewModel.banners.count)
+            .animation(.default, value: viewModel.pinnedItems)
+            .animation(.default, value: viewModel.isEditMode)
+            .task {
+                await viewModel.loadPinnedItems()
+            }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }
@@ -127,7 +139,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
+    func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
                      content: {
                          section(for: result.today, headerTitle: #localized("Today"))
@@ -142,8 +154,8 @@ struct ItemsTabView: View {
                      onRefresh: viewModel.forceSyncIfNotEditMode)
     }
 
-    private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
-                          direction: SortDirection) -> some View {
+    func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
+                  direction: SortDirection) -> some View {
         ScrollViewReader { proxy in
             ItemListView(safeAreaInsets: safeAreaInsets,
                          showScrollIndicators: false,
@@ -163,7 +175,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
+    func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
                      content: {
                          ForEach(result.buckets, id: \.monthYear) { bucket in
@@ -174,7 +186,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func section(for items: [ItemUiModel], headerTitle: String) -> some View {
+    func section(for items: [ItemUiModel], headerTitle: String) -> some View {
         if items.isEmpty {
             EmptyView()
         } else {
@@ -194,7 +206,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func itemRow(for item: ItemUiModel) -> some View {
+    func itemRow(for item: ItemUiModel) -> some View {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         let isSelectable = viewModel.isSelectable(item)
         let isSelected = viewModel.isSelected(item)

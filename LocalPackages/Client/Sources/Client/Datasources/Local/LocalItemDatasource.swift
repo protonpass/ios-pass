@@ -21,6 +21,7 @@
 import CoreData
 import Entities
 
+// sourcery: AutoMockable
 public protocol LocalItemDatasourceProtocol {
     // Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
@@ -28,14 +29,14 @@ public protocol LocalItemDatasourceProtocol {
     // Get all items by state
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
+    /// Get items by state
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
-
-    /// Get items by state
-    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get total items of a share (both active and trashed ones)
     func getItemCount(shareId: String) async throws -> Int
@@ -65,6 +66,8 @@ public protocol LocalItemDatasourceProtocol {
 
     /// Get all active log in items
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
 }
 
 public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}
@@ -73,6 +76,14 @@ public extension LocalItemDatasource {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "pinned = %d", true)
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -124,6 +135,9 @@ public extension LocalItemDatasource {
     }
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
+        // We are removing the items before insert due to the bug of non updating boolean variables
+        // on coredata entities causing us issues when following value like pinned status
+        try await deleteItems(items)
         let taskContext = newTaskContext(type: .insert)
         let entity = ItemEntity.entity(context: taskContext)
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
@@ -144,6 +158,7 @@ public extension LocalItemDatasource {
                                                 content: item.item.content,
                                                 itemKey: item.item.itemKey,
                                                 state: modifiedItem.state,
+                                                pinned: item.item.pinned,
                                                 aliasEmail: item.item.aliasEmail,
                                                 createTime: item.item.createTime,
                                                 modifyTime: modifiedItem.modifyTime,

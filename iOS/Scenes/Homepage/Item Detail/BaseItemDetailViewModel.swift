@@ -31,7 +31,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData)
-    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
+    func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable)
 }
 
 @MainActor
@@ -59,6 +59,8 @@ class BaseItemDetailViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
+    private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
+    private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -128,18 +130,18 @@ class BaseItemDetailViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let shareId = self.itemContent.shareId
-                let itemId = self.itemContent.item.itemID
+                let shareId = itemContent.shareId
+                let itemId = itemContent.item.itemID
                 guard let updatedItemContent =
-                    try await self.itemRepository.getItemContent(shareId: shareId,
-                                                                 itemId: itemId) else {
+                    try await itemRepository.getItemContent(shareId: shareId,
+                                                            itemId: itemId) else {
                     return
                 }
-                self.itemContent = updatedItemContent
-                self.bindValues()
+                itemContent = updatedItemContent
+                bindValues()
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -150,6 +152,29 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func moveToAnotherVault() {
         router.present(for: .moveItemsBetweenVaults(.singleItem(itemContent)))
+    }
+
+    func toggleItemPinning() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                logger.trace("beginning of pin/unpin of \(itemContent.debugDescription)")
+                router.display(element: .globalLoading(shouldShow: true))
+                let newItemState = if itemContent.item.pinned {
+                    try await unpinItem(item: itemContent)
+                } else {
+                    try await pinItem(item: itemContent)
+                }
+                router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
+                logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 
     func copyNoteContent() {
@@ -236,15 +261,15 @@ private extension BaseItemDetailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
+                isFreeUser = try await upgradeChecker.isFreeUser()
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
-    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
+    func getItemTask(item: any ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PassError.deallocatedSelf

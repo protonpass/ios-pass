@@ -17,38 +17,33 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Proton_Pass
-import Client
-import Core
-import CryptoKit
-import Entities
-import Factory
 import Foundation
-import ProtonCoreLogin
-import ProtonCoreNetworking
 
-final class CredentialsMigrationStateProviderMock: @unchecked Sendable, CredentialsMigrationStateProvider {
+public final class CredentialsMigrationStateProviderMock: @unchecked Sendable, CredentialsMigrationStateProvider {
+
+    public init() {}
+
     // MARK: - shouldMigrateToSeparatedCredentials
-    var closureShouldMigrateToSeparatedCredentials: () -> () = {}
-    var invokedShouldMigrateToSeparatedCredentials = false
-    var invokedShouldMigrateToSeparatedCredentialsCount = 0
-    var stubbedShouldMigrateToSeparatedCredentialsResult: Bool!
+    public var closureShouldMigrateToSeparatedCredentials: () -> () = {}
+    public var invokedShouldMigrateToSeparatedCredentialsfunction = false
+    public var invokedShouldMigrateToSeparatedCredentialsCount = 0
+    public var stubbedShouldMigrateToSeparatedCredentialsResult: Bool!
 
-    func shouldMigrateToSeparatedCredentials() -> Bool {
-        invokedShouldMigrateToSeparatedCredentials = true
+    public func shouldMigrateToSeparatedCredentials() -> Bool {
+        invokedShouldMigrateToSeparatedCredentialsfunction = true
         invokedShouldMigrateToSeparatedCredentialsCount += 1
         closureShouldMigrateToSeparatedCredentials()
         return stubbedShouldMigrateToSeparatedCredentialsResult
     }
     // MARK: - markAsMigratedToSeparatedCredentials
-    var closureMarkAsMigratedToSeparatedCredentials: () -> () = {}
-    var invokedMarkAsMigratedToSeparatedCredentials = false
-    var invokedMarkAsMigratedToSeparatedCredentialsCount = 0
+    public var closureMarkAsMigratedToSeparatedCredentials: () -> () = {}
+    public var invokedMarkAsMigratedToSeparatedCredentialsfunction = false
+    public var invokedMarkAsMigratedToSeparatedCredentialsCount = 0
 
-    func markAsMigratedToSeparatedCredentials() {
-        invokedMarkAsMigratedToSeparatedCredentials = true
+    public func markAsMigratedToSeparatedCredentials() {
+        invokedMarkAsMigratedToSeparatedCredentialsfunction = true
         invokedMarkAsMigratedToSeparatedCredentialsCount += 1
         closureMarkAsMigratedToSeparatedCredentials()
     }
