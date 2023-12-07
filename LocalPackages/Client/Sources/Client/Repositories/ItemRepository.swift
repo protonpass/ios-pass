@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -28,7 +29,10 @@ import ProtonCoreServices
 
 private let kBatchPageSize = 100
 
+// sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
+    var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> { get }
+
     /// Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
 
@@ -68,18 +72,18 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
-    func trashItems(_ items: [ItemIdentifiable]) async throws
+    func trashItems(_ items: [any ItemIdentifiable]) async throws
 
     func deleteAlias(email: String) async throws
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
-    func untrashItems(_ items: [ItemIdentifiable]) async throws
+    func untrashItems(_ items: [any ItemIdentifiable]) async throws
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws
 
     /// Permanently delete selected items
-    func delete(items: [ItemIdentifiable]) async throws
+    func delete(items: [any ItemIdentifiable]) async throws
 
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
@@ -89,12 +93,12 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws
 
-    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws
+    func updateLastUseTime(item: any ItemIdentifiable, date: Date) async throws
 
     @discardableResult
-    func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
+    func move(item: any ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
-    func move(items: [ItemIdentifiable], toShareId: String) async throws
+    func move(items: [any ItemIdentifiable], toShareId: String) async throws
 
     @discardableResult
     func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem]
@@ -112,6 +116,12 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     /// Get active log in items of all shares
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
+
+    func pinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+
+    func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
 }
 
 public extension ItemRepositoryProtocol {
@@ -129,6 +139,8 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let passKeyManager: PassKeyManagerProtocol
     private let logger: Logger
 
+    public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
+
     public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
                 localDatasource: LocalItemDatasourceProtocol,
                 remoteDatasource: RemoteItemDatasourceProtocol,
@@ -141,6 +153,12 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            try? await refreshPinnedItemDataStream()
+        }
     }
 }
 
@@ -159,6 +177,10 @@ public extension ItemRepository {
 
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         try await localDatasource.getItem(shareId: shareId, itemId: itemId)
+    }
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+        try await localDatasource.getAllPinnedItems()
     }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
@@ -199,6 +221,7 @@ public extension ItemRepository {
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
                                                         userId: userId,
                                                         shareId: shareId)
+        try await refreshPinnedItemDataStream()
         logger.trace("Refreshed last event ID for share \(shareId)")
     }
 
@@ -273,7 +296,7 @@ public extension ItemRepository {
         }
     }
 
-    func trashItems(_ items: [ItemIdentifiable]) async throws {
+    func trashItems(_ items: [any ItemIdentifiable]) async throws {
         logger.trace("Trashing \(items.count) items")
         try await bulkAction(items: items) { [weak self] groupedItems, _ in
             guard let self else { return }
@@ -310,7 +333,7 @@ public extension ItemRepository {
         }
     }
 
-    func untrashItems(_ items: [ItemIdentifiable]) async throws {
+    func untrashItems(_ items: [any ItemIdentifiable]) async throws {
         logger.trace("Bulk restoring \(items.count) items")
         try await bulkAction(items: items) { [weak self] groupedItems, _ in
             guard let self else { return }
@@ -337,7 +360,7 @@ public extension ItemRepository {
         }
     }
 
-    func delete(items: [ItemIdentifiable]) async throws {
+    func delete(items: [any ItemIdentifiable]) async throws {
         logger.trace("Bulk permanently deleting \(items.count) items")
         try await bulkAction(items: items) { [weak self] groupedItems, _ in
             guard let self else { return }
@@ -381,6 +404,7 @@ public extension ItemRepository {
         logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localDatasource.upsertItems([encryptedItem])
+        try await refreshPinnedItemDataStream()
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
     }
 
@@ -388,7 +412,9 @@ public extension ItemRepository {
         let encryptedItems = try await items.parallelMap { [weak self] in
             try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }.compactMap { $0 }
+
         try await localDatasource.upsertItems(encryptedItems)
+        try await refreshPinnedItemDataStream()
     }
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws {
@@ -397,7 +423,7 @@ public extension ItemRepository {
         logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
     }
 
-    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws {
+    func updateLastUseTime(item: any ItemIdentifiable, date: Date) async throws {
         logger.trace("Updating last use time \(item.debugDescription)")
         let updatedItem = try await remoteDatasource.updateLastUseTime(shareId: item.shareId,
                                                                        itemId: item.itemId,
@@ -406,7 +432,7 @@ public extension ItemRepository {
         logger.trace("Updated last use time \(item.debugDescription)")
     }
 
-    func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
+    func move(item: any ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Moving \(item.debugDescription) to share \(toShareId)")
         guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
             throw PassError.itemNotFound(item)
@@ -427,7 +453,7 @@ public extension ItemRepository {
         return newEncryptedItem
     }
 
-    func move(items: [ItemIdentifiable], toShareId: String) async throws {
+    func move(items: [any ItemIdentifiable], toShareId: String) async throws {
         logger.trace("Bulk moving \(items.count) items to share \(toShareId)")
         try await bulkAction(items: items) { [weak self] groupedItems, shareId in
             guard let self else { return }
@@ -451,6 +477,41 @@ public extension ItemRepository {
         let logInItems = try await localDatasource.getActiveLogInItems()
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
+    }
+}
+
+// MARK: - item Pinning functionalities
+
+public extension ItemRepository {
+    func pinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Pin item \(item.itemId) for share \(item.shareId)")
+        let pinItemRevision = try await remoteDatasource.pin(item: item)
+        logger.trace("Updating item \(pinItemRevision.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision, shareId: item.shareId)
+        try await localDatasource.upsertItems([encryptedItem])
+        logger.trace("Saved item \(pinItemRevision.itemID) to local database")
+        try await refreshPinnedItemDataStream()
+        return encryptedItem
+    }
+
+    func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Unpiin item \(item.itemId) for share \(item.shareId)")
+        let unpinItemRevision = try await remoteDatasource.unpin(item: item)
+        logger.trace("Updating item \(unpinItemRevision.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision, shareId: item.shareId)
+        try await localDatasource.upsertItems([encryptedItem])
+        logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
+        try await refreshPinnedItemDataStream()
+        return encryptedItem
+    }
+}
+
+// MARK: - Refresh Data
+
+private extension ItemRepository {
+    func refreshPinnedItemDataStream() async throws {
+        let pinnedItems = try await localDatasource.getAllPinnedItems()
+        currentlyPinnedItems.send(pinnedItems)
     }
 }
 
@@ -569,14 +630,13 @@ private extension ItemRepository {
             .parallelMap { [weak self] in
                 try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: toShareId)
             }.compactMap { $0 }
-        try await localDatasource.deleteItems(oldEncryptedItems)
         try await localDatasource.upsertItems(newEncryptedItems)
 
         return newEncryptedItems
     }
 
     /// Group items by share and bulk actionning on those grouped items
-    func bulkAction(items: [ItemIdentifiable],
+    func bulkAction(items: [any ItemIdentifiable],
                     action: ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
         let shouldInclude: (SymmetricallyEncryptedItem) -> Bool = { item in
             items.contains(where: { $0.isEqual(with: item) })

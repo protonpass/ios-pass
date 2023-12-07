@@ -26158,6 +26158,30 @@
         }
       }
     },
+    "Item successfully pinned" : {
+      "comment" : "Message displayed to user after pinning an item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully pinned"
+          }
+        }
+      }
+    },
+    "Item successfully unpinned" : {
+      "comment" : "Message displayed to user after unpinning an item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully unpinned"
+          }
+        }
+      }
+    },
     "Items" : {
       "localizations" : {
         "be" : {
@@ -36129,6 +36153,18 @@
         }
       }
     },
+    "Pin" : {
+      "comment" : "Title for action to pin item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin "
+          }
+        }
+      }
+    },
     "PIN Code" : {
       "localizations" : {
         "be" : {
@@ -41398,6 +41434,18 @@
         }
       }
     },
+    "Search pinned items" : {
+      "comment" : "Pinned item search bar placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search pinned items"
+          }
+        }
+      }
+    },
     "Secure password manager and more" : {
       "comment" : "Slogan",
       "extractionState" : "manual",
@@ -42079,6 +42127,18 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Đã sao chép số CVV"
+          }
+        }
+      }
+    },
+    "See all" : {
+      "comment" : "Last button on the home page for pinned items. This will redirect the user to a search screen for pinned items",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
           }
         }
       }
@@ -50662,6 +50722,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mở khóa bằng"
+          }
+        }
+      }
+    },
+    "Unpin" : {
+      "comment" : "Title for action to unpin item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin"
           }
         }
       }

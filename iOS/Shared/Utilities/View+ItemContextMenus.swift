@@ -24,21 +24,30 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+// swiftlint:disable enum_case_associated_values_count
 enum ItemContextMenu {
-    case login(onCopyUsername: () -> Void,
+    case login(item: any PinnableItemTypeIdentifiable,
+               onCopyUsername: () -> Void,
                onCopyPassword: () -> Void,
                onEdit: () -> Void,
+               onPinToggle: () -> Void,
                onTrash: () -> Void)
 
-    case alias(onCopyAlias: () -> Void,
+    case alias(item: any PinnableItemTypeIdentifiable,
+               onCopyAlias: () -> Void,
                onEdit: () -> Void,
+               onPinToggle: () -> Void,
                onTrash: () -> Void)
 
-    case creditCard(onEdit: () -> Void,
+    case creditCard(item: any PinnableItemTypeIdentifiable,
+                    onEdit: () -> Void,
+                    onPinToggle: () -> Void,
                     onTrash: () -> Void)
 
-    case note(onCopyContent: () -> Void,
+    case note(item: any PinnableItemTypeIdentifiable,
+              onCopyContent: () -> Void,
               onEdit: () -> Void,
+              onPinToggle: () -> Void,
               onTrash: () -> Void)
 
     case trashedItem(onRestore: () -> Void,
@@ -46,7 +55,12 @@ enum ItemContextMenu {
 
     var sections: [ItemContextMenuOptionSection] {
         switch self {
-        case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
+        case let .login(item,
+                        onCopyUsername,
+                        onCopyPassword,
+                        onEdit,
+                        onPinToggle,
+                        onTrash):
             [
                 .init(options: [
                     .init(title: #localized("Copy username"),
@@ -57,30 +71,34 @@ enum ItemContextMenu {
                           action: onCopyPassword)
                 ]),
                 .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
-        case let .alias(onCopyAlias, onEdit, onTrash):
+        case let .alias(item, onCopyAlias, onEdit, onPinToggle, onTrash):
             [
                 .init(options: [.init(title: #localized("Copy alias address"),
                                       icon: IconProvider.alias,
                                       action: onCopyAlias)]),
                 .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
-        case let .creditCard(onEdit, onTrash):
+        case let .creditCard(item, onEdit, onPinToggle, onTrash):
             [
                 .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
-        case let .note(onCopyContent, onEdit, onTrash):
+        case let .note(item, onCopyContent, onEdit, onPinToggle, onTrash):
             [
                 .init(options: [.init(title: #localized("Copy note content"),
                                       icon: IconProvider.note,
                                       action: onCopyContent)]),
                 .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
@@ -107,6 +125,11 @@ struct ItemContextMenuOption: Identifiable {
 
     static func editOption(action: @escaping () -> Void) -> ItemContextMenuOption {
         .init(title: #localized("Edit"), icon: IconProvider.pencil, action: action)
+    }
+
+    static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
+                                action: @escaping () -> Void) -> ItemContextMenuOption {
+        .init(title: item.pinTitle, icon: Image(systemName: item.pinIcon), action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
@@ -161,7 +184,7 @@ struct PermenentlyDeleteItemModifier: ViewModifier {
 }
 
 extension View {
-    func itemContextMenu(item: ItemTypeIdentifiable,
+    func itemContextMenu(item: any PinnableItemTypeIdentifiable,
                          isTrashed: Bool,
                          onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
@@ -171,24 +194,34 @@ extension View {
         } else {
             switch item.type {
             case .login:
-                itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
+                itemContextMenu(.login(item: item,
+                                       onCopyUsername: { handler.copyUsername(item) },
                                        onCopyPassword: { handler.copyPassword(item) },
                                        onEdit: { handler.edit(item) },
+                                       onPinToggle: { handler.toggleItemPinning(item) },
                                        onTrash: { handler.trash(item) }))
             case .alias:
-                itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
+                itemContextMenu(.alias(item: item,
+                                       onCopyAlias: { handler.copyAlias(item) },
                                        onEdit: { handler.edit(item) },
+                                       onPinToggle: { handler.toggleItemPinning(item) },
                                        onTrash: { handler.trash(item) }))
 
             case .creditCard:
-                itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
+                itemContextMenu(.creditCard(item: item,
+                                            onEdit: { handler.edit(item) },
+                                            onPinToggle: { handler.toggleItemPinning(item) },
                                             onTrash: { handler.trash(item) }))
 
             case .note:
-                itemContextMenu(.note(onCopyContent: { handler.copyNoteContent(item) },
+                itemContextMenu(.note(item: item,
+                                      onCopyContent: { handler.copyNoteContent(item) },
                                       onEdit: { handler.edit(item) },
+                                      onPinToggle: { handler.toggleItemPinning(item) },
                                       onTrash: { handler.trash(item) }))
             }
         }
     }
 }
+
+// swiftlint:enable enum_case_associated_values_count

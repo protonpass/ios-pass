@@ -26,7 +26,9 @@ let package = Package(name: "Core",
                           // Products define the executables and libraries a package produces, and make them
                           // visible to other packages.
                           .library(name: "Core",
-                                   targets: ["Core"])
+                                   targets: ["Core"]),
+                          .library(name: "CoreMocks",
+                                   targets: ["CoreMocks"])
                       ],
                       dependencies: [
                           .package(url: "https://github.com/protonpass/OneTimePassword", exact: "0.1.1"),
@@ -57,9 +59,13 @@ let package = Package(name: "Core",
                                   ],
                                   swiftSettings: swiftSettings
                                  ),
+                          .target(
+                              name: "CoreMocks",
+                              dependencies: ["Core"]),
                           .testTarget(name: "CoreTests",
                                       dependencies: [
                                           "Core",
+                                          "CoreMocks",
                                           .product(name: "ProtonCoreTestingToolkitUnitTestsCore",
                                                    package: "protoncore")
 

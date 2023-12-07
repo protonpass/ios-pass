@@ -20,6 +20,7 @@
 
 import Foundation
 
+// sourcery: AutoMockable
 public protocol LogManagerProtocol: Actor {
     var shouldLog: Bool { get }
 

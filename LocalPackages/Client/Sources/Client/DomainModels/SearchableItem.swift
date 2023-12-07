@@ -36,6 +36,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
     public let optionalExtras: [String] // E.g: URLs for login items
     public let lastUseTime: Int64
     public let modifyTime: Int64
+    public let pinned: Bool
 
     public init(from item: SymmetricallyEncryptedItem,
                 symmetricKey: SymmetricKey,
@@ -68,6 +69,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
 
         lastUseTime = itemContent.item.lastUseTime ?? 0
         modifyTime = item.item.modifyTime
+        pinned = item.item.pinned
     }
 }
 
@@ -122,12 +124,40 @@ extension SearchableItem {
                      url: url,
                      vault: vault,
                      lastUseTime: lastUseTime,
-                     modifyTime: modifyTime)
+                     modifyTime: modifyTime,
+                     pinned: pinned)
+    }
+
+    var toItemSearchResult: ItemSearchResult {
+        ItemSearchResult(shareId: shareId,
+                         itemId: itemId,
+                         type: type,
+                         aliasEmail: aliasEmail,
+                         title: .notMatched(name),
+                         detail: [.notMatched(note)],
+                         url: url,
+                         vault: vault,
+                         lastUseTime: lastUseTime,
+                         modifyTime: modifyTime,
+                         pinned: pinned)
+    }
+
+    public var toSearchEntryUiModel: SearchEntryUiModel {
+        SearchEntryUiModel(itemId: itemId,
+                           shareId: shareId,
+                           type: type,
+                           title: name,
+                           url: url,
+                           description: note)
     }
 }
 
 public extension [SearchableItem] {
     func result(for term: String) -> [ItemSearchResult] {
         compactMap { $0.result(for: term) }
+    }
+
+    var toItemSearchResults: [ItemSearchResult] {
+        self.map(\.toItemSearchResult)
     }
 }

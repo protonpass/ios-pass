@@ -14,31 +14,47 @@ configurations:
       args:
         testableImport: "Proton_Pass" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
         containedPathSubstringToApplyTemplate: "/iOS/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.
+#    - sources:
+#        include:
+#          - LocalPackages/Client/Sources/Client
+#      templates:
+#        - tools/Templates/
+#      output:
+#          path: iOSTests/Mocks/Generated
+#          link:
+#            project: ProtonPass.xcodeproj
+#            target: iOSTests
+#            group: iOSTests/Mocks/Generated
+#      args:
+#        testableImport: "Client" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
+#        containedPathSubstringToApplyTemplate: "/LocalPackages/Client/Sources/Client/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.
     - sources:
         include:
           - LocalPackages/Client/Sources/Client
       templates:
         - tools/Templates/
       output:
-          path: iOSTests/Mocks/Generated
-          link:
-            project: ProtonPass.xcodeproj
-            target: iOSTests
-            group: iOSTests/Mocks/Generated
+          path: LocalPackages/Client/Sources/ClientMocks
       args:
         testableImport: "Client" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
         containedPathSubstringToApplyTemplate: "/LocalPackages/Client/Sources/Client/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.
+    - sources:
+        include:
+          - LocalPackages/Core/Sources/Core
+      templates:
+        - tools/Templates/
+      output:
+          path: LocalPackages/Core/Sources/CoreMocks
+      args:
+        testableImport: "Core" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
+        containedPathSubstringToApplyTemplate: "/LocalPackages/Core/Sources/Core/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.
     - sources:
         include:
           - LocalPackages/UseCases/Sources/UseCases
       templates:
         - tools/Templates/
       output:
-          path: iOSTests/Mocks/Generated
-          link:
-            project: ProtonPass.xcodeproj
-            target: iOSTests
-            group: iOSTests/Mocks/Generated
+          path: LocalPackages/UseCases/Sources/UseCasesMocks
       args:
         testableImport: "UseCases" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
         containedPathSubstringToApplyTemplate: "/LocalPackages/UseCases/Sources/UseCases/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.

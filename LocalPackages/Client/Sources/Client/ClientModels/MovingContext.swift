@@ -22,9 +22,9 @@ import Entities
 import Foundation
 
 public enum MovingContext: Sendable, Equatable, Hashable {
-    case singleItem(ItemTypeIdentifiable)
+    case singleItem(any ItemTypeIdentifiable)
     case allItems(Vault)
-    case selectedItems([ItemIdentifiable])
+    case selectedItems([any ItemIdentifiable])
 }
 
 public extension MovingContext {
