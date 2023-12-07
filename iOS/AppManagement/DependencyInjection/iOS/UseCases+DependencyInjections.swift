@@ -48,7 +48,7 @@ private extension UseCasesContainer {
         SharedDataContainer.shared.userDataProvider()
     }
 
-    var itemRepository: ItemRepositoryProtocol {
+    var itemRepository: any ItemRepositoryProtocol {
         SharedRepositoryContainer.shared.itemRepository()
     }
 }
@@ -283,11 +283,11 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var getAllPinnedItems: Factory<GetAllPinnedItemsUseCase> {
-        self { GetAllPinnedItems(itemRepository: SharedRepositoryContainer.shared.itemRepository()) }
+        self { GetAllPinnedItems(itemRepository: self.itemRepository) }
     }
 
     var getSearchableItems: Factory<GetSearchableItemsUseCase> {
-        self { GetSearchableItems(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { GetSearchableItems(itemRepository: self.itemRepository,
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                   getAllPinnedItems: self.getAllPinnedItems(),
                                   symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }

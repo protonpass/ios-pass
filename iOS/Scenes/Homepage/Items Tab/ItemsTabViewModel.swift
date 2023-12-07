@@ -86,8 +86,11 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     func loadPinnedItems() async {
-        guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else { return }
-        pinnedItems = try? await getAllPinnedItems().compactMap { try? $0.toItemUiModel(symmetricKey) }
+        guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
+              let newPinnedItems = try? await getAllPinnedItems()
+              .compactMap({ try? $0.toItemUiModel(symmetricKey) })
+        else { return }
+        pinnedItems = Array(newPinnedItems.prefix(5))
     }
 }
 
@@ -373,22 +376,6 @@ extension ItemsTabViewModel {
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
-    }
-}
-
-// MARK: - Pull to refresh
-
-extension ItemsTabViewModel {
-    @MainActor
-    @Sendable
-    func forceSync() async {
-        await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
-            guard let self else { return }
-            pullToRefreshContinuation = continuation
-            syncEventLoop.pullToRefreshDelegate = self
-            syncEventLoop.forceSync()
-        }
-        await itemRepository.refreshDataStream()
     }
 }
 

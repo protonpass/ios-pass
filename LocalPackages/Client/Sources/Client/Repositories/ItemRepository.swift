@@ -122,8 +122,6 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
-
-    func refreshDataStream() async
 }
 
 public extension ItemRepositoryProtocol {
@@ -159,7 +157,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
             guard let self else {
                 return
             }
-            await refreshDataStream()
+            try? await refreshPinnedItemDataStream()
         }
     }
 }
@@ -223,6 +221,7 @@ public extension ItemRepository {
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
                                                         userId: userId,
                                                         shareId: shareId)
+        try await refreshPinnedItemDataStream()
         logger.trace("Refreshed last event ID for share \(shareId)")
     }
 
@@ -405,6 +404,7 @@ public extension ItemRepository {
         logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localDatasource.upsertItems([encryptedItem])
+        try await refreshPinnedItemDataStream()
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
     }
 
@@ -413,11 +413,8 @@ public extension ItemRepository {
             try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }.compactMap { $0 }
 
-        // We are removing the items before insert due to the bug of non updating boolean variables on coredata
-        // entities causing us
-        // issues when following value like pinned status
-        try await localDatasource.deleteItems(encryptedItems)
         try await localDatasource.upsertItems(encryptedItems)
+        try await refreshPinnedItemDataStream()
     }
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws {
@@ -495,8 +492,7 @@ public extension ItemRepository {
         try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(pinItemRevision.itemID) to local database")
-        let pinnedItems = try await localDatasource.getAllPinnedItems() // getAllItems().filter(\.item.pinned)
-        currentlyPinnedItems.send(pinnedItems)
+        try await refreshPinnedItemDataStream()
         return encryptedItem
     }
 
@@ -509,17 +505,16 @@ public extension ItemRepository {
         try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
-        let pinnedItems = try await localDatasource.getAllPinnedItems()
-        currentlyPinnedItems.send(pinnedItems)
+        try await refreshPinnedItemDataStream()
         return encryptedItem
     }
 }
 
-// MARK: - Refresh
+// MARK: - Refresh Data
 
-public extension ItemRepository {
-    func refreshDataStream() async {
-        let pinnedItems = try? await localDatasource.getAllPinnedItems()
+private extension ItemRepository {
+    func refreshPinnedItemDataStream() async throws {
+        let pinnedItems = try await localDatasource.getAllPinnedItems()
         currentlyPinnedItems.send(pinnedItems)
     }
 }
@@ -639,7 +634,6 @@ private extension ItemRepository {
             .parallelMap { [weak self] in
                 try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: toShareId)
             }.compactMap { $0 }
-        try await localDatasource.deleteItems(oldEncryptedItems)
         try await localDatasource.upsertItems(newEncryptedItems)
 
         return newEncryptedItems
