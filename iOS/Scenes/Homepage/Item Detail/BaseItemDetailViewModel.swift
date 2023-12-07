@@ -37,7 +37,6 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
-    @Published private(set) var isPinned = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
 
