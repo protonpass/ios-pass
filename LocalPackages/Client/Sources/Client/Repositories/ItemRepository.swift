@@ -488,8 +488,6 @@ public extension ItemRepository {
         let pinItemRevision = try await remoteDatasource.pin(item: item)
         logger.trace("Updating item \(pinItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision, shareId: item.shareId)
-        // we are deleting the entity due to a bug in core data that doesn't take into account boolean updates
-        try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(pinItemRevision.itemID) to local database")
         try await refreshPinnedItemDataStream()
@@ -501,8 +499,6 @@ public extension ItemRepository {
         let unpinItemRevision = try await remoteDatasource.unpin(item: item)
         logger.trace("Updating item \(unpinItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision, shareId: item.shareId)
-        // we are deleting the entity due to a bug in core data that doesn't take into account boolean updates
-        try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
         try await refreshPinnedItemDataStream()
