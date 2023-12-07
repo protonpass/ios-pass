@@ -36153,6 +36153,18 @@
         }
       }
     },
+    "Pin" : {
+      "comment" : "Title for action to pin item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin "
+          }
+        }
+      }
+    },
     "PIN Code" : {
       "localizations" : {
         "be" : {
@@ -36422,18 +36434,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã đặt mã PIN"
-          }
-        }
-      }
-    },
-    "Pin item" : {
-      "comment" : "Title for action to pin item",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pin item"
           }
         }
       }
@@ -50726,14 +50726,14 @@
         }
       }
     },
-    "Unpin item" : {
+    "Unpin" : {
       "comment" : "Title for action to unpin item",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unpin item"
+            "value" : "Unpin"
           }
         }
       }
