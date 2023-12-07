@@ -1,6 +1,6 @@
 //
-// VaultSelection+Extensions.swift
-// Proton Pass - Created on 04/10/2023.
+// PinnableItemTypeIdentifiable.swift
+// Proton Pass - Created on 07/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,18 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Macro
+import Foundation
 
-public extension VaultSelection {
-    var searchBarPlacehoder: String {
-        switch self {
-        case .all:
-            #localized("Search in all vaults...")
-        case let .precise(vault):
-            #localized("Search in %@...", vault.name)
-        case .trash:
-            #localized("Search in Trash...")
-        }
-    }
-}
+public typealias PinnableItemTypeIdentifiable = ItemTypeIdentifiable & Pinnable

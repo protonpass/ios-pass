@@ -59,6 +59,7 @@ extension SymmetricallyEncryptedItem {
                      hasTotpUri: hasTotpUri,
                      lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime,
-                     state: item.itemState)
+                     state: item.itemState,
+                     pinned: item.pinned)
     }
 }

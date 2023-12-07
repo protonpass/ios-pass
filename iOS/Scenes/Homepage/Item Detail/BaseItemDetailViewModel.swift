@@ -49,7 +49,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private(set) var itemContent: ItemContent {
         didSet {
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
-            isPinned = itemContent.item.pinned
         }
     }
 
@@ -170,8 +169,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 } else {
                     try await pinItem(item: itemContent)
                 }
-                updateItem(with: newItemState)
-                router.display(element: .successMessage(newItemState.item.pinMessage))
+                router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
             } catch {
                 logger.error(error)
@@ -283,23 +281,5 @@ private extension BaseItemDetailViewModel {
             }
             return item
         }
-    }
-
-    func updateItem(with item: SymmetricallyEncryptedItem) {
-        itemContent = itemContent.copy(with: item.item)
-    }
-}
-
-extension ItemRevision {
-    var pinTitle: String {
-        pinned ? #localized("Unpin item") : #localized("Pin item")
-    }
-
-    var pinIcon: String {
-        pinned ? "pin.slash" : "pin"
-    }
-
-    var pinMessage: String {
-        pinned ? #localized("Item successfully pinned") : #localized("Item successfully unpinned")
     }
 }
