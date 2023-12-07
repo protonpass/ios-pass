@@ -35,7 +35,7 @@ struct GeneratePasswordView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text(viewModel.texts)
+                Text(viewModel.coloredPassword)
                     .font(.title3.monospaced())
                     .minimumScaleFactor(0.5)
                     .frame(maxHeight: .infinity, alignment: .center)

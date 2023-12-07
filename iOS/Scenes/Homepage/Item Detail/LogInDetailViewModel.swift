@@ -45,10 +45,10 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var username = ""
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
+    @Published private(set) var totpUri = ""
     @Published private(set) var note = ""
     @Published private(set) var passwordStrength: PasswordStrength?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
-    @Published private(set) var totpManager: TOTPManager
     @Published private var aliasItem: SymmetricallyEncryptedItem?
 
     var isAlias: Bool { aliasItem != nil }
@@ -60,17 +60,16 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
-    var coloredPasswordTexts: [Text] { PasswordUtils.generateColoredPasswords(password) }
+    var coloredPassword: AttributedString {
+        PasswordUtils.generateColoredPassword(password)
+    }
 
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
                   upgradeChecker: UpgradeCheckerProtocol) {
-        let logManager = resolve(\SharedToolingContainer.logManager)
-        totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
-        totpManager.attach(to: self, storeIn: &cancellables)
     }
 
     override func bindValues() {
@@ -81,7 +80,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             password = data.password
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
-            totpManager.bind(uri: data.totpUri)
+            totpUri = data.totpUri
             getAliasItem(username: data.username)
 
             if !data.totpUri.isEmpty {
@@ -139,10 +138,8 @@ extension LogInDetailViewModel {
         copyToClipboard(text: password, message: #localized("Password copied"))
     }
 
-    func copyTotpCode() {
-        if let code = totpManager.totpData?.code {
-            copyToClipboard(text: code, message: #localized("TOTP copied"))
-        }
+    func copyTotpToken(_ token: String) {
+        copyToClipboard(text: token, message: #localized("TOTP copied"))
     }
 
     func showLargePassword() {

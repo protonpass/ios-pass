@@ -114,12 +114,13 @@ struct LogInDetailView: View {
                 totpNotAllowedRow
 
             case .allowed:
-                switch viewModel.totpManager.state {
-                case .empty:
+                if viewModel.totpUri.isEmpty {
                     EmptyView()
-                default:
+                } else {
                     PassSectionDivider()
-                    totpAllowedRow
+                    TOTPRow(uri: viewModel.totpUri,
+                            tintColor: iconTintColor,
+                            onCopyTotpToken: { viewModel.copyTotpToken($0) })
                 }
             }
         }
@@ -175,21 +176,26 @@ struct LogInDetailView: View {
 
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
+            if let passwordStrength = viewModel.passwordStrength {
+                PasswordStrengthIcon(strength: passwordStrength)
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
+            }
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Password")
-                    .sectionTitleText()
+                Text(viewModel.passwordStrength.sectionTitle)
+                    .font(.footnote)
+                    .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
 
                 if viewModel.password.isEmpty {
                     Text("Empty")
                         .placeholderText()
                 } else {
                     if isShowingPassword {
-                        Text(viewModel.coloredPasswordTexts)
+                        Text(viewModel.coloredPassword)
                             .font(.body.monospaced())
                     } else {
-                        Text(String(repeating: "•", count: 20))
+                        Text(String(repeating: "•", count: 12))
                             .sectionContentText()
                     }
                 }
@@ -199,15 +205,6 @@ struct LogInDetailView: View {
             .onTapGesture { viewModel.copyPassword() }
 
             Spacer()
-
-            if let passwordStrength = viewModel.passwordStrength {
-                Label { Text(passwordStrength.title)
-                    .font(.caption)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                } icon: { Image(systemName: passwordStrength.iconName)
-                    .foregroundColor(passwordStrength.color)
-                }
-            }
 
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
@@ -250,44 +247,6 @@ struct LogInDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, kItemDetailSectionPadding)
-    }
-
-    private var totpAllowedRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("2FA token (TOTP)")
-                    .sectionTitleText()
-
-                switch viewModel.totpManager.state {
-                case .empty:
-                    EmptyView()
-                case .loading:
-                    ProgressView()
-                case let .valid(data):
-                    TOTPText(code: data.code)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                case .invalid:
-                    Text("Invalid TOTP URI")
-                        .font(.caption)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-            .onTapGesture { viewModel.copyTotpCode() }
-
-            switch viewModel.totpManager.state {
-            case let .valid(data):
-                TOTPCircularTimer(data: data.timerData)
-                    .animation(nil, value: isShowingPassword)
-            default:
-                EmptyView()
-            }
-        }
-        .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: viewModel.totpManager.state)
     }
 
     private var urlsSection: some View {
