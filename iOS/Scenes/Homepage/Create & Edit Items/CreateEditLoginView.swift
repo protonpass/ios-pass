@@ -430,9 +430,9 @@ private extension CreateEditLoginView {
             }
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text(viewModel.passwordRowTitle)
+                Text(viewModel.passwordStrength.sectionTitle)
                     .font(.footnote)
-                    .foregroundColor(viewModel.passwordStrength?.color ?? PassColor.signalDanger.toColor)
+                    .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
 
                 SensitiveTextField(text: $viewModel.password,
                                    placeholder: #localized("Add password"),

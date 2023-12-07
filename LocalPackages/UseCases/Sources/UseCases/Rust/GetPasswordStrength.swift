@@ -25,11 +25,11 @@ import Entities
 @preconcurrency import PassRustCore
 
 public protocol GetPasswordStrengthUseCase: Sendable {
-    func execute(password: String) -> PasswordStrength
+    func execute(password: String) -> PasswordStrength?
 }
 
 public extension GetPasswordStrengthUseCase {
-    func callAsFunction(password: String) -> PasswordStrength {
+    func callAsFunction(password: String) -> PasswordStrength? {
         execute(password: password)
     }
 }
@@ -41,8 +41,11 @@ public final class GetPasswordStrength: GetPasswordStrengthUseCase {
         self.passwordScorer = passwordScorer
     }
 
-    public func execute(password: String) -> PasswordStrength {
-        switch passwordScorer.checkScore(password: password) {
+    public func execute(password: String) -> PasswordStrength? {
+        guard !password.isEmpty else {
+            return nil
+        }
+        return switch passwordScorer.checkScore(password: password) {
         case .dangerous, .veryDangerous:
             .vulnerable
         case .veryWeak, .weak:
