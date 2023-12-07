@@ -46,4 +46,10 @@ extension ServiceContainer {
     var authenticator: Factory<AuthenticatorInterface> {
         self { Authenticator(api: SharedToolingContainer.shared.apiManager().apiService) }
     }
+
+    var totpManager: Factory<TOTPManager> {
+        self { TOTPManager(logManager: SharedToolingContainer.shared.logManager(),
+                           generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken()) }
+            .unique
+    }
 }
