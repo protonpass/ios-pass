@@ -24,15 +24,15 @@ import Foundation
 public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
     private var timer: Timer?
     private let logger: Logger
-    private let generateTotpToken: GenerateTotpTokenUseCase
+    private let generateTotpToken: any GenerateTotpTokenUseCase
 
     @Published public private(set) var state = TOTPState.empty
 
     /// The current `URI` whether it's valid or not
     public private(set) var uri = ""
 
-    public init(logManager: LogManagerProtocol,
-                generateTotpToken: GenerateTotpTokenUseCase) {
+    public init(logManager: any LogManagerProtocol,
+                generateTotpToken: any GenerateTotpTokenUseCase) {
         logger = .init(manager: logManager)
         self.generateTotpToken = generateTotpToken
     }
@@ -73,5 +73,3 @@ public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
         timer?.fire()
     }
 }
-
-extension Token: @unchecked Sendable {}
