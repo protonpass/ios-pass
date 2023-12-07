@@ -35,6 +35,8 @@ final class ItemContextMenuHandler {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
+    private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -185,6 +187,27 @@ extension ItemContextMenuHandler {
                                           bannerMessage: #localized("Note content copied"))
                     logger.info("Copied note content \(item.debugDescription)")
                 }
+            } catch {
+                logger.error(error)
+                handleError(error)
+            }
+        }
+    }
+
+    func toggleItemPinning(_ item: any ItemTypeIdentifiable) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                let encryptedItem = try await getEncryptedItem(for: item)
+                router.display(element: .globalLoading(shouldShow: true))
+                let newItemState = if encryptedItem.item.pinned {
+                    try await unpinItem(item: encryptedItem)
+                } else {
+                    try await pinItem(item: encryptedItem)
+                }
+                router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
+                logger.trace("Success of pin/unpin of \(encryptedItem.debugDescription)")
             } catch {
                 logger.error(error)
                 handleError(error)

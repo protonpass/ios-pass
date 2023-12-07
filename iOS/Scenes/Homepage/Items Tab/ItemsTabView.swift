@@ -86,7 +86,7 @@ struct ItemsTabView: View {
                         .padding([.horizontal, .top])
                 }
 
-                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty {
+                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode {
                     PinnedItemsView(pinnedItems: pinnedItems,
                                     onSearch: { viewModel.search(pinnedItems: true) },
                                     action: { viewModel.viewDetail(of: $0) })
@@ -96,7 +96,7 @@ struct ItemsTabView: View {
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
                     case .all, .precise:
-                        EmptyVaultView(onCreate: viewModel.createNewItem(type:))
+                        EmptyVaultView(onCreate: { viewModel.createNewItem(type: $0) })
                             .padding(.bottom, safeAreaInsets.bottom)
                     case .trash:
                         EmptyTrashView()
@@ -113,6 +113,7 @@ struct ItemsTabView: View {
             .animation(.default, value: viewModel.vaultsManager.filterOption)
             .animation(.default, value: viewModel.banners.count)
             .animation(.default, value: viewModel.pinnedItems)
+            .animation(.default, value: viewModel.isEditMode)
             .task {
                 await viewModel.loadPinnedItems()
             }

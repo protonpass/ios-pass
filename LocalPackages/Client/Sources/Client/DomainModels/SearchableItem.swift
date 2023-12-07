@@ -36,6 +36,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
     public let optionalExtras: [String] // E.g: URLs for login items
     public let lastUseTime: Int64
     public let modifyTime: Int64
+    public let pinned: Bool
 
     public init(from item: SymmetricallyEncryptedItem,
                 symmetricKey: SymmetricKey,
@@ -68,6 +69,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
 
         lastUseTime = itemContent.item.lastUseTime ?? 0
         modifyTime = item.item.modifyTime
+        pinned = item.item.pinned
     }
 }
 
@@ -122,7 +124,8 @@ extension SearchableItem {
                      url: url,
                      vault: vault,
                      lastUseTime: lastUseTime,
-                     modifyTime: modifyTime)
+                     modifyTime: modifyTime,
+                     pinned: pinned)
     }
 
     var toItemSearchResult: ItemSearchResult {
@@ -135,7 +138,8 @@ extension SearchableItem {
                          url: url,
                          vault: vault,
                          lastUseTime: lastUseTime,
-                         modifyTime: modifyTime)
+                         modifyTime: modifyTime,
+                         pinned: pinned)
     }
 
     public var toSearchEntryUiModel: SearchEntryUiModel {

@@ -48,6 +48,10 @@ private extension SharedUseCasesContainer {
     var credentialManager: CredentialManagerProtocol {
         SharedServiceContainer.shared.credentialManager()
     }
+
+    var itemRepository: any ItemRepositoryProtocol {
+        SharedRepositoryContainer.shared.itemRepository()
+    }
 }
 
 // MARK: Permission
@@ -99,7 +103,7 @@ extension SharedUseCasesContainer {
     }
 
     var indexAllLoginItems: Factory<IndexAllLoginItemsUseCase> {
-        self { IndexAllLoginItems(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { IndexAllLoginItems(itemRepository: self.itemRepository,
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                   accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                   credentialManager: self.credentialManager,
@@ -186,7 +190,7 @@ extension SharedUseCasesContainer {
     }
 
     var deleteLocalDataBeforeFullSync: Factory<DeleteLocalDataBeforeFullSyncUseCase> {
-        self { DeleteLocalDataBeforeFullSync(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { DeleteLocalDataBeforeFullSync(itemRepository: self.itemRepository,
                                              shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                              shareKeyRepository: SharedRepositoryContainer.shared
                                                  .shareKeyRepository()) }
@@ -210,12 +214,12 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var pinItem: Factory<PinItemUseCase> {
-        self { PinItem(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { PinItem(itemRepository: self.itemRepository,
                        logManager: self.logManager) }
     }
 
     var unpinItem: Factory<UnpinItemUseCase> {
-        self { UnpinItem(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { UnpinItem(itemRepository: self.itemRepository,
                          logManager: self.logManager) }
     }
 }

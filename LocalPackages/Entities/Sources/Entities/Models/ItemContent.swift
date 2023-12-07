@@ -112,10 +112,6 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable {
               data: contentData,
               customFields: customFields)
     }
-
-    public func copy(with newRevision: ItemRevision) -> ItemContent {
-        ItemContent(shareId: shareId, item: newRevision, contentProtobuf: protobuf)
-    }
 }
 
 extension ItemContent: ItemIdentifiable {
