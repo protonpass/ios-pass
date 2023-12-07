@@ -23,8 +23,10 @@ import XCTest
 import ProtonCoreLogin
 import Entities
 import UseCases
+import UseCasesMocks
 @testable import Proton_Pass
-@testable import Client
+import Client
+import ClientMocks
 
 final class SendShareInviteTests: XCTestCase {
     var sut: SendVaultShareInviteUseCase!

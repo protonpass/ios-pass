@@ -42,7 +42,7 @@ extension SearchEntryEntity {
         .init(itemID: itemID, shareID: shareID, time: time)
     }
 
-    func hydrate(from item: ItemIdentifiable, date: Date) {
+    func hydrate(from item: any ItemIdentifiable, date: Date) {
         itemID = item.itemId
         shareID = item.shareId
         time = Int64(date.timeIntervalSince1970)
