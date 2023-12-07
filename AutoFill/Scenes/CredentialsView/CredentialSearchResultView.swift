@@ -28,7 +28,7 @@ struct CredentialSearchResultView: View, Equatable {
     let results: [ItemSearchResult]
     @Binding var selectedSortType: SortType
     let sortAction: () -> Void
-    let selectItem: (TitledItemIdentifiable) -> Void
+    let selectItem: (any TitledItemIdentifiable) -> Void
 
     var body: some View {
         VStack(spacing: 0) {

@@ -24,9 +24,9 @@ import Entities
 public protocol LocalSearchEntryDatasourceProtocol {
     /// Get entries of all vaults if `shareId` is `null`
     func getAllEntries(shareId: String?) async throws -> [SearchEntry]
-    func upsert(item: ItemIdentifiable, date: Date) async throws
+    func upsert(item: any ItemIdentifiable, date: Date) async throws
     func removeAllEntries() async throws
-    func remove(item: ItemIdentifiable) async throws
+    func remove(item: any ItemIdentifiable) async throws
 }
 
 public final class LocalSearchEntryDatasource: LocalDatasource, LocalSearchEntryDatasourceProtocol {}
@@ -43,7 +43,7 @@ public extension LocalSearchEntryDatasource {
         return entities.map { $0.toSearchEntry() }
     }
 
-    func upsert(item: ItemIdentifiable, date: Date) async throws {
+    func upsert(item: any ItemIdentifiable, date: Date) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
             newBatchInsertRequest(entity: SearchEntryEntity.entity(context: taskContext),
@@ -60,7 +60,7 @@ public extension LocalSearchEntryDatasource {
                           context: taskContext)
     }
 
-    func remove(item: ItemIdentifiable) async throws {
+    func remove(item: any ItemIdentifiable) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchEntryEntity")
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [

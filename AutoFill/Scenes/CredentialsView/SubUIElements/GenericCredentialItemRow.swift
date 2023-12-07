@@ -24,7 +24,7 @@ import SwiftUI
 
 struct GenericCredentialItemRow: View {
     let item: any CredentialItem
-    let selectItem: (TitledItemIdentifiable) -> Void
+    let selectItem: (any TitledItemIdentifiable) -> Void
 
     var body: some View {
         Button {
