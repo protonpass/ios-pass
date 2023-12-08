@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Core
+import Core
 import Foundation
 
  // Check if the protocol inherits from Actor
