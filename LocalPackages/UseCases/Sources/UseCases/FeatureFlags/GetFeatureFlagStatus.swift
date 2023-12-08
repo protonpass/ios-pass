@@ -27,11 +27,16 @@ import ProtonCoreFeatureFlags
 // sourcery: AutoMockable
 public protocol GetFeatureFlagStatusUseCase: Sendable {
     func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool
+    func execute(for flag: any FeatureFlagTypeProtocol) -> Bool
 }
 
 public extension GetFeatureFlagStatusUseCase {
     func callAsFunction(with flag: any FeatureFlagTypeProtocol) async -> Bool {
         await execute(with: flag)
+    }
+
+    func callAsFunction(with flag: any FeatureFlagTypeProtocol) -> Bool {
+        execute(for: flag)
     }
 }
 
@@ -39,6 +44,7 @@ public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStat
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let userDataProvider: any UserDataProvider
     private let logger: Logger
+    private var flags: FeatureFlags?
 
     public init(repository: any FeatureFlagsRepositoryProtocol,
                 userDataProvider: any UserDataProvider,
@@ -52,12 +58,16 @@ public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStat
         do {
             let userId = try userDataProvider.getUserId()
             logger.trace("Getting feature flags for user \(userId)")
-            let flags = try await featureFlagsRepository.getFlags()
+            flags = try await featureFlagsRepository.getFlags()
             logger.trace("Found local feature flags for user")
-            return flags.isFlagEnabled(for: flag)
+            return flags?.isFlagEnabled(for: flag) ?? false
         } catch {
             logger.error(error)
             return false
         }
+    }
+
+    public func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
+        flags?.isFlagEnabled(for: flag) ?? false
     }
 }
