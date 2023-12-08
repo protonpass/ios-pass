@@ -42,15 +42,15 @@ public protocol ShareKeyRepositoryProtocol: Sendable {
 }
 
 public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
-    private let localDatasource: LocalShareKeyDatasourceProtocol
-    private let remoteDatasource: RemoteShareKeyDatasourceProtocol
+    private let localDatasource: any LocalShareKeyDatasourceProtocol
+    private let remoteDatasource: any RemoteShareKeyDatasourceProtocol
     private let logger: Logger
-    private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
+    private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
 
-    public init(localDatasource: LocalShareKeyDatasourceProtocol,
-                remoteDatasource: RemoteShareKeyDatasourceProtocol,
-                logManager: LogManagerProtocol,
-                userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider) {
+    public init(localDatasource: any LocalShareKeyDatasourceProtocol,
+                remoteDatasource: any RemoteShareKeyDatasourceProtocol,
+                logManager: any LogManagerProtocol,
+                userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
