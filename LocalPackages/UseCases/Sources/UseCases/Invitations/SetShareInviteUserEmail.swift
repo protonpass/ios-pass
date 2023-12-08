@@ -34,9 +34,9 @@ public extension SetShareInviteUserEmailAndKeysUseCase {
 }
 
 public final class SetShareInviteUserEmailAndKeys: SetShareInviteUserEmailAndKeysUseCase {
-    private let shareInviteService: ShareInviteServiceProtocol
+    private let shareInviteService: any ShareInviteServiceProtocol
 
-    public init(shareInviteService: ShareInviteServiceProtocol) {
+    public init(shareInviteService: any ShareInviteServiceProtocol) {
         self.shareInviteService = shareInviteService
     }
 

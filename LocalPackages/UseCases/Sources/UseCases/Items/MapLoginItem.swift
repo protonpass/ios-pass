@@ -35,9 +35,9 @@ public extension MapLoginItemUseCase {
 }
 
 public final class MapLoginItem: Sendable, MapLoginItemUseCase {
-    private let symmetricKeyProvider: SymmetricKeyProvider
+    private let symmetricKeyProvider: any SymmetricKeyProvider
 
-    public init(symmetricKeyProvider: SymmetricKeyProvider) {
+    public init(symmetricKeyProvider: any SymmetricKeyProvider) {
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 

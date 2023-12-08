@@ -99,6 +99,7 @@ struct SearchResultsView: View, Equatable {
         .padding(.vertical, 12)
         .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                                     item: item,
+                                    isEditMode: false,
                                     isTrashed: viewModel.isTrash,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,

@@ -66,7 +66,7 @@ private extension CreateEditCreditCardView {
                                                selectedVault: viewModel.selectedVault,
                                                itemContentType: viewModel.itemContentType(),
                                                isEditMode: viewModel.mode.isEditMode,
-                                               onChangeVault: viewModel.changeVault,
+                                               onChangeVault: { viewModel.changeVault() },
                                                onSubmit: { focusedField = .cardholderName })
 
                     cardDetailSection
@@ -105,9 +105,9 @@ private extension CreateEditCreditCardView {
                                           dismiss()
                                       }
                                   },
-                                  onUpgrade: viewModel.upgrade,
-                                  onScan: viewModel.openScanner,
-                                  onSave: viewModel.save)
+                                  onUpgrade: { viewModel.upgrade() },
+                                  onScan: { viewModel.openScanner() },
+                                  onSave: { viewModel.save() })
         }
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,

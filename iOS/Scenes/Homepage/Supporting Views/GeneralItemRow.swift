@@ -22,6 +22,7 @@ import DesignSystem
 import SwiftUI
 
 struct GeneralItemRow<ThumbnailView: View>: View {
+    @Environment(\.isEnabled) private var isEnabled
     let thumbnailView: ThumbnailView
     let title: String
     let secondaryTitle: String?
@@ -55,10 +56,12 @@ struct GeneralItemRow<ThumbnailView: View>: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(title)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .foregroundColor((isEnabled ? PassColor.textNorm : PassColor.textWeak).toColor)
                     if let secondaryTitle {
                         Text(secondaryTitle)
-                            .foregroundColor(Color(uiColor: secondaryTitleColor ?? PassColor.textNorm))
+                            .foregroundColor((isEnabled ?
+                                    (secondaryTitleColor ?? PassColor.textNorm) :
+                                    PassColor.textWeak).toColor)
                     }
                 }
 

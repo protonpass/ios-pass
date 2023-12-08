@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 import Client
 import Combine
 import Core
@@ -161,7 +161,7 @@ extension CredentialsViewModel {
                                                                  delegate: self)
     }
 
-    func associateAndAutofill(item: ItemIdentifiable) {
+    func associateAndAutofill(item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -200,7 +200,7 @@ extension CredentialsViewModel {
         }
     }
 
-    func select(item: ItemIdentifiable) {
+    func select(item: any ItemIdentifiable) {
         assert(results != nil, "Credentials are not fetched")
         guard let results else { return }
 
@@ -219,7 +219,7 @@ extension CredentialsViewModel {
         autoFill(item: item)
     }
 
-    func autoFill(item: ItemIdentifiable) {
+    func autoFill(item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -332,7 +332,7 @@ private extension CredentialsViewModel {
 // MARK: - Private supporting tasks
 
 private extension CredentialsViewModel {
-    func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
+    func getItemTask(item: any ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PassError.CredentialProviderFailureReason.generic
@@ -415,7 +415,7 @@ private extension CredentialsViewModel {
         }
     }
 
-    func getCredentialTask(for item: ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
+    func getCredentialTask(for item: any ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PassError.CredentialProviderFailureReason.generic

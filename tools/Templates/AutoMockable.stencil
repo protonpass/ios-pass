@@ -1,9 +1,9 @@
 {% macro swiftifyMethodName name %}{{ name | replace:"(","_" | replace:")","" | replace:":","_" | replace:"`","" | snakeToCamelCase | lowerFirstWord }}{% endmacro %}
 {% macro methodThrowableErrorDeclaration method %}
-    var {% call swiftifyMethodName method.selectorName %}ThrowableError: Error?
+    public var {% call swiftifyMethodName method.selectorName %}ThrowableError{{forloop.outer.counter}}: Error?
 {% endmacro %}
 {% macro methodThrowableErrorUsage method %}
-        if let error = {% call swiftifyMethodName method.selectorName %}ThrowableError {
+        if let error = {% call swiftifyMethodName method.selectorName %}ThrowableError{{forloop.outer.counter}} {
             throw error
         }
 {% endmacro %}
@@ -28,24 +28,24 @@
         {% call methodThrowableErrorDeclaration method %}
     {% endif %}
     {% if not method.isInitializer %}
-    var closure{{ method.callName|upperFirstLetter }}: () -> () = {}
-    var invoked{{ method.callName|upperFirstLetter }} = false
-    var invoked{{ method.callName|upperFirstLetter }}Count = 0
+    public var closure{{ method.callName|upperFirstLetter }}: () -> () = {}
+    public var invoked{{ method.callName|upperFirstLetter }}function = false
+    public var invoked{{ method.callName|upperFirstLetter }}Count = 0
     {% endif %}
     {% if method.parameters.count == 1 %}
     {% if not method.parameters.0.typeName.isClosure or method.parameters.0.typeAttributes.escaping %}
-    var invoked{{ method.shortName|upperFirstLetter }}Parameters: {% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void)?{% endfor %}
-    var invoked{{ method.shortName|upperFirstLetter }}ParametersList = [{% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void){% endfor %}]()
+    public var invoked{{ method.shortName|upperFirstLetter }}Parameters: {% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void)?{% endfor %}
+    public var invoked{{ method.shortName|upperFirstLetter }}ParametersList = [{% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void){% endfor %}]()
     {% endif %}
     {% elif not method.parameters.count == 0 %}
-    var invoked{{ method.shortName|upperFirstLetter }}Parameters: ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})?
-    var invoked{{ method.shortName|upperFirstLetter }}ParametersList = [({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})]()
+    public var invoked{{ method.shortName|upperFirstLetter }}Parameters: ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})?
+    public var invoked{{ method.shortName|upperFirstLetter }}ParametersList = [({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})]()
     {% endif %}
     {% if not method.returnTypeName.isVoid and not method.isInitializer %}
-    var stubbed{{ method.callName|upperFirstLetter }}Result: {{ '(' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ method.returnTypeName }}{{ ')' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ '!' if not method.isOptionalReturnType }}
+    public var stubbed{{ method.callName|upperFirstLetter }}Result: {{ '(' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ method.returnTypeName }}{{ ')' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ '!' if not method.isOptionalReturnType }}
     {% endif %}
     {% for param in method.parameters %}{% if param.typeName.isClosure %}
-    var stubbed{{ method.callName|upperFirstLetter }}{{param.argumentLabel|upperFirstLetter}}Result: ({% for closureParam in param.typeName.closure.parameters %}{{closureParam.typeName}}, {% endfor %}Void)?
+    public var stubbed{{ method.callName|upperFirstLetter }}{{param.argumentLabel|upperFirstLetter}}Result: ({% for closureParam in param.typeName.closure.parameters %}{{closureParam.typeName}}, {% endfor %}Void)?
     {% endif %}{% endfor %}
 
 {% if method.isInitializer %}
@@ -54,8 +54,8 @@
         {% call methodClosureName method %}?({% call methodClosureCallParameters method %})
     }
 {% else %}
-    func {{ method.name }}{% if method.isAsync %} async{% endif %}{% if method.throws %} throws{% endif %}{% if not method.returnTypeName.isVoid %} -> {{ method.returnTypeName }}{% endif %} {
-        invoked{{ method.callName|upperFirstLetter }} = true
+    public func {{ method.name }}{% if method.isAsync %} async{% endif %}{% if method.throws %} throws{% endif %}{% if not method.returnTypeName.isVoid %} -> {{ method.returnTypeName }}{% endif %} {
+        invoked{{ method.callName|upperFirstLetter }}function = true
         invoked{{ method.callName|upperFirstLetter }}Count += 1
         {% if method.parameters.count == 1 %}
         {% if not method.parameters.0.typeName.isClosure or method.parameters.0.typeAttributes.escaping %}
@@ -97,24 +97,24 @@
         {% call methodThrowableErrorDeclaration method %}
     {% endif %}
     {% if not method.isInitializer %}
-    var closure{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}: () -> () = {}
-    var invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %} = false
-    var invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Count = 0
+    public var closure{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}{{forloop.outer.counter}}: () -> () = {}
+    public var invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}{{forloop.outer.counter}} = false
+    public var invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Count{{forloop.outer.counter}} = 0
     {% endif %}
     {% if method.parameters.count == 1 %}
     {% if not method.parameters.0.typeName.isClosure or method.parameters.0.typeAttributes.escaping %}
-    var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Parameters: {% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void)?{% endfor %}
-    var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}ParametersList = [{% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void){% endfor %}]()
+    public var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Parameters{{forloop.outer.counter}}: {% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void)?{% endfor %}
+    public var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}ParametersList{{forloop.outer.counter}} = [{% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}({{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}, Void){% endfor %}]()
     {% endif %}
     {% elif not method.parameters.count == 0 %}
-    var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Parameters: ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})?
-    var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}ParametersList = [({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})]()
+    public var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Parameters{{forloop.outer.counter}}: ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})?
+    public var invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}ParametersList{{forloop.outer.counter}} = [({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}: {{ param.unwrappedTypeName if param.typeAttributes.escaping else param.typeName }}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, Void{% endif %}{% endfor %})]()
     {% endif %}
     {% if not method.returnTypeName.isVoid and not method.isInitializer %}
-    var stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Result: {{ '(' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ method.returnTypeName }}{{ ')' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ '!' if not method.isOptionalReturnType }}
+    public var stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Result{{forloop.outer.counter}}: {{ '(' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ method.returnTypeName }}{{ ')' if method.returnTypeName.isClosure and not method.isOptionalReturnType }}{{ '!' if not method.isOptionalReturnType }}
     {% endif %}
     {% for param in method.parameters %}{% if param.typeName.isClosure %}
-    var stubbed{{ method.callName|upperFirstLetter }}{{param.argumentLabel|upperFirstLetter}}Result: ({% for closureParam in param.typeName.closure.parameters %}{{closureParam.typeName}}, {% endfor %}Void)?
+    public var stubbed{{ method.callName|upperFirstLetter }}{{param.argumentLabel|upperFirstLetter}}{% if method.isAsync %}Async{% endif %}Result{{forloop.outer.counter}}: ({% for closureParam in param.typeName.closure.parameters %}{{closureParam.typeName}}, {% endfor %}Void)?
     {% endif %}{% endfor %}
 
 {% if method.isInitializer %}
@@ -123,17 +123,17 @@
         {% call methodClosureName method %}?({% call methodClosureCallParameters method %})
     }
 {% else %}
-    func {{ method.name }}{% if method.isAsync %} async{% endif %}{% if method.throws %} throws{% endif %}{% if not method.returnTypeName.isVoid %} -> {{ method.returnTypeName }}{% endif %} {
-        invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %} = true
-        invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Count += 1
+    public func {{ method.name }}{% if method.isAsync %} async{% endif %}{% if method.throws %} throws{% endif %}{% if not method.returnTypeName.isVoid %} -> {{ method.returnTypeName }}{% endif %} {
+        invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}{{forloop.outer.counter}} = true
+        invoked{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Count{{forloop.outer.counter}} += 1
         {% if method.parameters.count == 1 %}
         {% if not method.parameters.0.typeName.isClosure or method.parameters.0.typeAttributes.escaping %}
-        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Parameters = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}, {% endfor %}())
-        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}ParametersList.append(({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{% endfor %}, ()))
+        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Parameters{{forloop.outer.counter}} = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}, {% endfor %}())
+        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}ParametersList{{forloop.outer.counter}}.append(({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{% endfor %}, ()))
         {% endif %}
         {% elif not method.parameters.count == 0 %}
-        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Parameters = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %})
-        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}ParametersList.append(({% for param in method.parameters  where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %}))
+        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Parameters{{forloop.outer.counter}} = ({% for param in method.parameters where not param.typeName.isClosure or param.typeAttributes.escaping %}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %})
+        invoked{{ method.shortName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}ParametersList{{forloop.outer.counter}}.append(({% for param in method.parameters  where not param.typeName.isClosure or param.typeAttributes.escaping%}{{param.name}}{{ ', ' if not forloop.last }}{% if forloop.last and forloop.counter == 1 %}, (){% endif %}{% endfor %}))
         {% endif %}
         {% for param in method.parameters %}
         {% if param.typeName.isClosure %}
@@ -152,9 +152,10 @@
         {% if method.throws %}
         {% call methodThrowableErrorUsage method %}
         {% endif %}
-        closure{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}()
+        closure{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}{{forloop.outer.counter}}()
         {% if not method.returnTypeName.isVoid %}
-        return stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.typeName|upperFirstLetter}}{% endfor %}Result
+        {# return stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.typeName|upperFirstLetter}}{% endfor %}Result #}
+        return stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}{% if method.isAsync %}Async{% endif %}Result{{forloop.outer.counter}}
         {% endif %}
     }
 {% endif %}
@@ -162,14 +163,14 @@
 
 {% macro mockProtocolVariable variable %}
     // MARK: - {{variable.name}}
-    var invoked{{variable.name|upperFirstLetter}}Setter = false
-    var invoked{{variable.name|upperFirstLetter}}SetterCount = 0
-    var invoked{{variable.name|upperFirstLetter}}: {{variable.unwrappedTypeName|upperFirstLetter}}?
-    var invoked{{variable.name|upperFirstLetter}}List = [{{variable.unwrappedTypeName|upperFirstLetter}}?]()
-    var invoked{{variable.name|upperFirstLetter}}Getter = false
-    var invoked{{variable.name|upperFirstLetter}}GetterCount = 0
-    var stubbed{{variable.name|upperFirstLetter}}: {{variable.unwrappedTypeName|upperFirstLetter}}!
-    var {{variable.name}}: {{variable.typeName}} {
+    public var invoked{{variable.name|upperFirstLetter}}Setter = false
+    public var invoked{{variable.name|upperFirstLetter}}SetterCount = 0
+    public var invoked{{variable.name|upperFirstLetter}}: {{variable.unwrappedTypeName|upperFirstLetter}}?
+    public var invoked{{variable.name|upperFirstLetter}}List = [{{variable.unwrappedTypeName|upperFirstLetter}}?]()
+    public var invoked{{variable.name|upperFirstLetter}}Getter = false
+    public var invoked{{variable.name|upperFirstLetter}}GetterCount = 0
+    public var stubbed{{variable.name|upperFirstLetter}}: {{variable.unwrappedTypeName|upperFirstLetter}}!
+    public var {{variable.name}}: {{variable.typeName}} {
         set {
             invoked{{variable.name|upperFirstLetter}}Setter = true
             invoked{{variable.name|upperFirstLetter}}SetterCount += 1
@@ -204,9 +205,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
+{% for import in argument.imports %}
+import {{ import }}
+{% endfor %}
+{% if argument.testableImport %}
 @testable import {{argument.testableImport}}
+{% endif %}
 {% for import in type.allImports %}
 import {{import}}
 {% endfor %}
@@ -214,11 +219,18 @@ import {{import}}
 import {{type.annotations.extraImport}}
 {% endif %}
 
-final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
+{% if "Actor" in type.inheritedTypes %} // Check if the protocol inherits from Actor
+public actor {{ type.name }}Mock: {{ type.name }} {
+    {% else %}
+public final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
+{% endif %}
+
+    public init() {}
+
 {% for variable in type.allVariables|!definedInExtension %}
     {% call mockProtocolVariable variable %}
 {% endfor %}
-{% for method in type.allMethods|!definedInExtension where method.shortName %}
+{% outer: for method in type.allMethods|!definedInExtension where method.shortName %}
     {% for method2 in type.allMethods|!definedInExtension where method2.shortName == method.shortName %}
     {% if forloop.length == 1 and forloop.first %}{% call mockMethod method %}{% endif %}
     {% if forloop.length > 1 and forloop.first %}{% call mockMethodWithQuaranteedUniqueName method %}{% endif %}
@@ -249,20 +261,31 @@ final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
+{% for import in argument.imports %}
+    import {{ import }}
+{% endfor %}
+{% if argument.testableImport %}
 @testable import {{argument.testableImport}}
+{% endif %}
 {% for import in type.allImports %}
 import {{import}}
 {% endfor %}
 
-final class {{ type.name }}Mock: @unchecked Sendable, {% for inheritedType in type.inheritedTypes %}{{inheritedType}}{{ ', ' if not forloop.last }}{% endfor %} {
+{% if "Actor" in type.inheritedTypes %} // Check if the protocol inherits from Actor
+public actor {{ type.name }}Mock: @unchecked Sendable, {% for inheritedType in type.inheritedTypes %}{{inheritedType}}{{ ', ' if not forloop.last }}{% endfor %} {
+    {% else %}
+public final class {{ type.name }}Mock: @unchecked Sendable, {% for inheritedType in type.inheritedTypes %}{{inheritedType}}{{ ', ' if not forloop.last }}{% endfor %} {
+{% endif %}
+
+    public init() {}
+
     {% for inheritedType in type.composedTypes where inheritedType.kind == "protocol"%}
     // MARK: - ⚡️ {{inheritedType.name}}
     {% for variable in inheritedType.allVariables|!definedInExtension %}
     {% call mockProtocolVariable variable %}
     {% endfor %}
-    {% for method in inheritedType.allMethods|!definedInExtension where method.shortName %}
+    {% outer: for method in inheritedType.allMethods|!definedInExtension where method.shortName %}
         {% for method2 in inheritedType.allMethods|!definedInExtension where method2.shortName == method.shortName %}
         {% if forloop.length == 1 and forloop.first %}{% call mockMethod method %}{% endif %}
         {% if forloop.length > 1 and forloop.first %}{% call mockMethodWithQuaranteedUniqueName method %}{% endif %}
@@ -270,6 +293,5 @@ final class {{ type.name }}Mock: @unchecked Sendable, {% for inheritedType in ty
     {% endfor %}
     {% endfor %}
 }
-
 // sourcery:end
 {% endfor %}

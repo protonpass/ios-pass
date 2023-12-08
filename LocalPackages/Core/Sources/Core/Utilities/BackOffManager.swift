@@ -35,9 +35,9 @@ public protocol BackOffManagerProtocol {
 
 public final class BackOffManager {
     public var failureDates: [Date]
-    public let currentDateProvider: CurrentDateProviderProtocol
+    public let currentDateProvider: any CurrentDateProviderProtocol
 
-    public init(currentDateProvider: CurrentDateProviderProtocol) {
+    public init(currentDateProvider: any CurrentDateProviderProtocol) {
         failureDates = []
         self.currentDateProvider = currentDateProvider
     }

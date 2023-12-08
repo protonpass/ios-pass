@@ -39,21 +39,21 @@ public extension SendVaultShareInviteUseCase {
 }
 
 public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
-    private let createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase
-    private let makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase
-    private let shareInviteService: ShareInviteServiceProtocol
-    private let passKeyManager: PassKeyManagerProtocol
-    private let shareInviteRepository: ShareInviteRepositoryProtocol
-    private let userDataProvider: UserDataProvider
-    private let syncEventLoop: SyncEventLoopProtocol
+    private let createAndMoveItemToNewVault: any CreateAndMoveItemToNewVaultUseCase
+    private let makeUnsignedSignatureForVaultSharing: any MakeUnsignedSignatureForVaultSharingUseCase
+    private let shareInviteService: any ShareInviteServiceProtocol
+    private let passKeyManager: any PassKeyManagerProtocol
+    private let shareInviteRepository: any ShareInviteRepositoryProtocol
+    private let userDataProvider: any UserDataProvider
+    private let syncEventLoop: any SyncEventLoopProtocol
 
-    public init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
-                makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase,
-                shareInviteService: ShareInviteServiceProtocol,
-                passKeyManager: PassKeyManagerProtocol,
-                shareInviteRepository: ShareInviteRepositoryProtocol,
-                userDataProvider: UserDataProvider,
-                syncEventLoop: SyncEventLoopProtocol) {
+    public init(createAndMoveItemToNewVault: any CreateAndMoveItemToNewVaultUseCase,
+                makeUnsignedSignatureForVaultSharing: any MakeUnsignedSignatureForVaultSharingUseCase,
+                shareInviteService: any ShareInviteServiceProtocol,
+                passKeyManager: any PassKeyManagerProtocol,
+                shareInviteRepository: any ShareInviteRepositoryProtocol,
+                userDataProvider: any UserDataProvider,
+                syncEventLoop: any SyncEventLoopProtocol) {
         self.createAndMoveItemToNewVault = createAndMoveItemToNewVault
         self.makeUnsignedSignatureForVaultSharing = makeUnsignedSignatureForVaultSharing
         self.shareInviteService = shareInviteService

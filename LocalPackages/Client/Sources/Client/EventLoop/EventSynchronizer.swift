@@ -298,6 +298,7 @@ private extension EventSynchronizer {
             try await itemRepository.deleteItemsLocally(itemIds: events.deletedItemIDs,
                                                         shareId: shareId)
         }
+
         try Task.checkCancellation()
         if !events.lastUseItems.isEmpty {
             hasNewEvents = true

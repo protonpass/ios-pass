@@ -34,9 +34,9 @@ public extension GetMainVaultUseCase {
 }
 
 public final class GetMainVault: GetMainVaultUseCase {
-    private let vaultsManager: VaultsManagerProtocol
+    private let vaultsManager: any VaultsManagerProtocol
 
-    public init(vaultsManager: VaultsManagerProtocol) {
+    public init(vaultsManager: any VaultsManagerProtocol) {
         self.vaultsManager = vaultsManager
     }
 
