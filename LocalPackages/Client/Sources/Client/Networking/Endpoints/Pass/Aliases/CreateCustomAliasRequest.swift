@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct AliasCreationInfo {
+public struct AliasCreationInfo: Sendable {
     public let prefix: String
     public let suffix: Suffix
     public let mailboxIds: [Int]

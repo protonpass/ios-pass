@@ -96,6 +96,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer64)
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "isLogInItem", on: sut, hasType: .boolean)
+        verifyAttribute(named: "pinned", on: sut, hasType: .boolean)
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
         verifyAttribute(named: "itemKey", on: sut, hasType: .string)
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)

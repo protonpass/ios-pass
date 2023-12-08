@@ -33,10 +33,10 @@ public enum LoggerConsolePrintOption: Sendable {
 public struct Logger: Sendable {
     let subsystem: String
     let category: String
-    public let manager: LogManagerProtocol
+    public let manager: any LogManagerProtocol
     let consolePrintOption: LoggerConsolePrintOption
 
-    public init(manager: LogManagerProtocol,
+    public init(manager: any LogManagerProtocol,
                 subsystem: String = Bundle.main.bundleIdentifier ?? "",
                 category: String = "\(Self.self)",
                 consolePrintOption: LoggerConsolePrintOption = .debug) {
@@ -108,7 +108,7 @@ public extension Logger {
 
     @discardableResult
     func error(message: String,
-               error: Error,
+               error: any Error,
                timestamp: TimeInterval = Date().timeIntervalSince1970,
                file: String = #file,
                function: String = #function,

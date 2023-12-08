@@ -47,6 +47,10 @@ private extension UseCasesContainer {
     var userDataProvider: UserDataProvider {
         SharedDataContainer.shared.userDataProvider()
     }
+
+    var itemRepository: any ItemRepositoryProtocol {
+        SharedRepositoryContainer.shared.itemRepository()
+    }
 }
 
 // MARK: User report
@@ -128,7 +132,7 @@ extension UseCasesContainer {
 
     var leaveShare: Factory<LeaveShareUseCase> {
         self { LeaveShare(repository: SharedRepositoryContainer.shared.shareRepository(),
-                          itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                          itemRepository: self.itemRepository,
                           vaultManager: SharedServiceContainer.shared.vaultsManager()) }
     }
 
@@ -244,12 +248,20 @@ extension UseCasesContainer {
         self { TransferVaultOwnership(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
 
-    var getVaultInfos: Factory<GetVaultInfosUseCase> {
-        self { GetVaultInfos(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    var moveItemsBetweenVaults: Factory<MoveItemsBetweenVaultsUseCase> {
+        self { MoveItemsBetweenVaults(repository: self.itemRepository) }
     }
 
-    var moveItemsBetweenVaults: Factory<MoveItemsBetweenVaultsUseCase> {
-        self { MoveItemsBetweenVaults(repository: SharedRepositoryContainer.shared.itemRepository()) }
+    var trashSelectedItems: Factory<TrashSelectedItemsUseCase> {
+        self { TrashSelectedItems(repository: self.itemRepository) }
+    }
+
+    var restoreSelectedItems: Factory<RestoreSelectedItemsUseCase> {
+        self { RestoreSelectedItems(repository: self.itemRepository) }
+    }
+
+    var permanentlyDeleteSelectedItems: Factory<PermanentlyDeleteSelectedItemsUseCase> {
+        self { PermanentlyDeleteSelectedItems(repository: self.itemRepository) }
     }
 
     var getVaultContentForVault: Factory<GetVaultContentForVaultUseCase> {
@@ -264,6 +276,21 @@ extension UseCasesContainer {
     var reachedVaultLimit: Factory<ReachedVaultLimitUseCase> {
         self { ReachedVaultLimit(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                  vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+}
+
+// MARK: - items
+
+extension UseCasesContainer {
+    var getAllPinnedItems: Factory<GetAllPinnedItemsUseCase> {
+        self { GetAllPinnedItems(itemRepository: self.itemRepository) }
+    }
+
+    var getSearchableItems: Factory<GetSearchableItemsUseCase> {
+        self { GetSearchableItems(itemRepository: self.itemRepository,
+                                  shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                  getAllPinnedItems: self.getAllPinnedItems(),
+                                  symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
     }
 }
 

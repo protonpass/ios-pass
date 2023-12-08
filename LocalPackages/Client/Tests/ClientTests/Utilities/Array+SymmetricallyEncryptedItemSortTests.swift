@@ -20,6 +20,7 @@
 
 @testable import Client
 import Entities
+import EntitiesMocks
 import XCTest
 
 // swiftlint:disable type_name

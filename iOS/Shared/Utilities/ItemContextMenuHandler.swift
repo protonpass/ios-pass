@@ -31,9 +31,12 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
 
 final class ItemContextMenuHandler {
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
+    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
+    private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -47,7 +50,7 @@ final class ItemContextMenuHandler {
 // Only show & hide spinner when trashing because API calls are needed.
 // Other operations are local so no need.
 extension ItemContextMenuHandler {
-    func edit(_ item: ItemTypeIdentifiable) {
+    func edit(_ item: any ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -59,7 +62,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func trash(_ item: ItemTypeIdentifiable) {
+    func trash(_ item: any ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
@@ -74,9 +77,9 @@ extension ItemContextMenuHandler {
                     restore(item)
                 }
 
-                clipboardManager.bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                                        dismissButtonTitle: #localized("Undo"),
-                                                                        onDismiss: undoBlock)
+                bannerManager.displayBottomInfoMessage(item.trashMessage,
+                                                       dismissButtonTitle: #localized("Undo"),
+                                                       onDismiss: undoBlock)
                 router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 logger.error(error)
@@ -85,7 +88,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func restore(_ item: ItemTypeIdentifiable) {
+    func restore(_ item: any ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
@@ -93,7 +96,7 @@ extension ItemContextMenuHandler {
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.untrashItems([encryptedItem])
-                clipboardManager.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+                bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
                 router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 logger.error(error)
@@ -102,7 +105,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func deletePermanently(_ item: ItemTypeIdentifiable) {
+    func deletePermanently(_ item: any ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
@@ -110,7 +113,7 @@ extension ItemContextMenuHandler {
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
-                clipboardManager.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+                bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
                 router.display(element: .successMessage(config: .refresh(with: .delete(item.type))))
             } catch {
                 logger.error(error)
@@ -119,7 +122,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyUsername(_ item: ItemTypeIdentifiable) {
+    func copyUsername(_ item: any ItemTypeIdentifiable) {
         guard case .login = item.type else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -137,7 +140,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyPassword(_ item: ItemTypeIdentifiable) {
+    func copyPassword(_ item: any ItemTypeIdentifiable) {
         guard case .login = item.type else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -155,7 +158,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyAlias(_ item: ItemTypeIdentifiable) {
+    func copyAlias(_ item: any ItemTypeIdentifiable) {
         guard case .alias = item.type else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -173,7 +176,7 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyNoteContent(_ item: ItemTypeIdentifiable) {
+    func copyNoteContent(_ item: any ItemTypeIdentifiable) {
         guard case .note = item.type else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -190,18 +193,39 @@ extension ItemContextMenuHandler {
             }
         }
     }
+
+    func toggleItemPinning(_ item: any ItemTypeIdentifiable) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                let encryptedItem = try await getEncryptedItem(for: item)
+                router.display(element: .globalLoading(shouldShow: true))
+                let newItemState = if encryptedItem.item.pinned {
+                    try await unpinItem(item: encryptedItem)
+                } else {
+                    try await pinItem(item: encryptedItem)
+                }
+                router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
+                logger.trace("Success of pin/unpin of \(encryptedItem.debugDescription)")
+            } catch {
+                logger.error(error)
+                handleError(error)
+            }
+        }
+    }
 }
 
 // MARK: - Private APIs
 
 private extension ItemContextMenuHandler {
-    func getDecryptedItemContent(for item: ItemIdentifiable) async throws -> ItemContent {
+    func getDecryptedItemContent(for item: any ItemIdentifiable) async throws -> ItemContent {
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let encryptedItem = try await getEncryptedItem(for: item)
         return try encryptedItem.getItemContent(symmetricKey: symmetricKey)
     }
 
-    func getEncryptedItem(for item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
+    func getEncryptedItem(for item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
         guard let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
                                                                    itemId: item.itemId) else {
             throw PassError.itemNotFound(item)
@@ -210,6 +234,6 @@ private extension ItemContextMenuHandler {
     }
 
     func handleError(_ error: Error) {
-        clipboardManager.bannerManager.displayTopErrorMessage(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 }

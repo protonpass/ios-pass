@@ -28,6 +28,12 @@ public struct DecryptedShareKey: Hashable, Sendable {
     public let shareId: String
     public let keyRotation: Int64
     public let keyData: Data
+
+    public init(shareId: String, keyRotation: Int64, keyData: Data) {
+        self.shareId = shareId
+        self.keyRotation = keyRotation
+        self.keyData = keyData
+    }
 }
 
 public struct DecryptedItemKey: Hashable, Sendable {
@@ -35,6 +41,13 @@ public struct DecryptedItemKey: Hashable, Sendable {
     public let itemId: String
     public let keyRotation: Int64
     public let keyData: Data
+
+    public init(shareId: String, itemId: String, keyRotation: Int64, keyData: Data) {
+        self.shareId = shareId
+        self.itemId = itemId
+        self.keyRotation = keyRotation
+        self.keyData = keyData
+    }
 }
 
 // sourcery: AutoMockable

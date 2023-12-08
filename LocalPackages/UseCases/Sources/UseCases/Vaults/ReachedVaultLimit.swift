@@ -33,11 +33,11 @@ public extension ReachedVaultLimitUseCase {
 }
 
 public final class ReachedVaultLimit: ReachedVaultLimitUseCase {
-    private let accessRepository: AccessRepositoryProtocol
-    private let vaultsManager: VaultsManagerProtocol
+    private let accessRepository: any AccessRepositoryProtocol
+    private let vaultsManager: any VaultsManagerProtocol
 
-    public init(accessRepository: AccessRepositoryProtocol,
-                vaultsManager: VaultsManagerProtocol) {
+    public init(accessRepository: any AccessRepositoryProtocol,
+                vaultsManager: any VaultsManagerProtocol) {
         self.accessRepository = accessRepository
         self.vaultsManager = vaultsManager
     }

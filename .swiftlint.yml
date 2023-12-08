@@ -24,9 +24,11 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - iOSUITests
   - LocalPackages/Core/Tests
   - LocalPackages/Client/Tests
+  - LocalPackages/Client/Sources/ClientMocks
+  - LocalPackages/Core/Sources/CoreMocks
   - LocalPackages/DesignSystem/Tests
   - LocalPackages/Entities/Tests
-  - LocalPackages/Client/Sources/Client/Protobuf*
+  - LocalPackages/Entities/Sources/Entities/Protobuf*
   - fastlane/*
   - misc/*
   
@@ -72,7 +74,7 @@ opt_in_rules:
   - first_where
   - flatmap_over_map_reduce
   - force_unwrapping
-  - function_default_parameter_at_end
+#  - function_default_parameter_at_end
   - ibinspectable_in_extension
   - identical_operands
   - implicit_return

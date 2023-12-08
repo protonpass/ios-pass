@@ -37,6 +37,8 @@ public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
     /// Revision state. Values: 1 = Active, 2 = Trashed
     public let state: Int64
 
+    public let pinned: Bool
+
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?
 
@@ -56,7 +58,8 @@ public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
 
     public init(itemID: String, revision: Int64, contentFormatVersion: Int64, keyRotation: Int64, content: String,
-                itemKey: String?, state: Int64, aliasEmail: String?, createTime: Int64, modifyTime: Int64,
+                itemKey: String?, state: Int64, pinned: Bool, aliasEmail: String?, createTime: Int64,
+                modifyTime: Int64,
                 lastUseTime: Int64?, revisionTime: Int64) {
         self.itemID = itemID
         self.revision = revision
@@ -65,6 +68,7 @@ public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
         self.content = content
         self.itemKey = itemKey
         self.state = state
+        self.pinned = pinned
         self.aliasEmail = aliasEmail
         self.createTime = createTime
         self.modifyTime = modifyTime

@@ -36,7 +36,7 @@ public struct ItemCount: Hashable, Equatable {
 }
 
 public extension ItemCount {
-    init(items: [ItemTypeIdentifiable]) {
+    init(items: [any ItemTypeIdentifiable]) {
         total = items.count
         login = items.filter { $0.type == .login }.count
         alias = items.filter { $0.type == .alias }.count

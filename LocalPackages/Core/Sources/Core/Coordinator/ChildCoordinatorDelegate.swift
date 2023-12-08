@@ -23,6 +23,7 @@ import UIKit
 
 /// Control how and what to do before presenting a view
 public protocol ChildCoordinatorDelegate: AnyObject {
+    @MainActor
     func childCoordinatorWantsToPresent(viewController: UIViewController,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption)
@@ -35,6 +36,7 @@ public protocol ChildCoordinatorDelegate: AnyObject {
 public extension ChildCoordinatorDelegate {
     /// Overloaded method of `childCoordinatorWantsToPresent(viewController:viewOption:presentationOption)`
     /// Conviently pass `some View` instead of `UIViewController`
+    @MainActor
     func childCoordinatorWantsToPresent(view: some View,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption) {

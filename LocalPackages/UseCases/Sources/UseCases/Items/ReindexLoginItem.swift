@@ -44,11 +44,11 @@ public extension ReindexLoginItemUseCase {
 }
 
 public final class ReindexLoginItem: ReindexLoginItemUseCase {
-    private let manager: CredentialManagerProtocol
-    private let mapServiceIdentifierToUrl: MapASCredentialServiceIdentifierToURLUseCase
+    private let manager: any CredentialManagerProtocol
+    private let mapServiceIdentifierToUrl: any MapASCredentialServiceIdentifierToURLUseCase
 
-    public init(manager: CredentialManagerProtocol,
-                mapServiceIdentifierToUrl: MapASCredentialServiceIdentifierToURLUseCase) {
+    public init(manager: any CredentialManagerProtocol,
+                mapServiceIdentifierToUrl: any MapASCredentialServiceIdentifierToURLUseCase) {
         self.manager = manager
         self.mapServiceIdentifierToUrl = mapServiceIdentifierToUrl
     }

@@ -104,7 +104,7 @@ private extension VaultsManager {
 
     func updateItemCount() {
         guard case let .loaded(vaults, trashedItems) = state else { return }
-        let items: [ItemTypeIdentifiable]
+        let items: [any ItemTypeIdentifiable]
         switch vaultSelection {
         case .all:
             items = vaults.map(\.items).reduce(into: []) { $0 += $1 }

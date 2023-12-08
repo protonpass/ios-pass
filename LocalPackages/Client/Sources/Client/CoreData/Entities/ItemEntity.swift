@@ -46,6 +46,7 @@ extension ItemEntity {
     @NSManaged var revisionTime: Int64
     @NSManaged var shareID: String? // Custom field
     @NSManaged var state: Int64
+    @NSManaged var pinned: Bool
     @NSManaged var symmetricallyEncryptedContent: String? // Custom field
 }
 
@@ -75,6 +76,7 @@ extension ItemEntity {
                                         content: content,
                                         itemKey: itemKey,
                                         state: state,
+                                        pinned: pinned,
                                         aliasEmail: aliasEmail,
                                         createTime: createTime,
                                         modifyTime: modifyTime,
@@ -99,6 +101,7 @@ extension ItemEntity {
         keyRotation = item.keyRotation
         lastUseTime = item.lastUseTime ?? 0
         modifyTime = item.modifyTime
+        pinned = item.pinned
         revision = item.revision
         revisionTime = item.revisionTime
         shareID = symmetricallyEncryptedItem.shareId

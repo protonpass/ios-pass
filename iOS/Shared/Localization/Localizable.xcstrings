@@ -948,6 +948,50 @@
         }
       }
     },
+    "%lld items moved to trash" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item moved to trash"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld items moved to trash"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld items moved to vault « %@ »" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld item moved to vault « %2$@ »"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld items moved to vault « %2$@ »"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld member(s)" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -23704,148 +23748,6 @@
         }
       }
     },
-    "Filter by" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Фільтраваць па"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrovat podle"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtern nach"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Φιλτράρισμα κατά"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filter by"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrar por"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrar por"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suodata"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrer par"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtra per"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フィルター条件"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გაფილტვრა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "필터 기준"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrer etter"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtruj"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrar por"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrar por"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrare după"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrovať podľa"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtrera efter"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Şuna göre süz"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Фільтрувати"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lọc"
-          }
-        }
-      }
-    },
     "Find an alias, login, or note" : {
       "comment" : "Search page",
       "localizations" : {
@@ -27308,6 +27210,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nội dung đã được dời vào kho lưu trữ « %@ »"
+          }
+        }
+      }
+    },
+    "Item successfully pinned" : {
+      "comment" : "Message displayed to user after pinning an item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully pinned"
+          }
+        }
+      }
+    },
+    "Item successfully unpinned" : {
+      "comment" : "Message displayed to user after unpinning an item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully unpinned"
           }
         }
       }
@@ -37663,6 +37589,28 @@
         }
       }
     },
+    "Permanently deleted %lld items" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Permanently deleted one item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Permanently deleted %lld items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Personal" : {
       "comment" : "The name of the default vault",
       "extractionState" : "manual",
@@ -37671,6 +37619,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personal"
+          }
+        }
+      }
+    },
+    "Pin" : {
+      "comment" : "Title for action to pin item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin "
           }
         }
       }
@@ -42109,6 +42069,28 @@
         }
       }
     },
+    "Restored %lld items" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Restored %lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Restored %lld items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Results" : {
       "localizations" : {
         "be" : {
@@ -43144,6 +43126,18 @@
         }
       }
     },
+    "Search pinned items" : {
+      "comment" : "Pinned item search bar placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search pinned items"
+          }
+        }
+      }
+    },
     "Secure password manager and more" : {
       "comment" : "Slogan",
       "extractionState" : "manual",
@@ -43847,6 +43841,18 @@
         }
       }
     },
+    "See all" : {
+      "comment" : "Last button on the home page for pinned items. This will redirect the user to a search screen for pinned items",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
+          }
+        }
+      }
+    },
     "See the shared vault" : {
       "comment" : "New user accepts the invitation",
       "extractionState" : "manual",
@@ -44139,6 +44145,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chọn một kho lưu trữ"
+          }
+        }
+      }
+    },
+    "Select items" : {
+      "comment" : "Enable bulk action mode",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select items"
           }
         }
       }
@@ -45461,6 +45479,18 @@
         }
       }
     },
+    "Show" : {
+      "comment" : "Show all filter options",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show"
+          }
+        }
+      }
+    },
     "Show large" : {
       "localizations" : {
         "be" : {
@@ -46029,8 +46059,9 @@
         }
       }
     },
-    "Sort by" : {
+    "Sort By" : {
       "comment" : "Items filtering",
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -46041,13 +46072,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seřadit podle"
+            "value" : "Seřadit Podle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortieren nach"
+            "value" : "Sortieren Nach"
           }
         },
         "el" : {
@@ -46059,19 +46090,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sort by"
+            "value" : "Sort By"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ordenar por"
+            "value" : "Ordenar Por"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ordenar por"
+            "value" : "Ordenar Por"
           }
         },
         "fi" : {
@@ -46083,13 +46114,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trier par"
+            "value" : "Trier Par"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ordina per"
+            "value" : "Ordina Per"
           }
         },
         "ja" : {
@@ -46125,31 +46156,31 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Organizar por"
+            "value" : "Organizar Por"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ordenar por"
+            "value" : "Ordenar Por"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortare după"
+            "value" : "Sortare După"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zoradiť podľa"
+            "value" : "Zoradiť Podľa"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortera efter"
+            "value" : "Sortera Efter"
           }
         },
         "tr" : {
@@ -46167,7 +46198,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sắp xếp theo"
+            "value" : "Sắp Xếp Theo"
           }
         }
       }
@@ -52771,6 +52802,18 @@
         }
       }
     },
+    "Unpin" : {
+      "comment" : "Title for action to unpin item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin"
+          }
+        }
+      }
+    },
     "Untitled" : {
       "localizations" : {
         "be" : {
@@ -57965,6 +58008,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn đang chuẩn bị tạo"
+          }
+        }
+      }
+    },
+    "You are going to delete %lld items irreversibly, are you sure?" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are going to delete one item irreversibly, are you sure?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
+                }
+              }
+            }
           }
         }
       }

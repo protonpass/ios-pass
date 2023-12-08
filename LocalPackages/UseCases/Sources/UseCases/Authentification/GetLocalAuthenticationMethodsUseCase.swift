@@ -34,9 +34,9 @@ public extension GetLocalAuthenticationMethodsUseCase {
 }
 
 public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsUseCase {
-    private let checkBiometryType: CheckBiometryTypeUseCase
+    private let checkBiometryType: any CheckBiometryTypeUseCase
 
-    public init(checkBiometryType: CheckBiometryTypeUseCase) {
+    public init(checkBiometryType: any CheckBiometryTypeUseCase) {
         self.checkBiometryType = checkBiometryType
     }
 

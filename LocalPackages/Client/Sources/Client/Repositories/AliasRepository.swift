@@ -24,7 +24,7 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public protocol AliasRepositoryProtocol {
+public protocol AliasRepositoryProtocol: Sendable {
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     @discardableResult

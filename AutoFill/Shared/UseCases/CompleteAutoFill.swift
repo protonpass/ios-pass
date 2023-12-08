@@ -48,7 +48,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let logger: Logger
     private let logManager: LogManagerProtocol
     private let telemetryRepository: TelemetryEventRepositoryProtocol
-    private let clipboardManager: ClipboardManager
+    private let clipboardManager: ClipboardManagerProtocol
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
     private let updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase
     private let resetFactory: ResetFactoryUseCase
@@ -56,7 +56,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
          telemetryRepository: TelemetryEventRepositoryProtocol,
-         clipboardManager: ClipboardManager,
+         clipboardManager: ClipboardManagerProtocol,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
          updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase,
          resetFactory: ResetFactoryUseCase) {
