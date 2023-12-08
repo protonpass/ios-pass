@@ -415,9 +415,6 @@
 		5BD4A90D2B15F33700C44C08 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
 		5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
 		5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
-		5BD4A9122B1A1AAB00C44C08 /* UseCasesMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5BD4A9112B1A1AAB00C44C08 /* UseCasesMocks */; };
-		5BD4A9142B1A1AF100C44C08 /* ClientMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5BD4A9132B1A1AF100C44C08 /* ClientMocks */; };
-		5BD4A9162B1A1AF200C44C08 /* CoreMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5BD4A9152B1A1AF200C44C08 /* CoreMocks */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BF35D6A2B21F82900D3E297 /* ItemRevision+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* ItemRevision+Extensions.swift */; };
@@ -845,17 +842,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				35855C132AC8744A00794DB4 /* UseCases in Frameworks */,
-				5BD4A9162B1A1AF200C44C08 /* CoreMocks in Frameworks */,
 				3544F5E128E2341900834CA4 /* AuthenticationServices.framework in Frameworks */,
 				5B0C74FF2A2F617900272CE8 /* Factory in Frameworks */,
 				5B8D20B12AA751AF00457CA3 /* MBProgressHUD in Frameworks */,
 				356A34CA2978642800969BA2 /* CodeScanner in Frameworks */,
 				5B8D20AD2AA74B6600457CA3 /* DesignSystem in Frameworks */,
 				35ABE12C2AA082BB001E20F9 /* DocScanner in Frameworks */,
-				5BD4A9142B1A1AF100C44C08 /* ClientMocks in Frameworks */,
 				5B8D209F2AA748F700457CA3 /* Client in Frameworks */,
 				3535182B2AE14FBD00574991 /* Screens in Frameworks */,
-				5BD4A9122B1A1AAB00C44C08 /* UseCasesMocks in Frameworks */,
 				354192862AC1CB9F001F2996 /* Macro in Frameworks */,
 				578B8BA42AE5AB6600719DA6 /* ProtonCoreForceUpgrade in Frameworks */,
 				578B8BA22AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation in Frameworks */,
@@ -2014,9 +2008,6 @@
 				3535182A2AE14FBD00574991 /* Screens */,
 				578B8BA12AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation */,
 				578B8BA32AE5AB6600719DA6 /* ProtonCoreForceUpgrade */,
-				5BD4A9112B1A1AAB00C44C08 /* UseCasesMocks */,
-				5BD4A9132B1A1AF100C44C08 /* ClientMocks */,
-				5BD4A9152B1A1AF200C44C08 /* CoreMocks */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -4966,18 +4957,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */;
 			productName = fusion;
-		};
-		5BD4A9112B1A1AAB00C44C08 /* UseCasesMocks */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = UseCasesMocks;
-		};
-		5BD4A9132B1A1AF100C44C08 /* ClientMocks */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ClientMocks;
-		};
-		5BD4A9152B1A1AF200C44C08 /* CoreMocks */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoreMocks;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
