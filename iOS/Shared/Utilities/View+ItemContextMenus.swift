@@ -115,6 +115,7 @@ enum ItemContextMenu {
         }
     }
 
+    // swiftlint:disable:next todo
     // TODO: Remove once pinning is active
     var isPinningActivated: Bool {
         SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: FeatureFlagType.passPinningV1)
