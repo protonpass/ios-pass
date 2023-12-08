@@ -85,12 +85,14 @@ struct SearchResultsView: View, Equatable {
 
     @ViewBuilder
     private func itemRow(for item: ItemSearchResult) -> some View {
+        let isEditable = viewModel.isEditable(item)
         Button(action: {
             onSelectItem(item)
         }, label: {
             ItemSearchResultView(result: item)
                 .itemContextMenu(item: item,
                                  isTrashed: viewModel.isTrash,
+                                 isEditable: isEditable,
                                  onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
                                  handler: viewModel.itemContextMenuHandler)
         })
@@ -101,7 +103,7 @@ struct SearchResultsView: View, Equatable {
                                     item: item,
                                     isEditMode: false,
                                     isTrashed: viewModel.isTrash,
-                                    isEditable: viewModel.isEditable(item),
+                                    isEditable: isEditable,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))

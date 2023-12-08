@@ -112,6 +112,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color)
                 })
+                .disabled(!viewModel.isAllowedToEdit)
             }
         }
     }
