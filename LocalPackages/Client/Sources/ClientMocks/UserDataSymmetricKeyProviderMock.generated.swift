@@ -18,11 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+    import Client
 import Combine
 import Entities
-import CryptoKit
 import ProtonCoreLogin
+import CryptoKit
 
 public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider, UserDataProvider {
 
