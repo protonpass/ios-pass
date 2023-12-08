@@ -55,7 +55,7 @@ public protocol SyncEventLoopDelegate: AnyObject {
     /// Called when a sync loop is failed.
     /// - Parameters:
     ///   - error: Occured error
-    func syncEventLoopDidFailLoop(error: Error)
+    func syncEventLoopDidFailLoop(error: any Error)
 
     /// Called when an additional task is started to be executed
     /// - Parameters:
@@ -70,7 +70,7 @@ public protocol SyncEventLoopDelegate: AnyObject {
     /// - Parameters:
     ///  - label: the uniquely identifiable label of the failed task.
     ///  - error: the underlying error
-    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error)
+    func syncEventLoopDidFailedAdditionalTask(label: String, error: any Error)
 }
 
 public protocol SyncEventLoopActionProtocol {
@@ -121,25 +121,25 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params
-    private let backOffManager: BackOffManagerProtocol
+    private let backOffManager: any BackOffManagerProtocol
     private var reachability: Reachability?
     private var isReachable = true
     private var timer: Timer?
     private var secondCount = 0
     private var threshold = kThresholdRange.randomElement() ?? 5
     private var additionalTasks: [AdditionalTask] = []
-    private var ongoingTask: Task<Void, Error>?
+    private var ongoingTask: Task<Void, any Error>?
 
     // Injected params
-    private let synchronizer: EventSynchronizerProtocol
+    private let synchronizer: any EventSynchronizerProtocol
     private let logger: Logger
 
-    public weak var delegate: SyncEventLoopDelegate?
-    public weak var pullToRefreshDelegate: SyncEventLoopPullToRefreshDelegate?
+    public weak var delegate: (any SyncEventLoopDelegate)?
+    public weak var pullToRefreshDelegate: (any SyncEventLoopPullToRefreshDelegate)?
 
-    public init(currentDateProvider: CurrentDateProviderProtocol,
-                synchronizer: EventSynchronizerProtocol,
-                logManager: LogManagerProtocol) {
+    public init(currentDateProvider: any CurrentDateProviderProtocol,
+                synchronizer: any EventSynchronizerProtocol,
+                logManager: any LogManagerProtocol) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.synchronizer = synchronizer
         logger = .init(manager: logManager)

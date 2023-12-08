@@ -82,7 +82,7 @@ public enum CryptoUtils {
         }
     }
 
-    public static func generateSessionKey() throws -> CryptoSessionKey {
+    public static func generateSessionKey() throws -> any CryptoSessionKey {
         var error: NSError?
         guard let sessionKey = CryptoGo.CryptoGenerateSessionKey(&error) else {
             throw PassError.crypto(.failedToGenerateSessionKey)

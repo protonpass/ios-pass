@@ -33,7 +33,7 @@ public enum TelemetryEventSendResult: Sendable {
 // MARK: - TelemetryEventRepositoryProtocol
 
 public protocol TelemetryEventRepositoryProtocol {
-    var scheduler: TelemetrySchedulerProtocol { get }
+    var scheduler: any TelemetrySchedulerProtocol { get }
 
     func getAllEvents(userId: String) async throws -> [TelemetryEvent]
 
@@ -44,22 +44,22 @@ public protocol TelemetryEventRepositoryProtocol {
 }
 
 public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
-    private let localDatasource: LocalTelemetryEventDatasourceProtocol
-    private let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
-    private let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
-    private let accessRepository: AccessRepositoryProtocol
+    private let localDatasource: any LocalTelemetryEventDatasourceProtocol
+    private let remoteDatasource: any RemoteTelemetryEventDatasourceProtocol
+    private let remoteUserSettingsDatasource: any RemoteUserSettingsDatasourceProtocol
+    private let accessRepository: any AccessRepositoryProtocol
     private let eventCount: Int
     private let logger: Logger
-    public let scheduler: TelemetrySchedulerProtocol
-    private let userDataProvider: UserDataProvider
+    public let scheduler: any TelemetrySchedulerProtocol
+    private let userDataProvider: any UserDataProvider
 
-    public init(localDatasource: LocalTelemetryEventDatasourceProtocol,
-                remoteDatasource: RemoteTelemetryEventDatasourceProtocol,
-                remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
-                accessRepository: AccessRepositoryProtocol,
-                logManager: LogManagerProtocol,
-                scheduler: TelemetrySchedulerProtocol,
-                userDataProvider: UserDataProvider,
+    public init(localDatasource: any LocalTelemetryEventDatasourceProtocol,
+                remoteDatasource: any RemoteTelemetryEventDatasourceProtocol,
+                remoteUserSettingsDatasource: any RemoteUserSettingsDatasourceProtocol,
+                accessRepository: any AccessRepositoryProtocol,
+                logManager: any LogManagerProtocol,
+                scheduler: any TelemetrySchedulerProtocol,
+                userDataProvider: any UserDataProvider,
                 eventCount: Int = 500) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
@@ -128,7 +128,7 @@ public extension TelemetryEventRepository {
 // MARK: - TelemetrySchedulerProtocol
 
 public protocol TelemetrySchedulerProtocol: AnyObject {
-    var currentDateProvider: CurrentDateProviderProtocol { get }
+    var currentDateProvider: any CurrentDateProviderProtocol { get }
     var threshhold: Date? { get set }
     var minIntervalInHours: Int { get }
     var maxIntervalInHours: Int { get }
@@ -161,7 +161,7 @@ public extension TelemetrySchedulerProtocol {
 }
 
 public final class TelemetryScheduler: TelemetrySchedulerProtocol {
-    public let currentDateProvider: CurrentDateProviderProtocol
+    public let currentDateProvider: any CurrentDateProviderProtocol
     public var threshhold: Date? {
         get {
             if let telemetryThreshold = thresholdProvider.getThreshold() {
@@ -179,10 +179,10 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
     public let eventCount = 500
     public let minIntervalInHours = 6
     public let maxIntervalInHours = 12
-    public let thresholdProvider: TelemetryThresholdProviderProtocol
+    public let thresholdProvider: any TelemetryThresholdProviderProtocol
 
-    public init(currentDateProvider: CurrentDateProviderProtocol,
-                thresholdProvider: TelemetryThresholdProviderProtocol) {
+    public init(currentDateProvider: any CurrentDateProviderProtocol,
+                thresholdProvider: any TelemetryThresholdProviderProtocol) {
         self.currentDateProvider = currentDateProvider
         self.thresholdProvider = thresholdProvider
     }

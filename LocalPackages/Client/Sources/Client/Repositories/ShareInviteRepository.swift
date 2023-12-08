@@ -52,11 +52,11 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
 }
 
 public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
-    private let remoteDataSource: RemoteShareInviteDatasourceProtocol
+    private let remoteDataSource: any RemoteShareInviteDatasourceProtocol
     private let logger: Logger
 
-    public init(remoteDataSource: RemoteShareInviteDatasourceProtocol,
-                logManager: LogManagerProtocol) {
+    public init(remoteDataSource: any RemoteShareInviteDatasourceProtocol,
+                logManager: any LogManagerProtocol) {
         self.remoteDataSource = remoteDataSource
         logger = .init(manager: logManager)
     }

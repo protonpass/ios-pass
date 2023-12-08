@@ -32,9 +32,9 @@ public protocol AliasRepositoryProtocol: Sendable {
 }
 
 public actor AliasRepository: AliasRepositoryProtocol {
-    private let remoteDatasouce: RemoteAliasDatasourceProtocol
+    private let remoteDatasouce: any RemoteAliasDatasourceProtocol
 
-    public init(remoteDatasouce: RemoteAliasDatasourceProtocol) {
+    public init(remoteDatasouce: any RemoteAliasDatasourceProtocol) {
         self.remoteDatasouce = remoteDatasouce
     }
 }

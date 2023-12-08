@@ -53,12 +53,12 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
 }
 
 public class LocalDatasource {
-    private let databaseService: DatabaseServiceProtocol
+    private let databaseService: any DatabaseServiceProtocol
     private var container: NSPersistentContainer {
         databaseService.container
     }
 
-    public init(databaseService: DatabaseServiceProtocol) {
+    public init(databaseService: any DatabaseServiceProtocol) {
         guard databaseService.container.name == kProtonPassContainerName else {
             fatalError("Unsupported container name \"\(databaseService.container.name)\"")
         }

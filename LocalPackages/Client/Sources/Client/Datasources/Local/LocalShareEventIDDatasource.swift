@@ -60,7 +60,7 @@ public extension LocalShareEventIDDatasource {
 
     func removeAllEntries(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEventIDEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareEventIDEntity")
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
