@@ -24,24 +24,26 @@ import Client
 import Entities
 
 public protocol GetVaultContentForVaultUseCase: Sendable {
-    func execute(for vault: Vault) -> VaultContentUiModel
+    func execute(for shareId: ShareID) -> VaultContentUiModel?
 }
 
 public extension GetVaultContentForVaultUseCase {
-    func callAsFunction(for vault: Vault) -> VaultContentUiModel {
-        execute(for: vault)
+    func callAsFunction(for shareId: ShareID) -> VaultContentUiModel? {
+        execute(for: shareId)
     }
 }
 
 public final class GetVaultContentForVault: GetVaultContentForVaultUseCase {
-    private let vaultsManager: VaultsManagerProtocol
+    private let vaultsManager: any VaultsManagerProtocol
 
-    public init(vaultsManager: VaultsManagerProtocol) {
+    public init(vaultsManager: any VaultsManagerProtocol) {
         self.vaultsManager = vaultsManager
     }
 
-    public func execute(for vault: Vault) -> VaultContentUiModel {
-        VaultContentUiModel(vault: vault,
-                            items: vaultsManager.getItems(for: vault))
+    public func execute(for shareId: ShareID) -> VaultContentUiModel? {
+        guard let vault = vaultsManager.getAllVaults().first(where: { $0.shareId == shareId }) else {
+            return nil
+        }
+        return VaultContentUiModel(vault: vault, items: vaultsManager.getItems(for: vault))
     }
 }

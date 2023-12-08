@@ -59,7 +59,7 @@ struct MoveVaultListView: View {
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
-                                            disabled: false,
+                                            disabled: viewModel.selectedVault == nil,
                                             height: 44,
                                             action: { dismiss(); viewModel.doMove() })
             }

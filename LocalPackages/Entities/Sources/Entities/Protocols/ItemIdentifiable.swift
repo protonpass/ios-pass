@@ -23,9 +23,15 @@ import Foundation
 
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching
-public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible {
+public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible, Equatable {
     var shareId: String { get }
     var itemId: String { get }
+}
+
+public extension ItemIdentifiable {
+    func isEqual(with otherItem: any ItemIdentifiable) -> Bool {
+        shareId == otherItem.shareId && itemId == otherItem.itemId
+    }
 }
 
 public extension ItemIdentifiable {

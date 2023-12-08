@@ -38,11 +38,11 @@ public extension AddTelemetryEventUseCase {
 }
 
 public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
-    private let repository: TelemetryEventRepositoryProtocol
+    private let repository: any TelemetryEventRepositoryProtocol
     private let logger: Logger
 
-    public init(repository: TelemetryEventRepositoryProtocol,
-                logManager: LogManagerProtocol) {
+    public init(repository: any TelemetryEventRepositoryProtocol,
+                logManager: any LogManagerProtocol) {
         self.repository = repository
         logger = .init(manager: logManager)
     }

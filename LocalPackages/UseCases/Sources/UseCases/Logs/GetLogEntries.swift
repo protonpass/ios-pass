@@ -23,11 +23,11 @@
 import Core
 import Entities
 
-// sourcery: AutoMockable
 /**
  The GetLogEntriesUseCase protocol defines the contract for a use case that retrieves log entries.
  It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
  */
+// sourcery: AutoMockable
 public protocol GetLogEntriesUseCase: Sendable {
     /**
      Executes the use case to retrieve log entries for the specified log module.
@@ -57,9 +57,9 @@ public extension GetLogEntriesUseCase {
 }
 
 public final class GetLogEntries: GetLogEntriesUseCase {
-    private let mainAppLogManager: LogManagerProtocol
-    private let autofillLogManager: LogManagerProtocol
-    private let keyboardLogManager: LogManagerProtocol
+    private let mainAppLogManager: any LogManagerProtocol
+    private let autofillLogManager: any LogManagerProtocol
+    private let keyboardLogManager: any LogManagerProtocol
 
     /**
      Initializes a new instance of `GetLogEntries` with the specified log managers.
@@ -69,9 +69,9 @@ public final class GetLogEntries: GetLogEntriesUseCase {
        - autofillLogManager: The log manager responsible for retrieving log entries for the autofill extension.
        - keyboardLogManager: The log manager responsible for retrieving log entries for the keyboard extension.
      */
-    public init(mainAppLogManager: LogManagerProtocol,
-                autofillLogManager: LogManagerProtocol,
-                keyboardLogManager: LogManagerProtocol) {
+    public init(mainAppLogManager: any LogManagerProtocol,
+                autofillLogManager: any LogManagerProtocol,
+                keyboardLogManager: any LogManagerProtocol) {
         self.mainAppLogManager = mainAppLogManager
         self.autofillLogManager = autofillLogManager
         self.keyboardLogManager = keyboardLogManager

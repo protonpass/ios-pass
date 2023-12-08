@@ -158,8 +158,7 @@ struct EditableVaultListView: View {
 
             if viewModel.canMoveItems(vault: vault), haveItems {
                 Button(action: {
-                    viewModel.router.present(for: .moveItemsBetweenVaults(currentVault: vault,
-                                                                          singleItemToMove: nil))
+                    viewModel.router.present(for: .moveItemsBetweenVaults(.allItems(vault)))
                 }, label: {
                     Label(title: {
                         Text("Move all items to another vault")

@@ -20,6 +20,7 @@
 
 import Foundation
 
+// sourcery: AutoMockable
 public protocol LogManagerProtocol: Actor {
     var shouldLog: Bool { get }
 
@@ -28,10 +29,6 @@ public protocol LogManagerProtocol: Actor {
     func removeAllLogs()
     func saveAllLogs()
     func toggleLogging(shouldLog: Bool)
-}
-
-enum LogManagerError: Error {
-    case failedToSerializeLogEntry
 }
 
 public struct LogManagerConfig: Sendable {

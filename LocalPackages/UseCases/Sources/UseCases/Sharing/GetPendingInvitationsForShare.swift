@@ -34,9 +34,9 @@ public extension GetPendingInvitationsForShareUseCase {
 }
 
 public final class GetPendingInvitationsForShare: GetPendingInvitationsForShareUseCase {
-    private let repository: ShareInviteRepositoryProtocol
+    private let repository: any ShareInviteRepositoryProtocol
 
-    public init(repository: ShareInviteRepositoryProtocol) {
+    public init(repository: any ShareInviteRepositoryProtocol) {
         self.repository = repository
     }
 
