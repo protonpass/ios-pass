@@ -29,6 +29,7 @@ struct ItemSwipeModifier: ViewModifier {
     let item: any ItemTypeIdentifiable
     let isEditMode: Bool
     let isTrashed: Bool
+    let isEditable: Bool
     let itemContextMenuHandler: ItemContextMenuHandler
 
     /// Active item:  swipe right-to-left to move to trash
@@ -36,7 +37,7 @@ struct ItemSwipeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .swipeActions(edge: .leading) {
-                if isEditMode {
+                if isEditMode || !isEditable {
                     EmptyView()
                 } else if isTrashed {
                     Button(action: {
@@ -49,12 +50,10 @@ struct ItemSwipeModifier: ViewModifier {
                         })
                     })
                     .tint(Color(uiColor: PassColor.signalSuccess))
-                } else {
-                    EmptyView()
                 }
             }
             .swipeActions(edge: .trailing) {
-                if isEditMode {
+                if isEditMode || !isEditable {
                     EmptyView()
                 } else if isTrashed {
                     Button(action: {
