@@ -205,7 +205,8 @@ extension CredentialsViewModel {
         guard let results else { return }
 
         // Check if given URL is valid before proposing "associate & autofill"
-        if notMatchedItemInformation == nil,
+        if isEditable(item),
+           notMatchedItemInformation == nil,
            let schemeAndHost = urls.first?.schemeAndHost,
            !schemeAndHost.isEmpty,
            let notMatchedItem = results.notMatchedItems
@@ -326,6 +327,11 @@ private extension CredentialsViewModel {
                 notMatchedItemInformation = nil
             }
             .store(in: &cancellables)
+    }
+
+    func isEditable(_ item: any ItemIdentifiable) -> Bool {
+        let editableShareIds = vaults.filter(\.canEdit).map(\.shareId)
+        return editableShareIds.contains { $0 == item.shareId }
     }
 }
 
