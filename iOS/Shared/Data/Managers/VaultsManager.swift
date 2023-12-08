@@ -333,14 +333,14 @@ extension VaultsManager {
 
     func restoreAllTrashedItems() async throws {
         logger.trace("Restoring all trashed items")
-        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        let trashedItems = try await getAllEditableTrashedItems()
         try await itemRepository.untrashItems(trashedItems)
         logger.info("Restored all trashed items")
     }
 
     func permanentlyDeleteAllTrashedItems() async throws {
         logger.trace("Permanently deleting all trashed items")
-        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        let trashedItems = try await getAllEditableTrashedItems()
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
         logger.info("Permanently deleted all trashed items")
     }
@@ -376,6 +376,16 @@ extension VaultsManager {
 
     func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
         self.filterOption = filterOption
+    }
+}
+
+private extension VaultsManager {
+    func getAllEditableTrashedItems() async throws -> [SymmetricallyEncryptedItem] {
+        let editableShareIds = getAllEditableVaultContents().map(\.vault.shareId)
+        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        return trashedItems.filter { item in
+            editableShareIds.contains(where: { $0 == item.shareId })
+        }
     }
 }
 
