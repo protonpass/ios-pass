@@ -71,6 +71,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -250,9 +251,8 @@ extension ItemsTabViewModel {
         currentSelectedItems.value.contains(item)
     }
 
-    func isSelectable(_ item: any ItemIdentifiable) -> Bool {
-        let editableVaults = vaultsManager.getAllEditableVaultContents()
-        return editableVaults.contains { $0.vault.shareId == item.shareId }
+    func isEditable(_ item: any ItemIdentifiable) -> Bool {
+        canEditItem(vaultsProvider: vaultsManager, item: item)
     }
 
     func presentVaultListToMoveSelectedItems() {
@@ -382,7 +382,7 @@ extension ItemsTabViewModel {
     }
 
     func handleThumbnailSelection(_ item: any ItemIdentifiable) {
-        if isSelectable(item) {
+        if isEditable(item) {
             selectOrDeselect(item)
             isEditMode = true
         }

@@ -297,11 +297,6 @@ extension VaultsManager {
         getAllVaultContents().filter(\.vault.canEdit)
     }
 
-    func getAllVaults() -> [Vault] {
-        guard case let .loaded(vaults, _) = state else { return [] }
-        return vaults.map(\.vault)
-    }
-
     func vaultHasTrashedItems(_ vault: Vault) -> Bool {
         guard case let .loaded(_, trashedItems) = state else { return false }
         return trashedItems.contains { $0.shareId == vault.shareId }
@@ -417,6 +412,15 @@ extension VaultsManager: LimitationCounterProtocol {
         default:
             0
         }
+    }
+}
+
+// MARK: - VaultsProvider
+
+extension VaultsManager: VaultsProvider {
+    func getAllVaults() -> [Vault] {
+        guard case let .loaded(vaults, _) = state else { return [] }
+        return vaults.map(\.vault)
     }
 }
 

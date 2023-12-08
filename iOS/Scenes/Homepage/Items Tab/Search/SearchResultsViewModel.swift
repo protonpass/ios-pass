@@ -35,6 +35,7 @@ final class SearchResultsViewModel: ObservableObject {
     @Published var showingPermanentDeletionAlert = false
 
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
@@ -61,7 +62,6 @@ extension SearchResultsViewModel {
     }
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        let editableVaults = vaultsManager.getAllEditableVaultContents()
-        return editableVaults.contains { $0.vault.shareId == item.shareId }
+        canEditItem(vaultsProvider: vaultsManager, item: item)
     }
 }
