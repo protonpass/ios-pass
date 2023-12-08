@@ -56,7 +56,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private var cancellables = Set<AnyCancellable>()
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
