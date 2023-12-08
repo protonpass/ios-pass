@@ -20,6 +20,7 @@
 
 import Client
 import Entities
+import Factory
 import SwiftUI
 
 final class SearchResultsViewModel: ObservableObject {
@@ -32,6 +33,8 @@ final class SearchResultsViewModel: ObservableObject {
     }
 
     @Published var showingPermanentDeletionAlert = false
+
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
@@ -47,9 +50,18 @@ final class SearchResultsViewModel: ObservableObject {
         self.results = results
         self.isTrash = isTrash
     }
+}
 
+// MARK: Public APIs
+
+extension SearchResultsViewModel {
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
+    }
+
+    func isEditable(_ item: any ItemIdentifiable) -> Bool {
+        let editableVaults = vaultsManager.getAllEditableVaultContents()
+        return editableVaults.contains { $0.vault.shareId == item.shareId }
     }
 }
