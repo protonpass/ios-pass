@@ -197,7 +197,7 @@ public extension LocalItemDatasource {
     func deleteItems(itemIds: [String], shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         for itemId in itemIds {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
+            let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 .init(format: "shareID = %@", shareId),
                 .init(format: "itemID = %@", itemId)
@@ -209,14 +209,14 @@ public extension LocalItemDatasource {
 
     func removeAllItems() async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
 
     func removeAllItems(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)

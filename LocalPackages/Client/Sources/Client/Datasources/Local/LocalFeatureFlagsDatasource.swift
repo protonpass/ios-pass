@@ -56,14 +56,14 @@ public extension LocalFeatureFlagsDatasource {
 
     func cleanAllFlags() async {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
         _ = try? await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                                context: taskContext)
     }
 
     func cleanFlags(for userId: String) async {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "userID = %@", userId)
         ])
