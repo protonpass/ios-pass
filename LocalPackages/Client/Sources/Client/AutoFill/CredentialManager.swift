@@ -34,7 +34,7 @@ public final class CredentialManager {
     public let store: ASCredentialIdentityStore
     public let logger: Logger
 
-    public init(logManager: LogManagerProtocol,
+    public init(logManager: any LogManagerProtocol,
                 store: ASCredentialIdentityStore = .shared) {
         self.store = store
         logger = .init(manager: logManager)

@@ -32,13 +32,13 @@ public protocol ShareEventIDRepositoryProtocol {
 }
 
 public actor ShareEventIDRepository: ShareEventIDRepositoryProtocol {
-    private let localDatasource: LocalShareEventIDDatasourceProtocol
-    private let remoteDatasource: RemoteShareEventIDDatasourceProtocol
+    private let localDatasource: any LocalShareEventIDDatasourceProtocol
+    private let remoteDatasource: any RemoteShareEventIDDatasourceProtocol
     private let logger: Logger
 
-    public init(localDatasource: LocalShareEventIDDatasourceProtocol,
-                remoteDatasource: RemoteShareEventIDDatasourceProtocol,
-                logManager: LogManagerProtocol) {
+    public init(localDatasource: any LocalShareEventIDDatasourceProtocol,
+                remoteDatasource: any RemoteShareEventIDDatasourceProtocol,
+                logManager: any LogManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)

@@ -74,7 +74,7 @@ public extension LocalTelemetryEventDatasource {
         let context = newTaskContext(type: .delete)
         try await context.perform {
             for event in events {
-                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TelemetryEventEntity")
+                let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "TelemetryEventEntity")
                 fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                     .init(format: "userID = %@", userId),
                     .init(format: "uuid = %@", event.uuid)
@@ -88,7 +88,7 @@ public extension LocalTelemetryEventDatasource {
 
     func removeAllEvents(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TelemetryEventEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "TelemetryEventEntity")
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)

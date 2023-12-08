@@ -55,18 +55,18 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws
 
     @discardableResult
-    func createItem(itemContent: ProtobufableItemContentProtocol,
+    func createItem(itemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
     func createAlias(info: AliasCreationInfo,
-                     itemContent: ProtobufableItemContentProtocol,
+                     itemContent: any ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
     func createAliasAndOtherItem(info: AliasCreationInfo,
-                                 aliasItemContent: ProtobufableItemContentProtocol,
-                                 otherItemContent: ProtobufableItemContentProtocol,
+                                 aliasItemContent: any ProtobufableItemContentProtocol,
+                                 otherItemContent: any ProtobufableItemContentProtocol,
                                  shareId: String) async throws
         -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)
 
@@ -86,7 +86,7 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func delete(items: [any ItemIdentifiable]) async throws
 
     func updateItem(oldItem: ItemRevision,
-                    newItemContent: ProtobufableItemContentProtocol,
+                    newItemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws
 
     func upsertItems(_ items: [ItemRevision], shareId: String) async throws
@@ -132,21 +132,21 @@ public extension ItemRepositoryProtocol {
 
 // swiftlint: disable discouraged_optional_self
 public actor ItemRepository: ItemRepositoryProtocol {
-    private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
-    private let localDatasource: LocalItemDatasourceProtocol
-    private let remoteDatasource: RemoteItemDatasourceProtocol
-    private let shareEventIDRepository: ShareEventIDRepositoryProtocol
-    private let passKeyManager: PassKeyManagerProtocol
+    private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
+    private let localDatasource: any LocalItemDatasourceProtocol
+    private let remoteDatasource: any RemoteItemDatasourceProtocol
+    private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
+    private let passKeyManager: any PassKeyManagerProtocol
     private let logger: Logger
 
     public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
 
-    public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
-                localDatasource: LocalItemDatasourceProtocol,
-                remoteDatasource: RemoteItemDatasourceProtocol,
-                shareEventIDRepository: ShareEventIDRepositoryProtocol,
-                passKeyManager: PassKeyManagerProtocol,
-                logManager: LogManagerProtocol) {
+    public init(userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider,
+                localDatasource: any LocalItemDatasourceProtocol,
+                remoteDatasource: any RemoteItemDatasourceProtocol,
+                shareEventIDRepository: any ShareEventIDRepositoryProtocol,
+                passKeyManager: any PassKeyManagerProtocol,
+                logManager: any LogManagerProtocol) {
         self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
@@ -225,7 +225,7 @@ public extension ItemRepository {
         logger.trace("Refreshed last event ID for share \(shareId)")
     }
 
-    func createItem(itemContent: ProtobufableItemContentProtocol,
+    func createItem(itemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating item for share \(shareId)")
         let request = try await createItemRequest(itemContent: itemContent, shareId: shareId)
@@ -240,7 +240,7 @@ public extension ItemRepository {
     }
 
     func createAlias(info: AliasCreationInfo,
-                     itemContent: ProtobufableItemContentProtocol,
+                     itemContent: any ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating alias item")
         let createItemRequest = try await createItemRequest(itemContent: itemContent, shareId: shareId)
@@ -257,8 +257,8 @@ public extension ItemRepository {
     }
 
     func createAliasAndOtherItem(info: AliasCreationInfo,
-                                 aliasItemContent: ProtobufableItemContentProtocol,
-                                 otherItemContent: ProtobufableItemContentProtocol,
+                                 aliasItemContent: any ProtobufableItemContentProtocol,
+                                 otherItemContent: any ProtobufableItemContentProtocol,
                                  shareId: String)
         async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         logger.trace("Creating alias and another item")
@@ -388,7 +388,7 @@ public extension ItemRepository {
     }
 
     func updateItem(oldItem: ItemRevision,
-                    newItemContent: ProtobufableItemContentProtocol,
+                    newItemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
@@ -541,7 +541,7 @@ private extension ItemRepository {
                      isLogInItem: isLogInItem)
     }
 
-    func createItemRequest(itemContent: ProtobufableItemContentProtocol,
+    func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
                            shareId: String) async throws -> CreateItemRequest {
         let latestKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
         return try CreateItemRequest(vaultKey: latestKey, itemContent: itemContent)

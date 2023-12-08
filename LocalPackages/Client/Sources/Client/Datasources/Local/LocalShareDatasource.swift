@@ -69,7 +69,7 @@ public extension LocalShareDatasource {
 
     func removeShare(shareId: String, userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareEntity")
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "userID = %@", userId),
             .init(format: "shareID = %@", shareId)
@@ -80,7 +80,7 @@ public extension LocalShareDatasource {
 
     func removeAllShares(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareEntity")
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)

@@ -29,7 +29,7 @@ extension UserSettings: Decodable {
         case telemetry
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         // 0 or 1, 1 means sending telemetry enabled

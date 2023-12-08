@@ -39,7 +39,7 @@ public struct UpdateItemRequest: Sendable {
 public extension UpdateItemRequest {
     init(oldRevision: ItemRevision,
          latestItemKey: DecryptedItemKey,
-         itemContent: ProtobufableItemContentProtocol) throws {
+         itemContent: any ProtobufableItemContentProtocol) throws {
         let sealedBox = try AES.GCM.seal(itemContent.data(),
                                          key: latestItemKey.keyData,
                                          associatedData: .itemContent)

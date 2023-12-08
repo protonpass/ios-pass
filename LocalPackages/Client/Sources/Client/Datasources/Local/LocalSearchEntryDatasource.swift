@@ -55,14 +55,14 @@ public extension LocalSearchEntryDatasource {
 
     func removeAllEntries() async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchEntryEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "SearchEntryEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
 
     func remove(item: any ItemIdentifiable) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchEntryEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "SearchEntryEntity")
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "itemID = %@", item.itemId),
             .init(format: "shareID = %@", item.shareId)
