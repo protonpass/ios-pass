@@ -226,4 +226,8 @@ extension SharedUseCasesContainer {
         self { UnpinItem(itemRepository: self.itemRepository,
                          logManager: self.logManager) }
     }
+
+    var canEditItem: Factory<CanEditItemUseCase> {
+        self { CanEditItem() }
+    }
 }
