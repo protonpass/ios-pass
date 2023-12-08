@@ -45,7 +45,7 @@ public struct ItemToBeMoved: Decodable {
 }
 
 extension MoveItemRequest {
-    init(itemContent: ProtobufableItemContentProtocol,
+    init(itemContent: any ProtobufableItemContentProtocol,
          destinationShareId: String,
          destinationShareKey: DecryptedShareKey) throws {
         let itemKey = try Data.random()

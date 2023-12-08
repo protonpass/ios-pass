@@ -38,7 +38,7 @@ public final class DatabaseService: DatabaseServiceProtocol {
     public private(set) var container: NSPersistentContainer
     private let logger: Logger?
 
-    public init(logManager: LogManagerProtocol? = nil, inMemory: Bool = false) {
+    public init(logManager: (any LogManagerProtocol)? = nil, inMemory: Bool = false) {
         if let logManager {
             logger = .init(manager: logManager)
         } else {

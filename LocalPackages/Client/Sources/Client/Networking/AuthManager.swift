@@ -26,23 +26,23 @@ import ProtonCoreServices
 import ProtonCoreUtilities
 
 public protocol AuthManagerProtocol: AuthDelegate {
-    func setUpDelegate(_ delegate: AuthHelperDelegate,
+    func setUpDelegate(_ delegate: any AuthHelperDelegate,
                        callingItOn executor: CompletionBlockExecutor?)
 }
 
 public final class AuthManager: AuthManagerProtocol {
-    private let credentialProvider: Atomic<CredentialProvider>
+    private let credentialProvider: Atomic<any CredentialProvider>
 
-    public private(set) weak var delegate: AuthHelperDelegate?
+    public private(set) weak var delegate: (any AuthHelperDelegate)?
     // swiftlint:disable:next identifier_name
-    public weak var authSessionInvalidatedDelegateForLoginAndSignup: AuthSessionInvalidatedDelegate?
+    public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
     private var delegateExecutor: CompletionBlockExecutor?
 
-    public init(credentialProvider: CredentialProvider) {
+    public init(credentialProvider: any CredentialProvider) {
         self.credentialProvider = .init(credentialProvider)
     }
 
-    public func setUpDelegate(_ delegate: AuthHelperDelegate,
+    public func setUpDelegate(_ delegate: any AuthHelperDelegate,
                               callingItOn executor: CompletionBlockExecutor? = nil) {
         if let executor {
             delegateExecutor = executor
