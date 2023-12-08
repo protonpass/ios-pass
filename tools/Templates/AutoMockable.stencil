@@ -206,7 +206,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+{% for import in argument.imports %}
+import {{ import }}
+{% endfor %}
+{% if argument.testableImport %}
 @testable import {{argument.testableImport}}
+{% endif %}
 {% for import in type.allImports %}
 import {{import}}
 {% endfor %}
@@ -257,7 +262,12 @@ public final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+{% for import in argument.imports %}
+    import {{ import }}
+{% endfor %}
+{% if argument.testableImport %}
 @testable import {{argument.testableImport}}
+{% endif %}
 {% for import in type.allImports %}
 import {{import}}
 {% endfor %}

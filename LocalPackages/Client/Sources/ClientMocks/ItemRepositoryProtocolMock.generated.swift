@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+import Client
 import Combine
 import Core
 import CoreData
@@ -624,18 +624,8 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllPinnedItems()
         return stubbedGetAllPinnedItemsResult
     }
-    // MARK: - refreshDataStream
-    public var closureRefreshDataStream: () -> () = {}
-    public var invokedRefreshDataStreamfunction = false
-    public var invokedRefreshDataStreamCount = 0
-
-    public func refreshDataStream() async {
-        invokedRefreshDataStreamfunction = true
-        invokedRefreshDataStreamCount += 1
-        closureRefreshDataStream()
-    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError33: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError32: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -648,7 +638,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError33 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError32 {
             throw error
         }
         closureTotpCreationDateThreshold()
