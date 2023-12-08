@@ -25,10 +25,10 @@ import ProtonCoreServices
 public let kDefaultPageSize = 100
 
 public class RemoteDatasource {
-    private let apiService: APIService
+    private let apiService: any APIService
     private let eventStream: CorruptedSessionEventStream
 
-    public init(apiService: APIService, eventStream: CorruptedSessionEventStream) {
+    public init(apiService: any APIService, eventStream: CorruptedSessionEventStream) {
         self.apiService = apiService
         self.eventStream = eventStream
     }
@@ -60,7 +60,7 @@ public class RemoteDatasource {
 
 private extension RemoteDatasource {
     /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
-    func streamAndReturn(error: Error) -> Error {
+    func streamAndReturn(error: any Error) -> any Error {
         if let responseError = error as? ResponseError,
            let httpCode = responseError.httpCode {
             let sessionId = apiService.sessionUID

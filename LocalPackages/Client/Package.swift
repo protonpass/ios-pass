@@ -11,9 +11,9 @@ var platforms: [SupportedPlatform] = [
 ]
 
 let swiftSettings: [SwiftSetting] = [
-//   .enableUpcomingFeature("BareSlashRegexLiterals"),
-//   .enableUpcomingFeature("ConciseMagicFile"),
-//   .enableUpcomingFeature("ExistentialAny"),
+   .enableUpcomingFeature("BareSlashRegexLiterals"),
+   .enableUpcomingFeature("ConciseMagicFile"),
+   .enableUpcomingFeature("ExistentialAny"),
 //   .enableUpcomingFeature("ForwardTrailingClosures"),
 //   .enableUpcomingFeature("ImplicitOpenExistentials"),
 //   .enableUpcomingFeature("StrictConcurrency=targeted"),

@@ -47,21 +47,21 @@ public protocol EventSynchronizerProtocol: Actor {
 }
 
 public actor EventSynchronizer: EventSynchronizerProtocol {
-    private let shareRepository: ShareRepositoryProtocol
-    private let itemRepository: ItemRepositoryProtocol
-    private let shareKeyRepository: ShareKeyRepositoryProtocol
-    private let shareEventIDRepository: ShareEventIDRepositoryProtocol
-    private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
-    private let userDataProvider: UserDataProvider
+    private let shareRepository: any ShareRepositoryProtocol
+    private let itemRepository: any ItemRepositoryProtocol
+    private let shareKeyRepository: any ShareKeyRepositoryProtocol
+    private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
+    private let remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol
+    private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
-    public init(shareRepository: ShareRepositoryProtocol,
-                itemRepository: ItemRepositoryProtocol,
-                shareKeyRepository: ShareKeyRepositoryProtocol,
-                shareEventIDRepository: ShareEventIDRepositoryProtocol,
-                remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
-                userDataProvider: UserDataProvider,
-                logManager: LogManagerProtocol) {
+    public init(shareRepository: any ShareRepositoryProtocol,
+                itemRepository: any ItemRepositoryProtocol,
+                shareKeyRepository: any ShareKeyRepositoryProtocol,
+                shareEventIDRepository: any ShareEventIDRepositoryProtocol,
+                remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol,
+                userDataProvider: any UserDataProvider,
+                logManager: any LogManagerProtocol) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.shareKeyRepository = shareKeyRepository

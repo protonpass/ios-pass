@@ -57,7 +57,7 @@ public extension LocalShareKeyDatasource {
 
     func removeAllKeys(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareKeyEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareKeyEntity")
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
@@ -65,7 +65,7 @@ public extension LocalShareKeyDatasource {
 
     func removeAllKeys() async throws {
         let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareKeyEntity")
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareKeyEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

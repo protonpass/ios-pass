@@ -25,11 +25,11 @@ public protocol ClipboardManagerProtocol: Sendable {
 }
 
 public final class ClipboardManager: ClipboardManagerProtocol {
-    private let preferences: PreferencesProtocol
-    public let bannerManager: BannerDisplayProtocol
+    private let preferences: any PreferencesProtocol
+    public let bannerManager: any BannerDisplayProtocol
 
-    public init(bannerManager: BannerDisplayProtocol,
-                preferences: PreferencesProtocol) {
+    public init(bannerManager: any BannerDisplayProtocol,
+                preferences: any PreferencesProtocol) {
         self.bannerManager = bannerManager
         self.preferences = preferences
     }
