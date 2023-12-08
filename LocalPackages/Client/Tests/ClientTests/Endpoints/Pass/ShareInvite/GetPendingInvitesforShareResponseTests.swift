@@ -79,8 +79,7 @@ final class GetPendingInvitesforShareResponseTests: XCTestCase {
                                                createTime: 1674813070,
                                                modifyTime: 1674813070)
 
-        let expectedResult = GetPendingInvitesForShareResponse(code: 1000,
-                                                               invites: [existingUserInvite],
+        let expectedResult = GetPendingInvitesForShareResponse(invites: [existingUserInvite],
                                                                newUserInvites: [newUserInvite])
 
         // When

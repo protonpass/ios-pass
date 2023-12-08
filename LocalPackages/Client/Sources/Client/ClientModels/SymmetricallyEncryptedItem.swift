@@ -22,7 +22,7 @@ import CryptoKit
 import Entities
 
 /// Item with associated match score. Used in autofill context
-public struct ScoredSymmetricallyEncryptedItem {
+public struct ScoredSymmetricallyEncryptedItem: Sendable {
     public let item: SymmetricallyEncryptedItem
     public let matchScore: Int
 

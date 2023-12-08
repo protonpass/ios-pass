@@ -70,7 +70,7 @@ public enum SearchResultEither: HighlightableText {
     }
 }
 
-public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
+public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
     public var id: String {
         "\(itemId + shareId)"
     }
@@ -85,6 +85,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
     public let vault: Vault?
     public let lastUseTime: Int64
     public let modifyTime: Int64
+    public let pinned: Bool
 
     public init(shareId: String,
                 itemId: String,
@@ -95,7 +96,8 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
                 url: String?,
                 vault: Vault?,
                 lastUseTime: Int64,
-                modifyTime: Int64) {
+                modifyTime: Int64,
+                pinned: Bool) {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
@@ -106,6 +108,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
         self.vault = vault
         self.lastUseTime = lastUseTime
         self.modifyTime = modifyTime
+        self.pinned = pinned
     }
 }
 

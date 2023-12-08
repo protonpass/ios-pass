@@ -33,15 +33,15 @@ public extension PromoteNewUserInviteUseCase {
 }
 
 public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
-    private let passKeyManager: PassKeyManagerProtocol
-    private let shareInviteRepository: ShareInviteRepositoryProtocol
-    private let userDataProvider: UserDataProvider
+    private let publicKeyRepository: any PublicKeyRepositoryProtocol
+    private let passKeyManager: any PassKeyManagerProtocol
+    private let shareInviteRepository: any ShareInviteRepositoryProtocol
+    private let userDataProvider: any UserDataProvider
 
-    public init(publicKeyRepository: PublicKeyRepositoryProtocol,
-                passKeyManager: PassKeyManagerProtocol,
-                shareInviteRepository: ShareInviteRepositoryProtocol,
-                userDataProvider: UserDataProvider) {
+    public init(publicKeyRepository: any PublicKeyRepositoryProtocol,
+                passKeyManager: any PassKeyManagerProtocol,
+                shareInviteRepository: any ShareInviteRepositoryProtocol,
+                userDataProvider: any UserDataProvider) {
         self.publicKeyRepository = publicKeyRepository
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository

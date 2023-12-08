@@ -65,7 +65,7 @@ struct CreateEditLoginView: View {
                                                    selectedVault: viewModel.selectedVault,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
-                                                   onChangeVault: viewModel.changeVault,
+                                                   onChangeVault: { viewModel.changeVault() },
                                                    onSubmit: { focusedField = .username })
                             .padding(.bottom, kItemDetailSectionPadding / 2)
                         usernamePasswordTOTPSection
@@ -84,9 +84,9 @@ struct CreateEditLoginView: View {
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
-                                                onAddMore: viewModel.addCustomField,
-                                                onEditTitle: viewModel.editCustomFieldTitle,
-                                                onUpgrade: viewModel.upgrade)
+                                                onAddMore: { viewModel.addCustomField() },
+                                                onEditTitle: { model in viewModel.editCustomFieldTitle(model) },
+                                                onUpgrade: { viewModel.upgrade() })
 
                         Spacer()
                             .id(bottomID)
@@ -150,7 +150,7 @@ struct CreateEditLoginView: View {
                                           }
                                       },
                                       onUpgrade: { /* Not applicable */ },
-                                      onScan: viewModel.openScanner,
+                                      onScan: { viewModel.openScanner() },
                                       onSave: {
                                           if viewModel.validateURLs() {
                                               viewModel.save()
@@ -193,7 +193,7 @@ private extension CreateEditLoginView {
     var usernameTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
-                Button(action: viewModel.generateAlias) {
+                Button { viewModel.generateAlias() } label: {
                     HStack {
                         toolbarIcon(uiImage: IconProvider.alias)
                         Text("Hide my email")
@@ -224,7 +224,7 @@ private extension CreateEditLoginView {
     var totpTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
-                Button(action: viewModel.pasteTotpUriFromClipboard) {
+                Button { viewModel.pasteTotpUriFromClipboard() } label: {
                     HStack {
                         toolbarIcon(uiImage: IconProvider.squares)
                         Text("Paste from clipboard")
@@ -234,7 +234,7 @@ private extension CreateEditLoginView {
 
                 PassDivider()
 
-                Button(action: viewModel.openCodeScanner) {
+                Button { viewModel.openCodeScanner() } label: {
                     HStack {
                         toolbarIcon(uiImage: IconProvider.camera)
                         Text("Open camera")
@@ -249,7 +249,7 @@ private extension CreateEditLoginView {
     var passwordTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
-                Button(action: viewModel.pastePasswordFromClipboard) {
+                Button { viewModel.pastePasswordFromClipboard() } label: {
                     HStack {
                         toolbarIcon(uiImage: IconProvider.squares)
                         Text("Paste from clipboard")
@@ -259,7 +259,7 @@ private extension CreateEditLoginView {
 
                 PassDivider()
 
-                Button(action: viewModel.generatePassword) {
+                Button { viewModel.generatePassword() } label: {
                     HStack {
                         toolbarIcon(uiImage: IconProvider.arrowsRotate)
                         Text("Generate password")
@@ -402,15 +402,15 @@ private extension CreateEditLoginView {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Menu(content: {
-                Button(action: viewModel.generateAlias) {
+                Button { viewModel.generateAlias() } label: {
                     Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.pencil) })
                 }
 
-                Button(action: viewModel.removeAlias,
-                       label: {
-                           Label(title: { Text("Remove alias") },
-                                 icon: { Image(uiImage: IconProvider.crossCircle) })
-                       })
+                Button { viewModel.removeAlias() }
+                    label: {
+                        Label(title: { Text("Remove alias") },
+                              icon: { Image(uiImage: IconProvider.crossCircle) })
+                    }
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: viewModel.itemContentType().normMajor1Color,
@@ -476,7 +476,7 @@ private extension CreateEditLoginView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("2FA limit reached")
                     .sectionTitleText()
-                UpgradeButtonLite(action: viewModel.upgrade)
+                UpgradeButtonLite { viewModel.upgrade() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -528,7 +528,7 @@ private extension CreateEditLoginView {
         .animation(.default, value: focusedField)
         .animation(.default, value: viewModel.totpUriErrorMessage.isEmpty)
         .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
-            NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
+            NoCameraPermissionView { viewModel.openSettings() }
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView { result in

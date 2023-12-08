@@ -11,13 +11,13 @@ var platforms: [SupportedPlatform] = [
 ]
 
 let swiftSettings: [SwiftSetting] = [
-//   .enableUpcomingFeature("BareSlashRegexLiterals"),
-//   .enableUpcomingFeature("ConciseMagicFile"),
-//   .enableUpcomingFeature("ExistentialAny"),
-//   .enableUpcomingFeature("ForwardTrailingClosures"),
-//   .enableUpcomingFeature("ImplicitOpenExistentials"),
-//   .enableUpcomingFeature("StrictConcurrency"),
-//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
+   .enableUpcomingFeature("BareSlashRegexLiterals"),
+   .enableUpcomingFeature("ConciseMagicFile"),
+   .enableUpcomingFeature("ExistentialAny"),
+   .enableUpcomingFeature("ForwardTrailingClosures"),
+   .enableUpcomingFeature("ImplicitOpenExistentials"),
+   .enableUpcomingFeature("StrictConcurrency"),
+   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
 ]
 
 let package = Package(name: "UseCases",
@@ -26,7 +26,9 @@ let package = Package(name: "UseCases",
                           // Products define the executables and libraries a package produces, and make them
                           // visible to other packages.
                           .library(name: "UseCases",
-                                   targets: ["UseCases"])
+                                   targets: ["UseCases"]),
+                          .library(name: "UseCasesMocks",
+                                   targets: ["UseCasesMocks"])
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
@@ -54,7 +56,15 @@ let package = Package(name: "UseCases",
                                   resources: [],
                                   swiftSettings: swiftSettings
                                  ),
+                          .target(
+                              name: "UseCasesMocks",
+                              dependencies: ["UseCases"]),
                           .testTarget(name: "UseCasesTests",
-                                      dependencies: ["UseCases"],
+                                      dependencies: ["UseCases",
+                                                     "UseCasesMocks",
+                                                     .product(name: "ClientMocks", package: "Client"),
+                                                     .product(name: "CoreMocks", package: "Core"),
+                                                     .product(name: "EntitiesMocks", package: "Entities"),
+                                                    ],
                                       path: "Tests")
                       ])

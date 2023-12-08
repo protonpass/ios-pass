@@ -23,6 +23,7 @@ import CoreData
 import ProtonCoreNetworking
 import ProtonCoreServices
 
+// sourcery: AutoMockable
 public protocol ShareEventIDRepositoryProtocol {
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
     @discardableResult

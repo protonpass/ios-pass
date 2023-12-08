@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct CreateAliasAndAnotherItemResponse: Decodable {
-    let code: Int
     let bundle: Bundle
 
     public struct Bundle: Decodable {

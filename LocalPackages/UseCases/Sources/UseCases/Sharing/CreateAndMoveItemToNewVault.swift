@@ -33,13 +33,13 @@ public extension CreateAndMoveItemToNewVaultUseCase {
 }
 
 public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase {
-    private let createVault: CreateVaultUseCase
-    private let moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase
-    private let vaultsManager: VaultsManagerProtocol
+    private let createVault: any CreateVaultUseCase
+    private let moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase
+    private let vaultsManager: any VaultsManagerProtocol
 
-    public init(createVault: CreateVaultUseCase,
-                moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase,
-                vaultsManager: VaultsManagerProtocol) {
+    public init(createVault: any CreateVaultUseCase,
+                moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase,
+                vaultsManager: any VaultsManagerProtocol) {
         self.createVault = createVault
         self.moveItemsBetweenVaults = moveItemsBetweenVaults
         self.vaultsManager = vaultsManager
@@ -48,8 +48,8 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
     public func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         do {
             if let vault = try await createVault(with: vault) {
-                try await moveItemsBetweenVaults(movingContext: .item(itemContent,
-                                                                      newShareId: vault.shareId))
+                try await moveItemsBetweenVaults(context: .singleItem(itemContent),
+                                                 to: vault.shareId)
                 vaultsManager.refresh()
                 return vault
             } else {

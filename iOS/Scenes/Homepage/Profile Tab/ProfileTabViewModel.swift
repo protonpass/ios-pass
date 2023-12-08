@@ -127,15 +127,30 @@ extension ProfileTabViewModel {
     }
 
     func editLocalAuthenticationMethod() {
-        securitySettingsCoordinator.editMethod()
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            securitySettingsCoordinator.editMethod()
+        }
     }
 
     func editAppLockTime() {
-        securitySettingsCoordinator.editAppLockTime()
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            securitySettingsCoordinator.editAppLockTime()
+        }
     }
 
     func editPINCode() {
-        securitySettingsCoordinator.editPINCode()
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            securitySettingsCoordinator.editPINCode()
+        }
     }
 
     func showEnableAutoFillOnMacInstructions() {
