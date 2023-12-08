@@ -37,17 +37,17 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
 }
 
 public actor AccessRepository: AccessRepositoryProtocol {
-    private let localDatasource: LocalAccessDatasourceProtocol
-    private let remoteDatasource: RemoteAccessDatasourceProtocol
-    private let userDataProvider: UserDataProvider
+    private let localDatasource: any LocalAccessDatasourceProtocol
+    private let remoteDatasource: any RemoteAccessDatasourceProtocol
+    private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
     public let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
-    public init(localDatasource: LocalAccessDatasourceProtocol,
-                remoteDatasource: RemoteAccessDatasourceProtocol,
-                userDataProvider: UserDataProvider,
-                logManager: LogManagerProtocol) {
+    public init(localDatasource: any LocalAccessDatasourceProtocol,
+                remoteDatasource: any RemoteAccessDatasourceProtocol,
+                userDataProvider: any UserDataProvider,
+                logManager: any LogManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userDataProvider = userDataProvider

@@ -36,7 +36,7 @@ public protocol FavIconSettings {
 
 /// Take care of fetching and caching behind the scenes
 public protocol FavIconRepositoryProtocol {
-    var settings: FavIconSettings { get }
+    var settings: any FavIconSettings { get }
 
     /// Always return `nil` if fav icons are disabled in `Preferences`
     /// Check if the icon is cached on disk and decryptable. Otherwise go fetch a new icon.
@@ -56,17 +56,17 @@ public protocol FavIconRepositoryProtocol {
 public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let datasource: RemoteFavIconDatasourceProtocol
+    private let datasource: any RemoteFavIconDatasourceProtocol
     /// URL to the folder that contains cached fav icons
     private let containerUrl: URL
     private let cacheExpirationDays: Int
-    public let settings: FavIconSettings
-    private let symmetricKeyProvider: SymmetricKeyProvider
+    public let settings: any FavIconSettings
+    private let symmetricKeyProvider: any SymmetricKeyProvider
 
-    public init(datasource: RemoteFavIconDatasourceProtocol,
+    public init(datasource: any RemoteFavIconDatasourceProtocol,
                 containerUrl: URL,
-                settings: FavIconSettings,
-                symmetricKeyProvider: SymmetricKeyProvider,
+                settings: any FavIconSettings,
+                symmetricKeyProvider: any SymmetricKeyProvider,
                 cacheExpirationDays: Int = 14) {
         self.datasource = datasource
         self.containerUrl = containerUrl

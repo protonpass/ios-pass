@@ -35,7 +35,7 @@ public protocol BannerDisplayProtocol: Sendable {
                                 dismissButtonTitle: String,
                                 onDismiss: ((PMBanner) -> Void)?)
 
-    func displayTopErrorMessage(_ error: Error)
+    func displayTopErrorMessage(_ error: any Error)
 }
 
 public extension BannerDisplayProtocol {

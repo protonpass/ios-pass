@@ -63,16 +63,16 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 }
 
 public actor PassKeyManager {
-    public let shareKeyRepository: ShareKeyRepositoryProtocol
-    public let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
+    public let shareKeyRepository: any ShareKeyRepositoryProtocol
+    public let itemKeyDatasource: any RemoteItemKeyDatasourceProtocol
     public let logger: Logger
-    public let symmetricKeyProvider: SymmetricKeyProvider
+    public let symmetricKeyProvider: any SymmetricKeyProvider
     private var decryptedShareKeys = Set<DecryptedShareKey>()
 
-    public init(shareKeyRepository: ShareKeyRepositoryProtocol,
-                itemKeyDatasource: RemoteItemKeyDatasourceProtocol,
-                logManager: LogManagerProtocol,
-                symmetricKeyProvider: SymmetricKeyProvider) {
+    public init(shareKeyRepository: any ShareKeyRepositoryProtocol,
+                itemKeyDatasource: any RemoteItemKeyDatasourceProtocol,
+                logManager: any LogManagerProtocol,
+                symmetricKeyProvider: any SymmetricKeyProvider) {
         self.shareKeyRepository = shareKeyRepository
         self.itemKeyDatasource = itemKeyDatasource
         logger = .init(manager: logManager)
