@@ -121,6 +121,7 @@ struct ItemsTabView: View {
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }
+            // swiftlint:disable:next todo
             // TODO: Remove when pinned flags is fully open
             .onReceive(NotificationCenter.default
                 .publisher(for: UIApplication.willEnterForegroundNotification)) { _ in

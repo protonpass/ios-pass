@@ -53,6 +53,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     @Published var showingPermanentDeletionAlert = false
+    // swiftlint:disable:next todo
     // TODO: Remove once pinned is full activated
     @Published var pinningAuthorized = false
 
@@ -96,6 +97,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         pinnedItems = Array(newPinnedItems.prefix(5))
     }
 
+    // swiftlint:disable:next todo
     // TODO: Remove once pinned is full activated
     func checkflags() {
         Task { @MainActor [weak self] in
