@@ -102,6 +102,7 @@ final class CredentialsViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
+    private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
     let urls: [URL]
     private var vaults = [Vault]()
@@ -205,7 +206,7 @@ extension CredentialsViewModel {
         guard let results else { return }
 
         // Check if given URL is valid before proposing "associate & autofill"
-        if isEditable(item),
+        if canEditItem(vaultsProvider: self, item: item),
            notMatchedItemInformation == nil,
            let schemeAndHost = urls.first?.schemeAndHost,
            !schemeAndHost.isEmpty,
@@ -327,11 +328,6 @@ private extension CredentialsViewModel {
                 notMatchedItemInformation = nil
             }
             .store(in: &cancellables)
-    }
-
-    func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        let editableShareIds = vaults.filter(\.canEdit).map(\.shareId)
-        return editableShareIds.contains { $0 == item.shareId }
     }
 }
 
@@ -465,6 +461,14 @@ private extension CredentialsViewModel {
 extension CredentialsViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
+    }
+}
+
+// MARK: - VaultsProvider
+
+extension CredentialsViewModel: VaultsProvider {
+    func getAllVaults() -> [Vault] {
+        vaults
     }
 }
 
