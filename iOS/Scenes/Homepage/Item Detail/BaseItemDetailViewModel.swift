@@ -39,6 +39,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
+    // swiftlint:disable:next todo
     // TODO: Remove once pinned is full activated
     @Published var pinningAuthorized = false
 
@@ -261,6 +262,7 @@ class BaseItemDetailViewModel: ObservableObject {
 // MARK: - Private APIs
 
 private extension BaseItemDetailViewModel {
+    // swiftlint:disable:next todo
     // TODO: Remove once pinned is full activated
     func checkPinningFeatureFlag() {
         Task { [weak self] in
