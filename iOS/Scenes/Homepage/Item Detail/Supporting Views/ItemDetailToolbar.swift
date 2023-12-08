@@ -66,11 +66,15 @@ struct ItemDetailToolbar: ToolbarContent {
                             label: { Label(title: { Text("Move to another vault") },
                                            icon: { Image(uiImage: IconProvider.folderArrowIn) }) }
 
-                        Button { viewModel.toggleItemPinning() }
-                            label: { Label(title: { Text(viewModel.itemContent.item.pinTitle) },
-                                           icon: { Image(systemName: viewModel.itemContent.item.pinIcon) }) }
+                        if viewModel.pinningAuthorized {
+                            Button { viewModel.toggleItemPinning() }
+                                label: {
+                                    Label(title: { Text(viewModel.itemContent.item.pinTitle) },
+                                          icon: { Image(systemName: viewModel.itemContent.item.pinIcon) })
+                                }
 
-                        Divider()
+                            Divider()
+                        }
 
                         if viewModel.itemContent.type == .note {
                             Button { viewModel.copyNoteContent() }

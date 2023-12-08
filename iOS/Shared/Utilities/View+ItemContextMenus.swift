@@ -71,9 +71,9 @@ enum ItemContextMenu {
                           action: onCopyPassword)
                 ]),
                 .init(options: [.editOption(action: onEdit)]),
-                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
+                isPinningActivated ? .init(options: [.pinToggleOption(item: item, action: onPinToggle)]) : nil,
                 .init(options: [.trashOption(action: onTrash)])
-            ]
+            ].compactMap { $0 }
 
         case let .alias(item, onCopyAlias, onEdit, onPinToggle, onTrash):
             [
@@ -81,16 +81,16 @@ enum ItemContextMenu {
                                       icon: IconProvider.alias,
                                       action: onCopyAlias)]),
                 .init(options: [.editOption(action: onEdit)]),
-                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
+                isPinningActivated ? .init(options: [.pinToggleOption(item: item, action: onPinToggle)]) : nil,
                 .init(options: [.trashOption(action: onTrash)])
-            ]
+            ].compactMap { $0 }
 
         case let .creditCard(item, onEdit, onPinToggle, onTrash):
             [
                 .init(options: [.editOption(action: onEdit)]),
                 .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
                 .init(options: [.trashOption(action: onTrash)])
-            ]
+            ].compactMap { $0 }
 
         case let .note(item, onCopyContent, onEdit, onPinToggle, onTrash):
             [
@@ -98,9 +98,9 @@ enum ItemContextMenu {
                                       icon: IconProvider.note,
                                       action: onCopyContent)]),
                 .init(options: [.editOption(action: onEdit)]),
-                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
+                isPinningActivated ? .init(options: [.pinToggleOption(item: item, action: onPinToggle)]) : nil,
                 .init(options: [.trashOption(action: onTrash)])
-            ]
+            ].compactMap { $0 }
 
         case let .trashedItem(onRestore, onPermanentlyDelete):
             [
@@ -113,6 +113,12 @@ enum ItemContextMenu {
                                       isDestructive: true)])
             ]
         }
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: Remove once pinning is active
+    var isPinningActivated: Bool {
+        SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: FeatureFlagType.passPinningV1)
     }
 }
 

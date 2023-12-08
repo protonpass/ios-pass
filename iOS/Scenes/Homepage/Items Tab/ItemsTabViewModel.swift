@@ -53,6 +53,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     @Published var showingPermanentDeletionAlert = false
+    // swiftlint:disable:next todo
+    // TODO: Remove once pinned is full activated
+    @Published var pinningAuthorized = false
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -67,6 +70,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -91,6 +95,17 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
               .compactMap({ try? $0.toItemUiModel(symmetricKey) })
         else { return }
         pinnedItems = Array(newPinnedItems.prefix(5))
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: Remove once pinned is full activated
+    func checkflags() {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            pinningAuthorized = await getFeatureFlagStatus(with: FeatureFlagType.passPinningV1)
+        }
     }
 }
 
