@@ -50,7 +50,8 @@ public final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseC
             return keys
         } catch {
             if let networkError = error as? ProtonCoreNetworking.ResponseError,
-               networkError.httpCode == 422, networkError.responseCode == 33_102 {
+               networkError.httpCode == 422,
+               [33_102, 33_103].contains(networkError.responseCode) {
                 throw PassError.sharing(.notProtonAddress)
             } else {
                 throw error
