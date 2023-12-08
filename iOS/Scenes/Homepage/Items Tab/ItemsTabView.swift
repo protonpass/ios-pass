@@ -218,7 +218,7 @@ struct ItemsTabView: View {
     @ViewBuilder
     func itemRow(for item: ItemUiModel) -> some View {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
-        let isSelectable = viewModel.isSelectable(item)
+        let isEditable = viewModel.isEditable(item)
         let isSelected = viewModel.isSelected(item)
         Button(action: {
             viewModel.handleSelection(item)
@@ -238,6 +238,7 @@ struct ItemsTabView: View {
                 .if(!viewModel.isEditMode) { view in
                     view.itemContextMenu(item: item,
                                          isTrashed: isTrashed,
+                                         isEditable: isEditable,
                                          onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
                                          handler: viewModel.itemContextMenuHandler)
                 }
@@ -252,10 +253,11 @@ struct ItemsTabView: View {
                                     item: item,
                                     isEditMode: viewModel.isEditMode,
                                     isTrashed: isTrashed,
+                                    isEditable: isEditable,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
-        .disabled(!isSelectable && viewModel.isEditMode)
+        .disabled(!isEditable && viewModel.isEditMode)
     }
 }
 

@@ -25,8 +25,10 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 // swiftlint:disable enum_case_associated_values_count
+// swiftlint:disable function_parameter_count
 enum ItemContextMenu {
     case login(item: any PinnableItemTypeIdentifiable,
+               isEditable: Bool,
                onCopyUsername: () -> Void,
                onCopyPassword: () -> Void,
                onEdit: () -> Void,
@@ -34,84 +36,112 @@ enum ItemContextMenu {
                onTrash: () -> Void)
 
     case alias(item: any PinnableItemTypeIdentifiable,
+               isEditable: Bool,
                onCopyAlias: () -> Void,
                onEdit: () -> Void,
                onPinToggle: () -> Void,
                onTrash: () -> Void)
 
     case creditCard(item: any PinnableItemTypeIdentifiable,
+                    isEditable: Bool,
                     onEdit: () -> Void,
                     onPinToggle: () -> Void,
                     onTrash: () -> Void)
 
     case note(item: any PinnableItemTypeIdentifiable,
+              isEditable: Bool,
               onCopyContent: () -> Void,
               onEdit: () -> Void,
               onPinToggle: () -> Void,
               onTrash: () -> Void)
 
-    case trashedItem(onRestore: () -> Void,
+    case trashedItem(isEditable: Bool,
+                     onRestore: () -> Void,
                      onPermanentlyDelete: () -> Void)
 
     var sections: [ItemContextMenuOptionSection] {
         switch self {
         case let .login(item,
+                        isEditable,
                         onCopyUsername,
                         onCopyPassword,
                         onEdit,
                         onPinToggle,
                         onTrash):
-            [
-                .init(options: [
-                    .init(title: #localized("Copy username"),
-                          icon: IconProvider.user,
-                          action: onCopyUsername),
-                    .init(title: #localized("Copy password"),
-                          icon: IconProvider.key,
-                          action: onCopyPassword)
-                ]),
-                .init(options: [.editOption(action: onEdit)]),
-                isPinningActivated ? .init(options: [.pinToggleOption(item: item, action: onPinToggle)]) : nil,
-                .init(options: [.trashOption(action: onTrash)])
-            ].compactMap { $0 }
+            var sections: [ItemContextMenuOptionSection] = []
 
-        case let .alias(item, onCopyAlias, onEdit, onPinToggle, onTrash):
-            [
-                .init(options: [.init(title: #localized("Copy alias address"),
-                                      icon: IconProvider.alias,
-                                      action: onCopyAlias)]),
-                .init(options: [.editOption(action: onEdit)]),
-                isPinningActivated ? .init(options: [.pinToggleOption(item: item, action: onPinToggle)]) : nil,
-                .init(options: [.trashOption(action: onTrash)])
-            ].compactMap { $0 }
+            sections.append(.init(options: [
+                .init(title: #localized("Copy username"),
+                      icon: IconProvider.user,
+                      action: onCopyUsername),
+                .init(title: #localized("Copy password"),
+                      icon: IconProvider.key,
+                      action: onCopyPassword)
+            ]))
 
-        case let .creditCard(item, onEdit, onPinToggle, onTrash):
-            [
-                .init(options: [.editOption(action: onEdit)]),
-                .init(options: [.pinToggleOption(item: item, action: onPinToggle)]),
-                .init(options: [.trashOption(action: onTrash)])
-            ].compactMap { $0 }
+            sections += Self.commonLastSections(item: item,
+                                                isPinningActivated: isPinningActivated,
+                                                isEditable: isEditable,
+                                                onEdit: onEdit,
+                                                onPinToggle: onPinToggle,
+                                                onTrash: onTrash)
 
-        case let .note(item, onCopyContent, onEdit, onPinToggle, onTrash):
-            [
-                .init(options: [.init(title: #localized("Copy note content"),
-                                      icon: IconProvider.note,
-                                      action: onCopyContent)]),
-                .init(options: [.editOption(action: onEdit)]),
-                isPinningActivated ? .init(options: [.pinToggleOption(item: item, action: onPinToggle)]) : nil,
-                .init(options: [.trashOption(action: onTrash)])
-            ].compactMap { $0 }
+            return sections
 
-        case let .trashedItem(onRestore, onPermanentlyDelete):
-            [
-                .init(options: [.init(title: #localized("Restore"),
-                                      icon: IconProvider.clockRotateLeft,
-                                      action: onRestore)]),
-                .init(options: [.init(title: #localized("Delete permanently"),
-                                      icon: IconProvider.trashCross,
-                                      action: onPermanentlyDelete,
-                                      isDestructive: true)])
-            ]
+        case let .alias(item, isEditable, onCopyAlias, onEdit, onPinToggle, onTrash):
+            var sections: [ItemContextMenuOptionSection] = []
+
+            sections.append(.init(options: [.init(title: #localized("Copy alias address"),
+                                                  icon: IconProvider.alias,
+                                                  action: onCopyAlias)]))
+
+            sections += Self.commonLastSections(item: item,
+                                                isPinningActivated: isPinningActivated,
+                                                isEditable: isEditable,
+                                                onEdit: onEdit,
+                                                onPinToggle: onPinToggle,
+                                                onTrash: onTrash)
+
+            return sections
+
+        case let .creditCard(item, isEditable, onEdit, onPinToggle, onTrash):
+            return Self.commonLastSections(item: item,
+                                           isPinningActivated: isPinningActivated,
+                                           isEditable: isEditable,
+                                           onEdit: onEdit,
+                                           onPinToggle: onPinToggle,
+                                           onTrash: onTrash)
+
+        case let .note(item, isEditable, onCopyContent, onEdit, onPinToggle, onTrash):
+            var sections: [ItemContextMenuOptionSection] = []
+
+            sections.append(.init(options: [.init(title: #localized("Copy note content"),
+                                                  icon: IconProvider.note,
+                                                  action: onCopyContent)]))
+
+            sections += Self.commonLastSections(item: item,
+                                                isPinningActivated: isPinningActivated,
+                                                isEditable: isEditable,
+                                                onEdit: onEdit,
+                                                onPinToggle: onPinToggle,
+                                                onTrash: onTrash)
+
+            return sections
+
+        case let .trashedItem(isEditable, onRestore, onPermanentlyDelete):
+            if isEditable {
+                return [
+                    .init(options: [.init(title: #localized("Restore"),
+                                          icon: IconProvider.clockRotateLeft,
+                                          action: onRestore)]),
+                    .init(options: [.init(title: #localized("Delete permanently"),
+                                          icon: IconProvider.trashCross,
+                                          action: onPermanentlyDelete,
+                                          isDestructive: true)])
+                ]
+            } else {
+                return []
+            }
         }
     }
 
@@ -119,6 +149,31 @@ enum ItemContextMenu {
     // TODO: Remove once pinning is active
     var isPinningActivated: Bool {
         SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: FeatureFlagType.passPinningV1)
+    }
+}
+
+private extension ItemContextMenu {
+    static func commonLastSections(item: any PinnableItemTypeIdentifiable,
+                                   isPinningActivated: Bool,
+                                   isEditable: Bool,
+                                   onEdit: @escaping () -> Void,
+                                   onPinToggle: @escaping () -> Void,
+                                   onTrash: @escaping () -> Void) -> [ItemContextMenuOptionSection] {
+        var sections: [ItemContextMenuOptionSection] = []
+
+        if isEditable {
+            sections.append(.init(options: [.editOption(action: onEdit)]))
+        }
+
+        if isPinningActivated {
+            sections.append(.init(options: [.pinToggleOption(item: item, action: onPinToggle)]))
+        }
+
+        if isEditable {
+            sections.append(.init(options: [.trashOption(action: onTrash)]))
+        }
+
+        return sections
     }
 }
 
@@ -192,15 +247,18 @@ struct PermenentlyDeleteItemModifier: ViewModifier {
 extension View {
     func itemContextMenu(item: any PinnableItemTypeIdentifiable,
                          isTrashed: Bool,
+                         isEditable: Bool,
                          onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
         if isTrashed {
-            itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
+            itemContextMenu(.trashedItem(isEditable: isEditable,
+                                         onRestore: { handler.restore(item) },
                                          onPermanentlyDelete: onPermanentlyDelete))
         } else {
             switch item.type {
             case .login:
                 itemContextMenu(.login(item: item,
+                                       isEditable: isEditable,
                                        onCopyUsername: { handler.copyUsername(item) },
                                        onCopyPassword: { handler.copyPassword(item) },
                                        onEdit: { handler.edit(item) },
@@ -208,6 +266,7 @@ extension View {
                                        onTrash: { handler.trash(item) }))
             case .alias:
                 itemContextMenu(.alias(item: item,
+                                       isEditable: isEditable,
                                        onCopyAlias: { handler.copyAlias(item) },
                                        onEdit: { handler.edit(item) },
                                        onPinToggle: { handler.toggleItemPinning(item) },
@@ -215,12 +274,14 @@ extension View {
 
             case .creditCard:
                 itemContextMenu(.creditCard(item: item,
+                                            isEditable: isEditable,
                                             onEdit: { handler.edit(item) },
                                             onPinToggle: { handler.toggleItemPinning(item) },
                                             onTrash: { handler.trash(item) }))
 
             case .note:
                 itemContextMenu(.note(item: item,
+                                      isEditable: isEditable,
                                       onCopyContent: { handler.copyNoteContent(item) },
                                       onEdit: { handler.edit(item) },
                                       onPinToggle: { handler.toggleItemPinning(item) },
@@ -231,3 +292,4 @@ extension View {
 }
 
 // swiftlint:enable enum_case_associated_values_count
+// swiftlint:enable function_parameter_count
