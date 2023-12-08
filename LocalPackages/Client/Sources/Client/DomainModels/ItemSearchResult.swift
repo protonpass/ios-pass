@@ -79,8 +79,8 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
     public let itemId: String
     public let type: ItemContentType
     public let aliasEmail: String?
-    public let highlightableTitle: HighlightableText
-    public let highlightableDetail: [HighlightableText]
+    public let highlightableTitle: any HighlightableText
+    public let highlightableDetail: [any HighlightableText]
     public let url: String?
     public let vault: Vault?
     public let lastUseTime: Int64

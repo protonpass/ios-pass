@@ -37,13 +37,13 @@ public protocol InviteRepositoryProtocol: Sendable {
 }
 
 public actor InviteRepository: InviteRepositoryProtocol {
-    public let remoteInviteDatasource: RemoteInviteDatasourceProtocol
+    public let remoteInviteDatasource: any RemoteInviteDatasourceProtocol
     public let logger: Logger
     public nonisolated let currentPendingInvites: CurrentValueSubject<[UserInvite], Never> = .init([])
     private var refreshInviteTask: Task<Void, Never>?
 
-    public init(remoteInviteDatasource: RemoteInviteDatasourceProtocol,
-                logManager: LogManagerProtocol) {
+    public init(remoteInviteDatasource: any RemoteInviteDatasourceProtocol,
+                logManager: any LogManagerProtocol) {
         self.remoteInviteDatasource = remoteInviteDatasource
         logger = .init(manager: logManager)
     }

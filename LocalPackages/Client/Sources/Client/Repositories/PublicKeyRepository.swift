@@ -29,13 +29,13 @@ public protocol PublicKeyRepositoryProtocol: Sendable {
 }
 
 public actor PublicKeyRepository: PublicKeyRepositoryProtocol {
-    private let localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol
-    private let remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol
+    private let localPublicKeyDatasource: any LocalPublicKeyDatasourceProtocol
+    private let remotePublicKeyDatasource: any RemotePublicKeyDatasourceProtocol
     private let logger: Logger
 
-    public init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
-                remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,
-                logManager: LogManagerProtocol) {
+    public init(localPublicKeyDatasource: any LocalPublicKeyDatasourceProtocol,
+                remotePublicKeyDatasource: any RemotePublicKeyDatasourceProtocol,
+                logManager: any LogManagerProtocol) {
         self.localPublicKeyDatasource = localPublicKeyDatasource
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
         logger = .init(manager: logManager)
