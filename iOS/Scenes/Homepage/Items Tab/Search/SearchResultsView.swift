@@ -101,6 +101,7 @@ struct SearchResultsView: View, Equatable {
                                     item: item,
                                     isEditMode: false,
                                     isTrashed: viewModel.isTrash,
+                                    isEditable: viewModel.isEditable(item),
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
