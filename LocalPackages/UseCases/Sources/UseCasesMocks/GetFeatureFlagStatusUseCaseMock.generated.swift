@@ -27,20 +27,36 @@ public final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeat
 
     public init() {}
 
-    // MARK: - execute
-    public var closureExecute: () -> () = {}
-    public var invokedExecutefunction = false
-    public var invokedExecuteCount = 0
-    public var invokedExecuteParameters: (flag: any FeatureFlagTypeProtocol, Void)?
-    public var invokedExecuteParametersList = [(flag: any FeatureFlagTypeProtocol, Void)]()
-    public var stubbedExecuteResult: Bool!
+    // MARK: - executeFlag
+    public var closureExecuteFlagAsync1: () -> () = {}
+    public var invokedExecuteFlagAsync1 = false
+    public var invokedExecuteFlagAsyncCount1 = 0
+    public var invokedExecuteFlagAsyncParameters1: (flag: any FeatureFlagTypeProtocol, Void)?
+    public var invokedExecuteFlagAsyncParametersList1 = [(flag: any FeatureFlagTypeProtocol, Void)]()
+    public var stubbedExecuteFlagAsyncResult1: Bool!
 
     public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
-        invokedExecutefunction = true
-        invokedExecuteCount += 1
-        invokedExecuteParameters = (flag, ())
-        invokedExecuteParametersList.append((flag, ()))
-        closureExecute()
-        return stubbedExecuteResult
+        invokedExecuteFlagAsync1 = true
+        invokedExecuteFlagAsyncCount1 += 1
+        invokedExecuteFlagAsyncParameters1 = (flag, ())
+        invokedExecuteFlagAsyncParametersList1.append((flag, ()))
+        closureExecuteFlagAsync1()
+        return stubbedExecuteFlagAsyncResult1
+    }
+    // MARK: - executeFlag
+    public var closureExecuteFlag2: () -> () = {}
+    public var invokedExecuteFlag2 = false
+    public var invokedExecuteFlagCount2 = 0
+    public var invokedExecuteFlagParameters2: (flag: any FeatureFlagTypeProtocol, Void)?
+    public var invokedExecuteFlagParametersList2 = [(flag: any FeatureFlagTypeProtocol, Void)]()
+    public var stubbedExecuteFlagResult2: Bool!
+
+    public func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
+        invokedExecuteFlag2 = true
+        invokedExecuteFlagCount2 += 1
+        invokedExecuteFlagParameters2 = (flag, ())
+        invokedExecuteFlagParametersList2.append((flag, ()))
+        closureExecuteFlag2()
+        return stubbedExecuteFlagResult2
     }
 }
