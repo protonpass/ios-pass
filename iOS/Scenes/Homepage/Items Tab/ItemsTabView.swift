@@ -86,7 +86,8 @@ struct ItemsTabView: View {
                         .padding([.horizontal, .top])
                 }
 
-                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode {
+                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
+                   viewModel.pinningAuthorized {
                     PinnedItemsView(pinnedItems: pinnedItems,
                                     onSearch: { viewModel.search(pinnedItems: true) },
                                     action: { viewModel.viewDetail(of: $0) })
@@ -119,6 +120,14 @@ struct ItemsTabView: View {
             }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
+            }
+            // TODO: Remove when pinned flags is fully open
+            .onReceive(NotificationCenter.default
+                .publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    viewModel.checkflags()
+            }
+            .onAppear {
+                viewModel.checkflags()
             }
         }
     }
