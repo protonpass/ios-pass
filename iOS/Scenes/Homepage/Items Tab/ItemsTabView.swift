@@ -238,6 +238,7 @@ struct ItemsTabView: View {
                 .if(!viewModel.isEditMode) { view in
                     view.itemContextMenu(item: item,
                                          isTrashed: isTrashed,
+                                         isEditable: isSelectable,
                                          onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
                                          handler: viewModel.itemContextMenuHandler)
                 }
