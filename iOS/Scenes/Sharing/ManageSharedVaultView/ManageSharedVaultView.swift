@@ -131,6 +131,7 @@ private extension ManageSharedVaultView {
                     inviteesSection(for: viewModel.members, title: "Members")
                 }
             }
+            .frame(maxWidth: .infinity)
         }
         .animation(.default, value: viewModel.invitations)
         .animation(.default, value: viewModel.members)
