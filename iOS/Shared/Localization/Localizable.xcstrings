@@ -31684,79 +31684,79 @@
         }
       }
     },
-    "MM / YYYY" : {
+    "MM / YY" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ММ / ГГГГ"
+            "value" : "ММ / ГГ"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / RRRR"
+            "value" : "MM / RR"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / JJJJ"
+            "value" : "MM / JJ"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / ΕΕΕΕ"
+            "value" : "MM / ΕΕ"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / YYYY"
+            "value" : "MM / YY"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / AAAA"
+            "value" : "MM / AA"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / AAAA"
+            "value" : "MM / AA"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "KK / VVVV"
+            "value" : "KK / VV"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / AAAA"
+            "value" : "MM / AA"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / AAAA"
+            "value" : "MM / AA"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / YYYY"
+            "value" : "MM / YY"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "თთ / წწწწ"
+            "value" : "თთ / წწ"
           }
         },
         "ko" : {
@@ -31768,61 +31768,61 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM/ÅÅÅÅ"
+            "value" : "MM/ÅÅ"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / RRRR"
+            "value" : "MM / RR"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / AAAA"
+            "value" : "MM / AA"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / AAAA"
+            "value" : "MM / AA"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "LL/AAAA"
+            "value" : "LL/AA"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / RRRR"
+            "value" : "MM / RR"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM/YYYY"
+            "value" : "MM/YY"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AA / YYYY"
+            "value" : "AA / YY"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ММ / РРРР"
+            "value" : "ММ / РР"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / YYYY"
+            "value" : "TT / NN"
           }
         }
       }
