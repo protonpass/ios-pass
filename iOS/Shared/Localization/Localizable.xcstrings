@@ -1714,7 +1714,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Et gjenstående forsøk"
+                  "value" : "Ett gjenstående forsøk"
                 }
               },
               "other" : {
@@ -11964,7 +11964,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu kasaya erişme iznini verebilir ya da kaldırabilir"
+            "value" : "Bu kasaya erişme iznini verebilir ya da geri alabilir"
           }
         },
         "uk" : {
@@ -26976,7 +26976,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ugyldig TOTP-URI-enhetlig ressursidentifikator"
+            "value" : "Ugyldig TOTP-URI"
           }
         },
         "pl" : {
@@ -51171,7 +51171,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slå på **Autofyll Passord**"
+            "value" : "Slå på **Autofyll passord**"
           }
         },
         "pl" : {
@@ -51457,7 +51457,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slå på AutoFyll Passord og tillat utfylling fra Proton Pass"
+            "value" : "Slå på AutoFyll passord og tillat utfylling fra Proton Pass"
           }
         },
         "pl" : {
@@ -55427,7 +55427,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Visning"
+            "value" : "Vis"
           }
         },
         "pl" : {
