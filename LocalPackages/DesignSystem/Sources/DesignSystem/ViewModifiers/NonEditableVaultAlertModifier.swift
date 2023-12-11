@@ -38,6 +38,7 @@ public struct NonEditableVaultAlertModifier: ViewModifier {
                        Button("Stop item creation process", role: .destructive, action: onDiscard)
                    },
                    message: {
+                       // swiftlint:disable:next line_length
                        Text("You didn't have editable clearance on the selected vault, we have chosen a new one for you")
                    })
     }
