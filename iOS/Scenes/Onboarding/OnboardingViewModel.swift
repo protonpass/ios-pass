@@ -36,6 +36,7 @@ final class OnboardingViewModel: ObservableObject {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -78,7 +79,7 @@ extension OnboardingViewModel {
     func primaryAction() {
         switch state {
         case .autoFill:
-            UIApplication.shared.openPasswordSettings()
+            openAutoFillSettings()
 
         case .autoFillEnabled:
             showAppropriateBiometricAuthenticationStep()
