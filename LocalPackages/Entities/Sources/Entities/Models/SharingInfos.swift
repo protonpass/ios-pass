@@ -72,7 +72,10 @@ public struct SharingInfos: Sendable {
         vault?.shared ?? false
     }
 
-    public init(vault: SharingVaultData?, email: String?, role: ShareRole?, receiverPublicKeys: [PublicKey]?,
+    public init(vault: SharingVaultData?,
+                email: String?,
+                role: ShareRole?,
+                receiverPublicKeys: [PublicKey]?,
                 itemsNum: Int?) {
         self.vault = vault
         self.email = email

@@ -47,9 +47,9 @@ struct CreateEditLoginView: View {
         static func == (lhs: Field, rhs: Field) -> Bool {
             if case let .custom(lhsfield) = lhs,
                case let .custom(rhsfield) = rhs {
-                return lhsfield?.id == rhsfield?.id
+                lhsfield?.id == rhsfield?.id
             } else {
-                return lhs.hashValue == rhs.hashValue
+                lhs.hashValue == rhs.hashValue
             }
         }
     }

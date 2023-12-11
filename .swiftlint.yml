@@ -10,7 +10,11 @@ included: # paths to include during linting. `--path` is ignored if present.
   - AutoFill
   - LocalPackages/Client/Sources
   - LocalPackages/Core/Sources
-  - LocalPackages/UIComponents/Sources
+  - LocalPackages/DesignSystem/Sources
+  - LocalPackages/Entities/Sources
+  - LocalPackages/Macro/Sources
+  - LocalPackages/Screens/Sources
+  - LocalPackages/UseCases/Sources
   - Keyboard
   
 ################
@@ -29,6 +33,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - LocalPackages/DesignSystem/Tests
   - LocalPackages/Entities/Tests
   - LocalPackages/Entities/Sources/Entities/Protobuf*
+  - LocalPackages/UseCases/Sources/UseCasesMocks
   - fastlane/*
   - misc/*
   
@@ -183,7 +188,7 @@ function_body_length: # Functions bodies should not span too many lines.
 type_name:
   min_length: 3 # only warning
   max_length: # warning and error
-    warning: 40
+    warning: 45
     error: 50
   excluded: iPhone # excluded via string
   allowed_symbols: ["_"] # these are allowed in type names

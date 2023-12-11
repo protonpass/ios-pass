@@ -20,6 +20,7 @@
 
 import SwiftUI
 
+// swiftlint:disable void_function_in_ternary
 /// A view modifier that applies an animated "shimmer" to any view
 public struct Shimmer: ViewModifier {
     @Environment(\.layoutDirection) private var layoutDirection
@@ -98,3 +99,5 @@ public extension View {
         }
     }
 }
+
+// swiftlint:enable void_function_in_ternary
