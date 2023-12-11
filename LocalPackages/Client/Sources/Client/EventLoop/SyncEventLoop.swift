@@ -117,7 +117,7 @@ public extension SyncEventLoop {
 }
 
 /// A background event loop that keeps data up to date by synching after a random number of seconds
-public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
+public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, Sendable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params

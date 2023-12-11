@@ -16,8 +16,18 @@ let swiftSettings: [SwiftSetting] = [
    .enableUpcomingFeature("ExistentialAny"),
    .enableUpcomingFeature("ForwardTrailingClosures"),
    .enableUpcomingFeature("ImplicitOpenExistentials"),
-   .enableUpcomingFeature("StrictConcurrency=targeted"),
-//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
+   .enableUpcomingFeature("StrictConcurrency"),
+   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks",
+                 "-driver-time-compilation",
+                 "-Xfrontend",
+                 "-debug-time-function-bodies",
+                 "-Xfrontend",
+                 "-debug-time-expression-type-checking",
+                 "-Xfrontend",
+                 "-warn-long-function-bodies=100",
+                 "-Xfrontend",
+                 "-warn-long-expression-type-checking=100"
+                ])
 ]
 
 let package = Package(name: "Client",
