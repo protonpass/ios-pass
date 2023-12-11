@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct UpdateItemResponse: Decodable {
+public struct UpdateItemResponse: Decodable, Sendable {
     let item: ItemRevision
 }
 

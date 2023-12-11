@@ -20,7 +20,8 @@
 
 import Entities
 import Foundation
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct UpdateLastUseTimeResponse: Decodable {

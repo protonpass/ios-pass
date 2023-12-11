@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import ProtonCoreNetworking
 
-public struct GetLatestItemKeyResponse: Decodable {
+@preconcurrency import ProtonCoreNetworking
+
+public struct GetLatestItemKeyResponse: Decodable, Sendable {
     let key: ItemKey
 }
 

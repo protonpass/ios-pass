@@ -32,7 +32,7 @@ public struct AliasCreationInfo: Sendable {
     }
 }
 
-public struct CreateCustomAliasRequest {
+public struct CreateCustomAliasRequest: Sendable {
     /// Prefix for the alias to be created (prefix.xxx@domain.com)
     public let prefix: String
 

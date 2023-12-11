@@ -67,7 +67,7 @@ public extension ReportRepository {
         guard let userData = userDataProvider.getUserData() else {
             throw ReportRepositoryError.noUserData
         }
-        let request = BugReportRequest(with: title, and: description, userData: userData)
+        let request = await BugReportRequest(with: title, and: description, userData: userData)
         let endpoint = ReportsBugEndpoint(request: request)
         if !logs.isEmpty {
             let result = try await apiService.exec(endpoint: endpoint, files: logs).isSuccessful

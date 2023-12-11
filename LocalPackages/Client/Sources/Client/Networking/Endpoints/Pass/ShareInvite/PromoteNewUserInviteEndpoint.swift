@@ -20,7 +20,8 @@
 //
 
 import Entities
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct PromoteNewUserInviteEndpoint: Endpoint {
@@ -40,7 +41,7 @@ public struct PromoteNewUserInviteEndpoint: Endpoint {
     }
 }
 
-public struct PromoteNewUserInviteRequest: Encodable {
+public struct PromoteNewUserInviteRequest: Encodable, Sendable {
     let keys: [ItemKey]
 
     enum CodingKeys: String, CodingKey {
