@@ -26,7 +26,11 @@ public struct SearchEntryUiModel: ItemIdentifiable {
     public let url: String?
     public let description: String?
 
-    public init(itemId: String, shareId: String, type: ItemContentType, title: String, url: String?,
+    public init(itemId: String,
+                shareId: String,
+                type: ItemContentType,
+                title: String,
+                url: String?,
                 description: String?) {
         self.itemId = itemId
         self.shareId = shareId

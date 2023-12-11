@@ -22,6 +22,7 @@ import SwiftUI
 
 public struct SkeletonBlock: View {
     let tintColor: UIColor
+
     public init(tintColor: UIColor = PassColor.interactionNorm) {
         self.tintColor = tintColor
     }
