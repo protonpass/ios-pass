@@ -39,17 +39,16 @@ public final class GenerateTotpToken: GenerateTotpTokenUseCase {
     }
 
     public func execute(uri: String) throws -> TOTPData {
-        let totp: Totp
-        if uri.contains("otpauth") {
-            totp = try parser.parse(uriString: uri)
+        let totp: Totp = if uri.contains("otpauth") {
+            try parser.parse(uriString: uri)
         } else {
             // Treat the whole URI as secret
-            totp = Totp(label: nil,
-                        secret: uri,
-                        issuer: nil,
-                        algorithm: nil,
-                        digits: nil,
-                        period: nil)
+            Totp(label: nil,
+                 secret: uri,
+                 issuer: nil,
+                 algorithm: nil,
+                 digits: nil,
+                 period: nil)
         }
 
         let date = currentDateProvider.getCurrentDate()

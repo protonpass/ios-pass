@@ -43,7 +43,9 @@ public final class UpdateUserShareRole: UpdateUserShareRoleUseCase {
         self.repository = repository
     }
 
-    public func execute(userShareId: String, shareId: String, shareRole: ShareRole,
+    public func execute(userShareId: String,
+                        shareId: String,
+                        shareRole: ShareRole,
                         expireTime: Int?) async throws {
         try await repository.updateUserPermission(userId: userShareId,
                                                   shareId: shareId,
