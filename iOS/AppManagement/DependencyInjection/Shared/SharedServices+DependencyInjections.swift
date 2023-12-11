@@ -58,9 +58,9 @@ extension SharedServiceContainer {
     }
 
     var syncEventLoop: Factory<SyncEventLoop> {
-        self { .init(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
-                     synchronizer: self.eventSynchronizer(),
-                     logManager: self.logManager) }
+        self { SyncEventLoop(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
+                             synchronizer: self.eventSynchronizer(),
+                             logManager: self.logManager) }
     }
 
     var clipboardManager: Factory<ClipboardManagerProtocol> {
