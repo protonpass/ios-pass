@@ -185,18 +185,11 @@ struct ProfileTabView: View {
 
                     Spacer()
 
-                    if ProcessInfo.processInfo.isiOSAppOnMac {
-                        Button(action: viewModel.showEnableAutoFillOnMacInstructions) {
-                            Label("Show me how", systemImage: "arrow.up.right.square")
-                                .font(.callout.weight(.semibold))
-                                .foregroundColor(PassColor.interactionNormMajor2.toColor)
-                        }
-                    } else {
-                        Button(action: UIApplication.shared.openPasswordSettings) {
-                            Label("Open Settings", systemImage: "arrow.up.right.square")
-                                .font(.callout.weight(.semibold))
-                                .foregroundColor(PassColor.interactionNormMajor2.toColor)
-                        }
+                    Button(action: viewModel.handleEnableAutoFillAction) {
+                        Label(ProcessInfo.processInfo.isiOSAppOnMac ? "Show me how" : "Open Settings",
+                              systemImage: "arrow.up.right.square")
+                            .font(.callout.weight(.semibold))
+                            .foregroundColor(PassColor.interactionNormMajor2.toColor)
                     }
                 }
             }
