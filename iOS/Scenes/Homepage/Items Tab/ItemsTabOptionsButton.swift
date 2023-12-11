@@ -32,6 +32,7 @@ struct ItemsTabOptionsButton: View {
             selectItemsButton
             filterOptions
             sortOptions
+            resetFiltersButton
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,
                          iconColor: viewModel.highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
@@ -87,7 +88,7 @@ private extension ItemsTabOptionsButton {
                     text(for: selectedFilterOption.uiModel(from: itemCount))
                 })
             }, icon: {
-                Image(uiImage: IconProvider.filter)
+                Image(uiImage: viewModel.highlighted ? PassIcon.filterFilled : IconProvider.filter)
             })
         })
     }
@@ -127,5 +128,20 @@ private extension ItemsTabOptionsButton {
 private extension ItemsTabOptionsButton {
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
         Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
+    }
+}
+
+private extension ItemsTabOptionsButton {
+    @ViewBuilder
+    var resetFiltersButton: some View {
+        if viewModel.resettable {
+            Button(action: viewModel.resetFilters) {
+                Label(title: {
+                    Text("Reset filters")
+                }, icon: {
+                    IconProvider.crossCircle
+                })
+            }
+        }
     }
 }

@@ -145,7 +145,7 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.info("App goes back to foreground")
-                refresh()
+                refresh(exitEditMode: false)
                 sendAllEventsIfApplicable()
                 eventLoop.start()
                 eventLoop.forceSync()
@@ -230,9 +230,11 @@ private extension HomepageCoordinator {
         }
     }
 
-    func refresh() {
+    func refresh(exitEditMode: Bool = true) {
         vaultsManager.refresh()
-        itemsTabViewModel?.isEditMode = false
+        if exitEditMode {
+            itemsTabViewModel?.isEditMode = false
+        }
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
         createEditItemCoordinator?.refresh()
