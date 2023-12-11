@@ -39,6 +39,7 @@ protocol GeneratePasswordCoordinatorDelegate: AnyObject {
     func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController)
 }
 
+@MainActor
 final class GeneratePasswordCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 

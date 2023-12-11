@@ -294,16 +294,16 @@ struct LogInDetailView: View {
         Group {
             Text("View and edit details for this alias on the separate alias page.")
                 .font(.callout)
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                .foregroundColor(PassColor.textNorm.toColor) +
                 Text(verbatim: " ")
                 .font(.callout) +
                 Text("View")
                 .font(.callout)
-                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
-                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor2Color))
+                .foregroundColor(viewModel.itemContent.type.normMajor2Color.toColor)
+                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
         }
         .padding(kItemDetailSectionPadding)
-        .background(Color(uiColor: PassColor.backgroundMedium))
+        .background(PassColor.backgroundMedium.toColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.showAliasDetail)
     }
