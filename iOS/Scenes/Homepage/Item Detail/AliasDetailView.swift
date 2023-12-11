@@ -148,11 +148,12 @@ struct AliasDetailView: View {
                     }
                 } else {
                     Group {
-                        AnimatingGradient(tintColor: iconTintColor)
-                        AnimatingGradient(tintColor: iconTintColor)
-                        AnimatingGradient(tintColor: iconTintColor)
+                        SkeletonBlock(tintColor: iconTintColor)
+                        SkeletonBlock(tintColor: iconTintColor)
+                        SkeletonBlock(tintColor: iconTintColor)
                     }
                     .clipShape(Capsule())
+                    .shimmering()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
