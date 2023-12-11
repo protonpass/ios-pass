@@ -297,15 +297,16 @@ private struct CredentialsSkeletonView: View {
     var body: some View {
         VStack {
             HStack {
-                AnimatingGradient()
+                SkeletonBlock()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
-                AnimatingGradient()
+                SkeletonBlock()
                     .frame(width: kSearchBarHeight)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .frame(height: kSearchBarHeight)
             .padding(.vertical)
+            .shimmering()
 
             ScrollView {
                 LazyVStack(spacing: 20) {
@@ -321,22 +322,23 @@ private struct CredentialsSkeletonView: View {
 
     private var itemRow: some View {
         HStack(spacing: 16) {
-            AnimatingGradient()
+            SkeletonBlock()
                 .frame(width: 40, height: 40)
                 .clipShape(Circle())
 
             VStack(alignment: .leading) {
                 Spacer()
-                AnimatingGradient()
+                SkeletonBlock()
                     .frame(width: 170, height: 10)
                     .clipShape(Capsule())
                 Spacer()
-                AnimatingGradient()
+                SkeletonBlock()
                     .frame(width: 200, height: 10)
                     .clipShape(Capsule())
                 Spacer()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .shimmering()
     }
 }
