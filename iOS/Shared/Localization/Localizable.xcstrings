@@ -41642,6 +41642,18 @@
         }
       }
     },
+    "Reset filters" : {
+      "comment" : "Reset to default filters (display all types of item & sort by most recently use time)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset filters"
+          }
+        }
+      }
+    },
     "Restart Proton Pass" : {
       "extractionState" : "manual",
       "localizations" : {

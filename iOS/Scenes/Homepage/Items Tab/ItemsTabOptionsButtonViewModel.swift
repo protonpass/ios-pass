@@ -54,11 +54,20 @@ final class ItemsTabOptionsButtonViewModel: ObservableObject {
         vaultsManager.filterOption != .all
     }
 
+    var resettable: Bool {
+        vaultsManager.filterOption != .all || selectedSortType != .mostRecent
+    }
+
     init() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
     }
 
     func updateFilterOption(_ option: ItemTypeFilterOption) {
         vaultsManager.updateItemTypeFilterOption(option)
+    }
+
+    func resetFilters() {
+        vaultsManager.updateItemTypeFilterOption(.all)
+        selectedSortType = .mostRecent
     }
 }
