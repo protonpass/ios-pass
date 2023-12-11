@@ -26,6 +26,7 @@ import Entities
 import Factory
 import SwiftUI
 
+@MainActor
 final class LockedCredentialViewModel: ObservableObject {
     private let credentialIdentity: ASPasswordCredentialIdentity
     private let logger = resolve(\SharedToolingContainer.logger)
