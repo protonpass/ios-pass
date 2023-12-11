@@ -165,9 +165,9 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
     public var threshhold: Date? {
         get {
             if let telemetryThreshold = thresholdProvider.getThreshold() {
-                return Date(timeIntervalSince1970: telemetryThreshold)
+                Date(timeIntervalSince1970: telemetryThreshold)
             } else {
-                return nil
+                nil
             }
         }
 
