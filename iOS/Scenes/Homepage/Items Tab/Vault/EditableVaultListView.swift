@@ -56,7 +56,6 @@ struct EditableVaultListView: View {
                 }
                 .padding(.horizontal)
             }
-            .animation(.default, value: viewModel.state)
             HStack {
                 CapsuleTextButton(title: #localized("Create vault"),
                                   titleColor: PassColor.interactionNormMajor2,
