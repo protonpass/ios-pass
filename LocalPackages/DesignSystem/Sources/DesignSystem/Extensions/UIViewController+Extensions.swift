@@ -33,11 +33,10 @@ public extension UIViewController {
         let parentWindow = parentViewController.view.window
         let screenHeight = parentWindow?.bounds.height ?? UIScreen.main.bounds.height
 
-        let detents: [UISheetPresentationController.Detent]
-        if #available(iOS 16, *) {
-            detents = makeDetentsIOS16AndUp(for: type, screenHeight: screenHeight)
+        let detents: [UISheetPresentationController.Detent] = if #available(iOS 16, *) {
+            makeDetentsIOS16AndUp(for: type, screenHeight: screenHeight)
         } else {
-            detents = makeDetents(for: type, screenHeight: screenHeight)
+            makeDetents(for: type, screenHeight: screenHeight)
         }
 
         sheetPresentationController?.detents = detents
@@ -78,22 +77,22 @@ private extension UIViewController {
                      screenHeight: CGFloat) -> [UISheetPresentationController.Detent] {
         switch type {
         case .medium:
-            return [.medium()]
+            [.medium()]
         case .large:
-            return [.large()]
+            [.large()]
         case .mediumAndLarge:
-            return [.medium(), .large()]
+            [.medium(), .large()]
         case let .custom(height):
             if height > screenHeight / 2 {
-                return [.large()]
+                [.large()]
             } else {
-                return [.medium()]
+                [.medium()]
             }
         case let .customAndLarge(height):
             if height > screenHeight / 2 {
-                return [.large()]
+                [.large()]
             } else {
-                return [.medium(), .large()]
+                [.medium(), .large()]
             }
         }
     }
