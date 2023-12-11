@@ -21,7 +21,7 @@
 import Foundation
 
 /// Keep track of failures and increase the wait time when failure occurs
-public protocol BackOffManagerProtocol {
+public protocol BackOffManagerProtocol: Sendable {
     /// Call this function when failure occurs and we want to back off
     func recordFailure()
 

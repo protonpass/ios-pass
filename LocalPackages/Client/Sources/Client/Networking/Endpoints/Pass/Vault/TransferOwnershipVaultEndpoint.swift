@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct TransferOwnershipVaultRequest: Encodable {
+public struct TransferOwnershipVaultRequest: Encodable, Sendable {
     public let newOwnerShareID: String
 
     enum CodingKeys: String, CodingKey {

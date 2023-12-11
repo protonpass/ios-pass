@@ -23,7 +23,7 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-public enum InviteeData {
+public enum InviteeData: Sendable {
     case existing(email: String, keys: [ItemKey])
     case new(email: String, signature: String)
 }

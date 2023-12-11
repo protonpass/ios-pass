@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct DeleteShareNewUserInviteEndpoint: Endpoint {

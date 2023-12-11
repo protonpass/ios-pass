@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public struct SyncEvents: Decodable {
+public struct SyncEvents: Decodable, Sendable {
     /// Updated share in case the vault content changes
     public let updatedShare: Share?
 
