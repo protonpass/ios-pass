@@ -28,12 +28,12 @@ public protocol BannerDisplayProtocol: Sendable {
 
     func displayBottomInfoMessage(_ message: String,
                                   dismissButtonTitle: String,
-                                  onDismiss: @escaping ((PMBanner) -> Void))
+                                  onDismiss: @escaping (@Sendable (PMBanner) -> Void))
 
     func displayBottomInfoMessage(_ message: String)
     func displayTopErrorMessage(_ message: String,
                                 dismissButtonTitle: String,
-                                onDismiss: ((PMBanner) -> Void)?)
+                                onDismiss: (@Sendable (PMBanner) -> Void)?)
 
     func displayTopErrorMessage(_ error: any Error)
 }
@@ -41,10 +41,14 @@ public protocol BannerDisplayProtocol: Sendable {
 public extension BannerDisplayProtocol {
     func displayTopErrorMessage(_ message: String,
                                 dismissButtonTitle: String = #localized("OK"),
-                                onDismiss: ((PMBanner) -> Void)? = nil) {
+                                onDismiss: (@Sendable (PMBanner) -> Void)? = nil) {
         displayTopErrorMessage(message, dismissButtonTitle: dismissButtonTitle, onDismiss: onDismiss)
     }
 }
+
+extension PMBanner: @unchecked Sendable {}
+extension PMBannerPosition: @unchecked Sendable {}
+extension PMBannerNewStyle: @unchecked Sendable {}
 
 public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
     private weak var container: UIViewController?
@@ -57,8 +61,10 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
         guard let container else {
             return
         }
-        let banner = PMBanner(message: message, style: style)
-        banner.show(at: position, on: container.topMostViewController)
+        Task { @MainActor in
+            let banner = PMBanner(message: message, style: style)
+            banner.show(at: position, on: container.topMostViewController)
+        }
     }
 
     public func displayBottomSuccessMessage(_ message: String) {
@@ -67,13 +73,16 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
 
     public func displayBottomInfoMessage(_ message: String,
                                          dismissButtonTitle: String,
-                                         onDismiss: @escaping ((PMBanner) -> Void)) {
+                                         onDismiss: @escaping (@Sendable (PMBanner) -> Void)) {
         guard let container else {
             return
         }
-        let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
-        banner.addButton(text: dismissButtonTitle, handler: onDismiss)
-        banner.show(at: .bottom, on: container.topMostViewController)
+
+        Task { @MainActor in
+            let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
+            banner.addButton(text: dismissButtonTitle, handler: onDismiss)
+            banner.show(at: .bottom, on: container.topMostViewController)
+        }
     }
 
     public func displayBottomInfoMessage(_ message: String) {
@@ -82,14 +91,20 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
 
     public func displayTopErrorMessage(_ message: String,
                                        dismissButtonTitle: String = #localized("OK"),
-                                       onDismiss: ((PMBanner) -> Void)? = nil) {
+                                       onDismiss: (@Sendable (PMBanner) -> Void)? = nil) {
         guard let container else {
             return
         }
-        let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
-        let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
-        banner.addButton(text: dismissButtonTitle, handler: dismissClosure)
-        banner.show(at: .top, on: container.topMostViewController)
+//        let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
+//        let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
+//        banner.addButton(text: dismissButtonTitle, handler: dismissClosure)
+//        banner.show(at: .top, on: container.topMostViewController)
+//        
+        Task { @MainActor in
+            let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
+            banner.addButton(text: dismissButtonTitle, handler: onDismiss)
+            banner.show(at: .top, on: container.topMostViewController)
+        }
     }
 
     public func displayTopErrorMessage(_ error: some Error) {
