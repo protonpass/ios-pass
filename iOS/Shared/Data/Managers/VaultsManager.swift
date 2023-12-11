@@ -104,17 +104,16 @@ private extension VaultsManager {
 
     func updateItemCount() {
         guard case let .loaded(vaults, trashedItems) = state else { return }
-        let items: [any ItemTypeIdentifiable]
-        switch vaultSelection {
+        let items: [any ItemTypeIdentifiable] = switch vaultSelection {
         case .all:
-            items = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+            vaults.map(\.items).reduce(into: []) { $0 += $1 }
         case let .precise(selectedVault):
-            items = vaults
+            vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
                 .map(\.items)
                 .reduce(into: []) { $0 += $1 }
         case .trash:
-            items = trashedItems
+            trashedItems
         }
         itemCount = .init(items: items)
     }
@@ -348,17 +347,16 @@ extension VaultsManager {
 
     func getFilteredItems() -> [ItemUiModel] {
         guard case let .loaded(vaults, trashedItems) = state else { return [] }
-        let items: [ItemUiModel]
-        switch vaultSelection {
+        let items: [ItemUiModel] = switch vaultSelection {
         case .all:
-            items = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+            vaults.map(\.items).reduce(into: []) { $0 += $1 }
         case let .precise(selectedVault):
-            items = vaults
+            vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
                 .map(\.items)
                 .reduce(into: []) { $0 += $1 }
         case .trash:
-            items = trashedItems
+            trashedItems
         }
 
         switch filterOption {
