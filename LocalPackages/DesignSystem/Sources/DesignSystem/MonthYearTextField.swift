@@ -91,7 +91,7 @@ public struct MonthYearTextField: UIViewRepresentable {
 
     public func updateUIView(_ uiView: UITextField, context: Context) {
         if let month, let year {
-            uiView.text = "\(String(format: "%02d", month)) / \(year)"
+            uiView.text = "\(String(format: "%02d", month)) / \(String(format: "%02d", year % 100))"
         }
     }
 
@@ -113,6 +113,7 @@ public struct MonthYearTextField: UIViewRepresentable {
 
 public extension MonthYearTextField {
     final class Coordinator: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
+        private let formatter = DateFormatter()
         var parent: MonthYearTextField
 
         init(_ parent: MonthYearTextField) {
@@ -155,7 +156,7 @@ public extension MonthYearTextField {
             switch component {
             case 0:
                 // Month
-                String(format: "%02d", row + 1)
+                String(format: "%02d - %@", row + 1, formatter.monthSymbols[row])
             case 1:
                 // Year
                 "\(parent.years[row])"
