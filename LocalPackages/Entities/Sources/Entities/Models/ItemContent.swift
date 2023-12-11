@@ -77,7 +77,7 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
     }
 }
 
-public protocol ItemContentProtocol {
+public protocol ItemContentProtocol: Sendable {
     var name: String { get }
     var note: String { get }
     var contentData: ItemContentData { get }

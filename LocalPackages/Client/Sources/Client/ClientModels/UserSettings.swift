@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct UserSettings {
+public struct UserSettings: Sendable {
     public let telemetry: Bool
 }
 

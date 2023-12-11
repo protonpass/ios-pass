@@ -22,13 +22,13 @@ import CryptoKit
 import Entities
 import Foundation
 
-public struct MoveItemRequest {
+public struct MoveItemRequest: Sendable {
     /// Encrypted ID of the destination share
     public let shareId: String
     public let item: ItemToBeMoved
 }
 
-public struct ItemToBeMoved: Decodable {
+public struct ItemToBeMoved: Decodable, Sendable {
     /// Encrypted ID of the VaultKey used to create this item
     /// >= 1
     public let keyRotation: Int64

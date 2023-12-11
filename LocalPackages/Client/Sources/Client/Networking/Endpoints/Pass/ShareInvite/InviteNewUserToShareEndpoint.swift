@@ -21,7 +21,8 @@
 
 import Entities
 import Foundation
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct InviteNewUserToShareEndpoint: Endpoint {
@@ -41,7 +42,7 @@ public struct InviteNewUserToShareEndpoint: Endpoint {
     }
 }
 
-public struct InviteNewUserToShareRequest {
+public struct InviteNewUserToShareRequest: Sendable {
     /// Email of the target user
     public let email: String
     /// Invite target type. 1 = Vault, 2 = Item

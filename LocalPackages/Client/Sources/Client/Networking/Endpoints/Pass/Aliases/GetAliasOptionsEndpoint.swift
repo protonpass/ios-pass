@@ -21,7 +21,7 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetAliasOptionsResponse: Decodable {
+public struct GetAliasOptionsResponse: Decodable, Sendable {
     let options: AliasOptions
 }
 

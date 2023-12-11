@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreLogin
 import UIKit
 
-public struct BugReportRequest {
+public struct BugReportRequest: Sendable {
     public let os: String // iOS, MacOS
     public let osVersion: String
     public let client: String
@@ -34,10 +34,10 @@ public struct BugReportRequest {
     public let username: String
     public let email: String
 
-    public init(with title: String, and description: String, userData: UserData) {
+    public init(with title: String, and description: String, userData: UserData) async {
         #if os(iOS)
         os = "iOS"
-        osVersion = UIDevice.current.systemVersion
+        osVersion = await UIDevice.current.systemVersion
         #elseif os(macOS)
         os = "MacOS"
         osVersion = ProcessInfo.processInfo.operatingSystemVersionString

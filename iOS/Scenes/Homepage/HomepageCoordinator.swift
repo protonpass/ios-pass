@@ -1251,10 +1251,15 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         refresh()
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
-            let undoBlock: (PMBanner) -> Void = { [weak self] banner in
+            let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
                 guard let self else { return }
-                banner.dismiss()
-                itemContextMenuHandler.restore(item)
+                Task { @MainActor [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    banner.dismiss()
+                    itemContextMenuHandler.restore(item)
+                }
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,
                                                    dismissButtonTitle: #localized("Undo"),

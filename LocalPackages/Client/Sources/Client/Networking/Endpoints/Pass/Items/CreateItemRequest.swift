@@ -22,7 +22,7 @@ import CryptoKit
 import Entities
 import Foundation
 
-public struct CreateItemRequest {
+public struct CreateItemRequest: Sendable {
     /// Encrypted ID of the VaultKey used to create this item
     /// Must be >= 1
     public let keyRotation: Int64
