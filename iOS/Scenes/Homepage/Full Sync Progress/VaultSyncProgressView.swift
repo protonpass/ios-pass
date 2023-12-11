@@ -42,21 +42,22 @@ struct VaultSyncProgressView: View {
 private extension VaultSyncProgressView {
     var skeleton: some View {
         HStack {
-            AnimatingGradient()
+            SkeletonBlock()
                 .frame(width: 48, height: 48)
                 .clipShape(Circle())
 
             VStack(alignment: .leading) {
-                AnimatingGradient()
+                SkeletonBlock()
                     .frame(width: 170, height: 16)
                     .clipShape(Capsule())
                 Spacer()
-                AnimatingGradient()
+                SkeletonBlock()
                     .frame(height: 16)
                     .clipShape(Capsule())
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .shimmering()
     }
 }
 
