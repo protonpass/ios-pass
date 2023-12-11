@@ -114,6 +114,7 @@ enum CoordinatorType {
     }
 }
 
+@MainActor
 open class Coordinator: CoordinatorProtocol {
     private let type: CoordinatorType
 

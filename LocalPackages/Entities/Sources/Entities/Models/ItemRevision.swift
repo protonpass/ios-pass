@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct ItemRevisionsPaginated: Decodable {
+public struct ItemRevisionsPaginated: Decodable, Sendable {
     public let total: Int
     public let lastToken: String?
     public let revisionsData: [ItemRevision]

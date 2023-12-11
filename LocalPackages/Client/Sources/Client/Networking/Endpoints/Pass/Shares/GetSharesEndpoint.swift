@@ -18,10 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetSharesResponse: Decodable {
+public struct GetSharesResponse: Decodable, Sendable {
     let shares: [Share]
 }
 

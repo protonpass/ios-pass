@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 
 public struct ReportsBugEndpoint: Endpoint {
     public typealias Body = BugReportRequest

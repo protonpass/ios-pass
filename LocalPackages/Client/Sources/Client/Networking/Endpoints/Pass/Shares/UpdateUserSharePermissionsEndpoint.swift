@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct UpdateUserSharePermissionsEndpoint: Endpoint {
@@ -41,7 +42,7 @@ public struct UpdateUserSharePermissionsEndpoint: Endpoint {
     }
 }
 
-public struct UserSharePermissionRequest: Encodable {
+public struct UserSharePermissionRequest: Encodable, Sendable {
     public let shareRoleID: String?
     public let expireTime: Int?
 

@@ -23,17 +23,17 @@ import ProtonCoreKeyManager
 import ProtonCoreNetworking
 
 /// For endpoints that have no body like GET ones
-public struct EmptyRequest: Encodable {}
+public struct EmptyRequest: Encodable, Sendable {}
 
 /// Holds responses that only have `code` field
-public struct CodeOnlyResponse: Decodable {
+public struct CodeOnlyResponse: Decodable, Sendable {
     let code: Int
     var isSuccessful: Bool { code == 1_000 }
 }
 
-public protocol Endpoint: Request {
-    associatedtype Body: Encodable
-    associatedtype Response: Decodable
+public protocol Endpoint: Request, Sendable {
+    associatedtype Body: Encodable & Sendable
+    associatedtype Response: Decodable & Sendable
 
     /// The "name" of the endpoint for debugging purposes
     var debugDescription: String { get }
@@ -68,7 +68,7 @@ public extension Endpoint {
     }
 }
 
-extension [String: Any] {
+extension [String: any Sendable] {
     static func paginationQuery(page: Int, pageSize: Int) -> Self {
         ["Page": page, "PageSize": pageSize]
     }

@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import ProtonCoreNetworking
+
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetShareLinkedUsersResponse: Decodable {
+public struct GetShareLinkedUsersResponse: Decodable, Sendable {
     let shares: [UserShareInfos]
 }
 

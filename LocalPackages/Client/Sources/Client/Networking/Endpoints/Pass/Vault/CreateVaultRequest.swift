@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreCrypto
 import ProtonCoreLogin
 
-public struct CreateVaultRequest {
+public struct CreateVaultRequest: Sendable {
     /// AddressID that should be displayed as the owner
     let addressID: String
 

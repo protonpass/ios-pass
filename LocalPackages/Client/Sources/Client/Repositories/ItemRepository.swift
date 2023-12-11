@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+@preconcurrency import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -637,8 +637,8 @@ private extension ItemRepository {
 
     /// Group items by share and bulk actionning on those grouped items
     func bulkAction(items: [any ItemIdentifiable],
-                    action: ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
-        let shouldInclude: (SymmetricallyEncryptedItem) -> Bool = { item in
+                    action: @Sendable ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
+        let shouldInclude: @Sendable (SymmetricallyEncryptedItem) -> Bool = { item in
             items.contains(where: { $0.isEqual(with: item) })
         }
         let allItems = try await getAllItems()

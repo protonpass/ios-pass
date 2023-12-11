@@ -21,7 +21,7 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetLastEventIDResponse: Decodable {
+public struct GetLastEventIDResponse: Decodable, Sendable {
     let eventID: String
 }
 

@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetPublicKeysResponse: Decodable {
+public struct GetPublicKeysResponse: Decodable, Sendable {
     let address: PublicKeys
 }
 
@@ -31,7 +31,7 @@ public struct GetPublicKeysEndpoint: Endpoint {
 
     public var debugDescription: String
     public var path: String
-    public var parameters: [String: Any]?
+    public var parameters: [String: any Sendable]?
 
     init(email: String) {
         debugDescription = "Get public keys"

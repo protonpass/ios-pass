@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-struct SendEventsRequest: Encodable {
+struct SendEventsRequest: Encodable, Sendable {
     let eventInfo: [EventInfo]
 
     enum CodingKeys: String, CodingKey {
@@ -29,7 +29,7 @@ struct SendEventsRequest: Encodable {
     }
 }
 
-public struct EventInfo: Encodable {
+public struct EventInfo: Encodable, Sendable {
     let measurementGroup: String
     let event: String
     let values: [String: String] = [:] // Not applicable to mobile apps
