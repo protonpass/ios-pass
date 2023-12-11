@@ -199,8 +199,9 @@ struct CreateEditAliasView: View {
                         // Dummy text to make ZStack occupy a correct height
                         Text(verbatim: "Dummy text")
                             .opacity(0)
-                        AnimatingGradient(tintColor: tintColor)
+                        SkeletonBlock(tintColor: tintColor)
                             .clipShape(Capsule())
+                            .shimmering()
                     }
                 default:
                     Text(viewModel.aliasEmail)
@@ -231,8 +232,9 @@ struct CreateEditAliasView: View {
                             // Dummy text to make ZStack occupy a correct height
                             Text(verbatim: "Dummy text")
                                 .opacity(0)
-                            AnimatingGradient(tintColor: tintColor)
+                            SkeletonBlock(tintColor: tintColor)
                                 .clipShape(Capsule())
+                                .shimmering()
                         }
 
                     default:

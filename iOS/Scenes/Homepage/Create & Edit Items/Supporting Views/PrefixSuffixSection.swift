@@ -107,8 +107,9 @@ struct PrefixSuffixSection<Field: Hashable>: View {
                         // Dummy text to make ZStack occupy a correct height
                         Text(verbatim: "Dummy text")
                             .opacity(0)
-                        AnimatingGradient(tintColor: tintColor)
+                        SkeletonBlock(tintColor: tintColor)
                             .clipShape(Capsule())
+                            .shimmering()
                     }
                 } else {
                     Text(suffixSelection.selectedSuffixString)

@@ -1,5 +1,5 @@
 //
-// AnimatingGradient.swift
+// SkeletonBlock.swift
 // Proton Pass - Created on 27/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,27 +20,13 @@
 
 import SwiftUI
 
-public struct AnimatingGradient: View {
-    @State private var animateGradient = false
+public struct SkeletonBlock: View {
     let tintColor: UIColor
-
     public init(tintColor: UIColor = PassColor.interactionNorm) {
         self.tintColor = tintColor
     }
 
     public var body: some View {
-        ZStack {
-            Color(tintColor.withAlphaComponent(0.08))
-            LinearGradient(colors: [.clear, Color(tintColor.withAlphaComponent(0.2)), .clear],
-                           startPoint: .leading,
-                           endPoint: .trailing)
-                .offset(x: animateGradient ? 300 : -200)
-                .frame(width: 200)
-                .animation(.easeInOut(duration: 1).repeatForever(autoreverses: false),
-                           value: animateGradient)
-        }
-        .onFirstAppear {
-            animateGradient.toggle()
-        }
+        Color(tintColor.withAlphaComponent(0.2))
     }
 }
