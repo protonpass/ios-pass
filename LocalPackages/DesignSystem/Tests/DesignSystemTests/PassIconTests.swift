@@ -39,6 +39,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.coverScreenBackground
         _ = PassIcon.coverScreenLogo
 
+        _ = PassIcon.filterFilled
         _ = PassIcon.fullSyncDone
 
         _ = PassIcon.infoBannerAliases
