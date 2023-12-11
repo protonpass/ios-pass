@@ -73,7 +73,8 @@ private extension UpsellingView {
                 PassDivider()
                 perkRow(title: "Unlimited 2FA Autofill", icon: PassIcon.trial2FA)
                 PassDivider()
-                perkRow(title: "Sharing with up to 10 people", icon: IconProvider.userPlus,
+                perkRow(title: "Sharing with up to 10 people",
+                        icon: IconProvider.userPlus,
                         iconTintColor: PassColor.noteInteractionNormMajor1)
                 PassDivider()
                 perkRow(title: "Multiple Vaults", icon: PassIcon.trialVaults)

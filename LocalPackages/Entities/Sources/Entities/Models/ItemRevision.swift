@@ -57,10 +57,19 @@ public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
     /// Enum representation of `state`
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
 
-    public init(itemID: String, revision: Int64, contentFormatVersion: Int64, keyRotation: Int64, content: String,
-                itemKey: String?, state: Int64, pinned: Bool, aliasEmail: String?, createTime: Int64,
+    public init(itemID: String,
+                revision: Int64,
+                contentFormatVersion: Int64,
+                keyRotation: Int64,
+                content: String,
+                itemKey: String?,
+                state: Int64,
+                pinned: Bool,
+                aliasEmail: String?,
+                createTime: Int64,
                 modifyTime: Int64,
-                lastUseTime: Int64?, revisionTime: Int64) {
+                lastUseTime: Int64?,
+                revisionTime: Int64) {
         self.itemID = itemID
         self.revision = revision
         self.contentFormatVersion = contentFormatVersion
