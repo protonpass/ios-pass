@@ -49,6 +49,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+    private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
@@ -153,8 +154,8 @@ extension ProfileTabViewModel {
         }
     }
 
-    func showEnableAutoFillOnMacInstructions() {
-        router.present(for: .autoFillInstructions)
+    func handleEnableAutoFillAction() {
+        openAutoFillSettings()
     }
 
     func showAccountMenu() {
