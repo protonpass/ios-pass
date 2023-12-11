@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
@@ -149,46 +150,8 @@ private extension CredentialsView {
     func itemList(results: CredentialsFetchResult) -> some View {
         ScrollViewReader { proxy in
             List {
-                let matchedItemsHeaderTitle = #localized("Suggestions for %@", viewModel.urls.first?.host ?? "")
-                if results.matchedItems.isEmpty {
-                    Section(content: {
-                        Text("No suggestions")
-                            .font(.callout.italic())
-                            .padding(.horizontal)
-                            .foregroundColor(PassColor.textWeak.toColor)
-                            .plainListRow()
-                    }, header: {
-                        Text(matchedItemsHeaderTitle)
-                            .font(.callout)
-                            .fontWeight(.bold)
-                            .foregroundColor(PassColor.textNorm.toColor)
-                    })
-                } else {
-                    section(for: results.matchedItems,
-                            headerTitle: matchedItemsHeaderTitle,
-                            headerColor: PassColor.textNorm,
-                            headerFontWeight: .bold)
-                }
-
-                if !results.notMatchedItems.isEmpty {
-                    HStack {
-                        Text("Other items")
-                            .font(.callout)
-                            .fontWeight(.bold)
-                            .foregroundColor(PassColor.textNorm.toColor) +
-                            Text(verbatim: " (\(results.notMatchedItems.count))")
-                            .font(.callout)
-                            .foregroundColor(PassColor.textWeak.toColor)
-
-                        Spacer()
-
-                        SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                                       action: viewModel.presentSortTypeList)
-                    }
-                    .plainListRow()
-                    .padding([.top, .horizontal])
-                    sortableSections(for: results.notMatchedItems)
-                }
+                matchedItemsSection(results.matchedItems)
+                notMatchedItemsSection(results.notMatchedItems)
             }
             .listStyle(.plain)
             .refreshable { await viewModel.sync() }
@@ -203,6 +166,55 @@ private extension CredentialsView {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    func matchedItemsSection(_ items: [ItemUiModel]) -> some View {
+        if let matchedUrl = viewModel.urls.first {
+            let matchedItemsHeaderTitle = #localized("Suggestions for %@", matchedUrl.host ?? "")
+            if items.isEmpty {
+                Section(content: {
+                    Text("No suggestions")
+                        .font(.callout.italic())
+                        .padding(.horizontal)
+                        .foregroundColor(PassColor.textWeak.toColor)
+                        .plainListRow()
+                }, header: {
+                    Text(matchedItemsHeaderTitle)
+                        .font(.callout)
+                        .fontWeight(.bold)
+                        .foregroundColor(PassColor.textNorm.toColor)
+                })
+            } else {
+                section(for: items,
+                        headerTitle: matchedItemsHeaderTitle,
+                        headerColor: PassColor.textNorm,
+                        headerFontWeight: .bold)
+            }
+        }
+    }
+
+    @ViewBuilder
+    func notMatchedItemsSection(_ items: [ItemUiModel]) -> some View {
+        if !items.isEmpty {
+            HStack {
+                Text("Other items")
+                    .font(.callout)
+                    .fontWeight(.bold)
+                    .foregroundColor(PassColor.textNorm.toColor) +
+                    Text(verbatim: " (\(items.count))")
+                    .font(.callout)
+                    .foregroundColor(PassColor.textWeak.toColor)
+
+                Spacer()
+
+                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
+                               action: viewModel.presentSortTypeList)
+            }
+            .plainListRow()
+            .padding([.top, .horizontal])
+            sortableSections(for: items)
         }
     }
 
