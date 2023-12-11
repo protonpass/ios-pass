@@ -56,12 +56,13 @@ struct ItemCountView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(0...5, id: \.self) { _ in
-                    AnimatingGradient()
+                    SkeletonBlock()
                         .frame(width: 100, height: kChipHeight)
                         .clipShape(Capsule())
                 }
             }
             .padding(.horizontal)
+            .shimmering()
         }
         .adaptiveScrollDisabled(true)
     }
