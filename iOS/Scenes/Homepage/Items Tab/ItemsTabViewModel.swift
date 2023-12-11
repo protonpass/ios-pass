@@ -72,6 +72,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
+    private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -340,7 +341,7 @@ extension ItemsTabViewModel {
         case .trial:
             delegate?.itemsTabViewModelWantsToShowTrialDetail()
         case .autofill:
-            UIApplication.shared.openPasswordSettings()
+            openAutoFillSettings()
         case .aliases:
             router.navigate(to: .urlPage(urlString: "https://proton.me/support/pass-alias-ios"))
         case let .invite(invites: invites):
