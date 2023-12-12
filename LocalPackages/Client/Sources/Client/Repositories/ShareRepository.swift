@@ -34,7 +34,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getShares() async throws -> [SymmetricallyEncryptedShare]
 
     /// Get all remote shares
-    func getRemoteShares(eventStream: VaultSyncEventStream?) async throws -> [Share]
+    func getRemoteShares(updateEventStream: Bool) async throws -> [Share]
 
     /// Delete all local shares
     func deleteAllSharesLocally() async throws
@@ -43,7 +43,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     func deleteShareLocally(shareId: String) async throws
 
     /// Re-encrypt and then upserting shares, emit `decryptedVault` events if `eventStream` is provided
-    func upsertShares(_ shares: [Share], eventStream: VaultSyncEventStream?) async throws
+    func upsertShares(_ shares: [Share], updateEventStream: Bool) async throws
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
 
@@ -82,11 +82,11 @@ public protocol ShareRepositoryProtocol: Sendable {
 
 public extension ShareRepositoryProtocol {
     func getRemoteShares() async throws -> [Share] {
-        try await getRemoteShares(eventStream: nil)
+        try await getRemoteShares(updateEventStream: false)
     }
 
     func upsertShares(_ shares: [Share]) async throws {
-        try await upsertShares(shares, eventStream: nil)
+        try await upsertShares(shares, updateEventStream: false)
     }
 }
 
@@ -95,17 +95,20 @@ public actor ShareRepository: ShareRepositoryProtocol {
     private let localDatasource: any LocalShareDatasourceProtocol
     private let remoteDatasouce: any RemoteShareDatasourceProtocol
     private let passKeyManager: any PassKeyManagerProtocol
+    private let eventStream: VaultSyncEventStream
     private let logger: Logger
 
     public init(userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider,
                 localDatasource: any LocalShareDatasourceProtocol,
                 remoteDatasouce: any RemoteShareDatasourceProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
-                logManager: any LogManagerProtocol) {
+                logManager: any LogManagerProtocol,
+                eventStream: VaultSyncEventStream) {
         self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasouce = remoteDatasouce
         self.passKeyManager = passKeyManager
+        self.eventStream = eventStream
         logger = .init(manager: logManager)
     }
 }
@@ -124,12 +127,14 @@ public extension ShareRepository {
         }
     }
 
-    func getRemoteShares(eventStream: VaultSyncEventStream?) async throws -> [Share] {
+    func getRemoteShares(updateEventStream: Bool = true) async throws -> [Share] {
         let userId = try userDataSymmetricKeyProvider.getUserId()
         logger.trace("Getting all remote shares for user \(userId)")
         do {
             let shares = try await remoteDatasouce.getShares()
-            eventStream?.send(.downloadedShares(shares))
+            if updateEventStream {
+                eventStream.send(.downloadedShares(shares))
+            }
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
         } catch {
@@ -152,7 +157,7 @@ public extension ShareRepository {
         logger.trace("Deleted local share \(shareId) for user \(userId)")
     }
 
-    func upsertShares(_ shares: [Share], eventStream: VaultSyncEventStream?) async throws {
+    func upsertShares(_ shares: [Share], updateEventStream: Bool = true) async throws {
         let userId = try userDataSymmetricKeyProvider.getUserId()
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
         let encryptedShares = try await shares
@@ -163,7 +168,7 @@ public extension ShareRepository {
             .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
-        if let eventStream {
+        if updateEventStream {
             for share in encryptedShares {
                 if let vault = try share.toVault(symmetricKey: getSymmetricKey()) {
                     eventStream.send(.decryptedVault(vault))
