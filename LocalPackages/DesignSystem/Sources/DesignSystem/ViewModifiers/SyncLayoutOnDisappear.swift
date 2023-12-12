@@ -26,6 +26,7 @@ import SwiftUI
 /// content
 /// This modifier should be applied to the content of the sheet being presented to force a recalculation of the
 /// view frame
+@available(iOS, deprecated: 16.0)
 public struct SyncLayoutOnDisappear: ViewModifier {
     public init() {}
 
