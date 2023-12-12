@@ -27,12 +27,14 @@ import ProtonCoreServices
 public extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        try await withCheckedThrowingContinuation { continuation in
-            NetworkDebugger.printDebugInfo(endpoint: endpoint)
-            perform(request: endpoint) { task, result in
-                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-                continuation.resume(with: result)
-            }
+        NetworkDebugger.printDebugInfo(endpoint: endpoint)
+        do {
+            let results: (URLSessionDataTask?, E.Response) = try await perform(request: endpoint)
+            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: results.0, result: .success(results.1))
+            return results.1
+        } catch {
+            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: nil, result: .failure(error))
+            throw error
         }
     }
 
@@ -50,7 +52,9 @@ public extension APIService {
         return try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
             performUpload(request: endpoint, files: files, uploadProgress: progress) { task, result in
-                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                NetworkDebugger.printDebugInfo(endpoint: endpoint,
+                                               task: task,
+                                               result: result.mapError { $0 as any Error })
                 continuation.resume(with: result)
             }
         }
@@ -60,27 +64,20 @@ public extension APIService {
     /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
     /// from the error object.
     func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        try await withCheckedThrowingContinuation { continuation in
-            NetworkDebugger.printDebugInfo(endpoint: endpoint)
-
-            perform(request: endpoint) { task, result in
-                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-
-                switch result {
-                case .success:
-                    continuation.resume(throwing: PassError.errorExpected)
-
-                case let .failure(error):
-                    if let responseError = error.underlyingError as? SessionResponseError,
-                       case let .responseBodyIsNotADecodableObject(body, _) = responseError {
-                        continuation.resume(returning: .init(httpCode: error.httpCode,
-                                                             protonCode: error.responseCode,
-                                                             data: body))
-                        return
-                    }
-                    continuation.resume(throwing: PassError.unexpectedError)
-                }
+        do {
+            let results: (URLSessionDataTask?, DataResponse) = try await perform(request: endpoint)
+            return results.1
+        } catch let error as ResponseError {
+            guard let responseError = error.underlyingError as? SessionResponseError,
+                  case let .responseBodyIsNotADecodableObject(body, _) = responseError else {
+                throw error
             }
+            return DataResponse(httpCode: error.httpCode,
+                                protonCode: error.responseCode,
+                                data: body)
+        } catch {
+            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: nil, result: .failure(error))
+            throw error
         }
     }
 }
@@ -119,7 +116,7 @@ private enum NetworkDebugger {
 
     static func printDebugInfo<E: Endpoint>(endpoint: E,
                                             task: URLSessionDataTask?,
-                                            result: Result<E.Response, ResponseError>) {
+                                            result: Result<E.Response, any Error>) {
         guard shouldDebugNetworkTraffic(),
               let response = task?.response as? HTTPURLResponse else { return }
 
@@ -141,7 +138,8 @@ private enum NetworkDebugger {
         case let .failure(error):
             print("Failure:")
             dump(error)
-            if let underError = error.underlyingError as? SessionResponseError,
+            if let responseError = error as? ResponseError,
+               let underError = responseError.underlyingError as? SessionResponseError,
                case let .responseBodyIsNotADecodableObject(body, _) = underError,
                let body,
                let rawString = String(data: body, encoding: .utf8) {

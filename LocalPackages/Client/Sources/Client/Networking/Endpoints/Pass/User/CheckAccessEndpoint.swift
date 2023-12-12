@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct CheckAccessResponse: Decodable, Equatable {
+public struct CheckAccessResponse: Decodable, Equatable, Sendable {
     let access: Access
 }
 

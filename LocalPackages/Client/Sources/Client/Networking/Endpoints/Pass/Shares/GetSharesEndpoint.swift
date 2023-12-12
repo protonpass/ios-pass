@@ -21,7 +21,7 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetSharesResponse: Decodable {
+public struct GetSharesResponse: Decodable, Sendable {
     let shares: [Share]
 }
 

@@ -245,6 +245,7 @@ struct PermenentlyDeleteItemModifier: ViewModifier {
 }
 
 extension View {
+    @MainActor
     func itemContextMenu(item: any PinnableItemTypeIdentifiable,
                          isTrashed: Bool,
                          isEditable: Bool,

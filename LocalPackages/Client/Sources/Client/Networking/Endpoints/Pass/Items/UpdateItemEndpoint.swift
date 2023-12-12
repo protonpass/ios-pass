@@ -22,7 +22,7 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct UpdateItemResponse: Decodable {
+public struct UpdateItemResponse: Decodable, Sendable {
     let item: ItemRevision
 }
 

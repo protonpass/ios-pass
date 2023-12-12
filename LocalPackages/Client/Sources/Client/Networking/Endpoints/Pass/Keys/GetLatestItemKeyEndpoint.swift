@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetLatestItemKeyResponse: Decodable {
+public struct GetLatestItemKeyResponse: Decodable, Sendable {
     let key: ItemKey
 }
 

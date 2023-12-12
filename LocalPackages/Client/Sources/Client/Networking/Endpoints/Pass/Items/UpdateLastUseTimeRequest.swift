@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct UpdateLastUseTimeRequest: Encodable {
+public struct UpdateLastUseTimeRequest: Encodable, Sendable {
     public let lastUseTime: Int
 
     enum CodingKeys: String, CodingKey {

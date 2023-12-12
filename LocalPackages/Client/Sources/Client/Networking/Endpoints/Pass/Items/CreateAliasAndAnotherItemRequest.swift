@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct CreateAliasAndAnotherItemRequest {
+public struct CreateAliasAndAnotherItemRequest: Sendable {
     let alias: CreateCustomAliasRequest
     let item: CreateItemRequest
 

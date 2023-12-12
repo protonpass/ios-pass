@@ -21,14 +21,15 @@
 import CryptoKit
 import Entities
 import Foundation
+
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct MoveItemsResponse: Decodable {
+public struct MoveItemsResponse: Decodable, Sendable {
     let items: [ItemRevision]
 }
 
-public struct MoveItemsRequest: Encodable {
+public struct MoveItemsRequest: Encodable, Sendable {
     /// Encrypted ID of the destination share
     public let shareId: String
     public let items: [ItemToBeMovedContainer]
@@ -75,7 +76,7 @@ extension MoveItemsRequest {
     }
 }
 
-public struct ItemToBeMovedContainer: Codable {
+public struct ItemToBeMovedContainer: Codable, Sendable {
     public let itemId: String
     public let item: ItemToBeMoved
 

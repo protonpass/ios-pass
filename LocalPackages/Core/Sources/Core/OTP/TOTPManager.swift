@@ -21,6 +21,7 @@
 import Entities
 import Foundation
 
+@MainActor
 public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
     private var timer: Timer?
     private let logger: Logger
@@ -52,8 +53,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
 
     public func bind(uri: String) {
         self.uri = uri
-        timer?.invalidate()
-        timer = nil
+        resetTimer()
         state = .loading
         guard !uri.isEmpty else {
             state = .empty
@@ -62,14 +62,23 @@ public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self else { return }
-            do {
-                let data = try generateTotpToken(uri: uri)
-                state = .valid(data)
-            } catch {
-                logger.error(error)
-                state = .invalid
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                do {
+                    let data = try generateTotpToken(uri: uri)
+                    state = .valid(data)
+                } catch {
+                    logger.error(error)
+                    state = .invalid
+                    resetTimer()
+                }
             }
         }
         timer?.fire()
+    }
+
+    private func resetTimer() {
+        timer?.invalidate()
+        timer = nil
     }
 }

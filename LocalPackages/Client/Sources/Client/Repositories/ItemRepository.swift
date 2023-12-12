@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+@preconcurrency import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -558,22 +558,22 @@ public extension ItemRepository {
             try items
                 .filter(\.isLogInItem)
                 .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
-                .filter { item in
-                    switch item.contentData {
-                    case let .login(loginData):
-                        !loginData.totpUri.isEmpty
-                    default:
-                        false
+                .compactMap { itemContent -> ItemRevision? in
+                    guard case let .login(loginData) = itemContent.contentData,
+                          !loginData.totpUri.isEmpty
+                    else {
+                        return nil
                     }
+                    return itemContent.item
                 }
-                .sorted(by: { $0.item.createTime < $1.item.createTime })
+                .sorted(by: { $0.createTime < $1.createTime })
 
         // Number of TOTP is not reached
         if loginItemsWithTotp.count < numberOfTotp {
             return nil
         }
 
-        return loginItemsWithTotp.prefix(numberOfTotp).last?.item.createTime
+        return loginItemsWithTotp.prefix(numberOfTotp).last?.createTime
     }
 }
 
@@ -637,8 +637,8 @@ private extension ItemRepository {
 
     /// Group items by share and bulk actionning on those grouped items
     func bulkAction(items: [any ItemIdentifiable],
-                    action: ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
-        let shouldInclude: (SymmetricallyEncryptedItem) -> Bool = { item in
+                    action: @Sendable ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
+        let shouldInclude: @Sendable (SymmetricallyEncryptedItem) -> Bool = { item in
             items.contains(where: { $0.isEqual(with: item) })
         }
         let allItems = try await getAllItems()

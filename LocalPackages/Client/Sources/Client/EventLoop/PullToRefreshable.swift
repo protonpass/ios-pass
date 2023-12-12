@@ -20,17 +20,16 @@
 
 import Foundation
 
+@MainActor
 public protocol PullToRefreshable: AnyObject, SyncEventLoopPullToRefreshDelegate {
     var syncEventLoop: SyncEventLoop { get }
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>? { get set }
 
-    @MainActor
     func forceSync() async
     func stopRefreshing()
 }
 
 public extension PullToRefreshable {
-    @MainActor
     @Sendable
     func forceSync() async {
         await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
