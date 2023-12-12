@@ -131,7 +131,6 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, Sendab
     // Injected params
     private let synchronizer: any EventSynchronizerProtocol
     private let logger: Logger
-    private var cancellable = Set<AnyCancellable>()
 
     public weak var delegate: (any SyncEventLoopDelegate)?
     public weak var pullToRefreshDelegate: (any SyncEventLoopPullToRefreshDelegate)?
@@ -139,7 +138,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, Sendab
     public init(currentDateProvider: any CurrentDateProviderProtocol,
                 synchronizer: any EventSynchronizerProtocol,
                 logManager: any LogManagerProtocol,
-                reachability: any ReachabilityServicing = ReachabilityService()) {
+                reachability: any ReachabilityServicing) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.synchronizer = synchronizer
         logger = .init(manager: logManager)

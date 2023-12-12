@@ -55,6 +55,7 @@ public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
     }
 }
 
+// periphery:ignore
 extension UserData: @unchecked Sendable {}
 
 public extension ReportRepository {
