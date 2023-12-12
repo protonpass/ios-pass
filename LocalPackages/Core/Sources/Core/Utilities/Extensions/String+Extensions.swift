@@ -95,6 +95,9 @@ public extension String {
     }
 
     func toMaskedCreditCardNumber() -> String {
+        guard count >= 12 else {
+            return "•••• •••• •••• ••••"
+        }
         let isAmex = ["34", "37"].contains(prefix(2))
 
         let noSpacesCardNumber = spacesRemoved
