@@ -20,8 +20,7 @@
 //
 
 import Entities
-
-@preconcurrency import ProtonCoreNetworking
+import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct PromoteNewUserInviteEndpoint: Endpoint {

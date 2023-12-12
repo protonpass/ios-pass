@@ -1,7 +1,7 @@
 //
-// DeleteItemsEndpoint.swift
-// Proton Pass - Created on 12/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// HTTPMethod+Extensions.swift
+// Proton Pass - Created on 12/12/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,24 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-
 import ProtonCoreNetworking
-import ProtonCoreServices
 
-public struct DeleteItemsEndpoint: Endpoint {
-    public typealias Body = ModifyItemRequest
-    public typealias Response = CodeOnlyResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: ModifyItemRequest?
-
-    public init(shareId: String, items: [ItemRevision], skipTrash: Bool) {
-        debugDescription = "Delete items"
-        path = "/pass/v1/share/\(shareId)/item"
-        method = .delete
-        body = .init(items: items, skipTrash: skipTrash)
-    }
-}
+extension HTTPMethod: @unchecked Sendable {}
