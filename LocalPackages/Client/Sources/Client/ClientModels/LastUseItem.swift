@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct LastUseItem: Decodable {
+public struct LastUseItem: Decodable, Sendable {
     let itemID: String
     let lastUseTime: Int
 }

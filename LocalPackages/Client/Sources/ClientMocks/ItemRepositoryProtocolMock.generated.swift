@@ -191,11 +191,11 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureCreateItem: () -> () = {}
     public var invokedCreateItemfunction = false
     public var invokedCreateItemCount = 0
-    public var invokedCreateItemParameters: (itemContent: ProtobufableItemContentProtocol, shareId: String)?
-    public var invokedCreateItemParametersList = [(itemContent: ProtobufableItemContentProtocol, shareId: String)]()
+    public var invokedCreateItemParameters: (itemContent: any ProtobufableItemContentProtocol, shareId: String)?
+    public var invokedCreateItemParametersList = [(itemContent: any ProtobufableItemContentProtocol, shareId: String)]()
     public var stubbedCreateItemResult: SymmetricallyEncryptedItem!
 
-    public func createItem(itemContent: ProtobufableItemContentProtocol, shareId: String) async throws -> SymmetricallyEncryptedItem {
+    public func createItem(itemContent: any ProtobufableItemContentProtocol, shareId: String) async throws -> SymmetricallyEncryptedItem {
         invokedCreateItemfunction = true
         invokedCreateItemCount += 1
         invokedCreateItemParameters = (itemContent, shareId)
@@ -211,11 +211,11 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureCreateAlias: () -> () = {}
     public var invokedCreateAliasfunction = false
     public var invokedCreateAliasCount = 0
-    public var invokedCreateAliasParameters: (info: AliasCreationInfo, itemContent: ProtobufableItemContentProtocol, shareId: String)?
-    public var invokedCreateAliasParametersList = [(info: AliasCreationInfo, itemContent: ProtobufableItemContentProtocol, shareId: String)]()
+    public var invokedCreateAliasParameters: (info: AliasCreationInfo, itemContent: any ProtobufableItemContentProtocol, shareId: String)?
+    public var invokedCreateAliasParametersList = [(info: AliasCreationInfo, itemContent: any ProtobufableItemContentProtocol, shareId: String)]()
     public var stubbedCreateAliasResult: SymmetricallyEncryptedItem!
 
-    public func createAlias(info: AliasCreationInfo, itemContent: ProtobufableItemContentProtocol, shareId: String) async throws -> SymmetricallyEncryptedItem {
+    public func createAlias(info: AliasCreationInfo, itemContent: any ProtobufableItemContentProtocol, shareId: String) async throws -> SymmetricallyEncryptedItem {
         invokedCreateAliasfunction = true
         invokedCreateAliasCount += 1
         invokedCreateAliasParameters = (info, itemContent, shareId)
@@ -231,11 +231,11 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureCreateAliasAndOtherItem: () -> () = {}
     public var invokedCreateAliasAndOtherItemfunction = false
     public var invokedCreateAliasAndOtherItemCount = 0
-    public var invokedCreateAliasAndOtherItemParameters: (info: AliasCreationInfo, aliasItemContent: ProtobufableItemContentProtocol, otherItemContent: ProtobufableItemContentProtocol, shareId: String)?
-    public var invokedCreateAliasAndOtherItemParametersList = [(info: AliasCreationInfo, aliasItemContent: ProtobufableItemContentProtocol, otherItemContent: ProtobufableItemContentProtocol, shareId: String)]()
+    public var invokedCreateAliasAndOtherItemParameters: (info: AliasCreationInfo, aliasItemContent: any ProtobufableItemContentProtocol, otherItemContent: any ProtobufableItemContentProtocol, shareId: String)?
+    public var invokedCreateAliasAndOtherItemParametersList = [(info: AliasCreationInfo, aliasItemContent: any ProtobufableItemContentProtocol, otherItemContent: any ProtobufableItemContentProtocol, shareId: String)]()
     public var stubbedCreateAliasAndOtherItemResult: (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)!
 
-    public func createAliasAndOtherItem(info: AliasCreationInfo, aliasItemContent: ProtobufableItemContentProtocol, otherItemContent: ProtobufableItemContentProtocol, shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
+    public func createAliasAndOtherItem(info: AliasCreationInfo, aliasItemContent: any ProtobufableItemContentProtocol, otherItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         invokedCreateAliasAndOtherItemfunction = true
         invokedCreateAliasAndOtherItemCount += 1
         invokedCreateAliasAndOtherItemParameters = (info, aliasItemContent, otherItemContent, shareId)
@@ -377,10 +377,10 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureUpdateItem: () -> () = {}
     public var invokedUpdateItemfunction = false
     public var invokedUpdateItemCount = 0
-    public var invokedUpdateItemParameters: (oldItem: ItemRevision, newItemContent: ProtobufableItemContentProtocol, shareId: String)?
-    public var invokedUpdateItemParametersList = [(oldItem: ItemRevision, newItemContent: ProtobufableItemContentProtocol, shareId: String)]()
+    public var invokedUpdateItemParameters: (oldItem: ItemRevision, newItemContent: any ProtobufableItemContentProtocol, shareId: String)?
+    public var invokedUpdateItemParametersList = [(oldItem: ItemRevision, newItemContent: any ProtobufableItemContentProtocol, shareId: String)]()
 
-    public func updateItem(oldItem: ItemRevision, newItemContent: ProtobufableItemContentProtocol, shareId: String) async throws {
+    public func updateItem(oldItem: ItemRevision, newItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws {
         invokedUpdateItemfunction = true
         invokedUpdateItemCount += 1
         invokedUpdateItemParameters = (oldItem, newItemContent, shareId)

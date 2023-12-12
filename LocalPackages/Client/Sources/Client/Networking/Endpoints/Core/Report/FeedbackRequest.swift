@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct FeedbackRequest {
+public struct FeedbackRequest: Sendable {
     public let feedbackType: String
     public let feedback: String
     public let score: Int

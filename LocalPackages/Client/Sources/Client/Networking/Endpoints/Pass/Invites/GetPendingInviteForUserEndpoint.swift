@@ -22,7 +22,7 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetPendingInviteForUserResponse: Decodable {
+public struct GetPendingInviteForUserResponse: Decodable, Sendable {
     let invites: [UserInvite]
 }
 

@@ -39,7 +39,7 @@ public struct AcceptInviteEndpoint: Endpoint {
     }
 }
 
-public struct AcceptInviteRequest {
+public struct AcceptInviteRequest: Sendable {
     /// Invite keys encrypted and signed with the User Key
     public let keys: [ItemKey]
 

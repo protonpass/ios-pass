@@ -22,7 +22,7 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetShareKeysResponse: Decodable {
+public struct GetShareKeysResponse: Decodable, Sendable {
     let shareKeys: ShareKeys
 }
 
@@ -33,7 +33,7 @@ public struct GetShareKeysEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var queries: [String: Any]?
+    public var queries: [String: any Sendable]?
 
     public init(shareId: String, page: Int, pageSize: Int) {
         debugDescription = "Get keys for share"

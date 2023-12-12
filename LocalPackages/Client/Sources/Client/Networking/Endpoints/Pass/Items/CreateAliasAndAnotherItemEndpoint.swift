@@ -22,10 +22,10 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct CreateAliasAndAnotherItemResponse: Decodable {
+public struct CreateAliasAndAnotherItemResponse: Decodable, Sendable {
     let bundle: Bundle
 
-    public struct Bundle: Decodable {
+    public struct Bundle: Decodable, Sendable {
         let alias: ItemRevision
         let item: ItemRevision
     }

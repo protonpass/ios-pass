@@ -58,9 +58,10 @@ extension SharedServiceContainer {
     }
 
     var syncEventLoop: Factory<SyncEventLoop> {
-        self { .init(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
-                     synchronizer: self.eventSynchronizer(),
-                     logManager: self.logManager) }
+        self { SyncEventLoop(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
+                             synchronizer: self.eventSynchronizer(),
+                             logManager: self.logManager,
+                             reachability: SharedServiceContainer.shared.reachabilityService()) }
     }
 
     var clipboardManager: Factory<ClipboardManagerProtocol> {
@@ -68,6 +69,7 @@ extension SharedServiceContainer {
                                 preferences: SharedToolingContainer.shared.preferences()) }
     }
 
+    @MainActor
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
         self { ItemContextMenuHandler() }
     }
@@ -84,5 +86,9 @@ extension SharedServiceContainer {
 
     var databaseService: Factory<DatabaseServiceProtocol> {
         self { DatabaseService(logManager: self.logManager) }
+    }
+
+    var reachabilityService: Factory<ReachabilityServicing> {
+        self { ReachabilityService() }
     }
 }

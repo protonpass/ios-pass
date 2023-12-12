@@ -24,7 +24,6 @@ import Core
 import Entities
 import Foundation
 import ProtonCoreNetworking
-import Reachability
 
 public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoopProtocol {
 

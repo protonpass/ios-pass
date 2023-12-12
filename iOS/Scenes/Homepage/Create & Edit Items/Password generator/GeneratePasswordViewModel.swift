@@ -53,6 +53,7 @@ enum PasswordUtils {
     }
 }
 
+@MainActor
 final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 

@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-public struct GetShareResponse: Decodable {
+public struct GetShareResponse: Decodable, Sendable {
     let share: Share
 }
 

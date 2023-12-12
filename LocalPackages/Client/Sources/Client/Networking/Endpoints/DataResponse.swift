@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct DataResponse {
+public struct DataResponse: Decodable, Sendable {
     public let httpCode: Int?
     public let protonCode: Int?
     public let data: Data?

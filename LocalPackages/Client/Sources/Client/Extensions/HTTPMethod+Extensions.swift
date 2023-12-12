@@ -1,7 +1,7 @@
 //
-// GetPublicKeysEndpoint.swift
-// Proton Pass - Created on 17/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// HTTPMethod+Extensions.swift
+// Proton Pass - Created on 12/12/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,24 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
 import ProtonCoreNetworking
 
-public struct GetPublicKeysResponse: Decodable, Sendable {
-    let address: PublicKeys
-}
-
-public struct GetPublicKeysEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetPublicKeysResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var parameters: [String: any Sendable]?
-
-    init(email: String) {
-        debugDescription = "Get public keys"
-        path = "/keys/all"
-        parameters = ["Email": email, "InternalOnly": 1]
-    }
-}
+extension HTTPMethod: @unchecked Sendable {}

@@ -41,7 +41,7 @@ public struct UpdateUserSharePermissionsEndpoint: Endpoint {
     }
 }
 
-public struct UserSharePermissionRequest: Encodable {
+public struct UserSharePermissionRequest: Encodable, Sendable {
     public let shareRoleID: String?
     public let expireTime: Int?
 

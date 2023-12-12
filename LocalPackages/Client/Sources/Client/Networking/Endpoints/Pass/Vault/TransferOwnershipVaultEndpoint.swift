@@ -22,7 +22,7 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct TransferOwnershipVaultRequest: Encodable {
+public struct TransferOwnershipVaultRequest: Encodable, Sendable {
     public let newOwnerShareID: String
 
     enum CodingKeys: String, CodingKey {
