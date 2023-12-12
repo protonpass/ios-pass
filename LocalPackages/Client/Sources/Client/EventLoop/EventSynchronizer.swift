@@ -77,9 +77,6 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // Need to sync 3 operations in 2 steps:
         // 1. Create & update sync
         // 2. Delete sync
-        if Task.isCancelled {
-            return false
-        }
 
         let localShares = try await shareRepository.getShares()
 

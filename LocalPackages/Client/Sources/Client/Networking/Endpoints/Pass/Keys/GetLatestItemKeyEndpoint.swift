@@ -20,7 +20,7 @@
 
 import Entities
 
-@preconcurrency import ProtonCoreNetworking
+import ProtonCoreNetworking
 
 public struct GetLatestItemKeyResponse: Decodable, Sendable {
     let key: ItemKey

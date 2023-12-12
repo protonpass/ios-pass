@@ -95,11 +95,7 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
         guard let container else {
             return
         }
-//        let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
-//        let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
-//        banner.addButton(text: dismissButtonTitle, handler: dismissClosure)
-//        banner.show(at: .top, on: container.topMostViewController)
-//
+
         Task { @MainActor in
             let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
             banner.addButton(text: dismissButtonTitle, handler: onDismiss)
