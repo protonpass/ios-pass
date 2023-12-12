@@ -29,7 +29,8 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
 }
 
-final class ItemContextMenuHandler {
+@MainActor
+final class ItemContextMenuHandler: Sendable {
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -71,10 +72,14 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.trashItems([encryptedItem])
 
-                let undoBlock: (PMBanner) -> Void = { [weak self] banner in
-                    guard let self else { return }
-                    banner.dismiss()
-                    restore(item)
+                let undoBlock: @Sendable (PMBanner) -> Void = { banner in
+                    Task { @MainActor [weak self] in
+                        guard let self else {
+                            return
+                        }
+                        banner.dismiss()
+                        restore(item)
+                    }
                 }
 
                 bannerManager.displayBottomInfoMessage(item.trashMessage,

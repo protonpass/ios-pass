@@ -38,8 +38,8 @@ struct LockedCredentialView: View {
             PassColor.backgroundNorm.toColor
                 .localAuthentication(delayed: true,
                                      onAuth: {},
-                                     onSuccess: viewModel.getAndReturnCredential,
-                                     onFailure: viewModel.handleAuthenticationFailure)
+                                     onSuccess: { viewModel.getAndReturnCredential() },
+                                     onFailure: { viewModel.handleAuthenticationFailure() })
                 .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
@@ -52,7 +52,11 @@ struct LockedCredentialView: View {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         action: viewModel.handleCancellation)
+                         action: {
+                             Task {
+                                 await viewModel.handleCancellation()
+                             }
+                         })
         }
     }
 }

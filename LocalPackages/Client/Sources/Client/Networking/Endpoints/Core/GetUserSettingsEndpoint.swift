@@ -21,7 +21,7 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetUserSettingsResponse: Decodable {
+public struct GetUserSettingsResponse: Decodable, Sendable {
     let userSettings: UserSettings
 }
 

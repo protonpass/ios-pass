@@ -77,9 +77,6 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // Need to sync 3 operations in 2 steps:
         // 1. Create & update sync
         // 2. Delete sync
-        if Task.isCancelled {
-            return false
-        }
 
         let localShares = try await shareRepository.getShares()
 
@@ -135,7 +132,16 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                                                   remoteShares: remoteShares)
             }
 
-            return try await taskGroup.contains { $0 }
+            while let hasNewEvents = try await taskGroup.next() {
+                if taskGroup.isCancelled {
+                    return false
+                }
+                if hasNewEvents {
+                    return true
+                }
+            }
+
+            return false
         }
 
         return hasNewEvents || hasNewShareEvents
@@ -207,7 +213,16 @@ private extension EventSynchronizer {
                 }
             }
 
-            return try await taskGroup.contains { $0 }
+            while let hasNewEvents = try await taskGroup.next() {
+                if taskGroup.isCancelled {
+                    return false
+                }
+                if hasNewEvents {
+                    return true
+                }
+            }
+
+            return false
         }
     }
 
@@ -248,8 +263,16 @@ private extension EventSynchronizer {
                     return false
                 }
             }
+            while let hasNewEvents = try await taskGroup.next() {
+                if taskGroup.isCancelled {
+                    return false
+                }
+                if hasNewEvents {
+                    return true
+                }
+            }
 
-            return try await taskGroup.contains { $0 }
+            return false
         }
     }
 
