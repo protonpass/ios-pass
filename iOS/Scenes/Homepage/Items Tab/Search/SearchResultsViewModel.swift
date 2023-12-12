@@ -23,6 +23,7 @@ import Entities
 import Factory
 import SwiftUI
 
+@MainActor
 final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
         didSet {

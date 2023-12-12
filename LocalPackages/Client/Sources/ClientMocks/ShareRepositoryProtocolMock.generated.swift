@@ -48,20 +48,20 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         return stubbedGetSharesResult
     }
     // MARK: - getRemoteShares
-    public var getRemoteSharesEventStreamThrowableError2: Error?
+    public var getRemoteSharesUpdateEventStreamThrowableError2: Error?
     public var closureGetRemoteShares: () -> () = {}
     public var invokedGetRemoteSharesfunction = false
     public var invokedGetRemoteSharesCount = 0
-    public var invokedGetRemoteSharesParameters: (eventStream: VaultSyncEventStream?, Void)?
-    public var invokedGetRemoteSharesParametersList = [(eventStream: VaultSyncEventStream?, Void)]()
+    public var invokedGetRemoteSharesParameters: (updateEventStream: Bool, Void)?
+    public var invokedGetRemoteSharesParametersList = [(updateEventStream: Bool, Void)]()
     public var stubbedGetRemoteSharesResult: [Share]!
 
-    public func getRemoteShares(eventStream: VaultSyncEventStream?) async throws -> [Share] {
+    public func getRemoteShares(updateEventStream: Bool) async throws -> [Share] {
         invokedGetRemoteSharesfunction = true
         invokedGetRemoteSharesCount += 1
-        invokedGetRemoteSharesParameters = (eventStream, ())
-        invokedGetRemoteSharesParametersList.append((eventStream, ()))
-        if let error = getRemoteSharesEventStreamThrowableError2 {
+        invokedGetRemoteSharesParameters = (updateEventStream, ())
+        invokedGetRemoteSharesParametersList.append((updateEventStream, ()))
+        if let error = getRemoteSharesUpdateEventStreamThrowableError2 {
             throw error
         }
         closureGetRemoteShares()
@@ -100,19 +100,19 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         closureDeleteShareLocally()
     }
     // MARK: - upsertShares
-    public var upsertSharesEventStreamThrowableError5: Error?
+    public var upsertSharesUpdateEventStreamThrowableError5: Error?
     public var closureUpsertShares: () -> () = {}
     public var invokedUpsertSharesfunction = false
     public var invokedUpsertSharesCount = 0
-    public var invokedUpsertSharesParameters: (shares: [Share], eventStream: VaultSyncEventStream?)?
-    public var invokedUpsertSharesParametersList = [(shares: [Share], eventStream: VaultSyncEventStream?)]()
+    public var invokedUpsertSharesParameters: (shares: [Share], updateEventStream: Bool)?
+    public var invokedUpsertSharesParametersList = [(shares: [Share], updateEventStream: Bool)]()
 
-    public func upsertShares(_ shares: [Share], eventStream: VaultSyncEventStream?) async throws {
+    public func upsertShares(_ shares: [Share], updateEventStream: Bool) async throws {
         invokedUpsertSharesfunction = true
         invokedUpsertSharesCount += 1
-        invokedUpsertSharesParameters = (shares, eventStream)
-        invokedUpsertSharesParametersList.append((shares, eventStream))
-        if let error = upsertSharesEventStreamThrowableError5 {
+        invokedUpsertSharesParameters = (shares, updateEventStream)
+        invokedUpsertSharesParametersList.append((shares, updateEventStream))
+        if let error = upsertSharesUpdateEventStreamThrowableError5 {
             throw error
         }
         closureUpsertShares()

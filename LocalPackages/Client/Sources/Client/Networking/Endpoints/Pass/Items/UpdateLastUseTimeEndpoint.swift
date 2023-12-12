@@ -24,7 +24,7 @@ import Foundation
 @preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct UpdateLastUseTimeResponse: Decodable {
+public struct UpdateLastUseTimeResponse: Decodable, Sendable {
     let revision: ItemRevision
 }
 

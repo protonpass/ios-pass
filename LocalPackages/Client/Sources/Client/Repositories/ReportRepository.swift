@@ -20,6 +20,7 @@
 
 import Core
 import Foundation
+import ProtonCoreLogin
 import ProtonCoreServices
 
 public enum ReportRepositoryError: Error {
@@ -53,6 +54,8 @@ public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
         self.userDataProvider = userDataProvider
     }
 }
+
+extension UserData: @unchecked Sendable {}
 
 public extension ReportRepository {
     /// Sends a user bug report
