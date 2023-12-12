@@ -20,7 +20,7 @@
 
 import Foundation
 
-@preconcurrency import ProtonCoreNetworking
+import ProtonCoreNetworking
 import ProtonCoreServices
 
 // Dummy empty response

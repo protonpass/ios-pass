@@ -19,8 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-
-@preconcurrency import ProtonCoreNetworking
+import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetShareLinkedUsersResponse: Decodable, Sendable {
