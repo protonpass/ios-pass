@@ -32,10 +32,8 @@ public extension APIService {
             let results: (URLSessionDataTask?, E.Response) = try await perform(request: endpoint)
             NetworkDebugger.printDebugInfo(endpoint: endpoint, task: results.0, result: .success(results.1))
             return results.1
-        } catch let error as ResponseError {
-            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: nil, result: .failure(error))
-            throw error
         } catch {
+            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: nil, result: .failure(error))
             throw error
         }
     }
@@ -54,7 +52,9 @@ public extension APIService {
         return try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
             performUpload(request: endpoint, files: files, uploadProgress: progress) { task, result in
-                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                NetworkDebugger.printDebugInfo(endpoint: endpoint,
+                                               task: task,
+                                               result: result.mapError { $0 as any Error })
                 continuation.resume(with: result)
             }
         }
@@ -76,31 +76,9 @@ public extension APIService {
                                 protonCode: error.responseCode,
                                 data: body)
         } catch {
+            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: nil, result: .failure(error))
             throw error
         }
-
-//        try await withCheckedThrowingContinuation { continuation in
-//            NetworkDebugger.printDebugInfo(endpoint: endpoint)
-//
-//            perform(request: endpoint) { task, result in
-//                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-//
-//                switch result {
-//                case .success:
-//                    continuation.resume(throwing: PassError.errorExpected)
-//
-//                case let .failure(error):
-//                    if let responseError = error.underlyingError as? SessionResponseError,
-//                       case let .responseBodyIsNotADecodableObject(body, _) = responseError {
-//                        continuation.resume(returning: .init(httpCode: error.httpCode,
-//                                                             protonCode: error.responseCode,
-//                                                             data: body))
-//                        return
-//                    }
-//                    continuation.resume(throwing: PassError.unexpectedError)
-//                }
-//            }
-//        }
     }
 }
 
@@ -138,7 +116,7 @@ private enum NetworkDebugger {
 
     static func printDebugInfo<E: Endpoint>(endpoint: E,
                                             task: URLSessionDataTask?,
-                                            result: Result<E.Response, ResponseError>) {
+                                            result: Result<E.Response, any Error>) {
         guard shouldDebugNetworkTraffic(),
               let response = task?.response as? HTTPURLResponse else { return }
 
@@ -160,7 +138,8 @@ private enum NetworkDebugger {
         case let .failure(error):
             print("Failure:")
             dump(error)
-            if let underError = error.underlyingError as? SessionResponseError,
+            if let responseError = error as? ResponseError,
+               let underError = responseError.underlyingError as? SessionResponseError,
                case let .responseBodyIsNotADecodableObject(body, _) = underError,
                let body,
                let rawString = String(data: body, encoding: .utf8) {
