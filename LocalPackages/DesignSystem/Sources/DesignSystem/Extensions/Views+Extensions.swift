@@ -66,7 +66,13 @@ public extension View {
 // MARK: - Modifier helpers
 
 public extension View {
+    @available(iOS, deprecated: 16.0)
+    @ViewBuilder
     func syncLayoutOnDisappear() -> some View {
-        modifier(SyncLayoutOnDisappear())
+        if #unavailable(iOS 16) {
+            modifier(SyncLayoutOnDisappear())
+        } else {
+            self
+        }
     }
 }
