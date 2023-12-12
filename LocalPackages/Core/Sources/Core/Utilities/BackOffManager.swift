@@ -34,7 +34,7 @@ public protocol BackOffManagerProtocol: Sendable {
 }
 
 public actor BackOffManager {
-    private var failureDates: [Date]
+    public var failureDates: [Date]
     public let currentDateProvider: any CurrentDateProviderProtocol
 
     public init(currentDateProvider: any CurrentDateProviderProtocol) {
