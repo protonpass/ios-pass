@@ -132,7 +132,6 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                                                   remoteShares: remoteShares)
             }
 
-//            return try await taskGroup.contains { $0 }
             while let hasNewEvents = try await taskGroup.next() {
                 if taskGroup.isCancelled {
                     return false
@@ -224,8 +223,6 @@ private extension EventSynchronizer {
             }
 
             return false
-
-//            return try await taskGroup.contains { $0 }
         }
     }
 
@@ -276,8 +273,6 @@ private extension EventSynchronizer {
             }
 
             return false
-//
-//            return try await taskGroup.contains { $0 }
         }
     }
 
