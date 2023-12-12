@@ -72,8 +72,7 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.trashItems([encryptedItem])
 
-                let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
-                    guard let self else { return }
+                let undoBlock: @Sendable (PMBanner) -> Void = { banner in
                     Task { @MainActor [weak self] in
                         guard let self else {
                             return

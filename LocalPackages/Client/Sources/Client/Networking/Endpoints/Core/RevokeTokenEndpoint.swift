@@ -20,8 +20,7 @@
 //
 
 import Foundation
-
-@preconcurrency import ProtonCoreNetworking
+import ProtonCoreNetworking
 
 public struct RevokeTokenEndpoint: Endpoint {
     public typealias Body = EmptyRequest

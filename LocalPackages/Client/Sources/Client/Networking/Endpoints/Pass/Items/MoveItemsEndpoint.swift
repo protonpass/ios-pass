@@ -22,7 +22,7 @@ import CryptoKit
 import Entities
 import Foundation
 
-@preconcurrency import ProtonCoreNetworking
+import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct MoveItemsResponse: Decodable, Sendable {
