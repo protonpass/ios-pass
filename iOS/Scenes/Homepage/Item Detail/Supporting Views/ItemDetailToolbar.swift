@@ -65,6 +65,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         Button { viewModel.moveToAnotherVault() }
                             label: { Label(title: { Text("Move to another vault") },
                                            icon: { Image(uiImage: IconProvider.folderArrowIn) }) }
+                            .hidden(!viewModel.isAllowedToEdit)
 
                         if viewModel.pinningAuthorized {
                             Button { viewModel.toggleItemPinning() }
@@ -87,12 +88,12 @@ struct ItemDetailToolbar: ToolbarContent {
                                action: { viewModel.moveToTrash() },
                                label: { Label(title: { Text("Move to trash") },
                                               icon: { Image(uiImage: IconProvider.trash) }) })
+                            .hidden(!viewModel.isAllowedToEdit)
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,
                                      iconColor: itemContentType.normMajor2Color,
                                      backgroundColor: itemContentType.normMinor1Color)
                     })
-                    .disabled(!viewModel.isAllowedToEdit)
                 }
 
             case .trashed:
