@@ -21,6 +21,7 @@
 import Client
 import Core
 import Foundation
+import ProtonCoreLogin
 import ProtonCoreServices
 
 public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryProtocol {

@@ -222,13 +222,13 @@ extension VaultsManager {
         try await deleteLocalDataBeforeFullSync()
 
         // 2. Get all remote shares and their items
-        let remoteShares = try await shareRepository.getRemoteShares(eventStream: vaultSyncEventStream)
+        let remoteShares = try await shareRepository.getRemoteShares(updateEventStream: true)
         await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in remoteShares {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
                     try await shareRepository.upsertShares([share],
-                                                           eventStream: vaultSyncEventStream)
+                                                           updateEventStream: true)
                     try await itemRepository.refreshItems(shareId: share.shareID,
                                                           eventStream: vaultSyncEventStream)
                 }

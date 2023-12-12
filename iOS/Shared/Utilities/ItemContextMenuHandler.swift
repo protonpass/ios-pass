@@ -30,7 +30,7 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
 }
 
 @MainActor
-final class ItemContextMenuHandler {
+final class ItemContextMenuHandler: Sendable {
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)

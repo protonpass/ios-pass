@@ -68,6 +68,7 @@ extension SharedServiceContainer {
                                 preferences: SharedToolingContainer.shared.preferences()) }
     }
 
+    @MainActor
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
         self { ItemContextMenuHandler() }
     }
@@ -84,5 +85,9 @@ extension SharedServiceContainer {
 
     var databaseService: Factory<DatabaseServiceProtocol> {
         self { DatabaseService(logManager: self.logManager) }
+    }
+
+    var reachabilityService: Factory<ReachabilityServicing> {
+        self { ReachabilityService() }
     }
 }
