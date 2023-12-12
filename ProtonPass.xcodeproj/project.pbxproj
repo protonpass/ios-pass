@@ -299,6 +299,7 @@
 		35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35C0D1C72B20B567005D48A6 /* TOTPRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C0D1C62B20B567005D48A6 /* TOTPRow.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
+		35CACB9A2B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 35CACB992B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore */; };
 		35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */; };
 		35CEA8E42A60769E00343A4E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 35CEA8E32A60769E00343A4E /* Factory */; };
 		35CEA8E62A607D2F00343A4E /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
@@ -917,6 +918,7 @@
 				575D3C2A2AE9168C0012434B /* SDWebImage in Frameworks */,
 				57CCEC082AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin in Frameworks */,
 				5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */,
+				35CACB9A2B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */,
 				575D3C272AE9154A0012434B /* TrustKit in Frameworks */,
 				5B8D20BE2AA7639E00457CA3 /* fusion in Frameworks */,
 				5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */,
@@ -2142,6 +2144,7 @@
 				57CCEC072AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin */,
 				5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */,
 				5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */,
+				35CACB992B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore */,
 			);
 			productName = iOSUITests;
 			productReference = 75283BD52946E1A8006658A6 /* iOSUITests.xctest */;
@@ -4824,6 +4827,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */;
 			productName = DocScanner;
+		};
+		35CACB992B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */;
+			productName = ProtonCoreTestingToolkitUnitTestsCore;
 		};
 		35CEA8E32A60769E00343A4E /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;
