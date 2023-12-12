@@ -358,6 +358,7 @@ public extension ItemRepository {
                 logger.trace("Deleted \(batch.count) items for share \(shareId)")
             }
         }
+        try await refreshPinnedItemDataStream()
     }
 
     func delete(items: [any ItemIdentifiable]) async throws {
