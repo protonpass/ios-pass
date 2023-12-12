@@ -23,7 +23,6 @@ import Core
 import Entities
 import Foundation
 import ProtonCoreNetworking
-import Reachability
 
 public protocol SyncEventLoopPullToRefreshDelegate: AnyObject {
     /// Do not care if the loop is finished with error or skipped.
@@ -117,13 +116,12 @@ public extension SyncEventLoop {
 }
 
 /// A background event loop that keeps data up to date by synching after a random number of seconds
-public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
+public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, Sendable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params
     private let backOffManager: any BackOffManagerProtocol
-    private var reachability: Reachability?
-    private var isReachable = true
+    private let reachability: any ReachabilityServicing
     private var timer: Timer?
     private var secondCount = 0
     private var threshold = kThresholdRange.randomElement() ?? 5
@@ -139,24 +137,12 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
 
     public init(currentDateProvider: any CurrentDateProviderProtocol,
                 synchronizer: any EventSynchronizerProtocol,
-                logManager: any LogManagerProtocol) {
+                logManager: any LogManagerProtocol,
+                reachability: any ReachabilityServicing) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.synchronizer = synchronizer
         logger = .init(manager: logManager)
-    }
-
-    func makeReachabilityIfNecessary() throws {
-        guard reachability == nil else { return }
-        reachability = try .init()
-        reachability?.whenReachable = { [weak self] _ in
-            guard let self else { return }
-            isReachable = true
-        }
-        reachability?.whenUnreachable = { [weak self] _ in
-            guard let self else { return }
-            isReachable = false
-        }
-        try reachability?.startNotifier()
+        self.reachability = reachability
     }
 
     public func reset() {
@@ -217,23 +203,9 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
 private extension SyncEventLoop {
     /// The repeated task of the timer
     func timerTask() {
-        do {
-            try makeReachabilityIfNecessary()
-        } catch {
-            logger.error(error)
-            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
-            delegate?.syncEventLoopDidFailLoop(error: error)
-        }
-
-        guard isReachable else {
+        guard reachability.isNetworkAvailable.value else {
             pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
             delegate?.syncEventLoopDidSkipLoop(reason: .noInternetConnection)
-            return
-        }
-
-        guard backOffManager.canProceed() else {
-            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
-            delegate?.syncEventLoopDidSkipLoop(reason: .backOff)
             return
         }
 
@@ -243,12 +215,18 @@ private extension SyncEventLoop {
             ongoingTask = Task { @MainActor [weak self] in
                 guard let self else { return }
                 defer {
-                    self.ongoingTask = nil
-                    self.pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                    ongoingTask = nil
+                    pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                }
+
+                guard await backOffManager.canProceed() else {
+                    pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                    delegate?.syncEventLoopDidSkipLoop(reason: .backOff)
+                    return
                 }
 
                 do {
-                    self.delegate?.syncEventLoopDidBeginNewLoop()
+                    delegate?.syncEventLoopDidBeginNewLoop()
                     if Task.isCancelled {
                         return
                     }
@@ -259,25 +237,25 @@ private extension SyncEventLoop {
                     // So up to this point, the event loop is considered successful
                     for task in additionalTasks {
                         do {
-                            self.delegate?.syncEventLoopDidBeginExecutingAdditionalTask(label: task.label)
+                            delegate?.syncEventLoopDidBeginExecutingAdditionalTask(label: task.label)
                             try await task()
-                            self.delegate?.syncEventLoopDidFinishAdditionalTask(label: task.label)
+                            delegate?.syncEventLoopDidFinishAdditionalTask(label: task.label)
                         } catch {
-                            self.delegate?.syncEventLoopDidFailedAdditionalTask(label: task.label,
-                                                                                error: error)
+                            delegate?.syncEventLoopDidFailedAdditionalTask(label: task.label,
+                                                                           error: error)
                         }
                     }
 
-                    self.delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
-                    self.backOffManager.recordSuccess()
+                    delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
+                    await backOffManager.recordSuccess()
                 } catch {
-                    self.logger.error(error)
-                    self.delegate?.syncEventLoopDidFailLoop(error: error)
+                    logger.error(error)
+                    delegate?.syncEventLoopDidFailLoop(error: error)
                     if let responseError = error as? ResponseError,
                        let httpCode = responseError.httpCode,
                        (500...599).contains(httpCode) {
-                        self.logger.debug("Server is down, backing off")
-                        self.backOffManager.recordFailure()
+                        logger.debug("Server is down, backing off")
+                        await backOffManager.recordFailure()
                     }
                 }
             }

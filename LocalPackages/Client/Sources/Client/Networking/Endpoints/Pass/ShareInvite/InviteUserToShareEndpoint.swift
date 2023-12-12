@@ -40,7 +40,7 @@ public struct InviteUserToShareEndpoint: Endpoint {
     }
 }
 
-public struct InviteUserToShareRequest {
+public struct InviteUserToShareRequest: Sendable {
     /// List of keys encrypted for the other user's address key and signed with your address key
     public let keys: [ItemKey]
     /// Email of the target user

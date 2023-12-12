@@ -22,7 +22,7 @@ import CryptoKit
 import Entities
 import ProtonCoreLogin
 
-public struct UpdateVaultRequest {
+public struct UpdateVaultRequest: Sendable {
     /// Vault content protocol buffer data encrypted with the vault key
     /// >= 28 characters
     let content: String

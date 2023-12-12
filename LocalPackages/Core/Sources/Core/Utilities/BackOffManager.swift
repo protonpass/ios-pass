@@ -21,19 +21,19 @@
 import Foundation
 
 /// Keep track of failures and increase the wait time when failure occurs
-public protocol BackOffManagerProtocol {
+public protocol BackOffManagerProtocol: Sendable {
     /// Call this function when failure occurs and we want to back off
-    func recordFailure()
+    func recordFailure() async
 
     /// Call this function when continuing with success
-    func recordSuccess()
+    func recordSuccess() async
 
     /// Return `true` when no need to back off
     /// Return `false` when back-off is still needed
-    func canProceed() -> Bool
+    func canProceed() async -> Bool
 }
 
-public final class BackOffManager {
+public actor BackOffManager {
     public var failureDates: [Date]
     public let currentDateProvider: any CurrentDateProviderProtocol
 

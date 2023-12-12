@@ -127,7 +127,7 @@ public extension TelemetryEventRepository {
 
 // MARK: - TelemetrySchedulerProtocol
 
-public protocol TelemetrySchedulerProtocol: AnyObject {
+public protocol TelemetrySchedulerProtocol: AnyObject, Sendable {
     var currentDateProvider: any CurrentDateProviderProtocol { get }
     var threshhold: Date? { get set }
     var minIntervalInHours: Int { get }
@@ -152,7 +152,6 @@ public extension TelemetrySchedulerProtocol {
     /// trigger an ui update.
     /// We saw crash as the update what not executed from the main thread.
     /// This is an attend to mitigate this issue
-    @MainActor
     func randomNextThreshold() {
         let randomIntervalInHours = Int.random(in: minIntervalInHours...maxIntervalInHours)
         let currentDate = currentDateProvider.getCurrentDate()
@@ -188,7 +187,7 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
     }
 }
 
-public protocol TelemetryThresholdProviderProtocol {
+public protocol TelemetryThresholdProviderProtocol: Sendable {
     func getThreshold() -> TimeInterval?
     func setThreshold(_ threshold: TimeInterval?)
 }

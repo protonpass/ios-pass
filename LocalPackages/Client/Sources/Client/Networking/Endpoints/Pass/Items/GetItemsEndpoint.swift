@@ -22,7 +22,7 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetItemsResponse: Decodable {
+public struct GetItemsResponse: Decodable, Sendable {
     let items: ItemRevisionsPaginated
 }
 
@@ -32,13 +32,13 @@ public struct GetItemsEndpoint: Endpoint {
 
     public var debugDescription: String
     public var path: String
-    public var queries: [String: Any]?
+    public var queries: [String: any Sendable]?
 
     public init(shareId: String, sinceToken: String?, pageSize: Int) {
         debugDescription = "Get items for share"
         path = "/pass/v1/share/\(shareId)/item"
 
-        var queries: [String: Any] = ["PageSize": pageSize]
+        var queries: [String: any Sendable] = ["PageSize": pageSize]
         if let sinceToken {
             queries["Since"] = sinceToken
         }
