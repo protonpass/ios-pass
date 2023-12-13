@@ -132,6 +132,26 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
+        vaultsManager.$vaultSelection
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] selection in
+                guard let self else { return }
+                var createButtonDisabled = false
+                switch selection {
+                case .all, .trash:
+                    let vaults = vaultsManager.getAllVaults()
+                    createButtonDisabled = !vaults.contains(where: \.canEdit)
+                case let .precise(vault):
+                    createButtonDisabled = !vault.canEdit
+                }
+                if createButtonDisabled {
+                    homepageTabDelegete?.homepageTabShouldDisableCreateButton()
+                } else {
+                    homepageTabDelegete?.homepageTabShouldEnableCreateButton()
+                }
+            }
+            .store(in: &cancellables)
+
         NotificationCenter.default
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { [weak self] _ in
