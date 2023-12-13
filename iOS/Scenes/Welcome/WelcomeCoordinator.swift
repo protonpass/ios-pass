@@ -34,6 +34,7 @@ protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinator(didFinishWith loginData: LoginData)
 }
 
+@MainActor
 final class WelcomeCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 

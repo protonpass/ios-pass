@@ -33,6 +33,7 @@ final class RouterContainer: SharedContainer, AutoRegistering {
 // MARK: Main Router
 
 extension RouterContainer {
+    @MainActor
     var mainNavViewRouter: Factory<MainNavViewRouter> {
         self { MainNavViewRouter() }
     }

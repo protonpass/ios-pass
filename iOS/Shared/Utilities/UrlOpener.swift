@@ -24,6 +24,7 @@ import Factory
 import SafariServices
 import UIKit
 
+@MainActor
 final class UrlOpener {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     weak var rootViewController: UIViewController?

@@ -39,6 +39,7 @@ import Sentry
 import SwiftUI
 import UIKit
 
+@MainActor
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
