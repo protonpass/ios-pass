@@ -144,11 +144,7 @@ private extension HomepageCoordinator {
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
                 }
-                if createButtonDisabled {
-                    homepageTabDelegete?.homepageTabShouldDisableCreateButton()
-                } else {
-                    homepageTabDelegete?.homepageTabShouldEnableCreateButton()
-                }
+                homepageTabDelegete?.homepageTabShouldDisableCreateButton(createButtonDisabled)
             }
             .store(in: &cancellables)
 
@@ -183,11 +179,7 @@ private extension HomepageCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isEditMode in
                 guard let self else { return }
-                if isEditMode {
-                    homepageTabDelegete?.homepageTabShouldHideTabbar()
-                } else {
-                    homepageTabDelegete?.homepageTabShouldShowTabbar()
-                }
+                homepageTabDelegete?.homepageTabShouldHideTabbar(isEditMode)
             }
             .store(in: &cancellables)
 
