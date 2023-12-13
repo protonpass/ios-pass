@@ -30,6 +30,7 @@ extension OpenAutoFillSettingsUseCase {
     }
 }
 
+@MainActor
 final class OpenAutoFillSettings: OpenAutoFillSettingsUseCase {
     private let router: MainUIKitSwiftUIRouter
 

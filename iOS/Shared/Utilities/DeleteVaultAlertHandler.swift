@@ -28,6 +28,7 @@ protocol DeleteVaultAlertHandlerDelegate: AnyObject {
     func confirmDelete(vault: Vault)
 }
 
+@MainActor
 final class DeleteVaultAlertHandler: DeinitPrintable {
     deinit { print(deinitMessage) }
 

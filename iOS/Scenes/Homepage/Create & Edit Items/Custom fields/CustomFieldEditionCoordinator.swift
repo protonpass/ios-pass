@@ -42,6 +42,7 @@ protocol CustomFieldEditionDelegate: AnyObject {
     func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
 }
 
+@MainActor
 final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {
     deinit { print(deinitMessage) }
 
