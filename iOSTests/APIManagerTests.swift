@@ -78,16 +78,23 @@ final class APIManagerTests: XCTestCase {
     func givenApiManager() -> APIManager { .init() }
 
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() {
-
         // GIVEN
         SharedDataContainer.shared.appData().resetData()
 
         // WHEN
         let apiManager = givenApiManager()
 
+        var credential: Credential?
+        let expectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
+
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, .empty)
-        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
+        XCTAssertNil(credential)
     }
 
     func testAPIServiceIsCreatedWithSessionIfUnauthSessionIsPersisted() throws {
@@ -97,42 +104,59 @@ final class APIManagerTests: XCTestCase {
         // WHEN
         let apiManager = givenApiManager()
 
+        var credential: Credential?
+        let expectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
+
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
-                       Credential(unauthSessionCredentials))
+        XCTAssertEqual(credential, Credential(unauthSessionCredentials))
     }
 
     func testAPIServiceIsCreatedWithSessionIfAuthSessionIsPersisted() throws {
         // GIVEN
-
         SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
         // WHEN
         let apiManager = givenApiManager()
 
+        var credential: Credential?
+        let expectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
+
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
-                       Credential(userData.credential))
+        XCTAssertEqual(credential, Credential(userData.credential))
     }
 
-    
-    
-   
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForUnauthSession() throws {
         // GIVEN
-
         SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
-        let apiManager = givenApiManager()
         // WHEN
-        apiManager.authHelper.onUpdate(credential: Credential(unauthSessionCredentials), sessionUID: unauthSessionCredentials.sessionID)
-        
+        let apiManager = givenApiManager()
+        apiManager.authHelper.onUpdate(credential: Credential(unauthSessionCredentials),
+                                       sessionUID: unauthSessionCredentials.sessionID)
+
+        var credential: Credential?
+        let expectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
+
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
-                       Credential(unauthSessionCredentials))
+        XCTAssertEqual(credential, Credential(unauthSessionCredentials))
     }
 
 
@@ -140,41 +164,63 @@ final class APIManagerTests: XCTestCase {
         // GIVEN
         SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
 
-        let apiManager = givenApiManager()
-
         // WHEN
+        let apiManager = givenApiManager()
         apiManager.authHelper.onUpdate(credential: Credential(userData.credential), sessionUID: userData.credential.sessionID)
+
+        var credential: Credential?
+        let expectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
 
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
-                       Credential(userData.credential))
+        XCTAssertEqual(credential, Credential(userData.credential))
     }
 
     func testAPIServiceClearCredentialsClearsAPIServiceAndUnauthSessionStorage() throws {
         // GIVEN
         SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
-        let apiManager = givenApiManager()
-
         // WHEN
+        let apiManager = givenApiManager()
         apiManager.clearCredentials()
+
+        var credential: Credential?
+        let expectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
 
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
-        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
+        XCTAssertNil(credential)
     }
 
     func testAPIServiceUnauthSessionInvalidationClearsCredentials() throws {
         // GIVEN
         SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
 
+        // WHEN
         let apiManager = givenApiManager()
-
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: false)
-        
+
+        var credential: Credential?
+        let expectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
+
+        // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
-        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
+        XCTAssertNil(credential)
     }
     
     
@@ -182,21 +228,37 @@ final class APIManagerTests: XCTestCase {
         // GIVEN
         SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
 
+        // WHEN
         let apiManager = givenApiManager()
 
-        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
-                       Credential(unauthSessionCredentials))
-        
+        var credential: Credential?
+        let expectation1 = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation1.fulfill()
+        }
+        wait(for: [expectation1], timeout: 0.1)
+
+        XCTAssertEqual(credential, Credential(unauthSessionCredentials))
+
         SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
-        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
-                       Credential(userData.credential))
+        let expectation2 = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            expectation2.fulfill()
+        }
+        wait(for: [expectation2], timeout: 0.1)
+
+        // THEN
+        XCTAssertEqual(credential, Credential(userData.credential))
     }
 
     func testAPIServiceAuthSessionInvalidationClearsCredentialsAndLogsOut() throws {
         // GIVEN
         SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
+        // WHEN
         let apiManager = givenApiManager()
 
         let sessionWasInvalidatedExpectation = expectation(description: "Session should be invalidated")
@@ -207,10 +269,19 @@ final class APIManagerTests: XCTestCase {
         
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
 
+        var credential: Credential?
+        let credentialExpectation = XCTestExpectation()
+        Task {
+            credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
+            credentialExpectation.fulfill()
+        }
+        wait(for: [credentialExpectation], timeout: 0.1)
+
         wait(for: [sessionWasInvalidatedExpectation], timeout: 3)
 
+        // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
-        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
+        XCTAssertNil(credential)
     }
 
     func testAPIServiceAuthCredentialsUpdateSetsNewUnauthCredentials() throws {
@@ -234,11 +305,17 @@ final class APIManagerTests: XCTestCase {
         )
 
         // THEN
-
-        guard let unlockedSession = apiManager.authHelper.authCredential(sessionUID: unauthSessionCredentials.sessionID) else {
-            XCTFail("Should contain authCredential")
-            return
+        var unlockedSession: AuthCredential!
+        let expectation = XCTestExpectation()
+        Task {
+            guard let authCredential = await apiManager.authHelper.authCredential(sessionUID: unauthSessionCredentials.sessionID) else {
+                XCTFail("Should contain authCredential")
+                return
+            }
+            unlockedSession = authCredential
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(unlockedSession.accessToken, newUnauthCredentials.accessToken)
         XCTAssertEqual(unlockedSession.refreshToken, newUnauthCredentials.refreshToken)
@@ -267,11 +344,19 @@ final class APIManagerTests: XCTestCase {
                                           for: unauthSessionCredentials.sessionID
         )
 
-        // THEN
-        guard let newCredential = apiManager.authHelper.authCredential(sessionUID: userData.credential.sessionID) else {
-            XCTFail("Should contain authCredential")
-            return
+        var newAuthCredential: AuthCredential!
+        let expectation = XCTestExpectation()
+        Task {
+            guard let authCredential = await apiManager.authHelper.authCredential(sessionUID: userData.credential.sessionID) else {
+                XCTFail("Should contain AuthCredential")
+                return
+            }
+            newAuthCredential = authCredential
+            expectation.fulfill()
         }
-        XCTAssertEqual(Credential(newCredential), Credential(newUnauthCredentials))
+        wait(for: [expectation], timeout: 0.1)
+
+        // THEN
+        XCTAssertEqual(Credential(newAuthCredential), Credential(newUnauthCredentials))
     }
 }
