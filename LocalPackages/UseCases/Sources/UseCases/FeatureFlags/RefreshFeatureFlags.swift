@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import ProtonCoreFeatureFlags
 
 public protocol RefreshFeatureFlagsUseCase: Sendable {
     func execute()
@@ -32,14 +33,14 @@ public extension RefreshFeatureFlagsUseCase {
 }
 
 public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase {
-    private let repository: any FeatureFlagsRepositoryProtocol
+    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
     public init(repository: any FeatureFlagsRepositoryProtocol,
                 userDataProvider: any UserDataProvider,
                 logManager: any LogManagerProtocol) {
-        self.repository = repository
+        featureFlagsRepository = repository
         self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)
     }
@@ -49,8 +50,13 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
             guard let self else { return }
             do {
                 let userId = try userDataProvider.getUserId()
-                logger.trace("Refreshing features fags for user \(userId)")
-                try await repository.refreshFlags()
+
+                if !userId.isEmpty {
+                    featureFlagsRepository.setUserId(userId)
+                }
+
+                logger.trace("Refreshing feature flags for user \(userId)")
+                try await featureFlagsRepository.fetchFlags()
                 logger.trace("Finished updating local flags for user \(userId)")
             } catch {
                 logger.error(error)
