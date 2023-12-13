@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreFeatureFlags
+
 public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
     case passSharingV1 = "PassSharingV1"
     case passSharingNewUsers = "PassSharingNewUsers"
