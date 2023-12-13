@@ -118,6 +118,7 @@ struct LocalAuthenticationModifier: ViewModifier {
 }
 
 extension View {
+    @MainActor
     func localAuthentication(delayed: Bool,
                              onAuth: @escaping () -> Void,
                              onSuccess: @escaping () -> Void,

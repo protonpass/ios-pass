@@ -57,6 +57,7 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
 
     func makeCoordinator() -> Coordinator { .init() }
 
+    @MainActor
     final class Coordinator: NSObject, HomepageTabDelegete {
         var homepageTabBarController: HomepageTabBarController?
 

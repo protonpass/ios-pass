@@ -308,6 +308,7 @@ extension UseCasesContainer {
         self { GetRustLibraryVersion() }
     }
 
+    @MainActor
     var openAutoFillSettings: Factory<OpenAutoFillSettingsUseCase> {
         self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
     }

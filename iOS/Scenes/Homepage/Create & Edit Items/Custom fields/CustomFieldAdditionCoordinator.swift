@@ -30,6 +30,7 @@ protocol CustomFieldAdditionDelegate: AnyObject {
     func customFieldAdded(_ customField: CustomField)
 }
 
+@MainActor
 final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
     deinit { print(deinitMessage) }
 
