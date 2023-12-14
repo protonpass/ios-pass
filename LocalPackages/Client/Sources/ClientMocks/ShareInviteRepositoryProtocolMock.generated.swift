@@ -148,4 +148,24 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         closureDeleteNewUserInvite()
         return stubbedDeleteNewUserInviteResult
     }
+    // MARK: - getInviteRecommendations
+    public var getInviteRecommendationsShareIdThrowableError7: Error?
+    public var closureGetInviteRecommendations: () -> () = {}
+    public var invokedGetInviteRecommendationsfunction = false
+    public var invokedGetInviteRecommendationsCount = 0
+    public var invokedGetInviteRecommendationsParameters: (shareId: String, Void)?
+    public var invokedGetInviteRecommendationsParametersList = [(shareId: String, Void)]()
+    public var stubbedGetInviteRecommendationsResult: InviteRecommendations!
+
+    public func getInviteRecommendations(shareId: String) async throws -> InviteRecommendations {
+        invokedGetInviteRecommendationsfunction = true
+        invokedGetInviteRecommendationsCount += 1
+        invokedGetInviteRecommendationsParameters = (shareId, ())
+        invokedGetInviteRecommendationsParametersList.append((shareId, ()))
+        if let error = getInviteRecommendationsShareIdThrowableError7 {
+            throw error
+        }
+        closureGetInviteRecommendations()
+        return stubbedGetInviteRecommendationsResult
+    }
 }
