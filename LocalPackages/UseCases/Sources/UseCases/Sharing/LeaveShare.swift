@@ -46,9 +46,10 @@ public final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
     }
 
     public func execute(with shareId: String) async throws {
-        try await repository.deleteShare(shareId: shareId)
-        try await repository.deleteShareLocally(shareId: shareId)
-        try await itemRepository.deleteAllItemsLocally(shareId: shareId)
+//        try await repository.deleteShare(shareId: shareId)
+//        try await repository.deleteShareLocally(shareId: shareId)
+//        try await itemRepository.deleteAllItemsLocally(shareId: shareId)
+        try await vaultManager.delete(shareId: shareId)
         vaultManager.refresh()
     }
 }
