@@ -31,6 +31,8 @@ public struct CodeOnlyResponse: Decodable, Sendable {
     var isSuccessful: Bool { code == 1_000 }
 }
 
+/// The content of Endpoint should not be changed to anything other than [String:  Any] as the parsing in the `Networking` core lib is very strict on this aspect.
+/// You should annotate the endpoint as `@unchecked Sendable` if you have params or queries set on it
 public protocol Endpoint: Request, Sendable {
     associatedtype Body: Encodable & Sendable
     associatedtype Response: Decodable & Sendable
