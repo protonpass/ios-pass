@@ -34,4 +34,15 @@ public enum ItemThumbnailData: Equatable, Sendable {
             nil
         }
     }
+
+    public var itemContentType: ItemContentType {
+        switch self {
+        case let .icon(type):
+            type
+        case let .initials(type, _):
+            type
+        case let .favIcon(type, _, _):
+            type
+        }
+    }
 }
