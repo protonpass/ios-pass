@@ -170,26 +170,44 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         closureVaultHasTrashedItems()
         return stubbedVaultHasTrashedItemsResult
     }
-    // MARK: - delete
+    // MARK: - deleteVault
     public var deleteVaultThrowableError7: Error?
-    public var closureDelete: () -> () = {}
-    public var invokedDeletefunction = false
-    public var invokedDeleteCount = 0
-    public var invokedDeleteParameters: (vault: Vault, Void)?
-    public var invokedDeleteParametersList = [(vault: Vault, Void)]()
+    public var closureDeleteVaultAsync7: () -> () = {}
+    public var invokedDeleteVaultAsync7 = false
+    public var invokedDeleteVaultAsyncCount7 = 0
+    public var invokedDeleteVaultAsyncParameters7: (vault: Vault, Void)?
+    public var invokedDeleteVaultAsyncParametersList7 = [(vault: Vault, Void)]()
 
     public func delete(vault: Vault) async throws {
-        invokedDeletefunction = true
-        invokedDeleteCount += 1
-        invokedDeleteParameters = (vault, ())
-        invokedDeleteParametersList.append((vault, ()))
+        invokedDeleteVaultAsync7 = true
+        invokedDeleteVaultAsyncCount7 += 1
+        invokedDeleteVaultAsyncParameters7 = (vault, ())
+        invokedDeleteVaultAsyncParametersList7.append((vault, ()))
         if let error = deleteVaultThrowableError7 {
             throw error
         }
-        closureDelete()
+        closureDeleteVaultAsync7()
+    }
+    // MARK: - deleteShareId
+    public var deleteShareIdThrowableError8: Error?
+    public var closureDeleteShareIdAsync8: () -> () = {}
+    public var invokedDeleteShareIdAsync8 = false
+    public var invokedDeleteShareIdAsyncCount8 = 0
+    public var invokedDeleteShareIdAsyncParameters8: (shareId: String, Void)?
+    public var invokedDeleteShareIdAsyncParametersList8 = [(shareId: String, Void)]()
+
+    public func delete(shareId: String) async throws {
+        invokedDeleteShareIdAsync8 = true
+        invokedDeleteShareIdAsyncCount8 += 1
+        invokedDeleteShareIdAsyncParameters8 = (shareId, ())
+        invokedDeleteShareIdAsyncParametersList8.append((shareId, ()))
+        if let error = deleteShareIdThrowableError8 {
+            throw error
+        }
+        closureDeleteShareIdAsync8()
     }
     // MARK: - restoreAllTrashedItems
-    public var restoreAllTrashedItemsThrowableError8: Error?
+    public var restoreAllTrashedItemsThrowableError9: Error?
     public var closureRestoreAllTrashedItems: () -> () = {}
     public var invokedRestoreAllTrashedItemsfunction = false
     public var invokedRestoreAllTrashedItemsCount = 0
@@ -197,13 +215,13 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public func restoreAllTrashedItems() async throws {
         invokedRestoreAllTrashedItemsfunction = true
         invokedRestoreAllTrashedItemsCount += 1
-        if let error = restoreAllTrashedItemsThrowableError8 {
+        if let error = restoreAllTrashedItemsThrowableError9 {
             throw error
         }
         closureRestoreAllTrashedItems()
     }
     // MARK: - permanentlyDeleteAllTrashedItems
-    public var permanentlyDeleteAllTrashedItemsThrowableError9: Error?
+    public var permanentlyDeleteAllTrashedItemsThrowableError10: Error?
     public var closurePermanentlyDeleteAllTrashedItems: () -> () = {}
     public var invokedPermanentlyDeleteAllTrashedItemsfunction = false
     public var invokedPermanentlyDeleteAllTrashedItemsCount = 0
@@ -211,7 +229,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public func permanentlyDeleteAllTrashedItems() async throws {
         invokedPermanentlyDeleteAllTrashedItemsfunction = true
         invokedPermanentlyDeleteAllTrashedItemsCount += 1
-        if let error = permanentlyDeleteAllTrashedItemsThrowableError9 {
+        if let error = permanentlyDeleteAllTrashedItemsThrowableError10 {
             throw error
         }
         closurePermanentlyDeleteAllTrashedItems()
