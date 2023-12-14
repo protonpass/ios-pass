@@ -41,6 +41,7 @@ import UIKit
 
 private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
 
+@MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
     func homepageCoordinatorDidFailLocallyAuthenticating()

@@ -43,6 +43,7 @@ enum VaultMode {
     case editNewVault(VaultProtobuf, ItemContent)
 }
 
+@MainActor
 protocol CreateEditVaultViewModelDelegate: AnyObject {
     func createEditVaultViewModelDidEditVault()
 }

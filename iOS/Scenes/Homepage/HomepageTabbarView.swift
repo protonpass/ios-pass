@@ -31,6 +31,7 @@ enum HomepageTab {
     case items, profile
 }
 
+@MainActor
 protocol HomepageTabDelegete: AnyObject {
     func homepageTabShouldChange(tab: HomepageTab)
     func homepageTabShouldRefreshTabIcons()
@@ -79,6 +80,7 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     }
 }
 
+@MainActor
 protocol HomepageTabBarControllerDelegate: AnyObject {
     func homepageTabBarControllerDidSelectItemsTab()
     func homepageTabBarControllerWantToCreateNewItem()

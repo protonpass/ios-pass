@@ -24,7 +24,7 @@ import Entities
 import Macro
 import SwiftUI
 
-struct CustomFieldUiModel: Identifiable, Equatable, Hashable {
+struct CustomFieldUiModel: Identifiable, Equatable, Hashable, Sendable {
     var id = UUID().uuidString
     var customField: CustomField
 }
@@ -38,6 +38,7 @@ extension CustomFieldUiModel {
     }
 }
 
+@MainActor
 protocol CustomFieldEditionDelegate: AnyObject {
     func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
 }

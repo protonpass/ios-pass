@@ -35,6 +35,7 @@ enum PasswordType: Int, CaseIterable {
     case random = 0, memorable
 }
 
+@MainActor
 protocol GeneratePasswordCoordinatorDelegate: AnyObject {
     func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController)
 }

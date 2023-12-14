@@ -24,6 +24,7 @@ import Entities
 import Macro
 import UIKit
 
+@MainActor
 protocol DeleteVaultAlertHandlerDelegate: AnyObject {
     func confirmDelete(vault: Vault)
 }

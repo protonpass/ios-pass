@@ -25,6 +25,7 @@ import Factory
 import ProtonCoreServices
 import SwiftUI
 
+@MainActor
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()

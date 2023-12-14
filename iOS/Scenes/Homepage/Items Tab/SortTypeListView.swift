@@ -23,10 +23,12 @@ import Core
 import DesignSystem
 import SwiftUI
 
+@MainActor
 protocol SortTypeListViewModelDelegate: AnyObject {
     func sortTypeListViewDidSelect(_ sortType: SortType)
 }
 
+@MainActor
 final class SortTypeListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
