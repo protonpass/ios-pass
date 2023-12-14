@@ -64,7 +64,6 @@ class BaseCreateEditItemViewModel {
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var recentlyAddedOrEditedField: CustomFieldUiModel?
-    @Published var isShowingNonEditableAlert = false
 
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
@@ -119,7 +118,6 @@ class BaseCreateEditItemViewModel {
             guard let vault = vaults.twoOldestVaults.owned ?? vaults.first else {
                 throw PassError.vault(.vaultNotFound(vaultShareId))
             }
-            isShowingNonEditableAlert = true
             selectedVault = vault
         }
         self.mode = mode
