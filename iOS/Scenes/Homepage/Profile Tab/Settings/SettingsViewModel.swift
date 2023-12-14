@@ -25,6 +25,7 @@ import Entities
 import Factory
 import SwiftUI
 
+@MainActor
 protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToGoBack()
     func settingsViewModelWantsToEditDefaultBrowser()
@@ -33,6 +34,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToClearLogs()
 }
 
+@MainActor
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 

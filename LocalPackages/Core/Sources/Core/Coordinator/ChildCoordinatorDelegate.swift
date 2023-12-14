@@ -22,8 +22,8 @@ import SwiftUI
 import UIKit
 
 /// Control how and what to do before presenting a view
+@MainActor
 public protocol ChildCoordinatorDelegate: AnyObject {
-    @MainActor
     func childCoordinatorWantsToPresent(viewController: UIViewController,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption)
