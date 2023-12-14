@@ -65,8 +65,8 @@ public extension APIService {
         try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
 
-            perform(request: endpoint) { _, result in
-//                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+            perform(request: endpoint) { task, result in
+                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
                 switch result {
                 case .success:
                     continuation.resume(throwing: PassError.errorExpected)
