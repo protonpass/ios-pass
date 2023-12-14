@@ -44,28 +44,30 @@ public final class ShareInviteService: ShareInviteServiceProtocol {
     public private(set) var receiverPublicKeys: [PublicKey]?
 
     public init() {}
+}
 
-    public func setCurrentSelectedVault(with vault: SharingVaultData) {
+public extension ShareInviteService {
+    func setCurrentSelectedVault(with vault: SharingVaultData) {
         currentSelectedVault.send(vault)
     }
 
-    public func setCurrentSelectedVaultItem(with itemNum: Int) {
+    func setCurrentSelectedVaultItem(with itemNum: Int) {
         currentSelectedVaultItems = itemNum
     }
 
-    public func setCurrentDestinationUserEmail(with email: String) {
+    func setCurrentDestinationUserEmail(with email: String) {
         currentDestinationUserEmail = email
     }
 
-    public func setCurrentUserRole(with role: ShareRole) {
+    func setCurrentUserRole(with role: ShareRole) {
         currentUserRole = role
     }
 
-    public func setReceiverPublicKeys(with keys: [PublicKey]) {
+    func setReceiverPublicKeys(with keys: [PublicKey]) {
         receiverPublicKeys = keys
     }
 
-    public func resetShareInviteInformations() {
+    func resetShareInviteInformations() {
         currentSelectedVault.send(nil)
         currentDestinationUserEmail = nil
         currentUserRole = nil

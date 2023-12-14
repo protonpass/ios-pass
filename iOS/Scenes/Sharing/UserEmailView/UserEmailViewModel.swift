@@ -38,6 +38,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
+    private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
     private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
@@ -108,5 +109,14 @@ private extension UserEmailViewModel {
                 vault = currentVault
             }
             .store(in: &cancellables)
+
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            if case let .existing(vault) = shareInviteService.currentSelectedVault.value {
+                let recommendations = try? await shareInviteRepository
+                    .getInviteRecommendations(shareId: vault.shareId)
+                print(recommendations)
+            }
+        }
     }
 }
