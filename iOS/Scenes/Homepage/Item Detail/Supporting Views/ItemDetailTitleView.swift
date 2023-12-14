@@ -31,7 +31,9 @@ struct ItemDetailTitleView: View {
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemSquircleThumbnail(data: itemContent.thumbnailData(), size: .large)
+            ItemSquircleThumbnail(data: itemContent.thumbnailData(),
+                                  pinned: itemContent.item.pinned,
+                                  size: .large)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(itemContent.name)

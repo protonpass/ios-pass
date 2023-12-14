@@ -232,7 +232,7 @@ struct ItemsTabView: View {
                                if viewModel.isEditMode, isSelected {
                                    SquircleCheckbox()
                                } else {
-                                   ItemSquircleThumbnail(data: item.thumbnailData())
+                                   ItemSquircleThumbnail(data: item.thumbnailData(), pinned: item.pinned)
                                        .onTapGesture {
                                            viewModel.handleThumbnailSelection(item)
                                        }
