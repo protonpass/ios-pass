@@ -26,19 +26,19 @@ public struct GetItemsResponse: Decodable, Sendable {
     let items: ItemRevisionsPaginated
 }
 
-public struct GetItemsEndpoint: Endpoint {
+public struct GetItemsEndpoint: Endpoint, @unchecked Sendable {
     public typealias Body = EmptyRequest
     public typealias Response = GetItemsResponse
 
     public var debugDescription: String
     public var path: String
-    public var queries: [String: any Sendable]?
+    public var queries: [String: Any]?
 
     public init(shareId: String, sinceToken: String?, pageSize: Int) {
         debugDescription = "Get items for share"
         path = "/pass/v1/share/\(shareId)/item"
 
-        var queries: [String: any Sendable] = ["PageSize": pageSize]
+        var queries: [String: Any] = ["PageSize": pageSize]
         if let sinceToken {
             queries["Since"] = sinceToken
         }
