@@ -59,11 +59,21 @@ struct NoteDetailView: View {
                             .opacity(0)
                     }
 
-                    TextView(.constant(viewModel.name))
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .isEditable(false)
-                        .foregroundColor(PassColor.textNorm)
+                    let itemContent = viewModel.itemContent
+
+                    HStack(alignment: .firstTextBaseline) {
+                        if itemContent.item.pinned {
+                            PinCircleView(tintColor: itemContent.contentData.type.normMajor1Color,
+                                          height: 24)
+                        }
+
+                        TextView(.constant(viewModel.name))
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .isEditable(false)
+                            .foregroundColor(PassColor.textNorm)
+                    }
+                    .animation(.default, value: itemContent.item.pinned)
 
                     HStack {
                         if let vault = viewModel.vault?.vault {
