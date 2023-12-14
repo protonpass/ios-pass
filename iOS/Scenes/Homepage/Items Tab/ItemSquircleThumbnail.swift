@@ -38,6 +38,10 @@ enum ItemSquircleThumbnailSize {
         }
     }
 
+    var pinHeight: CGFloat {
+        height / 2
+    }
+
     var strokeWidth: CGFloat {
         switch self {
         case .small:
@@ -55,18 +59,30 @@ struct ItemSquircleThumbnail: View {
 
     private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let data: ItemThumbnailData
+    private let pinned: Bool
     private let size: ItemSquircleThumbnailSize
     private let alternativeBackground: Bool
 
     init(data: ItemThumbnailData,
+         pinned: Bool = false,
          size: ItemSquircleThumbnailSize = .regular,
          alternativeBackground: Bool = false) {
         self.data = data
+        self.pinned = pinned
         self.size = size
         self.alternativeBackground = alternativeBackground
     }
 
     var body: some View {
+        thumbnail
+            .overlay(pinned ? pin : nil)
+            .animation(.default, value: pinned)
+    }
+}
+
+private extension ItemSquircleThumbnail {
+    @ViewBuilder
+    var thumbnail: some View {
         switch data {
         case let .icon(type):
             SquircleThumbnail(data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
@@ -120,8 +136,26 @@ struct ItemSquircleThumbnail: View {
             .onFirstAppear { loadFavIcon(url: url, force: false) }
         }
     }
+}
 
-    private func loadFavIcon(url: String, force: Bool) {
+private extension ItemSquircleThumbnail {
+    var pin: some View {
+        ZStack(alignment: .bottomTrailing) {
+            Color.clear
+            PassColor.backgroundNorm.toColor
+                .frame(width: size.pinHeight, height: size.pinHeight)
+                .clipShape(Circle())
+                .overlay {
+                    PinCircleView(tintColor: data.itemContentType.normMajor1Color,
+                                  height: size.pinHeight * 4 / 5)
+                }
+                .padding(-size.pinHeight / 5)
+        }
+    }
+}
+
+private extension ItemSquircleThumbnail {
+    func loadFavIcon(url: String, force: Bool) {
         if !force, image != nil {
             return
         }
