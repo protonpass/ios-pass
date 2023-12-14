@@ -68,7 +68,7 @@ public extension Endpoint {
     }
 }
 
-extension [String: any Sendable] {
+extension [String: Any] {
     static func paginationQuery(page: Int, pageSize: Int) -> Self {
         ["Page": page, "PageSize": pageSize]
     }
