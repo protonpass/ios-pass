@@ -26,6 +26,7 @@ import Factory
 import Macro
 import SwiftUI
 
+@MainActor
 protocol CustomFieldAdditionDelegate: AnyObject {
     func customFieldAdded(_ customField: CustomField)
 }

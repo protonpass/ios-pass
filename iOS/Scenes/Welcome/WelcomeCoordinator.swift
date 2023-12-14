@@ -30,6 +30,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import UIKit
 
+@MainActor
 protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinator(didFinishWith loginData: LoginData)
 }
