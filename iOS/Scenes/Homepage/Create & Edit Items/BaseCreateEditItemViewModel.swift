@@ -28,6 +28,7 @@ import Foundation
 import Macro
 import ProtonCoreLogin
 
+@MainActor
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,

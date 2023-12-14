@@ -26,6 +26,7 @@ import Factory
 import Macro
 import SwiftUI
 
+@MainActor
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
