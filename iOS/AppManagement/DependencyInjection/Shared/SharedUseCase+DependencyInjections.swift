@@ -52,6 +52,10 @@ private extension SharedUseCasesContainer {
     var itemRepository: any ItemRepositoryProtocol {
         SharedRepositoryContainer.shared.itemRepository()
     }
+
+    var userDataProvider: any UserDataProvider {
+        SharedDataContainer.shared.userDataProvider()
+    }
 }
 
 // MARK: Permission
@@ -92,6 +96,10 @@ extension SharedUseCasesContainer {
 
     var setUpSentry: Factory<SetUpSentryUseCase> {
         self { SetUpSentry() }
+    }
+
+    var sendErrorToSentry: Factory<SendErrorToSentryUseCase> {
+        self { SendErrorToSentry(userDataProvider: self.userDataProvider) }
     }
 }
 
@@ -144,7 +152,7 @@ extension SharedUseCasesContainer {
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 userDataProvider: SharedDataContainer.shared.userDataProvider(),
+                                 userDataProvider: self.userDataProvider,
                                  logManager: SharedToolingContainer.shared.logManager())
         }
     }
