@@ -373,18 +373,21 @@ public extension ItemRepository {
     func deleteAllItemsLocally() async throws {
         logger.trace("Deleting all items locally")
         try await localDatasource.removeAllItems()
+        try await refreshPinnedItemDataStream()
         logger.trace("Deleted all items locally")
     }
 
     func deleteAllItemsLocally(shareId: String) async throws {
         logger.trace("Deleting all items locally for share \(shareId)")
         try await localDatasource.removeAllItems(shareId: shareId)
+        try await refreshPinnedItemDataStream()
         logger.trace("Deleted all items locally for share \(shareId)")
     }
 
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws {
         logger.trace("Deleting locally items \(itemIds) for share \(shareId)")
         try await localDatasource.deleteItems(itemIds: itemIds, shareId: shareId)
+        try await refreshPinnedItemDataStream()
         logger.trace("Deleted locally items \(itemIds) for share \(shareId)")
     }
 
@@ -450,6 +453,7 @@ public extension ItemRepository {
         let newEncryptedItem = try await symmetricallyEncrypt(itemRevision: newItem, shareId: toShareId)
         try await localDatasource.deleteItems([oldEncryptedItem])
         try await localDatasource.upsertItems([newEncryptedItem])
+        try await refreshPinnedItemDataStream()
         logger.info("Moved \(item.debugDescription) to share \(toShareId)")
         return newEncryptedItem
     }
@@ -462,6 +466,7 @@ public extension ItemRepository {
                 _ = try await move(oldEncryptedItems: groupedItems, toShareId: toShareId)
             }
         }
+        try await refreshPinnedItemDataStream()
         logger.info("Bulk moved \(items.count) items to share \(toShareId)")
     }
 
@@ -632,7 +637,6 @@ private extension ItemRepository {
                 try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: toShareId)
             }.compactMap { $0 }
         try await localDatasource.upsertItems(newEncryptedItems)
-
         return newEncryptedItems
     }
 
