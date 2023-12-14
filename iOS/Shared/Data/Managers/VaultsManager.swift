@@ -305,22 +305,18 @@ extension VaultsManager {
         let shareId = vault.shareId
         logger.trace("Deleting vault \(shareId)")
         try await shareRepository.deleteVault(shareId: shareId)
-        switch state {
-        case let .loaded(vaults, trashedItems):
-            logger.trace("Deleting local active items of vault \(shareId)")
-            if let deletedVault = vaults.first(where: { $0.vault.shareId == shareId }) {
-                let itemIds = deletedVault.items.map(\.itemId)
-                try await itemRepository.deleteItemsLocally(itemIds: itemIds, shareId: shareId)
-            }
+        logger.trace("Deleting local active items of vault \(shareId)")
+        try await itemRepository.deleteAllItemsLocally(shareId: shareId)
+        // Delete local items of the vault
+        logger.info("Deleted vault \(shareId)")
+    }
 
-            logger.trace("Deleting local trashed items of vault \(shareId)")
-            let trashedItemsToBeRemoved = trashedItems.filter { $0.shareId == shareId }
-            try await itemRepository.deleteItemsLocally(itemIds: trashedItemsToBeRemoved.map(\.itemId),
-                                                        shareId: shareId)
-
-        default:
-            break
-        }
+    func delete(shareId: String) async throws {
+        logger.trace("Deleting share \(shareId)")
+        try await shareRepository.deleteShare(shareId: shareId)
+        try await shareRepository.deleteShareLocally(shareId: shareId)
+        logger.trace("Deleting local active items of vault \(shareId)")
+        try await itemRepository.deleteAllItemsLocally(shareId: shareId)
         // Delete local items of the vault
         logger.info("Deleted vault \(shareId)")
     }
