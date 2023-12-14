@@ -34,8 +34,8 @@ enum HomepageTab {
 protocol HomepageTabDelegete: AnyObject {
     func homepageTabShouldChange(tab: HomepageTab)
     func homepageTabShouldRefreshTabIcons()
-    func homepageTabShouldHideTabbar()
-    func homepageTabShouldShowTabbar()
+    func homepageTabShouldHideTabbar(_ isHidden: Bool)
+    func homepageTabShouldDisableCreateButton(_ isDisabled: Bool)
 }
 
 struct HomepageTabbarView: UIViewControllerRepresentable {
@@ -68,12 +68,12 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
             homepageTabBarController?.refreshTabBarIcons()
         }
 
-        func homepageTabShouldHideTabbar() {
-            homepageTabBarController?.hideTabBar(true)
+        func homepageTabShouldHideTabbar(_ isHidden: Bool) {
+            homepageTabBarController?.hideTabBar(isHidden)
         }
 
-        func homepageTabShouldShowTabbar() {
-            homepageTabBarController?.hideTabBar(false)
+        func homepageTabShouldDisableCreateButton(_ isDisabled: Bool) {
+            homepageTabBarController?.disableCreateButton(isDisabled)
         }
     }
 }
@@ -205,6 +205,13 @@ extension HomepageTabBarController {
                 tabBar.frame.origin.y = view.frame.maxY - tabBar.frame.height
             }
             view.layoutIfNeeded()
+        }
+    }
+
+    func disableCreateButton(_ isDisabled: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+            viewControllers?[1].tabBarItem.isEnabled = !isDisabled
         }
     }
 }
