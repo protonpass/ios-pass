@@ -315,9 +315,8 @@ extension VaultsManager {
         logger.trace("Deleting share \(shareId)")
         try await shareRepository.deleteShare(shareId: shareId)
         try await shareRepository.deleteShareLocally(shareId: shareId)
-        logger.trace("Deleting local active items of vault \(shareId)")
+        logger.trace("Deleting local active items of share \(shareId)")
         try await itemRepository.deleteAllItemsLocally(shareId: shareId)
-        // Delete local items of the vault
         logger.info("Deleted vault \(shareId)")
     }
 
