@@ -25,13 +25,13 @@ public struct GetPublicKeysResponse: Decodable, Sendable {
     let address: PublicKeys
 }
 
-public struct GetPublicKeysEndpoint: Endpoint {
+public struct GetPublicKeysEndpoint: Endpoint, @unchecked Sendable {
     public typealias Body = EmptyRequest
     public typealias Response = GetPublicKeysResponse
 
     public var debugDescription: String
     public var path: String
-    public var parameters: [String: any Sendable]?
+    public var parameters: [String: Any]?
 
     init(email: String) {
         debugDescription = "Get public keys"
