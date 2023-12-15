@@ -23,8 +23,6 @@ import CoreData
 import Foundation
 
 public protocol DatabaseServiceProtocol: Sendable {
-//    var container: NSPersistentContainer { get }
-
     func resetContainer(inMemory: Bool)
     func getContainer() -> NSPersistentContainer
 }

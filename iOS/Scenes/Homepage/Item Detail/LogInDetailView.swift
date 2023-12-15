@@ -74,9 +74,7 @@ struct LogInDetailView: View {
                                             isFreeUser: viewModel.isFreeUser,
                                             onSelectHiddenText: { copyHiddenText($0) },
                                             onSelectTotpToken: { copyTOTPToken($0) },
-                                            onUpgrade: {
-                                                viewModel.upgrade()
-                                            })
+                                            onUpgrade: { viewModel.upgrade() })
 
                         ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)

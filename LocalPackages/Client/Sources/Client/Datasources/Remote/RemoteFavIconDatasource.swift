@@ -52,7 +52,6 @@ public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatas
 public extension RemoteFavIconDatasource {
     func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult {
         let endpoint = GetLogoEndpoint(domain: domain)
-        print("woot fav for \(domain) with endpoint \(endpoint.parameters)")
         let response = try await execExpectingData(endpoint: endpoint)
         return try handle(dataResponse: response)
     }
