@@ -636,6 +636,8 @@ private extension ItemRepository {
             .parallelMap { [weak self] in
                 try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: toShareId)
             }.compactMap { $0 }
+        try await localDatasource.deleteItems(itemIds: oldEncryptedItems.map(\.itemId),
+                                              shareId: fromSharedId)
         try await localDatasource.upsertItems(newEncryptedItems)
         return newEncryptedItems
     }
