@@ -28,7 +28,7 @@ public class RemoteDatasource {
     private let apiService: any APIService
     private let eventStream: CorruptedSessionEventStream
 
-    public init(apiService: any APIService, eventStream: CorruptedSessionEventStream) {
+    public init(apiService: some APIService, eventStream: CorruptedSessionEventStream) {
         self.apiService = apiService
         self.eventStream = eventStream
     }

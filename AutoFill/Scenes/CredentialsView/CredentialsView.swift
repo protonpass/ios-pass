@@ -89,7 +89,7 @@ private extension CredentialsView {
                 SearchBar(query: $viewModel.query,
                           isFocused: $isFocusedOnSearchBar,
                           placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
-                          onCancel: viewModel.cancel)
+                          onCancel: { viewModel.cancel() })
             }
             switch viewModel.state {
             case .idle:
@@ -118,14 +118,14 @@ private extension CredentialsView {
                 } else {
                     CredentialSearchResultView(results: results,
                                                selectedSortType: $viewModel.selectedSortType,
-                                               sortAction: viewModel.presentSortTypeList,
-                                               selectItem: viewModel.select)
+                                               sortAction: { viewModel.presentSortTypeList() },
+                                               selectItem: { viewModel.select(item: $0) })
                 }
             case .loading:
                 CredentialsSkeletonView()
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: viewModel.fetchItems)
+                                   onRetry: { viewModel.fetchItems() })
             }
 
             Spacer()
@@ -134,7 +134,7 @@ private extension CredentialsView {
                               titleColor: PassColor.loginInteractionNormMajor2,
                               backgroundColor: PassColor.loginInteractionNormMinor1,
                               height: 52,
-                              action: viewModel.createLoginItem)
+                              action: { viewModel.createLoginItem() })
                 .padding(.horizontal)
                 .padding(.vertical, 8)
         }
@@ -210,7 +210,7 @@ private extension CredentialsView {
                 Spacer()
 
                 SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                               action: viewModel.presentSortTypeList)
+                               action: { viewModel.presentSortTypeList() })
             }
             .plainListRow()
             .padding([.top, .horizontal])
@@ -247,7 +247,7 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item, selectItem: viewModel.select)
+                    GenericCredentialItemRow(item: item, selectItem: { viewModel.select(item: $0) })
                         .plainListRow()
                         .padding(.horizontal)
                 }

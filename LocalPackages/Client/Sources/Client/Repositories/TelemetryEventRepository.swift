@@ -87,12 +87,12 @@ public extension TelemetryEventRepository {
     }
 
     func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult {
-        guard scheduler.shouldSendEvents() else {
+        guard await scheduler.shouldSendEvents() else {
             logger.debug("Threshold not reached")
             return .thresholdNotReached
         }
 
-        defer { scheduler.randomNextThreshold() }
+        defer { setNewThreshold() }
 
         let userId = try userDataProvider.getUserId()
 
@@ -123,58 +123,31 @@ public extension TelemetryEventRepository {
         logger.info("Sent all events")
         return .allEventsSent
     }
+
+    func setNewThreshold() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await scheduler.randomNextThreshold()
+        }
+    }
 }
 
 // MARK: - TelemetrySchedulerProtocol
 
 public protocol TelemetrySchedulerProtocol: AnyObject, Sendable {
     var currentDateProvider: any CurrentDateProviderProtocol { get }
-    var threshhold: Date? { get set }
     var minIntervalInHours: Int { get }
     var maxIntervalInHours: Int { get }
 
-    func shouldSendEvents() -> Bool
-    func randomNextThreshold()
+    func shouldSendEvents() async -> Bool
+    func randomNextThreshold() async
+    func getThreshold() async -> Date?
 }
 
-public extension TelemetrySchedulerProtocol {
-    func shouldSendEvents() -> Bool {
-        let currentDate = currentDateProvider.getCurrentDate()
-        if let threshhold {
-            return currentDate > threshhold
-        } else {
-            randomNextThreshold()
-            return false
-        }
-    }
-
-    /// We are setting this function as part of the main actor as it has influence on Preference that seems to
-    /// trigger an ui update.
-    /// We saw crash as the update what not executed from the main thread.
-    /// This is an attend to mitigate this issue
-    func randomNextThreshold() {
-        let randomIntervalInHours = Int.random(in: minIntervalInHours...maxIntervalInHours)
-        let currentDate = currentDateProvider.getCurrentDate()
-        threshhold = currentDate.adding(component: .hour, value: randomIntervalInHours)
-    }
-}
-
-public final class TelemetryScheduler: TelemetrySchedulerProtocol {
+public actor TelemetryScheduler: TelemetrySchedulerProtocol {
     public let currentDateProvider: any CurrentDateProviderProtocol
-    public var threshhold: Date? {
-        get {
-            if let telemetryThreshold = thresholdProvider.getThreshold() {
-                Date(timeIntervalSince1970: telemetryThreshold)
-            } else {
-                nil
-            }
-        }
-
-        set {
-            thresholdProvider.setThreshold(newValue?.timeIntervalSince1970)
-        }
-    }
-
     public let eventCount = 500
     public let minIntervalInHours = 6
     public let maxIntervalInHours = 12
@@ -184,6 +157,38 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
                 thresholdProvider: any TelemetryThresholdProviderProtocol) {
         self.currentDateProvider = currentDateProvider
         self.thresholdProvider = thresholdProvider
+    }
+
+    public func getThreshold() async -> Date? {
+        if let telemetryThreshold = thresholdProvider.getThreshold() {
+            Date(timeIntervalSince1970: telemetryThreshold)
+        } else {
+            nil
+        }
+    }
+
+    func setThreshold(with date: Date?) async {
+        thresholdProvider.setThreshold(date?.timeIntervalSince1970)
+    }
+
+    public func shouldSendEvents() async -> Bool {
+        let currentDate = currentDateProvider.getCurrentDate()
+        if let threshold = thresholdProvider.getThreshold() {
+            return currentDate > Date(timeIntervalSince1970: threshold)
+        } else {
+            await randomNextThreshold()
+            return false
+        }
+    }
+
+    /// We are setting this function as part of the main actor as it has influence on Preference that seems to
+    /// trigger an ui update.
+    /// We saw crash as the update what not executed from the main thread.
+    /// This is an attend to mitigate this issue
+    public func randomNextThreshold() async {
+        let randomIntervalInHours = Int.random(in: minIntervalInHours...maxIntervalInHours)
+        let currentDate = currentDateProvider.getCurrentDate()
+        await setThreshold(with: currentDate.adding(component: .hour, value: randomIntervalInHours))
     }
 }
 

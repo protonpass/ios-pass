@@ -407,8 +407,13 @@ extension ItemsTabViewModel: SortTypeListViewModelDelegate {
 // MARK: - SyncEventLoopPullToRefreshDelegate
 
 extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
-    func pullToRefreshShouldStopRefreshing() {
-        stopRefreshing()
+    nonisolated func pullToRefreshShouldStopRefreshing() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await stopRefreshing()
+        }
     }
 }
 

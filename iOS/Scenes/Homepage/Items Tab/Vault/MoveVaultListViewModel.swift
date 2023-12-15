@@ -26,6 +26,7 @@ import Entities
 import Factory
 import Macro
 
+@MainActor
 final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 

@@ -30,6 +30,7 @@ struct CachedFavIconsSection: View {
     }
 }
 
+@MainActor
 final class CachedFavIconsViewModel: ObservableObject {
     @Published private(set) var icons = [FavIcon]()
     @Published private(set) var error: Error?
@@ -70,7 +71,7 @@ struct CachedFavIconsView: View {
         Form {
             if let error = viewModel.error {
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: viewModel.loadIcons)
+                                   onRetry: { viewModel.loadIcons() })
             } else {
                 if viewModel.icons.isEmpty {
                     Text(verbatim: "Empty cache")
@@ -84,7 +85,7 @@ struct CachedFavIconsView: View {
         .navigationTitle(Text(verbatim: "Cached fav icons"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: viewModel.emptyCache) {
+                Button(action: { viewModel.emptyCache() }) {
                     Label(title: {
                         Text(verbatim: "Empty cache")
                     }, icon: {
