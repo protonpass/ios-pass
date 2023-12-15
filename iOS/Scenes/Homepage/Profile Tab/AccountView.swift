@@ -57,7 +57,7 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text(plan.displayName)
-                                          .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                          .foregroundColor(PassColor.textNorm.toColor)
                                   })
                     }
                 }
@@ -67,7 +67,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Manage subscription")
-                                  .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.arrowOutSquare,
@@ -81,7 +81,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Sign out")
-                                  .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.arrowOutFromRectangle,
@@ -95,7 +95,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Delete account")
-                                  .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                                  .foregroundColor(PassColor.signalDanger.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.trash,
@@ -118,7 +118,7 @@ struct AccountView: View {
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.isLoading)
         .alert("You will be signed out",

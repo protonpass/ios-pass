@@ -52,7 +52,7 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     }
 }
 
-public class LocalDatasource: Sendable {
+public class LocalDatasource: @unchecked Sendable {
     private let databaseService: any DatabaseServiceProtocol
     private var container: NSPersistentContainer {
         databaseService.getContainer()
