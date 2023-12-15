@@ -22,7 +22,7 @@ import Client
 import Factory
 import UIKit
 
-final class SharedViewContainer: SharedContainer, AutoRegistering {
+final class SharedViewContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = SharedViewContainer()
     private(set) var registered = false
     let manager = ContainerManager()
