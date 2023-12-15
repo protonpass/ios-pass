@@ -21,10 +21,11 @@
 
 import DesignSystem
 import Entities
+import Macro
 import SwiftUI
 
 public struct InviteSuggestionsSection: View {
-    @State private var isShowingRecentEmails = true
+    @State private var selectedIndex = 0
     @Binding private var selectedEmails: [String]
     let recommendations: InviteRecommendations
 
@@ -40,19 +41,16 @@ public struct InviteSuggestionsSection: View {
                 .font(.body.weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button(action: {
-                if !recommendations.planRecommendedEmails.isEmpty {
-                    isShowingRecentEmails.toggle()
-                }
-            }, label: {
-                Text(verbatim: "Switch")
-            })
+            if let planName = recommendations.planDisplayName ?? recommendations.planInternalName {
+                SegmentedPicker(selectedIndex: $selectedIndex,
+                                options: [#localized("Recents"), planName])
+            }
 
-            emailList(isShowingRecentEmails ?
+            emailList(selectedIndex == 0 ?
                 recommendations.recommendedEmails : recommendations.planRecommendedEmails)
         }
         .animation(.default, value: selectedEmails.hashValue)
-        .animation(.default, value: isShowingRecentEmails)
+        .animation(.default, value: selectedIndex)
     }
 }
 
