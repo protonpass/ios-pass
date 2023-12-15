@@ -33,11 +33,11 @@ struct NotLoggedInView: View {
             VStack {
                 Text("Please log in in order to use Proton Pass AutoFill extension")
                     .multilineTextAlignment(.center)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundColor(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

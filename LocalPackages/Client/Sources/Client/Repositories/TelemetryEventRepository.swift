@@ -136,7 +136,7 @@ public extension TelemetryEventRepository {
 
 // MARK: - TelemetrySchedulerProtocol
 
-public protocol TelemetrySchedulerProtocol: AnyObject, Sendable {
+public protocol TelemetrySchedulerProtocol: Actor, Sendable {
     var currentDateProvider: any CurrentDateProviderProtocol { get }
     var minIntervalInHours: Int { get }
     var maxIntervalInHours: Int { get }

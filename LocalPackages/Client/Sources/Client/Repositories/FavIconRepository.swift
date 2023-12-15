@@ -89,7 +89,6 @@ public extension FavIconRepository {
                 let symmetricKey = try getSymmetricKey()
 
                 let domain = URL(string: domain)?.host ?? domain
-                print("woot favicon domain \(domain)")
 
                 let hashedDomain = domain.sha256
                 let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
