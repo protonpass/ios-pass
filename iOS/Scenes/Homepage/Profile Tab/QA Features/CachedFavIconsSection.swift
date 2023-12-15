@@ -44,7 +44,7 @@ final class CachedFavIconsViewModel: ObservableObject {
             guard let self else { return }
             do {
                 self.error = nil
-                self.icons = try self.favIconRepository.getAllCachedIcons()
+                self.icons = try await favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }
@@ -56,8 +56,8 @@ final class CachedFavIconsViewModel: ObservableObject {
             guard let self else { return }
             do {
                 self.error = nil
-                try self.favIconRepository.emptyCache()
-                self.icons = try self.favIconRepository.getAllCachedIcons()
+                try await favIconRepository.emptyCache()
+                self.icons = try await favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }
@@ -85,7 +85,7 @@ struct CachedFavIconsView: View {
         .navigationTitle(Text(verbatim: "Cached fav icons"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { viewModel.emptyCache() }) {
+                Button { viewModel.emptyCache() } label: {
                     Label(title: {
                         Text(verbatim: "Empty cache")
                     }, icon: {
