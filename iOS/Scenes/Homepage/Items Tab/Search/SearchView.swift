@@ -42,7 +42,7 @@ struct SearchView: View {
 
                 case let .error(error):
                     RetryableErrorView(errorMessage: error.localizedDescription,
-                                       onRetry: viewModel.refreshResults)
+                                       onRetry: { viewModel.refreshResults() })
                 }
             }
             .animation(.default, value: viewModel.state)
@@ -72,7 +72,7 @@ struct SearchView: View {
                 SearchRecentResultsView(results: history,
                                         onSelect: { viewModel.viewDetail(of: $0) },
                                         onRemove: { viewModel.removeFromHistory($0) },
-                                        onClearResults: viewModel.removeAllSearchHistory)
+                                        onClearResults: { viewModel.removeAllSearchHistory() })
 
             case let .noResults(query):
                 if case let .all(vaultSelection) = viewModel.searchMode {
@@ -82,7 +82,7 @@ struct SearchView: View {
                     case let .precise(vault):
                         NoSearchResultsInPreciseVaultView(query: query,
                                                           vaultName: vault.name,
-                                                          action: viewModel.searchInAllVaults)
+                                                          action: { viewModel.searchInAllVaults() })
                     case .trash:
                         NoSearchResultsInTrashView(query: query)
                     }
@@ -99,7 +99,7 @@ struct SearchView: View {
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) },
-                                  onSelectSortType: viewModel.presentSortTypeList)
+                                  onSelectSortType: { viewModel.presentSortTypeList() })
 
             default:
                 // Impossible cases

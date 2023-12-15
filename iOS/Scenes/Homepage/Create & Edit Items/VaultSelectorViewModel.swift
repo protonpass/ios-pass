@@ -24,6 +24,7 @@ import Core
 import Entities
 import Factory
 
+@MainActor
 final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -45,8 +46,12 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
         setup()
     }
 
-    func select(vault: Vault) {
+    nonisolated func select(vault: Vault) {
         vaultsManager.select(.precise(vault))
+    }
+
+    func isSelected(vault: Vault) -> Bool {
+        vault.shareId == selectedVault?.shareId
     }
 
     func upgrade() {

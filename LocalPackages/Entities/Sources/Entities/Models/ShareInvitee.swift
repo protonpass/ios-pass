@@ -30,7 +30,7 @@ public protocol ShareInvitee: Identifiable {
     var options: [ShareInviteeOption] { get }
 }
 
-public enum ShareInviteeOption: Identifiable {
+public enum ShareInviteeOption: Identifiable, Sendable {
     case remindExistingUserInvitation(inviteId: String)
     case cancelExistingUserInvitation(inviteId: String)
     case cancelNewUserInvitation(inviteId: String)

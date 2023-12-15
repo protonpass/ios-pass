@@ -63,7 +63,7 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
-                OptionRow(action: viewModel.manageSubscription,
+                OptionRow(action: { viewModel.manageSubscription() },
                           height: .tall,
                           content: {
                               Text("Manage subscription")
@@ -91,7 +91,7 @@ struct AccountView: View {
                           .roundedEditableSection()
                           .padding(.vertical)
 
-                OptionRow(action: viewModel.deleteAccount,
+                OptionRow(action: { viewModel.deleteAccount() },
                           height: .tall,
                           content: {
                               Text("Delete account")
@@ -125,7 +125,7 @@ struct AccountView: View {
                isPresented: $isShowingSignOutConfirmation,
                actions: {
                    Button(role: .destructive,
-                          action: viewModel.signOut,
+                          action: { viewModel.signOut() },
                           label: { Text("Yes, sign me out") })
 
                    Button(role: .cancel, label: { Text("Cancel") })
@@ -138,7 +138,7 @@ struct AccountView: View {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         action: viewModel.goBack)
+                         action: { viewModel.goBack() })
         }
         ToolbarItem(placement: .navigationBarTrailing) {
             if let plan = viewModel.plan, plan.planType != .plus {
@@ -146,7 +146,7 @@ struct AccountView: View {
                                    title: #localized("Upgrade"),
                                    titleColor: ColorProvider.TextInverted,
                                    backgroundColor: PassColor.interactionNormMajor2,
-                                   action: viewModel.upgradeSubscription)
+                                   action: { viewModel.upgradeSubscription() })
             } else {
                 EmptyView()
             }
