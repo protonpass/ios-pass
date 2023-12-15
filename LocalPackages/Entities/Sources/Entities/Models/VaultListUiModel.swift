@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct VaultListUiModel: Hashable {
+public struct VaultListUiModel: Hashable, Sendable {
     public let vault: Vault
     public let itemCount: Int
 

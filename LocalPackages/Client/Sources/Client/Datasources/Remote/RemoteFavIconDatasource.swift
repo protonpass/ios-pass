@@ -43,7 +43,7 @@ public enum FavIconError: Int, CaseIterable, Sendable {
     case failedToFind = 2_902
 }
 
-public protocol RemoteFavIconDatasourceProtocol {
+public protocol RemoteFavIconDatasourceProtocol: Sendable {
     func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult
 }
 

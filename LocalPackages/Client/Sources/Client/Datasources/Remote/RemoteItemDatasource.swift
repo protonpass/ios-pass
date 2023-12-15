@@ -22,7 +22,7 @@ import Entities
 import Foundation
 
 // sourcery: AutoMockable
-public protocol RemoteItemDatasourceProtocol {
+public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision

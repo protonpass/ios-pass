@@ -24,7 +24,7 @@ import Factory
 import Foundation
 import ProtonCoreServices
 
-final class RepositoryContainer: SharedContainer, AutoRegistering {
+final class RepositoryContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = RepositoryContainer()
     let manager = ContainerManager()
 

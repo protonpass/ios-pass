@@ -30,7 +30,7 @@ private extension PassColor {
 }
 
 public extension PassColor {
-    static var inputBackgroundNorm = Self
+    static let inputBackgroundNorm = Self
         .color(named: "InputBackgroundNorm") // Self.color(named: , in: .module, compatibleWith: nil)!
     static let inputBorderNorm = Self.color(named: "InputBorderNorm")
 

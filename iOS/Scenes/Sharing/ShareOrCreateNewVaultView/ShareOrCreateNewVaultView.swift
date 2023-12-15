@@ -25,10 +25,10 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 struct ShareOrCreateNewVaultView: View {
     private let viewModel: ShareOrCreateNewVaultViewModel
 
-    @MainActor
     init(vault: VaultListUiModel, itemContent: ItemContent) {
         viewModel = .init(vault: vault, itemContent: itemContent)
     }
@@ -93,7 +93,7 @@ private extension ShareOrCreateNewVaultView {
             CapsuleTextButton(title: #localized("Share this vault"),
                               titleColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1,
-                              action: viewModel.shareVault)
+                              action: { viewModel.shareVault() })
                 .fixedSize(horizontal: true, vertical: true)
         }
         .padding(.horizontal)
@@ -103,7 +103,7 @@ private extension ShareOrCreateNewVaultView {
 
 private extension ShareOrCreateNewVaultView {
     var createNewVaultButton: some View {
-        Button(action: viewModel.createNewVault) {
+        Button(action: { viewModel.createNewVault() }) {
             Label(title: {
                 Text("Create a new vault to share")
                     .foregroundColor(PassColor.textNorm.toColor)

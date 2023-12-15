@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public protocol RemoteShareDatasourceProtocol {
+public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
     func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos]

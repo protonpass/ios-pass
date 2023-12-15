@@ -149,7 +149,7 @@ extension CredentialsViewModel {
                 let plan = try await accessRepository.getPlan()
                 planType = plan.planType
 
-                results = try await fetchCredentialsTask(plan: plan)
+                results = try await fetchCredentials(plan: plan)
                 state = .idle
                 logger.info("Loaded log in items")
             } catch {
@@ -355,12 +355,8 @@ private extension CredentialsViewModel {
         }
     }
 
-    func fetchCredentialsTask(plan: Plan) async throws
-        -> CredentialsFetchResult /* Task<CredentialsFetchResult, Error> */ {
-//        Task.detached(priority: .userInitiated) { [weak self] in
-//            guard let self else {
-//                throw PassError.CredentialProviderFailureReason.generic
-//            }
+    func fetchCredentials(plan: Plan) async throws
+        -> CredentialsFetchResult {
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
         vaults = try await shareRepository.getVaults()
@@ -422,7 +418,6 @@ private extension CredentialsViewModel {
                                       searchableItems: searchableItems,
                                       matchedItems: matchedItems,
                                       notMatchedItems: notMatchedItems)
-//        }
     }
 
     func getCredentialTask(for item: any ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {

@@ -24,7 +24,7 @@ import ProtonCoreServices
 
 public let kDefaultPageSize = 100
 
-public class RemoteDatasource {
+public class RemoteDatasource: Sendable {
     private let apiService: any APIService
     private let eventStream: CorruptedSessionEventStream
 
