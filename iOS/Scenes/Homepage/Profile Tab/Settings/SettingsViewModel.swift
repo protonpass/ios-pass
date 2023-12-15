@@ -153,7 +153,7 @@ private extension SettingsViewModel {
             guard let self else { return }
             do {
                 logger.trace("Fav icons are disabled. Removing all cached fav icons")
-                try favIconRepository.emptyCache()
+                try await favIconRepository.emptyCache()
                 logger.info("Removed all cached fav icons")
             } catch {
                 logger.error(error)

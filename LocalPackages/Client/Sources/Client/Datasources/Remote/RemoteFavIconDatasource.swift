@@ -21,13 +21,13 @@
 import Entities
 import Foundation
 
-public enum FavIconFetchResult {
+public enum FavIconFetchResult: Sendable {
     case positive(Data)
     case negative(FavIconNegativityReason)
 }
 
 /// Reason why a fav icon is null
-public enum FavIconNegativityReason {
+public enum FavIconNegativityReason: Sendable {
     /// Everything is ok, the image simply does not exist
     case notExist
 
@@ -36,7 +36,7 @@ public enum FavIconNegativityReason {
 }
 
 /// Known domain errors
-public enum FavIconError: Int, CaseIterable {
+public enum FavIconError: Int, CaseIterable, Sendable {
     case notTrusted = 2_011
     case invalidAddress = -1
     case failedToFindForAppropriateSize = 2_511
@@ -52,6 +52,7 @@ public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatas
 public extension RemoteFavIconDatasource {
     func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult {
         let endpoint = GetLogoEndpoint(domain: domain)
+        print("woot fav for \(domain) with endpoint \(endpoint.parameters)")
         let response = try await execExpectingData(endpoint: endpoint)
         return try handle(dataResponse: response)
     }
