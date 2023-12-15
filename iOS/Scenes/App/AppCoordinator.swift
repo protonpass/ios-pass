@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+@preconcurrency import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -88,8 +88,10 @@ final class AppCoordinator {
     }
 
     deinit {
-        corruptedSessionStream?.cancel()
-        corruptedSessionStream = nil
+        Task { @MainActor in
+            corruptedSessionStream?.cancel()
+            corruptedSessionStream = nil
+        }
     }
 
     private func clearUserDataInKeychainIfFirstRun() {

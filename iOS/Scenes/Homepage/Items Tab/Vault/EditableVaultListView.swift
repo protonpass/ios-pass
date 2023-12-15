@@ -60,7 +60,7 @@ struct EditableVaultListView: View {
                 CapsuleTextButton(title: #localized("Create vault"),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
-                                  action: viewModel.createNewVault)
+                                  action: { viewModel.createNewVault() })
                     .fixedSize(horizontal: true, vertical: true)
                 Spacer()
             }
@@ -185,7 +185,7 @@ struct EditableVaultListView: View {
     private var trashTrailingView: some View {
         if viewModel.hasTrashItems {
             Menu(content: {
-                Button(action: viewModel.restoreAllTrashedItems) {
+                Button(action: { viewModel.restoreAllTrashedItems() }) {
                     Label(title: {
                         Text("Restore all items")
                     }, icon: {
@@ -211,7 +211,7 @@ struct EditableVaultListView: View {
                        isPresented: $isShowingEmptyTrashAlert,
                        actions: {
                            Button(role: .destructive,
-                                  action: viewModel.emptyTrash,
+                                  action: { viewModel.emptyTrash() },
                                   label: { Text("Empty trash") })
 
                            Button(role: .cancel, label: { Text("Cancel") })

@@ -48,6 +48,7 @@ protocol CreateEditVaultViewModelDelegate: AnyObject {
     func createEditVaultViewModelDidEditVault()
 }
 
+@MainActor
 final class CreateEditVaultViewModel: ObservableObject {
     @Published private(set) var canCreateOrEdit = true
     @Published var selectedColor: VaultColor

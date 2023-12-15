@@ -20,6 +20,7 @@
 
 import UIKit
 
+@MainActor
 protocol OpenAutoFillSettingsUseCase: Sendable {
     func execute()
 }

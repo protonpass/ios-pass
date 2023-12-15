@@ -207,20 +207,25 @@ extension CredentialsViewModel {
         assert(results != nil, "Credentials are not fetched")
         guard let results else { return }
 
-        // Check if given URL is valid before proposing "associate & autofill"
-        if canEditItem(vaultsProvider: self, item: item),
-           notMatchedItemInformation == nil,
-           let schemeAndHost = urls.first?.schemeAndHost,
-           !schemeAndHost.isEmpty,
-           let notMatchedItem = results.notMatchedItems
-           .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
-            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
-                                                                      url: schemeAndHost)
-            return
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            // Check if given URL is valid before proposing "associate & autofill"
+            if await canEditItem(vaultsProvider: self, item: item),
+               notMatchedItemInformation == nil,
+               let schemeAndHost = urls.first?.schemeAndHost,
+               !schemeAndHost.isEmpty,
+               let notMatchedItem = results.notMatchedItems
+                .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
+                notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
+                                                                          url: schemeAndHost)
+                return
+            }
+            
+            // Given URL is not valid or item is matched, in either case just autofill normally
+            autoFill(item: item)
         }
-
-        // Given URL is not valid or item is matched, in either case just autofill normally
-        autoFill(item: item)
     }
 
     func autoFill(item: any ItemIdentifiable) {
@@ -470,7 +475,7 @@ extension CredentialsViewModel: SortTypeListViewModelDelegate {
 // MARK: - VaultsProvider
 
 extension CredentialsViewModel: VaultsProvider {
-    func getAllVaults() -> [Vault] {
+    func getAllVaults() async -> [Vault] {
         vaults
     }
 }
