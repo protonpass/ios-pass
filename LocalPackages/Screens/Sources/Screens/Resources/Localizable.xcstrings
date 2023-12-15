@@ -72,6 +72,18 @@
         }
       }
     },
+    "Recents" : {
+      "comment" : "Title of recently invited emails section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recents"
+          }
+        }
+      }
+    },
     "Sharing with up to 10 people" : {
       "comment" : "Used in the upselling screen to explain benefits",
       "extractionState" : "manual",
