@@ -26,6 +26,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 struct SearchResultsView: View, Equatable {
     @ObservedObject private var viewModel: SearchResultsViewModel
     @Binding var selectedType: ItemContentType?
