@@ -31,9 +31,11 @@ import ProtonCoreHumanVerification
 @MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
+    @Published var selectedEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
+    @Published private(set) var recommendations: InviteRecommendations?
     @Published private(set) var error: String?
     @Published private(set) var isChecking = false
 
@@ -113,9 +115,7 @@ private extension UserEmailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             if case let .existing(vault) = shareInviteService.currentSelectedVault.value {
-                let recommendations = try? await shareInviteRepository
-                    .getInviteRecommendations(shareId: vault.shareId)
-                print(recommendations)
+                recommendations = try? await shareInviteRepository.getInviteRecommendations(shareId: vault.shareId)
             }
         }
     }
