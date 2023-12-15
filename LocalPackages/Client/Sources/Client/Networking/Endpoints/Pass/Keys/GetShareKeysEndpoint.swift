@@ -26,14 +26,14 @@ public struct GetShareKeysResponse: Decodable, Sendable {
     let shareKeys: ShareKeys
 }
 
-public struct GetShareKeysEndpoint: Endpoint {
+public struct GetShareKeysEndpoint: Endpoint, @unchecked Sendable {
     public typealias Body = EmptyRequest
     public typealias Response = GetShareKeysResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var queries: [String: any Sendable]?
+    public var queries: [String: Any]?
 
     public init(shareId: String, page: Int, pageSize: Int) {
         debugDescription = "Get keys for share"

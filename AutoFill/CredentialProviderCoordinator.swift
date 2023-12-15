@@ -58,6 +58,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
+    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -288,11 +289,7 @@ private extension CredentialProviderCoordinator {
         Task { @MainActor [weak self] in
             guard let self else { return }
             if let error {
-                SentrySDK.capture(error: error) { scope in
-                    if let sessionId {
-                        scope.setTag(value: sessionId, key: "sessionUID")
-                    }
-                }
+                sendErrorToSentry(error, sessionId: sessionId)
             }
             await revokeCurrentSession()
             await wipeAllData(isTests: false)
