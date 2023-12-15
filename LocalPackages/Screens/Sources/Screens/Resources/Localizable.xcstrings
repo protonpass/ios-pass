@@ -84,6 +84,18 @@
         }
       }
     },
+    "Suggestions" : {
+      "comment" : "Title of suggested emails section when sharing",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        }
+      }
+    },
     "Unlimited 2FA Autofill" : {
       "comment" : "Used in upselling screen to explain paid feature",
       "extractionState" : "manual",

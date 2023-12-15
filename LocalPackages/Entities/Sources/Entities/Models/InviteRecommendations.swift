@@ -21,9 +21,13 @@
 
 import Foundation
 
-public struct InviteRecommendations: Sendable, Decodable {
+public struct InviteRecommendations: Sendable, Decodable, Hashable {
     public let recommendedEmails: [String]
     public let planInternalName: String?
     public let planDisplayName: String?
     public let planRecommendedEmails: [String]
+
+    public var isEmpty: Bool {
+        recommendedEmails.isEmpty && planRecommendedEmails.isEmpty
+    }
 }
