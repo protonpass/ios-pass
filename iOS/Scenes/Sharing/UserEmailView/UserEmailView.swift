@@ -26,6 +26,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct UserEmailView: View {
@@ -35,19 +36,34 @@ struct UserEmailView: View {
     @FocusState private var defaultFocus: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 31) {
+        VStack(alignment: .leading) {
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
+                .padding(.bottom)
 
-            emailTextField
+            ScrollView {
+                VStack {
+                    emailTextField
 
-            if case let .new(vault, _) = viewModel.vault {
-                vaultRow(vault)
+                    PassDivider()
+                        .padding(.horizontal, -kItemDetailSectionPadding)
+                        .padding(.top, 16)
+                        .padding(.bottom, 24)
+
+                    if let recommendations = viewModel.recommendations, !recommendations.isEmpty {
+                        InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
+                                                 recommendations: recommendations)
+                    }
+
+                    if case let .new(vault, _) = viewModel.vault {
+                        vaultRow(vault)
+                    }
+
+                    Spacer()
+                }
             }
-
-            Spacer()
         }
         .onAppear {
             if #available(iOS 16, *) {
@@ -58,6 +74,7 @@ struct UserEmailView: View {
                 }
             }
         }
+        .animation(.default, value: viewModel.recommendations?.hashValue)
         .animation(.default, value: viewModel.error)
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
