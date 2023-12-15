@@ -108,8 +108,6 @@ struct CreateEditNoteView: View {
         .tint(Color(uiColor: viewModel.itemContentType().normMajor1Color))
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
-        .nonEditableVaultAlert(isPresented: $viewModel.isShowingNonEditableAlert,
-                               onDiscard: dismiss.callAsFunction)
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,
                       resultStream: viewModel.scanResponsePublisher)

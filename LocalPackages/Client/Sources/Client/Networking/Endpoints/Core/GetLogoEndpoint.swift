@@ -26,14 +26,14 @@ import ProtonCoreServices
 // Dummy empty response
 public struct GetLogoResponse: Decodable, Sendable {}
 
-public struct GetLogoEndpoint: Endpoint {
+public struct GetLogoEndpoint: Endpoint, @unchecked Sendable {
     public typealias Body = EmptyRequest
     public typealias Response = GetLogoResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var parameters: [String: any Sendable]?
+    public var parameters: [String: Any]?
 
     public init(domain: String) {
         debugDescription = "Get fav icon of a domain"

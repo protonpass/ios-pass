@@ -133,6 +133,22 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
+        vaultsManager.$vaultSelection
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] selection in
+                guard let self else { return }
+                var createButtonDisabled = false
+                switch selection {
+                case .all, .trash:
+                    let vaults = vaultsManager.getAllVaults()
+                    createButtonDisabled = !vaults.contains(where: \.canEdit)
+                case let .precise(vault):
+                    createButtonDisabled = !vault.canEdit
+                }
+                homepageTabDelegete?.homepageTabShouldDisableCreateButton(createButtonDisabled)
+            }
+            .store(in: &cancellables)
+
         NotificationCenter.default
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { [weak self] _ in
@@ -164,11 +180,7 @@ private extension HomepageCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isEditMode in
                 guard let self else { return }
-                if isEditMode {
-                    homepageTabDelegete?.homepageTabShouldHideTabbar()
-                } else {
-                    homepageTabDelegete?.homepageTabShouldShowTabbar()
-                }
+                homepageTabDelegete?.homepageTabShouldHideTabbar(isEditMode)
             }
             .store(in: &cancellables)
 
