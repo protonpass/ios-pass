@@ -35,7 +35,7 @@ public protocol FavIconSettings: Sendable {
 }
 
 /// Take care of fetching and caching behind the scenes
-public protocol FavIconRepositoryProtocol {
+public protocol FavIconRepositoryProtocol: Sendable {
     var settings: any FavIconSettings { get }
 
     /// Always return `nil` if fav icons are disabled in `Preferences`
@@ -85,25 +85,6 @@ public extension FavIconRepository {
         }
 
         let task = Task<FavIcon?, any Error> {
-            //                  if let storedUser = await storage.user(withID: id) {
-            //                      activeTasks[id] = nil
-            //                      return storedUser
-            //                  }
-            //
-            //                  let url = URL.forLoadingUser(withID: id)
-            //
-            //                  do {
-            //                      let (data, _) = try await urlSession.data(from: url)
-            //                      let user = try decoder.decode(User.self, from: data)
-            //
-            //                      await storage.store(user)
-            //                      activeTasks[id] = nil
-            //                      return user
-            //                  } catch {
-            //                      activeTasks[id] = nil
-            //                      throw error
-            //                  }
-
             do {
                 let symmetricKey = try getSymmetricKey()
 
@@ -140,7 +121,6 @@ public extension FavIconRepository {
                                                 fileName: "\(hashedDomain).domain",
                                                 containerUrl: containerUrl)
                 return .init(domain: domain, data: dataToWrite, isFromCache: false)
-
             } catch {
                 activeTasks[domain] = nil
                 throw error

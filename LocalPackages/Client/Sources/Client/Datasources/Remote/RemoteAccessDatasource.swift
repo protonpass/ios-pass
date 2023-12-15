@@ -20,7 +20,7 @@
 
 import Entities
 
-public protocol RemoteAccessDatasourceProtocol {
+public protocol RemoteAccessDatasourceProtocol: Sendable {
     func getAccess() async throws -> Access
 }
 

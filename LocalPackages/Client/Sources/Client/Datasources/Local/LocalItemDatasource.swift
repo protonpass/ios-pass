@@ -22,7 +22,7 @@ import CoreData
 import Entities
 
 // sourcery: AutoMockable
-public protocol LocalItemDatasourceProtocol {
+public protocol LocalItemDatasourceProtocol: Sendable {
     // Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
 

@@ -27,7 +27,7 @@ import ProtonCoreLogin
 import ProtonCoreServices
 
 /// Contain all repositories
-final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
+final class SharedRepositoryContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = SharedRepositoryContainer()
     let manager = ContainerManager()
 
@@ -191,6 +191,8 @@ private extension SharedRepositoryContainer {
                                        eventStream: self.corruptedSessionEventStream) }
     }
 }
+
+extension FeatureFlagsConfiguration: @unchecked Sendable {}
 
 // MARK: Repositories
 
