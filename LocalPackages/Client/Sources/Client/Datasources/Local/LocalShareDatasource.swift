@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalShareDatasourceProtocol {
+public protocol LocalShareDatasourceProtocol: Sendable {
     func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare?
     func getAllShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
     func upsertShares(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws

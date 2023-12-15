@@ -158,17 +158,19 @@ struct ProfileTabView: View {
                 case .pin:
                     PassDivider()
 
-                    OptionRow(action: { viewModel.editPINCode() }, height: .medium) {
-                        HStack {
-                            Text("Change PIN code")
-                            Spacer()
-                            CircleButton(icon: IconProvider.grid3,
-                                         iconColor: PassColor.interactionNormMajor2,
-                                         backgroundColor: PassColor.interactionNormMinor1,
-                                         action: nil)
-                        }
-                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
-                    }
+                    OptionRow(action: { viewModel.editPINCode() },
+                              height: .medium,
+                              content: {
+                                  HStack {
+                                      Text("Change PIN code")
+                                      Spacer()
+                                      CircleButton(icon: IconProvider.grid3,
+                                                   iconColor: PassColor.interactionNormMajor2,
+                                                   backgroundColor: PassColor.interactionNormMinor1,
+                                                   action: nil)
+                                  }
+                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                              })
                 }
             }
             .roundedEditableSection()

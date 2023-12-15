@@ -25,7 +25,7 @@ import Factory
 import LocalAuthentication
 import UseCases
 
-final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
+final class SharedUseCasesContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = SharedUseCasesContainer()
     let manager = ContainerManager()
 
