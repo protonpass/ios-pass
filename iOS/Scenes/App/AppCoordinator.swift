@@ -62,6 +62,8 @@ final class AppCoordinator {
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
 
+    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
@@ -240,9 +242,7 @@ private extension AppCoordinator {
     }
 
     func captureErrorAndLogOut(_ error: Error, sessionId: String) {
-        SentrySDK.capture(error: error) { scope in
-            scope.setTag(value: sessionId, key: "sessionUID")
-        }
+        sendErrorToSentry(error, sessionId: sessionId)
         appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
     }
 }
