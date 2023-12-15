@@ -254,7 +254,7 @@ extension ItemsTabViewModel {
     }
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        canEditItem(vaultsProvider: vaultsManager, item: item)
+        canEditItem(vaults: vaultsManager.getAllVaults(), item: item)
     }
 
     func presentVaultListToMoveSelectedItems() {

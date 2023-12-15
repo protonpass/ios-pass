@@ -53,7 +53,7 @@ struct LocalAuthenticationView: View {
                 PinAuthenticationView(viewModel: viewModel)
             }
 
-            Button(action: { viewModel.logOut() }) {
+            Button { viewModel.logOut() } label: {
                 Image(uiImage: IconProvider.arrowOutFromRectangle)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .padding()

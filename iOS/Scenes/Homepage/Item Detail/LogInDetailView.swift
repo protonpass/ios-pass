@@ -72,8 +72,8 @@ struct LogInDetailView: View {
                         CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                             uiModels: viewModel.customFieldUiModels,
                                             isFreeUser: viewModel.isFreeUser,
-                                            onSelectHiddenText: copyHiddenText,
-                                            onSelectTotpToken: copyTOTPToken) {
+                                            onSelectHiddenText: { copyHiddenText($0) },
+                                            onSelectTotpToken: { copyTOTPToken($0) }) {
                             viewModel.upgrade()
                         }
 

@@ -21,7 +21,7 @@
 // swiftlint:disable force_unwrapping
 import UIKit
 
-public enum PassColor {}
+public enum PassColor: Sendable {}
 
 private extension PassColor {
     static func color(named: String) -> UIColor {

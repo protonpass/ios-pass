@@ -185,7 +185,7 @@ struct ProfileTabView: View {
 
                     Spacer()
 
-                    Button(action: { viewModel.handleEnableAutoFillAction() }) {
+                    Button { viewModel.handleEnableAutoFillAction() } label: {
                         Label(ProcessInfo.processInfo.isiOSAppOnMac ? "Show me how" : "Open Settings",
                               systemImage: "arrow.up.right.square")
                             .font(.callout.weight(.semibold))

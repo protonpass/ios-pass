@@ -185,7 +185,7 @@ struct EditableVaultListView: View {
     private var trashTrailingView: some View {
         if viewModel.hasTrashItems {
             Menu(content: {
-                Button(action: { viewModel.restoreAllTrashedItems() }) {
+                Button { viewModel.restoreAllTrashedItems() } label: {
                     Label(title: {
                         Text("Restore all items")
                     }, icon: {
