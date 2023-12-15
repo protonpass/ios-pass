@@ -28,6 +28,7 @@ import SwiftUI
 struct ShareOrCreateNewVaultView: View {
     private let viewModel: ShareOrCreateNewVaultViewModel
 
+    @MainActor
     init(vault: VaultListUiModel, itemContent: ItemContent) {
         viewModel = .init(vault: vault, itemContent: itemContent)
     }

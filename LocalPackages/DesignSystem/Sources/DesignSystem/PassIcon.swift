@@ -21,7 +21,7 @@
 // swiftlint:disable force_unwrapping
 import UIKit
 
-public enum PassIcon {}
+public enum PassIcon: Sendable {}
 
 private extension PassIcon {
     static func icon(named: String) -> UIImage {

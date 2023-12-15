@@ -30,7 +30,7 @@ public struct FavIcon: Hashable, Sendable {
     public let isFromCache: Bool
 }
 
-public protocol FavIconSettings {
+public protocol FavIconSettings: Sendable {
     var shouldDisplayFavIcons: Bool { get }
 }
 
@@ -44,16 +44,16 @@ public protocol FavIconRepositoryProtocol {
 
     /// Always return `nil` if fav icons are disabled in `Preferences`
     /// Only get icon from disk. Do not go fetch if icon is not cached.
-    func getCachedIcon(for domain: String) -> FavIcon?
+    func getCachedIcon(for domain: String) async -> FavIcon?
 
     /// For debugging purposes only
-    func getAllCachedIcons() throws -> [FavIcon]
+    func getAllCachedIcons() async throws -> [FavIcon]
 
     /// Remove cached icons from disk
-    func emptyCache() throws
+    func emptyCache() async throws
 }
 
-public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
+public actor FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let datasource: any RemoteFavIconDatasourceProtocol
@@ -62,6 +62,7 @@ public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable
     private let cacheExpirationDays: Int
     public let settings: any FavIconSettings
     private let symmetricKeyProvider: any SymmetricKeyProvider
+    private var activeTasks = [String: Task<FavIcon?, any Error>]()
 
     public init(datasource: any RemoteFavIconDatasourceProtocol,
                 containerUrl: URL,
@@ -78,39 +79,77 @@ public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable
 
 public extension FavIconRepository {
     func getIcon(for domain: String) async throws -> FavIcon? {
-        guard settings.shouldDisplayFavIcons else { return nil }
-        let symmetricKey = try getSymmetricKey()
-
-        let domain = URL(string: domain)?.host ?? domain
-        let hashedDomain = domain.sha256
-        let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
-                                                          conformingTo: .data)
-        if let encryptedData = try getDataOrRemoveIfObsolete(url: dataUrl),
-           let decryptedData = try? symmetricKey.decrypt(encryptedData) {
-            return .init(domain: domain, data: decryptedData, isFromCache: true)
+        guard settings.shouldDisplayFavIcons, !domain.isEmpty else { return nil }
+        if let existingTask = activeTasks[domain] {
+            return try await existingTask.value
         }
 
-        // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
-        let result = try await datasource.fetchFavIcon(for: domain)
+        let task = Task<FavIcon?, any Error> {
+            //                  if let storedUser = await storage.user(withID: id) {
+            //                      activeTasks[id] = nil
+            //                      return storedUser
+            //                  }
+            //
+            //                  let url = URL.forLoadingUser(withID: id)
+            //
+            //                  do {
+            //                      let (data, _) = try await urlSession.data(from: url)
+            //                      let user = try decoder.decode(User.self, from: data)
+            //
+            //                      await storage.store(user)
+            //                      activeTasks[id] = nil
+            //                      return user
+            //                  } catch {
+            //                      activeTasks[id] = nil
+            //                      throw error
+            //                  }
 
-        let dataToWrite: Data = switch result {
-        case let .positive(data):
-            data
-        case .negative:
-            .init()
+            do {
+                let symmetricKey = try getSymmetricKey()
+
+                let domain = URL(string: domain)?.host ?? domain
+                print("woot favicon domain \(domain)")
+
+                let hashedDomain = domain.sha256
+                let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
+                                                                  conformingTo: .data)
+                if let encryptedData = try getDataOrRemoveIfObsolete(url: dataUrl),
+                   let decryptedData = try? symmetricKey.decrypt(encryptedData) {
+                    activeTasks[domain] = nil
+                    return .init(domain: domain, data: decryptedData, isFromCache: true)
+                }
+
+                // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
+                let result = try await datasource.fetchFavIcon(for: domain)
+
+                let dataToWrite: Data = switch result {
+                case let .positive(data):
+                    data
+                case .negative:
+                    .init()
+                }
+
+                // Create 2 files: 1 contains the actual data & 1 contains the encrypted root domain
+                try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(dataToWrite),
+                                                fileName: "\(hashedDomain).data",
+                                                containerUrl: containerUrl)
+                guard let domainData = domain.data(using: .utf8) else {
+                    throw PassError.crypto(.failedToEncode(domain))
+                }
+                try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(domainData),
+                                                fileName: "\(hashedDomain).domain",
+                                                containerUrl: containerUrl)
+                return .init(domain: domain, data: dataToWrite, isFromCache: false)
+
+            } catch {
+                activeTasks[domain] = nil
+                throw error
+            }
         }
 
-        // Create 2 files: 1 contains the actual data & 1 contains the encrypted root domain
-        try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(dataToWrite),
-                                        fileName: "\(hashedDomain).data",
-                                        containerUrl: containerUrl)
-        guard let domainData = domain.data(using: .utf8) else {
-            throw PassError.crypto(.failedToEncode(domain))
-        }
-        try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(domainData),
-                                        fileName: "\(hashedDomain).domain",
-                                        containerUrl: containerUrl)
-        return .init(domain: domain, data: dataToWrite, isFromCache: false)
+        activeTasks[domain] = task
+
+        return try await task.value
     }
 
     func getCachedIcon(for domain: String) -> FavIcon? {
@@ -127,17 +166,17 @@ public extension FavIconRepository {
         return nil
     }
 
-    func getAllCachedIcons() throws -> [FavIcon] {
+    func getAllCachedIcons() async throws -> [FavIcon] {
         let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,
                                                                includingPropertiesForKeys: nil)
 
-        let getDecryptedData: (URL) throws -> Data? = { [weak self] url in
+        let getDecryptedData: (URL) async throws -> Data? = { [weak self] url in
             guard let self else { return nil }
             let encryptedData = try Data(contentsOf: url)
             if encryptedData.isEmpty {
                 return .init()
             } else {
-                return try? getSymmetricKey().decrypt(encryptedData)
+                return try? await getSymmetricKey().decrypt(encryptedData)
             }
         }
 
@@ -147,9 +186,9 @@ public extension FavIconRepository {
             let domainUrl = containerUrl.appendingPathComponent("\(hashedRootDomain).domain",
                                                                 conformingTo: .data)
 
-            if let domainData = try getDecryptedData(domainUrl),
+            if let domainData = try await getDecryptedData(domainUrl),
                let decryptedRootDomain = String(data: domainData, encoding: .utf8),
-               let decryptedImageData = try getDecryptedData(url) {
+               let decryptedImageData = try await getDecryptedData(url) {
                 icons.append(.init(domain: decryptedRootDomain,
                                    data: decryptedImageData,
                                    isFromCache: true))
