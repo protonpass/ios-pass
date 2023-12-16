@@ -132,7 +132,7 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        Publishers.Zip(vaultsManager.$vaultSelection, vaultsManager.$state)
+        Publishers.CombineLatest(vaultsManager.$vaultSelection, vaultsManager.$state)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] selection, _ in
                 guard let self else { return }
