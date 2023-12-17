@@ -1,3 +1,6 @@
+## Version 1.7.1
+- Fixed "+" button disabled
+
 ## Version 1.7.0
 Features:
 - Added support for bulk actions (move, trash, restore or delete multiple items)
