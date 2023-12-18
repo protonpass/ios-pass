@@ -25,6 +25,7 @@ import Entities
 import Factory
 import SwiftUI
 
+@MainActor
 final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 

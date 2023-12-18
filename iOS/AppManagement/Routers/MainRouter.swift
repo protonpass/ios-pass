@@ -19,8 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-
-@preconcurrency import Combine
+import Combine
 import Entities
 import SwiftUI
 
@@ -46,7 +45,7 @@ struct NavigationConfiguration {
     }
 }
 
-enum RouterDestination: Hashable {
+enum RouterDestination: Hashable, Sendable {
     case urlPage(urlString: String)
     case openSettings
 }
@@ -57,7 +56,7 @@ enum SheetDismissal {
     case all
 }
 
-enum SheetDestination: Equatable, Hashable {
+enum SheetDestination: Equatable, Hashable, Sendable {
     case sharingFlow(SheetDismissal)
     case manageShareVault(Vault, SheetDismissal)
     case acceptRejectInvite(UserInvite)
@@ -77,17 +76,18 @@ enum SheetDestination: Equatable, Hashable {
     case search(SearchMode)
 }
 
-enum UIElementDisplay {
+enum UIElementDisplay: Sendable {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
     case successMessage(String? = nil, config: NavigationConfiguration? = nil)
     case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
 }
 
-enum AlertDestination {
+enum AlertDestination: Sendable {
     case bulkPermanentDeleteConfirmation(itemCount: Int)
 }
 
+@MainActor
 final class MainUIKitSwiftUIRouter: Sendable {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()

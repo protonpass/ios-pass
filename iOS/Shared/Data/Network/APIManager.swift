@@ -33,7 +33,7 @@ import ProtonCoreFoundations
 import ProtonCoreHumanVerification
 import ProtonCoreKeymaker
 import ProtonCoreLogin
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreServices
 import SwiftUI
