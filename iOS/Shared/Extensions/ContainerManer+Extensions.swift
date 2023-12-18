@@ -1,6 +1,6 @@
 //
-// DataStream+DependencyInjections.swift
-// Proton Pass - Created on 30/11/2023.
+// ContainerManer+Extensions.swift
+// Proton Pass - Created on 18/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@preconcurrency import Combine
-import Entities
 import Factory
-import Foundation
 
-final class DataStreamContainer: SharedContainer, AutoRegistering, Sendable {
-    static let shared = DataStreamContainer()
-    let manager = ContainerManager()
-
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
-
-extension DataStreamContainer {
-    var currentSelectedItems: Factory<CurrentValueSubject<[any ItemIdentifiable], Never>> {
-        self { .init([]) }
-    }
-}
+extension ContainerManager: @unchecked Sendable {}

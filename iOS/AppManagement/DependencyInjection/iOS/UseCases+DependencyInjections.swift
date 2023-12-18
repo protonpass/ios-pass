@@ -24,8 +24,6 @@ import Factory
 import ProtonCoreServices
 import UseCases
 
-extension ContainerManager: @unchecked Sendable {}
-
 final class UseCasesContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = UseCasesContainer()
     let manager = ContainerManager()

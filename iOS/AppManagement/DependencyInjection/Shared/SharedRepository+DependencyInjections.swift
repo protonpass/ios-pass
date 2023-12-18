@@ -23,8 +23,13 @@ import Core
 import CoreData
 import CryptoKit
 import Factory
+@preconcurrency import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCoreServices
+
+extension FeatureFlagsConfiguration: @unchecked Sendable {}
+extension VaultSyncEventStream: @unchecked Sendable {}
+extension CorruptedSessionEventStream: @unchecked Sendable {}
 
 /// Contain all repositories
 final class SharedRepositoryContainer: SharedContainer, AutoRegistering, Sendable {
@@ -191,8 +196,6 @@ private extension SharedRepositoryContainer {
                                        eventStream: self.corruptedSessionEventStream) }
     }
 }
-
-extension FeatureFlagsConfiguration: @unchecked Sendable {}
 
 // MARK: Repositories
 
