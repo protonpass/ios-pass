@@ -29,7 +29,7 @@ protocol SortTypeListViewModelDelegate: AnyObject {
 }
 
 @MainActor
-final class SortTypeListViewModel: ObservableObject, DeinitPrintable {
+final class SortTypeListViewModel: ObservableObject, DeinitPrintable, Sendable {
     deinit { print(deinitMessage) }
 
     @Published var selectedSortType: SortType {

@@ -22,7 +22,7 @@ import Client
 import Core
 import Factory
 import Foundation
-import ProtonCoreServices
+@preconcurrency import ProtonCoreServices
 
 final class RepositoryContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = RepositoryContainer()
