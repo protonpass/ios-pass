@@ -99,7 +99,7 @@ private extension UserPermissionView {
             } label: {
                 HStack {
                     Text(title)
-                    Text("[\(viewModel.emails.count)]")
+                    Text(verbatim: "[\(viewModel.emails.count)]")
                     Image(uiImage: IconProvider.chevronDown)
                 }
                 .foregroundColor(PassColor.interactionNorm.toColor)
