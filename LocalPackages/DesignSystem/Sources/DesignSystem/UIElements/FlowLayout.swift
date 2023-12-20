@@ -25,13 +25,13 @@ public struct FlowLayout<T: Hashable, V: View>: View {
     private let mode: Mode
     private let items: [T]
     private let viewMapping: (T) -> V
-    @State private var totalHeight: CGSize = .zero
+    @State private var totalHeight: CGFloat
 
     public init(mode: Mode, items: [T], viewMapping: @escaping (T) -> V) {
         self.mode = mode
         self.items = items
         self.viewMapping = viewMapping
-//        _totalHeight = State(initialValue: (mode == .scrollable) ? .zero : .infinity)
+        _totalHeight = State(initialValue: (mode == .scrollable) ? .zero : .infinity)
     }
 
     public var body: some View {
@@ -42,9 +42,9 @@ public struct FlowLayout<T: Hashable, V: View>: View {
         }
         return Group {
             if mode == .scrollable {
-                stack.frame(height: totalHeight.height)
+                stack.frame(height: totalHeight)
             } else {
-                stack.frame(maxHeight: totalHeight.height)
+                stack.frame(maxHeight: totalHeight)
             }
         }
     }
@@ -84,45 +84,9 @@ extension FlowLayout {
                     }
             }
         }
-        .readSize { textSize in
-            totalHeight = textSize
+        .readSize { size in
+            totalHeight = size.height
         }
-//        .saveSize(in: $totalHeight)
-//        .background(viewHeightReader($totalHeight))
-    }
-
-//    private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View {
-//        GeometryReader { geo -> Color in
-    ////            Task { @MainActor in
-//            binding.wrappedValue = geo.frame(in: .local).size.height
-    ////            }
-    ////            DispatchQueue.main.async {
-    ////            }
-//            return .clear
-//        }
-//    }
-}
-
-struct SizeCalculator: ViewModifier {
-    @Binding var size: CGSize
-
-    func body(content: Content) -> some View {
-        content
-            .background(GeometryReader { proxy in
-                Color.clear // we just want the reader to get triggered, so let's use an empty color
-                    .onAppear {
-                        size = proxy.frame(in: .local).size
-                    }
-                    .onChange(of: proxy.size) { _ in
-                        size = proxy.size
-                    }
-            })
-    }
-}
-
-extension View {
-    func saveSize(in size: Binding<CGSize>) -> some View {
-        modifier(SizeCalculator(size: size))
     }
 }
 

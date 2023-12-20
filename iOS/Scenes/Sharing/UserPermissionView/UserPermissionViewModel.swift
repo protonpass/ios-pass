@@ -32,7 +32,6 @@ final class UserPermissionViewModel: ObservableObject, Sendable {
     @Published var goToNextStep = false
 
     private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
-    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
 
     var hasOnlyOneInvite: Bool {

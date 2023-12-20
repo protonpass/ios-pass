@@ -98,10 +98,6 @@ extension UseCasesContainer {
                                    getVaultItemCount: self.getVaultItemCount()) }
     }
 
-    var setShareInviteUserEmailAndKeys: Factory<SetShareInviteUserEmailAndKeysUseCase> {
-        self { SetShareInviteUserEmailAndKeys(shareInviteService: self.shareInviteService) }
-    }
-
     var setShareInvitesUserEmailsAndKeys: Factory<SetShareInvitesUserEmailsAndKeysUseCase> {
         self { SetShareInvitesUserEmailsAndKeys(shareInviteService: self.shareInviteService,
                                                 getEmailPublicKeyUseCase: self.getEmailPublicKey()) }
