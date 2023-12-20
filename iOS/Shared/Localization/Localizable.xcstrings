@@ -44327,6 +44327,10 @@
         }
       }
     },
+    "Set access level for all members" : {
+      "comment" : "Title of menu helping set the role for all invitee to a vault",
+      "extractionState" : "manual"
+    },
     "Set PIN code" : {
       "extractionState" : "manual",
       "localizations" : {
