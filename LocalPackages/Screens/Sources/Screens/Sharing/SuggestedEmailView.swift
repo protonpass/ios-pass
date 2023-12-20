@@ -20,26 +20,27 @@
 //
 
 import DesignSystem
+import Entities
 import SwiftUI
 
 struct SuggestedEmailView: View {
-    @Binding var selectedEmails: [String]
-    let email: String
+    @Binding var selectedEmails: [UserEmail]
+    let email: UserEmail
 
-    init(selectedEmails: Binding<[String]>, email: String) {
+    init(selectedEmails: Binding<[UserEmail]>, email: UserEmail) {
         _selectedEmails = selectedEmails
         self.email = email
     }
 
     var body: some View {
         HStack {
-            SquircleThumbnail(data: .initials(String(email.prefix(2).uppercased())),
+            SquircleThumbnail(data: .initials(String(email.email.prefix(2).uppercased())),
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(email)
+            Text(email.email)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -47,7 +48,7 @@ struct SuggestedEmailView: View {
 
             RoundedCircleCheckbox(isChecked: isSelected)
         }
-        .animation(.default, value: isSelected)
+//        .animation(.default, value: isSelected)
         .contentShape(Rectangle())
         .onTapGesture(perform: toggleSelection)
     }

@@ -22,6 +22,7 @@
 
 import Core
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
@@ -37,9 +38,14 @@ struct SharingSummaryView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
-            emailInfo
-            vaultInfo
-            permissionInfo
+            if viewModel.hasSingleInvite, let info = viewModel.infos.first {
+                emailInfo(infos: info)
+                vaultInfo(infos: info)
+                permissionInfo(infos: info)
+            } else if let info = viewModel.infos.first {
+                vaultInfo(infos: info)
+                infosList
+            }
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
@@ -53,42 +59,40 @@ struct SharingSummaryView: View {
 }
 
 private extension SharingSummaryView {
-    var vaultInfo: some View {
+    func vaultInfo(infos: SharingInfos) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Vault")
                 .font(.callout)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
-            if let infos = viewModel.infos {
-                VaultRow(thumbnail: {
-                             CircleButton(icon: infos.displayPreferences.icon.icon.bigImage,
-                                          iconColor: infos.displayPreferences.color.color.color,
-                                          backgroundColor: infos.displayPreferences.color.color.color
-                                              .withAlphaComponent(0.16))
-                         },
-                         title: infos.vaultName ?? "",
-                         itemCount: viewModel.infos?.itemsNum ?? 0,
-                         isShared: infos.shared,
-                         isSelected: false,
-                         height: 60)
-            }
+            VaultRow(thumbnail: {
+                         CircleButton(icon: infos.displayPreferences.icon.icon.bigImage,
+                                      iconColor: infos.displayPreferences.color.color.color,
+                                      backgroundColor: infos.displayPreferences.color.color.color
+                                          .withAlphaComponent(0.16))
+                     },
+                     title: infos.vaultName,
+                     itemCount: infos.itemsNum,
+                     isShared: infos.shared,
+                     isSelected: false,
+                     height: 60)
         }
     }
 }
 
 private extension SharingSummaryView {
-    var emailInfo: some View {
+    func emailInfo(infos: SharingInfos) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Share with")
                 .font(.callout)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             HStack(spacing: kItemDetailSectionPadding) {
-                SquircleThumbnail(data: .initials(viewModel.infos?.email?.initials() ?? ""),
+                SquircleThumbnail(data: .initials(infos.email.initials()),
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(viewModel.infos?.email ?? "")
+                    Text(infos.email)
                         .foregroundColor(PassColor.textNorm.toColor)
                 }
             }
@@ -98,27 +102,59 @@ private extension SharingSummaryView {
 }
 
 private extension SharingSummaryView {
-    var permissionInfo: some View {
+    func permissionInfo(infos: SharingInfos) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Access level")
                 .font(.callout)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
-            if let role = viewModel.infos?.role {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(role.title)
-                        .font(.body)
-                        .foregroundColor(PassColor.textNorm.toColor)
-                    Text(role.description)
-                        .font(.body)
-                        .foregroundColor(PassColor.textWeak.toColor)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(infos.role.title)
+                    .font(.body)
+                    .foregroundColor(PassColor.textNorm.toColor)
+                Text(infos.role.description)
+                    .font(.body)
+                    .foregroundColor(PassColor.textWeak.toColor)
+                    .padding(16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .cornerRadius(16)
+                    .overlay(RoundedRectangle(cornerRadius: 16)
+                        .strokeBorder(PassColor.textWeak.toColor,
+                                      lineWidth: 1))
+            }
+        }
+    }
+}
+
+private extension SharingSummaryView {
+    var infosList: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Share with")
+                    .font(.callout)
+                    .foregroundColor(PassColor.textWeak.toColor)
+                    .frame(height: 20)
+
+                LazyVStack {
+                    ForEach(viewModel.infos) { info in
+                        HStack(spacing: kItemDetailSectionPadding) {
+                            SquircleThumbnail(data: .initials(info.email.initials()),
+                                              tintColor: ItemType.login.tintColor,
+                                              backgroundColor: ItemType.login.backgroundColor)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(info.email)
+                                    .foregroundColor(PassColor.textNorm.toColor)
+                                HStack {
+                                    Text(info.role.title)
+                                        .foregroundColor(PassColor.textWeak.toColor)
+                                }
+                            }
+
+                            Spacer()
+                        }.padding(8)
+                    }
+                    .listRowSeparator(.hidden)
                 }
-                .padding(16)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .cornerRadius(16)
-                .overlay(RoundedRectangle(cornerRadius: 16)
-                    .strokeBorder(PassColor.textWeak.toColor,
-                                  lineWidth: 1))
             }
         }
     }

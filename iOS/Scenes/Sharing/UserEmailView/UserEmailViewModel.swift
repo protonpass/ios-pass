@@ -56,8 +56,6 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
-    private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
@@ -121,12 +119,12 @@ private extension UserEmailViewModel {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            if let currentSelectedVault = shareInviteService.currentSelectedVault {
+            vault = shareInviteService.getCurrentSelectedVault()
+            if let currentSelectedVault = shareInviteService.getCurrentSelectedVault() {
                 let recommendations = try? await shareInviteRepository
                     .getInviteRecommendations(shareId: currentSelectedVault.shareId)
                 recommendationsState = .loaded(recommendations)
             }
-            vault = shareInviteService.currentSelectedVault
         }
     }
 }
