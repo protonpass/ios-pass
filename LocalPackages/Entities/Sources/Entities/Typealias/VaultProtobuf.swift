@@ -42,3 +42,13 @@ public extension VaultProtobuf {
         try serializedData()
     }
 }
+
+public struct UserEmail: Identifiable, Hashable {
+    public let id: String
+    public let email: String
+
+    public init(id: String, email: String) {
+        self.id = id
+        self.email = email
+    }
+}
