@@ -28,21 +28,34 @@ import Foundation
 import Macro
 import ProtonCoreHumanVerification
 
+enum RecommendationsState: Equatable {
+    case loading
+    case loaded(InviteRecommendations?)
+
+    var recommendations: InviteRecommendations? {
+        if case let .loaded(data) = self {
+            return data
+        }
+
+        return nil
+    }
+}
+
 @MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
-    @Published var selectedEmails: [String] = []
+    @Published var selectedEmails: [UserEmail] = []
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
-    @Published private(set) var recommendations: InviteRecommendations?
+    @Published private(set) var recommendationsState: RecommendationsState = .loading
     @Published private(set) var error: String?
     @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
     private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
-    private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
+    private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
     private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -61,20 +74,15 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             }
             do {
                 isChecking = true
-                let receiverPublicKeys = try await getEmailPublicKey(with: email)
-                setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
+                var emails = selectedEmails.map(\.email)
+                if !email.isEmpty {
+                    emails.append(email)
+                }
+                try await setShareInvitesUserEmailsAndKeys(with: emails)
                 goToNextStep = true
             } catch {
-                if let passError = error as? PassError,
-                   case let .sharing(reason) = passError,
-                   reason == .notProtonAddress,
-                   await getFeatureFlagStatus(with: FeatureFlagType.passSharingNewUsers) {
-                    setShareInviteUserEmailAndKeys(with: email, and: nil)
-                    goToNextStep = true
-                } else {
-                    canContinue = false
-                    self.error = error.localizedDescription
-                }
+                canContinue = false
+                self.error = error.localizedDescription
             }
         }
     }
@@ -103,20 +111,22 @@ private extension UserEmailViewModel {
             }
             .store(in: &cancellables)
 
-        shareInviteService
-            .currentSelectedVault
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] currentVault in
+        $selectedEmails
+            .sink { [weak self] selectedEmails in
                 guard let self else { return }
-                vault = currentVault
+                error = nil
+                canContinue = !selectedEmails.isEmpty
             }
             .store(in: &cancellables)
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            if case let .existing(vault) = shareInviteService.currentSelectedVault.value {
-                recommendations = try? await shareInviteRepository.getInviteRecommendations(shareId: vault.shareId)
+            if let currentSelectedVault = shareInviteService.currentSelectedVault {
+                let recommendations = try? await shareInviteRepository
+                    .getInviteRecommendations(shareId: currentSelectedVault.shareId)
+                recommendationsState = .loaded(recommendations)
             }
+            vault = shareInviteService.currentSelectedVault
         }
     }
 }
