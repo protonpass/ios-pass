@@ -60,48 +60,54 @@ final class TelemetrySchedulerTests: XCTestCase {
 extension TelemetrySchedulerTests {
     func testThresholdGetterAndSetter() {
         // When
-        sut.threshhold = nil
+        thresholdProvider.telemetryThreshold = nil
         // Then
         XCTAssertNil(thresholdProvider.telemetryThreshold)
 
         // When
         let date = Date.now
-        sut.threshhold = date
+        thresholdProvider.telemetryThreshold = date.timeIntervalSince1970
         // Then
         XCTAssertEqual(thresholdProvider.telemetryThreshold, date.timeIntervalSince1970)
     }
 
-    func testShouldSendEventsWhenCurrentDateIsAfterThresholdDate() {
+    func testShouldSendEventsWhenCurrentDateIsAfterThresholdDate() async {
         // Given
-        sut.threshhold = kMockedDate.adding(component: .minute, value: -1)
+        thresholdProvider.telemetryThreshold = kMockedDate.adding(component: .minute, value: -1).timeIntervalSince1970
 
         // Then
-        XCTAssertTrue(sut.shouldSendEvents())
+        let result = await sut.shouldSendEvents()
+        XCTAssertTrue(result)
     }
 
-    func testShouldNotSendEventsWhenCurrentDateIsBeforeThresholdDate() {
+    func testShouldNotSendEventsWhenCurrentDateIsBeforeThresholdDate() async {
         // Given
-        sut.threshhold = kMockedDate.adding(component: .minute, value: 1)
+        thresholdProvider.telemetryThreshold = kMockedDate.adding(component: .minute, value: 1).timeIntervalSince1970
 
         // Then
-        XCTAssertFalse(sut.shouldSendEvents())
+        let result = await sut.shouldSendEvents()
+
+        XCTAssertFalse(result)
     }
 
-    func testRandomNextThresholdDate() throws {
+    func testRandomNextThresholdDate() async throws {
         // Given
         let givenThreshold = Date.now
-        sut.threshhold = givenThreshold
+        thresholdProvider.telemetryThreshold = givenThreshold.timeIntervalSince1970
 
         // When
-        sut.randomNextThreshold()
-        let newThreshhold = try XCTUnwrap(sut.threshhold)
+        await sut.randomNextThreshold()
+        let threshhold = await sut.getThreshold()
+        let newThreshhold = try XCTUnwrap(threshhold)
         let difference = Calendar.current.dateComponents([.hour],
                                                          from: givenThreshold,
                                                          to: newThreshhold)
 
         // Then
         let differenceInHours = try XCTUnwrap(difference.hour)
-        XCTAssertTrue(differenceInHours >= sut.minIntervalInHours)
-        XCTAssertTrue(differenceInHours <= sut.maxIntervalInHours)
+        let min = await sut.minIntervalInHours
+        let max = await sut.maxIntervalInHours
+        XCTAssertTrue(differenceInHours >= min)
+        XCTAssertTrue(differenceInHours <= max)
     }
 }
