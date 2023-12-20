@@ -53,6 +53,9 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
+            if case let .new(vault, _) = viewModel.vault {
+                vaultRow(vault)
+            }
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
