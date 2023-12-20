@@ -127,12 +127,12 @@ private extension UserEmailViewModel {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            if let currentSelectedVault = shareInviteService.currentSelectedVault {
+            vault = shareInviteService.getCurrentSelectedVault()
+            if let currentSelectedVault = shareInviteService.getCurrentSelectedVault() {
                 let recommendations = try? await shareInviteRepository
                     .getInviteRecommendations(shareId: currentSelectedVault.shareId)
                 recommendationsState = .loaded(recommendations)
             }
-            vault = shareInviteService.currentSelectedVault
         }
     }
 }
