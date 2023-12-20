@@ -38,8 +38,13 @@ struct UserPermissionView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
-            emailDisplayView
-            roleList
+            if viewModel.hasOnlyOneInvite,
+               let email = viewModel.emails.keys.first {
+                emailDisplayView(email: email)
+                roleList(email: email)
+            } else {
+                inviteeList
+            }
             Spacer()
         }
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .shareSummary))
@@ -63,14 +68,114 @@ struct UserPermissionView: View {
     }
 }
 
+// MARK: - Multiple Emails
+
 private extension UserPermissionView {
-    var emailDisplayView: some View {
+    var inviteeList: some View {
+        ScrollView {
+            VStack(spacing: 32) {
+                if !viewModel.emails.isEmpty {
+                    inviteesSection(for: viewModel.emails, title: "Members")
+                }
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .animation(.default, value: viewModel.emails)
+    }
+
+    func inviteesSection(for emails: [String: ShareRole], title: LocalizedStringKey) -> some View {
+        VStack {
+            Menu {
+                Text("Set access level for all members")
+                    .font(.footnote)
+                ForEach(ShareRole.allCases, id: \.self) { role in
+                    Button(action: {
+                        viewModel.setRoleForAll(with: role)
+                    }, label: {
+                        Text(role.title)
+                        Text(role.description)
+                    })
+                }
+            } label: {
+                HStack {
+                    Text(title)
+                    Text("[\(viewModel.emails.count)]")
+                    Image(uiImage: IconProvider.chevronDown)
+                }
+                .foregroundColor(PassColor.interactionNorm.toColor)
+                .padding(8)
+                .overlay(RoundedRectangle(cornerRadius: 8)
+                    .stroke(PassColor.interactionNorm.toColor, lineWidth: 1))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.bottom, 15)
+            .padding(.top, 10)
+            .padding(.horizontal, 10)
+
+            LazyVStack {
+                ForEach(Array(emails.keys), id: \.self) { email in
+                    HStack(spacing: kItemDetailSectionPadding) {
+                        SquircleThumbnail(data: .initials(email.initials()),
+                                          tintColor: ItemType.login.tintColor,
+                                          backgroundColor: ItemType.login.backgroundColor)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(email)
+                                .foregroundColor(PassColor.textNorm.toColor)
+                            if let currentRole = viewModel.emails[email] {
+                                HStack {
+                                    Text(currentRole.title)
+                                        .foregroundColor(PassColor.textWeak.toColor)
+                                }
+                            }
+                        }
+
+                        Spacer()
+                        if let currentRole = viewModel.emails[email] {
+                            trailingView(email: email, currentRole: currentRole)
+                        }
+                    }.padding(8)
+                }
+                .listRowSeparator(.hidden)
+            }
+        }
+    }
+
+    @ViewBuilder
+    func trailingView(email: String, currentRole: ShareRole) -> some View {
+        Menu(content: {
+            ForEach(ShareRole.allCases, id: \.self) { role in
+                Label(title: {
+                    Button(action: {
+                        viewModel.updateRole(for: email, with: role)
+                    }, label: {
+                        Text(role.title)
+                        Text(role.description)
+                    })
+                }, icon: {
+                    if currentRole == role {
+                        Image(systemName: "checkmark")
+                    }
+                })
+            }
+        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 24, height: 24)
+            .foregroundColor(PassColor.textWeak.toColor)
+        })
+    }
+}
+
+// MARK: - Single Email
+
+private extension UserPermissionView {
+    func emailDisplayView(email: String) -> some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(viewModel.email.initials()),
+            SquircleThumbnail(data: .initials(email.initials()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
-                Text(viewModel.email)
+                Text(email)
                     .foregroundColor(PassColor.textNorm.toColor)
             }
         }
@@ -79,11 +184,11 @@ private extension UserPermissionView {
 }
 
 private extension UserPermissionView {
-    var roleList: some View {
+    func roleList(email: String) -> some View {
         VStack(spacing: 12) {
             ForEach(ShareRole.allCases.reversed(), id: \.self) { role in
                 Button {
-                    viewModel.select(role: role)
+                    viewModel.updateRole(for: email, with: role)
                 } label: {
                     HStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 2) {
