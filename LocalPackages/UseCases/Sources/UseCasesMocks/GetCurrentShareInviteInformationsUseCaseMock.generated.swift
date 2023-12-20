@@ -30,9 +30,9 @@ public final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Send
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
-    public var stubbedExecuteResult: SharingInfos!
+    public var stubbedExecuteResult: [SharingInfos]!
 
-    public func execute() -> SharingInfos {
+    public func execute() -> [SharingInfos] {
         invokedExecutefunction = true
         invokedExecuteCount += 1
         closureExecute()
