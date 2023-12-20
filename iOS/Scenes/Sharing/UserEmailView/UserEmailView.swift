@@ -29,6 +29,22 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
+struct EmailViewCell: View {
+    let email: String
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 10) {
+            Text(email)
+                .font(.callout)
+        }
+        .foregroundColor(PassColor.textNorm.toColor)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(PassColor.interactionNormMinor1.toColor)
+        .cornerRadius(9)
+    }
+}
+
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()
@@ -37,6 +53,9 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
+            if case let .new(vault, _) = viewModel.vault {
+                vaultRow(vault)
+            }
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
@@ -45,6 +64,11 @@ struct UserEmailView: View {
 
             ScrollView {
                 VStack {
+                    FlowLayout(mode: .scrollable,
+                               items: viewModel.selectedEmails) { email in
+                        EmailViewCell(email: email.email)
+                    }.padding(.leading, -4)
+
                     emailTextField
 
                     PassDivider()
@@ -52,25 +76,31 @@ struct UserEmailView: View {
                         .padding(.top, 16)
                         .padding(.bottom, 24)
 
-                    if let recommendations = viewModel.recommendations, !recommendations.isEmpty {
+                    if viewModel.recommendationsState == .loading {
+                        VStack {
+                            Spacer(minLength: 50)
+                            ProgressView()
+                        }
+                    } else if let recommendations = viewModel.recommendationsState.recommendations,
+                              !recommendations.isEmpty {
                         InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
                                                  recommendations: recommendations)
                     }
 
-                    if case let .new(vault, _) = viewModel.vault {
-                        vaultRow(vault)
-                    }
-
                     Spacer()
-                }
+                }.frame(maxWidth: .infinity)
             }
+            .frame(maxWidth: .infinity)
         }
         .onAppear {
             defaultFocus = true
         }
-        .animation(.default, value: viewModel.recommendations?.hashValue)
+        .animation(.default, value: viewModel.selectedEmails.hashValue)
+
+        .animation(.default, value: viewModel.recommendationsState.recommendations?.hashValue)
         .animation(.default, value: viewModel.error)
-        .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
+        .navigate(isActive: $viewModel.goToNextStep,
+                  destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
