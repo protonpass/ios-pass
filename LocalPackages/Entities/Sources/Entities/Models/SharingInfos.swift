@@ -50,33 +50,46 @@ public extension SharingVaultData {
             false
         }
     }
+
+    var shareId: String {
+        switch self {
+        case let .existing(vault):
+            vault.shareId
+        case let .new(_, content):
+            content.shareId
+        }
+    }
 }
 
-public struct SharingInfos: Sendable {
-    public let vault: SharingVaultData?
-    public let email: String?
-    public let role: ShareRole?
+public struct SharingInfos: Sendable, Identifiable {
+    public var id: String {
+        email
+    }
+
+    public let vault: SharingVaultData
+    public let email: String
+    public let role: ShareRole
     /// No public keys means external user
     public let receiverPublicKeys: [PublicKey]?
-    public let itemsNum: Int?
+    public let itemsNum: Int
 
-    public var vaultName: String? {
-        vault?.name
+    public var vaultName: String {
+        vault.name
     }
 
     public var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
-        vault?.displayPreferences ?? .init()
+        vault.displayPreferences
     }
 
     public var shared: Bool {
-        vault?.shared ?? false
+        vault.shared
     }
 
-    public init(vault: SharingVaultData?,
-                email: String?,
-                role: ShareRole?,
+    public init(vault: SharingVaultData,
+                email: String,
+                role: ShareRole,
                 receiverPublicKeys: [PublicKey]?,
-                itemsNum: Int?) {
+                itemsNum: Int) {
         self.vault = vault
         self.email = email
         self.role = role
