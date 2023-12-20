@@ -155,6 +155,7 @@ private extension UserEmailViewModel {
                 recommendationsState = .loaded(nil)
                 router.display(element: .displayErrorBanner(error))
             }
+            vault = shareInviteService.currentSelectedVault
         }
     }
 }
