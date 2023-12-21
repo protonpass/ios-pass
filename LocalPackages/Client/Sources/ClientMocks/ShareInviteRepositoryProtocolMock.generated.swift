@@ -49,27 +49,47 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         return stubbedGetAllPendingInvitesResult
     }
     // MARK: - sendInvite
-    public var sendInviteShareIdInviteeDataTargetTypeShareRoleThrowableError2: Error?
+    public var sendInviteShareIdInviteeDataTargetTypeThrowableError2: Error?
     public var closureSendInvite: () -> () = {}
     public var invokedSendInvitefunction = false
     public var invokedSendInviteCount = 0
-    public var invokedSendInviteParameters: (shareId: String, inviteeData: InviteeData, targetType: TargetType, shareRole: ShareRole)?
-    public var invokedSendInviteParametersList = [(shareId: String, inviteeData: InviteeData, targetType: TargetType, shareRole: ShareRole)]()
+    public var invokedSendInviteParameters: (shareId: String, inviteeData: InviteeData, targetType: TargetType)?
+    public var invokedSendInviteParametersList = [(shareId: String, inviteeData: InviteeData, targetType: TargetType)]()
     public var stubbedSendInviteResult: Bool!
 
-    public func sendInvite(shareId: String, inviteeData: InviteeData, targetType: TargetType, shareRole: ShareRole) async throws -> Bool {
+    public func sendInvite(shareId: String, inviteeData: InviteeData, targetType: TargetType) async throws -> Bool {
         invokedSendInvitefunction = true
         invokedSendInviteCount += 1
-        invokedSendInviteParameters = (shareId, inviteeData, targetType, shareRole)
-        invokedSendInviteParametersList.append((shareId, inviteeData, targetType, shareRole))
-        if let error = sendInviteShareIdInviteeDataTargetTypeShareRoleThrowableError2 {
+        invokedSendInviteParameters = (shareId, inviteeData, targetType)
+        invokedSendInviteParametersList.append((shareId, inviteeData, targetType))
+        if let error = sendInviteShareIdInviteeDataTargetTypeThrowableError2 {
             throw error
         }
         closureSendInvite()
         return stubbedSendInviteResult
     }
+    // MARK: - sendInvites
+    public var sendInvitesShareIdInviteesDataTargetTypeThrowableError3: Error?
+    public var closureSendInvites: () -> () = {}
+    public var invokedSendInvitesfunction = false
+    public var invokedSendInvitesCount = 0
+    public var invokedSendInvitesParameters: (shareId: String, inviteesData: [InviteeData], targetType: TargetType)?
+    public var invokedSendInvitesParametersList = [(shareId: String, inviteesData: [InviteeData], targetType: TargetType)]()
+    public var stubbedSendInvitesResult: Bool!
+
+    public func sendInvites(shareId: String, inviteesData: [InviteeData], targetType: TargetType) async throws -> Bool {
+        invokedSendInvitesfunction = true
+        invokedSendInvitesCount += 1
+        invokedSendInvitesParameters = (shareId, inviteesData, targetType)
+        invokedSendInvitesParametersList.append((shareId, inviteesData, targetType))
+        if let error = sendInvitesShareIdInviteesDataTargetTypeThrowableError3 {
+            throw error
+        }
+        closureSendInvites()
+        return stubbedSendInvitesResult
+    }
     // MARK: - promoteNewUserInvite
-    public var promoteNewUserInviteShareIdInviteIdKeysThrowableError3: Error?
+    public var promoteNewUserInviteShareIdInviteIdKeysThrowableError4: Error?
     public var closurePromoteNewUserInvite: () -> () = {}
     public var invokedPromoteNewUserInvitefunction = false
     public var invokedPromoteNewUserInviteCount = 0
@@ -82,14 +102,14 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedPromoteNewUserInviteCount += 1
         invokedPromoteNewUserInviteParameters = (shareId, inviteId, keys)
         invokedPromoteNewUserInviteParametersList.append((shareId, inviteId, keys))
-        if let error = promoteNewUserInviteShareIdInviteIdKeysThrowableError3 {
+        if let error = promoteNewUserInviteShareIdInviteIdKeysThrowableError4 {
             throw error
         }
         closurePromoteNewUserInvite()
         return stubbedPromoteNewUserInviteResult
     }
     // MARK: - sendInviteReminder
-    public var sendInviteReminderShareIdInviteIdThrowableError4: Error?
+    public var sendInviteReminderShareIdInviteIdThrowableError5: Error?
     public var closureSendInviteReminder: () -> () = {}
     public var invokedSendInviteReminderfunction = false
     public var invokedSendInviteReminderCount = 0
@@ -102,14 +122,14 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedSendInviteReminderCount += 1
         invokedSendInviteReminderParameters = (shareId, inviteId)
         invokedSendInviteReminderParametersList.append((shareId, inviteId))
-        if let error = sendInviteReminderShareIdInviteIdThrowableError4 {
+        if let error = sendInviteReminderShareIdInviteIdThrowableError5 {
             throw error
         }
         closureSendInviteReminder()
         return stubbedSendInviteReminderResult
     }
     // MARK: - deleteInvite
-    public var deleteInviteShareIdInviteIdThrowableError5: Error?
+    public var deleteInviteShareIdInviteIdThrowableError6: Error?
     public var closureDeleteInvite: () -> () = {}
     public var invokedDeleteInvitefunction = false
     public var invokedDeleteInviteCount = 0
@@ -122,14 +142,14 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedDeleteInviteCount += 1
         invokedDeleteInviteParameters = (shareId, inviteId)
         invokedDeleteInviteParametersList.append((shareId, inviteId))
-        if let error = deleteInviteShareIdInviteIdThrowableError5 {
+        if let error = deleteInviteShareIdInviteIdThrowableError6 {
             throw error
         }
         closureDeleteInvite()
         return stubbedDeleteInviteResult
     }
     // MARK: - deleteNewUserInvite
-    public var deleteNewUserInviteShareIdInviteIdThrowableError6: Error?
+    public var deleteNewUserInviteShareIdInviteIdThrowableError7: Error?
     public var closureDeleteNewUserInvite: () -> () = {}
     public var invokedDeleteNewUserInvitefunction = false
     public var invokedDeleteNewUserInviteCount = 0
@@ -142,14 +162,14 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedDeleteNewUserInviteCount += 1
         invokedDeleteNewUserInviteParameters = (shareId, inviteId)
         invokedDeleteNewUserInviteParametersList.append((shareId, inviteId))
-        if let error = deleteNewUserInviteShareIdInviteIdThrowableError6 {
+        if let error = deleteNewUserInviteShareIdInviteIdThrowableError7 {
             throw error
         }
         closureDeleteNewUserInvite()
         return stubbedDeleteNewUserInviteResult
     }
     // MARK: - getInviteRecommendations
-    public var getInviteRecommendationsShareIdThrowableError7: Error?
+    public var getInviteRecommendationsShareIdThrowableError8: Error?
     public var closureGetInviteRecommendations: () -> () = {}
     public var invokedGetInviteRecommendationsfunction = false
     public var invokedGetInviteRecommendationsCount = 0
@@ -162,7 +182,7 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         invokedGetInviteRecommendationsCount += 1
         invokedGetInviteRecommendationsParameters = (shareId, ())
         invokedGetInviteRecommendationsParametersList.append((shareId, ()))
-        if let error = getInviteRecommendationsShareIdThrowableError7 {
+        if let error = getInviteRecommendationsShareIdThrowableError8 {
             throw error
         }
         closureGetInviteRecommendations()
