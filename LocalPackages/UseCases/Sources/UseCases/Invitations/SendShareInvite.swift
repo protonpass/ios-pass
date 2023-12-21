@@ -30,10 +30,15 @@ import ProtonCoreLogin
 /// Make an invitation and return the shared `Vault`
 public protocol SendVaultShareInviteUseCase: Sendable {
     func execute(with infos: SharingInfos) async throws -> Vault
+    func execute(with infos: [SharingInfos]) async throws -> Vault
 }
 
 public extension SendVaultShareInviteUseCase {
     func callAsFunction(with infos: SharingInfos) async throws -> Vault {
+        try await execute(with: infos)
+    }
+
+    func callAsFunction(with infos: [SharingInfos]) async throws -> Vault {
         try await execute(with: infos)
     }
 }
@@ -69,8 +74,27 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         let inviteeData = try generateInviteeData(from: infos, vault: vault, vaultKey: vaultKey)
         let invited = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
                                                                  inviteeData: inviteeData,
-                                                                 targetType: .vault,
-                                                                 shareRole: infos.role)
+                                                                 targetType: .vault)
+
+        if invited {
+            syncEventLoop.forceSync()
+            shareInviteService.resetShareInviteInformations()
+            return vault
+        }
+
+        throw PassError.sharing(.failedToInvite)
+    }
+
+    public func execute(with infos: [SharingInfos]) async throws -> Vault {
+        guard let baseInfo = infos.first else {
+            throw PassError.sharing(.incompleteInformation)
+        }
+        let vault = try await getVault(from: baseInfo)
+        let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
+        let inviteesData = try infos.map { try generateInviteeData(from: $0, vault: vault, vaultKey: vaultKey) }
+        let invited = try await shareInviteRepository.sendInvites(shareId: vault.shareId,
+                                                                  inviteesData: inviteesData,
+                                                                  targetType: .vault)
 
         if invited {
             syncEventLoop.forceSync()
@@ -102,13 +126,13 @@ private extension SendVaultShareInvite {
                                                                  publicReceiverKey: key,
                                                                  userData: userData,
                                                                  vaultKey: vaultKey)
-            return .existing(email: email, keys: [signedKey])
+            return .existing(email: email, keys: [signedKey], role: info.role)
         } else {
             let signature = try createAndSignSignature(addressId: vault.addressId,
                                                        vaultKey: vaultKey,
                                                        email: email,
                                                        userData: userData)
-            return .new(email: email, signature: signature)
+            return .new(email: email, signature: signature, role: info.role)
         }
     }
 
