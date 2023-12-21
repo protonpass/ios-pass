@@ -25,6 +25,10 @@ public protocol RemoteShareInviteDatasourceProtocol {
     func getPendingInvites(sharedId: String) async throws -> ShareInvites
     func inviteProtonUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool
     func inviteExternalUser(shareId: String, request: InviteNewUserToShareRequest) async throws -> Bool
+    func inviteMultipleProtonUsers(shareId: String, request: InviteMultipleUsersToShareRequest) async throws
+        -> Bool
+    func inviteMultipleExternalUsers(shareId: String, request: InviteMultipleNewUsersToShareRequest) async throws
+        -> Bool
     func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool
     func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
     func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool
@@ -82,5 +86,19 @@ public extension RemoteShareInviteDatasource {
         let endpoint = GetInviteRecommendationsEndpoint(shareId: shareId)
         let response = try await exec(endpoint: endpoint)
         return response.recommendation
+    }
+
+    func inviteMultipleProtonUsers(shareId: String,
+                                   request: InviteMultipleUsersToShareRequest) async throws -> Bool {
+        let endpoint = InviteMultipleUserToShareEndpoint(shareId: shareId, request: request)
+        let response = try await exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+
+    func inviteMultipleExternalUsers(shareId: String,
+                                     request: InviteMultipleNewUsersToShareRequest) async throws -> Bool {
+        let endpoint = InviteMultipleNewUserToShareEndpoint(shareId: shareId, request: request)
+        let response = try await exec(endpoint: endpoint)
+        return response.isSuccessful
     }
 }
