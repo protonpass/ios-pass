@@ -21,7 +21,7 @@
 import Factory
 import Foundation
 
-final class SharedRouterContainer: SharedContainer, AutoRegistering, Sendable {
+final class SharedRouterContainer: SharedContainer, AutoRegistering {
     static let shared = SharedRouterContainer()
     let manager = ContainerManager()
 
