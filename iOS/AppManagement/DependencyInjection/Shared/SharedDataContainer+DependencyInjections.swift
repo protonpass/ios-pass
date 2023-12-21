@@ -27,7 +27,7 @@ import Factory
 import Foundation
 import ProtonCoreLogin
 
-final class SharedDataContainer: SharedContainer, AutoRegistering, Sendable {
+final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()
     let manager = ContainerManager()
 

@@ -32,7 +32,7 @@ extension VaultSyncEventStream: @unchecked Sendable {}
 extension CorruptedSessionEventStream: @unchecked Sendable {}
 
 /// Contain all repositories
-final class SharedRepositoryContainer: SharedContainer, AutoRegistering, Sendable {
+final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
     static let shared = SharedRepositoryContainer()
     let manager = ContainerManager()
 

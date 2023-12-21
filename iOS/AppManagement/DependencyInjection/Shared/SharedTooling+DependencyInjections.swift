@@ -30,7 +30,7 @@ import ProtonCoreLogin
 import ProtonCoreServices
 
 /// Contain tools shared between main iOS app and extensions
-final class SharedToolingContainer: SharedContainer, AutoRegistering, Sendable {
+final class SharedToolingContainer: SharedContainer, AutoRegistering {
     static let shared = SharedToolingContainer()
     let manager = ContainerManager()
 

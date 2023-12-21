@@ -23,7 +23,7 @@ import Entities
 import Factory
 import Foundation
 
-final class DataStreamContainer: SharedContainer, AutoRegistering, Sendable {
+final class DataStreamContainer: SharedContainer, AutoRegistering {
     static let shared = DataStreamContainer()
     let manager = ContainerManager()
 
