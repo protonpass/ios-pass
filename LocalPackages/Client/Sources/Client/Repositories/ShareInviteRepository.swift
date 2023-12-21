@@ -23,9 +23,35 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-public enum InviteeData: Sendable {
-    case existing(email: String, keys: [ItemKey])
-    case new(email: String, signature: String)
+public enum InviteeData: Sendable, Equatable {
+    case existing(email: String, keys: [ItemKey], role: ShareRole)
+    case new(email: String, signature: String, role: ShareRole)
+}
+
+extension [InviteeData] {
+    func existingUserInvitesRequests(targetType: TargetType) -> [InviteUserToShareRequest] {
+        compactMap {
+            if case let .existing(email, keys, role) = $0 {
+                return InviteUserToShareRequest(keys: keys,
+                                                email: email,
+                                                targetType: targetType,
+                                                shareRole: role)
+            }
+            return nil
+        }
+    }
+
+    func newUserInvitesRequests(targetType: TargetType) -> [InviteNewUserToShareRequest] {
+        compactMap {
+            if case let .new(email, signature, role) = $0 {
+                return InviteNewUserToShareRequest(email: email,
+                                                   targetType: targetType,
+                                                   signature: signature,
+                                                   shareRole: role)
+            }
+            return nil
+        }
+    }
 }
 
 // sourcery: AutoMockable
@@ -34,8 +60,11 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
 
     func sendInvite(shareId: String,
                     inviteeData: InviteeData,
-                    targetType: TargetType,
-                    shareRole: ShareRole) async throws -> Bool
+                    targetType: TargetType) async throws -> Bool
+
+    func sendInvites(shareId: String,
+                     inviteesData: [InviteeData],
+                     targetType: TargetType) async throws -> Bool
 
     func promoteNewUserInvite(shareId: String,
                               inviteId: String,
@@ -83,21 +112,43 @@ public extension ShareInviteRepository {
 
     func sendInvite(shareId: String,
                     inviteeData: InviteeData,
-                    targetType: TargetType,
-                    shareRole: ShareRole) async throws -> Bool {
+                    targetType: TargetType) async throws -> Bool {
         switch inviteeData {
-        case let .existing(email, keys):
+        case let .existing(email, keys, role):
             try await sendProtonInvite(shareId: shareId,
                                        email: email,
                                        keys: keys,
                                        targetType: targetType,
-                                       shareRole: shareRole)
-        case let .new(email, signature):
+                                       shareRole: role)
+        case let .new(email, signature, role):
             try await sendExternalInvite(shareId: shareId,
                                          email: email,
                                          signature: signature,
                                          targetType: targetType,
-                                         shareRole: shareRole)
+                                         shareRole: role)
+        }
+    }
+
+    func sendInvites(shareId: String,
+                     inviteesData: [InviteeData],
+                     targetType: TargetType) async throws -> Bool {
+        let userInvites = inviteesData.existingUserInvitesRequests(targetType: targetType)
+        let newUserInvites = inviteesData.newUserInvitesRequests(targetType: targetType)
+
+        if userInvites.isEmpty, newUserInvites.isEmpty {
+            return false
+        }
+
+        if !userInvites.isEmpty, newUserInvites.isEmpty {
+            return try await sendProtonInvites(shareId: shareId, requests: userInvites)
+        } else if userInvites.isEmpty, !newUserInvites.isEmpty {
+            return try await sendExternalInvites(shareId: shareId, requests: newUserInvites)
+        } else {
+            async let invites = sendProtonInvites(shareId: shareId, requests: userInvites)
+            async let newInvites = sendExternalInvites(shareId: shareId, requests: newUserInvites)
+
+            let (invitesSuccess, newInvitesSuccess) = try await (invites, newInvites)
+            return invitesSuccess && newInvitesSuccess
         }
     }
 
@@ -206,6 +257,38 @@ private extension ShareInviteRepository {
             return inviteStatus
         } catch {
             logger.error(message: "Failed to invite external user \(email) to share \(shareId)",
+                         error: error)
+            throw error
+        }
+    }
+
+    func sendProtonInvites(shareId: String,
+                           requests: [InviteUserToShareRequest]) async throws -> Bool {
+        logger.trace("Inviting batch Proton users to share \(shareId)")
+        do {
+            let request = InviteMultipleUsersToShareRequest(invites: requests)
+            let inviteStatus = try await remoteDataSource.inviteMultipleProtonUsers(shareId: shareId,
+                                                                                    request: request)
+            logger.info("Invited batch Proton users to \(shareId)")
+            return inviteStatus
+        } catch {
+            logger.error(message: "Failed to invite batch Proton users to share \(shareId)",
+                         error: error)
+            throw error
+        }
+    }
+
+    func sendExternalInvites(shareId: String,
+                             requests: [InviteNewUserToShareRequest]) async throws -> Bool {
+        logger.trace("Inviting multiple external users to share \(shareId)")
+        do {
+            let request = InviteMultipleNewUsersToShareRequest(newUserInvites: requests)
+            let inviteStatus = try await remoteDataSource.inviteMultipleExternalUsers(shareId: shareId,
+                                                                                      request: request)
+            logger.info("Invited multiple external users to \(shareId)")
+            return inviteStatus
+        } catch {
+            logger.error(message: "Failed to invite multiple external users to share \(shareId)",
                          error: error)
             throw error
         }
