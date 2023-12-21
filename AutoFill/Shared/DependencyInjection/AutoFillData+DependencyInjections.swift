@@ -23,9 +23,7 @@ import Client
 import Factory
 import UIKit
 
-extension ContainerManager: @unchecked Sendable {}
-
-final class AutoFillDataContainer: SharedContainer, AutoRegistering, Sendable {
+final class AutoFillDataContainer: SharedContainer, AutoRegistering {
     static let shared = AutoFillDataContainer()
     let manager = ContainerManager()
 

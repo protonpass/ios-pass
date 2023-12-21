@@ -21,7 +21,7 @@
 import Client
 import Factory
 
-final class SharedDataStreamContainer: SharedContainer, AutoRegistering, Sendable {
+final class SharedDataStreamContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataStreamContainer()
     let manager = ContainerManager()
 

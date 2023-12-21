@@ -22,7 +22,7 @@ import Client
 import Core
 import Factory
 
-final class SharedServiceContainer: SharedContainer, AutoRegistering, Sendable {
+final class SharedServiceContainer: SharedContainer, AutoRegistering {
     static let shared = SharedServiceContainer()
     let manager = ContainerManager()
 
