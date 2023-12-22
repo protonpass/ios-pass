@@ -50,4 +50,3 @@ public enum AliasPrefixError: LocalizedError {
         }
     }
 }
-
