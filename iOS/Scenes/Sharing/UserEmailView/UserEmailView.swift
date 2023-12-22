@@ -29,22 +29,6 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-struct EmailViewCell: View {
-    let email: String
-
-    var body: some View {
-        HStack(alignment: .center, spacing: 10) {
-            Text(email)
-                .font(.callout)
-        }
-        .foregroundColor(PassColor.textNorm.toColor)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 8)
-        .background(PassColor.interactionNormMinor1.toColor)
-        .cornerRadius(9)
-    }
-}
-
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()
@@ -53,9 +37,6 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            if case let .new(vault, _) = viewModel.vault {
-                vaultRow(vault)
-            }
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
