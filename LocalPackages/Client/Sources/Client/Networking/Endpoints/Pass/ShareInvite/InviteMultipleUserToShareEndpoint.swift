@@ -34,7 +34,7 @@ public struct InviteMultipleUserToShareEndpoint: Endpoint {
 
     public init(shareId: String, request: InviteMultipleUsersToShareRequest) {
         debugDescription = "Invite a user to share"
-        path = "/pass/v1/share/\(shareId)/invite"
+        path = "/pass/v1/share/\(shareId)/invite/batch"
         method = .post
         body = request
     }
