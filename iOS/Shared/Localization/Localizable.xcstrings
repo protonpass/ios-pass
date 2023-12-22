@@ -43174,6 +43174,18 @@
         }
       }
     },
+    "search result(s)" : {
+      "comment" : "Displayed in the top bar of the search result page along side the number of results",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "search result(s)"
+          }
+        }
+      }
+    },
     "Secure password manager and more" : {
       "comment" : "Slogan",
       "extractionState" : "manual",
