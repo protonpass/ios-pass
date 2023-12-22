@@ -239,3 +239,11 @@ extension SharedUseCasesContainer {
         self { CanEditItem() }
     }
 }
+
+// MARK: - Rust Validators
+
+extension SharedUseCasesContainer {
+    var validateAliasPrefix: Factory<ValidateAliasPrefixUseCase> {
+        self { ValidateAliasPrefix() }
+    }
+}

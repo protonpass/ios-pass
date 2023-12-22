@@ -26,6 +26,9 @@ public enum AliasPrefixError: LocalizedError {
     case disallowedCharacters
     case twoConsecutiveDots
     case dotAtTheEnd
+    case dotAtTheStart
+    case prefixToLong
+    case unknown
 
     public var localizedDescription: String {
         switch self {
@@ -38,32 +41,13 @@ public enum AliasPrefixError: LocalizedError {
             #localized("Prefix can not contain 2 consecutive dots (..)")
         case .dotAtTheEnd:
             #localized("Alias can not contain 2 consecutive dots (..)")
+        case .dotAtTheStart:
+            #localized("Alias can not start with a dots (.)")
+        case .prefixToLong:
+            #localized("The alias prefix is to long")
+        case .unknown:
+            #localized("Something went wrong")
         }
     }
 }
 
-public enum AliasPrefixValidator {
-    public static let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
-
-    /// Validate a given prefix.
-    /// - Parameters:
-    ///  - prefix: Prefix to be validated.
-    /// - Returns: Nothing if success, throw`AliasPrefixError` if failure.
-    public static func validate(prefix: String) throws {
-        guard !prefix.isEmpty else {
-            throw AliasPrefixError.emptyPrefix
-        }
-
-        guard prefix.isValid(allowedCharacters: allowedCharacters) else {
-            throw AliasPrefixError.disallowedCharacters
-        }
-
-        guard !prefix.contains("..") else {
-            throw AliasPrefixError.twoConsecutiveDots
-        }
-
-        guard prefix.last != "." else {
-            throw AliasPrefixError.dotAtTheEnd
-        }
-    }
-}
