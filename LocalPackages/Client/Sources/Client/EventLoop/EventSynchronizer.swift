@@ -88,7 +88,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
 
         let updatedShares = try await removeSuperfluousLocalShares(localShares: localShares,
-                                                               remoteShares: remoteShares)
+                                                                   remoteShares: remoteShares)
         if updatedShares {
             if Task.isCancelled {
                 return false
@@ -115,7 +115,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
 
 private extension EventSynchronizer {
     func removeSuperfluousLocalShares(localShares: [SymmetricallyEncryptedShare],
-                              remoteShares: [Share]) async throws -> Bool {
+                                      remoteShares: [Share]) async throws -> Bool {
         // This is used to respond to sharing modifications that are not tied to events in the BE
         // making changes not visible to the user.
         if !remoteShares.isLooselyEqual(to: localShares.map(\.share)) {
