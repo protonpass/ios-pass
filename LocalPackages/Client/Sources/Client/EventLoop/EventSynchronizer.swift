@@ -29,7 +29,7 @@ import ProtonCoreNetworking
  1. Fetch all shares from remote and local
  2. Compare recently fetched shares with local ones.
     if discrepancies found update or remove local shares as remote share are the source of truth.
- 
+
     For each new share do the full sync procedure.
     For each existing share, do the step 3 of the full sync procedure.
 
@@ -94,7 +94,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                 return false
             }
 
-            /// Updating the local shares with the latest information as `hasNewShareEvents` notifies of local share changes.
+            /// Updating the local shares with the latest information as `hasNewShareEvents` notifies of local
+            /// share changes.
             localShares = try await shareRepository.getShares()
         }
         if Task.isCancelled {
@@ -111,6 +112,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
 // MARK: Private APIs
 
 // MARK: - Sharing Events
+
 private extension EventSynchronizer {
     func processSharingEvents(localShares: [SymmetricallyEncryptedShare],
                               remoteShares: [Share]) async throws -> Bool {
@@ -160,6 +162,7 @@ private extension EventSynchronizer {
 }
 
 // MARK: - Sync Utils
+
 private extension EventSynchronizer {
     /// Return `true` if new events found
     func syncCreateAndUpdateEvents(localShares: [SymmetricallyEncryptedShare],
