@@ -87,9 +87,9 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         }
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
 
-        let hasNewShareEvents = try await processSharingEvents(localShares: localShares,
+        let updatedShares = try await removeSuperfluousLocalShares(localShares: localShares,
                                                                remoteShares: remoteShares)
-        if hasNewShareEvents {
+        if updatedShares {
             if Task.isCancelled {
                 return false
             }
@@ -105,7 +105,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         let hasNewEvents = try await syncCreateAndUpdateEvents(localShares: localShares,
                                                                remoteShares: remoteShares)
 
-        return hasNewEvents || hasNewShareEvents
+        return hasNewEvents || updatedShares
     }
 }
 
@@ -114,19 +114,13 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
 // MARK: - Sharing Events
 
 private extension EventSynchronizer {
-    func processSharingEvents(localShares: [SymmetricallyEncryptedShare],
+    func removeSuperfluousLocalShares(localShares: [SymmetricallyEncryptedShare],
                               remoteShares: [Share]) async throws -> Bool {
         // This is used to respond to sharing modifications that are not tied to events in the BE
         // making changes not visible to the user.
         if !remoteShares.isLooselyEqual(to: localShares.map(\.share)) {
             // Update local shares based on remote shares that are the source of truth
             let remoteShareIDs = Set(remoteShares.map(\.shareID))
-            // Iterate over local shares and delete those that match remote shares
-            for localShare in localShares where remoteShareIDs.contains(localShare.share.shareID) {
-                try await shareRepository.deleteShareLocally(shareId: localShare.share.shareID)
-            }
-            // Upsert remote shares
-            try await shareRepository.upsertShares(remoteShares)
 
             // Filter local shares not present in remote shares
             let deletedLocalShares = localShares.filter { !remoteShareIDs.contains($0.share.shareID) }
@@ -181,6 +175,8 @@ private extension EventSynchronizer {
 
                     if isExistingShare {
                         var hasNewEvents = false
+                        try await shareRepository.deleteShareLocally(shareId: remoteShare.shareID)
+                        try await shareRepository.upsertShares([remoteShare])
                         try Task.checkCancellation()
                         try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
                         return hasNewEvents
@@ -205,11 +201,10 @@ private extension EventSynchronizer {
 
         do {
             try Task.checkCancellation()
-            async let refreshKeys = shareKeyRepository.refreshKeys(shareId: shareId)
             async let upsertShares: Void = shareRepository.upsertShares([remoteShare])
             async let refreshItems: Void = itemRepository.refreshItems(shareId: shareId)
             try Task.checkCancellation()
-            _ = try await (refreshKeys, upsertShares, refreshItems)
+            _ = try await (upsertShares, refreshItems)
         } catch {
             if let passError = error as? PassError,
                case let .crypto(reason) = passError,
