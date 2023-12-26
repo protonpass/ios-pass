@@ -61,37 +61,37 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
             let userData = try userDataProvider.getUnwrappedUserData()
             guard let vaultData = userInvite.vaultData,
                   let intermediateVaultKey = userInvite.keys
-                .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {
+                  .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {
                 throw PassError.sharing(.invalidKey)
             }
             guard let invitedAddress = try await address(for: userInvite, userData: userData) else {
                 throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
             }
-            
+
             let invitedAddressKeys = try CryptoUtils.unlockAddressKeys(address: invitedAddress,
                                                                        userData: userData)
-            
+
             guard let decodedIntermediateVaultKey = try intermediateVaultKey.key.base64Decode() else {
                 throw PassError.sharing(.cannotDecode)
             }
-            
+
             let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
             let armoredEncryptedVaultKeyData = try CryptoUtils.armorMessage(decodedIntermediateVaultKey)
-            
+
             let vaultKeyArmorMessage = ArmoredMessage(value: armoredEncryptedVaultKeyData)
             let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
             let context = VerificationContext(value: Constants.existingUserSharingSignatureContext,
                                               required: .always)
-            
+
             let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: invitedAddressKeys,
                                                                       value: vaultKeyArmorMessage,
                                                                       verificationKeys: armoredInviterPublicKeys,
                                                                       verificationContext: context)
-            
+
             guard let content = try vaultData.content.base64Decode() else {
                 throw PassError.sharing(.cannotDecode)
             }
-            
+
             let decryptedContent = try AES.GCM.open(content,
                                                     key: decode.content,
                                                     associatedData: .vaultContent)
