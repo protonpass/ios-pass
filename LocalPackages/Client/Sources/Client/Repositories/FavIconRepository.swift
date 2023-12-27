@@ -219,6 +219,7 @@ private extension FavIconRepository {
 }
 
 // MARK: - Task Management
+
 private extension FavIconRepository {
     func addActiveTask(_ task: Task<FavIcon?, any Error>, for domain: String) {
         activeTasks[domain] = task
