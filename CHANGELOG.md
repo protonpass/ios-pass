@@ -1,3 +1,28 @@
+## Version 1.7.1
+- Fixed "+" button disabled
+
+## Version 1.7.0
+Features:
+- Added support for bulk actions (move, trash, restore or delete multiple items)
+
+Bug fixes:
+- Fixed not being able to share to external users
+- Fixed card's number is not masked when its length is less than 12
+- Fixed item list glitch on iPad when closing search page
+- Fixed UI glitch when opening vault list
+
+Improvements:
+- Used YY format when displaying card details
+- Showed localized month symbols when picking card's expiration date
+- Showed instructions to enable AutoFill on macOS when clicking on the CTA button of the spotlight
+- Hid suggestion section in AutoFill extension when an application has no associated URLs
+- Disabled create item buttons when entering read-only vaults
+- Limited actions on read-only items (disable swipe to delete/restore...)
+
+Others:
+- Send UserID to Sentry when capturing errors
+- Added support for pinning behind a feature flag
+
 ## Version 1.6.1
 - Added support for Norwegian language
 - Improved passwords display

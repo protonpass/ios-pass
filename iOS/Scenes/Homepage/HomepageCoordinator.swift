@@ -133,9 +133,9 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        vaultsManager.$vaultSelection
+        Publishers.CombineLatest(vaultsManager.$vaultSelection, vaultsManager.$state)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] selection in
+            .sink { [weak self] selection, _ in
                 guard let self else { return }
                 var createButtonDisabled = false
                 switch selection {
