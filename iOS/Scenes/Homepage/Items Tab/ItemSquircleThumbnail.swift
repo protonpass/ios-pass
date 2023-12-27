@@ -54,7 +54,8 @@ enum ItemSquircleThumbnailSize {
     }
 }
 
-struct ItemSquircleThumbnail: View, Sendable {
+@MainActor
+struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
     private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
@@ -133,7 +134,16 @@ private extension ItemSquircleThumbnail {
                     image = nil
                 }
             }
-            .onFirstAppear { loadFavIcon(url: url, force: false) }
+            .task {
+                do {
+                    if let favIcon = try await repository.getIcon(for: url),
+                       let newImage = UIImage(data: favIcon.data) {
+                        image = newImage
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 }
