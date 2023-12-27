@@ -80,10 +80,21 @@ public actor FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
 public extension FavIconRepository {
     func getIcon(for domain: String) async throws -> FavIcon? {
         guard settings.shouldDisplayFavIcons, !domain.isEmpty else { return nil }
+    
         if let existingTask = activeTasks[domain] {
+            if Task.isCancelled {
+                activeTasks[domain]?.cancel()
+                activeTasks[domain] = nil
+                return nil
+            }
             return try await existingTask.value
         }
 
+        if Task.isCancelled {
+            activeTasks[domain]?.cancel()
+            activeTasks[domain] = nil
+            return nil
+        }
         let task = Task<FavIcon?, any Error> {
             do {
                 let symmetricKey = try getSymmetricKey()
@@ -99,6 +110,11 @@ public extension FavIconRepository {
                     return .init(domain: domain, data: decryptedData, isFromCache: true)
                 }
 
+                if Task.isCancelled {
+                    activeTasks[domain]?.cancel()
+                    activeTasks[domain] = nil
+                    return nil
+                }
                 // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
                 let result = try await datasource.fetchFavIcon(for: domain)
 
@@ -127,7 +143,11 @@ public extension FavIconRepository {
         }
 
         activeTasks[domain] = task
-
+        if Task.isCancelled {
+            activeTasks[domain]?.cancel()
+            activeTasks[domain] = nil
+            return nil
+        }
         return try await task.value
     }
 
