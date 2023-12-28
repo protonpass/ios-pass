@@ -24,13 +24,8 @@ public extension URL {
     /// String that contains only `scheme` & `host` of an `URL`
     /// E.g:`https://www.example.com/path/to/sth` -> `https://www.example.com`
     var schemeAndHost: String {
-        if #available(iOS 16.0, *) {
-            guard let scheme, let host = host() else { return "" }
-            return "\(scheme)://\(host)"
-        } else {
-            guard let scheme, let host else { return "" }
-            return "\(scheme)://\(host)"
-        }
+        guard let scheme, let host = host() else { return "" }
+        return "\(scheme)://\(host)"
     }
 
     /// Get value of a query parameter.
