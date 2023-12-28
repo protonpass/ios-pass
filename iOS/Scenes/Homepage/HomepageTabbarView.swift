@@ -109,13 +109,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        if #unavailable(iOS 16) {
-            // UITabBarController automatically embeds child VCs into a UINavigationController
-            // Which then causes 2 navigation bars stacked on top of each other because
-            // the child VCs themselves also have a navigation bar
-            // Looks like this is only the behavior before iOS 16. Safe to remove once dropped iOS 15
-            navigationController?.setNavigationBarHidden(true, animated: false)
-        }
     }
 
     override func viewDidLoad() {

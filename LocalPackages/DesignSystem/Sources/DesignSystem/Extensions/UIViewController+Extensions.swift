@@ -33,18 +33,14 @@ public extension UIViewController {
         let parentWindow = parentViewController.view.window
         let screenHeight = parentWindow?.bounds.height ?? UIScreen.main.bounds.height
 
-        let detents: [UISheetPresentationController.Detent] = if #available(iOS 16, *) {
-            makeDetentsIOS16AndUp(for: type, screenHeight: screenHeight)
-        } else {
-            makeDetents(for: type, screenHeight: screenHeight)
-        }
+        let detents: [UISheetPresentationController.Detent] = makeDetentsIOS16AndUp(for: type,
+                                                                                    screenHeight: screenHeight)
 
         sheetPresentationController?.detents = detents
     }
 }
 
 private extension UIViewController {
-    @available(iOS 16, *)
     func makeDetentsIOS16AndUp(for type: SheetDetentType,
                                screenHeight: CGFloat) -> [UISheetPresentationController.Detent] {
         let customDetent: (CGFloat) -> UISheetPresentationController.Detent = { height in

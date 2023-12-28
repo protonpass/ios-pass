@@ -112,15 +112,7 @@ struct CreateEditNoteView: View {
                       interpreter: viewModel.interpretor,
                       resultStream: viewModel.scanResponsePublisher)
         .onFirstAppear {
-            if #available(iOS 16, *) {
-                focusedField = .title
-            } else {
-                // 0.5 second delay is purely heuristic.
-                // Values lower than 0.5 simply don't work.
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    focusedField = .title
-                }
-            }
+            focusedField = .title
         }
     }
 }

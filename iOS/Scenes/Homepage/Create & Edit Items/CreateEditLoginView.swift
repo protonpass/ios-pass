@@ -127,13 +127,7 @@ struct CreateEditLoginView: View {
             }
             .onFirstAppear {
                 if case .create = viewModel.mode {
-                    if #available(iOS 16, *) {
-                        focusedField = .title
-                    } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                            focusedField = .title
-                        }
-                    }
+                    focusedField = .title
                 }
             }
             .toolbar {
@@ -171,19 +165,17 @@ private extension CreateEditLoginView {
     @ToolbarContentBuilder
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
-            if #available(iOS 16, *) {
-                switch focusedField {
-                case .username:
-                    usernameTextFieldToolbar
-                case .totp:
-                    totpTextFieldToolbar
-                case let .custom(model) where model?.customField.type == .totp:
-                    totpTextFieldToolbar
-                case .password:
-                    passwordTextFieldToolbar
-                default:
-                    EmptyView()
-                }
+            switch focusedField {
+            case .username:
+                usernameTextFieldToolbar
+            case .totp:
+                totpTextFieldToolbar
+            case let .custom(model) where model?.customField.type == .totp:
+                totpTextFieldToolbar
+            case .password:
+                passwordTextFieldToolbar
+            default:
+                EmptyView()
             }
         }
     }
@@ -363,13 +355,6 @@ private extension CreateEditLoginView {
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
-
-                if #unavailable(iOS 16) {
-                    if focusedField == .username {
-                        hideMyEmailButton
-                        useCurrentEmailButton
-                    }
-                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -442,12 +427,6 @@ private extension CreateEditLoginView {
                     .autocorrectionDisabled()
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.done)
-
-                if #unavailable(iOS 16) {
-                    if focusedField == .password {
-                        generatePasswordButton
-                    }
-                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -502,13 +481,6 @@ private extension CreateEditLoginView {
 
                 if !viewModel.totpUriErrorMessage.isEmpty {
                     InvalidInputLabel(viewModel.totpUriErrorMessage)
-                }
-
-                if #unavailable(iOS 16) {
-                    if focusedField == .totp {
-                        pasteFromClipboardButton
-                        openCameraButton
-                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
