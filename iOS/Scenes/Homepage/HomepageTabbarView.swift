@@ -107,10 +107,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
