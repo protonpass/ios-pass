@@ -81,13 +81,7 @@ private extension CreateEditCreditCardView {
         .tint(tintColor.toColor)
         .onFirstAppear {
             if case .create = viewModel.mode {
-                if #available(iOS 16, *) {
-                    focusedField = .title
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                        focusedField = .title
-                    }
-                }
+                focusedField = .title
             }
         }
         .toolbar {

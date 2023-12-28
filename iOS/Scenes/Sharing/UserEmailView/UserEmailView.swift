@@ -50,13 +50,7 @@ struct UserEmailView: View {
             Spacer()
         }
         .onAppear {
-            if #available(iOS 16, *) {
-                defaultFocus = true
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                    defaultFocus = true
-                }
-            }
+            defaultFocus = true
         }
         .animation(.default, value: viewModel.error)
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
