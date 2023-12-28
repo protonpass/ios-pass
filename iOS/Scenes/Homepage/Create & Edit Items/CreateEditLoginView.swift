@@ -267,59 +267,6 @@ private extension CreateEditLoginView {
     }
 }
 
-// iOS 15 work around
-// All the views and functions in this extension can be removed once we drop iOS 15
-private extension CreateEditLoginView {
-    @ViewBuilder
-    func capsuleButton(icon: UIImage?, title: String, action: @escaping () -> Void) -> some View {
-        if let icon {
-            CapsuleLabelButton(icon: icon,
-                               title: title,
-                               titleColor: PassColor.interactionNormMajor2,
-                               backgroundColor: PassColor.interactionNormMinor1,
-                               maxWidth: nil,
-                               action: action)
-        } else {
-            CapsuleTextButton(title: title,
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              maxWidth: nil,
-                              action: action)
-        }
-    }
-
-    var hideMyEmailButton: some View {
-        capsuleButton(icon: IconProvider.alias, title: "Hide my email", action: viewModel.generateAlias)
-    }
-
-    var useCurrentEmailButton: some View {
-        capsuleButton(icon: nil, title: #localized("Use %@", viewModel.emailAddress)) {
-            viewModel.useRealEmailAddress()
-            if viewModel.password.isEmpty {
-                focusedField = .password
-            } else {
-                focusedField = nil
-            }
-        }
-    }
-
-    var generatePasswordButton: some View {
-        capsuleButton(icon: IconProvider.arrowsRotate,
-                      title: "Generate password",
-                      action: viewModel.generatePassword)
-    }
-
-    var pasteFromClipboardButton: some View {
-        capsuleButton(icon: IconProvider.squares,
-                      title: "Paste from clipboard",
-                      action: viewModel.pasteTotpUriFromClipboard)
-    }
-
-    var openCameraButton: some View {
-        capsuleButton(icon: IconProvider.camera, title: "Open camera", action: viewModel.openCodeScanner)
-    }
-}
-
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {

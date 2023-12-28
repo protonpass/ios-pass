@@ -68,28 +68,4 @@ private extension UIViewController {
             }
         }
     }
-
-    func makeDetents(for type: SheetDetentType,
-                     screenHeight: CGFloat) -> [UISheetPresentationController.Detent] {
-        switch type {
-        case .medium:
-            [.medium()]
-        case .large:
-            [.large()]
-        case .mediumAndLarge:
-            [.medium(), .large()]
-        case let .custom(height):
-            if height > screenHeight / 2 {
-                [.large()]
-            } else {
-                [.medium()]
-            }
-        case let .customAndLarge(height):
-            if height > screenHeight / 2 {
-                [.large()]
-            } else {
-                [.medium(), .large()]
-            }
-        }
-    }
 }
