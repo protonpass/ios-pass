@@ -45,13 +45,7 @@ struct BugReportView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .showSpinner(viewModel.isSending)
                 .onFirstAppear {
-                    if #available(iOS 16, *) {
-                        focused = true
-                    } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                            focused = true
-                        }
-                    }
+                    focused = true
                 }
         }
         .navigationViewStyle(.stack)

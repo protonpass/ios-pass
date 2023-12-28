@@ -24,12 +24,8 @@ struct ScrollIndicatorsHiddenModifier: ViewModifier {
     let hidden: Bool
 
     func body(content: Content) -> some View {
-        if #available(iOS 16.0, *) {
-            if hidden {
-                content.scrollIndicators(.hidden)
-            } else {
-                content
-            }
+        if hidden {
+            content.scrollIndicators(.hidden)
         } else {
             content
         }

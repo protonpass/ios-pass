@@ -50,15 +50,8 @@ public extension View {
 
     @ViewBuilder
     func navigationModifier() -> some View {
-        if #available(iOS 16.0, *) {
-            NavigationStack {
-                self
-            }
-        } else {
-            NavigationView {
-                self
-            }
-            .navigationViewStyle(.stack)
+        NavigationStack {
+            self
         }
     }
 }
