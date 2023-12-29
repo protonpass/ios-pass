@@ -226,7 +226,7 @@ private extension BugReportView {
             .padding(kItemDetailSectionPadding)
             .roundedEditableSection()
 
-            Text("Add relevant informations to the report")
+            Text("Add relevant files or images to the report")
                 .sectionTitleText()
         }
     }
@@ -250,7 +250,7 @@ private extension BugReportView {
             CapsuleTextButton(title: "Clear all files",
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
-                              action: { viewModel.clearAllAddedFiles()})
+                              action: { viewModel.clearAllAddedFiles() })
         }
         .foregroundColor(PassColor.textNorm.toColor)
         .frame(maxHeight: .infinity)
