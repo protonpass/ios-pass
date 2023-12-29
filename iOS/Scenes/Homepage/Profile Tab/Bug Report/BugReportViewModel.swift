@@ -19,9 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Factory
 import Foundation
 import Macro
+import PhotosUI
+import SwiftUI
 
 enum BugReportObject: CaseIterable {
     case autofill, autosave, aliases, syncing, featureRequest, other
@@ -44,6 +47,20 @@ enum BugReportObject: CaseIterable {
     }
 }
 
+struct DataUrl: Transferable {
+    let url: URL
+
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(contentType: .data) { data in
+            SentTransferredFile(data.url)
+        } importing: { received in
+            Self(url: received.file)
+        }
+    }
+}
+
+extension PhotosPickerItem: @unchecked Sendable {}
+
 @MainActor
 final class BugReportViewModel: ObservableObject {
     @Published var object: BugReportObject?
@@ -52,17 +69,30 @@ final class BugReportViewModel: ObservableObject {
     @Published private(set) var hasSent = false
     @Published private(set) var isSending = false
     @Published var shouldSendLogs = true
+    @Published var selectedContent = [PhotosPickerItem]()
 
     var cantSend: Bool { object == nil || description.count < 10 }
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let sendUserBugReport = resolve(\UseCasesContainer.sendUserBugReport)
+    private var cancellable = Set<AnyCancellable>()
+
+    @Published private(set) var currentFiles = [String: URL]()
 
     enum SendError: Error {
         case failedToSendReport
     }
 
-    init() {}
+    init() {
+        $selectedContent
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] content in
+                guard let self else {
+                    return
+                }
+                addContent(content: content)
+            }.store(in: &cancellable)
+    }
 
     func send() {
         assert(object != nil, "An object must be selected")
@@ -76,7 +106,8 @@ final class BugReportViewModel: ObservableObject {
                 let title = "[\(planName)] iOS Proton Pass: \(objectDescription)"
                 if try await sendUserBugReport(with: title,
                                                and: description,
-                                               shouldSendLogs: shouldSendLogs) {
+                                               shouldSendLogs: shouldSendLogs,
+                                               otherLogContent: currentFiles.isEmpty ? nil : currentFiles) {
                     hasSent = true
                 } else {
                     error = SendError.failedToSendReport
@@ -85,6 +116,56 @@ final class BugReportViewModel: ObservableObject {
                 self.error = error
             }
             isSending = false
+        }
+    }
+
+    func addFiles(files: Result<[URL], Error>) {
+        switch files {
+        case let .success(fileurls):
+            for fileurl in fileurls {
+                currentFiles[fileurl.lastPathComponent] = fileurl
+            }
+        case let .failure(error):
+            self.error = error
+        }
+    }
+
+    func clearAllAddedFiles() {
+        currentFiles.removeAll()
+        selectedContent.removeAll()
+    }
+}
+
+private extension BugReportViewModel {
+    func addContent(content: [PhotosPickerItem]) {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let data = try await fetchContentUrls(content: content)
+                currentFiles = currentFiles.merging(data) { _, new in new }
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    func fetchContentUrls(content: [PhotosPickerItem]) async throws -> [String: URL] {
+        try await withThrowingTaskGroup(of: DataUrl?.self, returning: [String: URL].self) { group in
+            for item in content {
+                group.addTask { try await item.loadTransferable(type: DataUrl.self) }
+            }
+
+            var contentUrls: [String: URL] = [:]
+
+            for try await result in group {
+                if let result {
+                    contentUrls[result.url.lastPathComponent] = result.url
+                }
+            }
+
+            return contentUrls
         }
     }
 }
