@@ -54,21 +54,7 @@ public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStat
     }
 
     public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
-        do {
-            let userId = try userDataProvider.getUserId()
-
-            if !userId.isEmpty {
-                featureFlagsRepository.setUserId(userId)
-            }
-
-            logger.trace("Refreshing feature flags for user \(userId)")
-            try await featureFlagsRepository.fetchFlags()
-            logger.trace("Found local feature flags for user")
-            return featureFlagsRepository.isEnabled(flag, reloadValue: true)
-        } catch {
-            logger.error(error)
-            return false
-        }
+        featureFlagsRepository.isEnabled(flag, reloadValue: true)
     }
 
     public func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
