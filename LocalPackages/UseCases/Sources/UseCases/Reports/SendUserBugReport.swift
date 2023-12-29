@@ -38,7 +38,9 @@ public protocol SendUserBugReportUseCase: Sendable {
 
      - Throws: An error if an issue occurs while sending the bug report.
      */
-    func execute(with title: String, and description: String, shouldSendLogs: Bool,
+    func execute(with title: String,
+                 and description: String,
+                 shouldSendLogs: Bool,
                  otherLogContent: [String: URL]?) async throws -> Bool
 }
 
@@ -58,7 +60,9 @@ public extension SendUserBugReportUseCase {
                         and description: String,
                         shouldSendLogs: Bool,
                         otherLogContent: [String: URL]? = nil) async throws -> Bool {
-        try await execute(with: title, and: description, shouldSendLogs: shouldSendLogs,
+        try await execute(with: title,
+                          and: description,
+                          shouldSendLogs: shouldSendLogs,
                           otherLogContent: otherLogContent)
     }
 }
