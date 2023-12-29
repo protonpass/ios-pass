@@ -21,6 +21,7 @@
 import Client
 import Core
 import Foundation
+import ProtonCoreFeatureFlags
 import UIKit
 
 protocol WipeAllDataUseCase {
@@ -44,6 +45,8 @@ final class WipeAllData: WipeAllDataUseCase {
     private let vaultsManager: VaultsManager
     private let vaultSyncEventStream: VaultSyncEventStream
     private let credentialManager: CredentialManagerProtocol
+    private let userDataProvider: UserDataProvider
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
     init(logManager: LogManagerProtocol,
          appData: AppDataProtocol,
@@ -54,7 +57,9 @@ final class WipeAllData: WipeAllDataUseCase {
          syncEventLoop: SyncEventLoopProtocol,
          vaultsManager: VaultsManager,
          vaultSyncEventStream: VaultSyncEventStream,
-         credentialManager: CredentialManagerProtocol) {
+         credentialManager: CredentialManagerProtocol,
+         userDataProvider: UserDataProvider,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol) {
         logger = .init(manager: logManager)
         self.appData = appData
         self.mainKeyProvider = mainKeyProvider
@@ -65,10 +70,19 @@ final class WipeAllData: WipeAllDataUseCase {
         self.vaultsManager = vaultsManager
         self.vaultSyncEventStream = vaultSyncEventStream
         self.credentialManager = credentialManager
+        self.userDataProvider = userDataProvider
+        self.featureFlagsRepository = featureFlagsRepository
     }
 
     func execute(isTests: Bool) async {
         logger.info("Wiping all data")
+
+        let userID = try? userDataProvider.getUserId()
+        if let userID, !userID.isEmpty {
+            featureFlagsRepository.resetFlags(for: userID)
+        }
+        featureFlagsRepository.clearUserId()
+
         appData.resetData()
         mainKeyProvider.wipeMainKey()
         apiManager.clearCredentials()
