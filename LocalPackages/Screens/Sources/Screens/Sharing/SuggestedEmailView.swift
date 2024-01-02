@@ -36,13 +36,13 @@ struct SuggestedEmailView: View {
 
     var body: some View {
         HStack {
-            SquircleThumbnail(data: .initials(String(email.email.prefix(2).uppercased())),
+            SquircleThumbnail(data: .initials(String(email.prefix(2).uppercased())),
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(email.email)
+            Text(email)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
