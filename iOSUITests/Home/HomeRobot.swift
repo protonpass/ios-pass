@@ -52,6 +52,7 @@ public final class HomeRobot: CoreElements {
 }
 
 extension Wait {
+    @MainActor
     func waitUntilExists(timeInterval: TimeInterval) {
         let testCase = XCTestCase()
         let waitExpectation = testCase.expectation(description: "Waiting")

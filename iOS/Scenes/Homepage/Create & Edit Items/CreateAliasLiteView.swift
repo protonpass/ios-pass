@@ -59,11 +59,11 @@ struct CreateAliasLiteView: View {
                                                 tintColor: ItemContentType.login.normMajor1Color,
                                                 suffixSelection: viewModel.suffixSelection,
                                                 prefixError: viewModel.prefixError,
-                                                onSelectSuffix: viewModel.showSuffixSelection)
+                                                onSelectSuffix: { viewModel.showSuffixSelection() })
                         }
 
                         MailboxSection(mailboxSelection: viewModel.mailboxSelection, mode: .create)
-                            .onTapGesture(perform: viewModel.showMailboxSelection)
+                            .onTapGesture { viewModel.showMailboxSelection() }
 
                         if !isShowingAdvancedOptions {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
@@ -141,7 +141,7 @@ struct CreateAliasLiteView: View {
             } else {
                 UpgradeButton(backgroundColor: PassColor.loginInteractionNormMajor1,
                               height: 44,
-                              action: viewModel.upgrade)
+                              action: { viewModel.upgrade() })
             }
         }
     }

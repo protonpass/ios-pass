@@ -21,7 +21,7 @@
 import CoreData
 import Entities
 
-public protocol LocalTelemetryEventDatasourceProtocol {
+public protocol LocalTelemetryEventDatasourceProtocol: Sendable {
     /// - Parameters:
     ///   - count: the maximum number of events
     func getOldestEvents(count: Int, userId: String) async throws -> [TelemetryEvent]

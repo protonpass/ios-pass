@@ -25,6 +25,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 struct ItemDetailToolbar: ToolbarContent {
     @ObservedObject var viewModel: BaseItemDetailViewModel
 

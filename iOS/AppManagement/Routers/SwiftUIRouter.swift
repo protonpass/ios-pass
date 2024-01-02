@@ -25,6 +25,7 @@ enum GeneralRouterDestination: Hashable {
     case shareSummary
 }
 
+@MainActor
 final class MainNavViewRouter {
     @ViewBuilder
     func navigate(to destination: GeneralRouterDestination) -> some View {

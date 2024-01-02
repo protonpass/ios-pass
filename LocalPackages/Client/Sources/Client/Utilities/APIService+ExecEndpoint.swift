@@ -52,7 +52,7 @@ public extension APIService {
             performUpload(request: endpoint, files: files, uploadProgress: progress) { task, result in
                 NetworkDebugger.printDebugInfo(endpoint: endpoint,
                                                task: task,
-                                               result: result.mapError { $0 as any Error })
+                                               result: result)
                 continuation.resume(with: result)
             }
         }

@@ -21,7 +21,7 @@
 import Entities
 import ProtonCoreServices
 
-public protocol RemotePublicKeyDatasourceProtocol {
+public protocol RemotePublicKeyDatasourceProtocol: Sendable {
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }
 
