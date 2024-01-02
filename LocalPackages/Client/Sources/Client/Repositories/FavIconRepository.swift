@@ -233,7 +233,6 @@ private extension FavIconRepository {
     func checkAndHandleCancellation(for domain: String) -> Bool {
         if Task.isCancelled {
             cancelAndRemoveTask(for: domain)
-            print("woot cancelled")
             return true
         }
         return false
