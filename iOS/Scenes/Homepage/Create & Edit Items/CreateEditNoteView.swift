@@ -103,24 +103,14 @@ struct CreateEditNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
-        // Remove when dropping iOS 15
-        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor1Color))
-        .tint(Color(uiColor: viewModel.itemContentType().normMajor1Color))
+        .tint(viewModel.itemContentType().normMajor1Color.toColor)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,
                       resultStream: viewModel.scanResponsePublisher)
         .onFirstAppear {
-            if #available(iOS 16, *) {
-                focusedField = .title
-            } else {
-                // 0.5 second delay is purely heuristic.
-                // Values lower than 0.5 simply don't work.
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    focusedField = .title
-                }
-            }
+            focusedField = .title
         }
     }
 }

@@ -93,8 +93,7 @@ struct TextCustomFieldSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(kItemDetailSectionPadding)
-        .accentColor(Color(uiColor: itemContentType.normColor)) // Remove when iOS 15 is dropped
-        .tint(Color(uiColor: itemContentType.normColor))
+        .tint(itemContentType.normColor.toColor)
         .roundedDetailSection()
         .padding(.top, 8)
     }
@@ -150,8 +149,7 @@ struct HiddenCustomFieldSection: View {
         }
         .animation(.default, value: isShowingText)
         .padding(kItemDetailSectionPadding)
-        .accentColor(Color(uiColor: itemContentType.normColor)) // Remove when iOS 15 is dropped
-        .tint(Color(uiColor: itemContentType.normColor))
+        .tint(itemContentType.normColor.toColor)
         .roundedDetailSection()
         .padding(.top, 8)
     }
@@ -225,8 +223,7 @@ struct TotpCustomFieldSection: View {
             }
         }
         .padding(kItemDetailSectionPadding)
-        .accentColor(Color(uiColor: itemContentType.normColor)) // Remove when iOS 15 is dropped
-        .tint(Color(uiColor: itemContentType.normColor))
+        .tint(itemContentType.normColor.toColor)
         .roundedDetailSection()
         .padding(.top, 8)
         .onFirstAppear {

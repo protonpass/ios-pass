@@ -45,13 +45,7 @@ struct BugReportView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .showSpinner(viewModel.isSending)
                 .onFirstAppear {
-                    if #available(iOS 16, *) {
-                        focused = true
-                    } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                            focused = true
-                        }
-                    }
+                    focused = true
                 }
         }
         .navigationViewStyle(.stack)
@@ -102,7 +96,6 @@ private extension BugReportView {
             .padding()
             .frame(maxHeight: .infinity)
         }
-        .accentColor(PassColor.interactionNorm.toColor) // Remove when dropping iOS 15
         .tint(PassColor.interactionNorm.toColor)
         .background(PassColor.backgroundNorm.toColor)
     }

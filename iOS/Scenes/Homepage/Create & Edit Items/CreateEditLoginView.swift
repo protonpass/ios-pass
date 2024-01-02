@@ -127,13 +127,7 @@ struct CreateEditLoginView: View {
             }
             .onFirstAppear {
                 if case .create = viewModel.mode {
-                    if #available(iOS 16, *) {
-                        focusedField = .title
-                    } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                            focusedField = .title
-                        }
-                    }
+                    focusedField = .title
                 }
             }
             .toolbar {
@@ -159,8 +153,7 @@ struct CreateEditLoginView: View {
             }
             .toolbar { keyboardToolbar }
         }
-        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor2Color)) // Remove when dropping iOS 15
-        .tint(Color(uiColor: viewModel.itemContentType().normMajor2Color))
+        .tint(viewModel.itemContentType().normMajor2Color.toColor)
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
@@ -171,19 +164,17 @@ private extension CreateEditLoginView {
     @ToolbarContentBuilder
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
-            if #available(iOS 16, *) {
-                switch focusedField {
-                case .username:
-                    usernameTextFieldToolbar
-                case .totp:
-                    totpTextFieldToolbar
-                case let .custom(model) where model?.customField.type == .totp:
-                    totpTextFieldToolbar
-                case .password:
-                    passwordTextFieldToolbar
-                default:
-                    EmptyView()
-                }
+            switch focusedField {
+            case .username:
+                usernameTextFieldToolbar
+            case .totp:
+                totpTextFieldToolbar
+            case let .custom(model) where model?.customField.type == .totp:
+                totpTextFieldToolbar
+            case .password:
+                passwordTextFieldToolbar
+            default:
+                EmptyView()
             }
         }
     }
@@ -275,59 +266,6 @@ private extension CreateEditLoginView {
     }
 }
 
-// iOS 15 work around
-// All the views and functions in this extension can be removed once we drop iOS 15
-private extension CreateEditLoginView {
-    @ViewBuilder
-    func capsuleButton(icon: UIImage?, title: String, action: @escaping () -> Void) -> some View {
-        if let icon {
-            CapsuleLabelButton(icon: icon,
-                               title: title,
-                               titleColor: PassColor.interactionNormMajor2,
-                               backgroundColor: PassColor.interactionNormMinor1,
-                               maxWidth: nil,
-                               action: action)
-        } else {
-            CapsuleTextButton(title: title,
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              maxWidth: nil,
-                              action: action)
-        }
-    }
-
-    var hideMyEmailButton: some View {
-        capsuleButton(icon: IconProvider.alias, title: "Hide my email", action: viewModel.generateAlias)
-    }
-
-    var useCurrentEmailButton: some View {
-        capsuleButton(icon: nil, title: #localized("Use %@", viewModel.emailAddress)) {
-            viewModel.useRealEmailAddress()
-            if viewModel.password.isEmpty {
-                focusedField = .password
-            } else {
-                focusedField = nil
-            }
-        }
-    }
-
-    var generatePasswordButton: some View {
-        capsuleButton(icon: IconProvider.arrowsRotate,
-                      title: "Generate password",
-                      action: viewModel.generatePassword)
-    }
-
-    var pasteFromClipboardButton: some View {
-        capsuleButton(icon: IconProvider.squares,
-                      title: "Paste from clipboard",
-                      action: viewModel.pasteTotpUriFromClipboard)
-    }
-
-    var openCameraButton: some View {
-        capsuleButton(icon: IconProvider.camera, title: "Open camera", action: viewModel.openCodeScanner)
-    }
-}
-
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
@@ -363,13 +301,6 @@ private extension CreateEditLoginView {
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
-
-                if #unavailable(iOS 16) {
-                    if focusedField == .username {
-                        hideMyEmailButton
-                        useCurrentEmailButton
-                    }
-                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -442,12 +373,6 @@ private extension CreateEditLoginView {
                     .autocorrectionDisabled()
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.done)
-
-                if #unavailable(iOS 16) {
-                    if focusedField == .password {
-                        generatePasswordButton
-                    }
-                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -502,13 +427,6 @@ private extension CreateEditLoginView {
 
                 if !viewModel.totpUriErrorMessage.isEmpty {
                     InvalidInputLabel(viewModel.totpUriErrorMessage)
-                }
-
-                if #unavailable(iOS 16) {
-                    if focusedField == .totp {
-                        pasteFromClipboardButton
-                        openCameraButton
-                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
