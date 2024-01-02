@@ -29,22 +29,6 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-struct EmailViewCell: View {
-    let email: String
-
-    var body: some View {
-        HStack(alignment: .center, spacing: 10) {
-            Text(email)
-                .font(.callout)
-        }
-        .foregroundColor(PassColor.textNorm.toColor)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 8)
-        .background(PassColor.interactionNormMinor1.toColor)
-        .cornerRadius(9)
-    }
-}
-
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()
@@ -60,54 +44,105 @@ struct UserEmailView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
-                .padding(.bottom)
+                .padding(.horizontal, kItemDetailSectionPadding)
 
-            ScrollView {
-                VStack {
-                    FlowLayout(mode: .scrollable,
-                               items: viewModel.selectedEmails,
-                               viewMapping: { EmailViewCell(email: $0) })
-                        .padding(.leading, -4)
+            VStack {
+                FlowLayout(mode: .scrollable,
+                           items: viewModel.selectedEmails,
+                           viewMapping: { emailCell(for: $0) })
+                    .padding(.leading, -4)
 
-                    emailTextField
+                emailTextField
 
-                    PassDivider()
-                        .padding(.horizontal, -kItemDetailSectionPadding)
-                        .padding(.top, 16)
-                        .padding(.bottom, 24)
+                PassDivider()
+                    .padding(.horizontal, -kItemDetailSectionPadding)
+                    .padding(.top, 16)
+                    .padding(.bottom, 24)
 
-                    if viewModel.recommendationsState == .loading {
-                        VStack {
-                            Spacer(minLength: 50)
-                            ProgressView()
-                        }
-                    } else if let recommendations = viewModel.recommendationsState.recommendations,
-                              !recommendations.isEmpty {
-                        InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
-                                                 recommendations: recommendations)
+                if viewModel.recommendationsState == .loading {
+                    VStack {
+                        Spacer(minLength: 50)
+                        ProgressView()
                     }
+                } else if let recommendations = viewModel.recommendationsState.recommendations,
+                          !recommendations.isEmpty {
+                    InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
+                                             recommendations: recommendations)
+                }
 
-                    Spacer()
-                }.frame(maxWidth: .infinity)
+                Spacer()
             }
             .frame(maxWidth: .infinity)
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .scrollViewEmbeded()
         }
         .onAppear {
             isFocused = true
         }
-        .animation(.default, value: viewModel.selectedEmails.hashValue)
-
-        .animation(.default, value: viewModel.recommendationsState.recommendations?.hashValue)
+        .onChange(of: viewModel.highlightedEmail) { highlightedEmail in
+            isFocused = highlightedEmail == nil
+        }
+        .animation(.default, value: viewModel.selectedEmails)
+        .animation(.default, value: viewModel.recommendationsState)
         .animation(.default, value: viewModel.error)
         .navigate(isActive: $viewModel.goToNextStep,
                   destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .navigationStackEmbeded()
         .ignoresSafeArea(.keyboard)
+    }
+}
+
+private extension UserEmailView {
+    @ViewBuilder
+    func emailCell(for email: String) -> some View {
+        let highlighted = viewModel.highlightedEmail == email
+        let valid = email.isValidEmail()
+        let focused: Binding<Bool> = .init(get: {
+            highlighted
+        }, set: { newValue in
+            if !newValue {
+                viewModel.highlightedEmail = nil
+            }
+        })
+
+        HStack(alignment: .center, spacing: 10) {
+            if valid {
+                Text(email)
+            } else {
+                Label(email, systemImage: "exclamationmark.circle")
+            }
+        }
+        .font(.callout)
+        .foregroundColor(highlighted ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(highlighted ?
+            PassColor.interactionNormMajor2.toColor :
+            (valid ? PassColor.interactionNormMinor1.toColor : PassColor.signalDanger.toColor))
+        .cornerRadius(9)
+        .animation(.default, value: highlighted)
+        .contentShape(Rectangle())
+        .onTapGesture { viewModel.toggleHighlight(email) }
+        .overlay {
+            // Dummy invisible text field to allow removing a token with backspace
+            BackspaceAwareTextField(text: .constant(""),
+                                    isFocused: focused,
+                                    config: .init(font: .title,
+                                                  placeholder: "",
+                                                  autoCapitalization: .none,
+                                                  autoCorrection: .no,
+                                                  keyboardType: .default,
+                                                  returnKeyType: .default,
+                                                  textColor: .clear,
+                                                  tintColor: .clear),
+                                    onBackspace: { viewModel.deselect(email) },
+                                    onReturn: { viewModel.toggleHighlight(email) })
+                .opacity(0)
+        }
     }
 }
 
@@ -124,7 +159,7 @@ private extension UserEmailView {
                                                   returnKeyType: .default,
                                                   textColor: PassColor.textNorm,
                                                   tintColor: PassColor.interactionNorm),
-                                    onBackspace: { viewModel.handleBackspace() },
+                                    onBackspace: { viewModel.highlightLastEmail() },
                                     onReturn: { viewModel.appendCurrentEmail() })
 
             if let error = viewModel.error {

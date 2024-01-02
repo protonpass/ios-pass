@@ -364,6 +364,8 @@ private extension HomepageCoordinator {
                     }
                 case let .displayErrorBanner(errorLocalized):
                     bannerManager.displayTopErrorMessage(errorLocalized)
+                case let .errorMessage(message):
+                    bannerManager.displayTopErrorMessage(message)
                 case let .successMessage(message, config):
                     displaySuccessBanner(with: message, and: config)
                 case let .infosMessage(message, config):

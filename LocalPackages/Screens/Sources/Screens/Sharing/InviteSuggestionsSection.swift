@@ -55,7 +55,17 @@ public struct InviteSuggestionsSection: View {
 private extension InviteSuggestionsSection {
     func emailList(_ emails: [String]) -> some View {
         ForEach(emails, id: \.self) { email in
-            SuggestedEmailView(selectedEmails: $selectedEmails, email: email)
+            SuggestedEmailView(email: email,
+                               isSelected: selectedEmails.contains(email),
+                               onSelect: { handleSelection(email) })
+        }
+    }
+
+    func handleSelection(_ email: String) {
+        if selectedEmails.contains(email) {
+            selectedEmails.removeAll(where: { $0 == email })
+        } else {
+            selectedEmails.append(email)
         }
     }
 }
