@@ -67,7 +67,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @AppStorage(Key.browser.rawValue, store: kSharedUserDefaults)
     var browser: Browser = .systemDefault
 
-    @MainActor @AppStorage(Key.telemetryThreshold.rawValue, store: kSharedUserDefaults)
+    @AppStorage(Key.telemetryThreshold.rawValue, store: kSharedUserDefaults)
     var telemetryThreshold: TimeInterval?
 
     @AppStorage(Key.displayFavIcons.rawValue, store: kSharedUserDefaults)
@@ -161,8 +161,8 @@ private extension Preferences {
 // MARK: - TelemetryThresholdProviderProtocol
 
 extension Preferences: TelemetryThresholdProviderProtocol {
-    @MainActor func getThreshold() -> TimeInterval? { telemetryThreshold }
-    @MainActor func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
+    func getThreshold() -> TimeInterval? { telemetryThreshold }
+    func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
 }
 
 // MARK: - FavIconSettings

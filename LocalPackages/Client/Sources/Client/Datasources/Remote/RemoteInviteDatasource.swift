@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import ProtonCoreServices
 
-public protocol RemoteInviteDatasourceProtocol {
+public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool
     func rejectInvite(inviteToken: String) async throws -> Bool

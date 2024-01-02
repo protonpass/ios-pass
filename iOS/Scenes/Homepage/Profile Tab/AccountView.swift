@@ -57,17 +57,17 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text(plan.displayName)
-                                          .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                          .foregroundColor(PassColor.textNorm.toColor)
                                   })
                     }
                 }
                 .roundedEditableSection()
 
-                OptionRow(action: viewModel.manageSubscription,
+                OptionRow(action: { viewModel.manageSubscription() },
                           height: .tall,
                           content: {
                               Text("Manage subscription")
-                                  .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.arrowOutSquare,
@@ -81,7 +81,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Sign out")
-                                  .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.arrowOutFromRectangle,
@@ -91,11 +91,11 @@ struct AccountView: View {
                           .roundedEditableSection()
                           .padding(.vertical)
 
-                OptionRow(action: viewModel.deleteAccount,
+                OptionRow(action: { viewModel.deleteAccount() },
                           height: .tall,
                           content: {
                               Text("Delete account")
-                                  .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                                  .foregroundColor(PassColor.signalDanger.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.trash,
@@ -118,14 +118,14 @@ struct AccountView: View {
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.isLoading)
         .alert("You will be signed out",
                isPresented: $isShowingSignOutConfirmation,
                actions: {
                    Button(role: .destructive,
-                          action: viewModel.signOut,
+                          action: { viewModel.signOut() },
                           label: { Text("Yes, sign me out") })
 
                    Button(role: .cancel, label: { Text("Cancel") })
@@ -138,7 +138,7 @@ struct AccountView: View {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         action: viewModel.goBack)
+                         action: { viewModel.goBack() })
         }
         ToolbarItem(placement: .navigationBarTrailing) {
             if let plan = viewModel.plan, plan.planType != .plus {
@@ -146,7 +146,7 @@ struct AccountView: View {
                                    title: #localized("Upgrade"),
                                    titleColor: ColorProvider.TextInverted,
                                    backgroundColor: PassColor.interactionNormMajor2,
-                                   action: viewModel.upgradeSubscription)
+                                   action: { viewModel.upgradeSubscription() })
             } else {
                 EmptyView()
             }

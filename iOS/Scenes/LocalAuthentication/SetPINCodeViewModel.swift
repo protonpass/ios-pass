@@ -24,6 +24,7 @@ import Factory
 import Foundation
 import Macro
 
+@MainActor
 final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
