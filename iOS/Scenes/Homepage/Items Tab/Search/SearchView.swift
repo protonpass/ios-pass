@@ -52,7 +52,6 @@ struct SearchView: View {
                 viewModel.refreshResults()
             }
         }
-        .syncLayoutOnDisappear()
     }
 
     private var content: some View {
