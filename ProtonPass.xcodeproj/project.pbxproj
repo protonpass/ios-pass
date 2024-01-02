@@ -380,7 +380,7 @@
 		5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FF72A4E01D700E6681C /* GetLogsEntriesTests.swift */; };
 		5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */; };
 		5B5040132A53114600E6681C /* ExtractLogsToFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */; };
-		5B5C9D602B303FB4002AF0AB /* ContainerManer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C9D5F2B303FB4002AF0AB /* ContainerManer+Extensions.swift */; };
+		5B5C9D602B303FB4002AF0AB /* ContainerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C9D5F2B303FB4002AF0AB /* ContainerManager+Extensions.swift */; };
 		5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */; };
 		5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
@@ -779,7 +779,7 @@
 		5B503FF72A4E01D700E6681C /* GetLogsEntriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLogsEntriesTests.swift; sourceTree = "<group>"; };
 		5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendUserBugReportTests.swift; sourceTree = "<group>"; };
 		5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractLogsToFileTests.swift; sourceTree = "<group>"; };
-		5B5C9D5F2B303FB4002AF0AB /* ContainerManer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContainerManer+Extensions.swift"; sourceTree = "<group>"; };
+		5B5C9D5F2B303FB4002AF0AB /* ContainerManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContainerManager+Extensions.swift"; sourceTree = "<group>"; };
 		5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultView.swift; sourceTree = "<group>"; };
 		5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultViewModel.swift; sourceTree = "<group>"; };
 		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
@@ -1596,7 +1596,7 @@
 				5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */,
 				5BF35D692B21F82900D3E297 /* ItemRevision+Extensions.swift */,
 				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
-				5B5C9D5F2B303FB4002AF0AB /* ContainerManer+Extensions.swift */,
+				5B5C9D5F2B303FB4002AF0AB /* ContainerManager+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2812,7 +2812,7 @@
 				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
 				350CF79C2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
-				5B5C9D602B303FB4002AF0AB /* ContainerManer+Extensions.swift in Sources */,
+				5B5C9D602B303FB4002AF0AB /* ContainerManager+Extensions.swift in Sources */,
 				5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
 				35703F282A279B950088C287 /* CustomFieldSections.swift in Sources */,
 				5B1453942A6832780048B022 /* UserEmailView.swift in Sources */,
