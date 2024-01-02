@@ -67,7 +67,7 @@ struct ManageSharedVaultView: View {
                        .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
                        "Vaults can’t contain more than 10 users.")
                })
-        .navigationModifier()
+        .navigationStackEmbeded()
     }
 
     func refresh() {
