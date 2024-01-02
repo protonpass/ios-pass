@@ -45,6 +45,7 @@ enum RecommendationsState: Equatable {
 final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published var selectedEmails: [String] = []
+    @Published var highlightedEmail: String?
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
@@ -63,16 +64,32 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func handleBackspace() {
-        print(#function)
+    func highlightLastEmail() {
+        highlightedEmail = selectedEmails.last
     }
 
     func appendCurrentEmail() {
+        let email = email.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !email.isEmpty else { return }
         if !selectedEmails.contains(email) {
             selectedEmails.append(email)
+            if !email.isValidEmail() {
+                router.display(element: .errorMessage(#localized("Invalid email address")))
+            }
         }
-        email = ""
+        self.email = ""
+    }
+
+    func toggleHighlight(_ email: String) {
+        if highlightedEmail == email {
+            highlightedEmail = nil
+        } else {
+            highlightedEmail = email
+        }
+    }
+
+    func deselect(_ email: String) {
+        selectedEmails.removeAll(where: { $0 == email })
     }
 
     func saveEmail() {
@@ -116,21 +133,21 @@ final class UserEmailViewModel: ObservableObject, Sendable {
 private extension UserEmailViewModel {
     func setUp() {
         $email
-            .removeDuplicates()
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] newValue in
+            .sink { [weak self] _ in
                 guard let self else { return }
                 error = nil
-                canContinue = newValue.isValidEmail()
+                highlightedEmail = nil
             }
             .store(in: &cancellables)
 
         $selectedEmails
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] selectedEmails in
                 guard let self else { return }
                 error = nil
-                canContinue = !selectedEmails.isEmpty
+                highlightedEmail = nil
+                canContinue = !selectedEmails.isEmpty && !selectedEmails.contains(where: { !$0.isValidEmail() })
             }
             .store(in: &cancellables)
 
