@@ -48,7 +48,6 @@ struct SuggestedEmailView: View {
 
             RoundedCircleCheckbox(isChecked: isSelected)
         }
-//        .animation(.default, value: isSelected)
         .contentShape(Rectangle())
         .onTapGesture(perform: toggleSelection)
     }
