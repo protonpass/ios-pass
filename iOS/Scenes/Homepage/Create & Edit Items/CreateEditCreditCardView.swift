@@ -77,7 +77,6 @@ private extension CreateEditCreditCardView {
             }
         }
         .background(PassColor.backgroundNorm.toColor)
-        .accentColor(tintColor.toColor) // Remove when dropping iOS 15
         .tint(tintColor.toColor)
         .onFirstAppear {
             if case .create = viewModel.mode {

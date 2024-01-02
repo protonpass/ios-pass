@@ -103,9 +103,7 @@ struct CreateEditNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
-        // Remove when dropping iOS 15
-        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor1Color))
-        .tint(Color(uiColor: viewModel.itemContentType().normMajor1Color))
+        .tint(viewModel.itemContentType().normMajor1Color.toColor)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
