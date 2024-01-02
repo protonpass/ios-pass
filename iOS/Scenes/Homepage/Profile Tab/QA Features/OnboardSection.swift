@@ -42,6 +42,7 @@ struct OnboardSection: View {
         .sheet(isPresented: $isShowingSheet) { onboardingView }
     }
 
+    @MainActor
     private var onboardingView: some View {
         OnboardingView()
     }

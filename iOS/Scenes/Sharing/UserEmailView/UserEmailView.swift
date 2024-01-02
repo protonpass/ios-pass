@@ -60,7 +60,7 @@ struct UserEmailView: View {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .ignoresSafeArea(.keyboard)
-        .navigationModifier()
+        .navigationStackEmbeded()
     }
 }
 

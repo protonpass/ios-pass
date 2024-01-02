@@ -1,7 +1,7 @@
 //
-// AliasPrefixValidator.swift
-// Proton Pass - Created on 21/11/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// AliasPrefixError+Extensions.swift
+// Proton Pass - Created on 02/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 import Macro
 
-public enum AliasPrefixError: LocalizedError {
-    case emptyPrefix
-    case disallowedCharacters
-    case twoConsecutiveDots
-    case dotAtTheEnd
-
+extension AliasPrefixError: LocalizedError {
     public var localizedDescription: String {
         switch self {
         case .emptyPrefix:
@@ -38,32 +34,12 @@ public enum AliasPrefixError: LocalizedError {
             #localized("Prefix can not contain 2 consecutive dots (..)")
         case .dotAtTheEnd:
             #localized("Alias can not contain 2 consecutive dots (..)")
-        }
-    }
-}
-
-public enum AliasPrefixValidator {
-    public static let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
-
-    /// Validate a given prefix.
-    /// - Parameters:
-    ///  - prefix: Prefix to be validated.
-    /// - Returns: Nothing if success, throw`AliasPrefixError` if failure.
-    public static func validate(prefix: String) throws {
-        guard !prefix.isEmpty else {
-            throw AliasPrefixError.emptyPrefix
-        }
-
-        guard prefix.isValid(allowedCharacters: allowedCharacters) else {
-            throw AliasPrefixError.disallowedCharacters
-        }
-
-        guard !prefix.contains("..") else {
-            throw AliasPrefixError.twoConsecutiveDots
-        }
-
-        guard prefix.last != "." else {
-            throw AliasPrefixError.dotAtTheEnd
+        case .dotAtTheStart:
+            #localized("Alias can not start with a dot (.)")
+        case .prefixToLong:
+            #localized("The alias prefix is too long")
+        case .unknown:
+            #localized("Invalid prefix")
         }
     }
 }
