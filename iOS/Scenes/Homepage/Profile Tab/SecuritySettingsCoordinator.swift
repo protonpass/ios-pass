@@ -24,6 +24,7 @@ import Factory
 import LocalAuthentication
 import Macro
 
+@MainActor
 final class SecuritySettingsCoordinator {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let logger = resolve(\SharedToolingContainer.logger)
