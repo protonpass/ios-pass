@@ -87,7 +87,7 @@ struct ProfileTabView: View {
                                    title: #localized("Upgrade"),
                                    titleColor: PassColor.interactionNorm,
                                    backgroundColor: PassColor.interactionNormMinor2,
-                                   action: viewModel.upgrade)
+                                   action: { viewModel.upgrade() })
             } else {
                 EmptyView()
             }
@@ -110,7 +110,7 @@ struct ProfileTabView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
-                OptionRow(action: viewModel.editLocalAuthenticationMethod,
+                OptionRow(action: { viewModel.editLocalAuthenticationMethod() },
                           height: .tall,
                           content: {
                               VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
@@ -126,7 +126,7 @@ struct ProfileTabView: View {
                 if viewModel.localAuthenticationMethod != .none {
                     PassDivider()
 
-                    OptionRow(action: viewModel.editAppLockTime,
+                    OptionRow(action: { viewModel.editAppLockTime() },
                               height: .tall,
                               content: {
                                   VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
@@ -158,17 +158,19 @@ struct ProfileTabView: View {
                 case .pin:
                     PassDivider()
 
-                    OptionRow(action: viewModel.editPINCode, height: .medium) {
-                        HStack {
-                            Text("Change PIN code")
-                            Spacer()
-                            CircleButton(icon: IconProvider.grid3,
-                                         iconColor: PassColor.interactionNormMajor2,
-                                         backgroundColor: PassColor.interactionNormMinor1,
-                                         action: nil)
-                        }
-                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
-                    }
+                    OptionRow(action: { viewModel.editPINCode() },
+                              height: .medium,
+                              content: {
+                                  HStack {
+                                      Text("Change PIN code")
+                                      Spacer()
+                                      CircleButton(icon: IconProvider.grid3,
+                                                   iconColor: PassColor.interactionNormMajor2,
+                                                   backgroundColor: PassColor.interactionNormMinor1,
+                                                   action: nil)
+                                  }
+                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                              })
                 }
             }
             .roundedEditableSection()
@@ -185,7 +187,7 @@ struct ProfileTabView: View {
 
                     Spacer()
 
-                    Button(action: viewModel.handleEnableAutoFillAction) {
+                    Button { viewModel.handleEnableAutoFillAction() } label: {
                         Label(ProcessInfo.processInfo.isiOSAppOnMac ? "Show me how" : "Open Settings",
                               systemImage: "arrow.up.right.square")
                             .font(.callout.weight(.semibold))
@@ -231,7 +233,7 @@ struct ProfileTabView: View {
 
     private var accountAndSettingsSection: some View {
         VStack(spacing: 0) {
-            OptionRow(action: viewModel.showAccountMenu,
+            OptionRow(action: { viewModel.showAccountMenu() },
                       content: {
                           HStack {
                               Text("Account")
@@ -258,7 +260,7 @@ struct ProfileTabView: View {
 
             PassSectionDivider()
 
-            TextOptionRow(title: #localized("Settings"), action: viewModel.showSettingsMenu)
+            TextOptionRow(title: #localized("Settings"), action: { viewModel.showSettingsMenu() })
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -266,9 +268,9 @@ struct ProfileTabView: View {
 
     private var aboutSection: some View {
         VStack(spacing: 0) {
-            TextOptionRow(title: #localized("Privacy policy"), action: viewModel.showPrivacyPolicy)
+            TextOptionRow(title: #localized("Privacy policy"), action: { viewModel.showPrivacyPolicy() })
             PassSectionDivider()
-            TextOptionRow(title: #localized("Terms of service"), action: viewModel.showTermsOfService)
+            TextOptionRow(title: #localized("Terms of service"), action: { viewModel.showTermsOfService() })
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -282,9 +284,9 @@ struct ProfileTabView: View {
 
             VStack(spacing: 0) {
                 TextOptionRow(title: #localized("How to import to Proton Pass"),
-                              action: viewModel.showImportInstructions)
+                              action: { viewModel.showImportInstructions() })
                 PassSectionDivider()
-                TextOptionRow(title: #localized("Feedback"), action: viewModel.showFeedback)
+                TextOptionRow(title: #localized("Feedback"), action: { viewModel.showFeedback() })
             }
             .roundedEditableSection()
         }
@@ -293,7 +295,7 @@ struct ProfileTabView: View {
 
     private var qaFeaturesSection: some View {
         VStack(spacing: 0) {
-            TextOptionRow(title: "QA Features", action: viewModel.qaFeatures)
+            TextOptionRow(title: "QA Features", action: { viewModel.qaFeatures() })
         }
         .roundedEditableSection()
         .padding(.horizontal)

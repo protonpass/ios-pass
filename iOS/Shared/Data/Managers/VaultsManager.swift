@@ -20,7 +20,7 @@
 
 import Client
 
-@preconcurrency import Combine
+import Combine
 import Core
 import CryptoKit
 import Entities

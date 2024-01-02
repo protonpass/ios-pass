@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteShareEventIDDatasourceProtocol {
+public protocol RemoteShareEventIDDatasourceProtocol: Sendable {
     func getLastEventId(shareId: String) async throws -> String
 }
 
