@@ -28,6 +28,7 @@ import Factory
 import Macro
 import SwiftUI
 
+@MainActor
 protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToCancel()
     func credentialsViewModelWantsToLogOut()
@@ -76,6 +77,7 @@ extension ItemSearchResult: CredentialItem {
     var itemTitle: String { highlightableTitle.fullText }
 }
 
+@MainActor
 final class CredentialsViewModel: ObservableObject {
     @Published private(set) var state = CredentialsViewState.loading
     @Published private(set) var results: CredentialsFetchResult?
@@ -147,7 +149,7 @@ extension CredentialsViewModel {
                 let plan = try await accessRepository.getPlan()
                 planType = plan.planType
 
-                results = try await fetchCredentialsTask(plan: plan).value
+                results = try await fetchCredentials(plan: plan)
                 state = .idle
                 logger.info("Loaded log in items")
             } catch {
@@ -205,20 +207,25 @@ extension CredentialsViewModel {
         assert(results != nil, "Credentials are not fetched")
         guard let results else { return }
 
-        // Check if given URL is valid before proposing "associate & autofill"
-        if canEditItem(vaultsProvider: self, item: item),
-           notMatchedItemInformation == nil,
-           let schemeAndHost = urls.first?.schemeAndHost,
-           !schemeAndHost.isEmpty,
-           let notMatchedItem = results.notMatchedItems
-           .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
-            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
-                                                                      url: schemeAndHost)
-            return
-        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            // Check if given URL is valid before proposing "associate & autofill"
+            if canEditItem(vaults: vaults, item: item),
+               notMatchedItemInformation == nil,
+               let schemeAndHost = urls.first?.schemeAndHost,
+               !schemeAndHost.isEmpty,
+               let notMatchedItem = results.notMatchedItems
+               .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
+                notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
+                                                                          url: schemeAndHost)
+                return
+            }
 
-        // Given URL is not valid or item is matched, in either case just autofill normally
-        autoFill(item: item)
+            // Given URL is not valid or item is matched, in either case just autofill normally
+            autoFill(item: item)
+        }
     }
 
     func autoFill(item: any ItemIdentifiable) {
@@ -348,73 +355,69 @@ private extension CredentialsViewModel {
         }
     }
 
-    func fetchCredentialsTask(plan: Plan) -> Task<CredentialsFetchResult, Error> {
-        Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self else {
-                throw PassError.CredentialProviderFailureReason.generic
-            }
-            let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+    func fetchCredentials(plan: Plan) async throws
+        -> CredentialsFetchResult {
+        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
-            vaults = try await shareRepository.getVaults()
-            let encryptedItems = try await itemRepository.getActiveLogInItems()
-            logger.debug("Mapping \(encryptedItems.count) encrypted items")
+        vaults = try await shareRepository.getVaults()
+        let encryptedItems = try await itemRepository.getActiveLogInItems()
+        logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
-            let domainParser = try DomainParser()
-            var searchableItems = [SearchableItem]()
-            var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
-            var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
-            for encryptedItem in encryptedItems {
-                let decryptedItemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+        let domainParser = try DomainParser()
+        var searchableItems = [SearchableItem]()
+        var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
+        var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
+        for encryptedItem in encryptedItems {
+            let decryptedItemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
 
-                let vault = vaults.first { $0.shareId == encryptedItem.shareId }
-                assert(vault != nil, "Must have at least 1 vault")
-                guard await shouldTakeIntoAccount(vaults: vaults,
-                                                  vault: vault,
-                                                  withPlan: plan) else {
-                    continue
-                }
-
-                if case let .login(data) = decryptedItemContent.contentData {
-                    try searchableItems.append(SearchableItem(from: encryptedItem,
-                                                              symmetricKey: symmetricKey,
-                                                              allVaults: vaults))
-
-                    let itemUrls = data.urls.compactMap { URL(string: $0) }
-                    var matchResults = [URLUtils.Matcher.MatchResult]()
-                    for itemUrl in itemUrls {
-                        for url in urls {
-                            let result = URLUtils.Matcher.compare(itemUrl, url, domainParser: domainParser)
-                            if case .matched = result {
-                                matchResults.append(result)
-                            }
-                        }
-                    }
-
-                    if matchResults.isEmpty {
-                        notMatchedEncryptedItems.append(encryptedItem)
-                    } else {
-                        let totalScore = matchResults.reduce(into: 0) { partialResult, next in
-                            partialResult += next.score
-                        }
-                        matchedEncryptedItems.append(.init(item: encryptedItem,
-                                                           matchScore: totalScore))
-                    }
-                }
+            let vault = vaults.first { $0.shareId == encryptedItem.shareId }
+            assert(vault != nil, "Must have at least 1 vault")
+            guard await shouldTakeIntoAccount(vaults: vaults,
+                                              vault: vault,
+                                              withPlan: plan) else {
+                continue
             }
 
-            let matchedItems = try await matchedEncryptedItems.sorted()
-                .parallelMap { try $0.item.toItemUiModel(symmetricKey) }
-            let notMatchedItems = try await notMatchedEncryptedItems.sorted()
-                .parallelMap { try $0.toItemUiModel(symmetricKey) }
+            if case let .login(data) = decryptedItemContent.contentData {
+                try searchableItems.append(SearchableItem(from: encryptedItem,
+                                                          symmetricKey: symmetricKey,
+                                                          allVaults: vaults))
 
-            logger.debug("Mapped \(encryptedItems.count) encrypted items.")
-            logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
-            logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-            return CredentialsFetchResult(vaults: vaults,
-                                          searchableItems: searchableItems,
-                                          matchedItems: matchedItems,
-                                          notMatchedItems: notMatchedItems)
+                let itemUrls = data.urls.compactMap { URL(string: $0) }
+                var matchResults = [URLUtils.Matcher.MatchResult]()
+                for itemUrl in itemUrls {
+                    for url in urls {
+                        let result = URLUtils.Matcher.compare(itemUrl, url, domainParser: domainParser)
+                        if case .matched = result {
+                            matchResults.append(result)
+                        }
+                    }
+                }
+
+                if matchResults.isEmpty {
+                    notMatchedEncryptedItems.append(encryptedItem)
+                } else {
+                    let totalScore = matchResults.reduce(into: 0) { partialResult, next in
+                        partialResult += next.score
+                    }
+                    matchedEncryptedItems.append(.init(item: encryptedItem,
+                                                       matchScore: totalScore))
+                }
+            }
         }
+
+        let matchedItems = try await matchedEncryptedItems.sorted()
+            .parallelMap { try $0.item.toItemUiModel(symmetricKey) }
+        let notMatchedItems = try await notMatchedEncryptedItems.sorted()
+            .parallelMap { try $0.toItemUiModel(symmetricKey) }
+
+        logger.debug("Mapped \(encryptedItems.count) encrypted items.")
+        logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
+        logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
+        return CredentialsFetchResult(vaults: vaults,
+                                      searchableItems: searchableItems,
+                                      matchedItems: matchedItems,
+                                      notMatchedItems: notMatchedItems)
     }
 
     func getCredentialTask(for item: any ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
@@ -467,7 +470,7 @@ extension CredentialsViewModel: SortTypeListViewModelDelegate {
 // MARK: - VaultsProvider
 
 extension CredentialsViewModel: VaultsProvider {
-    func getAllVaults() -> [Vault] {
+    func getAllVaults() async -> [Vault] {
         vaults
     }
 }

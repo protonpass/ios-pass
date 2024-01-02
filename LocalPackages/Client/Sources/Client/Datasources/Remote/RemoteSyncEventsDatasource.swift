@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteSyncEventsDatasourceProtocol {
+public protocol RemoteSyncEventsDatasourceProtocol: Sendable {
     func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents
 }
 

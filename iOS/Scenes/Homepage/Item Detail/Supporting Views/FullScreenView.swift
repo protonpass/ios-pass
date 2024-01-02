@@ -25,7 +25,7 @@ import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
-enum FullScreenData {
+enum FullScreenData: Sendable {
     case password(String)
     case text(String)
 

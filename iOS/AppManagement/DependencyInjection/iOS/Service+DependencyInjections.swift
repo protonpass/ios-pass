@@ -25,7 +25,7 @@ import ProtonCoreAuthentication
 import ProtonCorePayments
 import ProtonCorePaymentsUI
 
-final class ServiceContainer: SharedContainer, AutoRegistering {
+final class ServiceContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = ServiceContainer()
     let manager = ContainerManager()
 
