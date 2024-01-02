@@ -29,7 +29,7 @@ public struct InviteSuggestionsSection: View {
     @Binding private var selectedEmails: [String]
     private let recommendations: InviteRecommendations
 
-    public init(selectedEmails: Binding<[UserEmail]>, recommendations: InviteRecommendations) {
+    public init(selectedEmails: Binding<[String]>, recommendations: InviteRecommendations) {
         _selectedEmails = selectedEmails
         self.recommendations = recommendations
     }
@@ -47,14 +47,13 @@ public struct InviteSuggestionsSection: View {
             }
 
             emailList(selectedIndex == 0 ?
-                recommendations.recommendedEmails.map(\.toUserEmail) : recommendations.planRecommendedEmails
-                .map(\.toUserEmail))
+                recommendations.recommendedEmails : recommendations.planRecommendedEmails)
         }
     }
 }
 
 private extension InviteSuggestionsSection {
-    func emailList(_ emails: [UserEmail]) -> some View {
+    func emailList(_ emails: [String]) -> some View {
         ForEach(emails, id: \.self) { email in
             SuggestedEmailView(email: email,
                                isSelected: selectedEmails.contains(email),
@@ -68,11 +67,5 @@ private extension InviteSuggestionsSection {
         } else {
             selectedEmails.append(email)
         }
-    }
-}
-
-extension String {
-    var toUserEmail: UserEmail {
-        UserEmail(id: self, email: self)
     }
 }
