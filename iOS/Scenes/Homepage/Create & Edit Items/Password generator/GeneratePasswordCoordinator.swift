@@ -90,23 +90,13 @@ extension GeneratePasswordCoordinator {
         let detent: UISheetPresentationController.Detent
         let detentIdentifier: UISheetPresentationController.Detent.Identifier
 
-        if #available(iOS 16, *) {
-            let makeCustomDetent: (Int) -> UISheetPresentationController.Detent = { height in
-                UISheetPresentationController.Detent.custom { _ in
-                    CGFloat(height)
-                }
-            }
-            detent = makeCustomDetent(isShowingAdvancedOptions ? 500 : 400)
-            detentIdentifier = detent.identifier
-        } else {
-            if isShowingAdvancedOptions {
-                detent = .large()
-                detentIdentifier = .large
-            } else {
-                detent = .medium()
-                detentIdentifier = .medium
+        let makeCustomDetent: (Int) -> UISheetPresentationController.Detent = { height in
+            UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
             }
         }
+        detent = makeCustomDetent(isShowingAdvancedOptions ? 500 : 400)
+        detentIdentifier = detent.identifier
 
         sheetPresentationController.animateChanges {
             sheetPresentationController.detents = [detent]
