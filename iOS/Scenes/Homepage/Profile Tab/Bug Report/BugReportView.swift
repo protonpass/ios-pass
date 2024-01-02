@@ -199,7 +199,7 @@ private extension BugReportView {
     var includeFileSection: some View {
         VStack {
             HStack {
-                CapsuleTextButton(title: "Add a File",
+                CapsuleTextButton(title: #localized("Add a File"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
                                   action: { isShowing.toggle() })
@@ -246,7 +246,7 @@ private extension BugReportView {
                 }
             }
 
-            CapsuleTextButton(title: "Clear all files",
+            CapsuleTextButton(title: #localized("Clear all files"),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               action: { viewModel.clearAllAddedFiles() })
