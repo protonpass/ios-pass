@@ -5091,6 +5091,18 @@
         }
       }
     },
+    "Add a File" : {
+      "comment" : "Title for the button to add a file to the bug report",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a file"
+          }
+        }
+      }
+    },
     "Add a prefix" : {
       "localizations" : {
         "be" : {
@@ -5804,6 +5816,10 @@
         }
       }
     },
+    "Add relevant files or images to the report" : {
+      "comment" : "Explanation for button to add file or image to bug report",
+      "extractionState" : "manual"
+    },
     "Add username or email address" : {
       "comment" : "Login item create/edit page",
       "localizations" : {
@@ -5946,6 +5962,10 @@
           }
         }
       }
+    },
+    "Added files" : {
+      "comment" : "Title for added file in bug report",
+      "extractionState" : "manual"
     },
     "admin" : {
       "comment" : "Vault sharing: Short description for share permission",
@@ -13702,6 +13722,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa"
+          }
+        }
+      }
+    },
+    "Clear all files" : {
+      "comment" : "Title of a button to removed all attached files from the bug report",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear all files"
           }
         }
       }
@@ -44184,6 +44216,10 @@
           }
         }
       }
+    },
+    "Select Content" : {
+      "comment" : "Title for button to add image or video to bug report",
+      "extractionState" : "manual"
     },
     "Select items" : {
       "comment" : "Enable bulk action mode",
