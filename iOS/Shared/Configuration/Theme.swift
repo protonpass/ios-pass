@@ -22,7 +22,7 @@ import Macro
 import ProtonCoreUIFoundations
 import UIKit
 
-public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable {
+public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable, Sendable {
     case light = 0
     case dark = 1
     case matchSystem = 2

@@ -26,6 +26,7 @@ import Factory
 import LocalAuthentication
 import SwiftUI
 
+@MainActor
 final class OnboardingViewModel: ObservableObject {
     @Published private(set) var finished = false
     @Published private(set) var state = OnboardingViewState.autoFill

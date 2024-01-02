@@ -132,13 +132,15 @@ extension TelemetryEventRepositoryTests {
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userDataProvider: userDataProviderMock)
-        XCTAssertNil(sut.scheduler.threshhold)
+        var threshold = await sut.scheduler.getThreshold()
+        XCTAssertNil(threshold)
 
         // When
         let sendResult = try await sut.sendAllEventsIfApplicable()
 
         // Then
-        XCTAssertNotNil(sut.scheduler.threshhold)
+        threshold = await sut.scheduler.getThreshold()
+        XCTAssertNotNil(threshold)
         XCTAssertEqual(sendResult, .thresholdNotReached)
     }
 
@@ -195,7 +197,8 @@ extension TelemetryEventRepositoryTests {
 
         let sendResult = try await sut.sendAllEventsIfApplicable()
         let events = try await localDatasource.getOldestEvents(count: 100, userId: givenUserId)
-        let newThreshold = try XCTUnwrap(telemetryScheduler.threshhold)
+        let threshold = await telemetryScheduler.getThreshold()
+        let newThreshold = try XCTUnwrap(threshold)
         let difference = Calendar.current.dateComponents([.hour],
                                                          from: givenCurrentDate,
                                                          to: newThreshold)
@@ -204,8 +207,10 @@ extension TelemetryEventRepositoryTests {
         // Then
         XCTAssertEqual(sendResult, .allEventsSent)
         XCTAssertTrue(events.isEmpty) // No more events left in local db
-        XCTAssertTrue(differenceInHours >= telemetryScheduler.minIntervalInHours)
-        XCTAssertTrue(differenceInHours <= telemetryScheduler.maxIntervalInHours)
+        let minInterval = await telemetryScheduler.minIntervalInHours
+        let maxInterval = await telemetryScheduler.maxIntervalInHours
+        XCTAssertTrue(differenceInHours >= minInterval)
+        XCTAssertTrue(differenceInHours <= maxInterval)
     }
 
     func testRemoveAllLocalEventsWhenThresholdIsReachedButTelemetryIsOff() async throws {
@@ -235,7 +240,8 @@ extension TelemetryEventRepositoryTests {
 
         let sendResult = try await sut.sendAllEventsIfApplicable()
         let events = try await localDatasource.getOldestEvents(count: 100, userId: givenUserId)
-        let newThreshold = try XCTUnwrap(telemetryScheduler.threshhold)
+        let threshold = await telemetryScheduler.getThreshold()
+        let newThreshold = try XCTUnwrap(threshold)
         let difference = Calendar.current.dateComponents([.hour],
                                                          from: givenCurrentDate,
                                                          to: newThreshold)
@@ -244,7 +250,9 @@ extension TelemetryEventRepositoryTests {
         // Then
         XCTAssertEqual(sendResult, .thresholdReachedButTelemetryOff)
         XCTAssertTrue(events.isEmpty) // No more events left in local db
-        XCTAssertTrue(differenceInHours >= telemetryScheduler.minIntervalInHours)
-        XCTAssertTrue(differenceInHours <= telemetryScheduler.maxIntervalInHours)
+        let minInterval = await telemetryScheduler.minIntervalInHours
+        let maxInterval = await telemetryScheduler.maxIntervalInHours
+        XCTAssertTrue(differenceInHours >= minInterval)
+        XCTAssertTrue(differenceInHours <= maxInterval)
     }
 }

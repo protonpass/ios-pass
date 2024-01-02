@@ -24,6 +24,7 @@ import Factory
 import Foundation
 import Macro
 
+@MainActor
 final class ShareOrCreateNewVaultViewModel: ObservableObject {
     let vault: VaultListUiModel
     let itemContent: ItemContent

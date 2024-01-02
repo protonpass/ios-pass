@@ -28,6 +28,7 @@ import Foundation
 import Macro
 import ProtonCoreNetworking
 
+@MainActor
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private(set) var vault: Vault
     @Published private(set) var itemsNumber = 0

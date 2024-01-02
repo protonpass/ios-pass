@@ -33,6 +33,7 @@ final class SharedRouterContainer: SharedContainer, AutoRegistering {
 // MARK: Main Router
 
 extension SharedRouterContainer {
+    @MainActor
     var mainUIKitSwiftUIRouter: Factory<MainUIKitSwiftUIRouter> {
         self { MainUIKitSwiftUIRouter() }
     }

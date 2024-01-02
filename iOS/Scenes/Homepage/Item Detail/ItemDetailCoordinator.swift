@@ -25,6 +25,7 @@ import Factory
 import SwiftUI
 import UIKit
 
+@MainActor
 protocol ItemDetailCoordinatorDelegate: AnyObject {
     func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool)
 }
