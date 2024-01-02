@@ -63,6 +63,14 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         setUp()
     }
 
+    func handleBackspace() {
+        print(#function)
+    }
+
+    func appendCurrentEmail() {
+        print(#function)
+    }
+
     func saveEmail() {
         Task { [weak self] in
             guard let self else {
