@@ -64,13 +64,7 @@ struct SetPINCodeView: View {
             .animation(.default, value: viewModel.error)
             .toolbar { toolbarContent }
             .onAppear {
-                if #available(iOS 16, *) {
-                    isFocused = true
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                        isFocused = true
-                    }
-                }
+                isFocused = true
             }
         }
         .navigationViewStyle(.stack)

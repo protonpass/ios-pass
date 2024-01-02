@@ -49,29 +49,18 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
     }
 
     public var body: some View {
-        if #available(iOS 16.0, *) {
-            TextField(placeholder, text: $text, axis: .vertical)
-                .focused(focusedField, equals: field)
-                .scrollContentBackground(.hidden)
-                .submitLabel(onSubmit != nil ? .next : .return)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                .font(Font(font.weight(fontWeight)))
-                .frame(minHeight: minHeight, alignment: .topLeading)
-                .onChange(of: text) { text in
-                    if let onSubmit, text.contains("\n") {
-                        self.text = text.replacingOccurrences(of: "\n", with: "")
-                        onSubmit()
-                    }
+        TextField(placeholder, text: $text, axis: .vertical)
+            .focused(focusedField, equals: field)
+            .scrollContentBackground(.hidden)
+            .submitLabel(onSubmit != nil ? .next : .return)
+            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .font(Font(font.weight(fontWeight)))
+            .frame(minHeight: minHeight, alignment: .topLeading)
+            .onChange(of: text) { text in
+                if let onSubmit, text.contains("\n") {
+                    self.text = text.replacingOccurrences(of: "\n", with: "")
+                    onSubmit()
                 }
-        } else {
-            TextView($text, onCommit: onSubmit)
-                .placeholder(placeholder)
-                .font(font)
-                .fontWeight(fontWeight)
-                .foregroundColor(PassColor.textNorm)
-                .returnKey(onSubmit != nil ? .next : .default)
-                .frame(minHeight: minHeight)
-                .focused(focusedField, equals: field)
-        }
+            }
     }
 }
