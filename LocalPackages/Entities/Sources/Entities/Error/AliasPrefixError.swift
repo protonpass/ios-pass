@@ -1,7 +1,7 @@
 //
-// GlobalVariables.swift
-// Proton Pass - Created on 22/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// AliasPrefixError.swift
+// Proton Pass - Created on 02/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,9 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-public enum GlobalVariables {
-    public static let prefixAllowedCharacters =
-        CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
+public enum AliasPrefixError: Error {
+    case emptyPrefix
+    case disallowedCharacters
+    case twoConsecutiveDots
+    case dotAtTheEnd
+    case dotAtTheStart
+    case prefixToLong
+    case unknown
 }
