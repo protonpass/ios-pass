@@ -23,10 +23,12 @@ import Entities
 import Factory
 import SwiftUI
 
+@MainActor
 protocol LogsViewModelDelegate: AnyObject {
     func logsViewModelWantsToShareLogs(_ url: URL)
 }
 
+@MainActor
 final class LogsViewModel: DeinitPrintable, ObservableObject {
     deinit {
         print(deinitMessage)
