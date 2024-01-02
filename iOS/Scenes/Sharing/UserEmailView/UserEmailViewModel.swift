@@ -44,7 +44,7 @@ enum RecommendationsState: Equatable {
 @MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
-    @Published var selectedEmails: [UserEmail] = []
+    @Published var selectedEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
@@ -68,7 +68,11 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func appendCurrentEmail() {
-        print(#function)
+        guard !email.isEmpty else { return }
+        if !selectedEmails.contains(email) {
+            selectedEmails.append(email)
+        }
+        email = ""
     }
 
     func saveEmail() {
@@ -81,11 +85,8 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             }
             do {
                 isChecking = true
-                var emails = selectedEmails.map(\.email)
-                if !email.isEmpty {
-                    emails.append(email)
-                }
-                try await setShareInvitesUserEmailsAndKeys(with: emails)
+                appendCurrentEmail()
+                try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
                 goToNextStep = true
             } catch {
                 if let passError = error as? PassError,

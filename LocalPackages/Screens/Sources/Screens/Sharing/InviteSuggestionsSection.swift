@@ -26,10 +26,10 @@ import SwiftUI
 
 public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
-    @Binding private var selectedEmails: [UserEmail]
+    @Binding private var selectedEmails: [String]
     let recommendations: InviteRecommendations
 
-    public init(selectedEmails: Binding<[UserEmail]>, recommendations: InviteRecommendations) {
+    public init(selectedEmails: Binding<[String]>, recommendations: InviteRecommendations) {
         _selectedEmails = selectedEmails
         self.recommendations = recommendations
     }
@@ -47,22 +47,15 @@ public struct InviteSuggestionsSection: View {
             }
 
             emailList(selectedIndex == 0 ?
-                recommendations.recommendedEmails.map(\.toUserEmail) : recommendations.planRecommendedEmails
-                .map(\.toUserEmail))
+                recommendations.recommendedEmails : recommendations.planRecommendedEmails)
         }
     }
 }
 
 private extension InviteSuggestionsSection {
-    func emailList(_ emails: [UserEmail]) -> some View {
+    func emailList(_ emails: [String]) -> some View {
         ForEach(emails, id: \.self) { email in
             SuggestedEmailView(selectedEmails: $selectedEmails, email: email)
         }
-    }
-}
-
-extension String {
-    var toUserEmail: UserEmail {
-        UserEmail(id: self, email: self)
     }
 }
