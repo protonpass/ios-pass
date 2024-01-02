@@ -385,6 +385,7 @@
 		5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
+		5B888A252B440E270011D6E0 /* AliasPrefixError+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */; };
 		5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20632AA7454400457CA3 /* MBProgressHUD */; };
 		5B8D209D2AA748ED00457CA3 /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D209C2AA748ED00457CA3 /* Client */; };
 		5B8D209F2AA748F700457CA3 /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D209E2AA748F700457CA3 /* Client */; };
@@ -783,6 +784,7 @@
 		5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultView.swift; sourceTree = "<group>"; };
 		5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultViewModel.swift; sourceTree = "<group>"; };
 		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
+		5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AliasPrefixError+Extensions.swift"; sourceTree = "<group>"; };
 		5B8D209B2AA748AB00457CA3 /* Client */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Client; path = LocalPackages/Client; sourceTree = "<group>"; };
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
 		5B8D20A92AA74B4700457CA3 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = LocalPackages/DesignSystem; sourceTree = "<group>"; };
@@ -1597,6 +1599,7 @@
 				5BF35D692B21F82900D3E297 /* ItemRevision+Extensions.swift */,
 				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
 				5B5C9D5F2B303FB4002AF0AB /* ContainerManager+Extensions.swift */,
+				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2766,6 +2769,7 @@
 				3565FD5D298D49B300E2A0EE /* NoteDetailSection.swift in Sources */,
 				3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */,
 				356BC35229D6C5B400F03497 /* SettingsViewModel.swift in Sources */,
+				5B888A252B440E270011D6E0 /* AliasPrefixError+Extensions.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				357ABEB02B188A08003D05C8 /* ItemsTabTopBar.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
