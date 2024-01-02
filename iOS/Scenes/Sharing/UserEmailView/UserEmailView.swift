@@ -49,7 +49,7 @@ struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()
     private var router = resolve(\RouterContainer.mainNavViewRouter)
-    @FocusState private var defaultFocus: Bool
+    @State private var isFocused = false
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -93,7 +93,7 @@ struct UserEmailView: View {
             .frame(maxWidth: .infinity)
         }
         .onAppear {
-            defaultFocus = true
+            isFocused = true
         }
         .animation(.default, value: viewModel.selectedEmails.hashValue)
 
@@ -106,23 +106,26 @@ struct UserEmailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
-        .ignoresSafeArea(.keyboard)
         .navigationStackEmbeded()
+        .ignoresSafeArea(.keyboard)
     }
 }
 
 private extension UserEmailView {
     var emailTextField: some View {
         VStack(alignment: .leading) {
-            TextField("Email address", text: $viewModel.email)
-                .font(.title)
-                .autocorrectionDisabled()
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .foregroundColor(PassColor.textNorm.toColor)
-                .focused($defaultFocus, equals: true)
-                .accentColor(PassColor.interactionNorm.toColor)
-                .tint(PassColor.interactionNorm.toColor)
+            BackspaceAwareTextField(text: $viewModel.email,
+                                    isFocused: $isFocused,
+                                    config: .init(font: .title,
+                                                  placeholder: #localized("Email address"),
+                                                  autoCapitalization: .none,
+                                                  autoCorrection: .no,
+                                                  keyboardType: .emailAddress,
+                                                  returnKeyType: .default,
+                                                  textColor: PassColor.textNorm,
+                                                  tintColor: PassColor.interactionNorm),
+                                    onBackspace: { viewModel.handleBackspace() },
+                                    onReturn: { viewModel.appendCurrentEmail() })
 
             if let error = viewModel.error {
                 Text(error)
