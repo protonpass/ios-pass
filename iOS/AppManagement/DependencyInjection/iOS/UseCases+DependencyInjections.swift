@@ -187,13 +187,15 @@ extension UseCasesContainer {
         self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
                                 userDataProvider: self.userDataProvider,
                                 getEmailPublicKey: self.getEmailPublicKey(),
-                                updateUserAddresses: self.updateUserAddresses()) }
+                                updateUserAddresses: self.updateUserAddresses(),
+                                logManager: self.logManager) }
     }
 
     var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
         self { DecodeShareVaultInformation(userDataProvider: self.userDataProvider,
                                            getEmailPublicKey: self.getEmailPublicKey(),
-                                           updateUserAddresses: self.updateUserAddresses()) }
+                                           updateUserAddresses: self.updateUserAddresses(),
+                                           logManager: self.logManager) }
     }
 
     var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
