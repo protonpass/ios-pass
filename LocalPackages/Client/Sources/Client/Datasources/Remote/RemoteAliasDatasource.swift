@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public protocol RemoteAliasDatasourceProtocol {
+public protocol RemoteAliasDatasourceProtocol: Sendable {
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias

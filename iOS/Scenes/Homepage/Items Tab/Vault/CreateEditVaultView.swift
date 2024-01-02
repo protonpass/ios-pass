@@ -76,10 +76,10 @@ struct CreateEditVaultView: View {
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: viewModel.title.isEmpty,
-                                            action: viewModel.save)
+                                            action: { viewModel.save() })
             } else {
                 UpgradeButton(backgroundColor: PassColor.interactionNormMajor1,
-                              action: viewModel.upgrade)
+                              action: { viewModel.upgrade() })
             }
         }
     }
@@ -220,7 +220,7 @@ private struct VaultIconView: View {
                 selectedIcon = icon
             }, label: {
                 ZStack {
-                    Color(uiColor: PassColor.inputBackgroundNorm)
+                    PassColor.inputBackgroundNorm.toColor
                     Image(uiImage: icon.bigImage)
                         .resizable()
                         .scaledToFit()

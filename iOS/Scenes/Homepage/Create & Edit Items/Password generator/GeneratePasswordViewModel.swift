@@ -24,10 +24,12 @@ import Entities
 import Factory
 import SwiftUI
 
+@MainActor
 protocol GeneratePasswordViewModelDelegate: AnyObject {
     func generatePasswordViewModelDidConfirm(password: String)
 }
 
+@MainActor
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
     func generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: Bool)
 }

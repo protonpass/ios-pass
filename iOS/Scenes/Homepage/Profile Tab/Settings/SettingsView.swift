@@ -71,14 +71,14 @@ struct SettingsView: View {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         action: viewModel.goBack)
+                         action: { viewModel.goBack() })
         }
     }
 
     private var untitledSection: some View {
         VStack(spacing: 0) {
             if !ProcessInfo.processInfo.isiOSAppOnMac {
-                OptionRow(action: viewModel.editDefaultBrowser,
+                OptionRow(action: { viewModel.editDefaultBrowser() },
                           title: #localized("Default browser"),
                           height: .tall,
                           content: {
@@ -90,7 +90,7 @@ struct SettingsView: View {
                 PassSectionDivider()
             }
 
-            OptionRow(action: viewModel.editTheme,
+            OptionRow(action: { viewModel.editTheme() },
                       title: #localized("Theme"),
                       height: .tall,
                       content: {
@@ -126,7 +126,7 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
-                OptionRow(action: viewModel.editClipboardExpiration,
+                OptionRow(action: { viewModel.editClipboardExpiration() },
                           title: #localized("Clear clipboard"),
                           height: .tall,
                           content: {
@@ -158,16 +158,16 @@ struct SettingsView: View {
 
             VStack(spacing: 0) {
                 TextOptionRow(title: PassModule.hostApp.logTitle,
-                              action: viewModel.viewHostAppLogs)
+                              action: { viewModel.viewHostAppLogs() })
 
                 PassSectionDivider()
 
                 TextOptionRow(title: PassModule.autoFillExtension.logTitle,
-                              action: viewModel.viewAutoFillExensionLogs)
+                              action: { viewModel.viewAutoFillExensionLogs() })
             }
             .roundedEditableSection()
 
-            OptionRow(action: viewModel.clearLogs,
+            OptionRow(action: { viewModel.clearLogs() },
                       height: .medium,
                       content: {
                           Text("Clear all logs")
@@ -190,7 +190,7 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, kItemDetailSectionPadding)
 
-            OptionRow(action: viewModel.forceSync,
+            OptionRow(action: { viewModel.forceSync() },
                       height: .medium,
                       content: {
                           Text("Force synchronization")

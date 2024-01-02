@@ -56,7 +56,6 @@ struct NoteDetailSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(kItemDetailSectionPadding)
-        .accentColor(tintColor) // Remove when iOS 15 is dropped
         .tint(tintColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
@@ -100,7 +99,6 @@ private struct FullNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .accentColor(tintColor) // Remove when iOS 15 is dropped
         .tint(tintColor)
         .theme(theme)
     }

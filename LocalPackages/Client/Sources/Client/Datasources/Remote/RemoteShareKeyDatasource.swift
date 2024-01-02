@@ -20,7 +20,7 @@
 
 import Entities
 
-public protocol RemoteShareKeyDatasourceProtocol {
+public protocol RemoteShareKeyDatasourceProtocol: Sendable {
     func getKeys(shareId: String) async throws -> [ShareKey]
 }
 

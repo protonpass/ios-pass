@@ -30,7 +30,7 @@ struct VaultSelectorView: View {
         NavigationView {
             VStack {
                 if viewModel.isFreeUser {
-                    LimitedVaultOperationsBanner(onUpgrade: viewModel.upgrade)
+                    LimitedVaultOperationsBanner(onUpgrade: { viewModel.upgrade() })
                         .padding([.horizontal, .top])
                 }
 
@@ -57,6 +57,7 @@ struct VaultSelectorView: View {
         .navigationViewStyle(.stack)
     }
 
+    @MainActor
     private func view(for vault: VaultListUiModel) -> some View {
         Button(action: {
             viewModel.select(vault: vault.vault)
@@ -66,7 +67,7 @@ struct VaultSelectorView: View {
                      title: vault.vault.name,
                      itemCount: vault.itemCount,
                      isShared: vault.vault.shared,
-                     isSelected: vault.vault.shareId == viewModel.selectedVault?.shareId,
+                     isSelected: viewModel.isSelected(vault: vault.vault),
                      height: 74)
                 .padding(.horizontal)
         })

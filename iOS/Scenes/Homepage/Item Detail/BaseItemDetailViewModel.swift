@@ -26,6 +26,7 @@ import Factory
 import Macro
 import UIKit
 
+@MainActor
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
