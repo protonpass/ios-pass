@@ -87,7 +87,7 @@ struct ItemsTabView: View {
                 }
 
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
-                   viewModel.pinningAuthorized {
+                   viewModel.pinningAuthorized, viewModel.vaultsManager.vaultSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
                                     onSearch: { viewModel.search(pinnedItems: true) },
                                     action: { viewModel.viewDetail(of: $0) })
