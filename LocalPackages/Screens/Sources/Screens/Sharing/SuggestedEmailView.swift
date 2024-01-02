@@ -24,23 +24,23 @@ import Entities
 import SwiftUI
 
 struct SuggestedEmailView: View {
-    @Binding var selectedEmails: [UserEmail]
-    let email: UserEmail
+    @Binding var selectedEmails: [String]
+    let email: String
 
-    init(selectedEmails: Binding<[UserEmail]>, email: UserEmail) {
+    init(selectedEmails: Binding<[String]>, email: String) {
         _selectedEmails = selectedEmails
         self.email = email
     }
 
     var body: some View {
         HStack {
-            SquircleThumbnail(data: .initials(String(email.email.prefix(2).uppercased())),
+            SquircleThumbnail(data: .initials(String(email.prefix(2).uppercased())),
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(email.email)
+            Text(email)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 

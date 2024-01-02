@@ -65,9 +65,9 @@ struct UserEmailView: View {
             ScrollView {
                 VStack {
                     FlowLayout(mode: .scrollable,
-                               items: viewModel.selectedEmails) { email in
-                        EmailViewCell(email: email.email)
-                    }.padding(.leading, -4)
+                               items: viewModel.selectedEmails,
+                               viewMapping: { EmailViewCell(email: $0) })
+                        .padding(.leading, -4)
 
                     emailTextField
 

@@ -75,6 +75,7 @@ public struct BackspaceAwareTextField: UIViewRepresentable {
         } else {
             textField.resignFirstResponder()
         }
+        textField.text = text
     }
 
     public func makeCoordinator() -> Coordinator {
