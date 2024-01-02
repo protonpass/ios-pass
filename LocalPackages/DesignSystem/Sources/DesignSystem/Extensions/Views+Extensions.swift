@@ -49,7 +49,7 @@ public extension View {
     }
 
     @ViewBuilder
-    func navigationModifier() -> some View {
+    func navigationStackEmbeded() -> some View {
         NavigationStack {
             self
         }

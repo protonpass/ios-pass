@@ -64,7 +64,7 @@ struct ItemCountView: View {
             .padding(.horizontal)
             .shimmering()
         }
-        .adaptiveScrollDisabled(true)
+        .scrollDisabled(true)
     }
 }
 
