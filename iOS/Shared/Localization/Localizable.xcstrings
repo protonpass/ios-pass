@@ -5091,6 +5091,18 @@
         }
       }
     },
+    "Add a File" : {
+      "comment" : "Title for the button to add a file to the bug report",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a file"
+          }
+        }
+      }
+    },
     "Add a prefix" : {
       "localizations" : {
         "be" : {
@@ -13710,6 +13722,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa"
+          }
+        }
+      }
+    },
+    "Clear all files" : {
+      "comment" : "Title of a button to removed all attached files from the bug report",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear all files"
           }
         }
       }
