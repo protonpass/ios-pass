@@ -120,23 +120,15 @@ private extension ItemSquircleThumbnail {
             }
             .frame(width: size.height, height: size.height)
             .animation(.default, value: image)
-            .onChange(of: data, perform: { newValue in
-                if let newUrl = newValue.url {
-                    loadFavIcon(url: newUrl, force: true)
-                }
-            })
-            .onChange(of: repository.settings.shouldDisplayFavIcons) { newValue in
-                if newValue {
-                    if image == nil {
-                        loadFavIcon(url: url, force: false)
-                    }
-                } else {
+            .onChange(of: repository.settings.shouldDisplayFavIcons) { shouldDisplay in
+                if !shouldDisplay {
                     image = nil
                 }
             }
             .task {
                 do {
-                    if let favIcon = try await repository.getIcon(for: url),
+                    if repository.settings.shouldDisplayFavIcons,
+                       let favIcon = try await repository.getIcon(for: url),
                        let newImage = UIImage(data: favIcon.data) {
                         image = newImage
                     }
@@ -160,29 +152,6 @@ private extension ItemSquircleThumbnail {
                                   height: size.pinHeight * 4 / 5)
                 }
                 .padding(-size.pinHeight / 5)
-        }
-    }
-}
-
-private extension ItemSquircleThumbnail {
-    func loadFavIcon(url: String, force: Bool) {
-        if !force, image != nil {
-            return
-        }
-
-        if force {
-            image = nil
-        }
-
-        Task { @MainActor in
-            do {
-                if let favIcon = try await repository.getIcon(for: url),
-                   let newImage = UIImage(data: favIcon.data) {
-                    image = newImage
-                }
-            } catch {
-                print(error)
-            }
         }
     }
 }
