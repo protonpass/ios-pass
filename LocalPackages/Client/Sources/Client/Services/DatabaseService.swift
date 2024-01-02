@@ -22,10 +22,9 @@ import Core
 import CoreData
 import Foundation
 
-public protocol DatabaseServiceProtocol {
-    var container: NSPersistentContainer { get }
-
+public protocol DatabaseServiceProtocol: Sendable {
     func resetContainer(inMemory: Bool)
+    func getContainer() -> NSPersistentContainer
 }
 
 public extension DatabaseServiceProtocol {
@@ -34,9 +33,10 @@ public extension DatabaseServiceProtocol {
     }
 }
 
-public final class DatabaseService: DatabaseServiceProtocol {
-    public private(set) var container: NSPersistentContainer
+public final class DatabaseService: DatabaseServiceProtocol, @unchecked Sendable {
+    private var container: NSPersistentContainer
     private let logger: Logger?
+    private let lock = NSLock()
 
     public init(logManager: (any LogManagerProtocol)? = nil, inMemory: Bool = false) {
         if let logManager {
@@ -48,6 +48,12 @@ public final class DatabaseService: DatabaseServiceProtocol {
     }
 
     public func resetContainer(inMemory: Bool = false) {
+        lock.lock()
+
+        defer {
+            lock.unlock()
+        }
+
         do {
             logger?.info("Recreating Store")
             // Delete existing persistent stores
@@ -64,6 +70,14 @@ public final class DatabaseService: DatabaseServiceProtocol {
         } catch {
             logger?.error(message: "Failed to reset database container", error: error)
         }
+    }
+
+    public func getContainer() -> NSPersistentContainer {
+        lock.lock()
+        defer {
+            lock.unlock()
+        }
+        return container
     }
 }
 

@@ -26,6 +26,7 @@ import ProtonCoreLogin
 import SwiftUI
 import UIKit
 
+@MainActor
 protocol CreateEditItemCoordinatorDelegate: AnyObject {
     func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool)
 }

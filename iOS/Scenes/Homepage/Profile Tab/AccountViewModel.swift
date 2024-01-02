@@ -24,12 +24,14 @@ import Entities
 import Factory
 import ProtonCoreFeatureSwitch
 
+@MainActor
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
     func accountViewModelWantsToSignOut()
     func accountViewModelWantsToDeleteAccount()
 }
 
+@MainActor
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 

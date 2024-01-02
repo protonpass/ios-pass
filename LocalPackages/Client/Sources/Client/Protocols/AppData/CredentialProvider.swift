@@ -21,7 +21,7 @@
 
 import ProtonCoreNetworking
 
-public protocol CredentialProvider {
+public protocol CredentialProvider: Sendable {
     func getCredential() -> AuthCredential?
     func setCredential(_ credential: AuthCredential?)
 

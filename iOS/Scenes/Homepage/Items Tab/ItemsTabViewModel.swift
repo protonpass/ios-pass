@@ -26,6 +26,7 @@ import Factory
 import Macro
 import SwiftUI
 
+@MainActor
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
@@ -253,7 +254,7 @@ extension ItemsTabViewModel {
     }
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        canEditItem(vaultsProvider: vaultsManager, item: item)
+        canEditItem(vaults: vaultsManager.getAllVaults(), item: item)
     }
 
     func presentVaultListToMoveSelectedItems() {
@@ -406,8 +407,13 @@ extension ItemsTabViewModel: SortTypeListViewModelDelegate {
 // MARK: - SyncEventLoopPullToRefreshDelegate
 
 extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
-    func pullToRefreshShouldStopRefreshing() {
-        stopRefreshing()
+    nonisolated func pullToRefreshShouldStopRefreshing() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await stopRefreshing()
+        }
     }
 }
 

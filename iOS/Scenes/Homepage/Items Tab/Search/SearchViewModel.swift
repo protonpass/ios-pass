@@ -42,12 +42,14 @@ enum SearchViewState {
     case error(Error)
 }
 
+@MainActor
 protocol SearchViewModelDelegate: AnyObject {
     func searchViewModelWantsToViewDetail(of itemContent: ItemContent)
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                    delegate: SortTypeListViewModelDelegate)
 }
 
+@MainActor
 final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 

@@ -31,6 +31,7 @@ enum LocalAuthenticationState: Equatable {
     case lastAttempt
 }
 
+@MainActor
 final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 

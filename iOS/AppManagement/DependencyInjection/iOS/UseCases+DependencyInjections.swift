@@ -24,7 +24,7 @@ import Factory
 import ProtonCoreServices
 import UseCases
 
-final class UseCasesContainer: SharedContainer, AutoRegistering {
+final class UseCasesContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = UseCasesContainer()
     let manager = ContainerManager()
 
@@ -306,6 +306,7 @@ extension UseCasesContainer {
         self { GetRustLibraryVersion() }
     }
 
+    @MainActor
     var openAutoFillSettings: Factory<OpenAutoFillSettingsUseCase> {
         self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
     }

@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public protocol LocalPublicKeyDatasourceProtocol {
+public protocol LocalPublicKeyDatasourceProtocol: Sendable {
     func getPublicKeys(email: String) async throws -> [PublicKey]
     func insertPublicKeys(_ publicKeys: [PublicKey], email: String) async throws
 }

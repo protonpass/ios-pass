@@ -58,7 +58,7 @@ struct TrialDetailView: View {
                     perk(title: #localized("Custom fields"), icon: PassIcon.trialCustomFields)
                 }
                 .padding()
-                .background(Color(uiColor: PassColor.inputBackgroundNorm))
+                .background(PassColor.inputBackgroundNorm.toColor)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .padding(.horizontal)
                 .padding(.vertical, 32)

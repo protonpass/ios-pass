@@ -23,6 +23,7 @@ import Combine
 import Core
 import Factory
 
+@MainActor
 final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
