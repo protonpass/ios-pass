@@ -24,12 +24,14 @@ import Entities
 import SwiftUI
 
 struct SuggestedEmailView: View {
-    @Binding var selectedEmails: [String]
     let email: String
+    let isSelected: Bool
+    let onSelect: () -> Void
 
-    init(selectedEmails: Binding<[String]>, email: String) {
-        _selectedEmails = selectedEmails
+    init(email: String, isSelected: Bool, onSelect: @escaping () -> Void) {
         self.email = email
+        self.isSelected = isSelected
+        self.onSelect = onSelect
     }
 
     var body: some View {
@@ -49,20 +51,6 @@ struct SuggestedEmailView: View {
             RoundedCircleCheckbox(isChecked: isSelected)
         }
         .contentShape(Rectangle())
-        .onTapGesture(perform: toggleSelection)
-    }
-}
-
-private extension SuggestedEmailView {
-    var isSelected: Bool {
-        selectedEmails.contains(email)
-    }
-
-    func toggleSelection() {
-        if isSelected {
-            selectedEmails.removeAll(where: { $0 == email })
-        } else {
-            selectedEmails.append(email)
-        }
+        .onTapGesture(perform: onSelect)
     }
 }

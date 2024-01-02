@@ -54,4 +54,12 @@ public extension View {
             self
         }
     }
+
+    @ViewBuilder
+    func scrollViewEmbeded() -> some View {
+        ScrollView {
+            self
+        }
+        .frame(maxWidth: .infinity)
+    }
 }

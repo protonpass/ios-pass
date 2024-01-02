@@ -42,6 +42,11 @@ public extension BannerDisplayProtocol {
     func displayTopErrorMessage(_ message: String,
                                 dismissButtonTitle: String = #localized("OK"),
                                 onDismiss: (@Sendable (PMBanner) -> Void)? = nil) {
+        let onDismiss = onDismiss ?? { banner in
+            Task {
+                await banner.dismiss()
+            }
+        }
         displayTopErrorMessage(message, dismissButtonTitle: dismissButtonTitle, onDismiss: onDismiss)
     }
 }
