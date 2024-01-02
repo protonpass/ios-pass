@@ -112,7 +112,7 @@ struct SearchResultsView: View {
 
 private extension SearchResultsView {
     var topBarSearchInformations: some View {
-        let localizedString = "\(viewModel.results.numberOfItems) search result(s)"
+        let localizedString = #localized("%lld search result(s)", viewModel.results.numberOfItems)
         var attributedString = AttributedString(localizedString)
 
         // Apply bold to the dynamic part of the string
