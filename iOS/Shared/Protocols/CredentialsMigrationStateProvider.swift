@@ -21,7 +21,7 @@
 import Foundation
 
 // sourcery: AutoMockable
-protocol CredentialsMigrationStateProvider {
+protocol CredentialsMigrationStateProvider: Sendable {
     func shouldMigrateToSeparatedCredentials() -> Bool
     func markAsMigratedToSeparatedCredentials()
 }

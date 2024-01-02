@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalShareKeyDatasourceProtocol {
+public protocol LocalShareKeyDatasourceProtocol: Sendable {
     /// Get keys of a share
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 

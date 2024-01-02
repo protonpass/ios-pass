@@ -25,6 +25,7 @@ import Factory
 import ProtonCoreServices
 import SwiftUI
 
+@MainActor
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
@@ -32,6 +33,7 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToQaFeatures()
 }
 
+@MainActor
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 

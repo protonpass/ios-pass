@@ -113,12 +113,12 @@ private extension AcceptRejectInviteView {
             CapsuleTextButton(title: viewModel.userInvite.acceptButtonTitle,
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
-                              action: viewModel.accept)
+                              action: { viewModel.accept() })
 
             CapsuleTextButton(title: viewModel.userInvite.rejectButtonTitle,
                               titleColor: PassColor.interactionNormMajor1,
                               backgroundColor: PassColor.interactionNormMinor1,
-                              action: viewModel.reject)
+                              action: { viewModel.reject() })
         }
     }
 }
