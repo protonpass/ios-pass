@@ -20,6 +20,7 @@
 
 import Foundation
 
+@MainActor
 protocol CustomCoordinator {
     func start()
 }

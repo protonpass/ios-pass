@@ -30,12 +30,12 @@ public struct FavIcon: Hashable, Sendable {
     public let isFromCache: Bool
 }
 
-public protocol FavIconSettings {
+public protocol FavIconSettings: Sendable {
     var shouldDisplayFavIcons: Bool { get }
 }
 
 /// Take care of fetching and caching behind the scenes
-public protocol FavIconRepositoryProtocol {
+public protocol FavIconRepositoryProtocol: Sendable {
     var settings: any FavIconSettings { get }
 
     /// Always return `nil` if fav icons are disabled in `Preferences`
@@ -44,16 +44,16 @@ public protocol FavIconRepositoryProtocol {
 
     /// Always return `nil` if fav icons are disabled in `Preferences`
     /// Only get icon from disk. Do not go fetch if icon is not cached.
-    func getCachedIcon(for domain: String) -> FavIcon?
+    func getCachedIcon(for domain: String) async -> FavIcon?
 
     /// For debugging purposes only
-    func getAllCachedIcons() throws -> [FavIcon]
+    func getAllCachedIcons() async throws -> [FavIcon]
 
     /// Remove cached icons from disk
-    func emptyCache() throws
+    func emptyCache() async throws
 }
 
-public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
+public actor FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let datasource: any RemoteFavIconDatasourceProtocol
@@ -62,6 +62,7 @@ public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable
     private let cacheExpirationDays: Int
     public let settings: any FavIconSettings
     private let symmetricKeyProvider: any SymmetricKeyProvider
+    private var activeTasks = [String: Task<FavIcon?, any Error>]()
 
     public init(datasource: any RemoteFavIconDatasourceProtocol,
                 containerUrl: URL,
@@ -77,40 +78,29 @@ public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable
 }
 
 public extension FavIconRepository {
+    /// Fetches the favicon for the specified domain.
+    /// - If the icon is already being fetched, it waits for the existing task to complete.
+    /// - If the icon is cached and not obsolete, it returns the cached version.
+    /// - Otherwise, it fetches the icon from the remote source and caches it.
+    /// Parameters:
+    ///   - domain: The domain for which to fetch the favicon.
+    /// Returns: The fetched `FavIcon` object, or `nil` if the operation fails or is cancelled.
     func getIcon(for domain: String) async throws -> FavIcon? {
-        guard settings.shouldDisplayFavIcons else { return nil }
-        let symmetricKey = try getSymmetricKey()
+        guard settings.shouldDisplayFavIcons, !domain.isEmpty else { return nil }
 
-        let domain = URL(string: domain)?.host ?? domain
-        let hashedDomain = domain.sha256
-        let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
-                                                          conformingTo: .data)
-        if let encryptedData = try getDataOrRemoveIfObsolete(url: dataUrl),
-           let decryptedData = try? symmetricKey.decrypt(encryptedData) {
-            return .init(domain: domain, data: decryptedData, isFromCache: true)
+        if let existingTask = activeTasks[domain] {
+            if checkAndHandleCancellation(for: domain) { return nil }
+            return try await existingTask.value
         }
 
-        // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
-        let result = try await datasource.fetchFavIcon(for: domain)
-
-        let dataToWrite: Data = switch result {
-        case let .positive(data):
-            data
-        case .negative:
-            .init()
+        if checkAndHandleCancellation(for: domain) { return nil }
+        let task = Task { [weak self] in
+            // swiftlint:disable:next discouraged_optional_self
+            try await self?.fetchAndCacheIcon(for: domain)
         }
-
-        // Create 2 files: 1 contains the actual data & 1 contains the encrypted root domain
-        try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(dataToWrite),
-                                        fileName: "\(hashedDomain).data",
-                                        containerUrl: containerUrl)
-        guard let domainData = domain.data(using: .utf8) else {
-            throw PassError.crypto(.failedToEncode(domain))
-        }
-        try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(domainData),
-                                        fileName: "\(hashedDomain).domain",
-                                        containerUrl: containerUrl)
-        return .init(domain: domain, data: dataToWrite, isFromCache: false)
+        addActiveTask(task, for: domain)
+        if checkAndHandleCancellation(for: domain) { return nil }
+        return try await task.value
     }
 
     func getCachedIcon(for domain: String) -> FavIcon? {
@@ -120,24 +110,24 @@ public extension FavIconRepository {
         let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
                                                           conformingTo: .data)
         if let data = try? getDataOrRemoveIfObsolete(url: dataUrl) {
-            return try? .init(domain: domain,
-                              data: getSymmetricKey().decrypt(data),
-                              isFromCache: true)
+            return try? FavIcon(domain: domain,
+                                data: getSymmetricKey().decrypt(data),
+                                isFromCache: true)
         }
         return nil
     }
 
-    func getAllCachedIcons() throws -> [FavIcon] {
+    func getAllCachedIcons() async throws -> [FavIcon] {
         let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,
                                                                includingPropertiesForKeys: nil)
 
-        let getDecryptedData: (URL) throws -> Data? = { [weak self] url in
+        let getDecryptedData: (URL) async throws -> Data? = { [weak self] url in
             guard let self else { return nil }
             let encryptedData = try Data(contentsOf: url)
             if encryptedData.isEmpty {
                 return .init()
             } else {
-                return try? getSymmetricKey().decrypt(encryptedData)
+                return try? await getSymmetricKey().decrypt(encryptedData)
             }
         }
 
@@ -147,9 +137,9 @@ public extension FavIconRepository {
             let domainUrl = containerUrl.appendingPathComponent("\(hashedRootDomain).domain",
                                                                 conformingTo: .data)
 
-            if let domainData = try getDecryptedData(domainUrl),
+            if let domainData = try await getDecryptedData(domainUrl),
                let decryptedRootDomain = String(data: domainData, encoding: .utf8),
-               let decryptedImageData = try getDecryptedData(url) {
+               let decryptedImageData = try await getDecryptedData(url) {
                 icons.append(.init(domain: decryptedRootDomain,
                                    data: decryptedImageData,
                                    isFromCache: true))
@@ -169,7 +159,53 @@ public extension FavIconRepository {
     }
 }
 
+// MARK: - Utils
+
 private extension FavIconRepository {
+    func fetchAndCacheIcon(for domain: String) async throws -> FavIcon? {
+        do {
+            let symmetricKey = try getSymmetricKey()
+
+            let domain = URL(string: domain)?.host ?? domain
+
+            let hashedDomain = domain.sha256
+            let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
+                                                              conformingTo: .data)
+            if let encryptedData = try getDataOrRemoveIfObsolete(url: dataUrl),
+               let decryptedData = try? symmetricKey.decrypt(encryptedData) {
+                activeTasks[domain] = nil
+                return FavIcon(domain: domain, data: decryptedData, isFromCache: true)
+            }
+
+            if checkAndHandleCancellation(for: domain) { return nil }
+
+            // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
+            let result = try await datasource.fetchFavIcon(for: domain)
+
+            let dataToWrite: Data = switch result {
+            case let .positive(data):
+                data
+            case .negative:
+                .init()
+            }
+
+            // Create 2 files: 1 contains the actual data & 1 contains the encrypted root domain
+            try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(dataToWrite),
+                                            fileName: "\(hashedDomain).data",
+                                            containerUrl: containerUrl)
+            guard let domainData = domain.data(using: .utf8) else {
+                throw PassError.crypto(.failedToEncode(domain))
+            }
+            try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(domainData),
+                                            fileName: "\(hashedDomain).domain",
+                                            containerUrl: containerUrl)
+            return FavIcon(domain: domain, data: dataToWrite, isFromCache: false)
+        } catch {
+            activeTasks[domain] = nil
+            throw error
+        }
+    }
+
     func getSymmetricKey() throws -> SymmetricKey {
         try symmetricKeyProvider.getSymmetricKey()
     }
@@ -179,5 +215,26 @@ private extension FavIconRepository {
                                               currentDate: .now,
                                               thresholdInDays: cacheExpirationDays)
         return try FileUtils.getDataRemovingIfObsolete(url: url, isObsolete: isObsolete)
+    }
+}
+
+// MARK: - Task Management
+
+private extension FavIconRepository {
+    func addActiveTask(_ task: Task<FavIcon?, any Error>, for domain: String) {
+        activeTasks[domain] = task
+    }
+
+    func cancelAndRemoveTask(for domain: String) {
+        activeTasks[domain]?.cancel()
+        activeTasks[domain] = nil
+    }
+
+    func checkAndHandleCancellation(for domain: String) -> Bool {
+        if Task.isCancelled {
+            cancelAndRemoveTask(for: domain)
+            return true
+        }
+        return false
     }
 }

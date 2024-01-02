@@ -61,6 +61,7 @@ private extension CredentialSearchResultView {
         .padding([.bottom, .horizontal])
     }
 
+    @MainActor
     var searchListView: some View {
         ScrollViewReader { proxy in
             List {

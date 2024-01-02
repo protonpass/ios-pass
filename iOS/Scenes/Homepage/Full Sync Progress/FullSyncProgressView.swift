@@ -183,7 +183,7 @@ private extension FullSyncProgressView {
             CapsuleTextButton(title: #localized("Continue"),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNormMajor1,
-                              action: handleContinuation)
+                              action: { handleContinuation() })
                 .padding()
         }
     }

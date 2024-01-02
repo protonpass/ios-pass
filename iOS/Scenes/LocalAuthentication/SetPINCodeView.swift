@@ -91,7 +91,7 @@ private extension SetPINCodeView {
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: viewModel.actionNotAllowed,
-                                        action: viewModel.action)
+                                        action: { viewModel.action() })
         }
     }
 }

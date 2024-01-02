@@ -74,11 +74,11 @@ struct OnboardingView: View {
                                       titleColor: PassColor.textInvert,
                                       backgroundColor: PassColor.interactionNormMajor1,
                                       height: 60,
-                                      action: viewModel.primaryAction)
+                                      action: { viewModel.primaryAction() })
                         .padding(.vertical, 26)
 
                     if let secondaryButtonTitle = viewModel.state.secondaryButtonTitle {
-                        Button(action: viewModel.secondaryAction) {
+                        Button { viewModel.secondaryAction() } label: {
                             Text(secondaryButtonTitle)
                                 .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                                 .animationsDisabled()

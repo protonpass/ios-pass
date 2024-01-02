@@ -39,6 +39,7 @@ import Sentry
 import SwiftUI
 import UIKit
 
+@MainActor
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
@@ -87,8 +88,10 @@ final class AppCoordinator {
     }
 
     deinit {
-        corruptedSessionStream?.cancel()
-        corruptedSessionStream = nil
+        Task { @MainActor in
+            corruptedSessionStream?.cancel()
+            corruptedSessionStream = nil
+        }
     }
 
     private func clearUserDataInKeychainIfFirstRun() {

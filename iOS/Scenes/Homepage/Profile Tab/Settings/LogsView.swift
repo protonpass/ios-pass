@@ -38,7 +38,7 @@ struct LogsView: View {
                     ProgressView()
                 } else if let error = viewModel.error {
                     RetryableErrorView(errorMessage: error.localizedDescription,
-                                       onRetry: viewModel.loadLogs)
+                                       onRetry: { viewModel.loadLogs() })
                 } else if viewModel.entries.isEmpty {
                     VStack {
                         Image(systemName: "doc")
@@ -109,7 +109,7 @@ struct LogsView: View {
                                        title: #localized("Share"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: PassColor.interactionNorm,
-                                       action: viewModel.shareLogs)
+                                       action: { viewModel.shareLogs() })
                 }
             }
         }
