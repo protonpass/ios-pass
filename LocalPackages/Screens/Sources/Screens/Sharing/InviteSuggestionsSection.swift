@@ -41,7 +41,7 @@ public struct InviteSuggestionsSection: View {
                 .font(.body.weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let planName = recommendations.planDisplayName ?? recommendations.planInternalName {
+            if let planName = recommendations.groupDisplayName ?? recommendations.planInternalName {
                 SegmentedPicker(selectedIndex: $selectedIndex,
                                 options: [#localized("Recents"), planName])
             }
@@ -50,8 +50,6 @@ public struct InviteSuggestionsSection: View {
                 recommendations.recommendedEmails.map(\.toUserEmail) : recommendations.planRecommendedEmails
                 .map(\.toUserEmail))
         }
-//        .animation(.default, value: selectedEmails.hashValue)
-//        .animation(.default, value: selectedIndex)
     }
 }
 
