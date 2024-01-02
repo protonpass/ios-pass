@@ -26,7 +26,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SearchResultsView: View, Equatable {
+struct SearchResultsView: View {
     @ObservedObject private var viewModel: SearchResultsViewModel
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
@@ -108,24 +108,22 @@ struct SearchResultsView: View, Equatable {
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
     }
-
-    static func == (lhs: SearchResultsView, rhs: SearchResultsView) -> Bool {
-        lhs.viewModel.results.hashValue == rhs.viewModel.results.hashValue
-    }
 }
 
 private extension SearchResultsView {
     var topBarSearchInformations: some View {
-        HStack {
-            Text(verbatim: "\(viewModel.results.numberOfItems)")
+        let localizedString = "\(viewModel.results.numberOfItems) search result(s)"
+        var attributedString = AttributedString(localizedString)
+
+        // Apply bold to the dynamic part of the string
+        if let range = attributedString.range(of: String(viewModel.results.numberOfItems)) {
+            attributedString[range].font = .callout.bold()
+            attributedString[range].foregroundColor = PassColor.textNorm.toColor
+        }
+        return HStack {
+            Text(attributedString)
                 .font(.callout)
-                .fontWeight(.bold)
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(verbatim: " ")
-                .font(.callout) +
-                Text("search result(s)")
-                .font(.callout)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
+                .foregroundColor(PassColor.textWeak.toColor)
 
             Spacer()
 
