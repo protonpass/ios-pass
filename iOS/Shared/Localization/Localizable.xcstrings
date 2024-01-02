@@ -5996,7 +5996,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ylläpitäjä"
+            "value" : "hallinta"
           }
         },
         "fr" : {
@@ -8123,6 +8123,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bí danh không thể chứa 2 dấu chấm liên tiếp (..)"
+          }
+        }
+      }
+    },
+    "Alias can not start with a dot (.)" : {
+      "comment" : "Error message displayed to users when they try to create an alias",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias can not start with a dot (.)"
           }
         }
       }
@@ -26893,6 +26905,18 @@
         }
       }
     },
+    "Invalid prefix" : {
+      "comment" : "Error message displayed to user when they try to create a badly formatted alias ",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid prefix"
+          }
+        }
+      }
+    },
     "Invalid TOTP URI" : {
       "localizations" : {
         "be" : {
@@ -37050,7 +37074,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un mot de passe"
+            "value" : "Mot de passe"
           }
         },
         "it" : {
@@ -48364,6 +48388,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Text custom field"
+          }
+        }
+      }
+    },
+    "The alias prefix is too long" : {
+      "comment" : "Error message displayed to user when they try to create a badly formatted alias",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The alias prefix is too long"
           }
         }
       }

@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Entities
 @preconcurrency import PassRustCore
 
 public protocol ValidateAliasPrefixUseCase: Sendable {
@@ -40,6 +41,32 @@ public final class ValidateAliasPrefix: ValidateAliasPrefixUseCase {
     }
 
     public func execute(prefix: String) throws {
-        try validator.validate(prefix: prefix)
+        do {
+            try validator.validate(prefix: prefix)
+        } catch {
+            guard let aliasError = error as? PassRustCore.AliasPrefixError else {
+                throw Entities.AliasPrefixError.unknown
+            }
+            throw aliasError.toEntitiesAliasPrefixError
+        }
+    }
+}
+
+extension PassRustCore.AliasPrefixError {
+    var toEntitiesAliasPrefixError: Entities.AliasPrefixError {
+        switch self {
+        case .DotAtTheBeginning:
+            .dotAtTheEnd
+        case .DotAtTheEnd:
+            .dotAtTheEnd
+        case .InvalidCharacter:
+            .disallowedCharacters
+        case .PrefixEmpty:
+            .emptyPrefix
+        case .PrefixTooLong:
+            .prefixToLong
+        case .TwoConsecutiveDots:
+            .twoConsecutiveDots
+        }
     }
 }
