@@ -27,7 +27,7 @@ import SwiftUI
 enum PrefixUtils {
     static func generatePrefix(fromTitle title: String) -> String {
         var lowercasedTitle = title.lowercased()
-        let allowedCharacters = GlobalVariables.prefixAllowedCharacters
+        let allowedCharacters = Constants.Utils.prefixAllowedCharacters
         lowercasedTitle.unicodeScalars.removeAll(where: { !allowedCharacters.contains($0) })
         return String(lowercasedTitle.prefix(40))
     }

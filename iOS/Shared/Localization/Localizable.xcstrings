@@ -8127,6 +8127,18 @@
         }
       }
     },
+    "Alias can not start with a dot (.)" : {
+      "comment" : "Error message displayed to users when they try to create an alias",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias can not start with a dot (.)"
+          }
+        }
+      }
+    },
     "Alias copied" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -26889,6 +26901,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trình xác thực 2 bước được tích hợp"
+          }
+        }
+      }
+    },
+    "Invalid prefix" : {
+      "comment" : "Error message displayed to user when they try to create a badly formatted alias ",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid prefix"
           }
         }
       }
@@ -48364,6 +48388,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Text custom field"
+          }
+        }
+      }
+    },
+    "The alias prefix is too long" : {
+      "comment" : "Error message displayed to user when they try to create a badly formatted alias",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The alias prefix is too long"
           }
         }
       }

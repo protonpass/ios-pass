@@ -1,7 +1,7 @@
 //
-// AliasPrefixValidator.swift
-// Proton Pass - Created on 21/11/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// AliasPrefixError+Extensions.swift
+// Proton Pass - Created on 02/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,18 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 import Macro
 
-public enum AliasPrefixError: LocalizedError {
-    case emptyPrefix
-    case disallowedCharacters
-    case twoConsecutiveDots
-    case dotAtTheEnd
-    case dotAtTheStart
-    case prefixToLong
-    case unknown
-
+extension AliasPrefixError: LocalizedError {
     public var localizedDescription: String {
         switch self {
         case .emptyPrefix:
@@ -42,11 +35,11 @@ public enum AliasPrefixError: LocalizedError {
         case .dotAtTheEnd:
             #localized("Alias can not contain 2 consecutive dots (..)")
         case .dotAtTheStart:
-            #localized("Alias can not start with a dots (.)")
+            #localized("Alias can not start with a dot (.)")
         case .prefixToLong:
-            #localized("The alias prefix is to long")
+            #localized("The alias prefix is too long")
         case .unknown:
-            #localized("Something went wrong")
+            #localized("Invalid prefix")
         }
     }
 }
