@@ -48,6 +48,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     let suffixSelection: SuffixSelection
     let mailboxSelection: MailboxSelection
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
 
     weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
 
@@ -78,7 +79,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
 private extension CreateAliasLiteViewModel {
     func validatePrefix() {
         do {
-            try AliasPrefixValidator.validate(prefix: prefix)
+            try validateAliasPrefix(prefix: prefix)
             prefixError = nil
         } catch {
             prefixError = error as? AliasPrefixError
