@@ -24,7 +24,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 // sourcery: AutoMockable
-public protocol ShareEventIDRepositoryProtocol {
+public protocol ShareEventIDRepositoryProtocol: Sendable {
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
     @discardableResult
     func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String

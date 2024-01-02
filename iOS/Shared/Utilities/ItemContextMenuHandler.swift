@@ -25,6 +25,7 @@ import Factory
 import Macro
 import ProtonCoreUIFoundations
 
+@MainActor
 protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
 }

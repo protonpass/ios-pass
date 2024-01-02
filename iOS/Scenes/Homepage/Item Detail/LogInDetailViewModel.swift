@@ -28,6 +28,7 @@ import Macro
 import SwiftUI
 import UIKit
 
+@MainActor
 protocol LogInDetailViewModelDelegate: AnyObject {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent)
 }

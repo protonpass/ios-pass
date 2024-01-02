@@ -27,6 +27,7 @@ import Factory
 import Foundation
 import Macro
 
+@MainActor
 final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var userInvite: UserInvite
     @Published private(set) var vaultInfos: VaultProtobuf?

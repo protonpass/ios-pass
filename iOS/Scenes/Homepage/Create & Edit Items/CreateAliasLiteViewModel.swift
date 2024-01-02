@@ -25,11 +25,12 @@ import Entities
 import Factory
 import SwiftUI
 
+@MainActor
 protocol AliasCreationLiteInfoDelegate: AnyObject {
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo)
 }
 
-struct AliasCreationLiteInfo {
+struct AliasCreationLiteInfo: Sendable {
     let prefix: String
     let suffix: Suffix
     let mailboxes: [Mailbox]
@@ -37,6 +38,7 @@ struct AliasCreationLiteInfo {
     var aliasAddress: String { prefix + suffix.suffix }
 }
 
+@MainActor
 final class CreateAliasLiteViewModel: ObservableObject {
     @Published var prefix = ""
     @Published private(set) var canCreateAlias: Bool
