@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalShareEventIDDatasourceProtocol {
+public protocol LocalShareEventIDDatasourceProtocol: Sendable {
     /// Get last event ID of a share
     func getLastEventId(userId: String, shareId: String) async throws -> String?
 

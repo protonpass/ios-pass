@@ -23,11 +23,13 @@ import Core
 import Factory
 import UserNotifications
 
+@MainActor
 protocol ExtensionSettingsViewModelDelegate: AnyObject {
     func extensionSettingsViewModelWantsToDismiss()
     func extensionSettingsViewModelWantsToLogOut()
 }
 
+@MainActor
 final class ExtensionSettingsViewModel: ObservableObject {
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {

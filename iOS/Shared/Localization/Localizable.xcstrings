@@ -5996,7 +5996,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ylläpitäjä"
+            "value" : "hallinta"
           }
         },
         "fr" : {
@@ -37050,7 +37050,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un mot de passe"
+            "value" : "Mot de passe"
           }
         },
         "it" : {
