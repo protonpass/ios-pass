@@ -52,15 +52,15 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     }
 }
 
-public class LocalDatasource {
+public class LocalDatasource: @unchecked Sendable {
     private let databaseService: any DatabaseServiceProtocol
     private var container: NSPersistentContainer {
-        databaseService.container
+        databaseService.getContainer()
     }
 
     public init(databaseService: any DatabaseServiceProtocol) {
-        guard databaseService.container.name == kProtonPassContainerName else {
-            fatalError("Unsupported container name \"\(databaseService.container.name)\"")
+        guard databaseService.getContainer().name == kProtonPassContainerName else {
+            fatalError("Unsupported container name \"\(databaseService.getContainer().name)\"")
         }
         self.databaseService = databaseService
     }

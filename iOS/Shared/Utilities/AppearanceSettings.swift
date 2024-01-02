@@ -24,12 +24,14 @@ import UIKit
 
 enum AppearanceSettings {
     static func apply() {
-        Brand.currentBrand = .pass
+        Task { @MainActor in
+            Brand.currentBrand = .pass
 
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
-            PassColor.interactionNorm
+            UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
+                PassColor.interactionNorm
 
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassColor.textNorm]
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassColor.textNorm]
+        }
     }
 }

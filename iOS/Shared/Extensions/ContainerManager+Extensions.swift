@@ -1,6 +1,6 @@
 //
-// SwiftUIRouter.swift
-// Proton Pass - Created on 24/07/2023.
+// ContainerManager+Extensions.swift
+// Proton Pass - Created on 18/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Factory
 
-enum GeneralRouterDestination: Hashable {
-    case userSharePermission
-    case shareSummary
-}
-
-@MainActor
-final class MainNavViewRouter {
-    @ViewBuilder
-    func navigate(to destination: GeneralRouterDestination) -> some View {
-        switch destination {
-        case .userSharePermission:
-            UserPermissionView()
-        case .shareSummary:
-            SharingSummaryView()
-        }
-    }
-}
+extension ContainerManager: @unchecked Sendable {}
