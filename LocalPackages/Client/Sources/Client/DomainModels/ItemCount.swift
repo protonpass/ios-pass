@@ -21,14 +21,14 @@
 import Entities
 import Foundation
 
-public struct ItemCount: Hashable, Equatable {
+public struct ItemCount: Hashable, Equatable, Sendable {
     public let total: Int
     public let login: Int
     public let alias: Int
     public let creditCard: Int
     public let note: Int
 
-    public static var zero = ItemCount(total: 0,
+    public static let zero = ItemCount(total: 0,
                                        login: 0,
                                        alias: 0,
                                        creditCard: 0,

@@ -24,7 +24,7 @@ import Factory
 import ProtonCoreServices
 import UseCases
 
-final class UseCasesContainer: SharedContainer, AutoRegistering {
+final class UseCasesContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = UseCasesContainer()
     let manager = ContainerManager()
 
@@ -187,13 +187,15 @@ extension UseCasesContainer {
         self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
                                 userDataProvider: self.userDataProvider,
                                 getEmailPublicKey: self.getEmailPublicKey(),
-                                updateUserAddresses: self.updateUserAddresses()) }
+                                updateUserAddresses: self.updateUserAddresses(),
+                                logManager: self.logManager) }
     }
 
     var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
         self { DecodeShareVaultInformation(userDataProvider: self.userDataProvider,
                                            getEmailPublicKey: self.getEmailPublicKey(),
-                                           updateUserAddresses: self.updateUserAddresses()) }
+                                           updateUserAddresses: self.updateUserAddresses(),
+                                           logManager: self.logManager) }
     }
 
     var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
@@ -306,6 +308,7 @@ extension UseCasesContainer {
         self { GetRustLibraryVersion() }
     }
 
+    @MainActor
     var openAutoFillSettings: Factory<OpenAutoFillSettingsUseCase> {
         self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
     }

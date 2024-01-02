@@ -104,7 +104,6 @@ private extension BugReportView {
             .padding()
             .frame(maxHeight: .infinity)
         }
-        .accentColor(PassColor.interactionNorm.toColor) // Remove when dropping iOS 15
         .tint(PassColor.interactionNorm.toColor)
         .background(PassColor.backgroundNorm.toColor)
     }
