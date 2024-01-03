@@ -27,7 +27,7 @@ import SwiftUI
 public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
     @Binding private var selectedEmails: [String]
-    let recommendations: InviteRecommendations
+    private let recommendations: InviteRecommendations
 
     public init(selectedEmails: Binding<[String]>, recommendations: InviteRecommendations) {
         _selectedEmails = selectedEmails
