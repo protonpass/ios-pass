@@ -91,7 +91,7 @@ private extension UserPermissionView {
             inviteeList(for: viewModel.emails)
         }
         .frame(maxWidth: .infinity)
-        .scrollViewEmbeded()
+        .scrollViewEmbeded(maxWidth: .infinity)
     }
 
     var setAccessLevelMenu: some View {

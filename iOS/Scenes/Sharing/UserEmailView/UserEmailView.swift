@@ -74,7 +74,7 @@ struct UserEmailView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, kItemDetailSectionPadding)
-            .scrollViewEmbeded()
+            .scrollViewEmbeded(maxWidth: .infinity)
         }
         .onAppear {
             isFocused = true
@@ -154,7 +154,7 @@ private extension UserEmailView {
                                                   placeholder: "",
                                                   autoCapitalization: .none,
                                                   autoCorrection: .no,
-                                                  keyboardType: .default,
+                                                  keyboardType: .emailAddress,
                                                   returnKeyType: .default,
                                                   textColor: .clear,
                                                   tintColor: .clear),
