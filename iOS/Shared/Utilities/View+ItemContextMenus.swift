@@ -25,7 +25,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 // swiftlint:disable enum_case_associated_values_count
-// swiftlint:disable function_parameter_count
 enum ItemContextMenu {
     case login(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
@@ -280,4 +279,3 @@ extension View {
 }
 
 // swiftlint:enable enum_case_associated_values_count
-// swiftlint:enable function_parameter_count
