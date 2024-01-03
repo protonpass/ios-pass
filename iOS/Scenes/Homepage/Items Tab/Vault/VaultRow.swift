@@ -30,6 +30,7 @@ struct VaultRow<Thumbnail: View>: View {
     let isShared: Bool
     let isSelected: Bool
     var showBadge = false
+    var maxWidth: CGFloat? = .infinity
     var height: CGFloat = 70
 
     var body: some View {
@@ -50,7 +51,9 @@ struct VaultRow<Thumbnail: View>: View {
                 }
             }
 
-            Spacer()
+            if maxWidth != nil {
+                Spacer()
+            }
 
             if isShared {
                 HStack(spacing: 0) {
@@ -78,7 +81,7 @@ struct VaultRow<Thumbnail: View>: View {
                     .frame(maxHeight: 20)
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: maxWidth)
         .frame(height: height)
         .contentShape(Rectangle())
     }
