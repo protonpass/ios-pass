@@ -20,7 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import Core
 import ProtonCoreFeatureFlags
 
@@ -42,14 +41,11 @@ public extension GetFeatureFlagStatusUseCase {
 
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
     public init(repository: any FeatureFlagsRepositoryProtocol,
-                userDataProvider: any UserDataProvider,
                 logManager: any LogManagerProtocol) {
         featureFlagsRepository = repository
-        self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)
     }
 
