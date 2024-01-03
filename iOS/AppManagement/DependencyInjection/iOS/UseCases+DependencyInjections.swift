@@ -153,8 +153,7 @@ extension UseCasesContainer {
 
     var getUserShareStatus: Factory<GetUserShareStatusUseCase> {
         self {
-            GetUserShareStatus(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
-                               accessRepository: SharedRepositoryContainer.shared.accessRepository())
+            GetUserShareStatus(accessRepository: SharedRepositoryContainer.shared.accessRepository())
         }
     }
 
@@ -175,8 +174,7 @@ extension UseCasesContainer {
 
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
         self { RefreshInvitations(inviteRepository: RepositoryContainer.shared.inviteRepository(),
-                                  accessRepository: SharedRepositoryContainer.shared.accessRepository(),
-                                  getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus()) }
+                                  accessRepository: SharedRepositoryContainer.shared.accessRepository()) }
     }
 
     var rejectInvitation: Factory<RejectInvitationUseCase> {
