@@ -213,7 +213,7 @@ private extension UserEmailView {
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: !viewModel.canContinue,
-                                            action: { viewModel.saveEmail() })
+                                            action: { viewModel.continue() })
             }
         }
     }

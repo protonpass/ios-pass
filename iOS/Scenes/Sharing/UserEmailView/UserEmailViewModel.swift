@@ -91,7 +91,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         selectedEmails.removeAll(where: { $0 == email })
     }
 
-    func saveEmail() {
+    func `continue`() {
         Task { [weak self] in
             guard let self else {
                 return
@@ -103,6 +103,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 isChecking = true
                 appendCurrentEmail()
                 try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
+                highlightedEmail = nil
                 goToNextStep = true
             } catch {
                 router.display(element: .displayErrorBanner(error))
