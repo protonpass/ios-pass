@@ -71,11 +71,12 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     func appendCurrentEmail() {
         let email = email.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !email.isEmpty else { return }
+        guard email.isValidEmail() else {
+            router.display(element: .errorMessage(#localized("Invalid email address")))
+            return
+        }
         if !selectedEmails.contains(email) {
             selectedEmails.append(email)
-            if !email.isValidEmail() {
-                router.display(element: .errorMessage(#localized("Invalid email address")))
-            }
         }
         self.email = ""
     }
@@ -147,7 +148,7 @@ private extension UserEmailViewModel {
                 guard let self else { return }
                 error = nil
                 highlightedEmail = nil
-                canContinue = !selectedEmails.isEmpty && !selectedEmails.contains(where: { !$0.isValidEmail() })
+                canContinue = !selectedEmails.isEmpty
             }
             .store(in: &cancellables)
 
