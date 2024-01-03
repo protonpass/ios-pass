@@ -50,7 +50,6 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
     @Published private(set) var recommendationsState: RecommendationsState = .loading
-    @Published private(set) var error: String?
     @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
@@ -137,7 +136,6 @@ private extension UserEmailViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                error = nil
                 highlightedEmail = nil
             }
             .store(in: &cancellables)
@@ -146,7 +144,6 @@ private extension UserEmailViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] selectedEmails in
                 guard let self else { return }
-                error = nil
                 highlightedEmail = nil
                 canContinue = !selectedEmails.isEmpty
             }
