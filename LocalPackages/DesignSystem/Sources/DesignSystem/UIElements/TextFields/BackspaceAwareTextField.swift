@@ -34,9 +34,9 @@ private final class BackspaceAwareUITextField: UITextField {
 }
 
 public struct BackspaceAwareTextField: UIViewRepresentable {
-    @Binding var text: String
-    @Binding var isFocused: Bool
-    let config: BackspaceAwareTextField.Configuration
+    @Binding private var text: String
+    @Binding private var isFocused: Bool
+    private let config: BackspaceAwareTextField.Configuration
     let onBackspace: () -> Void
     let onReturn: () -> Void
 

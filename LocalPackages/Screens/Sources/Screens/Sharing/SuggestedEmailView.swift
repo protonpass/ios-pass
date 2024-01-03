@@ -24,9 +24,9 @@ import Entities
 import SwiftUI
 
 struct SuggestedEmailView: View {
-    let email: String
-    let isSelected: Bool
-    let onSelect: () -> Void
+    private let email: String
+    private let isSelected: Bool
+    private let onSelect: () -> Void
 
     init(email: String, isSelected: Bool, onSelect: @escaping () -> Void) {
         self.email = email
