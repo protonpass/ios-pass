@@ -27,31 +27,43 @@ import Foundation
 @MainActor
 final class UserPermissionViewModel: ObservableObject, Sendable {
     @Published private(set) var selectedUserRole: ShareRole = .read
-    @Published private(set) var vaultName = ""
-    @Published private(set) var email = ""
+    @Published private(set) var emails = [String: ShareRole]()
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
 
     private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
-    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
+    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
+
+    var hasOnlyOneInvite: Bool {
+        emails.count == 1
+    }
 
     init() {
         setUp()
     }
 
-    func select(role: ShareRole) {
-        setShareInviteRole(with: role)
-        selectedUserRole = role
+    func updateRole(for email: String, with newRole: ShareRole) {
+        emails[email] = newRole
+        setShareInviteRole(with: emails)
+        if hasOnlyOneInvite {
+            selectedUserRole = newRole
+        }
+    }
+
+    func setRoleForAll(with role: ShareRole) {
+        for (email, _) in emails {
+            emails[email] = role
+        }
+        setShareInviteRole(with: emails)
     }
 }
 
 private extension UserPermissionViewModel {
     func setUp() {
-        let infos = getShareInviteInfos()
-        selectedUserRole = infos.role ?? .read
-        setShareInviteRole(with: selectedUserRole)
+        for email in shareInviteService.getAllEmails() {
+            emails[email] = .read
+            setShareInviteRole(with: emails)
+        }
         canContinue = true
-        vaultName = infos.vaultName ?? ""
-        email = infos.email ?? ""
     }
 }

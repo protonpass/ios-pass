@@ -64,17 +64,13 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
     }
 
     public func execute(with infos: SharingInfos) async throws -> Vault {
-        guard let role = infos.role else {
-            throw PassError.sharing(.incompleteInformation)
-        }
-
         let vault = try await getVault(from: infos)
         let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
         let inviteeData = try generateInviteeData(from: infos, vault: vault, vaultKey: vaultKey)
         let invited = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
                                                                  inviteeData: inviteeData,
                                                                  targetType: .vault,
-                                                                 shareRole: role)
+                                                                 shareRole: infos.role)
 
         if invited {
             syncEventLoop.forceSync()
@@ -93,8 +89,6 @@ private extension SendVaultShareInvite {
             vault
         case let .new(vaultProtobuf, itemContent):
             try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
-        default:
-            throw PassError.sharing(.incompleteInformation)
         }
     }
 
@@ -102,10 +96,7 @@ private extension SendVaultShareInvite {
                              vault: Vault,
                              vaultKey: DecryptedShareKey) throws -> InviteeData {
         let userData = try userDataProvider.getUnwrappedUserData()
-        guard let email = info.email else {
-            throw PassError.sharing(.incompleteInformation)
-        }
-
+        let email = info.email
         if let key = info.receiverPublicKeys?.first {
             let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,
                                                                  publicReceiverKey: key,

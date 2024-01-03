@@ -23,27 +23,44 @@
 import Client
 import Entities
 
-public protocol SetShareInviteUserEmailAndKeysUseCase {
-    func execute(with email: String, and publicKeys: [PublicKey]?)
+public protocol SetShareInvitesUserEmailsAndKeysUseCase {
+    func execute(with emails: [String]) async throws
 }
 
-public extension SetShareInviteUserEmailAndKeysUseCase {
-    func callAsFunction(with email: String, and publicKeys: [PublicKey]?) {
-        execute(with: email, and: publicKeys)
+public extension SetShareInvitesUserEmailsAndKeysUseCase {
+    func callAsFunction(with emails: [String]) async throws {
+        try await execute(with: emails)
     }
 }
 
-public final class SetShareInviteUserEmailAndKeys: SetShareInviteUserEmailAndKeysUseCase {
+public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAndKeysUseCase {
     private let shareInviteService: any ShareInviteServiceProtocol
+    private let getEmailPublicKeyUseCase: any GetEmailPublicKeyUseCase
 
-    public init(shareInviteService: any ShareInviteServiceProtocol) {
+    public init(shareInviteService: any ShareInviteServiceProtocol,
+                getEmailPublicKeyUseCase: any GetEmailPublicKeyUseCase) {
         self.shareInviteService = shareInviteService
+        self.getEmailPublicKeyUseCase = getEmailPublicKeyUseCase
     }
 
-    public func execute(with email: String, and publicKeys: [PublicKey]?) {
-        shareInviteService.setCurrentDestinationUserEmail(with: email)
-        if let publicKeys {
-            shareInviteService.setReceiverPublicKeys(with: publicKeys)
+    public func execute(with emails: [String]) async throws {
+        var emailsAndKeys = [String: [PublicKey]?]()
+        for email in emails {
+            do {
+                let receiverPublicKeys = try await getEmailPublicKeyUseCase(with: email)
+                emailsAndKeys[email] = receiverPublicKeys
+            } catch {
+                if let passError = error as? PassError,
+                   case let .sharing(reason) = passError,
+                   reason == .notProtonAddress {
+                    /// Subcript will not work because it won't create the key with nil value
+                    /// if the key doesn't exist before. Have to use `updateValue`.
+                    emailsAndKeys.updateValue(nil, forKey: email)
+                } else {
+                    throw error
+                }
+            }
         }
+        shareInviteService.setEmailsAndKeys(with: emailsAndKeys)
     }
 }
