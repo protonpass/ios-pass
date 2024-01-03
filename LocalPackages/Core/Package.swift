@@ -41,7 +41,7 @@ let package = Package(name: "Core",
                                    targets: ["CoreMocks"])
                       ],
                       dependencies: [
-                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "14.0.1"),
+                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.1"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro")
                       ],

@@ -145,10 +145,4 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "pendingInvites", on: sut, hasType: .integer64)
         verifyAttribute(named: "waitingNewUserInvites", on: sut, hasType: .integer64)
     }
-
-    func testFeatureFlagsEntity() {
-        let sut = entity(byName: "FeatureFlagsEntity")
-        verifyAttribute(named: "flagsData", on: sut, hasType: .binaryData)
-        verifyAttribute(named: "userID", on: sut, hasType: .string)
-    }
 }
