@@ -37,22 +37,21 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            if case let .new(vault, _) = viewModel.vault {
-                vaultRow(vault)
-            }
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
                 .padding(.horizontal, kItemDetailSectionPadding)
 
+            if case let .new(vault, _) = viewModel.vault {
+                vaultRow(vault)
+            }
+
             VStack {
                 FlowLayout(mode: .scrollable,
-                           items: viewModel.selectedEmails,
-                           viewMapping: { emailCell(for: $0) })
+                           items: viewModel.selectedEmails + [""],
+                           viewMapping: { token(for: $0) })
                     .padding(.leading, -4)
-
-                emailTextField
 
                 PassDivider()
                     .padding(.horizontal, -kItemDetailSectionPadding)
@@ -84,7 +83,6 @@ struct UserEmailView: View {
         }
         .animation(.default, value: viewModel.selectedEmails)
         .animation(.default, value: viewModel.recommendationsState)
-        .animation(.default, value: viewModel.error)
         .navigate(isActive: $viewModel.goToNextStep,
                   destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -97,6 +95,32 @@ struct UserEmailView: View {
 }
 
 private extension UserEmailView {
+    @ViewBuilder
+    func token(for email: String) -> some View {
+        if email.isEmpty {
+            emailTextField
+        } else {
+            emailCell(for: email)
+        }
+    }
+
+    var emailTextField: some View {
+        BackspaceAwareTextField(text: $viewModel.email,
+                                isFocused: $isFocused,
+                                config: .init(font: .body,
+                                              placeholder: #localized("Email address"),
+                                              autoCapitalization: .none,
+                                              autoCorrection: .no,
+                                              keyboardType: .emailAddress,
+                                              returnKeyType: .default,
+                                              textColor: PassColor.textNorm,
+                                              tintColor: PassColor.interactionNorm),
+                                onBackspace: { viewModel.highlightLastEmail() },
+                                onReturn: { viewModel.appendCurrentEmail() })
+            .frame(width: 150, height: 32)
+            .clipped()
+    }
+
     @ViewBuilder
     func emailCell(for email: String) -> some View {
         let highlighted = viewModel.highlightedEmail == email
@@ -136,31 +160,6 @@ private extension UserEmailView {
                                     onBackspace: { viewModel.deselect(email) },
                                     onReturn: { viewModel.toggleHighlight(email) })
                 .opacity(0)
-        }
-    }
-}
-
-private extension UserEmailView {
-    var emailTextField: some View {
-        VStack(alignment: .leading) {
-            BackspaceAwareTextField(text: $viewModel.email,
-                                    isFocused: $isFocused,
-                                    config: .init(font: .title,
-                                                  placeholder: #localized("Email address"),
-                                                  autoCapitalization: .none,
-                                                  autoCorrection: .no,
-                                                  keyboardType: .emailAddress,
-                                                  returnKeyType: .default,
-                                                  textColor: PassColor.textNorm,
-                                                  tintColor: PassColor.interactionNorm),
-                                    onBackspace: { viewModel.highlightLastEmail() },
-                                    onReturn: { viewModel.appendCurrentEmail() })
-
-            if let error = viewModel.error {
-                Text(error)
-                    .font(.callout)
-                    .foregroundColor(PassColor.textWeak.toColor)
-            }
         }
     }
 }
