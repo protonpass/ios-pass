@@ -143,11 +143,16 @@ private extension UserEmailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             vault = shareInviteService.getCurrentSelectedVault()
-            if let shareId = vault?.shareId {
-                recommendationsState = .loading
-                let recommendations = try? await shareInviteRepository
-                    .getInviteRecommendations(shareId: shareId)
-                recommendationsState = .loaded(recommendations)
+            do {
+                if let shareId = vault?.shareId {
+                    recommendationsState = .loading
+                    let recommendations = try await shareInviteRepository
+                        .getInviteRecommendations(shareId: shareId)
+                    recommendationsState = .loaded(recommendations)
+                }
+            } catch {
+                recommendationsState = .loaded(nil)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
