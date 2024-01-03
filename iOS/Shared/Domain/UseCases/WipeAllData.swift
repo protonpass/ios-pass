@@ -77,8 +77,7 @@ final class WipeAllData: WipeAllDataUseCase {
     func execute(isTests: Bool) async {
         logger.info("Wiping all data")
 
-        let userID = try? userDataProvider.getUserId()
-        if let userID, !userID.isEmpty {
+        if let userID = try? userDataProvider.getUserId(), !userID.isEmpty {
             featureFlagsRepository.resetFlags(for: userID)
         }
         featureFlagsRepository.clearUserId()
