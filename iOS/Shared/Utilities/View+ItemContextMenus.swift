@@ -80,7 +80,6 @@ enum ItemContextMenu {
             ]))
 
             sections += Self.commonLastSections(item: item,
-                                                isPinningActivated: isPinningActivated,
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
@@ -96,7 +95,6 @@ enum ItemContextMenu {
                                                   action: onCopyAlias)]))
 
             sections += Self.commonLastSections(item: item,
-                                                isPinningActivated: isPinningActivated,
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
@@ -106,7 +104,6 @@ enum ItemContextMenu {
 
         case let .creditCard(item, isEditable, onEdit, onPinToggle, onTrash):
             return Self.commonLastSections(item: item,
-                                           isPinningActivated: isPinningActivated,
                                            isEditable: isEditable,
                                            onEdit: onEdit,
                                            onPinToggle: onPinToggle,
@@ -120,7 +117,6 @@ enum ItemContextMenu {
                                                   action: onCopyContent)]))
 
             sections += Self.commonLastSections(item: item,
-                                                isPinningActivated: isPinningActivated,
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
@@ -144,17 +140,10 @@ enum ItemContextMenu {
             }
         }
     }
-
-    // swiftlint:disable:next todo
-    // TODO: Remove once pinning is active
-    var isPinningActivated: Bool {
-        SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: FeatureFlagType.passPinningV1)
-    }
 }
 
 private extension ItemContextMenu {
     static func commonLastSections(item: any PinnableItemTypeIdentifiable,
-                                   isPinningActivated: Bool,
                                    isEditable: Bool,
                                    onEdit: @escaping () -> Void,
                                    onPinToggle: @escaping () -> Void,
@@ -165,9 +154,7 @@ private extension ItemContextMenu {
             sections.append(.init(options: [.editOption(action: onEdit)]))
         }
 
-        if isPinningActivated {
-            sections.append(.init(options: [.pinToggleOption(item: item, action: onPinToggle)]))
-        }
+        sections.append(.init(options: [.pinToggleOption(item: item, action: onPinToggle)]))
 
         if isEditable {
             sections.append(.init(options: [.trashOption(action: onTrash)]))
