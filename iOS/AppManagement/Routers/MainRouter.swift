@@ -79,6 +79,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
 enum UIElementDisplay: Sendable {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
+    case errorMessage(String)
     case successMessage(String? = nil, config: NavigationConfiguration? = nil)
     case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
 }

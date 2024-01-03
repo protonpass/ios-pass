@@ -49,6 +49,8 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
 
     @discardableResult
     func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool
+
+    func getInviteRecommendations(shareId: String) async throws -> InviteRecommendations
 }
 
 public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
@@ -156,6 +158,11 @@ public extension ShareInviteRepository {
                          error: error)
             throw error
         }
+    }
+
+    func getInviteRecommendations(shareId: String) async throws -> InviteRecommendations {
+        logger.trace("Getting invite recommendations for share \(shareId)")
+        return try await remoteDataSource.getInviteRecommendations(shareId: shareId)
     }
 }
 

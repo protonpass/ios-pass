@@ -26,69 +26,148 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()
     private var router = resolve(\RouterContainer.mainNavViewRouter)
-    @FocusState private var defaultFocus: Bool
+    @State private var isFocused = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 31) {
+        VStack(alignment: .leading) {
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
+                .padding(.horizontal, kItemDetailSectionPadding)
 
-            emailTextField
+            VStack(alignment: .leading) {
+                if case let .new(vault, _) = viewModel.vault {
+                    vaultRow(vault)
+                }
 
-            if case let .new(vault, _) = viewModel.vault {
-                vaultRow(vault)
+                FlowLayout(mode: .scrollable,
+                           items: viewModel.selectedEmails + [""],
+                           viewMapping: { token(for: $0) })
+                    .padding(.leading, -4)
+
+                PassDivider()
+                    .padding(.horizontal, -kItemDetailSectionPadding)
+                    .padding(.top, 16)
+                    .padding(.bottom, 24)
+
+                if viewModel.recommendationsState == .loading {
+                    VStack {
+                        Spacer(minLength: 50)
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                } else if let recommendations = viewModel.recommendationsState.recommendations,
+                          !recommendations.isEmpty {
+                    InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
+                                             recommendations: recommendations)
+                }
+
+                Spacer()
             }
-
-            Spacer()
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, kItemDetailSectionPadding)
+            .scrollViewEmbeded(maxWidth: .infinity)
         }
         .onAppear {
-            defaultFocus = true
+            isFocused = true
         }
-        .animation(.default, value: viewModel.error)
-        .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
+        .onChange(of: viewModel.highlightedEmail) { highlightedEmail in
+            isFocused = highlightedEmail == nil
+        }
+        .animation(.default, value: viewModel.selectedEmails)
+        .animation(.default, value: viewModel.recommendationsState)
+        .navigate(isActive: $viewModel.goToNextStep,
+                  destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
-        .ignoresSafeArea(.keyboard)
         .navigationStackEmbeded()
+        .ignoresSafeArea(.keyboard)
     }
 }
 
 private extension UserEmailView {
-    var emailTextField: some View {
-        VStack(alignment: .leading) {
-            TextField("Email address", text: $viewModel.email)
-                .font(.title)
-                .autocorrectionDisabled()
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .foregroundColor(PassColor.textNorm.toColor)
-                .focused($defaultFocus, equals: true)
-                .accentColor(PassColor.interactionNorm.toColor)
-                .tint(PassColor.interactionNorm.toColor)
+    @ViewBuilder
+    func token(for email: String) -> some View {
+        if email.isEmpty {
+            emailTextField
+        } else {
+            emailCell(for: email)
+        }
+    }
 
-            if let error = viewModel.error {
-                Text(error)
-                    .font(.callout)
-                    .foregroundColor(PassColor.textWeak.toColor)
+    var emailTextField: some View {
+        BackspaceAwareTextField(text: $viewModel.email,
+                                isFocused: $isFocused,
+                                config: .init(font: .body,
+                                              placeholder: #localized("Email address"),
+                                              autoCapitalization: .none,
+                                              autoCorrection: .no,
+                                              keyboardType: .emailAddress,
+                                              returnKeyType: .default,
+                                              textColor: PassColor.textNorm,
+                                              tintColor: PassColor.interactionNorm),
+                                onBackspace: { viewModel.highlightLastEmail() },
+                                onReturn: { viewModel.appendCurrentEmail() })
+            .frame(width: 150, height: 32)
+            .clipped()
+    }
+
+    @ViewBuilder
+    func emailCell(for email: String) -> some View {
+        let highlighted = viewModel.highlightedEmail == email
+        let focused: Binding<Bool> = .init(get: {
+            highlighted
+        }, set: { newValue in
+            if !newValue {
+                viewModel.highlightedEmail = nil
             }
+        })
+
+        HStack(alignment: .center, spacing: 10) {
+            Text(email)
+        }
+        .font(.callout)
+        .foregroundColor(highlighted ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(highlighted ?
+            PassColor.interactionNormMajor2.toColor : PassColor.interactionNormMinor1.toColor)
+        .cornerRadius(9)
+        .animation(.default, value: highlighted)
+        .contentShape(Rectangle())
+        .onTapGesture { viewModel.toggleHighlight(email) }
+        .overlay {
+            // Dummy invisible text field to allow removing a token with backspace
+            BackspaceAwareTextField(text: .constant(""),
+                                    isFocused: focused,
+                                    config: .init(font: .title,
+                                                  placeholder: "",
+                                                  autoCapitalization: .none,
+                                                  autoCorrection: .no,
+                                                  keyboardType: .emailAddress,
+                                                  returnKeyType: .default,
+                                                  textColor: .clear,
+                                                  tintColor: .clear),
+                                    onBackspace: { viewModel.deselect(email) },
+                                    onReturn: { viewModel.toggleHighlight(email) })
+                .opacity(0)
         }
     }
 }
 
 private extension UserEmailView {
     func vaultRow(_ vault: VaultProtobuf) -> some View {
-        HStack {
+        HStack(spacing: 16) {
             VaultRow(thumbnail: {
                          CircleButton(icon: vault.display.icon.icon.bigImage,
                                       iconColor: vault.display.color.color.color,
@@ -99,15 +178,13 @@ private extension UserEmailView {
                      itemCount: 1,
                      isShared: false,
                      isSelected: false,
+                     maxWidth: nil,
                      height: 74)
 
-            Spacer()
-
-            CapsuleTextButton(title: #localized("Customize"),
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              action: { viewModel.customizeVault() })
-                .fixedSize(horizontal: true, vertical: true)
+            CircleButton(icon: IconProvider.pencil,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         action: { viewModel.customizeVault() })
         }
         .padding(.horizontal, 16)
         .roundedEditableSection()
@@ -136,7 +213,7 @@ private extension UserEmailView {
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: !viewModel.canContinue,
-                                            action: { viewModel.saveEmail() })
+                                            action: { viewModel.continue() })
             }
         }
     }
