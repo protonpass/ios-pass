@@ -42,7 +42,7 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
             let entityName = request.fetchRequest.entityName ?? ""
             return "Failed to batch delete entity \(entityName)"
         case .databaseOperationsOnMainThread:
-            return "Can not do database operations on main thread"
+            return "Cannot do database operations on main thread"
         case let .corruptedShareKeys(shareId, itemKeyCount, vaultKeyCount):
             return """
             "Corrupted share keys for share \(shareId).

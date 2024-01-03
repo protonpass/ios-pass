@@ -23,11 +23,11 @@ import Core
 import CoreData
 import CryptoKit
 import Factory
-@preconcurrency import ProtonCoreFeatureFlags
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCoreServices
+import ProtonCoreUtilities
 
-extension FeatureFlagsConfiguration: @unchecked Sendable {}
 extension VaultSyncEventStream: @unchecked Sendable {}
 extension CorruptedSessionEventStream: @unchecked Sendable {}
 
@@ -178,19 +178,6 @@ private extension SharedRepositoryContainer {
                                   thresholdProvider: self.preferences) }
     }
 
-    var featureFlagsConfiguration: Factory<FeatureFlagsConfiguration> {
-        self { FeatureFlagsConfiguration(userId: self.userDataProvider.getUserData()?.user.ID ?? "",
-                                         currentBUFlags: FeatureFlagType.self) }
-    }
-
-    var localFeatureFlagsDatasource: Factory<LocalFeatureFlagsProtocol> {
-        self { LocalFeatureFlagsDatasource(databaseService: self.databaseService) }
-    }
-
-    var remoteFeatureFlagsDatasource: Factory<RemoteFeatureFlagsProtocol> {
-        self { DefaultRemoteDatasource(apiService: self.apiService) }
-    }
-
     var remoteFavIconDatasource: Factory<RemoteFavIconDatasourceProtocol> {
         self { RemoteFavIconDatasource(apiService: self.apiService,
                                        eventStream: self.corruptedSessionEventStream) }
@@ -286,9 +273,8 @@ extension SharedRepositoryContainer {
 
     var featureFlagsRepository: Factory<FeatureFlagsRepositoryProtocol> {
         self {
-            FeatureFlagsRepository(configuration: self.featureFlagsConfiguration(),
-                                   localDatasource: self.localFeatureFlagsDatasource(),
-                                   remoteDatasource: self.remoteFeatureFlagsDatasource())
+            FeatureFlagsRepository.shared.setApiService(self.apiService)
+            return FeatureFlagsRepository.shared
         }
     }
 
