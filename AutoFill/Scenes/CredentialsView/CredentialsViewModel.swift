@@ -102,7 +102,6 @@ final class CredentialsViewModel: ObservableObject {
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
@@ -447,12 +446,8 @@ private extension CredentialsViewModel {
         guard let vault else { return true }
         switch plan.planType {
         case .free:
-            if await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1) {
-                let oldestVaults = vaults.twoOldestVaults
-                return oldestVaults.isOneOf(shareId: vault.shareId)
-            } else {
-                return vaults.oldestOwned == vault
-            }
+            let oldestVaults = vaults.twoOldestVaults
+            return oldestVaults.isOneOf(shareId: vault.shareId)
         default:
             return true
         }
