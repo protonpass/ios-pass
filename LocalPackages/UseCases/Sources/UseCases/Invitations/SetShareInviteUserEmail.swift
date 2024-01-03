@@ -53,7 +53,9 @@ public final class SetShareInvitesUserEmailsAndKeys: SetShareInvitesUserEmailsAn
                 if let passError = error as? PassError,
                    case let .sharing(reason) = passError,
                    reason == .notProtonAddress {
-                    emailsAndKeys[email] = nil
+                    /// Subcript will not work because it won't create the key with nil value
+                    /// if the key doesn't exist before. Have to use `updateValue`.
+                    emailsAndKeys.updateValue(nil, forKey: email)
                 } else {
                     throw error
                 }

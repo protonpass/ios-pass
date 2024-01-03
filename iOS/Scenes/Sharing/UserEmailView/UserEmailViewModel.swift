@@ -49,14 +49,13 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
-    @Published private(set) var recommendationsState: RecommendationsState = .loading
+    @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
     private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
-    private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
@@ -144,9 +143,10 @@ private extension UserEmailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             vault = shareInviteService.getCurrentSelectedVault()
-            if let currentSelectedVault = shareInviteService.getCurrentSelectedVault() {
+            if let shareId = vault?.shareId {
+                recommendationsState = .loading
                 let recommendations = try? await shareInviteRepository
-                    .getInviteRecommendations(shareId: currentSelectedVault.shareId)
+                    .getInviteRecommendations(shareId: shareId)
                 recommendationsState = .loaded(recommendations)
             }
         }
