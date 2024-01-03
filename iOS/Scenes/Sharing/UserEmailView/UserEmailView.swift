@@ -100,7 +100,6 @@ private extension UserEmailView {
     @ViewBuilder
     func emailCell(for email: String) -> some View {
         let highlighted = viewModel.highlightedEmail == email
-        let valid = email.isValidEmail()
         let focused: Binding<Bool> = .init(get: {
             highlighted
         }, set: { newValue in
@@ -110,19 +109,14 @@ private extension UserEmailView {
         })
 
         HStack(alignment: .center, spacing: 10) {
-            if valid {
-                Text(email)
-            } else {
-                Label(email, systemImage: "exclamationmark.circle")
-            }
+            Text(email)
         }
         .font(.callout)
         .foregroundColor(highlighted ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .background(highlighted ?
-            PassColor.interactionNormMajor2.toColor :
-            (valid ? PassColor.interactionNormMinor1.toColor : PassColor.signalDanger.toColor))
+            PassColor.interactionNormMajor2.toColor : PassColor.interactionNormMinor1.toColor)
         .cornerRadius(9)
         .animation(.default, value: highlighted)
         .contentShape(Rectangle())
