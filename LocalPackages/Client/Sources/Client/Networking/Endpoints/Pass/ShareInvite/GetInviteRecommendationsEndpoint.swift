@@ -1,7 +1,6 @@
 //
-//
-// GetCurrentShareInviteInformations.swift
-// Proton Pass - Created on 20/07/2023.
+// GetInviteRecommendationsEndpoint.swift
+// Proton Pass - Created on 14/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,28 +19,25 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import Entities
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-// sourcery: AutoMockable
-public protocol GetCurrentShareInviteInformationsUseCase {
-    func execute() -> [SharingInfos]
+public struct GetInviteRecommendationsResponse: Sendable, Decodable {
+    let recommendation: InviteRecommendations
 }
 
-public extension GetCurrentShareInviteInformationsUseCase {
-    func callAsFunction() -> [SharingInfos] {
-        execute()
-    }
-}
+public struct GetInviteRecommendationsEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = GetInviteRecommendationsResponse
 
-public final class GetCurrentShareInviteInformations: GetCurrentShareInviteInformationsUseCase {
-    private let shareInviteService: any ShareInviteServiceProtocol
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
 
-    public init(shareInviteService: any ShareInviteServiceProtocol) {
-        self.shareInviteService = shareInviteService
-    }
-
-    public func execute() -> [SharingInfos] {
-        shareInviteService.getSharingInfos()
+    public init(shareId: String) {
+        debugDescription = "Get invite recommendations"
+        path = "/pass/v1/share/\(shareId)/invite/recommended_emails"
+        method = .get
     }
 }

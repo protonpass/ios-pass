@@ -56,21 +56,6 @@ final class SendShareInviteTests: XCTestCase {
                                    syncEventLoop: syncEventLoop)
     }
 
-    func testSendShareInvite_ShouldBeNotBeValid_missingInfos() async throws {
-        let infos = SharingInfos(vault: nil, email: nil, role: nil, receiverPublicKeys: nil, itemsNum: nil)
-        do {
-            _ = try await sut(with: infos)
-            XCTFail("Error needs to be thrown")
-        } catch {
-            if let passError = error as? PassError,
-               case let .sharing(reason) = passError {
-                XCTAssertEqual(reason, .incompleteInformation)
-            } else {
-                XCTFail("Expect .incompleteInformation error")
-            }
-        }
-    }
-    
     func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())

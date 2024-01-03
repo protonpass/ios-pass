@@ -29,6 +29,7 @@ public protocol RemoteShareInviteDatasourceProtocol: Sendable {
     func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
     func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool
     func deleteShareNewUserInvite(shareId: String, inviteId: String) async throws -> Bool
+    func getInviteRecommendations(shareId: String) async throws -> InviteRecommendations
 }
 
 public final class RemoteShareInviteDatasource: RemoteDatasource, RemoteShareInviteDatasourceProtocol {}
@@ -75,5 +76,11 @@ public extension RemoteShareInviteDatasource {
         let endpoint = DeleteShareNewUserInviteEndpoint(shareId: shareId, inviteId: inviteId)
         let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
+    }
+
+    func getInviteRecommendations(shareId: String) async throws -> InviteRecommendations {
+        let endpoint = GetInviteRecommendationsEndpoint(shareId: shareId)
+        let response = try await exec(endpoint: endpoint)
+        return response.recommendation
     }
 }

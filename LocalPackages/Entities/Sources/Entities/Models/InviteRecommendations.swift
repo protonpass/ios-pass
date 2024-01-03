@@ -1,7 +1,6 @@
 //
-//
-// SetShareInviteRole.swift
-// Proton Pass - Created on 20/07/2023.
+// InviteRecommendations.swift
+// Proton Pass - Created on 14/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,27 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
-import Entities
+import Foundation
 
-public protocol SetShareInviteRoleUseCase {
-    func execute(with roles: [String: ShareRole])
-}
+public struct InviteRecommendations: Sendable, Decodable, Hashable {
+    public let recommendedEmails: [String]
+    public let planInternalName: String?
+    public let groupDisplayName: String?
+    public let planRecommendedEmails: [String]
 
-public extension SetShareInviteRoleUseCase {
-    func callAsFunction(with roles: [String: ShareRole]) {
-        execute(with: roles)
-    }
-}
-
-public final class SetShareInviteRole: SetShareInviteRoleUseCase {
-    private let shareInviteService: any ShareInviteServiceProtocol
-
-    public init(shareInviteService: any ShareInviteServiceProtocol) {
-        self.shareInviteService = shareInviteService
-    }
-
-    public func execute(with roles: [String: ShareRole]) {
-        shareInviteService.setEmailsAndRoles(with: roles)
+    public var isEmpty: Bool {
+        recommendedEmails.isEmpty && planRecommendedEmails.isEmpty
     }
 }
