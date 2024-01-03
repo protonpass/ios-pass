@@ -56,10 +56,10 @@ public extension View {
     }
 
     @ViewBuilder
-    func scrollViewEmbeded() -> some View {
+    func scrollViewEmbeded(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> some View {
         ScrollView {
             self
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: maxWidth, maxHeight: maxHeight)
     }
 }
