@@ -106,15 +106,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
                 goToNextStep = true
             } catch {
-                if let passError = error as? PassError,
-                   case let .sharing(reason) = passError,
-                   reason == .notProtonAddress {
-                    setShareInviteUserEmailAndKeys(with: email, and: nil)
-                    goToNextStep = true
-                } else {
-                    canContinue = false
-                    self.error = error.localizedDescription
-                }
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

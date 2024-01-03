@@ -43,11 +43,11 @@ struct UserEmailView: View {
                 .foregroundColor(PassColor.textNorm.toColor)
                 .padding(.horizontal, kItemDetailSectionPadding)
 
-            if case let .new(vault, _) = viewModel.vault {
-                vaultRow(vault)
-            }
+            VStack(alignment: .leading) {
+                if case let .new(vault, _) = viewModel.vault {
+                    vaultRow(vault)
+                }
 
-            VStack {
                 FlowLayout(mode: .scrollable,
                            items: viewModel.selectedEmails + [""],
                            viewMapping: { token(for: $0) })
@@ -63,6 +63,7 @@ struct UserEmailView: View {
                         Spacer(minLength: 50)
                         ProgressView()
                     }
+                    .frame(maxWidth: .infinity, alignment: .center)
                 } else if let recommendations = viewModel.recommendationsState.recommendations,
                           !recommendations.isEmpty {
                     InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
@@ -166,7 +167,7 @@ private extension UserEmailView {
 
 private extension UserEmailView {
     func vaultRow(_ vault: VaultProtobuf) -> some View {
-        HStack {
+        HStack(spacing: 16) {
             VaultRow(thumbnail: {
                          CircleButton(icon: vault.display.icon.icon.bigImage,
                                       iconColor: vault.display.color.color.color,
@@ -177,15 +178,13 @@ private extension UserEmailView {
                      itemCount: 1,
                      isShared: false,
                      isSelected: false,
+                     maxWidth: nil,
                      height: 74)
 
-            Spacer()
-
-            CapsuleTextButton(title: #localized("Customize"),
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              action: { viewModel.customizeVault() })
-                .fixedSize(horizontal: true, vertical: true)
+            CircleButton(icon: IconProvider.pencil,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         action: { viewModel.customizeVault() })
         }
         .padding(.horizontal, 16)
         .roundedEditableSection()
