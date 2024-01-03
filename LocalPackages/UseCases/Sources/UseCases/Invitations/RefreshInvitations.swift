@@ -35,18 +35,14 @@ public extension RefreshInvitationsUseCase {
 public final class RefreshInvitations: RefreshInvitationsUseCase {
     private let inviteRepository: any InviteRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
-    private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
 
     public init(inviteRepository: any InviteRepositoryProtocol,
-                accessRepository: any AccessRepositoryProtocol,
-                getFeatureFlagStatus: any GetFeatureFlagStatusUseCase) {
+                accessRepository: any AccessRepositoryProtocol) {
         self.inviteRepository = inviteRepository
         self.accessRepository = accessRepository
-        self.getFeatureFlagStatus = getFeatureFlagStatus
     }
 
     public func execute() async throws {
-        guard await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1) else { return }
         await inviteRepository.refreshInvites()
     }
 }

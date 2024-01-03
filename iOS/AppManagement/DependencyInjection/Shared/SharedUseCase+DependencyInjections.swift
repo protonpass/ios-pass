@@ -149,6 +149,7 @@ extension SharedUseCasesContainer {
 // MARK: - Feature Flags
 
 extension SharedUseCasesContainer {
+    // periphery:ignore
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
