@@ -41,7 +41,6 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
     private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
@@ -64,8 +63,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             } catch {
                 if let passError = error as? PassError,
                    case let .sharing(reason) = passError,
-                   reason == .notProtonAddress,
-                   await getFeatureFlagStatus(with: FeatureFlagType.passSharingNewUsers) {
+                   reason == .notProtonAddress {
                     setShareInviteUserEmailAndKeys(with: email, and: nil)
                     goToNextStep = true
                 } else {
