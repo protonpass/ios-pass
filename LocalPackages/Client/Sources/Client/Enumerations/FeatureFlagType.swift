@@ -20,9 +20,12 @@
 
 import ProtonCoreFeatureFlags
 
+// swiftlint:disable orphaned_doc_comment
 /// Should be activated when new feature flags are added to the project
-/// following is how a falg should be added:
+/// following is how a flag should be added:
 /// Example:
 ///    case passSharingV1 = "PassSharingV1"
 // public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
 // }
+
+// swiftlint:enable orphaned_doc_comment
