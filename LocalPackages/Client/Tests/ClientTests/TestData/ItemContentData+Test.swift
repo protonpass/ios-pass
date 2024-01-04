@@ -33,7 +33,8 @@ extension ItemContentData {
             return .login(.init(username: .random(),
                                 password: .random(),
                                 totpUri: .random(),
-                                urls: .random(randomElement: .random())))
+                                urls: .random(randomElement: .random()),
+                                allowedAndroidApps: []))
         }
     }
 }
