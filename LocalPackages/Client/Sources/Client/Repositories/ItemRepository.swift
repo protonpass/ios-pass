@@ -29,6 +29,8 @@ import ProtonCoreServices
 
 private let kBatchPageSize = 100
 
+extension KeyPath: @unchecked Sendable {}
+
 // sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> { get }

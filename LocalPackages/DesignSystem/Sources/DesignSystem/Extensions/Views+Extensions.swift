@@ -49,30 +49,17 @@ public extension View {
     }
 
     @ViewBuilder
-    func navigationModifier() -> some View {
-        if #available(iOS 16.0, *) {
-            NavigationStack {
-                self
-            }
-        } else {
-            NavigationView {
-                self
-            }
-            .navigationViewStyle(.stack)
-        }
-    }
-}
-
-// MARK: - Modifier helpers
-
-public extension View {
-    @available(iOS, deprecated: 16.0)
-    @ViewBuilder
-    func syncLayoutOnDisappear() -> some View {
-        if #unavailable(iOS 16) {
-            modifier(SyncLayoutOnDisappear())
-        } else {
+    func navigationStackEmbeded() -> some View {
+        NavigationStack {
             self
         }
+    }
+
+    @ViewBuilder
+    func scrollViewEmbeded(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> some View {
+        ScrollView {
+            self
+        }
+        .frame(maxWidth: maxWidth, maxHeight: maxHeight)
     }
 }

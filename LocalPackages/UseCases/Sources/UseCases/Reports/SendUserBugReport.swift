@@ -38,7 +38,10 @@ public protocol SendUserBugReportUseCase: Sendable {
 
      - Throws: An error if an issue occurs while sending the bug report.
      */
-    func execute(with title: String, and description: String, shouldSendLogs: Bool) async throws -> Bool
+    func execute(with title: String,
+                 and description: String,
+                 shouldSendLogs: Bool,
+                 otherLogContent: [String: URL]?) async throws -> Bool
 }
 
 public extension SendUserBugReportUseCase {
@@ -55,8 +58,12 @@ public extension SendUserBugReportUseCase {
      */
     func callAsFunction(with title: String,
                         and description: String,
-                        shouldSendLogs: Bool) async throws -> Bool {
-        try await execute(with: title, and: description, shouldSendLogs: shouldSendLogs)
+                        shouldSendLogs: Bool,
+                        otherLogContent: [String: URL]? = nil) async throws -> Bool {
+        try await execute(with: title,
+                          and: description,
+                          shouldSendLogs: shouldSendLogs,
+                          otherLogContent: otherLogContent)
     }
 }
 
@@ -94,7 +101,8 @@ public final class SendUserBugReport: SendUserBugReportUseCase {
      */
     public func execute(with title: String,
                         and description: String,
-                        shouldSendLogs: Bool) async throws -> Bool {
+                        shouldSendLogs: Bool,
+                        otherLogContent: [String: URL]? = nil) async throws -> Bool {
         var logs = [String: URL]()
 
         if shouldSendLogs {
@@ -104,6 +112,9 @@ public final class SendUserBugReport: SendUserBugReportUseCase {
             if let autofillEntries = await createLogsFile(for: .autoFillExtension) {
                 logs[ReportFileKey.autofill.rawValue] = autofillEntries
             }
+        }
+        if let otherLogContent {
+            logs = logs.merging(otherLogContent) { _, new in new }
         }
         return try await reportRepository.sendBug(with: title, and: description, optional: logs)
     }

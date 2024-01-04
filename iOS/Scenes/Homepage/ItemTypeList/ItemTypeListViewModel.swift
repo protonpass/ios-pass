@@ -46,10 +46,12 @@ extension ItemContentType {
     }
 }
 
+@MainActor
 protocol ItemTypeListViewModelDelegate: AnyObject {
     func itemTypeListViewModelDidSelect(type: ItemType)
 }
 
+@MainActor
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)

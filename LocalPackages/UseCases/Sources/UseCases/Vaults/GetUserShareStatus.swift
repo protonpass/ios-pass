@@ -41,20 +41,15 @@ public enum UserShareStatus {
 
 public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUseCase {
     private let accessRepository: any AccessRepositoryProtocol
-    private let getFeatureFlagStatusUseCase: any GetFeatureFlagStatusUseCase
     private var isFreeUser = true
-    private var sharingFeatureFlagIsOpen = false
 
-    public init(getFeatureFlagStatusUseCase: any GetFeatureFlagStatusUseCase,
-                accessRepository: any AccessRepositoryProtocol) {
+    public init(accessRepository: any AccessRepositoryProtocol) {
         self.accessRepository = accessRepository
-        self.getFeatureFlagStatusUseCase = getFeatureFlagStatusUseCase
         setUp()
     }
 
     public func execute(for vault: Vault) -> UserShareStatus {
-        guard sharingFeatureFlagIsOpen,
-              vault.isAdmin || vault.isOwner else {
+        guard vault.isAdmin || vault.isOwner else {
             return .cantShare
         }
 
@@ -74,9 +69,7 @@ private extension GetUserShareStatus {
             }
 
             async let isFreeUserCheck = try? await accessRepository.getPlan().isFreeUser
-            async let featureFlags = await getFeatureFlagStatusUseCase(with: FeatureFlagType.passSharingV1)
             isFreeUser = await isFreeUserCheck ?? true
-            sharingFeatureFlagIsOpen = await featureFlags
         }
     }
 

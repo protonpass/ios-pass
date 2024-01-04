@@ -31,7 +31,7 @@ struct MoveVaultListView: View {
     var body: some View {
         VStack(alignment: .leading) {
             if viewModel.isFreeUser {
-                LimitedVaultOperationsBanner(onUpgrade: viewModel.upgrade)
+                LimitedVaultOperationsBanner(onUpgrade: { viewModel.upgrade() })
                     .padding([.horizontal, .top])
             }
 

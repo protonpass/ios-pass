@@ -24,23 +24,25 @@ import Entities
 import SwiftUI
 
 struct SuggestedEmailView: View {
-    @Binding var selectedEmails: [UserEmail]
-    let email: UserEmail
+    private let email: String
+    private let isSelected: Bool
+    private let onSelect: () -> Void
 
-    init(selectedEmails: Binding<[UserEmail]>, email: UserEmail) {
-        _selectedEmails = selectedEmails
+    init(email: String, isSelected: Bool, onSelect: @escaping () -> Void) {
         self.email = email
+        self.isSelected = isSelected
+        self.onSelect = onSelect
     }
 
     var body: some View {
         HStack {
-            SquircleThumbnail(data: .initials(String(email.email.prefix(2).uppercased())),
+            SquircleThumbnail(data: .initials(String(email.prefix(2).uppercased())),
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
 
             Spacer()
 
-            Text(email.email)
+            Text(email)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -48,22 +50,7 @@ struct SuggestedEmailView: View {
 
             RoundedCircleCheckbox(isChecked: isSelected)
         }
-//        .animation(.default, value: isSelected)
         .contentShape(Rectangle())
-        .onTapGesture(perform: toggleSelection)
-    }
-}
-
-private extension SuggestedEmailView {
-    var isSelected: Bool {
-        selectedEmails.contains(email)
-    }
-
-    func toggleSelection() {
-        if isSelected {
-            selectedEmails.removeAll(where: { $0 == email })
-        } else {
-            selectedEmails.append(email)
-        }
+        .onTapGesture(perform: onSelect)
     }
 }

@@ -44,41 +44,52 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
     private let userDataProvider: any UserDataProvider
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
     private let updateUserAddresses: any UpdateUserAddressesUseCase
+    private let logger: Logger
 
     public init(repository: any InviteRepositoryProtocol,
                 userDataProvider: any UserDataProvider,
                 getEmailPublicKey: any GetEmailPublicKeyUseCase,
-                updateUserAddresses: any UpdateUserAddressesUseCase) {
+                updateUserAddresses: any UpdateUserAddressesUseCase,
+                logManager: any LogManagerProtocol) {
         self.repository = repository
         self.userDataProvider = userDataProvider
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses
+        logger = .init(manager: logManager)
     }
 
     public func execute(with userInvite: UserInvite) async throws -> Bool {
+        logger.trace("Start accepting share invite for invitee email \(userInvite.invitedEmail)")
         let encrytedKeys = try await encryptKeys(userInvite: userInvite)
+        logger.trace("Finished encrypting keys")
         return try await repository.acceptInvite(with: userInvite.inviteToken, and: encrytedKeys)
     }
 }
 
 private extension AcceptInvitation {
     func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
-        let userData = try userDataProvider.getUnwrappedUserData()
-        guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
-            throw PassError.sharing(.invalidKeyOrAddress)
-        }
-        let addressKeys = try CryptoUtils.unlockAddressKeys(address: address,
-                                                            userData: userData)
-        let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
-        let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
+        do {
+            let userData = try userDataProvider.getUnwrappedUserData()
+            guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
+                throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
+            }
+            let addressKeys = try CryptoUtils.unlockAddressKeys(address: address,
+                                                                userData: userData)
+            let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
+            let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
 
-        let reencrytedKeys: [ItemKey] = try userInvite.keys.map { key in
-            try transformKey(key: key,
-                             addressKeys: addressKeys,
-                             armoredInviterPublicKeys: armoredInviterPublicKeys,
-                             userData: userData)
+            let reencrytedKeys: [ItemKey] = try userInvite.keys.map { key in
+                try transformKey(key: key,
+                                 addressKeys: addressKeys,
+                                 armoredInviterPublicKeys: armoredInviterPublicKeys,
+                                 userData: userData)
+            }
+
+            return reencrytedKeys
+        } catch {
+            logger.error(error)
+            throw error
         }
-        return reencrytedKeys
     }
 
     func transformKey(key: ItemKey,

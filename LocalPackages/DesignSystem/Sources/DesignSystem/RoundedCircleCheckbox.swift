@@ -23,8 +23,8 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct RoundedCircleCheckbox: View {
-    let isChecked: Bool
-    let width: CGFloat
+    private let isChecked: Bool
+    private let width: CGFloat
 
     public init(isChecked: Bool, width: CGFloat = 24) {
         self.isChecked = isChecked

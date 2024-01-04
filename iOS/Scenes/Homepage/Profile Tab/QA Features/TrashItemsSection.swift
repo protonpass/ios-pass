@@ -112,6 +112,7 @@ private struct TrashItemsView: View {
     }
 }
 
+@MainActor
 private final class TrashItemsViewModel: ObservableObject {
     enum State {
         case loading

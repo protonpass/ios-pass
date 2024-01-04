@@ -5091,6 +5091,18 @@
         }
       }
     },
+    "Add a File" : {
+      "comment" : "Title for the button to add a file to the bug report",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a file"
+          }
+        }
+      }
+    },
     "Add a prefix" : {
       "localizations" : {
         "be" : {
@@ -5804,6 +5816,10 @@
         }
       }
     },
+    "Add relevant files or images to the report" : {
+      "comment" : "Explanation for button to add file or image to bug report",
+      "extractionState" : "manual"
+    },
     "Add username or email address" : {
       "comment" : "Login item create/edit page",
       "localizations" : {
@@ -5947,6 +5963,10 @@
         }
       }
     },
+    "Added files" : {
+      "comment" : "Title for added file in bug report",
+      "extractionState" : "manual"
+    },
     "admin" : {
       "comment" : "Vault sharing: Short description for share permission",
       "extractionState" : "manual",
@@ -5996,7 +6016,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ylläpitäjä"
+            "value" : "hallinta"
           }
         },
         "fr" : {
@@ -8123,6 +8143,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bí danh không thể chứa 2 dấu chấm liên tiếp (..)"
+          }
+        }
+      }
+    },
+    "Alias can not start with a dot (.)" : {
+      "comment" : "Error message displayed to users when they try to create an alias",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias can not start with a dot (.)"
           }
         }
       }
@@ -13690,6 +13722,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa"
+          }
+        }
+      }
+    },
+    "Clear all files" : {
+      "comment" : "Title of a button to removed all attached files from the bug report",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear all files"
           }
         }
       }
@@ -26893,6 +26937,148 @@
         }
       }
     },
+    "Invalid email address" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Памылковы адрас электроннай пошты"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neplatná e-mailová adresa"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungültige E-Mail-Adresse"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μη έγκυρη διεύθυνση email"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid email address"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección de correo electrónico no válida"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección de correo electrónico inválida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'adresse e-mail n'est pas valide"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indirizzo email non valido"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無効なメールアドレスです"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არასწორი ელფოსტის მისამართი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "유효하지 않은 이메일 주소입니다"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres e-mail jest nieprawidłowy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O endereço de e-mail não é válido"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O nome de usuário não é valido"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresă de e-mail nevalidă"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ogiltig e-postadress"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta adresi geçersiz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Недійсна адреса електронної пошти"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Địa chỉ email không hợp lệ"
+          }
+        }
+      }
+    },
+    "Invalid prefix" : {
+      "comment" : "Error message displayed to user when they try to create a badly formatted alias ",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid prefix"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiền tố không hợp lệ"
+          }
+        }
+      }
+    },
     "Invalid TOTP URI" : {
       "localizations" : {
         "be" : {
@@ -37050,7 +37236,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un mot de passe"
+            "value" : "Mot de passe"
           }
         },
         "it" : {
@@ -44161,6 +44347,10 @@
         }
       }
     },
+    "Select Content" : {
+      "comment" : "Title for button to add image or video to bug report",
+      "extractionState" : "manual"
+    },
     "Select items" : {
       "comment" : "Enable bulk action mode",
       "extractionState" : "manual",
@@ -44329,7 +44519,15 @@
     },
     "Set access level for all members" : {
       "comment" : "Title of menu helping set the role for all invitee to a vault",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set access level for all members"
+          }
+        }
+      }
     },
     "Set PIN code" : {
       "extractionState" : "manual",
@@ -48368,6 +48566,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Text custom field"
+          }
+        }
+      }
+    },
+    "The alias prefix is too long" : {
+      "comment" : "Error message displayed to user when they try to create a badly formatted alias",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The alias prefix is too long"
           }
         }
       }

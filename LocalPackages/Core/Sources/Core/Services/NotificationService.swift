@@ -22,7 +22,7 @@ import Foundation
 
 @preconcurrency import UserNotifications
 
-public protocol LocalNotificationServiceProtocol {
+public protocol LocalNotificationServiceProtocol: Sendable {
     func requestNotificationPermission(with options: UNAuthorizationOptions)
 
     func add(for request: UNNotificationRequest)

@@ -21,7 +21,7 @@
 import Core
 import Factory
 import Foundation
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCorePayments
 import ProtonCorePaymentsUI
 import ProtonCoreServices
@@ -32,6 +32,7 @@ final class PaymentsManager {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
+    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let payments: Payments
     private var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -73,7 +74,7 @@ final class PaymentsManager {
 
         payments.storeKitManager.delegate = self
 
-        if !FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if !featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
                 guard let self else { return }
                 payments.storeKitManager.subscribeToPaymentQueue()

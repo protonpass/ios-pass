@@ -1,7 +1,7 @@
 //
-// View+AdaptiveScrollDisabled.swift
-// Proton Pass - Created on 09/11/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// ContainerManager+Extensions.swift
+// Proton Pass - Created on 18/12/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,22 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Factory
 
-struct AdaptiveScrollDisabledModifier: ViewModifier {
-    let disabled: Bool
-
-    func body(content: Content) -> some View {
-        if #available(iOS 16.0, *) {
-            content
-                .scrollDisabled(disabled)
-        }
-    }
-}
-
-public extension View {
-    /// Wrapper modifier of `scrollDisabled` modifier. Only apply if iOS 16 and above.
-    func adaptiveScrollDisabled(_ disabled: Bool) -> some View {
-        modifier(AdaptiveScrollDisabledModifier(disabled: disabled))
-    }
-}
+extension ContainerManager: @unchecked Sendable {}

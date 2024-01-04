@@ -24,7 +24,7 @@ import Factory
 import ProtonCoreServices
 import UseCases
 
-final class UseCasesContainer: SharedContainer, AutoRegistering {
+final class UseCasesContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = UseCasesContainer()
     let manager = ContainerManager()
 
@@ -154,8 +154,7 @@ extension UseCasesContainer {
 
     var getUserShareStatus: Factory<GetUserShareStatusUseCase> {
         self {
-            GetUserShareStatus(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
-                               accessRepository: SharedRepositoryContainer.shared.accessRepository())
+            GetUserShareStatus(accessRepository: SharedRepositoryContainer.shared.accessRepository())
         }
     }
 
@@ -176,8 +175,7 @@ extension UseCasesContainer {
 
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
         self { RefreshInvitations(inviteRepository: RepositoryContainer.shared.inviteRepository(),
-                                  accessRepository: SharedRepositoryContainer.shared.accessRepository(),
-                                  getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus()) }
+                                  accessRepository: SharedRepositoryContainer.shared.accessRepository()) }
     }
 
     var rejectInvitation: Factory<RejectInvitationUseCase> {
@@ -188,13 +186,15 @@ extension UseCasesContainer {
         self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
                                 userDataProvider: self.userDataProvider,
                                 getEmailPublicKey: self.getEmailPublicKey(),
-                                updateUserAddresses: self.updateUserAddresses()) }
+                                updateUserAddresses: self.updateUserAddresses(),
+                                logManager: self.logManager) }
     }
 
     var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
         self { DecodeShareVaultInformation(userDataProvider: self.userDataProvider,
                                            getEmailPublicKey: self.getEmailPublicKey(),
-                                           updateUserAddresses: self.updateUserAddresses()) }
+                                           updateUserAddresses: self.updateUserAddresses(),
+                                           logManager: self.logManager) }
     }
 
     var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
@@ -307,6 +307,7 @@ extension UseCasesContainer {
         self { GetRustLibraryVersion() }
     }
 
+    @MainActor
     var openAutoFillSettings: Factory<OpenAutoFillSettingsUseCase> {
         self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
     }
