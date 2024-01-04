@@ -44,12 +44,12 @@ enum RecommendationsState: Equatable {
 @MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
-    @Published var selectedEmails: [UserEmail] = []
+    @Published var selectedEmails: [String] = []
+    @Published var highlightedEmail: String?
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
-    @Published private(set) var recommendationsState: RecommendationsState = .loading
-    @Published private(set) var error: String?
+    @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
@@ -62,7 +62,36 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func saveEmail() {
+    func highlightLastEmail() {
+        highlightedEmail = selectedEmails.last
+    }
+
+    func appendCurrentEmail() {
+        let email = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !email.isEmpty else { return }
+        guard email.isValidEmail() else {
+            router.display(element: .errorMessage(#localized("Invalid email address")))
+            return
+        }
+        if !selectedEmails.contains(email) {
+            selectedEmails.append(email)
+        }
+        self.email = ""
+    }
+
+    func toggleHighlight(_ email: String) {
+        if highlightedEmail == email {
+            highlightedEmail = nil
+        } else {
+            highlightedEmail = email
+        }
+    }
+
+    func deselect(_ email: String) {
+        selectedEmails.removeAll(where: { $0 == email })
+    }
+
+    func `continue`() {
         Task { [weak self] in
             guard let self else {
                 return
@@ -72,15 +101,12 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             }
             do {
                 isChecking = true
-                var emails = selectedEmails.map(\.email)
-                if !email.isEmpty {
-                    emails.append(email)
-                }
-                try await setShareInvitesUserEmailsAndKeys(with: emails)
+                appendCurrentEmail()
+                try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
+                highlightedEmail = nil
                 goToNextStep = true
             } catch {
-                canContinue = false
-                self.error = error.localizedDescription
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -99,20 +125,18 @@ final class UserEmailViewModel: ObservableObject, Sendable {
 private extension UserEmailViewModel {
     func setUp() {
         $email
-            .removeDuplicates()
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] newValue in
+            .sink { [weak self] _ in
                 guard let self else { return }
-                error = nil
-                canContinue = newValue.isValidEmail()
+                highlightedEmail = nil
             }
             .store(in: &cancellables)
 
         $selectedEmails
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] selectedEmails in
                 guard let self else { return }
-                error = nil
+                highlightedEmail = nil
                 canContinue = !selectedEmails.isEmpty
             }
             .store(in: &cancellables)
@@ -120,10 +144,16 @@ private extension UserEmailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             vault = shareInviteService.getCurrentSelectedVault()
-            if let currentSelectedVault = shareInviteService.getCurrentSelectedVault() {
-                let recommendations = try? await shareInviteRepository
-                    .getInviteRecommendations(shareId: currentSelectedVault.shareId)
-                recommendationsState = .loaded(recommendations)
+            do {
+                if let shareId = vault?.shareId {
+                    recommendationsState = .loading
+                    let recommendations = try await shareInviteRepository
+                        .getInviteRecommendations(shareId: shareId)
+                    recommendationsState = .loaded(recommendations)
+                }
+            } catch {
+                recommendationsState = .loaded(nil)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

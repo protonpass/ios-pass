@@ -26,10 +26,10 @@ import SwiftUI
 
 public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
-    @Binding private var selectedEmails: [UserEmail]
-    let recommendations: InviteRecommendations
+    @Binding private var selectedEmails: [String]
+    private let recommendations: InviteRecommendations
 
-    public init(selectedEmails: Binding<[UserEmail]>, recommendations: InviteRecommendations) {
+    public init(selectedEmails: Binding<[String]>, recommendations: InviteRecommendations) {
         _selectedEmails = selectedEmails
         self.recommendations = recommendations
     }
@@ -41,30 +41,31 @@ public struct InviteSuggestionsSection: View {
                 .font(.body.weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let planName = recommendations.planDisplayName ?? recommendations.planInternalName {
+            if let planName = recommendations.groupDisplayName ?? recommendations.planInternalName {
                 SegmentedPicker(selectedIndex: $selectedIndex,
                                 options: [#localized("Recents"), planName])
             }
 
             emailList(selectedIndex == 0 ?
-                recommendations.recommendedEmails.map(\.toUserEmail) : recommendations.planRecommendedEmails
-                .map(\.toUserEmail))
+                recommendations.recommendedEmails : recommendations.planRecommendedEmails)
         }
-//        .animation(.default, value: selectedEmails.hashValue)
-//        .animation(.default, value: selectedIndex)
     }
 }
 
 private extension InviteSuggestionsSection {
-    func emailList(_ emails: [UserEmail]) -> some View {
+    func emailList(_ emails: [String]) -> some View {
         ForEach(emails, id: \.self) { email in
-            SuggestedEmailView(selectedEmails: $selectedEmails, email: email)
+            SuggestedEmailView(email: email,
+                               isSelected: selectedEmails.contains(email),
+                               onSelect: { handleSelection(email) })
         }
     }
-}
 
-extension String {
-    var toUserEmail: UserEmail {
-        UserEmail(id: self, email: self)
+    func handleSelection(_ email: String) {
+        if selectedEmails.contains(email) {
+            selectedEmails.removeAll(where: { $0 == email })
+        } else {
+            selectedEmails.append(email)
+        }
     }
 }

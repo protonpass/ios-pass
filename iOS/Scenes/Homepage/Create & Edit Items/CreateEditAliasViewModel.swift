@@ -118,6 +118,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var suffixSelection: SuffixSelection?
     private(set) var mailboxSelection: MailboxSelection?
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
+    private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     var isSaveable: Bool {
@@ -216,7 +217,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private func validatePrefix() {
         do {
-            try AliasPrefixValidator.validate(prefix: prefix)
+            try validateAliasPrefix(prefix: prefix)
             prefixError = nil
         } catch {
             prefixError = error as? AliasPrefixError

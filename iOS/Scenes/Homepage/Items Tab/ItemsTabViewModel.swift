@@ -26,6 +26,7 @@ import Factory
 import Macro
 import SwiftUI
 
+@MainActor
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
@@ -53,9 +54,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     @Published var showingPermanentDeletionAlert = false
-    // swiftlint:disable:next todo
-    // TODO: Remove once pinned is full activated
-    @Published var pinningAuthorized = false
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -70,7 +68,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
 
@@ -97,17 +94,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
               .compactMap({ try? $0.toItemUiModel(symmetricKey) })
         else { return }
         pinnedItems = Array(newPinnedItems.prefix(5))
-    }
-
-    // swiftlint:disable:next todo
-    // TODO: Remove once pinned is full activated
-    func checkflags() {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            pinningAuthorized = await getFeatureFlagStatus(with: FeatureFlagType.passPinningV1)
-        }
     }
 }
 
@@ -253,7 +239,7 @@ extension ItemsTabViewModel {
     }
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        canEditItem(vaultsProvider: vaultsManager, item: item)
+        canEditItem(vaults: vaultsManager.getAllVaults(), item: item)
     }
 
     func presentVaultListToMoveSelectedItems() {
@@ -406,8 +392,13 @@ extension ItemsTabViewModel: SortTypeListViewModelDelegate {
 // MARK: - SyncEventLoopPullToRefreshDelegate
 
 extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
-    func pullToRefreshShouldStopRefreshing() {
-        stopRefreshing()
+    nonisolated func pullToRefreshShouldStopRefreshing() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await stopRefreshing()
+        }
     }
 }
 
