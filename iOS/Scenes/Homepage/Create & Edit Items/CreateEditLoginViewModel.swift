@@ -57,6 +57,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var isShowingCodeScanner = false
     @Published private(set) var loading = false
 
+    private var allowedAndroidApps: [AllowedAndroidApp] = []
+
     /// Proton account email address
     let emailAddress: String
 
@@ -96,6 +98,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 password = data.password
                 originalTotpUri = data.totpUri
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
+                allowedAndroidApps = data.allowedAndroidApps
                 if !data.urls.isEmpty {
                     urls = data.urls.map { .init(value: $0) }
                 }
@@ -140,7 +143,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             let logInData = ItemContentData.login(.init(username: username,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
-                                                        urls: sanitizedUrls))
+                                                        urls: sanitizedUrls,
+                                                        allowedAndroidApps: allowedAndroidApps))
             return ItemContentProtobuf(name: title,
                                        note: note,
                                        itemUuid: UUID().uuidString,
