@@ -149,10 +149,10 @@ extension SharedUseCasesContainer {
 // MARK: - Feature Flags
 
 extension SharedUseCasesContainer {
+    // periphery:ignore
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 userDataProvider: self.userDataProvider,
                                  logManager: SharedToolingContainer.shared.logManager())
         }
     }
@@ -218,7 +218,9 @@ extension SharedUseCasesContainer {
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                            vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
-                           credentialManager: SharedServiceContainer.shared.credentialManager()) }
+                           credentialManager: SharedServiceContainer.shared.credentialManager(),
+                           userDataProvider: self.userDataProvider,
+                           featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository()) }
     }
 }
 
@@ -237,5 +239,13 @@ extension SharedUseCasesContainer {
 
     var canEditItem: Factory<CanEditItemUseCase> {
         self { CanEditItem() }
+    }
+}
+
+// MARK: - Rust Validators
+
+extension SharedUseCasesContainer {
+    var validateAliasPrefix: Factory<ValidateAliasPrefixUseCase> {
+        self { ValidateAliasPrefix() }
     }
 }

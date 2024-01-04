@@ -33,6 +33,11 @@ public enum Constants {
         public static let minLength = 4
         public static let maxLength = 100
     }
+
+    public enum Utils {
+        public static let prefixAllowedCharacters =
+            CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
+    }
 }
 
 /// Links to KB articles or useful pages

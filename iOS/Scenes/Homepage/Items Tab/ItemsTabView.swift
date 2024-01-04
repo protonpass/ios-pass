@@ -87,7 +87,7 @@ struct ItemsTabView: View {
                 }
 
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
-                   viewModel.pinningAuthorized {
+                   viewModel.vaultsManager.vaultSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
                                     onSearch: { viewModel.search(pinnedItems: true) },
                                     action: { viewModel.viewDetail(of: $0) })
@@ -125,15 +125,6 @@ struct ItemsTabView: View {
             }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
-            }
-            // swiftlint:disable:next todo
-            // TODO: Remove when pinned flags is fully open
-            .onReceive(NotificationCenter.default
-                .publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                    viewModel.checkflags()
-            }
-            .onAppear {
-                viewModel.checkflags()
             }
         }
     }

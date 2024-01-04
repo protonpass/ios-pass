@@ -26,7 +26,8 @@ public extension PassError {
         case incompleteInformation
         case failedEncryptionKeysFetching
         case noPublicKeyAssociatedWithEmail(String)
-        case invalidKeyOrAddress
+        case invalidKey
+        case invalidAddress(String)
         case cannotDecode
         case failedToCreateNewVault
         case failedToInvite
@@ -40,8 +41,10 @@ public extension PassError {
                 "Failed to fetch encryption keys"
             case let .noPublicKeyAssociatedWithEmail(email):
                 "No public key for email \(email)"
-            case .invalidKeyOrAddress:
-                "Invalid key or address"
+            case .invalidKey:
+                "Invalid key"
+            case let .invalidAddress(email):
+                "Invalid address for email \(email)"
             case .cannotDecode:
                 "Cannot decode"
             case .failedToCreateNewVault:

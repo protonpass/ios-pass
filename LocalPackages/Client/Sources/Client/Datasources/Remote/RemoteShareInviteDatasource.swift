@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public protocol RemoteShareInviteDatasourceProtocol {
+public protocol RemoteShareInviteDatasourceProtocol: Sendable {
     func getPendingInvites(sharedId: String) async throws -> ShareInvites
     func inviteProtonUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool
     func inviteExternalUser(shareId: String, request: InviteNewUserToShareRequest) async throws -> Bool

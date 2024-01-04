@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public protocol RemoteItemKeyDatasourceProtocol {
+public protocol RemoteItemKeyDatasourceProtocol: Sendable {
     func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey
 }
 

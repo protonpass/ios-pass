@@ -23,20 +23,20 @@ import Entities
 import Foundation
 
 public protocol CanEditItemUseCase: Sendable {
-    func execute(vaultsProvider: any VaultsProvider, item: any ItemIdentifiable) -> Bool
+    func execute(vaults: [Vault], item: any ItemIdentifiable) -> Bool
 }
 
 public extension CanEditItemUseCase {
-    func callAsFunction(vaultsProvider: any VaultsProvider, item: any ItemIdentifiable) -> Bool {
-        execute(vaultsProvider: vaultsProvider, item: item)
+    func callAsFunction(vaults: [Vault], item: any ItemIdentifiable) -> Bool {
+        execute(vaults: vaults, item: item)
     }
 }
 
 public final class CanEditItem: CanEditItemUseCase {
     public init() {}
 
-    public func execute(vaultsProvider: any VaultsProvider, item: any ItemIdentifiable) -> Bool {
-        let editableSharedIds = vaultsProvider.getAllVaults().filter(\.canEdit).map(\.shareId)
+    public func execute(vaults: [Vault], item: any ItemIdentifiable) -> Bool {
+        let editableSharedIds = vaults.filter(\.canEdit).map(\.shareId)
         return editableSharedIds.contains { $0 == item.shareId }
     }
 }

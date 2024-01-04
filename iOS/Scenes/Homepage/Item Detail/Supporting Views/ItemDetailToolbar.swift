@@ -25,6 +25,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 struct ItemDetailToolbar: ToolbarContent {
     @ObservedObject var viewModel: BaseItemDetailViewModel
 
@@ -67,15 +68,13 @@ struct ItemDetailToolbar: ToolbarContent {
                                            icon: { Image(uiImage: IconProvider.folderArrowIn) }) }
                             .hidden(!viewModel.isAllowedToEdit)
 
-                        if viewModel.pinningAuthorized {
-                            Button { viewModel.toggleItemPinning() }
-                                label: {
-                                    Label(title: { Text(viewModel.itemContent.item.pinTitle) },
-                                          icon: { Image(systemName: viewModel.itemContent.item.pinIcon) })
-                                }
+                        Button { viewModel.toggleItemPinning() }
+                            label: {
+                                Label(title: { Text(viewModel.itemContent.item.pinTitle) },
+                                      icon: { Image(systemName: viewModel.itemContent.item.pinIcon) })
+                            }
 
-                            Divider()
-                        }
+                        Divider()
 
                         if viewModel.itemContent.type == .note {
                             Button { viewModel.copyNoteContent() }

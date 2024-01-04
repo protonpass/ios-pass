@@ -67,7 +67,7 @@ struct ManageSharedVaultView: View {
                        .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
                        "Vaults can’t contain more than 10 users.")
                })
-        .navigationModifier()
+        .navigationStackEmbeded()
     }
 
     func refresh() {
@@ -149,7 +149,7 @@ private extension ManageSharedVaultView {
                                      isAdmin: viewModel.vault.isAdmin,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
                                      canTransferOwnership: viewModel.canTransferOwnership(to: invitee),
-                                     onSelect: viewModel.handle(option:))
+                                     onSelect: { viewModel.handle(option: $0) })
                         .padding(16)
                     if index != invitees.count - 1 {
                         PassDivider()
@@ -172,7 +172,7 @@ private extension ManageSharedVaultView {
                                         disableBackgroundColor: PassColor.interactionNorm
                                             .withAlphaComponent(0.5),
                                         disabled: viewModel.reachedLimit,
-                                        action: viewModel.shareWithMorePeople)
+                                        action: { viewModel.shareWithMorePeople() })
 
             if viewModel.showVaultLimitMessage {
                 vaultLimitReachedMessage

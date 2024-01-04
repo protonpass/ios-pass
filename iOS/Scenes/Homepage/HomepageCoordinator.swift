@@ -41,6 +41,7 @@ import UIKit
 
 private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
 
+@MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
     func homepageCoordinatorDidFailLocallyAuthenticating()
@@ -363,6 +364,8 @@ private extension HomepageCoordinator {
                     }
                 case let .displayErrorBanner(errorLocalized):
                     bannerManager.displayTopErrorMessage(errorLocalized)
+                case let .errorMessage(message):
+                    bannerManager.displayTopErrorMessage(message)
                 case let .successMessage(message, config):
                     displaySuccessBanner(with: message, and: config)
                 case let .infosMessage(message, config):
@@ -1330,46 +1333,51 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 // MARK: - SyncEventLoopDelegate
 
 extension HomepageCoordinator: SyncEventLoopDelegate {
-    func syncEventLoopDidStartLooping() {
+    nonisolated func syncEventLoopDidStartLooping() {
         logger.info("Started looping")
     }
 
-    func syncEventLoopDidStopLooping() {
+    nonisolated func syncEventLoopDidStopLooping() {
         logger.info("Stopped looping")
     }
 
-    func syncEventLoopDidBeginNewLoop() {
+    nonisolated func syncEventLoopDidBeginNewLoop() {
         logger.info("Began new sync loop")
     }
 
     #warning("Handle no connection reason")
-    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
+    nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         logger.info("Skipped sync loop \(reason)")
     }
 
-    func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+    nonisolated func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
-            refresh()
+            Task { [weak self] in
+                guard let self else {
+                    return
+                }
+                await refresh()
+            }
         } else {
             logger.info("Has no new events. Do nothing.")
         }
     }
 
-    func syncEventLoopDidFailLoop(error: Error) {
+    nonisolated func syncEventLoopDidFailLoop(error: Error) {
         // Silently fail & not show error to users
         logger.error(error)
     }
 
-    func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
+    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
         logger.trace("Began executing additional task \(label)")
     }
 
-    func syncEventLoopDidFinishAdditionalTask(label: String) {
+    nonisolated func syncEventLoopDidFinishAdditionalTask(label: String) {
         logger.info("Finished executing additional task \(label)")
     }
 
-    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
+    nonisolated func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
         logger.error(message: "Failed to execute additional task \(label)", error: error)
     }
 }

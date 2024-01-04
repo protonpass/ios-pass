@@ -5,8 +5,8 @@ import PackageDescription
 
 var platforms: [SupportedPlatform] = [
     .macOS(.v12),
-    .iOS(.v15),
-    .tvOS(.v15),
+    .iOS(.v16),
+    .tvOS(.v16),
     .watchOS(.v8)
 ]
 
@@ -41,7 +41,7 @@ let package = Package(name: "Core",
                                    targets: ["CoreMocks"])
                       ],
                       dependencies: [
-                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "14.0.1"),
+                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.1"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro")
                       ],
