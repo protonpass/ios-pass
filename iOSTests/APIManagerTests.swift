@@ -217,7 +217,7 @@ final class APIManagerTests: XCTestCase {
 
         let credential = await apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID)
 
-        wait(for: [sessionWasInvalidatedExpectation], timeout: 3)
+        await fulfillment(of: [sessionWasInvalidatedExpectation], timeout: 3)
 
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
