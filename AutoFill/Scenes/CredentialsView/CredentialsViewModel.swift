@@ -184,7 +184,8 @@ extension CredentialsViewModel {
                 let newLoginData = ItemContentData.login(.init(username: oldData.username,
                                                                password: oldData.password,
                                                                totpUri: oldData.totpUri,
-                                                               urls: oldData.urls + [newUrl]))
+                                                               urls: oldData.urls + [newUrl],
+                                                               allowedAndroidApps: oldData.allowedAndroidApps))
                 let newContent = ItemContentProtobuf(name: oldContent.name,
                                                      note: oldContent.note,
                                                      itemUuid: oldContent.itemUuid,
