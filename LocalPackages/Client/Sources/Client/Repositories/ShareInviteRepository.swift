@@ -195,50 +195,6 @@ public extension ShareInviteRepository {
 }
 
 private extension ShareInviteRepository {
-    func sendProtonInvite(shareId: String,
-                          email: String,
-                          keys: [ItemKey],
-                          targetType: TargetType,
-                          shareRole: ShareRole) async throws -> Bool {
-        logger.trace("Inviting Proton user \(email) to share \(shareId)")
-        do {
-            let request = InviteUserToShareRequest(keys: keys,
-                                                   email: email,
-                                                   targetType: targetType,
-                                                   shareRole: shareRole)
-            let inviteStatus = try await remoteDataSource.inviteProtonUser(shareId: shareId,
-                                                                           request: request)
-            logger.info("Invited Proton user \(email) to \(shareId)")
-            return inviteStatus
-        } catch {
-            logger.error(message: "Failed to invite Proton user \(email) to share \(shareId)",
-                         error: error)
-            throw error
-        }
-    }
-
-    func sendExternalInvite(shareId: String,
-                            email: String,
-                            signature: String,
-                            targetType: TargetType,
-                            shareRole: ShareRole) async throws -> Bool {
-        logger.trace("Inviting external user \(email) to share \(shareId)")
-        do {
-            let request = InviteNewUserToShareRequest(email: email,
-                                                      targetType: targetType,
-                                                      signature: signature,
-                                                      shareRole: shareRole)
-            let inviteStatus = try await remoteDataSource.inviteExternalUser(shareId: shareId,
-                                                                             request: request)
-            logger.info("Invited external user \(email) to \(shareId)")
-            return inviteStatus
-        } catch {
-            logger.error(message: "Failed to invite external user \(email) to share \(shareId)",
-                         error: error)
-            throw error
-        }
-    }
-
     func sendProtonInvites(shareId: String,
                            requests: [InviteUserToShareRequest]) async throws -> Bool {
         logger.trace("Inviting batch Proton users to share \(shareId)")
