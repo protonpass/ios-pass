@@ -72,9 +72,9 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         let vault = try await getVault(from: infos)
         let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
         let inviteeData = try generateInviteeData(from: infos, vault: vault, vaultKey: vaultKey)
-        let invited = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
-                                                                 inviteeData: inviteeData,
-                                                                 targetType: .vault)
+        let invited = try await shareInviteRepository.sendInvites(shareId: vault.shareId,
+                                                                  inviteesData: [inviteeData],
+                                                                  targetType: .vault)
 
         if invited {
             syncEventLoop.forceSync()

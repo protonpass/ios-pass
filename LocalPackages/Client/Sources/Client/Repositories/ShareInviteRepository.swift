@@ -58,10 +58,6 @@ extension [InviteeData] {
 public protocol ShareInviteRepositoryProtocol: Sendable {
     func getAllPendingInvites(shareId: String) async throws -> ShareInvites
 
-    func sendInvite(shareId: String,
-                    inviteeData: InviteeData,
-                    targetType: TargetType) async throws -> Bool
-
     func sendInvites(shareId: String,
                      inviteesData: [InviteeData],
                      targetType: TargetType) async throws -> Bool
@@ -107,25 +103,6 @@ public extension ShareInviteRepository {
         } catch {
             logger.error(message: "Failed to get pending invites for share \(shareId)", error: error)
             throw error
-        }
-    }
-
-    func sendInvite(shareId: String,
-                    inviteeData: InviteeData,
-                    targetType: TargetType) async throws -> Bool {
-        switch inviteeData {
-        case let .existing(email, keys, role):
-            try await sendProtonInvite(shareId: shareId,
-                                       email: email,
-                                       keys: keys,
-                                       targetType: targetType,
-                                       shareRole: role)
-        case let .new(email, signature, role):
-            try await sendExternalInvite(shareId: shareId,
-                                         email: email,
-                                         signature: signature,
-                                         targetType: targetType,
-                                         shareRole: role)
         }
     }
 
