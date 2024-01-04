@@ -48,25 +48,25 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         closureGetAllPendingInvites()
         return stubbedGetAllPendingInvitesResult
     }
-    // MARK: - sendInvite
-    public var sendInviteShareIdInviteeDataTargetTypeShareRoleThrowableError2: Error?
-    public var closureSendInvite: () -> () = {}
-    public var invokedSendInvitefunction = false
-    public var invokedSendInviteCount = 0
-    public var invokedSendInviteParameters: (shareId: String, inviteeData: InviteeData, targetType: TargetType, shareRole: ShareRole)?
-    public var invokedSendInviteParametersList = [(shareId: String, inviteeData: InviteeData, targetType: TargetType, shareRole: ShareRole)]()
-    public var stubbedSendInviteResult: Bool!
+    // MARK: - sendInvites
+    public var sendInvitesShareIdInviteesDataTargetTypeThrowableError2: Error?
+    public var closureSendInvites: () -> () = {}
+    public var invokedSendInvitesfunction = false
+    public var invokedSendInvitesCount = 0
+    public var invokedSendInvitesParameters: (shareId: String, inviteesData: [InviteeData], targetType: TargetType)?
+    public var invokedSendInvitesParametersList = [(shareId: String, inviteesData: [InviteeData], targetType: TargetType)]()
+    public var stubbedSendInvitesResult: Bool!
 
-    public func sendInvite(shareId: String, inviteeData: InviteeData, targetType: TargetType, shareRole: ShareRole) async throws -> Bool {
-        invokedSendInvitefunction = true
-        invokedSendInviteCount += 1
-        invokedSendInviteParameters = (shareId, inviteeData, targetType, shareRole)
-        invokedSendInviteParametersList.append((shareId, inviteeData, targetType, shareRole))
-        if let error = sendInviteShareIdInviteeDataTargetTypeShareRoleThrowableError2 {
+    public func sendInvites(shareId: String, inviteesData: [InviteeData], targetType: TargetType) async throws -> Bool {
+        invokedSendInvitesfunction = true
+        invokedSendInvitesCount += 1
+        invokedSendInvitesParameters = (shareId, inviteesData, targetType)
+        invokedSendInvitesParametersList.append((shareId, inviteesData, targetType))
+        if let error = sendInvitesShareIdInviteesDataTargetTypeThrowableError2 {
             throw error
         }
-        closureSendInvite()
-        return stubbedSendInviteResult
+        closureSendInvites()
+        return stubbedSendInvitesResult
     }
     // MARK: - promoteNewUserInvite
     public var promoteNewUserInviteShareIdInviteIdKeysThrowableError3: Error?
