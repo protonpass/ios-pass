@@ -45,12 +45,18 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
     public let password: String
     public let totpUri: String
     public let urls: [String]
+    public let allowedAndroidApps: [AllowedAndroidApp]
 
-    public init(username: String, password: String, totpUri: String, urls: [String]) {
+    public init(username: String,
+                password: String,
+                totpUri: String,
+                urls: [String],
+                allowedAndroidApps: [AllowedAndroidApp]) {
         self.username = username
         self.password = password
         self.totpUri = totpUri
         self.urls = urls
+        self.allowedAndroidApps = allowedAndroidApps
     }
 }
 
@@ -161,7 +167,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             .login(.init(username: data.username,
                          password: data.password,
                          totpUri: data.totpUri,
-                         urls: data.urls))
+                         urls: data.urls,
+                         allowedAndroidApps: platformSpecific.android.allowedApps))
         case .none:
             .note
         }
@@ -198,6 +205,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             content.login.password = logInData.password
             content.login.totpUri = logInData.totpUri
             content.login.urls = logInData.urls
+            platformSpecific.android.allowedApps = logInData.allowedAndroidApps
 
         case let .creditCard(data):
             content.creditCard = .init()
