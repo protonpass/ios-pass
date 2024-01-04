@@ -29,15 +29,10 @@ import ProtonCoreLogin
 
 /// Make an invitation and return the shared `Vault`
 public protocol SendVaultShareInviteUseCase: Sendable {
-    func execute(with infos: SharingInfos) async throws -> Vault
     func execute(with infos: [SharingInfos]) async throws -> Vault
 }
 
 public extension SendVaultShareInviteUseCase {
-    func callAsFunction(with infos: SharingInfos) async throws -> Vault {
-        try await execute(with: infos)
-    }
-
     func callAsFunction(with infos: [SharingInfos]) async throws -> Vault {
         try await execute(with: infos)
     }
@@ -66,23 +61,6 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         self.shareInviteRepository = shareInviteRepository
         self.userDataProvider = userDataProvider
         self.syncEventLoop = syncEventLoop
-    }
-
-    public func execute(with infos: SharingInfos) async throws -> Vault {
-        let vault = try await getVault(from: infos)
-        let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
-        let inviteeData = try generateInviteeData(from: infos, vault: vault, vaultKey: vaultKey)
-        let invited = try await shareInviteRepository.sendInvites(shareId: vault.shareId,
-                                                                  inviteesData: [inviteeData],
-                                                                  targetType: .vault)
-
-        if invited {
-            syncEventLoop.forceSync()
-            shareInviteService.resetShareInviteInformations()
-            return vault
-        }
-
-        throw PassError.sharing(.failedToInvite)
     }
 
     public func execute(with infos: [SharingInfos]) async throws -> Vault {
