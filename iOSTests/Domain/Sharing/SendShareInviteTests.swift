@@ -65,7 +65,7 @@ final class SendShareInviteTests: XCTestCase {
                                  receiverPublicKeys: [PublicKey(value: "")],
                                  itemsNum: 100)
         do {
-            _ = try await sut(with: infos)
+            _ = try await sut(with: [infos])
             XCTFail("Error needs to be thrown")
         } catch {
             XCTAssertTrue(error is PassError)
