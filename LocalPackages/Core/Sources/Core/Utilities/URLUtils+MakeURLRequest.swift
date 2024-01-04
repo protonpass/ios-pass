@@ -36,11 +36,7 @@ public extension URLUtils {
             throw PassError.network(.badUrlString(baseUrl))
         }
 
-        url = if #available(iOS 16.0, *) {
-            url.appending(path: path)
-        } else {
-            url.appendingPathComponent(path)
-        }
+        url = url.appending(path: path)
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue

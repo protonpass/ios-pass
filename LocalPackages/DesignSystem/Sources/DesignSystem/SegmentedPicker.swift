@@ -22,8 +22,8 @@
 import SwiftUI
 
 public struct SegmentedPicker: View {
-    @Binding var selectedIndex: Int
-    let options: [String]
+    @Binding private var selectedIndex: Int
+    private let options: [String]
 
     public init(selectedIndex: Binding<Int>, options: [String]) {
         _selectedIndex = selectedIndex

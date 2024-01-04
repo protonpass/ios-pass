@@ -26,6 +26,7 @@ import Factory
 import Macro
 import UIKit
 
+@MainActor
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
@@ -39,9 +40,6 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
-    // swiftlint:disable:next todo
-    // TODO: Remove once pinned is full activated
-    @Published var pinningAuthorized = false
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -64,7 +62,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -100,7 +97,6 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
-        checkPinningFeatureFlag()
     }
 
     /// To be overidden by subclasses
@@ -262,15 +258,6 @@ class BaseItemDetailViewModel: ObservableObject {
 // MARK: - Private APIs
 
 private extension BaseItemDetailViewModel {
-    // swiftlint:disable:next todo
-    // TODO: Remove once pinned is full activated
-    func checkPinningFeatureFlag() {
-        Task { [weak self] in
-            guard let self else { return }
-            pinningAuthorized = await getFeatureFlagStatus(with: FeatureFlagType.passPinningV1)
-        }
-    }
-
     func checkIfFreeUser() {
         Task { @MainActor [weak self] in
             guard let self else { return }

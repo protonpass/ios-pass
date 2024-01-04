@@ -43,6 +43,7 @@ private struct TelemetryEventUiModel: Identifiable {
     }
 }
 
+@MainActor
 private final class TelemetryEventsViewModel: ObservableObject {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
@@ -60,7 +61,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
             guard let self else { return }
             do {
                 let formatter = RelativeDateTimeFormatter()
-                if let threshold = self.telemetryEventRepository.scheduler.threshhold {
+                if let threshold = await self.telemetryEventRepository.scheduler.getThreshold() {
                     let relativeDate = formatter.localizedString(for: threshold, relativeTo: .now)
                     self.relativeThreshold = "Next batch \(relativeDate)"
                 }

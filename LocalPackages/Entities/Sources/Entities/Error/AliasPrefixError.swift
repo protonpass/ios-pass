@@ -1,7 +1,7 @@
 //
-// SwiftUIRouter.swift
-// Proton Pass - Created on 24/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// AliasPrefixError.swift
+// Proton Pass - Created on 02/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,22 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-
-enum GeneralRouterDestination: Hashable {
-    case userSharePermission
-    case shareSummary
-}
-
-@MainActor
-final class MainNavViewRouter {
-    @ViewBuilder
-    func navigate(to destination: GeneralRouterDestination) -> some View {
-        switch destination {
-        case .userSharePermission:
-            UserPermissionView()
-        case .shareSummary:
-            SharingSummaryView()
-        }
-    }
+public enum AliasPrefixError: Error {
+    case emptyPrefix
+    case disallowedCharacters
+    case twoConsecutiveDots
+    case dotAtTheEnd
+    case dotAtTheStart
+    case prefixToLong
+    case unknown
 }

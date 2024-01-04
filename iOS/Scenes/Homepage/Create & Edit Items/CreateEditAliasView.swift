@@ -152,17 +152,10 @@ struct CreateEditAliasView: View {
                 }
             }
         }
-        .accentColor(Color(uiColor: viewModel.itemContentType().normMajor1Color)) // Remove when dropping iOS 15
-        .tint(Color(uiColor: tintColor))
+        .tint(tintColor.toColor)
         .onFirstAppear {
             if case .create = viewModel.mode {
-                if #available(iOS 16, *) {
-                    focusedField = .title
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                        focusedField = .title
-                    }
-                }
+                focusedField = .title
             }
         }
         .toolbar {

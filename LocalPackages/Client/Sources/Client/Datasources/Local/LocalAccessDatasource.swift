@@ -20,7 +20,7 @@
 
 import Entities
 
-public protocol LocalAccessDatasourceProtocol {
+public protocol LocalAccessDatasourceProtocol: Sendable {
     func getAccess(userId: String) async throws -> Access?
     func upsert(access: Access, userId: String) async throws
 }

@@ -20,6 +20,7 @@
 
 import UIKit
 
+@MainActor
 protocol OpenAutoFillSettingsUseCase: Sendable {
     func execute()
 }
@@ -30,6 +31,7 @@ extension OpenAutoFillSettingsUseCase {
     }
 }
 
+@MainActor
 final class OpenAutoFillSettings: OpenAutoFillSettingsUseCase {
     private let router: MainUIKitSwiftUIRouter
 

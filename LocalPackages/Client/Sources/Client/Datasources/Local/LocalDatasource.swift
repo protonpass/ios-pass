@@ -42,7 +42,7 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
             let entityName = request.fetchRequest.entityName ?? ""
             return "Failed to batch delete entity \(entityName)"
         case .databaseOperationsOnMainThread:
-            return "Can not do database operations on main thread"
+            return "Cannot do database operations on main thread"
         case let .corruptedShareKeys(shareId, itemKeyCount, vaultKeyCount):
             return """
             "Corrupted share keys for share \(shareId).
@@ -52,15 +52,15 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     }
 }
 
-public class LocalDatasource {
+public class LocalDatasource: @unchecked Sendable {
     private let databaseService: any DatabaseServiceProtocol
     private var container: NSPersistentContainer {
-        databaseService.container
+        databaseService.getContainer()
     }
 
     public init(databaseService: any DatabaseServiceProtocol) {
-        guard databaseService.container.name == kProtonPassContainerName else {
-            fatalError("Unsupported container name \"\(databaseService.container.name)\"")
+        guard databaseService.getContainer().name == kProtonPassContainerName else {
+            fatalError("Unsupported container name \"\(databaseService.getContainer().name)\"")
         }
         self.databaseService = databaseService
     }
