@@ -55,8 +55,27 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 self.lastTask = nil
             }
             sendingInvite = true
-            if hasSingleInvite {
-                await sendSingleInvite()
+
+            do {
+                if Task.isCancelled {
+                    return
+                }
+                let sharedVault = try await sendShareInvite(with: infos)
+                if let baseInfo = infos.first {
+                    switch baseInfo.vault {
+                    case .existing:
+                        // When sharing a created vault, we want to keep the context
+                        // by only dismissing the top most sheet (which is share vault sheet)
+                        router.present(for: .manageShareVault(sharedVault, .topMost))
+                    case .new:
+                        // When sharing a new vault from item detail page,
+                        // as the item is moved to the new vault, the last item detail sheet is stale
+                        // so we dismiss all sheets
+                        router.present(for: .manageShareVault(sharedVault, .all))
+                    }
+                }
+            } catch {
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -65,30 +84,5 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
 private extension SharingSummaryViewModel {
     func setUp() {
         infos = getShareInviteInfos()
-    }
-
-    func sendSingleInvite() async {
-        guard let info = infos.first else {
-            return
-        }
-        do {
-            if Task.isCancelled {
-                return
-            }
-            let sharedVault = try await sendShareInvite(with: info)
-            switch info.vault {
-            case .existing:
-                // When sharing a created vault, we want to keep the context
-                // by only dismissing the top most sheet (which is share vault sheet)
-                router.present(for: .manageShareVault(sharedVault, .topMost))
-            case .new:
-                // When sharing a new vault from item detail page,
-                // as the item is moved to the new vault, the last item detail sheet is stale
-                // so we dismiss all sheets
-                router.present(for: .manageShareVault(sharedVault, .all))
-            }
-        } catch {
-            router.display(element: .displayErrorBanner(error))
-        }
     }
 }
