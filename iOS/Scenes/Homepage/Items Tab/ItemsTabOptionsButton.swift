@@ -82,11 +82,15 @@ private extension ItemsTabOptionsButton {
             }
         }, label: {
             Label(title: {
-                // Use Button to trick SwiftUI into rendering option with title and subtitle
-                Button(action: {}, label: {
-                    Text("Show")
+                if #available(iOS 17, *) {
+                    // Use Button to trick SwiftUI into rendering option with title and subtitle
+                    Button(action: {}, label: {
+                        Text("Show")
+                        text(for: selectedFilterOption.uiModel(from: itemCount))
+                    })
+                } else {
                     text(for: selectedFilterOption.uiModel(from: itemCount))
-                })
+                }
             }, icon: {
                 Image(uiImage: viewModel.highlighted ? PassIcon.filterFilled : IconProvider.filter)
             })
@@ -114,10 +118,14 @@ private extension ItemsTabOptionsButton {
             }
         }, label: {
             Label(title: {
-                Button(action: {}, label: {
-                    Text("Sort By")
+                if #available(iOS 17, *) {
+                    Button(action: {}, label: {
+                        Text("Sort By")
+                        Text(verbatim: selectedSortType.title)
+                    })
+                } else {
                     Text(verbatim: selectedSortType.title)
-                })
+                }
             }, icon: {
                 Image(uiImage: IconProvider.arrowDownArrowUp)
             })
