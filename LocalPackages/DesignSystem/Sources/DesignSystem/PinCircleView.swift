@@ -35,13 +35,11 @@ public struct PinCircleView: View {
             tintColor.toColor
                 .clipShape(Circle())
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Image(systemName: "pin.fill")
+            Image(uiImage: PassIcon.pinAngledFilled)
                 .resizable()
                 .scaledToFit()
                 .frame(height: height * 3 / 5)
-                .offset(y: height / 14)
                 .foregroundStyle(PassColor.textInvert.toColor)
-                .rotationEffect(.degrees(45))
         }
         .frame(width: height, height: height)
     }
