@@ -68,7 +68,7 @@ extension CustomFieldType {
         case .text:
             #localized("Text")
         case .totp:
-            #localized("2FA secret (TOTP)")
+            #localized("2FA secret key (TOTP)")
         case .hidden:
             #localized("Hidden")
         }

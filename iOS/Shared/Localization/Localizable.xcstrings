@@ -3972,7 +3972,7 @@
         }
       }
     },
-    "2FA secret (TOTP)" : {
+    "2FA secret key (TOTP)" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -3983,7 +3983,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA secret (TOTP)"
+            "value" : "2FA secret key (TOTP)"
           }
         },
         "de" : {
@@ -4001,7 +4001,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA secret (TOTP)"
+            "value" : "2FA secret key (TOTP)"
           }
         },
         "es" : {
@@ -4114,12 +4114,12 @@
         }
       }
     },
-    "2FA secret (TOTP) custom field" : {
+    "2FA secret key (TOTP) custom field" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA secret (TOTP) custom field"
+            "value" : "2FA secret key (TOTP) custom field"
           }
         }
       }

@@ -101,7 +101,7 @@ private extension CustomFieldType {
         case .text:
             #localized("Text custom field")
         case .totp:
-            #localized("2FA secret (TOTP) custom field")
+            #localized("2FA secret key (TOTP) custom field")
         case .hidden:
             #localized("Hidden custom field")
         }
@@ -112,7 +112,7 @@ private extension CustomFieldType {
         case .text:
             #localized("E.g., User ID, Acct number")
         case .totp:
-            #localized("2FA secret (TOTP)")
+            #localized("2FA secret key (TOTP)")
         case .hidden:
             #localized("E.g., Recovery key, PIN")
         }
