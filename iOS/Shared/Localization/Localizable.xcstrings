@@ -47157,6 +47157,7 @@
       }
     },
     "Suggestions for %@" : {
+      "comment" : "The title of the section of matched login items of a given URL. E.g \"Suggestions for https://proton.me\"",
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
