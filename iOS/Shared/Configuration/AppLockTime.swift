@@ -44,9 +44,9 @@ public enum AppLockTime: Int, Codable, CustomStringConvertible, CaseIterable {
         case .tenMinutes:
             #localized("After %lld minute(s)", 10)
         case .oneHour:
-            #localized("After 1 hour")
+            #localized("After %lld hour(s)", 1)
         case .fourHours:
-            #localized("After 4 hours")
+            #localized("After %lld hour(s)", 4)
         case .never:
             #localized("Never")
         }
