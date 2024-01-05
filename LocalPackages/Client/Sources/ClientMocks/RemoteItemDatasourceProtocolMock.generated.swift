@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import Entities
 import Foundation
 
@@ -26,45 +27,45 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
 
     public init() {}
 
-    // MARK: - getItemRevisionsShareIdEventStream
-    public var getItemRevisionsShareIdEventStreamThrowableError1: Error?
-    public var closureGetItemRevisionsShareIdEventStreamAsync1: () -> () = {}
-    public var invokedGetItemRevisionsShareIdEventStreamAsync1 = false
-    public var invokedGetItemRevisionsShareIdEventStreamAsyncCount1 = 0
-    public var invokedGetItemRevisionsShareIdEventStreamAsyncParameters1: (shareId: String, eventStream: VaultSyncEventStream?)?
-    public var invokedGetItemRevisionsShareIdEventStreamAsyncParametersList1 = [(shareId: String, eventStream: VaultSyncEventStream?)]()
-    public var stubbedGetItemRevisionsShareIdEventStreamAsyncResult1: [Item]!
+    // MARK: - getItems
+    public var getItemsShareIdEventStreamThrowableError1: Error?
+    public var closureGetItems: () -> () = {}
+    public var invokedGetItemsfunction = false
+    public var invokedGetItemsCount = 0
+    public var invokedGetItemsParameters: (shareId: String, eventStream: VaultSyncEventStream?)?
+    public var invokedGetItemsParametersList = [(shareId: String, eventStream: VaultSyncEventStream?)]()
+    public var stubbedGetItemsResult: [Item]!
 
-    public func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item] {
-        invokedGetItemRevisionsShareIdEventStreamAsync1 = true
-        invokedGetItemRevisionsShareIdEventStreamAsyncCount1 += 1
-        invokedGetItemRevisionsShareIdEventStreamAsyncParameters1 = (shareId, eventStream)
-        invokedGetItemRevisionsShareIdEventStreamAsyncParametersList1.append((shareId, eventStream))
-        if let error = getItemRevisionsShareIdEventStreamThrowableError1 {
+    public func getItems(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item] {
+        invokedGetItemsfunction = true
+        invokedGetItemsCount += 1
+        invokedGetItemsParameters = (shareId, eventStream)
+        invokedGetItemsParametersList.append((shareId, eventStream))
+        if let error = getItemsShareIdEventStreamThrowableError1 {
             throw error
         }
-        closureGetItemRevisionsShareIdEventStreamAsync1()
-        return stubbedGetItemRevisionsShareIdEventStreamAsyncResult1
+        closureGetItems()
+        return stubbedGetItemsResult
     }
-    // MARK: - getItemRevisionsShareIdItemId
+    // MARK: - getItemRevisions
     public var getItemRevisionsShareIdItemIdThrowableError2: Error?
-    public var closureGetItemRevisionsShareIdItemIdAsync2: () -> () = {}
-    public var invokedGetItemRevisionsShareIdItemIdAsync2 = false
-    public var invokedGetItemRevisionsShareIdItemIdAsyncCount2 = 0
-    public var invokedGetItemRevisionsShareIdItemIdAsyncParameters2: (shareId: String, itemId: String)?
-    public var invokedGetItemRevisionsShareIdItemIdAsyncParametersList2 = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemRevisionsShareIdItemIdAsyncResult2: [Item]!
+    public var closureGetItemRevisions: () -> () = {}
+    public var invokedGetItemRevisionsfunction = false
+    public var invokedGetItemRevisionsCount = 0
+    public var invokedGetItemRevisionsParameters: (shareId: String, itemId: String)?
+    public var invokedGetItemRevisionsParametersList = [(shareId: String, itemId: String)]()
+    public var stubbedGetItemRevisionsResult: [Item]!
 
     public func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
-        invokedGetItemRevisionsShareIdItemIdAsync2 = true
-        invokedGetItemRevisionsShareIdItemIdAsyncCount2 += 1
-        invokedGetItemRevisionsShareIdItemIdAsyncParameters2 = (shareId, itemId)
-        invokedGetItemRevisionsShareIdItemIdAsyncParametersList2.append((shareId, itemId))
+        invokedGetItemRevisionsfunction = true
+        invokedGetItemRevisionsCount += 1
+        invokedGetItemRevisionsParameters = (shareId, itemId)
+        invokedGetItemRevisionsParametersList.append((shareId, itemId))
         if let error = getItemRevisionsShareIdItemIdThrowableError2 {
             throw error
         }
-        closureGetItemRevisionsShareIdItemIdAsync2()
-        return stubbedGetItemRevisionsShareIdItemIdAsyncResult2
+        closureGetItemRevisions()
+        return stubbedGetItemRevisionsResult
     }
     // MARK: - createItem
     public var createItemShareIdRequestThrowableError3: Error?
@@ -126,63 +127,63 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureCreateAliasAndAnotherItem()
         return stubbedCreateAliasAndAnotherItemResult
     }
-    // MARK: - trashItemRevisions
-    public var trashItemRevisionsShareIdThrowableError6: Error?
-    public var closureTrashItemRevisions: () -> () = {}
-    public var invokedTrashItemRevisionsfunction = false
-    public var invokedTrashItemRevisionsCount = 0
-    public var invokedTrashItemRevisionsParameters: (items: [Item], shareId: String)?
-    public var invokedTrashItemRevisionsParametersList = [(items: [Item], shareId: String)]()
-    public var stubbedTrashItemRevisionsResult: [ModifiedItem]!
+    // MARK: - trashItem
+    public var trashItemShareIdThrowableError6: Error?
+    public var closureTrashItem: () -> () = {}
+    public var invokedTrashItemfunction = false
+    public var invokedTrashItemCount = 0
+    public var invokedTrashItemParameters: (items: [Item], shareId: String)?
+    public var invokedTrashItemParametersList = [(items: [Item], shareId: String)]()
+    public var stubbedTrashItemResult: [ModifiedItem]!
 
-    public func trashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
-        invokedTrashItemRevisionsfunction = true
-        invokedTrashItemRevisionsCount += 1
-        invokedTrashItemRevisionsParameters = (items, shareId)
-        invokedTrashItemRevisionsParametersList.append((items, shareId))
-        if let error = trashItemRevisionsShareIdThrowableError6 {
+    public func trashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
+        invokedTrashItemfunction = true
+        invokedTrashItemCount += 1
+        invokedTrashItemParameters = (items, shareId)
+        invokedTrashItemParametersList.append((items, shareId))
+        if let error = trashItemShareIdThrowableError6 {
             throw error
         }
-        closureTrashItemRevisions()
-        return stubbedTrashItemRevisionsResult
+        closureTrashItem()
+        return stubbedTrashItemResult
     }
-    // MARK: - untrashItemRevisions
-    public var untrashItemRevisionsShareIdThrowableError7: Error?
-    public var closureUntrashItemRevisions: () -> () = {}
-    public var invokedUntrashItemRevisionsfunction = false
-    public var invokedUntrashItemRevisionsCount = 0
-    public var invokedUntrashItemRevisionsParameters: (items: [Item], shareId: String)?
-    public var invokedUntrashItemRevisionsParametersList = [(items: [Item], shareId: String)]()
-    public var stubbedUntrashItemRevisionsResult: [ModifiedItem]!
+    // MARK: - untrashItem
+    public var untrashItemShareIdThrowableError7: Error?
+    public var closureUntrashItem: () -> () = {}
+    public var invokedUntrashItemfunction = false
+    public var invokedUntrashItemCount = 0
+    public var invokedUntrashItemParameters: (items: [Item], shareId: String)?
+    public var invokedUntrashItemParametersList = [(items: [Item], shareId: String)]()
+    public var stubbedUntrashItemResult: [ModifiedItem]!
 
-    public func untrashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
-        invokedUntrashItemRevisionsfunction = true
-        invokedUntrashItemRevisionsCount += 1
-        invokedUntrashItemRevisionsParameters = (items, shareId)
-        invokedUntrashItemRevisionsParametersList.append((items, shareId))
-        if let error = untrashItemRevisionsShareIdThrowableError7 {
+    public func untrashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
+        invokedUntrashItemfunction = true
+        invokedUntrashItemCount += 1
+        invokedUntrashItemParameters = (items, shareId)
+        invokedUntrashItemParametersList.append((items, shareId))
+        if let error = untrashItemShareIdThrowableError7 {
             throw error
         }
-        closureUntrashItemRevisions()
-        return stubbedUntrashItemRevisionsResult
+        closureUntrashItem()
+        return stubbedUntrashItemResult
     }
-    // MARK: - deleteItemRevisions
-    public var deleteItemRevisionsShareIdSkipTrashThrowableError8: Error?
-    public var closureDeleteItemRevisions: () -> () = {}
-    public var invokedDeleteItemRevisionsfunction = false
-    public var invokedDeleteItemRevisionsCount = 0
-    public var invokedDeleteItemRevisionsParameters: (items: [Item], shareId: String, skipTrash: Bool)?
-    public var invokedDeleteItemRevisionsParametersList = [(items: [Item], shareId: String, skipTrash: Bool)]()
+    // MARK: - deleteItem
+    public var deleteItemShareIdSkipTrashThrowableError8: Error?
+    public var closureDeleteItem: () -> () = {}
+    public var invokedDeleteItemfunction = false
+    public var invokedDeleteItemCount = 0
+    public var invokedDeleteItemParameters: (items: [Item], shareId: String, skipTrash: Bool)?
+    public var invokedDeleteItemParametersList = [(items: [Item], shareId: String, skipTrash: Bool)]()
 
-    public func deleteItemRevisions(_ items: [Item], shareId: String, skipTrash: Bool) async throws {
-        invokedDeleteItemRevisionsfunction = true
-        invokedDeleteItemRevisionsCount += 1
-        invokedDeleteItemRevisionsParameters = (items, shareId, skipTrash)
-        invokedDeleteItemRevisionsParametersList.append((items, shareId, skipTrash))
-        if let error = deleteItemRevisionsShareIdSkipTrashThrowableError8 {
+    public func deleteItem(_ items: [Item], shareId: String, skipTrash: Bool) async throws {
+        invokedDeleteItemfunction = true
+        invokedDeleteItemCount += 1
+        invokedDeleteItemParameters = (items, shareId, skipTrash)
+        invokedDeleteItemParametersList.append((items, shareId, skipTrash))
+        if let error = deleteItemShareIdSkipTrashThrowableError8 {
             throw error
         }
-        closureDeleteItemRevisions()
+        closureDeleteItem()
     }
     // MARK: - updateItem
     public var updateItemShareIdItemIdRequestThrowableError9: Error?
