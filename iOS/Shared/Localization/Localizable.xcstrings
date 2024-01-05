@@ -15929,19 +15929,19 @@
         }
       }
     },
-    "Couldn't find « %@ »" : {
+    "Couldn't find \"%@\"" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Немагчыма знайсці « %@ »"
+            "value" : "Немагчыма знайсці \"%@\""
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nepodařilo se najít « %@ »"
+            "value" : "Nepodařilo se najít \"%@\""
           }
         },
         "de" : {
@@ -15953,13 +15953,13 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η εύρεση του « %@ »"
+            "value" : "Δεν ήταν δυνατή η εύρεση του \"%@\""
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ »"
+            "value" : "Couldn't find \"%@\""
           }
         },
         "es" : {
@@ -15983,19 +15983,19 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aucun résultat n'a été trouvé pour « %@ »."
+            "value" : "Aucun résultat n'a été trouvé pour \"%@\"."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impossibile trovare « %@ »"
+            "value" : "Impossibile trovare \"%@\""
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« %@ » が見つかりませんでした"
+            "value" : "\"%@\" が見つかりませんでした"
           }
         },
         "ka" : {
@@ -16007,7 +16007,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« %@ » 을(를) 찾을 수 없습니다."
+            "value" : "\"%@\" 을(를) 찾을 수 없습니다."
           }
         },
         "nb" : {
@@ -16019,13 +16019,13 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nie można znaleźć « %@ »"
+            "value" : "Nie można znaleźć \"%@\""
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível encontrar «%@ »"
+            "value" : "Não foi possível encontrar \"%@\""
           }
         },
         "pt-BR" : {
@@ -16043,191 +16043,48 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nemôžem nájsť « %@ »"
+            "value" : "Nemôžem nájsť \"%@\""
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kunde inte hitta « %@ »"
+            "value" : "Kunde inte hitta \"%@\""
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« %@ » bulunamadı"
+            "value" : "\"%@\" bulunamadı"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Неможливо знайти « %@ »"
+            "value" : "Неможливо знайти \"%@\""
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không thể tìm thấy « %@ »"
+            "value" : "Không thể tìm thấy \"%@\""
           }
         }
       }
     },
-    "Couldn't find « %@ » in %@" : {
+    "Couldn't find \"%@\" in Trash" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Немагчыма знайсці « %@ » у %@"
+            "value" : "Немагчыма знайсці \"%@\" у сметніцы"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nepodařilo se najít « %@ » v %@"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" konnte nicht in %@ gefunden werden."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η εύρεση του « %@ » στα %@"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Couldn't find « %@ » in %@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se ha podido encontrar \"%@\" en %@."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudo encontrar \"%@\" en %@."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" ei löytynyt holvista %@"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun résultat n'a été trouvé dans %@ pour « %@ »."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossibile trovare « %@ » in %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ で« %@ » が見つかりませんでした"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "„%@“-ის %@-ში აღმოჩენა შეუძლებელია"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 에서 « %@ » 을(를) 찾을 수 없습니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finne \"%@\" i %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nie można znaleźć « %@ » w %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível encontrar «%@ » no %@"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível encontrar «%@ » no %@"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nu s-a putut găsi „%@” în %@"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nemôžem nájsť « %@ » v %@"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunde inte hitta « %@ » i %@"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "« %@ » %@ içinde bulunamadı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Неможливо знайти « %@ » у %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Không thể tìm thấy « %@ » trong %@"
-          }
-        }
-      }
-    },
-    "Couldn't find « %@ » in Trash" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Немагчыма знайсці « %@ » у сметніцы"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nepodařilo se najít « %@ » v Koši"
+            "value" : "Nepodařilo se najít \"%@\" v Koši"
           }
         },
         "de" : {
@@ -16239,13 +16096,13 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η εύρεση του « %@ » στον κάδο απορριμμάτων"
+            "value" : "Δεν ήταν δυνατή η εύρεση του \"%@\" στον κάδο απορριμμάτων"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ » in Trash"
+            "value" : "Couldn't find \"%@\" in Trash"
           }
         },
         "es" : {
@@ -16269,19 +16126,19 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aucun résultat n'a été trouvé dans la corbeille pour « %@ »."
+            "value" : "Aucun résultat n'a été trouvé dans la corbeille pour \"%@\"."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impossibile trovare « %@ » nel cestino"
+            "value" : "Impossibile trovare \"%@\" nel cestino"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ゴミ箱で« %@ »が見つかりませんでした"
+            "value" : "ゴミ箱で\"%@\"が見つかりませんでした"
           }
         },
         "ka" : {
@@ -16293,7 +16150,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "휴지통에서 « %@ » 을(를) 찾을 수 없습니다."
+            "value" : "휴지통에서 \"%@\" 을(를) 찾을 수 없습니다."
           }
         },
         "nb" : {
@@ -16305,19 +16162,19 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nie można znaleźć « %@ » w Koszu"
+            "value" : "Nie można znaleźć \"%@\" w Koszu"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível encontrar «%@ » no caixote do lixo"
+            "value" : "Não foi possível encontrar \"%@\" no caixote do lixo"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível encontrar «%@ » na lixeira"
+            "value" : "Não foi possível encontrar \"%@\" na lixeira"
           }
         },
         "ro" : {
@@ -16329,31 +16186,174 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nemôžem nájsť « %@ » v Koši"
+            "value" : "Nemôžem nájsť \"%@\" v Koši"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kunde inte hitta « %@ » i papperskorg"
+            "value" : "Kunde inte hitta \"%@\" i papperskorg"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« %@ » çöp kutusunda bulunamadı"
+            "value" : "\"%@\" çöp kutusunda bulunamadı"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Неможливо знайти « %@ » у смітнику"
+            "value" : "Неможливо знайти \"%@\" у смітнику"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không thể tìm thấy « %@ » trong Thùng rác"
+            "value" : "Không thể tìm thấy \"%@\" trong Thùng rác"
+          }
+        }
+      }
+    },
+    "Couldn't find \"%1$@\" in %2$@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немагчыма знайсці \"%1$@\" у %2$@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodařilo se najít \"%1$@\" v %2$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" konnte nicht in %2$@ gefunden werden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν ήταν δυνατή η εύρεση του \"%1$@\" στα %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't find \"%1$@\" in %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido encontrar \"%1$@\" en %2$@."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo encontrar \"%1$@\" en %2$@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" ei löytynyt holvista %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun résultat n'a été trouvé dans %2$@ pour « %1$@ »."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile trovare \"%1$@\" in %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ で\"%1$@\" が見つかりませんでした"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„%1$@“-ის %2$@-ში აღმოჩენა შეუძლებელია"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ 에서 \"%1$@\" 을(를) 찾을 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finne \"%1$@\" i %2$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można znaleźć \"%1$@\" w %2$@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível encontrar \"%1$@\" no %2$@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível encontrar \"%1$@\" no %2$@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu s-a putut găsi „%1$@” în %2$@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemôžem nájsť \"%1$@\" v %2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunde inte hitta \"%1$@\" i %2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" %2$@ içinde bulunamadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неможливо знайти \"%1$@\" у %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể tìm thấy \"%1$@\" trong %2$@"
           }
         }
       }
