@@ -75,6 +75,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func copyMailboxEmail(_ email: String) {
-        copyToClipboard(text: email, message: #localized("Mailbox copied"))
+        copyToClipboard(text: email, message: #localized("Email address copied"))
     }
 }

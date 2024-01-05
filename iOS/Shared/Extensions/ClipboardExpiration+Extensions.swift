@@ -27,9 +27,9 @@ extension ClipboardExpiration: CustomStringConvertible {
         case .fifteenSeconds:
             #localized("After 15 seconds")
         case .oneMinute:
-            #localized("After 60 seconds")
+            #localized("After %lld minute(s)", 1)
         case .twoMinutes:
-            #localized("After 120 seconds")
+            #localized("After %lld minute(s)", 2)
         case .never:
             #localized("Never")
         }
