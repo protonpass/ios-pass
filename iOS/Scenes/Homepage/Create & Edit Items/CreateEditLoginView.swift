@@ -411,7 +411,7 @@ private extension CreateEditLoginView {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("2FA secret (TOTP)")
+                Text("2FA secret key (TOTP)")
                     .sectionTitleText(isValid: viewModel.totpUriErrorMessage.isEmpty)
 
                 SensitiveTextField(text: $viewModel.totpUri,
