@@ -48,7 +48,7 @@ let package = Package(name: "UseCases",
                           .package(name: "Client", path: "../Client"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
                           .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "8.16.1"),
-                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.1")
+                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.2")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
