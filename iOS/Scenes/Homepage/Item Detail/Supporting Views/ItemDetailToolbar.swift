@@ -71,7 +71,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         Button { viewModel.toggleItemPinning() }
                             label: {
                                 Label(title: { Text(viewModel.itemContent.item.pinTitle) },
-                                      icon: { Image(systemName: viewModel.itemContent.item.pinIcon) })
+                                      icon: { Image(uiImage: viewModel.itemContent.item.pinIcon) })
                             }
 
                         Divider()
