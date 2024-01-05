@@ -83,7 +83,7 @@ struct ItemsTabView: View {
                     InfoBannerViewStack(banners: viewModel.banners,
                                         dismiss: { viewModel.dismiss(banner: $0) },
                                         action: { viewModel.handleAction(banner: $0) })
-                        .padding([.horizontal, .top])
+                        .padding()
                 }
 
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
