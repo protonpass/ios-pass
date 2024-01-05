@@ -1480,7 +1480,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Засталася 1 спроба"
+                  "value" : "Засталася %lld спроба"
                 }
               },
               "other" : {
@@ -1510,7 +1510,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zbývá 1 pokus"
+                  "value" : "Zbývá %lld pokus"
                 }
               },
               "other" : {
@@ -1528,7 +1528,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ein Versuch verbleibend"
+                  "value" : "%lld Versuch verbleibend"
                 }
               },
               "other" : {
@@ -1546,7 +1546,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Μία προσπάθεια απομένει"
+                  "value" : "%lld προσπάθεια απομένει"
                 }
               },
               "other" : {
@@ -1564,7 +1564,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "One remaining attempt"
+                  "value" : "%lld remaining attempt"
                 }
               },
               "other" : {
@@ -1582,7 +1582,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "1 intento restante"
+                  "value" : "%lld intento restante"
                 }
               },
               "other" : {
@@ -1600,7 +1600,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "1 intento restante"
+                  "value" : "%lld intento restante"
                 }
               },
               "other" : {
@@ -1618,7 +1618,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Yksi jäljellä oleva yritys"
+                  "value" : "%lld jäljellä oleva yritys"
                 }
               },
               "other" : {
@@ -1636,7 +1636,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "1 tentative restante"
+                  "value" : "%lld tentative restante"
                 }
               },
               "other" : {
@@ -1654,7 +1654,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Un tentativo rimanente"
+                  "value" : "%lld tentativo rimanente"
                 }
               },
               "other" : {
@@ -1684,7 +1684,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "ერთი დარჩენილი ცდა"
+                  "value" : "%lld დარჩენილი ცდა"
                 }
               },
               "other" : {
@@ -1702,7 +1702,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld %d회 남은 시도"
+                  "value" : "%lld 회 남은 시도"
                 }
               }
             }
@@ -1714,7 +1714,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ett gjenstående forsøk"
+                  "value" : "%lld gjenstående forsøk"
                 }
               },
               "other" : {
@@ -1744,7 +1744,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Pozostała 1 próba"
+                  "value" : "Pozostała %lld próba"
                 }
               },
               "other" : {
@@ -1762,7 +1762,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Uma tentativa restante"
+                  "value" : "%lld tentativa restante"
                 }
               },
               "other" : {
@@ -1780,7 +1780,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Uma tentativa restante"
+                  "value" : "%lld tentativa restante"
                 }
               },
               "other" : {
@@ -1804,7 +1804,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Mai aveți o încercare"
+                  "value" : "Mai aveți %lld încercare"
                 }
               },
               "other" : {
@@ -1834,7 +1834,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zostáva ešte jeden pokus"
+                  "value" : "Zostáva ešte %lld pokus"
                 }
               },
               "other" : {
@@ -1852,7 +1852,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ett återstående försök"
+                  "value" : "%lld återstående försök"
                 }
               },
               "other" : {
@@ -1870,7 +1870,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Bir deneme hakkı kaldı"
+                  "value" : "%lld deneme hakkı kaldı"
                 }
               },
               "other" : {
@@ -1900,7 +1900,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Залишилась одна спроба"
+                  "value" : "Залишилась %lld спроба"
                 }
               },
               "other" : {
