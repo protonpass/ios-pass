@@ -23,7 +23,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetItemsResponse: Decodable, Sendable {
-    let items: ItemRevisionsPaginated
+    let items: ItemsPaginated
 }
 
 public struct GetItemsEndpoint: Endpoint, @unchecked Sendable {

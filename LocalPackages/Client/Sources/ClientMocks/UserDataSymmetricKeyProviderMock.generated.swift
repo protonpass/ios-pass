@@ -21,8 +21,8 @@
     import Client
 import Combine
 import Entities
-import CryptoKit
 import ProtonCoreLogin
+import CryptoKit
 
 public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider, UserDataProvider {
 
