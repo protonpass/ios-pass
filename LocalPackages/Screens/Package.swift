@@ -27,7 +27,7 @@ let package = Package(
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Macro", path: "../Macro"),
-        .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.1")
+        .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.2")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
