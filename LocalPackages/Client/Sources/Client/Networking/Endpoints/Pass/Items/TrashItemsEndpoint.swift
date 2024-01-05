@@ -31,7 +31,7 @@ public struct TrashItemsEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: ModifyItemRequest?
 
-    public init(shareId: String, items: [ItemRevision]) {
+    public init(shareId: String, items: [Item]) {
         debugDescription = "Trash items"
         path = "/pass/v1/share/\(shareId)/item/trash"
         method = .post

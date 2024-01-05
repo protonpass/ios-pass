@@ -1,5 +1,5 @@
 //
-// ItemRevision.swift
+// Item.swift
 // Proton Pass - Created on 13/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,13 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct ItemRevisionsPaginated: Decodable, Sendable {
+public struct ItemsPaginated: Decodable, Sendable {
     public let total: Int
     public let lastToken: String?
-    public let revisionsData: [ItemRevision]
+    public let revisionsData: [Item]
 }
 
-public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
+public struct Item: Decodable, Equatable, Sendable, Hashable {
     public let itemID: String
     public let revision: Int64
     public let contentFormatVersion: Int64

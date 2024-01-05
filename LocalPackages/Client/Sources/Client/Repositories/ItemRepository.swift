@@ -53,6 +53,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
+    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item]
+
     /// Full sync for a given `shareId`
     func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws
 
@@ -87,11 +89,11 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Permanently delete selected items
     func delete(items: [any ItemIdentifiable]) async throws
 
-    func updateItem(oldItem: ItemRevision,
+    func updateItem(oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws
 
-    func upsertItems(_ items: [ItemRevision], shareId: String) async throws
+    func upsertItems(_ items: [Item], shareId: String) async throws
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws
 
@@ -190,14 +192,18 @@ public extension ItemRepository {
         return try encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
     }
 
+    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
+        try await remoteDatasource.getItemRevisions(shareId: shareId, itemId: itemId)
+    }
+
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
         try await localDatasource.getAliasItem(email: email)
     }
 
     func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws {
         logger.trace("Refreshing share \(shareId)")
-        let itemRevisions = try await remoteDatasource.getItemRevisions(shareId: shareId,
-                                                                        eventStream: eventStream)
+        let itemRevisions = try await remoteDatasource.getItems(shareId: shareId,
+                                                                eventStream: eventStream)
         logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
@@ -289,8 +295,8 @@ public extension ItemRepository {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Trashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                    try await remoteDatasource.trashItemRevisions(batch.map(\.item),
-                                                                  shareId: shareId)
+                    try await remoteDatasource.trashItem(batch.map(\.item),
+                                                         shareId: shareId)
                 try await localDatasource.upsertItems(batch,
                                                       modifiedItems: modifiedItems)
                 logger.trace("Trashed \(batch.count) items for share \(shareId)")
@@ -326,8 +332,8 @@ public extension ItemRepository {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Untrashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                    try await remoteDatasource.untrashItemRevisions(batch.map(\.item),
-                                                                    shareId: shareId)
+                    try await remoteDatasource.untrashItem(batch.map(\.item),
+                                                           shareId: shareId)
                 try await localDatasource.upsertItems(batch,
                                                       modifiedItems: modifiedItems)
                 logger.trace("Untrashed \(batch.count) items for share \(shareId)")
@@ -353,9 +359,9 @@ public extension ItemRepository {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Deleting \(batch.count) items for share \(shareId)")
-                try await remoteDatasource.deleteItemRevisions(batch.map(\.item),
-                                                               shareId: shareId,
-                                                               skipTrash: skipTrash)
+                try await remoteDatasource.deleteItem(batch.map(\.item),
+                                                      shareId: shareId,
+                                                      skipTrash: skipTrash)
                 try await localDatasource.deleteItems(batch)
                 logger.trace("Deleted \(batch.count) items for share \(shareId)")
             }
@@ -393,7 +399,7 @@ public extension ItemRepository {
         logger.trace("Deleted locally items \(itemIds) for share \(shareId)")
     }
 
-    func updateItem(oldItem: ItemRevision,
+    func updateItem(oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws {
         let itemId = oldItem.itemID
@@ -414,7 +420,7 @@ public extension ItemRepository {
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
     }
 
-    func upsertItems(_ items: [ItemRevision], shareId: String) async throws {
+    func upsertItems(_ items: [Item], shareId: String) async throws {
         let encryptedItems = try await items.parallelMap { [weak self] in
             try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }.compactMap { $0 }
@@ -530,7 +536,7 @@ private extension ItemRepository {
         try userDataSymmetricKeyProvider.getSymmetricKey()
     }
 
-    func symmetricallyEncrypt(itemRevision: ItemRevision,
+    func symmetricallyEncrypt(itemRevision: Item,
                               shareId: String) async throws -> SymmetricallyEncryptedItem {
         let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
@@ -566,7 +572,7 @@ public extension ItemRepository {
             try items
                 .filter(\.isLogInItem)
                 .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
-                .compactMap { itemContent -> ItemRevision? in
+                .compactMap { itemContent -> Item? in
                     guard case let .login(loginData) = itemContent.contentData,
                           !loginData.totpUri.isEmpty
                     else {
