@@ -37,6 +37,8 @@ public enum Constants {
     public enum Utils {
         public static let prefixAllowedCharacters =
             CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
+
+        public static let defaultPageSize = 100
     }
 }
 

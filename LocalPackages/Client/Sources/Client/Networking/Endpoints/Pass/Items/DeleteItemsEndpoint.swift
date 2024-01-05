@@ -31,7 +31,7 @@ public struct DeleteItemsEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: ModifyItemRequest?
 
-    public init(shareId: String, items: [ItemRevision], skipTrash: Bool) {
+    public init(shareId: String, items: [Item], skipTrash: Bool) {
         debugDescription = "Delete items"
         path = "/pass/v1/share/\(shareId)/item"
         method = .delete

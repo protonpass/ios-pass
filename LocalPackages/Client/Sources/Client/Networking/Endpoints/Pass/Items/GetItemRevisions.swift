@@ -1,7 +1,7 @@
 //
-// GetItemsEndpoint.swift
-// Proton Pass - Created on 10/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// GetItemRevisions.swift
+// Proton Pass - Created on 05/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,25 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetItemsResponse: Decodable, Sendable {
-    let items: ItemsPaginated
+public struct GetItemRevisionsResponse: Decodable, Sendable {
+    let revisions: ItemsPaginated
 }
 
-public struct GetItemsEndpoint: Endpoint, @unchecked Sendable {
+public struct GetItemRevisionsEndpoint: Endpoint, @unchecked Sendable {
     public typealias Body = EmptyRequest
-    public typealias Response = GetItemsResponse
+    public typealias Response = GetItemRevisionsResponse
 
     public var debugDescription: String
     public var path: String
     public var queries: [String: Any]?
 
-    public init(shareId: String, sinceToken: String?, pageSize: Int) {
+    public init(shareId: String,
+                itemId: String,
+                sinceToken: String? = nil,
+                pageSize: Int = Constants.Utils.defaultPageSize) {
         debugDescription = "Get items for share"
-        path = "/pass/v1/share/\(shareId)/item"
+        path = "/pass/v1/share/\(shareId)/item/\(itemId)/revision"
 
         var queries: [String: Any] = ["PageSize": pageSize]
         if let sinceToken {

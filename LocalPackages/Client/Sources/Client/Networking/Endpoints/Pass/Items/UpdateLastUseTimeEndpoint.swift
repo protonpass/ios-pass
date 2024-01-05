@@ -24,7 +24,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct UpdateLastUseTimeResponse: Decodable, Sendable {
-    let revision: ItemRevision
+    let revision: Item
 }
 
 public struct UpdateLastUseTimeEndpoint: Endpoint {
