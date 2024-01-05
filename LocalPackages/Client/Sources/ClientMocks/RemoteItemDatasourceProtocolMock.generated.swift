@@ -33,9 +33,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedGetItemRevisionsShareIdEventStreamAsyncCount1 = 0
     public var invokedGetItemRevisionsShareIdEventStreamAsyncParameters1: (shareId: String, eventStream: VaultSyncEventStream?)?
     public var invokedGetItemRevisionsShareIdEventStreamAsyncParametersList1 = [(shareId: String, eventStream: VaultSyncEventStream?)]()
-    public var stubbedGetItemRevisionsShareIdEventStreamAsyncResult1: [ItemRevision]!
+    public var stubbedGetItemRevisionsShareIdEventStreamAsyncResult1: [Item]!
 
-    public func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision] {
+    public func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item] {
         invokedGetItemRevisionsShareIdEventStreamAsync1 = true
         invokedGetItemRevisionsShareIdEventStreamAsyncCount1 += 1
         invokedGetItemRevisionsShareIdEventStreamAsyncParameters1 = (shareId, eventStream)
@@ -53,9 +53,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedGetItemRevisionsShareIdItemIdAsyncCount2 = 0
     public var invokedGetItemRevisionsShareIdItemIdAsyncParameters2: (shareId: String, itemId: String)?
     public var invokedGetItemRevisionsShareIdItemIdAsyncParametersList2 = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemRevisionsShareIdItemIdAsyncResult2: [ItemRevision]!
+    public var stubbedGetItemRevisionsShareIdItemIdAsyncResult2: [Item]!
 
-    public func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemRevision] {
+    public func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
         invokedGetItemRevisionsShareIdItemIdAsync2 = true
         invokedGetItemRevisionsShareIdItemIdAsyncCount2 += 1
         invokedGetItemRevisionsShareIdItemIdAsyncParameters2 = (shareId, itemId)
@@ -73,9 +73,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedCreateItemCount = 0
     public var invokedCreateItemParameters: (shareId: String, request: CreateItemRequest)?
     public var invokedCreateItemParametersList = [(shareId: String, request: CreateItemRequest)]()
-    public var stubbedCreateItemResult: ItemRevision!
+    public var stubbedCreateItemResult: Item!
 
-    public func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
+    public func createItem(shareId: String, request: CreateItemRequest) async throws -> Item {
         invokedCreateItemfunction = true
         invokedCreateItemCount += 1
         invokedCreateItemParameters = (shareId, request)
@@ -93,9 +93,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedCreateAliasCount = 0
     public var invokedCreateAliasParameters: (shareId: String, request: CreateCustomAliasRequest)?
     public var invokedCreateAliasParametersList = [(shareId: String, request: CreateCustomAliasRequest)]()
-    public var stubbedCreateAliasResult: ItemRevision!
+    public var stubbedCreateAliasResult: Item!
 
-    public func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
+    public func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> Item {
         invokedCreateAliasfunction = true
         invokedCreateAliasCount += 1
         invokedCreateAliasParameters = (shareId, request)
@@ -131,11 +131,11 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var closureTrashItemRevisions: () -> () = {}
     public var invokedTrashItemRevisionsfunction = false
     public var invokedTrashItemRevisionsCount = 0
-    public var invokedTrashItemRevisionsParameters: (items: [ItemRevision], shareId: String)?
-    public var invokedTrashItemRevisionsParametersList = [(items: [ItemRevision], shareId: String)]()
+    public var invokedTrashItemRevisionsParameters: (items: [Item], shareId: String)?
+    public var invokedTrashItemRevisionsParametersList = [(items: [Item], shareId: String)]()
     public var stubbedTrashItemRevisionsResult: [ModifiedItem]!
 
-    public func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+    public func trashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
         invokedTrashItemRevisionsfunction = true
         invokedTrashItemRevisionsCount += 1
         invokedTrashItemRevisionsParameters = (items, shareId)
@@ -151,11 +151,11 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var closureUntrashItemRevisions: () -> () = {}
     public var invokedUntrashItemRevisionsfunction = false
     public var invokedUntrashItemRevisionsCount = 0
-    public var invokedUntrashItemRevisionsParameters: (items: [ItemRevision], shareId: String)?
-    public var invokedUntrashItemRevisionsParametersList = [(items: [ItemRevision], shareId: String)]()
+    public var invokedUntrashItemRevisionsParameters: (items: [Item], shareId: String)?
+    public var invokedUntrashItemRevisionsParametersList = [(items: [Item], shareId: String)]()
     public var stubbedUntrashItemRevisionsResult: [ModifiedItem]!
 
-    public func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+    public func untrashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
         invokedUntrashItemRevisionsfunction = true
         invokedUntrashItemRevisionsCount += 1
         invokedUntrashItemRevisionsParameters = (items, shareId)
@@ -171,10 +171,10 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var closureDeleteItemRevisions: () -> () = {}
     public var invokedDeleteItemRevisionsfunction = false
     public var invokedDeleteItemRevisionsCount = 0
-    public var invokedDeleteItemRevisionsParameters: (items: [ItemRevision], shareId: String, skipTrash: Bool)?
-    public var invokedDeleteItemRevisionsParametersList = [(items: [ItemRevision], shareId: String, skipTrash: Bool)]()
+    public var invokedDeleteItemRevisionsParameters: (items: [Item], shareId: String, skipTrash: Bool)?
+    public var invokedDeleteItemRevisionsParametersList = [(items: [Item], shareId: String, skipTrash: Bool)]()
 
-    public func deleteItemRevisions(_ items: [ItemRevision], shareId: String, skipTrash: Bool) async throws {
+    public func deleteItemRevisions(_ items: [Item], shareId: String, skipTrash: Bool) async throws {
         invokedDeleteItemRevisionsfunction = true
         invokedDeleteItemRevisionsCount += 1
         invokedDeleteItemRevisionsParameters = (items, shareId, skipTrash)
@@ -191,9 +191,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedUpdateItemCount = 0
     public var invokedUpdateItemParameters: (shareId: String, itemId: String, request: UpdateItemRequest)?
     public var invokedUpdateItemParametersList = [(shareId: String, itemId: String, request: UpdateItemRequest)]()
-    public var stubbedUpdateItemResult: ItemRevision!
+    public var stubbedUpdateItemResult: Item!
 
-    public func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> ItemRevision {
+    public func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> Item {
         invokedUpdateItemfunction = true
         invokedUpdateItemCount += 1
         invokedUpdateItemParameters = (shareId, itemId, request)
@@ -211,9 +211,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedUpdateLastUseTimeCount = 0
     public var invokedUpdateLastUseTimeParameters: (shareId: String, itemId: String, lastUseTime: TimeInterval)?
     public var invokedUpdateLastUseTimeParametersList = [(shareId: String, itemId: String, lastUseTime: TimeInterval)]()
-    public var stubbedUpdateLastUseTimeResult: ItemRevision!
+    public var stubbedUpdateLastUseTimeResult: Item!
 
-    public func updateLastUseTime(shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> ItemRevision {
+    public func updateLastUseTime(shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> Item {
         invokedUpdateLastUseTimefunction = true
         invokedUpdateLastUseTimeCount += 1
         invokedUpdateLastUseTimeParameters = (shareId, itemId, lastUseTime)
@@ -231,9 +231,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedMoveItemIdFromShareIdRequestAsyncCount11 = 0
     public var invokedMoveItemIdFromShareIdRequestAsyncParameters11: (itemId: String, fromShareId: String, request: MoveItemRequest)?
     public var invokedMoveItemIdFromShareIdRequestAsyncParametersList11 = [(itemId: String, fromShareId: String, request: MoveItemRequest)]()
-    public var stubbedMoveItemIdFromShareIdRequestAsyncResult11: ItemRevision!
+    public var stubbedMoveItemIdFromShareIdRequestAsyncResult11: Item!
 
-    public func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> ItemRevision {
+    public func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> Item {
         invokedMoveItemIdFromShareIdRequestAsync11 = true
         invokedMoveItemIdFromShareIdRequestAsyncCount11 += 1
         invokedMoveItemIdFromShareIdRequestAsyncParameters11 = (itemId, fromShareId, request)
@@ -251,9 +251,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedMoveFromShareIdRequestAsyncCount12 = 0
     public var invokedMoveFromShareIdRequestAsyncParameters12: (fromShareId: String, request: MoveItemsRequest)?
     public var invokedMoveFromShareIdRequestAsyncParametersList12 = [(fromShareId: String, request: MoveItemsRequest)]()
-    public var stubbedMoveFromShareIdRequestAsyncResult12: [ItemRevision]!
+    public var stubbedMoveFromShareIdRequestAsyncResult12: [Item]!
 
-    public func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
+    public func move(fromShareId: String, request: MoveItemsRequest) async throws -> [Item] {
         invokedMoveFromShareIdRequestAsync12 = true
         invokedMoveFromShareIdRequestAsyncCount12 += 1
         invokedMoveFromShareIdRequestAsyncParameters12 = (fromShareId, request)
@@ -271,9 +271,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedPinCount = 0
     public var invokedPinParameters: (item: any ItemIdentifiable, Void)?
     public var invokedPinParametersList = [(item: any ItemIdentifiable, Void)]()
-    public var stubbedPinResult: ItemRevision!
+    public var stubbedPinResult: Item!
 
-    public func pin(item: any ItemIdentifiable) async throws -> ItemRevision {
+    public func pin(item: any ItemIdentifiable) async throws -> Item {
         invokedPinfunction = true
         invokedPinCount += 1
         invokedPinParameters = (item, ())
@@ -291,9 +291,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedUnpinCount = 0
     public var invokedUnpinParameters: (item: any ItemIdentifiable, Void)?
     public var invokedUnpinParametersList = [(item: any ItemIdentifiable, Void)]()
-    public var stubbedUnpinResult: ItemRevision!
+    public var stubbedUnpinResult: Item!
 
-    public func unpin(item: any ItemIdentifiable) async throws -> ItemRevision {
+    public func unpin(item: any ItemIdentifiable) async throws -> Item {
         invokedUnpinfunction = true
         invokedUnpinCount += 1
         invokedUnpinParameters = (item, ())

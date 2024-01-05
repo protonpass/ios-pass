@@ -1,5 +1,5 @@
 //
-// ItemRevision+Extensions.swift
+// Item+Extensions.swift
 // Proton Pass - Created on 24/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,7 +23,7 @@ import Entities
 import ProtonCoreDataModel
 import ProtonCoreLogin
 
-public extension ItemRevision {
+public extension Item {
     func getContentProtobuf(vaultKey: DecryptedShareKey) throws -> ItemContentProtobuf {
         guard vaultKey.keyRotation == keyRotation else {
             throw PassError.crypto(.unmatchedKeyRotation(lhsKey: vaultKey.keyRotation,

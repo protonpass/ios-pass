@@ -175,9 +175,9 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetItemRevisionsCount = 0
     public var invokedGetItemRevisionsParameters: (shareId: String, itemId: String)?
     public var invokedGetItemRevisionsParametersList = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemRevisionsResult: [ItemRevision]!
+    public var stubbedGetItemRevisionsResult: [Item]!
 
-    public func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemRevision] {
+    public func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
         invokedGetItemRevisionsfunction = true
         invokedGetItemRevisionsCount += 1
         invokedGetItemRevisionsParameters = (shareId, itemId)
@@ -397,10 +397,10 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureUpdateItem: () -> () = {}
     public var invokedUpdateItemfunction = false
     public var invokedUpdateItemCount = 0
-    public var invokedUpdateItemParameters: (oldItem: ItemRevision, newItemContent: any ProtobufableItemContentProtocol, shareId: String)?
-    public var invokedUpdateItemParametersList = [(oldItem: ItemRevision, newItemContent: any ProtobufableItemContentProtocol, shareId: String)]()
+    public var invokedUpdateItemParameters: (oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)?
+    public var invokedUpdateItemParametersList = [(oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)]()
 
-    public func updateItem(oldItem: ItemRevision, newItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws {
+    public func updateItem(oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws {
         invokedUpdateItemfunction = true
         invokedUpdateItemCount += 1
         invokedUpdateItemParameters = (oldItem, newItemContent, shareId)
@@ -415,10 +415,10 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureUpsertItems: () -> () = {}
     public var invokedUpsertItemsfunction = false
     public var invokedUpsertItemsCount = 0
-    public var invokedUpsertItemsParameters: (items: [ItemRevision], shareId: String)?
-    public var invokedUpsertItemsParametersList = [(items: [ItemRevision], shareId: String)]()
+    public var invokedUpsertItemsParameters: (items: [Item], shareId: String)?
+    public var invokedUpsertItemsParametersList = [(items: [Item], shareId: String)]()
 
-    public func upsertItems(_ items: [ItemRevision], shareId: String) async throws {
+    public func upsertItems(_ items: [Item], shareId: String) async throws {
         invokedUpsertItemsfunction = true
         invokedUpsertItemsCount += 1
         invokedUpsertItemsParameters = (items, shareId)

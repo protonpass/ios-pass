@@ -26,7 +26,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct MoveItemsResponse: Decodable, Sendable {
-    let items: [ItemRevision]
+    let items: [Item]
 }
 
 public struct MoveItemsRequest: Encodable, Sendable {

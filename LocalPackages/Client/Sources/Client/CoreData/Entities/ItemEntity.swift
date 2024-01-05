@@ -69,19 +69,19 @@ extension ItemEntity {
             throw PassError.coreData(.corrupted(object: self, property: "content"))
         }
 
-        let itemRevision = ItemRevision(itemID: itemID,
-                                        revision: revision,
-                                        contentFormatVersion: contentFormatVersion,
-                                        keyRotation: keyRotation,
-                                        content: content,
-                                        itemKey: itemKey,
-                                        state: state,
-                                        pinned: pinned,
-                                        aliasEmail: aliasEmail,
-                                        createTime: createTime,
-                                        modifyTime: modifyTime,
-                                        lastUseTime: lastUseTime == 0 ? nil : lastUseTime,
-                                        revisionTime: revisionTime)
+        let itemRevision = Item(itemID: itemID,
+                                revision: revision,
+                                contentFormatVersion: contentFormatVersion,
+                                keyRotation: keyRotation,
+                                content: content,
+                                itemKey: itemKey,
+                                state: state,
+                                pinned: pinned,
+                                aliasEmail: aliasEmail,
+                                createTime: createTime,
+                                modifyTime: modifyTime,
+                                lastUseTime: lastUseTime == 0 ? nil : lastUseTime,
+                                revisionTime: revisionTime)
 
         return .init(shareId: shareID,
                      item: itemRevision,

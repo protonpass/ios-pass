@@ -26,7 +26,7 @@ public struct SyncEvents: Decodable, Sendable {
     public let updatedShare: Share?
 
     /// New or updated items
-    public let updatedItems: [ItemRevision]
+    public let updatedItems: [Item]
 
     /// Deleted items
     public let deletedItemIDs: [String]

@@ -93,14 +93,14 @@ public protocol ItemContentProtocol: Sendable {
 public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable {
     public let shareId: String
     public let itemUuid: String
-    public let item: ItemRevision
+    public let item: Item
     public let name: String
     public let note: String
     public let contentData: ItemContentData
     public let customFields: [CustomField]
 
     public init(shareId: String,
-                item: ItemRevision,
+                item: Item,
                 contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
         self.item = item
