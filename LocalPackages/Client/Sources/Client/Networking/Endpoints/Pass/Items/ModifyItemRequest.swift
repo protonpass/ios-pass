@@ -37,7 +37,7 @@ public struct ModifyItemRequest: Encodable, Sendable {
         self.skipTrash = skipTrash
     }
 
-    public init(items: [ItemRevision], skipTrash: Bool) {
+    public init(items: [Item], skipTrash: Bool) {
         self.items = items.map { .init(itemID: $0.itemID, revision: $0.revision) }
         self.skipTrash = skipTrash
     }

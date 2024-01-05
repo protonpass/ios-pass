@@ -26,8 +26,8 @@ public struct CreateAliasAndAnotherItemResponse: Decodable, Sendable {
     let bundle: Bundle
 
     public struct Bundle: Decodable, Sendable {
-        let alias: ItemRevision
-        let item: ItemRevision
+        let alias: Item
+        let item: Item
     }
 }
 

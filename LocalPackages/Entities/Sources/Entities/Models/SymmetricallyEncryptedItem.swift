@@ -24,7 +24,7 @@ public struct SymmetricallyEncryptedItem: Equatable, Sendable {
     public let shareId: String
 
     /// Original item revision object as returned by the server
-    public let item: ItemRevision
+    public let item: Item
 
     /// Symmetrically encrypted content in base 64 format
     public let encryptedContent: String
@@ -32,7 +32,7 @@ public struct SymmetricallyEncryptedItem: Equatable, Sendable {
     /// Whether the item is type log in or not
     public let isLogInItem: Bool
 
-    public init(shareId: String, item: ItemRevision, encryptedContent: String, isLogInItem: Bool) {
+    public init(shareId: String, item: Item, encryptedContent: String, isLogInItem: Bool) {
         self.shareId = shareId
         self.item = item
         self.encryptedContent = encryptedContent

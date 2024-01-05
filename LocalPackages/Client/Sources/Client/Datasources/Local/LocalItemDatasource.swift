@@ -151,19 +151,19 @@ public extension LocalItemDatasource {
                      modifiedItems: [ModifiedItem]) async throws {
         for item in items {
             if let modifiedItem = modifiedItems.first(where: { $0.itemID == item.item.itemID }) {
-                let modifiedItem = ItemRevision(itemID: item.item.itemID,
-                                                revision: modifiedItem.revision,
-                                                contentFormatVersion: item.item.contentFormatVersion,
-                                                keyRotation: item.item.keyRotation,
-                                                content: item.item.content,
-                                                itemKey: item.item.itemKey,
-                                                state: modifiedItem.state,
-                                                pinned: item.item.pinned,
-                                                aliasEmail: item.item.aliasEmail,
-                                                createTime: item.item.createTime,
-                                                modifyTime: modifiedItem.modifyTime,
-                                                lastUseTime: item.item.lastUseTime,
-                                                revisionTime: modifiedItem.revisionTime)
+                let modifiedItem = Item(itemID: item.item.itemID,
+                                        revision: modifiedItem.revision,
+                                        contentFormatVersion: item.item.contentFormatVersion,
+                                        keyRotation: item.item.keyRotation,
+                                        content: item.item.content,
+                                        itemKey: item.item.itemKey,
+                                        state: modifiedItem.state,
+                                        pinned: item.item.pinned,
+                                        aliasEmail: item.item.aliasEmail,
+                                        createTime: item.item.createTime,
+                                        modifyTime: modifiedItem.modifyTime,
+                                        lastUseTime: item.item.lastUseTime,
+                                        revisionTime: modifiedItem.revisionTime)
                 try await upsertItems([.init(shareId: item.shareId,
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
