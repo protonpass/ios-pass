@@ -110,15 +110,15 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = title ?? ""
                 urls = [url ?? ""].map { .init(value: $0) }
             }
+        }
 
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                do {
-                    self.canAddOrEdit2FAURI = try await self.upgradeChecker.canHaveMoreLoginsWith2FA()
-                } catch {
-                    self.logger.error(error)
-                    self.router.display(element: .displayErrorBanner(error))
-                }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                canAddOrEdit2FAURI = try await upgradeChecker.canHaveMoreLoginsWith2FA()
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

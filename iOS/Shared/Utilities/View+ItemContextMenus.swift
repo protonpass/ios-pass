@@ -176,7 +176,7 @@ struct ItemContextMenuOption: Identifiable {
 
     static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
                                 action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: item.pinTitle, icon: Image(systemName: item.pinIcon), action: action)
+        .init(title: item.pinTitle, icon: Image(uiImage: item.pinIcon), action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
