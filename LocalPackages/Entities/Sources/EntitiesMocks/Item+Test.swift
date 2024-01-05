@@ -1,5 +1,5 @@
 //
-// ItemRevision+Test.swift
+// Item+Test.swift
 // Proton Pass - Created on 10/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -26,14 +26,14 @@ public extension ItemState {
     }
 }
 
-public extension ItemRevision {
+public extension Item {
     static func random(itemId: String? = nil,
                        state: ItemState? = nil,
                        aliasEmail: String? = nil,
                        pinned: Bool = false,
                        keyRotation: Int64 = .random(in: 0...100),
                        lastUseTime: Int64 = .random(in: 0...1_000_000),
-                       modifyTime: Int64 = .random(in: 0...1_000_000)) -> ItemRevision {
+                       modifyTime: Int64 = .random(in: 0...1_000_000)) -> Item {
         .init(itemID: itemId ?? .random(),
               revision: .random(in: 0...100),
               contentFormatVersion: .random(in: 0...100),

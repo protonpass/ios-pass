@@ -18,26 +18,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 
 public protocol RemoteShareKeyDatasourceProtocol: Sendable {
-    func getKeys(shareId: String) async throws -> [ShareKey]
+    func getKeys(shareId: String, pageSize: Int) async throws -> [ShareKey]
+}
+
+extension RemoteShareKeyDatasourceProtocol {
+    func getKeys(shareId: String, pageSize: Int = Constants.Utils.defaultPageSize) async throws -> [ShareKey] {
+        try await getKeys(shareId: shareId, pageSize: pageSize)
+    }
 }
 
 public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {}
 
 public extension RemoteShareKeyDatasource {
-    func getKeys(shareId: String) async throws -> [ShareKey] {
+    func getKeys(shareId: String, pageSize: Int = Constants.Utils.defaultPageSize) async throws -> [ShareKey] {
         var keys = [ShareKey]()
         var page = 0
         while true {
             let endpoint = GetShareKeysEndpoint(shareId: shareId,
                                                 page: page,
-                                                pageSize: kDefaultPageSize)
+                                                pageSize: pageSize)
             let response = try await exec(endpoint: endpoint)
 
             keys += response.shareKeys.keys
-            if response.shareKeys.total < kDefaultPageSize {
+            if response.shareKeys.total < pageSize {
                 break
             } else {
                 page += 1

@@ -171,7 +171,7 @@ extension LocalItemDatasourceTests {
         let givenShareId = String.random()
         let givenItem = try await sut.givenInsertedItem(itemId: givenItemId,
                                                         shareId: givenShareId)
-        let updatedItemRevision = ItemRevision.random(itemId: givenItemId)
+        let updatedItemRevision = Item.random(itemId: givenItemId)
         let updatedItem = SymmetricallyEncryptedItem.random(shareId: givenShareId,
                                                             item: updatedItemRevision,
                                                             isLogInItem: givenItem.isLogInItem)
@@ -422,7 +422,7 @@ extension LocalItemDatasource {
                            isLogInItem: Bool = .random())
     async throws -> SymmetricallyEncryptedItem {
         let shareId = shareId ?? .random()
-        let itemRevision = ItemRevision.random(itemId: itemId ?? .random(),
+        let itemRevision = Item.random(itemId: itemId ?? .random(),
                                                state: state,
                                                aliasEmail: aliasEmail,
                                                modifyTime: modifyTime)
