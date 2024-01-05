@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
@@ -34,7 +35,10 @@ public struct GetItemRevisionsEndpoint: Endpoint, @unchecked Sendable {
     public var path: String
     public var queries: [String: Any]?
 
-    public init(shareId: String, itemId: String, sinceToken: String? = nil, pageSize: Int = 100) {
+    public init(shareId: String,
+                itemId: String,
+                sinceToken: String? = nil,
+                pageSize: Int = Constants.Utils.defaultPageSize) {
         debugDescription = "Get items for share"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/revision"
 

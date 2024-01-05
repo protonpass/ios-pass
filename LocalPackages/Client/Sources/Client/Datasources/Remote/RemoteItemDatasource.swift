@@ -18,21 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import Foundation
 
 // sourcery: AutoMockable
 public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
-    func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item]
+    func getItems(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item]
     func getItemRevisions(shareId: String, itemId: String) async throws -> [Item]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> Item
     func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> Item
     func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
         async throws -> CreateAliasAndAnotherItemResponse.Bundle
-    func trashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem]
-    func untrashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem]
-    func deleteItemRevisions(_ items: [Item], shareId: String, skipTrash: Bool) async throws
+    func trashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem]
+    func untrashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem]
+    func deleteItem(_ items: [Item], shareId: String, skipTrash: Bool) async throws
     func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> Item
     func updateLastUseTime(shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> Item
     func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> Item
@@ -44,14 +45,14 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
 
 public extension RemoteItemDatasource {
-    func getItemRevisions(shareId: String,
-                          eventStream: VaultSyncEventStream?) async throws -> [Item] {
+    func getItems(shareId: String,
+                  eventStream: VaultSyncEventStream?) async throws -> [Item] {
         var itemRevisions = [Item]()
         var sinceToken: String?
         while true {
             let endpoint = GetItemsEndpoint(shareId: shareId,
                                             sinceToken: sinceToken,
-                                            pageSize: kDefaultPageSize)
+                                            pageSize: Constants.Utils.defaultPageSize)
             let response = try await exec(endpoint: endpoint)
 
             itemRevisions += response.items.revisionsData
@@ -91,21 +92,21 @@ public extension RemoteItemDatasource {
         return response.bundle
     }
 
-    func trashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
+    func trashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
         let endpoint = TrashItemsEndpoint(shareId: shareId, items: items)
         let response = try await exec(endpoint: endpoint)
         return response.items
     }
 
-    func untrashItemRevisions(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
+    func untrashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
         let endpoint = UntrashItemsEndpoint(shareId: shareId, items: items)
         let response = try await exec(endpoint: endpoint)
         return response.items
     }
 
-    func deleteItemRevisions(_ items: [Item],
-                             shareId: String,
-                             skipTrash: Bool) async throws {
+    func deleteItem(_ items: [Item],
+                    shareId: String,
+                    skipTrash: Bool) async throws {
         let endpoint = DeleteItemsEndpoint(shareId: shareId,
                                            items: items,
                                            skipTrash: skipTrash)
