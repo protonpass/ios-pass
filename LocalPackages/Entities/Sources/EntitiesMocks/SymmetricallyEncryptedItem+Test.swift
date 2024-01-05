@@ -22,7 +22,7 @@ import Entities
 
 public extension SymmetricallyEncryptedItem {
     static func random(shareId: String? = nil,
-                       item: ItemRevision? = nil,
+                       item: Item? = nil,
                        encryptedContent: String? = nil,
                        isLogInItem: Bool = .random()) -> SymmetricallyEncryptedItem {
         .init(shareId: shareId ?? .random(),
