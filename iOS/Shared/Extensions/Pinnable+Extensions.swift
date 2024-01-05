@@ -18,16 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
 import Macro
+import UIKit
 
 extension Pinnable {
     var pinTitle: String {
         pinned ? #localized("Unpin") : #localized("Pin")
     }
 
-    var pinIcon: String {
-        pinned ? "pin.slash" : "pin"
+    var pinIcon: UIImage {
+        pinned ? PassIcon.pinAngledSlash : PassIcon.pinAngled
     }
 
     var pinMessage: String {
