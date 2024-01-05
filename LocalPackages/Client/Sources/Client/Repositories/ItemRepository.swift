@@ -202,8 +202,8 @@ public extension ItemRepository {
 
     func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws {
         logger.trace("Refreshing share \(shareId)")
-        let itemRevisions = try await remoteDatasource.getItemRevisions(shareId: shareId,
-                                                                        eventStream: eventStream)
+        let itemRevisions = try await remoteDatasource.getItems(shareId: shareId,
+                                                                eventStream: eventStream)
         logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
@@ -295,8 +295,8 @@ public extension ItemRepository {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Trashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                    try await remoteDatasource.trashItemRevisions(batch.map(\.item),
-                                                                  shareId: shareId)
+                    try await remoteDatasource.trashItem(batch.map(\.item),
+                                                         shareId: shareId)
                 try await localDatasource.upsertItems(batch,
                                                       modifiedItems: modifiedItems)
                 logger.trace("Trashed \(batch.count) items for share \(shareId)")
@@ -332,8 +332,8 @@ public extension ItemRepository {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Untrashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                    try await remoteDatasource.untrashItemRevisions(batch.map(\.item),
-                                                                    shareId: shareId)
+                    try await remoteDatasource.untrashItem(batch.map(\.item),
+                                                           shareId: shareId)
                 try await localDatasource.upsertItems(batch,
                                                       modifiedItems: modifiedItems)
                 logger.trace("Untrashed \(batch.count) items for share \(shareId)")
@@ -359,9 +359,9 @@ public extension ItemRepository {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Deleting \(batch.count) items for share \(shareId)")
-                try await remoteDatasource.deleteItemRevisions(batch.map(\.item),
-                                                               shareId: shareId,
-                                                               skipTrash: skipTrash)
+                try await remoteDatasource.deleteItem(batch.map(\.item),
+                                                      shareId: shareId,
+                                                      skipTrash: skipTrash)
                 try await localDatasource.deleteItems(batch)
                 logger.trace("Deleted \(batch.count) items for share \(shareId)")
             }
