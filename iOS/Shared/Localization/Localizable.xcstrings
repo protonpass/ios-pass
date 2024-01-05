@@ -2911,7 +2911,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Do konce zkušebního období zbývá 1 den"
+                  "value" : "Do konce zkušebního období zbývá %lld den"
                 }
               },
               "other" : {
@@ -2929,7 +2929,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Deine kostenlose Testphase läuft noch einen Tag."
+                  "value" : "Deine kostenlose Testphase läuft noch %lld Tag."
                 }
               },
               "other" : {
@@ -2947,7 +2947,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Μία ημέρα απομένει στη δοκιμαστική σας περίοδο"
+                  "value" : "%lld ημέρα απομένει στη δοκιμαστική σας περίοδο"
                 }
               },
               "other" : {
@@ -2965,7 +2965,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "One day left to try premium features"
+                  "value" : "%lld day left to try premium features"
                 }
               },
               "other" : {
@@ -2983,7 +2983,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "1 día restante en tu periodo de prueba"
+                  "value" : "%lld día restante en tu periodo de prueba"
                 }
               },
               "other" : {
@@ -3001,7 +3001,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Un día restante en su periodo de prueba"
+                  "value" : "%lld día restante en su periodo de prueba"
                 }
               },
               "other" : {
@@ -3019,7 +3019,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Kokeilujaksoasi on jäljellä 1 päivä"
+                  "value" : "Kokeilujaksoasi on jäljellä %lld päivä"
                 }
               },
               "other" : {
@@ -3037,7 +3037,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Votre période d'essai se termine dans un jour."
+                  "value" : "Votre période d'essai se termine dans %lld jour."
                 }
               },
               "other" : {
@@ -3055,7 +3055,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Manca un giorno al termine del periodo di prova"
+                  "value" : "Manca %lld giorno al termine del periodo di prova"
                 }
               },
               "other" : {
@@ -3085,7 +3085,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია ერთი დღე"
+                  "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია %lld დღე"
                 }
               },
               "other" : {
@@ -3103,7 +3103,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 무료 체험이 %d일 남았습니다"
+                  "value" : "%lld 무료 체험이 일 남았습니다"
                 }
               }
             }
@@ -3115,7 +3115,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "En dag igjen av prøveperioden"
+                  "value" : "%lld dag igjen av prøveperioden"
                 }
               },
               "other" : {
@@ -3145,7 +3145,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Pozostał 1 dzień wersji próbnej"
+                  "value" : "Pozostał %lld dzień wersji próbnej"
                 }
               },
               "other" : {
@@ -3163,7 +3163,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Resta um dia no seu período experimental"
+                  "value" : "Resta %lld dia no seu período experimental"
                 }
               },
               "other" : {
@@ -3181,7 +3181,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Um dia restante em seu período de avaliação gratuita"
+                  "value" : "%lld dia restante em seu período de avaliação gratuita"
                 }
               },
               "other" : {
@@ -3205,7 +3205,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "A mai rămas o zi de încercare."
+                  "value" : "A mai rămas %lld zi de încercare."
                 }
               },
               "other" : {
@@ -3235,7 +3235,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Do konca skúšobného obdobia zostáva jeden deň"
+                  "value" : "Do konca skúšobného obdobia zostáva %lld deň"
                 }
               },
               "other" : {
@@ -3253,7 +3253,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "1 dag kvar av din provperiod"
+                  "value" : "%lld dag kvar av din provperiod"
                 }
               },
               "other" : {
@@ -3271,7 +3271,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Deneme sürenizin bitmesine 1 gün kaldı"
+                  "value" : "Deneme sürenizin bitmesine %lld gün kaldı"
                 }
               },
               "other" : {
@@ -3301,7 +3301,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "До закінчення пробного періоду залишився 1 день"
+                  "value" : "До закінчення пробного періоду залишився %lld день"
                 }
               },
               "other" : {
