@@ -26,28 +26,48 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
 
     public init() {}
 
-    // MARK: - getItemRevisions
+    // MARK: - getItemRevisionsShareIdEventStream
     public var getItemRevisionsShareIdEventStreamThrowableError1: Error?
-    public var closureGetItemRevisions: () -> () = {}
-    public var invokedGetItemRevisionsfunction = false
-    public var invokedGetItemRevisionsCount = 0
-    public var invokedGetItemRevisionsParameters: (shareId: String, eventStream: VaultSyncEventStream?)?
-    public var invokedGetItemRevisionsParametersList = [(shareId: String, eventStream: VaultSyncEventStream?)]()
-    public var stubbedGetItemRevisionsResult: [ItemRevision]!
+    public var closureGetItemRevisionsShareIdEventStreamAsync1: () -> () = {}
+    public var invokedGetItemRevisionsShareIdEventStreamAsync1 = false
+    public var invokedGetItemRevisionsShareIdEventStreamAsyncCount1 = 0
+    public var invokedGetItemRevisionsShareIdEventStreamAsyncParameters1: (shareId: String, eventStream: VaultSyncEventStream?)?
+    public var invokedGetItemRevisionsShareIdEventStreamAsyncParametersList1 = [(shareId: String, eventStream: VaultSyncEventStream?)]()
+    public var stubbedGetItemRevisionsShareIdEventStreamAsyncResult1: [ItemRevision]!
 
     public func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision] {
-        invokedGetItemRevisionsfunction = true
-        invokedGetItemRevisionsCount += 1
-        invokedGetItemRevisionsParameters = (shareId, eventStream)
-        invokedGetItemRevisionsParametersList.append((shareId, eventStream))
+        invokedGetItemRevisionsShareIdEventStreamAsync1 = true
+        invokedGetItemRevisionsShareIdEventStreamAsyncCount1 += 1
+        invokedGetItemRevisionsShareIdEventStreamAsyncParameters1 = (shareId, eventStream)
+        invokedGetItemRevisionsShareIdEventStreamAsyncParametersList1.append((shareId, eventStream))
         if let error = getItemRevisionsShareIdEventStreamThrowableError1 {
             throw error
         }
-        closureGetItemRevisions()
-        return stubbedGetItemRevisionsResult
+        closureGetItemRevisionsShareIdEventStreamAsync1()
+        return stubbedGetItemRevisionsShareIdEventStreamAsyncResult1
+    }
+    // MARK: - getItemRevisionsShareIdItemId
+    public var getItemRevisionsShareIdItemIdThrowableError2: Error?
+    public var closureGetItemRevisionsShareIdItemIdAsync2: () -> () = {}
+    public var invokedGetItemRevisionsShareIdItemIdAsync2 = false
+    public var invokedGetItemRevisionsShareIdItemIdAsyncCount2 = 0
+    public var invokedGetItemRevisionsShareIdItemIdAsyncParameters2: (shareId: String, itemId: String)?
+    public var invokedGetItemRevisionsShareIdItemIdAsyncParametersList2 = [(shareId: String, itemId: String)]()
+    public var stubbedGetItemRevisionsShareIdItemIdAsyncResult2: [ItemRevision]!
+
+    public func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemRevision] {
+        invokedGetItemRevisionsShareIdItemIdAsync2 = true
+        invokedGetItemRevisionsShareIdItemIdAsyncCount2 += 1
+        invokedGetItemRevisionsShareIdItemIdAsyncParameters2 = (shareId, itemId)
+        invokedGetItemRevisionsShareIdItemIdAsyncParametersList2.append((shareId, itemId))
+        if let error = getItemRevisionsShareIdItemIdThrowableError2 {
+            throw error
+        }
+        closureGetItemRevisionsShareIdItemIdAsync2()
+        return stubbedGetItemRevisionsShareIdItemIdAsyncResult2
     }
     // MARK: - createItem
-    public var createItemShareIdRequestThrowableError2: Error?
+    public var createItemShareIdRequestThrowableError3: Error?
     public var closureCreateItem: () -> () = {}
     public var invokedCreateItemfunction = false
     public var invokedCreateItemCount = 0
@@ -60,14 +80,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreateItemCount += 1
         invokedCreateItemParameters = (shareId, request)
         invokedCreateItemParametersList.append((shareId, request))
-        if let error = createItemShareIdRequestThrowableError2 {
+        if let error = createItemShareIdRequestThrowableError3 {
             throw error
         }
         closureCreateItem()
         return stubbedCreateItemResult
     }
     // MARK: - createAlias
-    public var createAliasShareIdRequestThrowableError3: Error?
+    public var createAliasShareIdRequestThrowableError4: Error?
     public var closureCreateAlias: () -> () = {}
     public var invokedCreateAliasfunction = false
     public var invokedCreateAliasCount = 0
@@ -80,14 +100,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreateAliasCount += 1
         invokedCreateAliasParameters = (shareId, request)
         invokedCreateAliasParametersList.append((shareId, request))
-        if let error = createAliasShareIdRequestThrowableError3 {
+        if let error = createAliasShareIdRequestThrowableError4 {
             throw error
         }
         closureCreateAlias()
         return stubbedCreateAliasResult
     }
     // MARK: - createAliasAndAnotherItem
-    public var createAliasAndAnotherItemShareIdRequestThrowableError4: Error?
+    public var createAliasAndAnotherItemShareIdRequestThrowableError5: Error?
     public var closureCreateAliasAndAnotherItem: () -> () = {}
     public var invokedCreateAliasAndAnotherItemfunction = false
     public var invokedCreateAliasAndAnotherItemCount = 0
@@ -100,14 +120,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedCreateAliasAndAnotherItemCount += 1
         invokedCreateAliasAndAnotherItemParameters = (shareId, request)
         invokedCreateAliasAndAnotherItemParametersList.append((shareId, request))
-        if let error = createAliasAndAnotherItemShareIdRequestThrowableError4 {
+        if let error = createAliasAndAnotherItemShareIdRequestThrowableError5 {
             throw error
         }
         closureCreateAliasAndAnotherItem()
         return stubbedCreateAliasAndAnotherItemResult
     }
     // MARK: - trashItemRevisions
-    public var trashItemRevisionsShareIdThrowableError5: Error?
+    public var trashItemRevisionsShareIdThrowableError6: Error?
     public var closureTrashItemRevisions: () -> () = {}
     public var invokedTrashItemRevisionsfunction = false
     public var invokedTrashItemRevisionsCount = 0
@@ -120,14 +140,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedTrashItemRevisionsCount += 1
         invokedTrashItemRevisionsParameters = (items, shareId)
         invokedTrashItemRevisionsParametersList.append((items, shareId))
-        if let error = trashItemRevisionsShareIdThrowableError5 {
+        if let error = trashItemRevisionsShareIdThrowableError6 {
             throw error
         }
         closureTrashItemRevisions()
         return stubbedTrashItemRevisionsResult
     }
     // MARK: - untrashItemRevisions
-    public var untrashItemRevisionsShareIdThrowableError6: Error?
+    public var untrashItemRevisionsShareIdThrowableError7: Error?
     public var closureUntrashItemRevisions: () -> () = {}
     public var invokedUntrashItemRevisionsfunction = false
     public var invokedUntrashItemRevisionsCount = 0
@@ -140,14 +160,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUntrashItemRevisionsCount += 1
         invokedUntrashItemRevisionsParameters = (items, shareId)
         invokedUntrashItemRevisionsParametersList.append((items, shareId))
-        if let error = untrashItemRevisionsShareIdThrowableError6 {
+        if let error = untrashItemRevisionsShareIdThrowableError7 {
             throw error
         }
         closureUntrashItemRevisions()
         return stubbedUntrashItemRevisionsResult
     }
     // MARK: - deleteItemRevisions
-    public var deleteItemRevisionsShareIdSkipTrashThrowableError7: Error?
+    public var deleteItemRevisionsShareIdSkipTrashThrowableError8: Error?
     public var closureDeleteItemRevisions: () -> () = {}
     public var invokedDeleteItemRevisionsfunction = false
     public var invokedDeleteItemRevisionsCount = 0
@@ -159,13 +179,13 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedDeleteItemRevisionsCount += 1
         invokedDeleteItemRevisionsParameters = (items, shareId, skipTrash)
         invokedDeleteItemRevisionsParametersList.append((items, shareId, skipTrash))
-        if let error = deleteItemRevisionsShareIdSkipTrashThrowableError7 {
+        if let error = deleteItemRevisionsShareIdSkipTrashThrowableError8 {
             throw error
         }
         closureDeleteItemRevisions()
     }
     // MARK: - updateItem
-    public var updateItemShareIdItemIdRequestThrowableError8: Error?
+    public var updateItemShareIdItemIdRequestThrowableError9: Error?
     public var closureUpdateItem: () -> () = {}
     public var invokedUpdateItemfunction = false
     public var invokedUpdateItemCount = 0
@@ -178,14 +198,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUpdateItemCount += 1
         invokedUpdateItemParameters = (shareId, itemId, request)
         invokedUpdateItemParametersList.append((shareId, itemId, request))
-        if let error = updateItemShareIdItemIdRequestThrowableError8 {
+        if let error = updateItemShareIdItemIdRequestThrowableError9 {
             throw error
         }
         closureUpdateItem()
         return stubbedUpdateItemResult
     }
     // MARK: - updateLastUseTime
-    public var updateLastUseTimeShareIdItemIdLastUseTimeThrowableError9: Error?
+    public var updateLastUseTimeShareIdItemIdLastUseTimeThrowableError10: Error?
     public var closureUpdateLastUseTime: () -> () = {}
     public var invokedUpdateLastUseTimefunction = false
     public var invokedUpdateLastUseTimeCount = 0
@@ -198,54 +218,54 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUpdateLastUseTimeCount += 1
         invokedUpdateLastUseTimeParameters = (shareId, itemId, lastUseTime)
         invokedUpdateLastUseTimeParametersList.append((shareId, itemId, lastUseTime))
-        if let error = updateLastUseTimeShareIdItemIdLastUseTimeThrowableError9 {
+        if let error = updateLastUseTimeShareIdItemIdLastUseTimeThrowableError10 {
             throw error
         }
         closureUpdateLastUseTime()
         return stubbedUpdateLastUseTimeResult
     }
     // MARK: - moveItemIdFromShareIdRequest
-    public var moveItemIdFromShareIdRequestThrowableError10: Error?
-    public var closureMoveItemIdFromShareIdRequestAsync10: () -> () = {}
-    public var invokedMoveItemIdFromShareIdRequestAsync10 = false
-    public var invokedMoveItemIdFromShareIdRequestAsyncCount10 = 0
-    public var invokedMoveItemIdFromShareIdRequestAsyncParameters10: (itemId: String, fromShareId: String, request: MoveItemRequest)?
-    public var invokedMoveItemIdFromShareIdRequestAsyncParametersList10 = [(itemId: String, fromShareId: String, request: MoveItemRequest)]()
-    public var stubbedMoveItemIdFromShareIdRequestAsyncResult10: ItemRevision!
+    public var moveItemIdFromShareIdRequestThrowableError11: Error?
+    public var closureMoveItemIdFromShareIdRequestAsync11: () -> () = {}
+    public var invokedMoveItemIdFromShareIdRequestAsync11 = false
+    public var invokedMoveItemIdFromShareIdRequestAsyncCount11 = 0
+    public var invokedMoveItemIdFromShareIdRequestAsyncParameters11: (itemId: String, fromShareId: String, request: MoveItemRequest)?
+    public var invokedMoveItemIdFromShareIdRequestAsyncParametersList11 = [(itemId: String, fromShareId: String, request: MoveItemRequest)]()
+    public var stubbedMoveItemIdFromShareIdRequestAsyncResult11: ItemRevision!
 
     public func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> ItemRevision {
-        invokedMoveItemIdFromShareIdRequestAsync10 = true
-        invokedMoveItemIdFromShareIdRequestAsyncCount10 += 1
-        invokedMoveItemIdFromShareIdRequestAsyncParameters10 = (itemId, fromShareId, request)
-        invokedMoveItemIdFromShareIdRequestAsyncParametersList10.append((itemId, fromShareId, request))
-        if let error = moveItemIdFromShareIdRequestThrowableError10 {
+        invokedMoveItemIdFromShareIdRequestAsync11 = true
+        invokedMoveItemIdFromShareIdRequestAsyncCount11 += 1
+        invokedMoveItemIdFromShareIdRequestAsyncParameters11 = (itemId, fromShareId, request)
+        invokedMoveItemIdFromShareIdRequestAsyncParametersList11.append((itemId, fromShareId, request))
+        if let error = moveItemIdFromShareIdRequestThrowableError11 {
             throw error
         }
-        closureMoveItemIdFromShareIdRequestAsync10()
-        return stubbedMoveItemIdFromShareIdRequestAsyncResult10
+        closureMoveItemIdFromShareIdRequestAsync11()
+        return stubbedMoveItemIdFromShareIdRequestAsyncResult11
     }
     // MARK: - moveFromShareIdRequest
-    public var moveFromShareIdRequestThrowableError11: Error?
-    public var closureMoveFromShareIdRequestAsync11: () -> () = {}
-    public var invokedMoveFromShareIdRequestAsync11 = false
-    public var invokedMoveFromShareIdRequestAsyncCount11 = 0
-    public var invokedMoveFromShareIdRequestAsyncParameters11: (fromShareId: String, request: MoveItemsRequest)?
-    public var invokedMoveFromShareIdRequestAsyncParametersList11 = [(fromShareId: String, request: MoveItemsRequest)]()
-    public var stubbedMoveFromShareIdRequestAsyncResult11: [ItemRevision]!
+    public var moveFromShareIdRequestThrowableError12: Error?
+    public var closureMoveFromShareIdRequestAsync12: () -> () = {}
+    public var invokedMoveFromShareIdRequestAsync12 = false
+    public var invokedMoveFromShareIdRequestAsyncCount12 = 0
+    public var invokedMoveFromShareIdRequestAsyncParameters12: (fromShareId: String, request: MoveItemsRequest)?
+    public var invokedMoveFromShareIdRequestAsyncParametersList12 = [(fromShareId: String, request: MoveItemsRequest)]()
+    public var stubbedMoveFromShareIdRequestAsyncResult12: [ItemRevision]!
 
     public func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
-        invokedMoveFromShareIdRequestAsync11 = true
-        invokedMoveFromShareIdRequestAsyncCount11 += 1
-        invokedMoveFromShareIdRequestAsyncParameters11 = (fromShareId, request)
-        invokedMoveFromShareIdRequestAsyncParametersList11.append((fromShareId, request))
-        if let error = moveFromShareIdRequestThrowableError11 {
+        invokedMoveFromShareIdRequestAsync12 = true
+        invokedMoveFromShareIdRequestAsyncCount12 += 1
+        invokedMoveFromShareIdRequestAsyncParameters12 = (fromShareId, request)
+        invokedMoveFromShareIdRequestAsyncParametersList12.append((fromShareId, request))
+        if let error = moveFromShareIdRequestThrowableError12 {
             throw error
         }
-        closureMoveFromShareIdRequestAsync11()
-        return stubbedMoveFromShareIdRequestAsyncResult11
+        closureMoveFromShareIdRequestAsync12()
+        return stubbedMoveFromShareIdRequestAsyncResult12
     }
     // MARK: - pin
-    public var pinItemThrowableError12: Error?
+    public var pinItemThrowableError13: Error?
     public var closurePin: () -> () = {}
     public var invokedPinfunction = false
     public var invokedPinCount = 0
@@ -258,14 +278,14 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedPinCount += 1
         invokedPinParameters = (item, ())
         invokedPinParametersList.append((item, ()))
-        if let error = pinItemThrowableError12 {
+        if let error = pinItemThrowableError13 {
             throw error
         }
         closurePin()
         return stubbedPinResult
     }
     // MARK: - unpin
-    public var unpinItemThrowableError13: Error?
+    public var unpinItemThrowableError14: Error?
     public var closureUnpin: () -> () = {}
     public var invokedUnpinfunction = false
     public var invokedUnpinCount = 0
@@ -278,7 +298,7 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         invokedUnpinCount += 1
         invokedUnpinParameters = (item, ())
         invokedUnpinParametersList.append((item, ()))
-        if let error = unpinItemThrowableError13 {
+        if let error = unpinItemThrowableError14 {
             throw error
         }
         closureUnpin()

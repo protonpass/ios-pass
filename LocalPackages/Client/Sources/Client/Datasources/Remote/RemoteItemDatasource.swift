@@ -25,6 +25,7 @@ import Foundation
 public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision]
+    func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
     func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision
     func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
@@ -63,6 +64,12 @@ public extension RemoteItemDatasource {
             }
         }
         return itemRevisions
+    }
+
+    func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemRevision] {
+        let endpoint = GetItemRevisionsEndpoint(shareId: shareId, itemId: itemId)
+        let response = try await exec(endpoint: endpoint)
+        return response.revisions.revisionsData
     }
 
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
