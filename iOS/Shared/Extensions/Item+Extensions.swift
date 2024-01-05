@@ -21,4 +21,4 @@
 import Entities
 import Macro
 
-extension ItemRevision: Pinnable {}
+extension Item: Pinnable {}
