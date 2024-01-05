@@ -28032,6 +28032,8 @@
       }
     },
     "Just autofill" : {
+      "comment" : "When autofilling an unmatched login item, the app will ask the user whether to \"just autofill\" (autofill and do nothing) or \"associate and autofill\" (associate the current URL to the login item and then autofill)",
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
