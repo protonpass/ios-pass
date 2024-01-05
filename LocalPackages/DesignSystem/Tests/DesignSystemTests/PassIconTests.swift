@@ -64,6 +64,9 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.passCreditCardTwoStripes
         _ = PassIcon.passIcon
         _ = PassIcon.passTextLogo
+        _ = PassIcon.pinAngled
+        _ = PassIcon.pinAngledFilled
+        _ = PassIcon.pinAngledSlash
         _ = PassIcon.scanner
         _ = PassIcon.shieldCheck
         _ = PassIcon.swirls
