@@ -69,21 +69,30 @@ private struct TrashItemsView: View {
                     let vault = uiModel.vault
                     let icon = vault.displayPreferences.icon.icon.bigImage
                     let color = vault.displayPreferences.color.color.color
-                    Button(action: {
-                        selectedVault = uiModel
-                    }, label: {
-                        VaultRow(thumbnail: {
-                                     CircleButton(icon: icon,
-                                                  iconColor: color,
-                                                  backgroundColor: color.withAlphaComponent(0.16))
-                                 },
-                                 title: vault.name,
-                                 itemCount: uiModel.itemCount,
-                                 isShared: uiModel.vault.shared,
-                                 isSelected: false,
-                                 height: 44)
-                    })
-                    .buttonStyle(.plain)
+
+                    VStack {
+                        Button(action: {
+                            selectedVault = uiModel
+                        }, label: {
+                            VaultRow(thumbnail: {
+                                         CircleButton(icon: icon,
+                                                      iconColor: color,
+                                                      backgroundColor: color.withAlphaComponent(0.16))
+                                     },
+                                     title: vault.name,
+                                     itemCount: uiModel.itemCount,
+                                     isShared: uiModel.vault.shared,
+                                     isSelected: false,
+                                     height: 44)
+                        })
+                        .buttonStyle(.plain)
+
+                        Text(vault.shareId)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .font(.caption)
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
             }, header: {
                 Text(verbatim: "\(uiModels.count) vault(s) in total")

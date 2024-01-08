@@ -65,12 +65,14 @@ struct ItemDetailMoreInfoSection: View {
                     HStack {
                         title(#localized("Item ID") + ":")
                         Text(uiModel.itemId)
+                            .textSelection(.enabled)
                             .onTapGesture(perform: copyItemId)
                     }
 
                     HStack {
                         title(#localized("Vault ID") + ":")
                         Text(uiModel.vaultId)
+                            .textSelection(.enabled)
                             .onTapGesture(perform: copyVaultId)
                     }
 
