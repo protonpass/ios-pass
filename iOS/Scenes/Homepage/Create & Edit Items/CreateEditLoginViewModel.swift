@@ -110,15 +110,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = title ?? ""
                 urls = [url ?? ""].map { .init(value: $0) }
             }
-        }
 
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                canAddOrEdit2FAURI = try await upgradeChecker.canHaveMoreLoginsWith2FA()
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+            // We only show upsell button when in create mode
+            // because we want to let users access their data in edit mode
+            // even when they've reached limitations
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                do {
+                    canAddOrEdit2FAURI = try await upgradeChecker.canHaveMoreLoginsWith2FA()
+                } catch {
+                    logger.error(error)
+                    router.display(element: .displayErrorBanner(error))
+                }
             }
         }
     }
