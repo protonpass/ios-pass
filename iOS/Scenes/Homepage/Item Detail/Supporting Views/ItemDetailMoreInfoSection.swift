@@ -21,11 +21,13 @@
 import Client
 import DesignSystem
 import Entities
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemDetailMoreInfoSection: View {
+    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     @Binding var isExpanded: Bool
     private let uiModel: ItemDetailMoreInfoSectionUIModel
 
@@ -60,6 +62,18 @@ struct ItemDetailMoreInfoSection: View {
 
             if isExpanded {
                 VStack(alignment: .leading) {
+                    HStack {
+                        title(#localized("Item ID") + ":")
+                        Text(uiModel.itemId)
+                            .onTapGesture(perform: copyItemId)
+                    }
+
+                    HStack {
+                        title(#localized("Vault ID") + ":")
+                        Text(uiModel.vaultId)
+                            .onTapGesture(perform: copyVaultId)
+                    }
+
                     if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
                         HStack {
                             title(#localized("Auto-filled:"))
@@ -110,13 +124,30 @@ struct ItemDetailMoreInfoSection: View {
     }
 }
 
+private extension ItemDetailMoreInfoSection {
+    func copyItemId() {
+        clipboardManager.copy(text: uiModel.itemId,
+                              bannerMessage: #localized("Item ID copied"))
+    }
+
+    func copyVaultId() {
+        clipboardManager.copy(text: uiModel.vaultId,
+                              bannerMessage: #localized("Vault ID copied"))
+    }
+}
+
 private struct ItemDetailMoreInfoSectionUIModel {
+    let itemId: String
+    let vaultId: String
     let lastAutoFilledDate: String?
     let modificationCount: String
     let modificationDate: String
     let creationDate: String
 
     init(itemContent: ItemContent) {
+        itemId = itemContent.itemId
+        vaultId = itemContent.shareId
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
         dateFormatter.timeStyle = .short
