@@ -1,3 +1,24 @@
+## Version 1.7.2
+Improvements:
+- Added email suggestions when sharing
+- Improved fav icons availability
+- Added support for file and photo attachments when contacting custom support
+
+Bug fixes:
+- Addressed sorting/filtering issue on iOS 16
+- Resolved an issue that caused passwords containing quotes to be tampered with
+
+Others:
+- Bumped core 16.3.2
+- Added more logs to sharing flow
+- Fixed duplicated item count when displaying search results
+- Preserved linked Android packages
+- Enabled full concurrency check for the host application
+- Removed obsolete feature flags (sharing & pinning)
+- Improved event loop
+- Alias prefix validation using Rust
+- Added "Item ID" & "Vault ID" to "More info" section on item detail pages
+
 ## Version 1.7.1
 - Fixed "+" button disabled
 
