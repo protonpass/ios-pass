@@ -27275,6 +27275,26 @@
         }
       }
     },
+    "Item ID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ID"
+          }
+        }
+      }
+    },
+    "Item ID copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ID copied"
+          }
+        }
+      }
+    },
     "Item moved to vault « %@ »" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -54980,6 +55000,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vault has been transferred"
+          }
+        }
+      }
+    },
+    "Vault ID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault ID"
+          }
+        }
+      }
+    },
+    "Vault ID copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault ID copied"
           }
         }
       }
