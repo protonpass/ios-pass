@@ -1,7 +1,7 @@
 //
-// ContainerManager+Extensions.swift
-// Proton Pass - Created on 18/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// UncheckedSendable+Extensions.swift
+// Proton Pass - Created on 08/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,6 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Factory
+import PhotosUI
+import SwiftUI
 
+/// We are regrouping some of the `@unchecked Sendable` extensions in the following file.
+/// This should help us keep a eye on what we are not currently checking for strict structured concurrency
+
+extension AnyCancellable: @unchecked Sendable {}
+extension PhotosPickerItem: @unchecked Sendable {}
 extension ContainerManager: @unchecked Sendable {}
