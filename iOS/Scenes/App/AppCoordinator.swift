@@ -88,10 +88,8 @@ final class AppCoordinator {
     }
 
     deinit {
-        Task { @MainActor in
-            corruptedSessionStream?.cancel()
-            corruptedSessionStream = nil
-        }
+        corruptedSessionStream?.cancel()
+        corruptedSessionStream = nil
     }
 
     private func clearUserDataInKeychainIfFirstRun() {

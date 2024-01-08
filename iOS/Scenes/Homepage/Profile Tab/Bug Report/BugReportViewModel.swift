@@ -59,8 +59,6 @@ struct DataUrl: Transferable {
     }
 }
 
-extension PhotosPickerItem: @unchecked Sendable {}
-
 @MainActor
 final class BugReportViewModel: ObservableObject {
     @Published var object: BugReportObject?
