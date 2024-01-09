@@ -50,7 +50,7 @@ struct UserPermissionView: View {
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .shareSummary))
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
@@ -119,7 +119,7 @@ private extension UserPermissionView {
     func inviteeList(for emails: [String: ShareRole]) -> some View {
         LazyVStack {
             ForEach(Array(emails.keys), id: \.self) { email in
-                HStack(spacing: kItemDetailSectionPadding) {
+                HStack(spacing: DesignConstant.sectionPadding) {
                     SquircleThumbnail(data: .initials(email.initials()),
                                       tintColor: PassColor.interactionNormMajor2,
                                       backgroundColor: PassColor.interactionNormMinor1)
@@ -175,7 +175,7 @@ private extension UserPermissionView {
 
 private extension UserPermissionView {
     func emailDisplayView(email: String) -> some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             SquircleThumbnail(data: .initials(email.initials()),
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
