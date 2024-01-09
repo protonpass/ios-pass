@@ -22,163 +22,118 @@ import Client
 import DesignSystem
 import Entities
 import Factory
+import Foundation
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct ItemDetailMoreInfoSection: View {
-    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
-    @Binding var isExpanded: Bool
-    private let uiModel: ItemDetailMoreInfoSectionUIModel
-
-    init(isExpanded: Binding<Bool>,
-         itemContent: ItemContent) {
-        _isExpanded = isExpanded
-        uiModel = .init(itemContent: itemContent)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                HStack {
-                    Label(title: {
-                        Text("More info")
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    }, icon: {
-                        icon(from: IconProvider.infoCircle)
-                    })
-
-                    Spacer()
-
-                    if isExpanded {
-                        icon(from: IconProvider.chevronUp)
-                    } else {
-                        icon(from: IconProvider.chevronDown)
-                    }
-                }
-            }
-
-            if isExpanded {
-                VStack(alignment: .leading) {
-                    HStack {
-                        title(#localized("Item ID") + ":")
-                        Text(uiModel.itemId)
-                            .textSelection(.enabled)
-                            .onTapGesture(perform: copyItemId)
-                    }
-
-                    HStack {
-                        title(#localized("Vault ID") + ":")
-                        Text(uiModel.vaultId)
-                            .textSelection(.enabled)
-                            .onTapGesture(perform: copyVaultId)
-                    }
-
-                    if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
-                        HStack {
-                            title(#localized("Auto-filled:"))
-                            Text(lastAutoFilledDate)
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                    }
-
-                    HStack {
-                        title(#localized("Modified:"))
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(uiModel.modificationCount)
-                                .fontWeight(.semibold)
-                            Text(uiModel.modificationDate)
-                        }
-                    }
-
-                    HStack {
-                        title(#localized("Created:"))
-                        Text(uiModel.creationDate)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
-                    }
-                }
-                .font(.caption)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
-            }
+extension ItemContent {
+    var lastAutoFilledDate: String? {
+        if case .login = contentData.type,
+           let lastUseTime = item.lastUseTime,
+           lastUseTime != item.createTime {
+            lastUseTime.fullDateString.capitalizingFirstLetter()
+        } else {
+            nil
         }
-        .contentShape(Rectangle())
-        .onTapGesture { isExpanded.toggle() }
-        .animation(.default, value: isExpanded)
     }
 
-    private func icon(from image: UIImage) -> some View {
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 16)
-            .foregroundColor(Color(uiColor: PassColor.textWeak))
+    var modificationCount: String {
+        #localized("%lld time(s)", item.revision)
     }
 
-    private func title(_ text: String) -> some View {
-        Text(text)
-            .fontWeight(.semibold)
-            .frame(width: 100, alignment: .trailing)
-            .frame(maxHeight: .infinity, alignment: .topTrailing)
+    var modificationDate: String {
+        #localized("Last time, %@", item.modifyTime.fullDateString)
+    }
+
+    var creationDate: String {
+        item.createTime.fullDateString.capitalizingFirstLetter()
     }
 }
 
-private extension ItemDetailMoreInfoSection {
-    func copyItemId() {
-        clipboardManager.copy(text: uiModel.itemId,
-                              bannerMessage: #localized("Item ID copied"))
-    }
-
-    func copyVaultId() {
-        clipboardManager.copy(text: uiModel.vaultId,
-                              bannerMessage: #localized("Vault ID copied"))
-    }
-}
-
-private struct ItemDetailMoreInfoSectionUIModel {
-    let itemId: String
-    let vaultId: String
-    let lastAutoFilledDate: String?
-    let modificationCount: String
-    let modificationDate: String
-    let creationDate: String
-
-    init(itemContent: ItemContent) {
-        itemId = itemContent.itemId
-        vaultId = itemContent.shareId
-
+extension Int64 {
+    var fullDateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
         dateFormatter.timeStyle = .short
         dateFormatter.doesRelativeDateFormatting = true
-
         let relativeDateFormatter = RelativeDateTimeFormatter()
 
-        let now = Date()
+        let timeInterval = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        let dateString = dateFormatter.string(from: date)
+        let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
+        return "\(dateString) (\(relativeString))"
+    }
+}
 
-        let fullDateString: (Int64) -> String = { timeInterval in
-            let timeInterval = TimeInterval(timeInterval)
-            let date = Date(timeIntervalSince1970: timeInterval)
-            let dateString = dateFormatter.string(from: date)
-            let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: now)
-            return "\(dateString) (\(relativeString))"
+struct ItemDetailMoreInfoSection: View {
+    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
+    private let item: ItemContent
+    let action: () -> Void
+
+    init(itemContent: ItemContent,
+         action: @escaping () -> Void) {
+        item = itemContent
+        self.action = action
+    }
+
+    var body: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            infoRow(title: "Item ID", infos: item.itemId, icon: IconProvider.infoCircle)
+                .textSelection(.enabled)
+                .onTapGesture(perform: copyItemId)
+
+            infoRow(title: "Vault ID", infos: item.shareId, icon: IconProvider.infoCircle)
+                .textSelection(.enabled)
+                .onTapGesture(perform: copyVaultId)
+
+            if let lastAutoFill = item.lastAutoFilledDate {
+                infoRow(title: "Last autofill", infos: lastAutoFill, icon: IconProvider.magicWand)
+            }
+
+            infoRow(title: "Last Modified", infos: item.modificationDate, icon: IconProvider.pencil)
+
+            infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
+
+            CapsuleTextButton(title: "View Item history",
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              action: action)
+                .padding(.horizontal, DesignConstant.sectionPadding)
         }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedDetailSection()
+        .padding(.top, 16)
+    }
+}
 
-        let item = itemContent.item
+private extension ItemDetailMoreInfoSection {
+    func infoRow(title: LocalizedStringKey, infos: String, icon: UIImage) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: icon,
+                                  color: PassColor.textWeak)
 
-        if case .login = itemContent.contentData.type,
-           let lastUseTime = item.lastUseTime,
-           lastUseTime != item.createTime {
-            lastAutoFilledDate = fullDateString(lastUseTime).capitalizingFirstLetter()
-        } else {
-            lastAutoFilledDate = nil
-        }
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(title)
+                    .font(.body)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                Text(infos)
+                    .font(.footnote)
+                    .foregroundColor(PassColor.textWeak.toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+        }.padding(.horizontal, DesignConstant.sectionPadding)
+    }
 
-        modificationCount = #localized("%lld time(s)", item.revision)
-        modificationDate = #localized("Last time, %@", fullDateString(item.modifyTime))
-        creationDate = fullDateString(item.createTime).capitalizingFirstLetter()
+    func copyItemId() {
+        clipboardManager.copy(text: item.itemId,
+                              bannerMessage: #localized("Item ID copied"))
+    }
+
+    func copyVaultId() {
+        clipboardManager.copy(text: item.shareId,
+                              bannerMessage: #localized("Vault ID copied"))
     }
 }

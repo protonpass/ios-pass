@@ -44,7 +44,7 @@ struct MailboxSection: View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.forward)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(mode.title)
                     .sectionTitleText()
                 Text(mailboxSelection.selectedMailboxesString)
@@ -55,7 +55,7 @@ struct MailboxSection: View {
             ItemDetailSectionIcon(icon: IconProvider.chevronDown)
         }
         .animation(.default, value: mailboxSelection.selectedMailboxes)
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
         .contentShape(Rectangle())
     }
