@@ -62,7 +62,7 @@ struct AliasDetailView: View {
                     }
 
                     ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              action: {})
+                                              action: { viewModel.showItemHistory() })
                         .id(bottomID)
                 }
                 .padding()
