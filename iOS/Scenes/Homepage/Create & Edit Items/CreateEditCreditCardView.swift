@@ -117,7 +117,7 @@ private extension CreateEditCreditCardView {
 
 private extension CreateEditCreditCardView {
     var cardDetailSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: DesignConstant.sectionPadding) {
             cardholderNameRow
             PassSectionDivider()
             cardNumberRow
@@ -128,15 +128,15 @@ private extension CreateEditCreditCardView {
             PassSectionDivider()
             pinRow
         }
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
 
     var cardholderNameRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Cardholder name")
                     .sectionTitleText()
                 TextField("Name on card", text: $viewModel.cardholderName)
@@ -157,15 +157,15 @@ private extension CreateEditCreditCardView {
                 })
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.cardholderName.isEmpty)
     }
 
     var cardNumberRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.creditCard)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Card number")
                     .sectionTitleText()
                 WrappedUITextField(text: $viewModel.cardNumber,
@@ -187,15 +187,15 @@ private extension CreateEditCreditCardView {
                 })
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.cardNumber.isEmpty)
     }
 
     var verificationNumberRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: PassIcon.shieldCheck)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Security code")
                     .sectionTitleText()
 
@@ -219,15 +219,15 @@ private extension CreateEditCreditCardView {
                 })
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.verificationNumber.isEmpty)
     }
 
     var pinRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.grid3)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("PIN Code")
                     .sectionTitleText()
 
@@ -251,15 +251,15 @@ private extension CreateEditCreditCardView {
                 })
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.verificationNumber.isEmpty)
     }
 
     var expirationDateRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.calendarDay)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Expiration date")
                     .sectionTitleText()
                 MonthYearTextField(placeholder: #localized("MM / YY"),
@@ -269,6 +269,6 @@ private extension CreateEditCreditCardView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 }
