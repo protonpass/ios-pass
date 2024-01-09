@@ -39,7 +39,7 @@ extension ItemContent {
     }
 
     var modificationDate: String {
-        #localized("Last time, %@", item.modifyTime.fullDateString)
+        item.modifyTime.fullDateString
     }
 
     var creationDate: String {
