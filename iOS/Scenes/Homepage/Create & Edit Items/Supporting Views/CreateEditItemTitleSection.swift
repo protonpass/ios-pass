@@ -64,7 +64,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
         Button(action: onChangeVault) {
             HStack {
                 VaultThumbnail(vault: selectedVault)
-                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text("Vault")
                         .sectionTitleText()
                     Text(selectedVault.name)
@@ -74,7 +74,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
 
                 ItemDetailSectionIcon(icon: IconProvider.chevronDown)
             }
-            .padding(kItemDetailSectionPadding)
+            .padding(DesignConstant.sectionPadding)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -82,7 +82,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
 
     private var titleRow: some View {
         HStack {
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Title")
                     .sectionTitleText()
                 TextEditorWithPlaceholder(text: $title,
@@ -103,7 +103,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
                 })
             }
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .animation(.default, value: title.isEmpty)
     }
 }

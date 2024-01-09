@@ -136,7 +136,7 @@ private extension BugReportView {
             .contentShape(Rectangle())
             .frame(maxWidth: .infinity, alignment: .leading)
         })
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
 }
@@ -148,8 +148,8 @@ private extension BugReportView {
         let placeholder =
             // swiftlint:disable:next line_length
             #localized("Please describe the problem in as much detail as you can. If there was an error message, let us know what it said.")
-        HStack(spacing: kItemDetailSectionPadding) {
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
                     .font(.footnote)
                     .foregroundColor(PassColor.textNorm.toColor)
@@ -176,7 +176,7 @@ private extension BugReportView {
                 focused = true
             }
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
 }
@@ -186,7 +186,7 @@ private extension BugReportView {
         VStack {
             Toggle("Send logs", isOn: $viewModel.shouldSendLogs)
                 .foregroundColor(PassColor.textNorm.toColor)
-                .padding(kItemDetailSectionPadding)
+                .padding(DesignConstant.sectionPadding)
                 .roundedEditableSection()
             // swiftlint:disable:next line_length
             Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.")
@@ -223,7 +223,7 @@ private extension BugReportView {
                     .buttonStyle(.plain)
             }
             .foregroundColor(PassColor.textNorm.toColor)
-            .padding(kItemDetailSectionPadding)
+            .padding(DesignConstant.sectionPadding)
             .roundedEditableSection()
 
             Text("Add relevant files or images to the report")
@@ -238,6 +238,7 @@ private extension BugReportView {
             Text("Added files")
                 .font(.callout.weight(.bold))
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
                 FlowLayout(mode: .scrollable,

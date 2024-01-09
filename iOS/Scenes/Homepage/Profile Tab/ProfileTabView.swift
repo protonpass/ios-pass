@@ -107,13 +107,13 @@ struct ProfileTabView: View {
         VStack(spacing: 0) {
             Text("Security")
                 .profileSectionTitle()
-                .padding(.bottom, kItemDetailSectionPadding)
+                .padding(.bottom, DesignConstant.sectionPadding)
 
             VStack(spacing: 0) {
                 OptionRow(action: { viewModel.editLocalAuthenticationMethod() },
                           height: .tall,
                           content: {
-                              VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
+                              VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
                                   Text("Unlock with")
                                       .sectionTitleText()
 
@@ -129,7 +129,7 @@ struct ProfileTabView: View {
                     OptionRow(action: { viewModel.editAppLockTime() },
                               height: .tall,
                               content: {
-                                  VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
+                                  VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
                                       Text("Automatic lock")
                                           .sectionTitleText()
 
@@ -200,7 +200,7 @@ struct ProfileTabView: View {
             Text("AutoFill on apps and websites by enabling Proton Pass AutoFill")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, kItemDetailSectionPadding / 2)
+                .padding(.top, DesignConstant.sectionPadding / 2)
         }
         .padding(.horizontal)
     }
@@ -280,7 +280,7 @@ struct ProfileTabView: View {
         VStack(spacing: 0) {
             Text("Help center")
                 .profileSectionTitle()
-                .padding(.bottom, kItemDetailSectionPadding)
+                .padding(.bottom, DesignConstant.sectionPadding)
 
             VStack(spacing: 0) {
                 TextOptionRow(title: #localized("How to import to Proton Pass"),
