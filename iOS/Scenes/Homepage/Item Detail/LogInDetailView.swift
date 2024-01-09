@@ -76,9 +76,8 @@ struct LogInDetailView: View {
                                             onSelectTotpToken: { copyTOTPToken($0) },
                                             onUpgrade: { viewModel.upgrade() })
 
-                        ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
-                                                  itemContent: viewModel.itemContent)
-                            .padding(.top, 24)
+                        ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
+                                                  action: {})
                             .id(bottomID)
                     }
                     .padding()
@@ -99,7 +98,7 @@ struct LogInDetailView: View {
     }
 
     private var usernamePassword2FaSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: DesignConstant.sectionPadding) {
             usernameRow
             PassSectionDivider()
             passwordRow
@@ -123,17 +122,17 @@ struct LogInDetailView: View {
                 }
             }
         }
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
         .animation(.default, value: viewModel.totpTokenState)
     }
 
     private var usernameRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
                                   color: iconTintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Username or email address")
                     .sectionTitleText()
 
@@ -159,7 +158,7 @@ struct LogInDetailView: View {
             .contentShape(Rectangle())
             .onTapGesture(perform: { viewModel.copyUsername() })
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
             Button { viewModel.copyUsername() } label: {
                 Text("Copy")
@@ -174,14 +173,14 @@ struct LogInDetailView: View {
     }
 
     private var passwordRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             if let passwordStrength = viewModel.passwordStrength {
                 PasswordStrengthIcon(strength: passwordStrength)
             } else {
                 ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
             }
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(viewModel.passwordStrength.sectionTitle)
                     .font(.footnote)
                     .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
@@ -214,7 +213,7 @@ struct LogInDetailView: View {
                     .animationsDisabled()
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
             Button(action: {
                 withAnimation {
@@ -235,24 +234,24 @@ struct LogInDetailView: View {
     }
 
     private var totpNotAllowedRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA limit reached")
                     .sectionTitleText()
                 UpgradeButtonLite { viewModel.upgrade() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
     private var urlsSection: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Website")
                     .sectionTitleText()
 
@@ -285,7 +284,7 @@ struct LogInDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .animation(.default, value: viewModel.urls)
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
 
@@ -301,7 +300,7 @@ struct LogInDetailView: View {
                 .foregroundColor(viewModel.itemContent.type.normMajor2Color.toColor)
                 .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .background(PassColor.backgroundMedium.toColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.showAliasDetail)

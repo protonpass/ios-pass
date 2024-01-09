@@ -40,7 +40,7 @@ struct CreateEditVaultView: View {
             .showSpinner(viewModel.loading)
             .animation(.default, value: viewModel.canCreateOrEdit)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(kItemDetailSectionPadding)
+            .padding(DesignConstant.sectionPadding)
             .navigationBarTitleDisplayMode(.inline)
             .background(Color(uiColor: PassColor.backgroundNorm))
             .toolbar { toolbarContent }
@@ -94,7 +94,7 @@ struct CreateEditVaultView: View {
     }
 
     private var previewAndTitle: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             let previewWidth: CGFloat = UIDevice.current.isIpad ? 60 : 40
             VStack {
                 Spacer()
@@ -112,7 +112,7 @@ struct CreateEditVaultView: View {
             }
 
             HStack {
-                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text("Title")
                         .sectionTitleText()
                     TextField("Untitled", text: $viewModel.title)
@@ -132,7 +132,7 @@ struct CreateEditVaultView: View {
                     })
                 }
             }
-            .padding(kItemDetailSectionPadding)
+            .padding(DesignConstant.sectionPadding)
             .roundedEditableSection()
             .animation(.default, value: viewModel.title.isEmpty)
         }

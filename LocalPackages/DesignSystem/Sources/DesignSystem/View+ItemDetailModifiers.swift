@@ -37,19 +37,19 @@ public extension View {
 public extension Text {
     func sectionTitleText(isValid: Bool = true) -> Text {
         font(.footnote)
-            .foregroundColor(Color(uiColor: isValid ? PassColor.textWeak : PassColor.signalDanger))
+            .foregroundColor(isValid ? PassColor.textWeak.toColor : PassColor.signalDanger.toColor)
     }
 
     func sectionContentText() -> Text {
-        foregroundColor(Color(uiColor: PassColor.textNorm))
+        foregroundColor(PassColor.textNorm.toColor)
     }
 
     func sectionHeaderText() -> Text {
-        foregroundColor(Color(uiColor: PassColor.textWeak))
+        foregroundColor(PassColor.textWeak.toColor)
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        font(.body.italic()).foregroundColor(Color(uiColor: PassColor.textWeak))
+        font(.body.italic()).foregroundColor(PassColor.textWeak.toColor)
     }
 }

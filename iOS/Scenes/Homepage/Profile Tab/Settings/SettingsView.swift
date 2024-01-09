@@ -43,7 +43,7 @@ struct SettingsView: View {
 
     private var realBody: some View {
         ScrollView {
-            VStack(spacing: kItemDetailSectionPadding) {
+            VStack(spacing: DesignConstant.sectionPadding) {
                 untitledSection
 
                 clipboardSection
@@ -120,7 +120,7 @@ struct SettingsView: View {
     }
 
     private var clipboardSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: DesignConstant.sectionPadding) {
             Text("Clipboard")
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -154,7 +154,7 @@ struct SettingsView: View {
             Text("Logs")
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, kItemDetailSectionPadding)
+                .padding(.bottom, DesignConstant.sectionPadding)
 
             VStack(spacing: 0) {
                 TextOptionRow(title: PassModule.hostApp.logTitle,
@@ -179,7 +179,7 @@ struct SettingsView: View {
                                        backgroundColor: PassColor.interactionNormMinor1)
                       })
                       .roundedEditableSection()
-                      .padding(.top, kItemDetailSectionPadding / 2)
+                      .padding(.top, DesignConstant.sectionPadding / 2)
         }
     }
 
@@ -188,7 +188,7 @@ struct SettingsView: View {
             Text("Application")
                 .sectionHeaderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, kItemDetailSectionPadding)
+                .padding(.bottom, DesignConstant.sectionPadding)
 
             OptionRow(action: { viewModel.forceSync() },
                       height: .medium,
@@ -206,7 +206,7 @@ struct SettingsView: View {
             Text("Download all your items again to make sure you are in sync")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, kItemDetailSectionPadding / 2)
+                .padding(.top, DesignConstant.sectionPadding / 2)
         }
     }
 }
