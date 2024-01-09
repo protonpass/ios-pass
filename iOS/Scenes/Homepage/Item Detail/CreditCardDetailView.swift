@@ -67,8 +67,12 @@ private extension CreditCardDetailView {
                             .padding(.top, 8)
                     }
 
-                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              action: {})
+                    ItemDetailHistorySection(itemContent: viewModel.itemContent,
+                                             action: {})
+
+                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
+                                              itemContent: viewModel.itemContent)
+                        .padding(.top, 24)
                         .id(bottomID)
                 }
                 .padding()
