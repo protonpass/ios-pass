@@ -100,7 +100,7 @@ struct ItemDetailMoreInfoSection: View {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .padding(.top, 16)
+        .padding(.top, DesignConstant.sectionPadding)
     }
 }
 
