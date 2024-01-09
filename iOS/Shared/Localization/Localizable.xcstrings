@@ -28902,15 +28902,12 @@
       }
     },
     "Last modified" : {
-
-    },
-    "Last Modified" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Last Modified"
+            "value" : "Last modified"
           }
         }
       }
