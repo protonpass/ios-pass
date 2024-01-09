@@ -346,6 +346,8 @@ private extension HomepageCoordinator {
                     presentSetPINCodeView()
                 case let .search(selection):
                     presentSearchScreen(selection)
+                case let .history(item):
+                    presentItemHistory(item)
                 }
             }
             .store(in: &cancellables)
@@ -582,6 +584,11 @@ private extension HomepageCoordinator {
         let view = SearchView(viewModel: viewModel)
         present(view)
         addNewEvent(type: .searchTriggered)
+    }
+
+    func presentItemHistory(_ item: ItemContent) {
+        let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
+        present(view)
     }
 
     func startUpgradeFlow() {

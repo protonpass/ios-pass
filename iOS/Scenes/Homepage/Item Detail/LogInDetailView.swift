@@ -77,7 +77,7 @@ struct LogInDetailView: View {
                                             onUpgrade: { viewModel.upgrade() })
 
                         ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                                  action: {})
+                                                  action: { viewModel.showItemHistory() })
                             .id(bottomID)
                     }
                     .padding()

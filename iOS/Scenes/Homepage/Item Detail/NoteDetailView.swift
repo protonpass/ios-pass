@@ -89,7 +89,7 @@ struct NoteDetailView: View {
                     }
 
                     ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              action: {})
+                                              action: { viewModel.showItemHistory() })
                         .id(bottomID)
                 }
                 .padding()
