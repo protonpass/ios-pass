@@ -53,7 +53,7 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
-    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item]
+    func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemContent]
 
     /// Full sync for a given `shareId`
     func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws
@@ -192,8 +192,16 @@ public extension ItemRepository {
         return try encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
     }
 
-    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
-        try await remoteDatasource.getItemRevisions(shareId: shareId, itemId: itemId)
+    func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemContent] {
+        let items = try await remoteDatasource.getItemRevisions(shareId: shareId, itemId: itemId)
+
+        var itemContents = [ItemContent]()
+        for item in items {
+            let itemContent = try await symmetricallyEncrypt(itemRevision: item, shareId: shareId)
+                .getItemContent(symmetricKey: getSymmetricKey())
+            itemContents.append(itemContent)
+        }
+        return itemContents
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {

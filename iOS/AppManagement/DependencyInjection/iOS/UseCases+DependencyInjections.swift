@@ -291,6 +291,10 @@ extension UseCasesContainer {
                                   getAllPinnedItems: self.getAllPinnedItems(),
                                   symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
     }
+
+    var getItemHistory: Factory<GetItemHistoryUseCase> {
+        self { GetItemHistory(itemRepository: self.itemRepository) }
+    }
 }
 
 // MARK: - User

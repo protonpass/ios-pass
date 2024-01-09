@@ -56,8 +56,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
     var coloredPassword: AttributedString {

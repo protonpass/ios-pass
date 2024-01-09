@@ -74,6 +74,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case vaultSelection
     case setPINCode
     case search(SearchMode)
+    case history(ItemContent)
 }
 
 enum UIElementDisplay: Sendable {

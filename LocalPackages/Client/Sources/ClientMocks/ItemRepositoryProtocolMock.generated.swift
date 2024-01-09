@@ -175,9 +175,9 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedGetItemRevisionsCount = 0
     public var invokedGetItemRevisionsParameters: (shareId: String, itemId: String)?
     public var invokedGetItemRevisionsParametersList = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemRevisionsResult: [Item]!
+    public var stubbedGetItemRevisionsResult: [ItemContent]!
 
-    public func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
+    public func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemContent] {
         invokedGetItemRevisionsfunction = true
         invokedGetItemRevisionsCount += 1
         invokedGetItemRevisionsParameters = (shareId, itemId)

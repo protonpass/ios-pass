@@ -56,7 +56,8 @@ class BaseItemDetailViewModel: ObservableObject {
     let vault: VaultListUiModel?
     let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
@@ -252,6 +253,10 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func getSymmetricKey() throws -> SymmetricKey {
         try symmetricKeyProvider.getSymmetricKey()
+    }
+
+    func showItemHistory() {
+        router.present(for: .history(itemContent))
     }
 }
 
