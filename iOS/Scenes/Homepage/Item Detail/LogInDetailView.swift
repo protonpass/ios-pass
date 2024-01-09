@@ -76,8 +76,12 @@ struct LogInDetailView: View {
                                             onSelectTotpToken: { copyTOTPToken($0) },
                                             onUpgrade: { viewModel.upgrade() })
 
-                        ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                                  action: {})
+                        ItemDetailHistorySection(itemContent: viewModel.itemContent,
+                                                 action: {})
+
+                        ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
+                                                  itemContent: viewModel.itemContent)
+                            .padding(.top, 24)
                             .id(bottomID)
                     }
                     .padding()
