@@ -88,7 +88,7 @@ struct ItemDetailMoreInfoSection: View {
                 infoRow(title: "Last autofill", infos: lastAutoFill, icon: IconProvider.magicWand)
             }
 
-            infoRow(title: "Last Modified", infos: item.modificationDate, icon: IconProvider.pencil)
+            infoRow(title: "Last modified", infos: item.modificationDate, icon: IconProvider.pencil)
 
             infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
 
