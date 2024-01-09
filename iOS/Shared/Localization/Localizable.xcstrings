@@ -17512,26 +17512,26 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Створана:"
+            "state" : "translated",
+            "value" : "Створана"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Vytvořeno:"
+            "state" : "translated",
+            "value" : "Vytvořeno"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Erstellt:"
+            "state" : "translated",
+            "value" : "Erstellt"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Δημιουργήθηκε:"
+            "state" : "translated",
+            "value" : "Δημιουργήθηκε"
           }
         },
         "en" : {
@@ -17542,110 +17542,110 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Creado:"
+            "state" : "translated",
+            "value" : "Creado"
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Creado:"
+            "state" : "translated",
+            "value" : "Creado"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Luotu:"
+            "state" : "translated",
+            "value" : "Luotu"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Création :"
+            "state" : "translated",
+            "value" : "Création"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Creato:"
+            "state" : "translated",
+            "value" : "Creato"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "作成:"
+            "state" : "translated",
+            "value" : "作成"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "შექმნილია:"
+            "state" : "translated",
+            "value" : "შექმნილია"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "생성됨:"
+            "state" : "translated",
+            "value" : "생성됨"
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Opprettet:"
+            "state" : "translated",
+            "value" : "Opprettet"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Utworzono:"
+            "state" : "translated",
+            "value" : "Utworzono"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Criação:"
+            "state" : "translated",
+            "value" : "Criação"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Criado:"
+            "state" : "translated",
+            "value" : "Criado"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Creat:"
+            "state" : "translated",
+            "value" : "Creat"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Vytvorené:"
+            "state" : "translated",
+            "value" : "Vytvorené"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Skapad:"
+            "state" : "translated",
+            "value" : "Skapad"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Oluşturulma:"
+            "state" : "translated",
+            "value" : "Oluşturulma"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Створено:"
+            "state" : "translated",
+            "value" : "Створено"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Đã tạo:"
+            "state" : "translated",
+            "value" : "Đã tạo"
           }
         }
       }
@@ -28901,155 +28901,16 @@
         }
       }
     },
+    "Last modified" : {
+
+    },
     "Last Modified" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Last Modified"
-          }
-        }
-      }
-    },
-    "Last time, %@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Апошні раз, %@"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Naposledy, %@"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Letztes Mal, %@"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Τελευταία φορά, %@"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last time, %@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última vez, %@"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última vez, %@"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viimeksi, %@"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La dernière fois, %@"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima volta, %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ に最後の使用"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ბოლოს, %@"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "마지막 동기화 시점: %@"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Siste gang, %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ostatni raz: %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última vez, %@"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última vez, %@"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima oară, %@"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Naposledy, %@"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sista gången, %@"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Son kez, %@"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Востаннє, %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lần cuối, %@"
           }
         }
       }
