@@ -66,7 +66,7 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
             .foregroundColor(Color(uiColor: contentType.normMajor2Color))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
     }
 
     private var upgradeButton: some View {
@@ -84,6 +84,6 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
             .foregroundColor(Color(uiColor: contentType.normMajor2Color))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
     }
 }

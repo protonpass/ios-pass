@@ -88,9 +88,8 @@ struct NoteDetailView: View {
                             .isEditable(false)
                     }
 
-                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
-                                              itemContent: viewModel.itemContent)
-                        .padding(.top)
+                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
+                                              action: {})
                         .id(bottomID)
                 }
                 .padding()

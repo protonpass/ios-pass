@@ -46,7 +46,7 @@ struct ManageSharedVaultView: View {
             viewModel.fetchShareInformation(displayFetchingLoader: true)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
