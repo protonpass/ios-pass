@@ -61,9 +61,8 @@ struct AliasDetailView: View {
                                           vault: viewModel.vault?.vault)
                     }
 
-                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
-                                              itemContent: viewModel.itemContent)
-                        .padding(.top, 24)
+                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
+                                              action: {})
                         .id(bottomID)
                 }
                 .padding()
@@ -78,21 +77,21 @@ struct AliasDetailView: View {
     }
 
     private var aliasMailboxesSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: DesignConstant.sectionPadding) {
             aliasRow
             PassSectionDivider()
             mailboxesRow
         }
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
         .animation(.default, value: viewModel.mailboxes)
     }
 
     private var aliasRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user, color: iconTintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Alias address")
                     .sectionTitleText()
 
@@ -103,7 +102,7 @@ struct AliasDetailView: View {
             .contentShape(Rectangle())
             .onTapGesture { viewModel.copyAliasEmail() }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
             Button { viewModel.copyAliasEmail() } label: {
                 Text("Copy")
@@ -119,7 +118,7 @@ struct AliasDetailView: View {
 
     @ViewBuilder
     private var mailboxesRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: 8) {
@@ -158,7 +157,7 @@ struct AliasDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.mailboxes)
     }
 }

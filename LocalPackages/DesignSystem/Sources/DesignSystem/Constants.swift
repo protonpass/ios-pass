@@ -20,4 +20,6 @@
 
 import Foundation
 
-public let kItemDetailSectionPadding: CGFloat = 16
+public enum DesignConstant {
+    public static let sectionPadding: CGFloat = 16
+}

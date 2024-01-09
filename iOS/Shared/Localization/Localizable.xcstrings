@@ -17507,6 +17507,16 @@
         }
       }
     },
+    "Created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created"
+          }
+        }
+      }
+    },
     "Created:" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -28887,6 +28897,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "90 ngày gần đây"
+          }
+        }
+      }
+    },
+    "Last autofill" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last autofill"
+          }
+        }
+      }
+    },
+    "Last Modified" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Modified"
           }
         }
       }

@@ -58,7 +58,7 @@ struct CreateEditLoginView: View {
         NavigationView {
             ScrollViewReader { proxy in
                 ScrollView {
-                    LazyVStack(spacing: kItemDetailSectionPadding / 2) {
+                    LazyVStack(spacing: DesignConstant.sectionPadding / 2) {
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
                                                    field: .title,
@@ -67,7 +67,7 @@ struct CreateEditLoginView: View {
                                                    isEditMode: viewModel.mode.isEditMode,
                                                    onChangeVault: { viewModel.changeVault() },
                                                    onSubmit: { focusedField = .username })
-                            .padding(.bottom, kItemDetailSectionPadding / 2)
+                            .padding(.bottom, DesignConstant.sectionPadding / 2)
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel,
                                        focusedField: $focusedField,
@@ -268,7 +268,7 @@ private extension CreateEditLoginView {
 
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: DesignConstant.sectionPadding) {
             if !viewModel.username.isEmpty, viewModel.isAlias {
                 pendingAliasRow
             } else {
@@ -283,15 +283,15 @@ private extension CreateEditLoginView {
                 totpNotAllowedRow
             }
         }
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
 
     var usernameRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Username or email address")
                     .sectionTitleText()
                 TextField("Add username or email address", text: $viewModel.username)
@@ -312,17 +312,17 @@ private extension CreateEditLoginView {
                 })
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.username.isEmpty)
         .animation(.default, value: focusedField)
         .id(usernameID)
     }
 
     var pendingAliasRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Username or email address")
                     .sectionTitleText()
                 Text(viewModel.username)
@@ -346,19 +346,19 @@ private extension CreateEditLoginView {
                              backgroundColor: viewModel.itemContentType().normMinor1Color)
             })
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.username.isEmpty)
     }
 
     var passwordRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             if let passwordStrength = viewModel.passwordStrength {
                 PasswordStrengthIcon(strength: passwordStrength)
             } else {
                 ItemDetailSectionIcon(icon: IconProvider.key)
             }
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(viewModel.passwordStrength.sectionTitle)
                     .font(.footnote)
                     .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
@@ -385,7 +385,7 @@ private extension CreateEditLoginView {
                 })
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.password.isEmpty)
         .animation(.default, value: focusedField)
         .animation(.default, value: viewModel.passwordStrength)
@@ -393,24 +393,24 @@ private extension CreateEditLoginView {
     }
 
     var totpNotAllowedRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA limit reached")
                     .sectionTitleText()
                 UpgradeButtonLite { viewModel.upgrade() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
     var totpAllowedRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA secret key (TOTP)")
                     .sectionTitleText(isValid: viewModel.totpUriErrorMessage.isEmpty)
 
@@ -440,7 +440,7 @@ private extension CreateEditLoginView {
                 })
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: focusedField)
         .animation(.default, value: viewModel.totpUriErrorMessage.isEmpty)
         .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
@@ -470,10 +470,10 @@ private struct WebsiteSection<Field: Hashable>: View {
     let onSubmit: () -> Void
 
     var body: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Website")
                     .sectionTitleText()
                 VStack(alignment: .leading) {
@@ -521,7 +521,7 @@ private struct WebsiteSection<Field: Hashable>: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
         .contentShape(Rectangle())
     }

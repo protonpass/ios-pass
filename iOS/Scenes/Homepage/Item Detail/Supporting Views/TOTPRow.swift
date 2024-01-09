@@ -38,10 +38,10 @@ struct TOTPRow: View {
     }
 
     var body: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA token (TOTP)")
                     .sectionTitleText()
 
@@ -74,7 +74,7 @@ struct TOTPRow: View {
                 EmptyView()
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: totpManager.state)
         .onFirstAppear {
             totpManager.bind(uri: uri)

@@ -35,10 +35,10 @@ struct EditCustomFieldView<Field: Hashable>: View {
     var onRemove: () -> Void
 
     var body: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: uiModel.customField.type.icon)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(uiModel.customField.title)
                     .sectionTitleText()
 
@@ -100,7 +100,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                              backgroundColor: contentType.normMinor1Color)
             })
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
     }
 }
