@@ -38,10 +38,6 @@ extension ItemContent {
         }
     }
 
-    var modificationCount: String {
-        #localized("%lld time(s)", item.revision)
-    }
-
     var modificationDate: String {
         #localized("Last time, %@", item.modifyTime.fullDateString)
     }
