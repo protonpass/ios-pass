@@ -99,6 +99,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func shareWithMorePeople() {
+        setShareInviteVault(with: .existing(vault))
         router.present(for: .sharingFlow(.none))
     }
 
@@ -237,7 +238,6 @@ private extension ManageSharedVaultViewModel {
                 isFreeUser = status
             }
         }
-        setShareInviteVault(with: .existing(vault))
     }
 
     func display(error: Error) {
