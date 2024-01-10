@@ -54,7 +54,8 @@ struct DataUrl: Transferable {
         FileRepresentation(contentType: .data) { data in
             SentTransferredFile(data.url)
         } importing: { received in
-            Self(url: received.file)
+            let copy = try received.file.copyFileToTempFolder()
+            return Self(url: copy)
         }
     }
 }
@@ -120,8 +121,12 @@ final class BugReportViewModel: ObservableObject {
     func addFiles(files: Result<[URL], Error>) {
         switch files {
         case let .success(fileurls):
-            for fileurl in fileurls {
-                currentFiles[fileurl.lastPathComponent] = fileurl
+            do {
+                for fileurl in fileurls {
+                    currentFiles[fileurl.lastPathComponent] = try fileurl.copyFileToTempFolder()
+                }
+            } catch {
+                self.error = error
             }
         case let .failure(error):
             self.error = error
