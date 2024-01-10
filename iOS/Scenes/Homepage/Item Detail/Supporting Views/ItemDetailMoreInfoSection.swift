@@ -27,102 +27,70 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-extension ItemContent {
-    var lastAutoFilledDate: String? {
-        if case .login = contentData.type,
-           let lastUseTime = item.lastUseTime,
-           lastUseTime != item.createTime {
-            lastUseTime.fullDateString.capitalizingFirstLetter()
-        } else {
-            nil
-        }
-    }
-
-    var modificationDate: String {
-        item.modifyTime.fullDateString
-    }
-
-    var creationDate: String {
-        item.createTime.fullDateString.capitalizingFirstLetter()
-    }
-}
-
-extension Int64 {
-    var fullDateString: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .full
-        dateFormatter.timeStyle = .short
-        dateFormatter.doesRelativeDateFormatting = true
-        let relativeDateFormatter = RelativeDateTimeFormatter()
-
-        let timeInterval = TimeInterval(self)
-        let date = Date(timeIntervalSince1970: timeInterval)
-        let dateString = dateFormatter.string(from: date)
-        let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
-        return "\(dateString) (\(relativeString))"
-    }
-}
-
 struct ItemDetailMoreInfoSection: View {
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
+    @Binding var isExpanded: Bool
     private let item: ItemContent
-    let action: () -> Void
 
-    init(itemContent: ItemContent,
-         action: @escaping () -> Void) {
+    init(isExpanded: Binding<Bool>,
+         itemContent: ItemContent) {
+        _isExpanded = isExpanded
         item = itemContent
-        self.action = action
     }
 
     var body: some View {
-        VStack(spacing: DesignConstant.sectionPadding) {
-            infoRow(title: "Item ID", infos: item.itemId, icon: IconProvider.infoCircle)
-                .textSelection(.enabled)
-                .onTapGesture(perform: copyItemId)
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                HStack {
+                    Label(title: {
+                        Text("More info")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    }, icon: {
+                        icon(from: IconProvider.infoCircle)
+                    })
 
-            infoRow(title: "Vault ID", infos: item.shareId, icon: IconProvider.infoCircle)
-                .textSelection(.enabled)
-                .onTapGesture(perform: copyVaultId)
+                    Spacer()
 
-            if let lastAutoFill = item.lastAutoFilledDate {
-                infoRow(title: "Last autofill", infos: lastAutoFill, icon: IconProvider.magicWand)
+                    if isExpanded {
+                        icon(from: IconProvider.chevronUp)
+                    } else {
+                        icon(from: IconProvider.chevronDown)
+                    }
+                }
             }
 
-            infoRow(title: "Last modified", infos: item.modificationDate, icon: IconProvider.pencil)
+            if isExpanded {
+                VStack(alignment: .leading) {
+                    HStack {
+                        title(#localized("Item ID") + ":")
+                        Text(item.itemId)
+                            .textSelection(.enabled)
+                            .onTapGesture(perform: copyItemId)
+                        Spacer()
+                    }.frame(maxWidth: .infinity, alignment: .leading)
 
-            infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
-
-            CapsuleTextButton(title: "View Item history",
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              action: action)
-                .padding(.horizontal, DesignConstant.sectionPadding)
+                    HStack {
+                        title(#localized("Vault ID") + ":")
+                        Text(item.shareId)
+                            .textSelection(.enabled)
+                            .onTapGesture(perform: copyVaultId)
+                        Spacer()
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .font(.caption)
+                .foregroundColor(PassColor.textWeak.toColor)
+                .frame(maxWidth: .infinity)
+            }
         }
-        .padding(.vertical, DesignConstant.sectionPadding)
-        .roundedDetailSection()
-        .padding(.top, DesignConstant.sectionPadding)
+        .contentShape(Rectangle())
+        .onTapGesture { isExpanded.toggle() }
+        .animation(.default, value: isExpanded)
     }
 }
 
 private extension ItemDetailMoreInfoSection {
-    func infoRow(title: LocalizedStringKey, infos: String, icon: UIImage) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: icon,
-                                  color: PassColor.textWeak)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(title)
-                    .font(.body)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text(infos)
-                    .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-        }.padding(.horizontal, DesignConstant.sectionPadding)
-    }
-
     func copyItemId() {
         clipboardManager.copy(text: item.itemId,
                               bannerMessage: #localized("Item ID copied"))
@@ -131,5 +99,19 @@ private extension ItemDetailMoreInfoSection {
     func copyVaultId() {
         clipboardManager.copy(text: item.shareId,
                               bannerMessage: #localized("Vault ID copied"))
+    }
+
+    func icon(from image: UIImage) -> some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 16)
+            .foregroundColor(PassColor.textWeak.toColor)
+    }
+
+    func title(_ text: String) -> some View {
+        Text(text)
+            .fontWeight(.semibold)
+            .frame(maxHeight: .infinity, alignment: .topTrailing)
     }
 }
