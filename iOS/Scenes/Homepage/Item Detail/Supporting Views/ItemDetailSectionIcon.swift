@@ -31,7 +31,7 @@ struct ItemDetailSectionIcon: View {
             .resizable()
             .renderingMode(.template)
             .scaledToFit()
-            .foregroundColor(Color(uiColor: color))
+            .foregroundColor(color.toColor)
             .frame(width: width)
     }
 }
