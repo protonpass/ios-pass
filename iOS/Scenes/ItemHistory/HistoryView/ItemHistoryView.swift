@@ -20,10 +20,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemHistoryView: View {
     @StateObject var viewModel: ItemHistoryViewModel
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         mainContainer
@@ -35,9 +38,131 @@ struct ItemHistoryView: View {
 
 private extension ItemHistoryView {
     var mainContainer: some View {
-        ForEach(viewModel.itemStates, id: \.itemUuid) { item in
-            VStack {
-                Text("Item revision \(item.item.revision)")
+        VStack(alignment: .leading) {
+            Text("History")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(PassColor.textNorm.toColor)
+                .padding(.horizontal, DesignConstant.sectionPadding)
+
+            if viewModel.state == .loading {
+                VStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+            } else if !viewModel.state.history.isEmpty {
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    ForEach(viewModel.state.history, id: \.item.revision) { item in
+                        if viewModel.isFirst(currentItem: item) {
+                            HStack {
+                                VStack(spacing: 0) {
+                                    Rectangle()
+                                        .foregroundColor(.clear)
+                                        .frame(maxWidth: 1, maxHeight: .infinity)
+                                        .background(PassColor.textWeak.toColor)
+
+                                    Circle()
+                                        .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                                        .frame(width: 15, height: 15)
+
+                                    Spacer(minLength: 30)
+                                }
+                                infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
+                                    .padding(.top, 8)
+                            }
+                        } else if viewModel.isLast(currentItem: item) {
+                            HStack {
+                                VStack(spacing: 0) {
+                                    Spacer(minLength: 30)
+                                    Circle()
+                                        .strokeBorder(PassColor.textWeak.toColor, lineWidth: 1)
+                                        .frame(width: 15, height: 15)
+
+                                    Rectangle()
+                                        .foregroundColor(.clear)
+                                        .frame(maxWidth: 1, maxHeight: .infinity)
+                                        .background(PassColor.textWeak.toColor)
+                                }
+                                infoRow(title: "Current", infos: nil, icon: IconProvider.clock,
+                                        shouldDisplay: false)
+                                    .padding(.bottom, 8)
+                            }
+                        } else {
+                            HStack {
+                                VStack(spacing: 0) {
+                                    Rectangle()
+                                        .foregroundColor(.clear)
+                                        .frame(maxWidth: 1, maxHeight: .infinity)
+                                        .background(PassColor.textWeak.toColor)
+
+                                    Circle()
+                                        .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                                        .frame(width: 15, height: 15)
+
+                                    Rectangle()
+                                        .foregroundColor(.clear)
+                                        .frame(maxWidth: 1, maxHeight: .infinity)
+                                        .background(PassColor.textWeak.toColor)
+                                }
+                                infoRow(title: "Modified", infos: item.revisionDate, icon: IconProvider.pencil)
+                                    .padding(.vertical, 8)
+                            }
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, DesignConstant.sectionPadding)
+                .scrollViewEmbeded(maxWidth: .infinity)
+            }
+        }
+        .animation(.default, value: viewModel.state)
+        .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(PassColor.backgroundNorm.toColor)
+        .toolbar { toolbarContent }
+        .navigationStackEmbeded()
+    }
+}
+
+private extension ItemHistoryView {
+    func infoRow(title: LocalizedStringKey, infos: String?, icon: UIImage,
+                 shouldDisplay: Bool = true) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: icon,
+                                  color: PassColor.textWeak)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(title)
+                    .font(.body)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                if let infos {
+                    Text(infos)
+                        .font(.footnote)
+                        .foregroundColor(PassColor.textWeak.toColor)
+                }
+            }
+            .frame(maxWidth: .infinity, minHeight: 76, alignment: .leading)
+            .contentShape(Rectangle())
+            if shouldDisplay {
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                      color: PassColor.textWeak)
+            }
+
+        }.padding(.horizontal, DesignConstant.sectionPadding)
+            .roundedDetailSection()
+    }
+}
+
+private extension ItemHistoryView {
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            CircleButton(icon: IconProvider.chevronDown,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1) {
+                dismiss()
             }
         }
     }
@@ -47,5 +172,195 @@ private extension ItemHistoryView {
 // struct ItemHistoryView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ItemHistoryView()
+//    }
+// }
+
+// struct UserEmailView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    @StateObject private var viewModel = UserEmailViewModel()
+//    private var router = resolve(\RouterContainer.mainNavViewRouter)
+//    @State private var isFocused = false
+//
+//    var body: some View {
+//        VStack(alignment: .leading) {
+//            Text("Share with")
+//                .font(.largeTitle)
+//                .fontWeight(.bold)
+//                .foregroundColor(PassColor.textNorm.toColor)
+//                .padding(.horizontal, DesignConstant.sectionPadding)
+//
+//            VStack(alignment: .leading) {
+//                if case let .new(vault, _) = viewModel.vault {
+//                    vaultRow(vault)
+//                }
+//
+//                FlowLayout(mode: .scrollable,
+//                           items: viewModel.selectedEmails + [""],
+//                           viewMapping: { token(for: $0) })
+//                    .padding(.leading, -4)
+//
+//                PassDivider()
+//                    .padding(.horizontal, -DesignConstant.sectionPadding)
+//                    .padding(.top, 16)
+//                    .padding(.bottom, 24)
+//
+//                if viewModel.recommendationsState == .loading {
+//                    VStack {
+//                        Spacer(minLength: 50)
+//                        ProgressView()
+//                    }
+//                    .frame(maxWidth: .infinity, alignment: .center)
+//                } else if let recommendations = viewModel.recommendationsState.recommendations,
+//                          !recommendations.isEmpty {
+//                    InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
+//                                             recommendations: recommendations)
+//                }
+//
+//                Spacer()
+//            }
+//            .frame(maxWidth: .infinity)
+//            .padding(.horizontal, DesignConstant.sectionPadding)
+//            .scrollViewEmbeded(maxWidth: .infinity)
+//        }
+//        .onAppear {
+//            isFocused = true
+//        }
+//        .onChange(of: viewModel.highlightedEmail) { highlightedEmail in
+//            isFocused = highlightedEmail == nil
+//        }
+//        .animation(.default, value: viewModel.selectedEmails)
+//        .animation(.default, value: viewModel.recommendationsState)
+//        .navigate(isActive: $viewModel.goToNextStep,
+//                  destination: router.navigate(to: .userSharePermission))
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .navigationBarTitleDisplayMode(.inline)
+//        .background(PassColor.backgroundNorm.toColor)
+//        .toolbar { toolbarContent }
+//        .navigationStackEmbeded()
+//        .ignoresSafeArea(.keyboard)
+//    }
+// }
+//
+// private extension UserEmailView {
+//    @ViewBuilder
+//    func token(for email: String) -> some View {
+//        if email.isEmpty {
+//            emailTextField
+//        } else {
+//            emailCell(for: email)
+//        }
+//    }
+//
+//    var emailTextField: some View {
+//        BackspaceAwareTextField(text: $viewModel.email,
+//                                isFocused: $isFocused,
+//                                config: .init(font: .body,
+//                                              placeholder: #localized("Email address"),
+//                                              autoCapitalization: .none,
+//                                              autoCorrection: .no,
+//                                              keyboardType: .emailAddress,
+//                                              returnKeyType: .default,
+//                                              textColor: PassColor.textNorm,
+//                                              tintColor: PassColor.interactionNorm),
+//                                onBackspace: { viewModel.highlightLastEmail() },
+//                                onReturn: { viewModel.appendCurrentEmail() })
+//            .frame(width: 150, height: 32)
+//            .clipped()
+//    }
+//
+//    @ViewBuilder
+//    func emailCell(for email: String) -> some View {
+//        let highlighted = viewModel.highlightedEmail == email
+//        let focused: Binding<Bool> = .init(get: {
+//            highlighted
+//        }, set: { newValue in
+//            if !newValue {
+//                viewModel.highlightedEmail = nil
+//            }
+//        })
+//
+//        HStack(alignment: .center, spacing: 10) {
+//            Text(email)
+//        }
+//        .font(.callout)
+//        .foregroundColor(highlighted ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
+//        .padding(.horizontal, 10)
+//        .padding(.vertical, 8)
+//        .background(highlighted ?
+//            PassColor.interactionNormMajor2.toColor : PassColor.interactionNormMinor1.toColor)
+//        .cornerRadius(9)
+//        .animation(.default, value: highlighted)
+//        .contentShape(Rectangle())
+//        .onTapGesture { viewModel.toggleHighlight(email) }
+//        .overlay {
+//            // Dummy invisible text field to allow removing a token with backspace
+//            BackspaceAwareTextField(text: .constant(""),
+//                                    isFocused: focused,
+//                                    config: .init(font: .title,
+//                                                  placeholder: "",
+//                                                  autoCapitalization: .none,
+//                                                  autoCorrection: .no,
+//                                                  keyboardType: .emailAddress,
+//                                                  returnKeyType: .default,
+//                                                  textColor: .clear,
+//                                                  tintColor: .clear),
+//                                    onBackspace: { viewModel.deselect(email) },
+//                                    onReturn: { viewModel.toggleHighlight(email) })
+//                .opacity(0)
+//        }
+//    }
+// }
+//
+// private extension UserEmailView {
+//    func vaultRow(_ vault: VaultProtobuf) -> some View {
+//        HStack(spacing: 16) {
+//            VaultRow(thumbnail: {
+//                         CircleButton(icon: vault.display.icon.icon.bigImage,
+//                                      iconColor: vault.display.color.color.color,
+//                                      backgroundColor: vault.display.color.color.color
+//                                          .withAlphaComponent(0.16))
+//                     },
+//                     title: vault.name,
+//                     itemCount: 1,
+//                     isShared: false,
+//                     isSelected: false,
+//                     maxWidth: nil,
+//                     height: 74)
+//
+//            CircleButton(icon: IconProvider.pencil,
+//                         iconColor: PassColor.interactionNormMajor2,
+//                         backgroundColor: PassColor.interactionNormMinor1,
+//                         action: { viewModel.customizeVault() })
+//        }
+//        .padding(.horizontal, 16)
+//        .roundedEditableSection()
+//    }
+// }
+
+// private extension UserEmailView {
+//    @ToolbarContentBuilder
+//    var toolbarContent: some ToolbarContent {
+//        ToolbarItem(placement: .navigationBarLeading) {
+//            CircleButton(icon: IconProvider.cross,
+//                         iconColor: PassColor.interactionNormMajor2,
+//                         backgroundColor: PassColor.interactionNormMinor1) {
+//                viewModel.resetShareInviteInformation()
+//                dismiss()
+//            }
+//        }
+//
+//        ToolbarItem(placement: .navigationBarTrailing) {
+//            if viewModel.isChecking {
+//                ProgressView()
+//            } else {
+//                DisablableCapsuleTextButton(title: #localized("Continue"),
+//                                            titleColor: PassColor.textInvert,
+//                                            disableTitleColor: PassColor.textHint,
+//                                            backgroundColor: PassColor.interactionNormMajor1,
+//                                            disableBackgroundColor: PassColor.interactionNormMinor1,
+//                                            disabled: !viewModel.canContinue,
+//                                            action: { viewModel.continue() })
+//            }
+//        }
 //    }
 // }

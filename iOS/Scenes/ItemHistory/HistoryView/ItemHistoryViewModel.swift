@@ -24,11 +24,24 @@ import Entities
 import Factory
 import Foundation
 
+enum HistoryState: Equatable {
+    case loading
+    case loaded([ItemContent])
+
+    var history: [ItemContent] {
+        if case let .loaded(data) = self {
+            return data
+        }
+
+        return []
+    }
+}
+
 @MainActor
 final class ItemHistoryViewModel: ObservableObject, Sendable {
-    @Published var itemStates = [ItemContent]()
-    private let item: ItemContent
+    @Published private(set) var state: HistoryState = .loading
 
+    private let item: ItemContent
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
 
     init(item: ItemContent) {
@@ -38,10 +51,19 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
 
     func loadItemHistory() async {
         do {
-            itemStates = try await getItemHistory(shareId: item.shareId, itemId: item.itemId)
+            let history = try await getItemHistory(shareId: item.shareId, itemId: item.itemId)
+            state = .loaded(history)
         } catch {
             print("Woot error for history: \(error)")
         }
+    }
+
+    func isFirst(currentItem: ItemContent) -> Bool {
+        currentItem.item.revision == 1
+    }
+
+    func isLast(currentItem: ItemContent) -> Bool {
+        currentItem.item.revision == item.item.revision
     }
 }
 

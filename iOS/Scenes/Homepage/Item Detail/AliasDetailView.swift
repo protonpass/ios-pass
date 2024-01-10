@@ -61,8 +61,12 @@ struct AliasDetailView: View {
                                           vault: viewModel.vault?.vault)
                     }
 
-                    ItemDetailMoreInfoSection(itemContent: viewModel.itemContent,
-                                              action: { viewModel.showItemHistory() })
+                    ItemDetailHistorySection(itemContent: viewModel.itemContent,
+                                             action: { viewModel.showItemHistory() })
+
+                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
+                                              itemContent: viewModel.itemContent)
+                        .padding(.top, 24)
                         .id(bottomID)
                 }
                 .padding()
