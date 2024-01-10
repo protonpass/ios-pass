@@ -22,13 +22,23 @@
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
 
+private let itemsLabelText = "Items"
 private let settingsLabelText = "Settings"
 private let accountLabelText = "Account"
 
 final class ProfileRobot: CoreElements {
     let verify = Verify()
 
-    final class Verify: CoreElements {
+    public final class Verify: CoreElements {
+        @discardableResult
+        public func itemListContainsAllElements(login: String, alias: String, creditCard: String, note: String) -> ProfileRobot {
+            staticText(itemsLabelText).waitUntilExists().checkExists()
+            staticText(login).waitUntilExists().checkExists()
+            staticText(alias).waitUntilExists().checkExists()
+            staticText(creditCard).waitUntilExists().checkExists()
+            staticText(note).waitUntilExists().checkExists()
+            return ProfileRobot()
+        }
     }
 
     func tapSettingsButton() -> SettingsRobot {
