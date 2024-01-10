@@ -25,7 +25,6 @@ import ProtonCoreTestingToolkitUnitTestsCore
 import XCTest
 
 class LoginSignupTests: LoginBaseTestCase {
-    lazy var quarkCommands = QuarkCommands(doh: doh)
     let mainRobot = MainRobot()
 
     let password = ObfuscatedConstants.password

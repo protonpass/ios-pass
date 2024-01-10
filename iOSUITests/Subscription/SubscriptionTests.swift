@@ -21,6 +21,7 @@
 
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsLogin
 import ProtonCoreTestingToolkitUITestsPaymentsUI
@@ -37,15 +38,13 @@ class SubscriptionTests: LoginBaseTestCase {
         session.clearTransactions()
     }
 
-    func testUpgradeAccountFromFreeToUnlimited() {
-        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-
-        createAccount(randomUsername, randomPassword)
-
+    fileprivate func createUserVerifySubscription(plan: PaymentsPlan) throws {
+        let user = User(name: randomName, password: randomPassword)
+        try quarkCommands.userCreate(user: user)
+        
         SigninExternalAccountsCapability()
-            .signInWithAccount(userName: randomUsername,
-                               password: randomPassword,
+            .signInWithAccount(userName: user.name,
+                               password: user.password,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: AutoFillRobot.self)
             .notNowTap(robot: FaceIDRobot.self)
@@ -54,36 +53,19 @@ class SubscriptionTests: LoginBaseTestCase {
             .tapProfile()
             .tapAccountButton()
             .goToManageSubscription()
-            .expandPlan(plan: .unlimited)
-            .planButtonTap(plan: .unlimited)
-
+            .expandPlan(plan: plan)
+            .planButtonTap(plan: plan)
+        
         PaymentsUIRobot()
-            .verifyCurrentPlan(plan: .unlimited)
+            .verifyCurrentPlan(plan: plan)
             .verifyExtendButton()
     }
+    
+    func testUpgradeAccountFromFreeToUnlimited() throws {
+        try createUserVerifySubscription(plan: .unlimited)
+    }
 
-    func testUpgradeAccountFromFreeToPlus() {
-        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-
-        createAccount(randomUsername, randomPassword)
-
-        SigninExternalAccountsCapability()
-            .signInWithAccount(userName: randomUsername,
-                               password: randomPassword,
-                               loginRobot: welcomeRobot.logIn(),
-                               retRobot: AutoFillRobot.self)
-            .notNowTap(robot: FaceIDRobot.self)
-            .noThanks(robot: GetStartedRobot.self)
-            .getStartedTap(robot: HomeRobot.self)
-            .tapProfile()
-            .tapAccountButton()
-            .goToManageSubscription()
-            .expandPlan(plan: .pass2022)
-            .planButtonTap(plan: .pass2022)
-
-        PaymentsUIRobot()
-            .verifyCurrentPlan(plan: .pass2022)
-            .verifyExtendButton()
+    func testUpgradeAccountFromFreeToPlus() throws {
+        try createUserVerifySubscription(plan: .pass2022)
     }
 }
