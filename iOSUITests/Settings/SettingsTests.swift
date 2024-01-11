@@ -20,6 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import fusion
+import ProtonCorePaymentsUI
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsLogin
 import XCTest
@@ -28,17 +30,19 @@ class SettingsTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
     let homeRobot = HomeRobot()
 
-    /// settings and telemetry haven't build yet. enable when ready
-    func testTelemetrySettings() {
+    func testItemListDisplayed() throws {
+        let user = User(name: randomName, password: randomPassword)
+        let quarkUser = try quarkCommands.userCreate(user: user)
+        try quarkCommands.enableSubscription(id: quarkUser!.decryptedUserId, plan: "pass2023")
+
         welcomeRobot.logIn()
-            .fillUsername(username: ObfuscatedConstants.passTestUsername)
-            .fillpassword(password: ObfuscatedConstants.passTestPassword)
+            .fillUsername(username: user.name)
+            .fillpassword(password: user.password)
             .signIn(robot: AutoFillRobot.self)
             .notNowTap(robot: FaceIDRobot.self)
             .noThanks(robot: GetStartedRobot.self)
             .getStartedTap(robot: HomeRobot.self)
-            .tapBurgerMenuButton(robot: SettingsRobot.self)
-            .tapSettingsButton()
-            .verify.telemetryItemIsDisplayed()
+            .tapProfile()
+            .verify.itemListContainsAllElements(login: "0", alias: "0", creditCard: "0", note: "0")
     }
 }

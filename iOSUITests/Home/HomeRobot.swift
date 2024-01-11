@@ -44,7 +44,7 @@ public final class HomeRobot: CoreElements {
         return T()
     }
 
-
+    @discardableResult
     func tapProfile() -> ProfileRobot {
         button(profileTab).waitUntilExists().tap()
         return ProfileRobot()

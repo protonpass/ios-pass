@@ -22,18 +22,12 @@
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
 
-private let telemetryLabelText = "Telemetry"
 private let settingsLabelText = "Settings"
 
 final class SettingsRobot: CoreElements {
     let verify = Verify()
 
     final class Verify: CoreElements {
-        @discardableResult
-        public func telemetryItemIsDisplayed() -> SettingsRobot {
-            staticText(telemetryLabelText).waitUntilExists().checkExists()
-            return SettingsRobot()
-        }
     }
 
     func tapSettingsButton() -> SettingsRobot {
