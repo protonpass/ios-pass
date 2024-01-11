@@ -52,7 +52,7 @@ struct UserPermissionView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(DesignConstant.sectionPadding)
         .navigationBarTitleDisplayMode(.inline)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
     }
 
