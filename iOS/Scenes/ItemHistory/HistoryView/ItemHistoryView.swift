@@ -56,10 +56,12 @@ private extension ItemHistoryView {
                 .foregroundColor(PassColor.textNorm.toColor)
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
+            if let lastUsed = viewModel.lastUsedTime {
+                header(lastUsed: lastUsed)
+            }
             if viewModel.state == .loading {
                 progressView
             } else if !viewModel.state.history.isEmpty {
-                if viewModel.
                 historyListView
             }
         }
@@ -69,6 +71,34 @@ private extension ItemHistoryView {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .navigationStackEmbeded()
+    }
+}
+
+private extension ItemHistoryView {
+    func header(lastUsed: String) -> some View {
+        VStack(alignment: .leading) {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                ItemDetailSectionIcon(icon: IconProvider.magicWand,
+                                      color: PassColor.textWeak)
+
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text("Last autofill")
+                        .font(.body)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    Text(lastUsed)
+                        .font(.footnote)
+                        .foregroundColor(PassColor.textWeak.toColor)
+                }
+                .contentShape(Rectangle())
+            }
+            .padding(.bottom, 20)
+
+            Text("Changelog")
+                .font(.body)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
