@@ -28,6 +28,7 @@ import SwiftUI
 struct ItemHistoryView: View {
     @StateObject var viewModel: ItemHistoryViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var path = NavigationPath()
 
     private enum ElementSizes {
         static let circleSize: CGFloat = 15
@@ -70,7 +71,8 @@ private extension ItemHistoryView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
-        .navigationStackEmbeded()
+        .routingProvided
+        .navigationStackEmbeded($path)
     }
 }
 
@@ -118,11 +120,20 @@ private extension ItemHistoryView {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(viewModel.state.history, id: \.item.revision) { item in
                 if viewModel.isCreationRevision(item) {
-                    creationCell(item: item)
+                    navigationLink(for: item, view: creationCell(item: item))
+//                    NavigationLink(value: GeneralRouterDestination
+//                        .historyDetail(currentItem: viewModel.item, revision: item),
+//
+//                        label: {
+//                            creationCell(item: item)
+//                        })
+//                        .isDetailLink(false)
+//                        .buttonStyle(.plain)
                 } else if viewModel.isCurrentRevision(item) {
-                    currentCell(item: item)
+                    navigationLink(for: item, view: currentCell(item: item))
+
                 } else {
-                    modificationCell(item: item)
+                    navigationLink(for: item, view: modificationCell(item: item))
                 }
             }
         }
@@ -158,7 +169,9 @@ private extension ItemHistoryView {
 
                 verticalLine
             }
-            infoRow(title: "Current", infos: nil, icon: IconProvider.clock,
+            infoRow(title: "Current",
+                    infos: nil,
+                    icon: IconProvider.clock,
                     shouldDisplay: false)
                 .padding(.bottom, 8)
         }
@@ -178,6 +191,16 @@ private extension ItemHistoryView {
             infoRow(title: "Modified", infos: item.revisionDate, icon: IconProvider.pencil)
                 .padding(.vertical, 8)
         }
+    }
+
+    func navigationLink(for item: ItemContent, view: some View) -> some View {
+        NavigationLink(value: GeneralRouterDestination
+            .historyDetail(currentItem: viewModel.item, revision: item),
+            label: {
+                view
+            })
+            .isDetailLink(false)
+            .buttonStyle(.plain)
     }
 }
 
@@ -235,6 +258,10 @@ private extension ItemHistoryView {
             .background(PassColor.textWeak.toColor)
     }
 }
+
+//
+//    .navigate(isActive: $viewModel.goToNextStep,
+//              destination: router.navigate(to: .userSharePermission))
 
 //
 // struct ItemHistoryView_Previews: PreviewProvider {
