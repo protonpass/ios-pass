@@ -42,7 +42,7 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     @Published private(set) var state: HistoryState = .loading
     @Published private(set) var lastUsedTime: String?
 
-    private let item: ItemContent
+    let item: ItemContent
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
 
     init(item: ItemContent) {
