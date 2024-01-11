@@ -238,13 +238,23 @@ private extension BugReportView {
             Text("Added files")
                 .font(.callout.weight(.bold))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, kItemDetailSectionPadding)
 
-            VStack {
-                ForEach(Array(viewModel.currentFiles.keys), id: \.self) { itemTitle in
-                    Text(itemTitle)
-                        .font(.body)
-                }
+            VStack(alignment: .leading) {
+                FlowLayout(mode: .scrollable,
+                           items: Array(viewModel.currentFiles.keys),
+                           viewMapping: { element in
+                               HStack(alignment: .center, spacing: 10) {
+                                   Text(element)
+                                       .lineLimit(1)
+                               }
+                               .font(.callout)
+                               .foregroundColor(PassColor.textNorm.toColor)
+                               .padding(.horizontal, 10)
+                               .padding(.vertical, 8)
+                               .background(PassColor.interactionNormMinor1.toColor)
+                               .cornerRadius(9)
+                               .contentShape(Rectangle())
+                           })
             }
 
             CapsuleTextButton(title: #localized("Clear all files"),
