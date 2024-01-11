@@ -45,7 +45,7 @@ struct BugReportView: View {
                 .toolbar { toolbarContent }
                 .navigationTitle("Report a problem")
                 .navigationBarTitleDisplayMode(.inline)
-                .showSpinner(viewModel.isSending)
+                .showSpinner(viewModel.actionInProcess)
                 .onFirstAppear {
                     focused = true
                 }
@@ -211,6 +211,7 @@ private extension BugReportView {
 
                 PhotosPicker("Select Content",
                              selection: $viewModel.selectedContent,
+                             maxSelectionCount: 2,
                              photoLibrary: .shared())
                     .font(.callout)
                     .foregroundColor(PassColor.textInvert.toColor)
