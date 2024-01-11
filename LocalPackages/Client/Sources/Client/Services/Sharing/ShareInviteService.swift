@@ -22,19 +22,19 @@ import Combine
 import Entities
 
 public protocol ShareInviteServiceProtocol {
-    func setCurrentSelectedVault(with vault: SharingVaultData)
+    var currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> { get }
+
     func setCurrentSelectedVaultItem(with itemNum: Int)
     func setEmailsAndKeys(with data: [String: [PublicKey]?])
     func setEmailsAndRoles(with data: [String: ShareRole])
 
     func getAllEmails() -> [String]
-    func getCurrentSelectedVault() -> SharingVaultData?
     func getSharingInfos() -> [SharingInfos]
     func resetShareInviteInformations()
 }
 
 public final class ShareInviteService: ShareInviteServiceProtocol {
-    private var currentSelectedVault: SharingVaultData?
+    public let currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> = .init(nil)
     private var currentSelectedVaultItems: Int?
     private var emailsAndKeys = [String: [PublicKey]?]()
     private var emailsAndRole = [String: ShareRole]()
@@ -43,14 +43,6 @@ public final class ShareInviteService: ShareInviteServiceProtocol {
 }
 
 public extension ShareInviteService {
-    func setCurrentSelectedVault(with vault: SharingVaultData) {
-        currentSelectedVault = vault
-    }
-
-    func getCurrentSelectedVault() -> SharingVaultData? {
-        currentSelectedVault
-    }
-
     func setCurrentSelectedVaultItem(with itemNum: Int) {
         currentSelectedVaultItems = itemNum
     }
@@ -68,7 +60,7 @@ public extension ShareInviteService {
     }
 
     func getSharingInfos() -> [SharingInfos] {
-        guard let vault = currentSelectedVault else {
+        guard let vault = currentSelectedVault.value else {
             return []
         }
         var result = [SharingInfos]()
@@ -86,7 +78,7 @@ public extension ShareInviteService {
     }
 
     func resetShareInviteInformations() {
-        currentSelectedVault = nil
+        currentSelectedVault.send(nil)
         currentSelectedVaultItems = nil
         emailsAndKeys.removeAll()
         emailsAndRole.removeAll()
