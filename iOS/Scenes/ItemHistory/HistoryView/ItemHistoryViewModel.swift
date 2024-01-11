@@ -40,6 +40,7 @@ enum HistoryState: Equatable {
 @MainActor
 final class ItemHistoryViewModel: ObservableObject, Sendable {
     @Published private(set) var state: HistoryState = .loading
+    @Published private(set) var lastUsedTime: String?
 
     private let item: ItemContent
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
@@ -58,11 +59,11 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
         }
     }
 
-    func isFirst(currentItem: ItemContent) -> Bool {
+    func isCreationRevision(_ currentItem: ItemContent) -> Bool {
         currentItem.item.revision == 1
     }
 
-    func isLast(currentItem: ItemContent) -> Bool {
+    func isCurrentRevision(_ currentItem: ItemContent) -> Bool {
         currentItem.item.revision == item.item.revision
     }
 }
