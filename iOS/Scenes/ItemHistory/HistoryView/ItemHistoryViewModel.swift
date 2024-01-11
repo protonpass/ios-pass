@@ -47,6 +47,7 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
 
     init(item: ItemContent) {
         self.item = item
+        lastUsedTime = item.lastAutoFilledDate
         setUp()
     }
 
