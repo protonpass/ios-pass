@@ -117,7 +117,7 @@ private extension UserEmailView {
                                               textColor: PassColor.textNorm,
                                               tintColor: PassColor.interactionNorm),
                                 onBackspace: { viewModel.highlightLastEmail() },
-                                onReturn: { viewModel.appendCurrentEmail() })
+                                onReturn: { _ = viewModel.appendCurrentEmail() })
             .frame(width: max(150, CGFloat(viewModel.email.count) * 10), height: 32)
             .clipped()
     }

@@ -134,9 +134,17 @@ private extension UserEmailViewModel {
             }
             .store(in: &cancellables)
 
+        shareInviteService.currentSelectedVault
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                vault = shareInviteService.currentSelectedVault.value
+            }
+            .store(in: &cancellables)
+
         Task { @MainActor [weak self] in
             guard let self else { return }
-            vault = shareInviteService.getCurrentSelectedVault()
+            vault = shareInviteService.currentSelectedVault.value
             do {
                 if let shareId = vault?.shareId {
                     recommendationsState = .loading
