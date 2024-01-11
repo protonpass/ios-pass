@@ -66,7 +66,7 @@ final class BugReportViewModel: ObservableObject {
     @Published var description = ""
     @Published private(set) var error: Error?
     @Published private(set) var hasSent = false
-    @Published private(set) var isSending = false
+    @Published private(set) var actionInProcess = false
     @Published var shouldSendLogs = true
     @Published var selectedContent = [PhotosPickerItem]()
 
@@ -97,7 +97,7 @@ final class BugReportViewModel: ObservableObject {
         assert(object != nil, "An object must be selected")
         Task { @MainActor [weak self] in
             guard let self else { return }
-            isSending = true
+            actionInProcess = true
             do {
                 let plan = try await accessRepository.getPlan()
                 let planName = plan.type.capitalized
@@ -114,7 +114,7 @@ final class BugReportViewModel: ObservableObject {
             } catch {
                 self.error = error
             }
-            isSending = false
+            actionInProcess = false
         }
     }
 
@@ -147,7 +147,11 @@ private extension BugReportViewModel {
             guard let self else {
                 return
             }
+            defer {
+                actionInProcess = false
+            }
             do {
+                actionInProcess = true
                 let data = try await fetchContentUrls(content: content)
                 currentFiles = currentFiles.merging(data) { _, new in new }
             } catch {
