@@ -49,6 +49,10 @@ extension ItemContent {
     var revisionDate: String {
         item.revisionTime.fullDateString
     }
+
+    var shortRevisionDate: String {
+        item.revisionTime.shortDateString
+    }
 }
 
 extension Int64 {
@@ -64,6 +68,15 @@ extension Int64 {
         let dateString = dateFormatter.string(from: date)
         let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
         return "\(dateString) (\(relativeString))"
+    }
+
+    var shortDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM-dd-yy HH:mm"
+        let timeInterval = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        let dateString = dateFormatter.string(from: date)
+        return "\(dateString)"
     }
 }
 
