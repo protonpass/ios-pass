@@ -120,10 +120,12 @@ final class BugReportViewModel: ObservableObject {
 
     func addFiles(files: Result<[URL], Error>) {
         switch files {
-        case let .success(fileurls):
+        case let .success(fileUrls):
             do {
-                for fileurl in fileurls {
-                    currentFiles[fileurl.lastPathComponent] = try fileurl.copyFileToTempFolder()
+                for fileUrl in fileUrls {
+                    _ = fileUrl.startAccessingSecurityScopedResource()
+                    currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempFolder()
+                    fileUrl.stopAccessingSecurityScopedResource()
                 }
             } catch {
                 self.error = error
