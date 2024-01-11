@@ -44,7 +44,7 @@ public final class SetShareInviteVault: SetShareInviteVaultUseCase {
     }
 
     public func execute(with vault: SharingVaultData) {
-        shareInviteService.setCurrentSelectedVault(with: vault)
+        shareInviteService.currentSelectedVault.send(vault)
         switch vault {
         case let .existing(createdVault):
             shareInviteService.setCurrentSelectedVaultItem(with: getVaultItemCount(for: createdVault))
