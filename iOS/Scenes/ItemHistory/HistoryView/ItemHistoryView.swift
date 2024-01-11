@@ -21,12 +21,23 @@
 //
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemHistoryView: View {
     @StateObject var viewModel: ItemHistoryViewModel
     @Environment(\.dismiss) private var dismiss
+
+    private enum ElementSizes {
+        static let circleSize: CGFloat = 15
+        static let line: CGFloat = 1
+        static let cellHeight: CGFloat = 75
+
+        static var minSpacerSize: CGFloat {
+            (ElementSizes.cellHeight - ElementSizes.circleSize) / 2
+        }
+    }
 
     var body: some View {
         mainContainer
@@ -46,75 +57,10 @@ private extension ItemHistoryView {
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
             if viewModel.state == .loading {
-                VStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
+                progressView
             } else if !viewModel.state.history.isEmpty {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    ForEach(viewModel.state.history, id: \.item.revision) { item in
-                        if viewModel.isFirst(currentItem: item) {
-                            HStack {
-                                VStack(spacing: 0) {
-                                    Rectangle()
-                                        .foregroundColor(.clear)
-                                        .frame(maxWidth: 1, maxHeight: .infinity)
-                                        .background(PassColor.textWeak.toColor)
-
-                                    Circle()
-                                        .background(Circle().foregroundColor(PassColor.textWeak.toColor))
-                                        .frame(width: 15, height: 15)
-
-                                    Spacer(minLength: 30)
-                                }
-                                infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
-                                    .padding(.top, 8)
-                            }
-                        } else if viewModel.isLast(currentItem: item) {
-                            HStack {
-                                VStack(spacing: 0) {
-                                    Spacer(minLength: 30)
-                                    Circle()
-                                        .strokeBorder(PassColor.textWeak.toColor, lineWidth: 1)
-                                        .frame(width: 15, height: 15)
-
-                                    Rectangle()
-                                        .foregroundColor(.clear)
-                                        .frame(maxWidth: 1, maxHeight: .infinity)
-                                        .background(PassColor.textWeak.toColor)
-                                }
-                                infoRow(title: "Current", infos: nil, icon: IconProvider.clock,
-                                        shouldDisplay: false)
-                                    .padding(.bottom, 8)
-                            }
-                        } else {
-                            HStack {
-                                VStack(spacing: 0) {
-                                    Rectangle()
-                                        .foregroundColor(.clear)
-                                        .frame(maxWidth: 1, maxHeight: .infinity)
-                                        .background(PassColor.textWeak.toColor)
-
-                                    Circle()
-                                        .background(Circle().foregroundColor(PassColor.textWeak.toColor))
-                                        .frame(width: 15, height: 15)
-
-                                    Rectangle()
-                                        .foregroundColor(.clear)
-                                        .frame(maxWidth: 1, maxHeight: .infinity)
-                                        .background(PassColor.textWeak.toColor)
-                                }
-                                infoRow(title: "Modified", infos: item.revisionDate, icon: IconProvider.pencil)
-                                    .padding(.vertical, 8)
-                            }
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, DesignConstant.sectionPadding)
-                .scrollViewEmbeded(maxWidth: .infinity)
+                if viewModel.
+                historyListView
             }
         }
         .animation(.default, value: viewModel.state)
@@ -127,7 +73,88 @@ private extension ItemHistoryView {
 }
 
 private extension ItemHistoryView {
-    func infoRow(title: LocalizedStringKey, infos: String?, icon: UIImage,
+    var progressView: some View {
+        VStack {
+            Spacer()
+            ProgressView()
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
+    }
+}
+
+private extension ItemHistoryView {
+    var historyListView: some View {
+        LazyVStack(alignment: .leading, spacing: 0) {
+            ForEach(viewModel.state.history, id: \.item.revision) { item in
+                if viewModel.isCreationRevision(item) {
+                    creationCell(item: item)
+                } else if viewModel.isCurrentRevision(item) {
+                    currentCell(item: item)
+                } else {
+                    modificationCell(item: item)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .scrollViewEmbeded(maxWidth: .infinity)
+    }
+
+    func creationCell(item: ItemContent) -> some View {
+        HStack {
+            VStack(spacing: 0) {
+                verticalLine
+
+                Circle()
+                    .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                    .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
+
+                Spacer(minLength: ElementSizes.minSpacerSize)
+            }
+            infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
+                .padding(.top, 8)
+        }
+    }
+
+    func currentCell(item: ItemContent) -> some View {
+        HStack {
+            VStack(spacing: 0) {
+                Spacer(minLength: ElementSizes.minSpacerSize)
+
+                Circle()
+                    .strokeBorder(PassColor.textWeak.toColor, lineWidth: 1)
+                    .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
+
+                verticalLine
+            }
+            infoRow(title: "Current", infos: nil, icon: IconProvider.clock,
+                    shouldDisplay: false)
+                .padding(.bottom, 8)
+        }
+    }
+
+    func modificationCell(item: ItemContent) -> some View {
+        HStack {
+            VStack(spacing: 0) {
+                verticalLine
+
+                Circle()
+                    .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                    .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
+
+                verticalLine
+            }
+            infoRow(title: "Modified", infos: item.revisionDate, icon: IconProvider.pencil)
+                .padding(.vertical, 8)
+        }
+    }
+}
+
+private extension ItemHistoryView {
+    func infoRow(title: LocalizedStringKey,
+                 infos: String?,
+                 icon: UIImage,
                  shouldDisplay: Bool = true) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: icon,
@@ -143,15 +170,15 @@ private extension ItemHistoryView {
                         .foregroundColor(PassColor.textWeak.toColor)
                 }
             }
-            .frame(maxWidth: .infinity, minHeight: 76, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
             .contentShape(Rectangle())
             if shouldDisplay {
                 ItemDetailSectionIcon(icon: IconProvider.chevronRight,
                                       color: PassColor.textWeak)
             }
-
-        }.padding(.horizontal, DesignConstant.sectionPadding)
-            .roundedDetailSection()
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .roundedDetailSection()
     }
 }
 
@@ -165,6 +192,17 @@ private extension ItemHistoryView {
                 dismiss()
             }
         }
+    }
+}
+
+// MARK: - UIElements
+
+private extension ItemHistoryView {
+    var verticalLine: some View {
+        Rectangle()
+            .foregroundColor(.clear)
+            .frame(maxWidth: ElementSizes.line, maxHeight: .infinity)
+            .background(PassColor.textWeak.toColor)
     }
 }
 

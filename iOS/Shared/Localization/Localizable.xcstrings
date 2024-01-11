@@ -18508,6 +18508,9 @@
         }
       }
     },
+    "Current" : {
+
+    },
     "Custom fields" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -25955,6 +25958,9 @@
         }
       }
     },
+    "History" : {
+
+    },
     "How to import to Proton Pass" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -31787,6 +31793,9 @@
           }
         }
       }
+    },
+    "Modified" : {
+
     },
     "More info" : {
       "localizations" : {
