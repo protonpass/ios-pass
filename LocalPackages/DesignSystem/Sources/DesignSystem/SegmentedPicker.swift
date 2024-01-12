@@ -23,18 +23,28 @@ import SwiftUI
 
 public struct SegmentedPicker: View {
     @Binding private var selectedIndex: Int
+    private let textColor: Color
+    private let mainColor: Color
+    private let backgroundColor: Color
     private let options: [String]
 
-    public init(selectedIndex: Binding<Int>, options: [String]) {
+    public init(selectedIndex: Binding<Int>,
+                options: [String],
+                textColor: Color = PassColor.textNorm.toColor,
+                mainColor: Color = PassColor.interactionNormMajor1.toColor,
+                backgroundColor: Color = PassColor.interactionNormMinor1.toColor) {
         _selectedIndex = selectedIndex
         self.options = options
+        self.mainColor = mainColor
+        self.backgroundColor = backgroundColor
+        self.textColor = textColor
     }
 
     public var body: some View {
         ZStack {
             GeometryReader { proxy in
                 let thumbWidth = proxy.size.width / CGFloat(options.count)
-                PassColor.interactionNormMajor1.toColor
+                mainColor
                     .clipShape(Capsule())
                     .frame(width: thumbWidth)
                     .offset(x: thumbWidth * CGFloat(selectedIndex))
@@ -48,7 +58,7 @@ public struct SegmentedPicker: View {
                     }, label: {
                         Text(option)
                             .font(.body.weight(.medium))
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(index == selectedIndex ? textColor : PassColor.textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .center)
                     })
                     .buttonStyle(.plain)
@@ -56,7 +66,7 @@ public struct SegmentedPicker: View {
             }
         }
         .padding(5)
-        .background(PassColor.interactionNormMinor1.toColor)
+        .background(backgroundColor)
         .clipShape(Capsule())
         .frame(height: 50)
     }

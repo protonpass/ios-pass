@@ -36,7 +36,7 @@ struct ItemHistoryView: View {
         static let cellHeight: CGFloat = 75
 
         static var minSpacerSize: CGFloat {
-            (ElementSizes.cellHeight - ElementSizes.circleSize) / 2
+            (ElementSizes.cellHeight - ElementSizes.circleSize / 2) / 2
         }
     }
 
@@ -119,19 +119,10 @@ private extension ItemHistoryView {
     var historyListView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(viewModel.state.history, id: \.item.revision) { item in
-                if viewModel.isCreationRevision(item) {
+                if viewModel.isCurrentRevision(item) {
+                    currentCell(item: item)
+                } else if viewModel.isCreationRevision(item) {
                     navigationLink(for: item, view: creationCell(item: item))
-//                    NavigationLink(value: GeneralRouterDestination
-//                        .historyDetail(currentItem: viewModel.item, revision: item),
-//
-//                        label: {
-//                            creationCell(item: item)
-//                        })
-//                        .isDetailLink(false)
-//                        .buttonStyle(.plain)
-                } else if viewModel.isCurrentRevision(item) {
-                    navigationLink(for: item, view: currentCell(item: item))
-
                 } else {
                     navigationLink(for: item, view: modificationCell(item: item))
                 }
@@ -167,13 +158,16 @@ private extension ItemHistoryView {
                     .strokeBorder(PassColor.textWeak.toColor, lineWidth: 1)
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
-                verticalLine
+                if viewModel.state.history.count > 1 {
+                    verticalLine
+                } else {
+                    Spacer(minLength: ElementSizes.minSpacerSize)
+                }
             }
             infoRow(title: "Current",
                     infos: nil,
                     icon: IconProvider.clock,
                     shouldDisplay: false)
-                .padding(.bottom, 8)
         }
     }
 
@@ -189,7 +183,7 @@ private extension ItemHistoryView {
                 verticalLine
             }
             infoRow(title: "Modified", infos: item.revisionDate, icon: IconProvider.pencil)
-                .padding(.vertical, 8)
+                .padding(.top, 8)
         }
     }
 
@@ -240,8 +234,8 @@ private extension ItemHistoryView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.chevronDown,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1) {
+                         iconColor: viewModel.item.contentData.type.normMajor2Color,
+                         backgroundColor: viewModel.item.contentData.type.normMinor1Color) {
                 dismiss()
             }
         }
