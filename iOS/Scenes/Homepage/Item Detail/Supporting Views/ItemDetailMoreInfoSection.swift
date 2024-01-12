@@ -22,6 +22,7 @@ import Client
 import DesignSystem
 import Entities
 import Factory
+import Foundation
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -29,12 +30,12 @@ import SwiftUI
 struct ItemDetailMoreInfoSection: View {
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     @Binding var isExpanded: Bool
-    private let uiModel: ItemDetailMoreInfoSectionUIModel
+    private let item: ItemContent
 
     init(isExpanded: Binding<Bool>,
          itemContent: ItemContent) {
         _isExpanded = isExpanded
-        uiModel = .init(itemContent: itemContent)
+        item = itemContent
     }
 
     var body: some View {
@@ -64,121 +65,53 @@ struct ItemDetailMoreInfoSection: View {
                 VStack(alignment: .leading) {
                     HStack {
                         title(#localized("Item ID") + ":")
-                        Text(uiModel.itemId)
+                        Text(item.itemId)
                             .textSelection(.enabled)
                             .onTapGesture(perform: copyItemId)
-                    }
+                        Spacer()
+                    }.frame(maxWidth: .infinity, alignment: .leading)
 
                     HStack {
                         title(#localized("Vault ID") + ":")
-                        Text(uiModel.vaultId)
+                        Text(item.shareId)
                             .textSelection(.enabled)
                             .onTapGesture(perform: copyVaultId)
-                    }
-
-                    if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
-                        HStack {
-                            title(#localized("Auto-filled:"))
-                            Text(lastAutoFilledDate)
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                    }
-
-                    HStack {
-                        title(#localized("Modified:"))
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(uiModel.modificationCount)
-                                .fontWeight(.semibold)
-                            Text(uiModel.modificationDate)
-                        }
-                    }
-
-                    HStack {
-                        title(#localized("Created:"))
-                        Text(uiModel.creationDate)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
-                    }
+                        Spacer()
+                    }.frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .font(.caption)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
+                .foregroundColor(PassColor.textWeak.toColor)
+                .frame(maxWidth: .infinity)
             }
         }
         .contentShape(Rectangle())
         .onTapGesture { isExpanded.toggle() }
         .animation(.default, value: isExpanded)
     }
-
-    private func icon(from image: UIImage) -> some View {
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 16)
-            .foregroundColor(Color(uiColor: PassColor.textWeak))
-    }
-
-    private func title(_ text: String) -> some View {
-        Text(text)
-            .fontWeight(.semibold)
-            .frame(width: 100, alignment: .trailing)
-            .frame(maxHeight: .infinity, alignment: .topTrailing)
-    }
 }
 
 private extension ItemDetailMoreInfoSection {
     func copyItemId() {
-        clipboardManager.copy(text: uiModel.itemId,
+        clipboardManager.copy(text: item.itemId,
                               bannerMessage: #localized("Item ID copied"))
     }
 
     func copyVaultId() {
-        clipboardManager.copy(text: uiModel.vaultId,
+        clipboardManager.copy(text: item.shareId,
                               bannerMessage: #localized("Vault ID copied"))
     }
-}
 
-private struct ItemDetailMoreInfoSectionUIModel {
-    let itemId: String
-    let vaultId: String
-    let lastAutoFilledDate: String?
-    let modificationCount: String
-    let modificationDate: String
-    let creationDate: String
+    func icon(from image: UIImage) -> some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 16)
+            .foregroundColor(PassColor.textWeak.toColor)
+    }
 
-    init(itemContent: ItemContent) {
-        itemId = itemContent.itemId
-        vaultId = itemContent.shareId
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .full
-        dateFormatter.timeStyle = .short
-        dateFormatter.doesRelativeDateFormatting = true
-
-        let relativeDateFormatter = RelativeDateTimeFormatter()
-
-        let now = Date()
-
-        let fullDateString: (Int64) -> String = { timeInterval in
-            let timeInterval = TimeInterval(timeInterval)
-            let date = Date(timeIntervalSince1970: timeInterval)
-            let dateString = dateFormatter.string(from: date)
-            let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: now)
-            return "\(dateString) (\(relativeString))"
-        }
-
-        let item = itemContent.item
-
-        if case .login = itemContent.contentData.type,
-           let lastUseTime = item.lastUseTime,
-           lastUseTime != item.createTime {
-            lastAutoFilledDate = fullDateString(lastUseTime).capitalizingFirstLetter()
-        } else {
-            lastAutoFilledDate = nil
-        }
-
-        modificationCount = #localized("%lld time(s)", item.revision)
-        modificationDate = #localized("Last time, %@", fullDateString(item.modifyTime))
-        creationDate = fullDateString(item.createTime).capitalizingFirstLetter()
+    func title(_ text: String) -> some View {
+        Text(text)
+            .fontWeight(.semibold)
+            .frame(maxHeight: .infinity, alignment: .topTrailing)
     }
 }

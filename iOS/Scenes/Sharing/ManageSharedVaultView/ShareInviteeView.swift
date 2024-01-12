@@ -49,7 +49,7 @@ struct ShareInviteeView: View {
 
 private extension ShareInviteeView {
     var content: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             SquircleThumbnail(data: .initials(invitee.email.initials()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)

@@ -41,7 +41,7 @@ struct UserEmailView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
-                .padding(.horizontal, kItemDetailSectionPadding)
+                .padding(.horizontal, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
                 if case let .new(vault, _) = viewModel.vault {
@@ -54,7 +54,7 @@ struct UserEmailView: View {
                     .padding(.leading, -4)
 
                 PassDivider()
-                    .padding(.horizontal, -kItemDetailSectionPadding)
+                    .padding(.horizontal, -DesignConstant.sectionPadding)
                     .padding(.top, 16)
                     .padding(.bottom, 24)
 
@@ -73,7 +73,7 @@ struct UserEmailView: View {
                 Spacer()
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, kItemDetailSectionPadding)
+            .padding(.horizontal, DesignConstant.sectionPadding)
             .scrollViewEmbeded(maxWidth: .infinity)
         }
         .onAppear {

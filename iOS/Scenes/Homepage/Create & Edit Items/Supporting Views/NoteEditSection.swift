@@ -29,10 +29,10 @@ struct NoteEditSection<Field: Hashable>: View {
     let field: Field
 
     var body: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Note")
                     .sectionTitleText()
 
@@ -52,7 +52,7 @@ struct NoteEditSection<Field: Hashable>: View {
                 })
             }
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
         .animation(.default, value: note.isEmpty)
     }
