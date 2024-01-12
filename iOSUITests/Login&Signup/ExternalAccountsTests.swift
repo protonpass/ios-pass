@@ -30,55 +30,44 @@ import ProtonCoreTestingToolkitUITestsLogin
 import XCTest
 
 final class ExternalAccountsTests: LoginBaseTestCase {
-    let timeout = 120.0
+    let timeout = 60.0
 
     let welcomeRobot = WelcomeRobot()
 
     // Sign-in with internal account works
     // Sign-in with external account works
     // Sign-in with username account works (account is converted to internal under the hood)
-    func testSignInWithInternalAccountWorks() {
-        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        let accountToCreate = AccountAvailableForCreation.freeWithAddressAndKeys(username: randomUsername,
-                                                                                 password: randomPassword)
-
-        guard createAccount(accountToCreate: accountToCreate, doh: doh, username: randomUsername) else { return }
-
+    func testSignInWithInternalAccountWorks() throws {
+        let user = User(name: randomName, password: randomPassword)
+        try quarkCommands.userCreate(user: user)
+        
         SigninExternalAccountsCapability()
-            .signInWithAccount(userName: randomUsername,
-                               password: randomPassword,
+            .signInWithAccount(userName: user.name,
+                               password: user.password,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: AutoFillRobot.self)
             .verify.isAutoFillSetupShown(timeout: timeout)
     }
 
-    func testSignInWithExternalAccountWorks() {
-        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
-        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        let accountToCreate = AccountAvailableForCreation.external(email: randomEmail, password: randomPassword)
-
-        guard createAccount(accountToCreate: accountToCreate, doh: doh, username: randomEmail) else { return }
+    func testSignInWithExternalAccountWorks() throws {
+        let user = User(email: randomEmail, name: randomName, password: randomPassword, isExternal: true)
+        try quarkCommands.userCreate(user: user)
 
         SigninExternalAccountsCapability()
-            .signInWithAccount(userName: randomEmail,
-                               password: randomPassword,
+            .signInWithAccount(userName: user.email,
+                               password: user.password,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: AutoFillRobot.self)
             .verify.isAutoFillSetupShown(timeout: timeout)
     }
 
-    func testSignInWithUsernameAccountWorks() {
-        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        let accountToCreate = AccountAvailableForCreation.freeNoAddressNoKeys(username: randomUsername,
-                                                                              password: randomPassword)
-
-        guard createAccount(accountToCreate: accountToCreate, doh: doh, username: randomUsername) else { return }
-
+    func testSignInWithUsernameAccountWorks()  throws {
+        let user = User(name: randomName, password: randomPassword)
+        try quarkCommands.userCreate(user: user, createAddress: .noKey)
+        
         SigninExternalAccountsCapability()
-            .signInWithAccount(userName: randomUsername,
-                               password: randomPassword,
+            .signInWithAccount(userName: user.name,
+                               password: user.password,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: AutoFillRobot.self)
             .verify.isAutoFillSetupShown(timeout: timeout)
@@ -88,11 +77,14 @@ final class ExternalAccountsTests: LoginBaseTestCase {
     // Sign-up with external account works
     // The UI for sign-up with username account is not available
 
-    func testSignUpWithInternalAccountWorks() {
+    // FIXME: Enable again when Account team provides a working solution
+    func disableTestSignUpWithInternalAccountWorks() throws {
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
 
+        try quarkCommands.jailUnban()
+        
         let signupRobot = welcomeRobot
             .logIn()
             .switchToCreateAccount()
@@ -110,9 +102,12 @@ final class ExternalAccountsTests: LoginBaseTestCase {
             ).verify.isAutoFillSetupShown(timeout: timeout)
     }
 
-    func testSignUpWithExternalAccountIsNotAvailable() {
+    // FIXME: Enable again when Account team provides a working solution
+    func disabledTestSignUpWithExternalAccountIsNotAvailable() throws {
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@example.com"
+
+        try quarkCommands.jailUnban()
 
         let signupRobot = welcomeRobot
             .logIn()
@@ -130,32 +125,17 @@ final class ExternalAccountsTests: LoginBaseTestCase {
             .verify.isAutoFillSetupShown(timeout: timeout)
     }
 
+    func testSignUpWithExternalAccountIsNotAvailable() {
+        welcomeRobot
+            .signUp()
+            .verify.otherAccountExtButtonIsNotShown()
+    }
+
     func testSignUpWithUsernameAccountIsNotAvailable() {
         welcomeRobot.logIn()
             .switchToCreateAccount()
             .otherAccountButtonTap()
             .verify.otherAccountExtButtonIsShown()
             .verify.domainsButtonIsShown()
-    }
-
-    // MARK: - Helpers
-
-    private func createAccount(accountToCreate: AccountAvailableForCreation,
-                               doh: DoHInterface,
-                               username: String) -> Bool {
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: accountToCreate, currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
-        }
-
-        wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
-            return false
-        }
-        return true
-
     }
 }

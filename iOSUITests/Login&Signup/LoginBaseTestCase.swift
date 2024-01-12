@@ -29,7 +29,7 @@ import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
 class LoginBaseTestCase: ProtonCoreBaseTestCase {
-    var doh: DoHInterface {
+    var doh: DoH {
         if let customDomain = dynamicDomain.map({ "\($0)" }) {
             return CustomServerConfigDoH(
                 signupDomain: customDomain,
@@ -55,28 +55,11 @@ class LoginBaseTestCase: ProtonCoreBaseTestCase {
 
     let entryRobot = AppMainRobot()
     var appRobot: MainRobot!
+    lazy var quarkCommands = Quark().baseUrl(doh)
 
     override func setUp() {
         beforeSetUp(bundleIdentifier: "me.proton.pass.iOSUITests")
         super.setUp()
         PMLog.info("UI TEST runs on: " + doh.getAccountHost())
-    }
-
-    // MARK: - Helpers
-
-    func createAccount(_ randomUsername: String, _ randomPassword: String) {
-        let quarkCommandTimeout = 30.0
-
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .freeNoAddressNoKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
-        }
-        wait(for: [expectQuarkCommandToFinish], timeout: quarkCommandTimeout)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Username account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
-        }
     }
 }

@@ -29,36 +29,37 @@ import XCTest
 
 final class TokenRefreshTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
-
-    func testSignInWithInternalAccountWorks() {
-        let hostUrl = doh.getCurrentlyUsedHostUrl()
-        let expectUnbanQuarkCommandToFinish = expectation(description: "Unban quark command should finish")
-        QuarkCommands.unban(currentlyUsedHostUrl: hostUrl) { result in
-            switch result {
-            case .failure(let error):
-                XCTFail(String(describing: error))
-            case .success:
-                expectUnbanQuarkCommandToFinish.fulfill()
-            }
-        }
-        wait(for: [expectUnbanQuarkCommandToFinish], timeout: 5.0)
-
+    
+    func testSignInWithInternalAccountWorks() throws {
+        let user = User(name: randomName, password: randomPassword)
+        try quarkCommands.userCreate(user: user)
+        try quarkCommands.jailUnban()
+        
         _ = welcomeRobot.logIn()
-            .fillUsername(username: ObfuscatedConstants.passTestUsername)
-            .fillpassword(password: ObfuscatedConstants.passTestPassword)
+            .fillUsername(username: user.name)
+            .fillpassword(password: user.password)
             .signIn(robot: AutoFillRobot.self)
             .notNowTap(robot: FaceIDRobot.self)
-        let expectExpireSessionQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        QuarkCommands.expireSession(currentlyUsedHostUrl: hostUrl,
-                                    username: ObfuscatedConstants.passTestUsername,
-                                    expireRefreshToken: true) { result in
-            if case .failure(let error) = result {
-                XCTFail("\(error)")
-            } else {
-                expectExpireSessionQuarkCommandToFinish.fulfill()
-            }
-        }
-        wait(for: [expectExpireSessionQuarkCommandToFinish], timeout: 5.0)
-        WelcomeRobot().verify.loginButtonExists()
+            .noThanks(robot: GetStartedRobot.self)
+            .getStartedTap(robot: HomeRobot.self)
+        
+        _ = try quarkCommands.userExpireSession(username: user.name, expireRefreshToken: true)
+        
+        HomeRobot()
+            .tapProfile()
+        
+        WelcomeRobot()
+            .clickOnExpireSessionPopup()
+            .verify.loginButtonExists()
     }
+}
+
+extension WelcomeRobot {
+    
+    public func clickOnExpireSessionPopup() -> WelcomeRobot {
+        staticText("Your session is expired").waitUntilExists(time: 30.0).checkExists()
+        button("OK").tap()
+        return self
+    }
+    
 }

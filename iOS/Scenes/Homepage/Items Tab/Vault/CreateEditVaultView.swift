@@ -48,6 +48,9 @@ struct CreateEditVaultView: View {
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
         }
         .navigationViewStyle(.stack)
+        .onAppear {
+            isFocusedOnTitle = true
+        }
         .onChange(of: viewModel.selectedIcon) { _ in
             isFocusedOnTitle = false
         }
