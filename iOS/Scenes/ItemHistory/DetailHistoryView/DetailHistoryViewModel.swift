@@ -25,20 +25,62 @@ import Entities
 import Factory
 import Foundation
 
-enum ItemElement {
+// This enum must have exact name of variables contained in ItemContent and it sub classes
+enum ItemElement: String {
     case name
     case note
+
+    // login
     case password
     case username
+    case urls
     case website
     case customFields
-    case cardHolder
-    case cardNumber
+
+    // card
+    case cardholderName
+    case verificationNumber
     case expirationDate
     case securityCode
     case pin
+    case type
+
     case alias
     case forwardAddress
+}
+
+extension ItemContent: Diffable {}
+extension Item: Diffable {}
+extension ItemContentData: Diffable {}
+extension LogInItemData: Diffable {}
+extension CreditCardData: Diffable {}
+
+protocol Diffable {
+    associatedtype DiffableType: Diffable
+    func differences(from other: DiffableType) -> [String]
+}
+
+extension Diffable {
+    func differences(from other: Self) -> [String] {
+        var differences = [String]()
+        let mirror1 = Mirror(reflecting: self)
+        let mirror2 = Mirror(reflecting: other)
+
+        for (label, value1) in mirror1.children {
+            guard let label else { continue }
+            if let value2 = mirror2.children.first(where: { $0.label == label })?.value {
+                if let subDiffable1 = value1 as? Self,
+                   let subDiffable2 = value2 as? Self {
+                    let subDiffs = subDiffable1.differences(from: subDiffable2)
+                    differences.append(contentsOf: subDiffs.map { "\($0)" })
+                } else if !"\(value1)".elementsEqual("\(value2)") {
+                    differences.append("\(label)")
+                }
+            }
+        }
+
+        return differences
+    }
 }
 
 @MainActor
@@ -54,44 +96,19 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     let currentItem: ItemContent
     let revision: ItemContent
 
+    private let differences: [String]
+
     init(currentItem: ItemContent,
          revision: ItemContent) {
         self.currentItem = currentItem
         self.revision = revision
         selectedItem = revision
+        differences = currentItem.differences(from: revision)
         setUp()
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
-    func isEqual(for element: ItemElement) -> Bool {
-        switch element {
-        case .name:
-            currentItem.name == revision.name
-        case .note:
-            currentItem.note == revision.note
-        case .password:
-            false
-        case .username:
-            false
-        case .website:
-            false
-        case .customFields:
-            false
-        case .cardHolder:
-            false
-        case .cardNumber:
-            false
-        case .expirationDate:
-            false
-        case .securityCode:
-            false
-        case .pin:
-            false
-        case .alias:
-            false
-        case .forwardAddress:
-            false
-        }
+    func isDifferent(for element: ItemElement) -> Bool {
+        differences.contains(element.rawValue)
     }
 
     func restore() {
