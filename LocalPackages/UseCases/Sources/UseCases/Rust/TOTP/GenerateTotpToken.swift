@@ -27,36 +27,24 @@ import Foundation
 
 public final class GenerateTotpToken: GenerateTotpTokenUseCase {
     private let currentDateProvider: any CurrentDateProviderProtocol
-    private let parser: any TotpUriParserProtocol
+    private let handler: any TotpHandlerProtocol
     private let generator: any TotpTokenGeneratorProtocol
 
     public init(currentDateProvider: any CurrentDateProviderProtocol,
-                parser: any TotpUriParserProtocol = TotpUriParser(),
+                handler: any TotpHandlerProtocol = TotpHandler(),
                 generator: any TotpTokenGeneratorProtocol = TotpTokenGenerator()) {
         self.currentDateProvider = currentDateProvider
-        self.parser = parser
+        self.handler = handler
         self.generator = generator
     }
 
     public func execute(uri: String) throws -> TOTPData {
-        let totp: Totp = if uri.contains("otpauth") {
-            try parser.parse(uriString: uri)
-        } else {
-            // Treat the whole URI as secret
-            Totp(label: nil,
-                 secret: uri,
-                 issuer: nil,
-                 algorithm: nil,
-                 digits: nil,
-                 period: nil)
-        }
-
         let date = currentDateProvider.getCurrentDate()
-        let token = try generator.generateCurrentToken(totp: totp,
-                                                       currentTime: UInt64(date.timeIntervalSince1970))
-        let period = Double(totp.period ?? 30)
+        let result = try generator.generateToken(uri: uri,
+                                                 currentTime: UInt64(date.timeIntervalSince1970))
+        let period = Double(handler.getPeriod(totp: result.totp))
         let remainingSeconds = period - date.timeIntervalSince1970.truncatingRemainder(dividingBy: period)
-        return .init(code: token,
+        return .init(code: result.token,
                      timerData: .init(total: Int(period), remaining: Int(remainingSeconds)))
     }
 }
