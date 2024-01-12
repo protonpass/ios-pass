@@ -284,7 +284,7 @@ private extension HomepageCoordinator {
 private extension HomepageCoordinator {
     // MARK: - Router setup
 
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
+    // swiftlint:disable:next cyclomatic_complexity
     func setUpRouting() {
         router
             .newPresentationDestination
