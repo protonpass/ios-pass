@@ -57,6 +57,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let totpManager = resolve(\ServiceContainer.totpManager)
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
@@ -81,6 +82,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
             totpUri = data.totpUri
+            totpManager.bind(uri: data.totpUri)
             getAliasItem(username: data.username)
 
             if !data.totpUri.isEmpty {
