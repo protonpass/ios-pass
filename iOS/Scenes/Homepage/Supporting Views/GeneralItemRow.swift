@@ -45,7 +45,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     }
 
     var body: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             VStack {
                 Spacer()
                 thumbnailView

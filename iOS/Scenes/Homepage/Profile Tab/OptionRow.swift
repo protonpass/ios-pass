@@ -50,7 +50,7 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     init(action: (() -> Void)? = nil,
          title: String? = nil,
          height: OptionRowHeight = .short,
-         horizontalPadding: CGFloat = kItemDetailSectionPadding,
+         horizontalPadding: CGFloat = DesignConstant.sectionPadding,
          @ViewBuilder content: () -> Content,
          @ViewBuilder leading: (() -> LeadingView) = { EmptyView() },
          @ViewBuilder trailing: (() -> TrailingView) = { EmptyView() }) {
