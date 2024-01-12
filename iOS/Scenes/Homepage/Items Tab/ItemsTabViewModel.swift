@@ -157,7 +157,7 @@ private extension ItemsTabViewModel {
         inviteRefreshTask?.cancel()
         inviteRefreshTask = Task { @MainActor [weak self] in
             guard let self else { return }
-            banners.removeAll()
+            var banners = [InfoBanner]()
             if let invites, !invites.isEmpty {
                 if let newUserInvite = invites.first(where: { $0.fromNewUser }) {
                     router.present(for: .acceptRejectInvite(newUserInvite))
@@ -166,14 +166,15 @@ private extension ItemsTabViewModel {
                 }
             }
             if banners.isEmpty {
-                await fillLocalBanners()
+                await banners.append(contentsOf: localBanners())
             }
+            self.banners = banners
         }
     }
 
-    @MainActor
-    func fillLocalBanners() async {
+    func localBanners() async -> [InfoBanner] {
         do {
+            var banners = [InfoBanner]()
             for banner in InfoBanner.allCases {
                 if preferences.dismissedBannerIds.contains(where: { $0 == banner.id }) {
                     continue
@@ -196,9 +197,11 @@ private extension ItemsTabViewModel {
                     banners.append(banner)
                 }
             }
+            return banners
         } catch {
             logger.error(error)
             router.display(element: .displayErrorBanner(error))
+            return []
         }
     }
 

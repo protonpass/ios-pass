@@ -117,8 +117,8 @@ private extension UserEmailView {
                                               textColor: PassColor.textNorm,
                                               tintColor: PassColor.interactionNorm),
                                 onBackspace: { viewModel.highlightLastEmail() },
-                                onReturn: { viewModel.appendCurrentEmail() })
-            .frame(width: 150, height: 32)
+                                onReturn: { _ = viewModel.appendCurrentEmail() })
+            .frame(width: max(150, CGFloat(viewModel.email.count) * 10), height: 32)
             .clipped()
     }
 
@@ -135,6 +135,7 @@ private extension UserEmailView {
 
         HStack(alignment: .center, spacing: 10) {
             Text(email)
+                .lineLimit(1)
         }
         .font(.callout)
         .foregroundColor(highlighted ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)

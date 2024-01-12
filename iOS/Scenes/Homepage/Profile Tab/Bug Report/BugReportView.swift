@@ -45,7 +45,7 @@ struct BugReportView: View {
                 .toolbar { toolbarContent }
                 .navigationTitle("Report a problem")
                 .navigationBarTitleDisplayMode(.inline)
-                .showSpinner(viewModel.isSending)
+                .showSpinner(viewModel.actionInProcess)
                 .onFirstAppear {
                     focused = true
                 }
@@ -211,6 +211,7 @@ private extension BugReportView {
 
                 PhotosPicker("Select Content",
                              selection: $viewModel.selectedContent,
+                             maxSelectionCount: 2,
                              photoLibrary: .shared())
                     .font(.callout)
                     .foregroundColor(PassColor.textInvert.toColor)
@@ -239,11 +240,22 @@ private extension BugReportView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
 
-            VStack {
-                ForEach(Array(viewModel.currentFiles.keys), id: \.self) { itemTitle in
-                    Text(itemTitle)
-                        .font(.body)
-                }
+            VStack(alignment: .leading) {
+                FlowLayout(mode: .scrollable,
+                           items: Array(viewModel.currentFiles.keys),
+                           viewMapping: { element in
+                               HStack(alignment: .center, spacing: 10) {
+                                   Text(element)
+                                       .lineLimit(1)
+                               }
+                               .font(.callout)
+                               .foregroundColor(PassColor.textNorm.toColor)
+                               .padding(.horizontal, 10)
+                               .padding(.vertical, 8)
+                               .background(PassColor.interactionNormMinor1.toColor)
+                               .cornerRadius(9)
+                               .contentShape(Rectangle())
+                           })
             }
 
             CapsuleTextButton(title: #localized("Clear all files"),

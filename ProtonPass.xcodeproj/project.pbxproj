@@ -2997,7 +2997,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3077,7 +3077,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
@@ -3157,7 +3157,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3229,7 +3229,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSTests;
@@ -3332,7 +3332,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
@@ -3403,7 +3403,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSTests;
@@ -3471,7 +3471,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSUITests;
@@ -3548,7 +3548,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
@@ -3628,7 +3628,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.keyboard;
@@ -3671,7 +3671,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -3745,7 +3745,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3823,7 +3823,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.keyboard;
@@ -3927,7 +3927,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
@@ -3998,7 +3998,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSTests;
@@ -4066,7 +4066,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSUITests;
@@ -4143,7 +4143,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
@@ -4223,7 +4223,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.keyboard;
@@ -4266,7 +4266,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4367,7 +4367,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-function-bodies=150 -Xfrontend -warn-long-expression-type-checking=150 -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4409,7 +4409,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4504,7 +4504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
@@ -4544,7 +4544,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4610,7 +4610,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4678,7 +4678,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSUITests;

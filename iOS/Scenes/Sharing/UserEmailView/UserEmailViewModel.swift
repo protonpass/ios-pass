@@ -66,17 +66,18 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         highlightedEmail = selectedEmails.last
     }
 
-    func appendCurrentEmail() {
+    func appendCurrentEmail() -> Bool {
         let email = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !email.isEmpty else { return }
+        guard !email.isEmpty else { return true }
         guard email.isValidEmail() else {
             router.display(element: .errorMessage(#localized("Invalid email address")))
-            return
+            return false
         }
         if !selectedEmails.contains(email) {
             selectedEmails.append(email)
         }
         self.email = ""
+        return true
     }
 
     func toggleHighlight(_ email: String) {
@@ -101,7 +102,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             }
             do {
                 isChecking = true
-                appendCurrentEmail()
+                guard appendCurrentEmail() else { return }
                 try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
                 highlightedEmail = nil
                 goToNextStep = true
@@ -124,26 +125,26 @@ final class UserEmailViewModel: ObservableObject, Sendable {
 
 private extension UserEmailViewModel {
     func setUp() {
-        $email
+        Publishers.CombineLatest($email, $selectedEmails)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] email, selectedEmails in
                 guard let self else { return }
                 highlightedEmail = nil
+                canContinue = !email.isEmpty || !selectedEmails.isEmpty
             }
             .store(in: &cancellables)
 
-        $selectedEmails
+        shareInviteService.currentSelectedVault
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] selectedEmails in
+            .sink { [weak self] _ in
                 guard let self else { return }
-                highlightedEmail = nil
-                canContinue = !selectedEmails.isEmpty
+                vault = shareInviteService.currentSelectedVault.value
             }
             .store(in: &cancellables)
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            vault = shareInviteService.getCurrentSelectedVault()
+            vault = shareInviteService.currentSelectedVault.value
             do {
                 if let shareId = vault?.shareId {
                     recommendationsState = .loading
