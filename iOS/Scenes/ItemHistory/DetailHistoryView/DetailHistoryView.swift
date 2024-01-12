@@ -109,8 +109,8 @@ private extension DetailHistoryView {
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .padding(DesignConstant.sectionPadding)
-                    .roundedDetailSection(color: viewModel.isEqual(for: .name) ? PassColor.inputBorderNorm
-                        .toColor : PassColor.signalWarning
+                    .roundedDetailSection(color: viewModel.isDifferent(for: .name) ? PassColor.signalWarning
+                        .toColor : PassColor.inputBorderNorm
                         .toColor)
                 Spacer()
             }
@@ -127,8 +127,8 @@ private extension DetailHistoryView {
                 }
             }
             .padding(DesignConstant.sectionPadding)
-            .roundedDetailSection(color: viewModel.isEqual(for: .note) ? PassColor.inputBorderNorm
-                .toColor : PassColor.signalWarning
+            .roundedDetailSection(color: viewModel.isDifferent(for: .note) ? PassColor.signalWarning
+                .toColor : PassColor.inputBorderNorm
                 .toColor)
         }
         .frame(maxWidth: .infinity)
