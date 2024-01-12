@@ -284,7 +284,7 @@ private extension HomepageCoordinator {
 private extension HomepageCoordinator {
     // MARK: - Router setup
 
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func setUpRouting() {
         router
             .newPresentationDestination
@@ -348,6 +348,8 @@ private extension HomepageCoordinator {
                     presentSearchScreen(selection)
                 case let .history(item):
                     presentItemHistory(item)
+                case .restoreHistory:
+                    restoreItem()
                 }
             }
             .store(in: &cancellables)
@@ -586,11 +588,6 @@ private extension HomepageCoordinator {
         addNewEvent(type: .searchTriggered)
     }
 
-    func presentItemHistory(_ item: ItemContent) {
-        let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
-        present(view)
-    }
-
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
@@ -719,6 +716,20 @@ private extension HomepageCoordinator {
                 userInterfaceStyle: preferences.theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible)
+    }
+}
+
+// MARK: - Item history {
+
+extension HomepageCoordinator {
+    func presentItemHistory(_ item: ItemContent) {
+        let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
+        present(view)
+    }
+
+    func restoreItem() {
+        dismissTopMostViewController(animated: true, completion: nil)
+        itemDetailCoordinator?.refresh()
     }
 }
 

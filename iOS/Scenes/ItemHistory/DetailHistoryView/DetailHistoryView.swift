@@ -30,7 +30,7 @@ import SwiftUI
 struct DetailHistoryView: View {
     @StateObject var viewModel: DetailHistoryViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedIndex = 0
+    @State private var showAlert = false
 
     var body: some View {
         mainContainer
@@ -40,6 +40,15 @@ struct DetailHistoryView: View {
             .navigationBarTitleDisplayMode(.inline)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Restore this version?"),
+                      message: Text(#localized("Your current document will revert to the version from %@",
+                                               viewModel.revision.revisionDate)),
+                      primaryButton: .default(Text("Restore"),
+                                              action: { viewModel.restore() }),
+                      secondaryButton: .cancel())
+            }
+            .showSpinner(viewModel.restoringItem)
     }
 }
 
@@ -48,28 +57,17 @@ private extension DetailHistoryView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.arrowLeft,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
+                         iconColor: viewModel.selectedItem.contentData.type.normMajor2Color,
+                         backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color,
                          action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             CapsuleLabelButton(icon: IconProvider.clockRotateLeft,
                                title: #localized("Restore"),
-                               titleColor: PassColor.interactionNormMajor2,
-                               backgroundColor: PassColor.interactionNormMinor1,
-                               action: {})
-//            CircleButton(icon: IconProvider.arrowLeft,
-//                         iconColor: PassColor.interactionNormMajor2,
-//                         backgroundColor: PassColor.interactionNormMinor1,
-//                         action: dismiss.callAsFunction)
-//            DisablableCapsuleTextButton(title: #localized("Continue"),
-//                                        titleColor: PassColor.textInvert,
-//                                        disableTitleColor: PassColor.textHint,
-//                                        backgroundColor: PassColor.interactionNormMajor1,
-//                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-//                                        disabled: !viewModel.canContinue,
-//                                        action: { viewModel.goToNextStep = true })
+                               titleColor: viewModel.selectedItem.contentData.type.normMajor2Color,
+                               backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color,
+                               action: { showAlert = true })
         }
     }
 }
@@ -77,34 +75,63 @@ private extension DetailHistoryView {
 private extension DetailHistoryView {
     var mainContainer: some View {
         ZStack(alignment: .bottom) {
-            VStack(alignment: .leading) {
-                Text("History")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .padding(.horizontal, DesignConstant.sectionPadding)
-
-//                if let lastUsed = viewModel.lastUsedTime {
-//                    header(lastUsed: lastUsed)
-//                }
-//                if viewModel.state == .loading {
-//                    progressView
-//                } else if !viewModel.state.history.isEmpty {
-//                    historyListView
-//                }
+            ScrollViewReader { _ in
+                ScrollView {
+                    if viewModel.selectedItem.contentData == .note {
+                        noteView
+                    } else {
+                        Text("Plop")
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(PassColor.backgroundNorm.toColor)
+                    }
+                }
+                .animation(.default, value: viewModel.selectedItem)
             }
-//            .animation(.default, value: viewModel.state)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(PassColor.backgroundNorm.toColor)
+            .padding(.bottom, 50)
 
-            SegmentedPicker(selectedIndex: $selectedIndex,
-                            options: [viewModel.revision.shortRevisionDate, #localized("Current")])
+            SegmentedPicker(selectedIndex: $viewModel.selectedItemIndex,
+                            options: [viewModel.revision.shortRevisionDate, #localized("Current")],
+                            textColor: PassColor.textInvert.toColor,
+                            mainColor: viewModel.selectedItem.contentData.type.normMajor2Color.toColor,
+                            backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color.toColor)
         }
     }
 }
 
-// struct DetailHistoryView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DetailHistoryView()
-//    }
-// }
+private extension DetailHistoryView {
+    var noteView: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            let itemContent = viewModel.selectedItem
+
+            HStack(alignment: .firstTextBaseline) {
+                Text(itemContent.name)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(PassColor.textNorm.toColor)
+                    .padding(DesignConstant.sectionPadding)
+                    .roundedDetailSection(color: viewModel.isEqual(for: .name) ? PassColor.inputBorderNorm
+                        .toColor : PassColor.signalWarning
+                        .toColor)
+                Spacer()
+            }
+
+            Spacer(minLength: 16)
+
+            Group {
+                if itemContent.note.isEmpty {
+                    Text("Empty note")
+                        .placeholderText()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    Text(itemContent.note)
+                }
+            }
+            .padding(DesignConstant.sectionPadding)
+            .roundedDetailSection(color: viewModel.isEqual(for: .note) ? PassColor.inputBorderNorm
+                .toColor : PassColor.signalWarning
+                .toColor)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+    }
+}

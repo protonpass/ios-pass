@@ -101,8 +101,8 @@ struct ItemDetailHistorySection: View {
             infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
 
             CapsuleTextButton(title: "View Item history",
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
+                              titleColor: item.contentData.type.normMajor2Color,
+                              backgroundColor: item.contentData.type.normMinor1Color,
                               action: action)
                 .padding(.horizontal, DesignConstant.sectionPadding)
         }
