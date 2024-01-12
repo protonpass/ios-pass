@@ -89,13 +89,10 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
 
         case .securityCode:
             false
-
         case .pin:
             false
-
         case .alias:
             false
-
         case .forwardAddress:
             false
         }
