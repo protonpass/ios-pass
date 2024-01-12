@@ -46,12 +46,12 @@ struct PrefixSuffixSection<Field: Hashable>: View {
     var onSelectSuffix: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: kItemDetailSectionPadding) {
+        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
             prefixRow
             PassSectionDivider()
             suffixRow
         }
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
@@ -92,14 +92,14 @@ struct PrefixSuffixSection<Field: Hashable>: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: prefix.isEmpty)
     }
 
     @ViewBuilder
     private var suffixRow: some View {
         HStack {
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Suffix")
                     .sectionTitleText()
 
@@ -121,7 +121,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
             Spacer()
             ItemDetailSectionIcon(icon: IconProvider.chevronDown)
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .animationsDisabled()
         .contentShape(Rectangle())
         .onTapGesture(perform: onSelectSuffix)

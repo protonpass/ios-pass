@@ -50,7 +50,7 @@ struct SharingSummaryView: View {
         }
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
@@ -87,7 +87,7 @@ private extension SharingSummaryView {
                 .font(.callout)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
-            HStack(spacing: kItemDetailSectionPadding) {
+            HStack(spacing: DesignConstant.sectionPadding) {
                 SquircleThumbnail(data: .initials(infos.email.initials()),
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
@@ -137,7 +137,7 @@ private extension SharingSummaryView {
 
                 LazyVStack {
                     ForEach(viewModel.infos) { info in
-                        HStack(spacing: kItemDetailSectionPadding) {
+                        HStack(spacing: DesignConstant.sectionPadding) {
                             SquircleThumbnail(data: .initials(info.email.initials()),
                                               tintColor: ItemType.login.tintColor,
                                               backgroundColor: ItemType.login.backgroundColor)

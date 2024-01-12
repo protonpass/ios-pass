@@ -67,6 +67,9 @@ private extension CreditCardDetailView {
                             .padding(.top, 8)
                     }
 
+                    ItemDetailHistorySection(itemContent: viewModel.itemContent,
+                                             action: {})
+
                     ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
                         .padding(.top, 24)
@@ -84,7 +87,7 @@ private extension CreditCardDetailView {
 
 private extension CreditCardDetailView {
     var detailSection: some View {
-        VStack(spacing: kItemDetailSectionPadding) {
+        VStack(spacing: DesignConstant.sectionPadding) {
             cardholderNameRow
             PassSectionDivider()
             cardNumberRow
@@ -97,15 +100,15 @@ private extension CreditCardDetailView {
                 pinRow
             }
         }
-        .padding(.vertical, kItemDetailSectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
 
     var cardholderNameRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Cardholder name")
                     .sectionTitleText()
 
@@ -120,7 +123,7 @@ private extension CreditCardDetailView {
             .contentShape(Rectangle())
             .onTapGesture { viewModel.copyCardholderName() }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
             if !viewModel.isFreeUser, !viewModel.cardholderName.isEmpty {
                 Button { viewModel.copyCardholderName() } label: {
@@ -139,10 +142,10 @@ private extension CreditCardDetailView {
     @ViewBuilder
     var cardNumberRow: some View {
         let shouldShowOptions = !viewModel.isFreeUser && !viewModel.cardNumber.isEmpty
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.creditCard, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Card number")
                     .sectionTitleText()
 
@@ -170,7 +173,7 @@ private extension CreditCardDetailView {
                     .animationsDisabled()
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
             if shouldShowOptions {
                 Button(action: {
@@ -191,10 +194,10 @@ private extension CreditCardDetailView {
     @ViewBuilder
     var verificationNumberRow: some View {
         let shouldShowOptions = !viewModel.isFreeUser && !viewModel.verificationNumber.isEmpty
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: PassIcon.shieldCheck, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Security code")
                     .sectionTitleText()
 
@@ -222,7 +225,7 @@ private extension CreditCardDetailView {
                     .animationsDisabled()
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
             if shouldShowOptions {
                 Button(action: {
@@ -243,10 +246,10 @@ private extension CreditCardDetailView {
     @ViewBuilder
     var pinRow: some View {
         let shouldShowOptions = !viewModel.isFreeUser && !viewModel.pin.isEmpty
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("PIN number")
                     .sectionTitleText()
 
@@ -272,7 +275,7 @@ private extension CreditCardDetailView {
                     .animationsDisabled()
             }
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
             if shouldShowOptions {
                 Button(action: {
@@ -287,10 +290,10 @@ private extension CreditCardDetailView {
     }
 
     var expirationDateRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.calendarDay, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Expiration date")
                     .sectionTitleText()
 
@@ -303,6 +306,6 @@ private extension CreditCardDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, kItemDetailSectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 }
