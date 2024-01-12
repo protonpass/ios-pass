@@ -21,9 +21,9 @@
 import SwiftUI
 
 public extension View {
-    func roundedDetailSection(color: Color = PassColor.inputBorderNorm.toColor) -> some View {
+    func roundedDetailSection(color: UIColor = PassColor.inputBorderNorm) -> some View {
         overlay(RoundedRectangle(cornerRadius: 16)
-            .stroke(color, lineWidth: 1))
+            .stroke(color.toColor, lineWidth: 1))
     }
 
     func roundedEditableSection(borderColor: UIColor = PassColor.inputBorderNorm) -> some View {
