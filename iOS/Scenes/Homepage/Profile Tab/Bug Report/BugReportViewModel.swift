@@ -152,6 +152,9 @@ private extension BugReportViewModel {
             }
             do {
                 actionInProcess = true
+                for key in currentFiles.keys where key.contains("Content -") {
+                    currentFiles.removeValue(forKey: key)
+                }
                 let data = try await fetchContentUrls(content: content)
                 currentFiles = currentFiles.merging(data) { _, new in new }
             } catch {
@@ -170,7 +173,7 @@ private extension BugReportViewModel {
 
             for try await result in group {
                 if let result {
-                    contentUrls[result.url.lastPathComponent] = result.url
+                    contentUrls["Content - \(result.url.lastPathComponent)"] = result.url
                 }
             }
 
