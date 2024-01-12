@@ -27,6 +27,7 @@ import Foundation
 enum HistoryState: Equatable {
     case loading
     case loaded([ItemContent])
+    case error
 
     var history: [ItemContent] {
         if case let .loaded(data) = self {
@@ -44,6 +45,7 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
 
     let item: ItemContent
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init(item: ItemContent) {
         self.item = item
@@ -56,7 +58,8 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
             let history = try await getItemHistory(shareId: item.shareId, itemId: item.itemId)
             state = .loaded(history)
         } catch {
-            print("Woot error for history: \(error)")
+            state = .error
+            router.display(element: .displayErrorBanner(error))
         }
     }
 
