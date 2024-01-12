@@ -64,6 +64,9 @@ private extension ItemHistoryView {
                 progressView
             } else if !viewModel.state.history.isEmpty {
                 historyListView
+            } else {
+                EmptyView()
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
         }
         .animation(.default, value: viewModel.state)
