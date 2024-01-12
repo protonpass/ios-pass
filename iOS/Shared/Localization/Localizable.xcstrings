@@ -41911,6 +41911,9 @@
         }
       }
     },
+    "Restore this version?" : {
+
+    },
     "Restored %lld items" : {
       "localizations" : {
         "en" : {
@@ -58813,6 +58816,9 @@
           }
         }
       }
+    },
+    "Your current document will revert to the version from %@" : {
+
     },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",

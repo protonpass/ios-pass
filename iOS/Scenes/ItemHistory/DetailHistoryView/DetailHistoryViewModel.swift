@@ -20,11 +20,37 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Combine
 import Entities
+import Factory
 import Foundation
+
+enum ItemElement {
+    case name
+    case note
+    case password
+    case username
+    case website
+    case customFields
+    case cardHolder
+    case cardNumber
+    case expirationDate
+    case securityCode
+    case pin
+    case alias
+    case forwardAddress
+}
 
 @MainActor
 final class DetailHistoryViewModel: ObservableObject, Sendable {
+    @Published var selectedItemIndex = 0
+    @Published private(set) var selectedItem: ItemContent
+    @Published private(set) var restoringItem = false
+
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private var cancellables = Set<AnyCancellable>()
+
     let currentItem: ItemContent
     let revision: ItemContent
 
@@ -32,10 +58,85 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
          revision: ItemContent) {
         self.currentItem = currentItem
         self.revision = revision
+        selectedItem = revision
         setUp()
+    }
+
+    func isEqual(for element: ItemElement) -> Bool {
+        switch element {
+        case .name:
+            currentItem.name == revision.name
+        case .note:
+            currentItem.note == revision.note
+        case .password:
+            false
+        case .username:
+            false
+        case .website:
+            false
+
+        case .customFields:
+            false
+
+        case .cardHolder:
+            false
+
+        case .cardNumber:
+            false
+
+        case .expirationDate:
+            false
+
+        case .securityCode:
+            false
+
+        case .pin:
+            false
+
+        case .alias:
+            false
+
+        case .forwardAddress:
+            false
+        }
+    }
+
+    func restore() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                restoringItem = false
+            }
+            restoringItem = true
+            do {
+                let protobuff = ItemContentProtobuf(name: revision.name,
+                                                    note: revision.note,
+                                                    itemUuid: revision.itemUuid,
+                                                    data: revision.contentData,
+                                                    customFields: revision.customFields)
+                try await itemRepository.updateItem(oldItem: currentItem.item,
+                                                    newItemContent: protobuff,
+                                                    shareId: currentItem.shareId)
+                router.present(for: .restoreHistory)
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 
 private extension DetailHistoryViewModel {
-    func setUp() {}
+    func setUp() {
+        $selectedItemIndex
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] index in
+                guard let self else {
+                    return
+                }
+                selectedItem = index == 0 ? revision : currentItem
+            }
+            .store(in: &cancellables)
+    }
 }
