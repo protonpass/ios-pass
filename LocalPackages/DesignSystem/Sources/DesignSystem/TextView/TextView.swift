@@ -14,6 +14,7 @@ public struct TextView: View {
     private var shouldEditInRange: ((Range<String.Index>, String) -> Bool)?
     private var onCommit: (() -> Void)?
 
+    // swiftlint:disable:next discouraged_anyview
     var placeholderView: AnyView?
     var foregroundColor: UIColor = .label
     var autocapitalization: UITextAutocapitalizationType = .sentences
