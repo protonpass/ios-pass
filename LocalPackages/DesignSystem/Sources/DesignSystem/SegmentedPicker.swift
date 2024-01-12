@@ -23,28 +23,28 @@ import SwiftUI
 
 public struct SegmentedPicker: View {
     @Binding private var selectedIndex: Int
-    private let textColor: Color
-    private let mainColor: Color
-    private let backgroundColor: Color
+    private let highlightTextColor: UIColor
+    private let mainColor: UIColor
+    private let backgroundColor: UIColor
     private let options: [String]
 
     public init(selectedIndex: Binding<Int>,
                 options: [String],
-                textColor: Color = PassColor.textNorm.toColor,
-                mainColor: Color = PassColor.interactionNormMajor1.toColor,
-                backgroundColor: Color = PassColor.interactionNormMinor1.toColor) {
+                highlightTextColor: UIColor = PassColor.textNorm,
+                mainColor: UIColor = PassColor.interactionNormMajor1,
+                backgroundColor: UIColor = PassColor.interactionNormMinor1) {
         _selectedIndex = selectedIndex
         self.options = options
         self.mainColor = mainColor
         self.backgroundColor = backgroundColor
-        self.textColor = textColor
+        self.highlightTextColor = highlightTextColor
     }
 
     public var body: some View {
         ZStack {
             GeometryReader { proxy in
                 let thumbWidth = proxy.size.width / CGFloat(options.count)
-                mainColor
+                mainColor.toColor
                     .clipShape(Capsule())
                     .frame(width: thumbWidth)
                     .offset(x: thumbWidth * CGFloat(selectedIndex))
@@ -58,7 +58,8 @@ public struct SegmentedPicker: View {
                     }, label: {
                         Text(option)
                             .font(.body.weight(.medium))
-                            .foregroundStyle(index == selectedIndex ? textColor : PassColor.textNorm.toColor)
+                            .foregroundStyle(index == selectedIndex ? highlightTextColor.toColor : PassColor
+                                .textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .center)
                     })
                     .buttonStyle(.plain)
@@ -66,8 +67,8 @@ public struct SegmentedPicker: View {
             }
         }
         .padding(5)
-        .background(backgroundColor)
+        .background(backgroundColor.toColor)
         .clipShape(Capsule())
-        .frame(height: 50)
+        .frame(height: DesignConstant.defaultPickerHeight)
     }
 }

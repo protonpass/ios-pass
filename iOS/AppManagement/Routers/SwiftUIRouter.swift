@@ -24,7 +24,7 @@ import SwiftUI
 enum GeneralRouterDestination: Hashable {
     case userSharePermission
     case shareSummary
-    case historyDetail(currentItem: ItemContent, revision: ItemContent)
+    case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
 }
 
 @MainActor
@@ -36,8 +36,9 @@ final class MainNavViewRouter {
             UserPermissionView()
         case .shareSummary:
             SharingSummaryView()
-        case let .historyDetail(currentItem: currentItem, revision: revision):
-            DetailHistoryView(viewModel: DetailHistoryViewModel(currentItem: currentItem, revision: revision))
+        case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
+            DetailHistoryView(viewModel: DetailHistoryViewModel(currentItem: currentRevision,
+                                                                revision: pastRevision))
         }
     }
 }
@@ -51,8 +52,9 @@ extension View {
                 UserPermissionView()
             case .shareSummary:
                 SharingSummaryView()
-            case let .historyDetail(currentItem: currentItem, revision: revision):
-                DetailHistoryView(viewModel: DetailHistoryViewModel(currentItem: currentItem, revision: revision))
+            case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
+                DetailHistoryView(viewModel: DetailHistoryViewModel(currentItem: currentRevision,
+                                                                    revision: pastRevision))
             }
         }
     }
