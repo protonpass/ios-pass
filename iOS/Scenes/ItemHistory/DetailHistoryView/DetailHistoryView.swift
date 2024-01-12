@@ -80,7 +80,7 @@ private extension DetailHistoryView {
                     if viewModel.selectedItem.contentData == .note {
                         noteView
                     } else {
-                        Text("Plop")
+                        Text(verbatim: "This is a temporary empty state")
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .background(PassColor.backgroundNorm.toColor)
                     }
