@@ -51,12 +51,6 @@ struct ItemHistoryView: View {
 private extension ItemHistoryView {
     var mainContainer: some View {
         VStack(alignment: .leading) {
-            Text("History")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
-                .padding(.horizontal, DesignConstant.sectionPadding)
-
             if let lastUsed = viewModel.lastUsedTime {
                 header(lastUsed: lastUsed)
             }
@@ -70,7 +64,7 @@ private extension ItemHistoryView {
             }
         }
         .animation(.default, value: viewModel.state)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("History")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
@@ -167,7 +161,7 @@ private extension ItemHistoryView {
                     Spacer(minLength: ElementSizes.minSpacerSize)
                 }
             }
-            infoRow(title: "Current",
+            infoRow(title: "Current version",
                     infos: nil,
                     icon: IconProvider.clock,
                     shouldDisplay: false)
@@ -192,7 +186,7 @@ private extension ItemHistoryView {
 
     func navigationLink(for item: ItemContent, view: some View) -> some View {
         NavigationLink(value: GeneralRouterDestination
-            .historyDetail(currentItem: viewModel.item, revision: item),
+            .historyDetail(currentRevision: viewModel.item, pastRevision: item),
             label: {
                 view
             })

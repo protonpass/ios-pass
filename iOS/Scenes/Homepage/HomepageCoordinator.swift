@@ -349,7 +349,7 @@ private extension HomepageCoordinator {
                 case let .history(item):
                     presentItemHistory(item)
                 case .restoreHistory:
-                    restoreItem()
+                    updateAfterRestoration()
                 }
             }
             .store(in: &cancellables)
@@ -727,7 +727,7 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func restoreItem() {
+    func updateAfterRestoration() {
         dismissTopMostViewController(animated: true, completion: nil)
         itemDetailCoordinator?.refresh()
     }

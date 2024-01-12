@@ -22,4 +22,5 @@ import Foundation
 
 public enum DesignConstant {
     public static let sectionPadding: CGFloat = 16
+    public static let defaultPickerHeight: CGFloat = 50
 }
