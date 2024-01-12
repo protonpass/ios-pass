@@ -194,14 +194,12 @@ public extension ItemRepository {
 
     func getItemRevisions(shareId: String, itemId: String) async throws -> [ItemContent] {
         let items = try await remoteDatasource.getItemRevisions(shareId: shareId, itemId: itemId)
-
-        var itemContents = [ItemContent]()
-        for item in items {
-            let itemContent = try await symmetricallyEncrypt(itemRevision: item, shareId: shareId)
-                .getItemContent(symmetricKey: getSymmetricKey())
-            itemContents.append(itemContent)
+        let symmetricKey = try getSymmetricKey()
+        let contents: [ItemContent?] = try await items.parallelMap { [weak self] item in
+            try await self?.symmetricallyEncrypt(itemRevision: item, shareId: shareId)
+                .getItemContent(symmetricKey: symmetricKey)
         }
-        return itemContents
+        return contents.compactMap { $0 }
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {

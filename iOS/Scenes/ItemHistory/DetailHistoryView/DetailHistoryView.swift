@@ -75,63 +75,24 @@ private extension DetailHistoryView {
 private extension DetailHistoryView {
     var mainContainer: some View {
         ZStack(alignment: .bottom) {
-            ScrollViewReader { _ in
-                ScrollView {
-                    if viewModel.selectedItem.contentData == .note {
-                        noteView
-                    } else {
-                        Text(verbatim: "This is a temporary empty state")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(PassColor.backgroundNorm.toColor)
-                    }
+            ScrollView {
+                if viewModel.selectedItem.contentData == .note {
+                    noteView
+                } else {
+                    Text(verbatim: "This is a temporary empty state")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(PassColor.backgroundNorm.toColor)
                 }
-                .animation(.default, value: viewModel.selectedItem)
             }
-            .padding(.bottom, 50)
+            .animation(.default, value: viewModel.selectedItem)
+            .padding(.bottom, DesignConstant.defaultPickerHeight)
 
             SegmentedPicker(selectedIndex: $viewModel.selectedItemIndex,
                             options: [viewModel.revision.shortRevisionDate, #localized("Current")],
-                            textColor: PassColor.textInvert.toColor,
-                            mainColor: viewModel.selectedItem.contentData.type.normMajor2Color.toColor,
-                            backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color.toColor)
+                            highlightTextColor: PassColor.textInvert,
+                            mainColor: viewModel.selectedItem.contentData.type.normMajor2Color,
+                            backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color)
         }
     }
 }
 
-private extension DetailHistoryView {
-    var noteView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            let itemContent = viewModel.selectedItem
-
-            HStack(alignment: .firstTextBaseline) {
-                Text(itemContent.name)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .padding(DesignConstant.sectionPadding)
-                    .roundedDetailSection(color: viewModel.isDifferent(for: .name) ? PassColor.signalWarning
-                        .toColor : PassColor.inputBorderNorm
-                        .toColor)
-                Spacer()
-            }
-
-            Spacer(minLength: 16)
-
-            Group {
-                if itemContent.note.isEmpty {
-                    Text("Empty note")
-                        .placeholderText()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                } else {
-                    Text(itemContent.note)
-                }
-            }
-            .padding(DesignConstant.sectionPadding)
-            .roundedDetailSection(color: viewModel.isDifferent(for: .note) ? PassColor.signalWarning
-                .toColor : PassColor.inputBorderNorm
-                .toColor)
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-    }
-}

@@ -75,8 +75,7 @@ extension Int64 {
         dateFormatter.dateFormat = "MMM-dd-yy HH:mm"
         let timeInterval = TimeInterval(self)
         let date = Date(timeIntervalSince1970: timeInterval)
-        let dateString = dateFormatter.string(from: date)
-        return "\(dateString)"
+        return dateFormatter.string(from: date)
     }
 }
 
