@@ -214,3 +214,8 @@ custom_rules:
     name: "Discouraged PreviewProvider"
     message: "Use #Preview macro insteaf of PreviewProvider"
     regex: "(PreviewProvider)"
+
+  discouraged_anyview:
+    name: "Discouraged AnyView"
+    message: "Avoid using AnyView for better performance"
+    regex: "(AnyView)"

@@ -27,6 +27,7 @@ public extension TextView {
     func placeholder(_ placeholder: String, _ configure: (Text) -> some View) -> TextView {
         var view = self
         let text = Text(placeholder)
+        // swiftlint:disable:next discouraged_anyview
         view.placeholderView = AnyView(configure(text))
         return view
     }
@@ -34,6 +35,7 @@ public extension TextView {
     /// Specify a custom placeholder view
     func placeholder(_ placeholder: some View) -> TextView {
         var view = self
+        // swiftlint:disable:next discouraged_anyview
         view.placeholderView = AnyView(placeholder)
         return view
     }
