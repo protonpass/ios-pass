@@ -120,7 +120,7 @@ struct LogInDetailView: View {
                     EmptyView()
                 } else {
                     PassSectionDivider()
-                    TOTPRow(uri: viewModel.totpUri,
+                    TOTPRow(totpManager: viewModel.totpManager,
                             tintColor: iconTintColor,
                             onCopyTotpToken: { viewModel.copyTotpToken($0) })
                 }

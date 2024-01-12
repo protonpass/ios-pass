@@ -54,7 +54,8 @@ struct DataUrl: Transferable {
         FileRepresentation(contentType: .data) { data in
             SentTransferredFile(data.url)
         } importing: { received in
-            Self(url: received.file)
+            let copy = try received.file.copyFileToTempFolder()
+            return Self(url: copy)
         }
     }
 }
@@ -65,7 +66,7 @@ final class BugReportViewModel: ObservableObject {
     @Published var description = ""
     @Published private(set) var error: Error?
     @Published private(set) var hasSent = false
-    @Published private(set) var isSending = false
+    @Published private(set) var actionInProcess = false
     @Published var shouldSendLogs = true
     @Published var selectedContent = [PhotosPickerItem]()
 
@@ -96,7 +97,7 @@ final class BugReportViewModel: ObservableObject {
         assert(object != nil, "An object must be selected")
         Task { @MainActor [weak self] in
             guard let self else { return }
-            isSending = true
+            actionInProcess = true
             do {
                 let plan = try await accessRepository.getPlan()
                 let planName = plan.type.capitalized
@@ -113,15 +114,21 @@ final class BugReportViewModel: ObservableObject {
             } catch {
                 self.error = error
             }
-            isSending = false
+            actionInProcess = false
         }
     }
 
     func addFiles(files: Result<[URL], Error>) {
         switch files {
-        case let .success(fileurls):
-            for fileurl in fileurls {
-                currentFiles[fileurl.lastPathComponent] = fileurl
+        case let .success(fileUrls):
+            do {
+                for fileUrl in fileUrls {
+                    _ = fileUrl.startAccessingSecurityScopedResource()
+                    currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempFolder()
+                    fileUrl.stopAccessingSecurityScopedResource()
+                }
+            } catch {
+                self.error = error
             }
         case let .failure(error):
             self.error = error
@@ -140,7 +147,14 @@ private extension BugReportViewModel {
             guard let self else {
                 return
             }
+            defer {
+                actionInProcess = false
+            }
             do {
+                actionInProcess = true
+                for key in currentFiles.keys where key.contains("Content -") {
+                    currentFiles.removeValue(forKey: key)
+                }
                 let data = try await fetchContentUrls(content: content)
                 currentFiles = currentFiles.merging(data) { _, new in new }
             } catch {
@@ -159,7 +173,7 @@ private extension BugReportViewModel {
 
             for try await result in group {
                 if let result {
-                    contentUrls[result.url.lastPathComponent] = result.url
+                    contentUrls["Content - \(result.url.lastPathComponent)"] = result.url
                 }
             }
 

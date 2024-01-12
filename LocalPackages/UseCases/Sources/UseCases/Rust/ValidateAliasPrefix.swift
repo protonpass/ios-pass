@@ -56,7 +56,7 @@ extension PassRustCore.AliasPrefixError {
     var toEntitiesAliasPrefixError: Entities.AliasPrefixError {
         switch self {
         case .DotAtTheBeginning:
-            .dotAtTheEnd
+            .dotAtTheStart
         case .DotAtTheEnd:
             .dotAtTheEnd
         case .InvalidCharacter:
