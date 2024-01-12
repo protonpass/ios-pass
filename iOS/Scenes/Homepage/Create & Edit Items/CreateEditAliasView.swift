@@ -181,7 +181,7 @@ struct CreateEditAliasView: View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.alias, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Alias address")
                     .sectionTitleText()
                 switch viewModel.state {
@@ -201,7 +201,7 @@ struct CreateEditAliasView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
 
@@ -209,7 +209,7 @@ struct CreateEditAliasView: View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.alias, color: tintColor)
 
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("You are about to create")
                     .sectionTitleText()
 
@@ -239,7 +239,7 @@ struct CreateEditAliasView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .animation(.default, value: viewModel.prefixError)
-        .padding(kItemDetailSectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
 }

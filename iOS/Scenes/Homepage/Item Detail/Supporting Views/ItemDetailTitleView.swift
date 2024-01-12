@@ -30,7 +30,7 @@ struct ItemDetailTitleView: View {
     let shouldShowVault: Bool
 
     var body: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             ItemSquircleThumbnail(data: itemContent.thumbnailData(),
                                   pinned: itemContent.item.pinned,
                                   size: .large)
