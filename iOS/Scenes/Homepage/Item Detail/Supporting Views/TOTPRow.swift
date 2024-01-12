@@ -18,21 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import DesignSystem
-import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct TOTPRow: View {
-    @StateObject private var totpManager = resolve(\ServiceContainer.totpManager)
-    let uri: String
+    @ObservedObject private var totpManager: TOTPManager
     let tintColor: UIColor
     let onCopyTotpToken: (String) -> Void
 
-    init(uri: String,
+    init(totpManager: TOTPManager,
          tintColor: UIColor,
          onCopyTotpToken: @escaping (String) -> Void) {
-        self.uri = uri
+        _totpManager = .init(initialValue: totpManager)
         self.tintColor = tintColor
         self.onCopyTotpToken = onCopyTotpToken
     }
@@ -76,8 +75,5 @@ struct TOTPRow: View {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: totpManager.state)
-        .onFirstAppear {
-            totpManager.bind(uri: uri)
-        }
     }
 }

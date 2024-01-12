@@ -46,11 +46,11 @@ public final class GetPasswordStrength: GetPasswordStrengthUseCase {
             return nil
         }
         return switch passwordScorer.checkScore(password: password) {
-        case .dangerous, .veryDangerous:
+        case .vulnerable:
             .vulnerable
-        case .veryWeak, .weak:
+        case .weak:
             .weak
-        default:
+        case .strong:
             .strong
         }
     }
