@@ -62,6 +62,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
         setUp()
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func isEqual(for element: ItemElement) -> Bool {
         switch element {
         case .name:
@@ -74,19 +75,14 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
             false
         case .website:
             false
-
         case .customFields:
             false
-
         case .cardHolder:
             false
-
         case .cardNumber:
             false
-
         case .expirationDate:
             false
-
         case .securityCode:
             false
         case .pin:
