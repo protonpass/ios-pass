@@ -63,6 +63,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -78,6 +79,10 @@ class BaseItemDetailViewModel: ObservableObject {
             return false
         }
         return canUserPerformActionOnVault(for: vault.vault)
+    }
+
+    var itemHistoryEnabled: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1)
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
