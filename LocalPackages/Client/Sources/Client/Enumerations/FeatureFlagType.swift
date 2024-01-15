@@ -25,7 +25,8 @@ import ProtonCoreFeatureFlags
 /// following is how a flag should be added:
 /// Example:
 ///    case passSharingV1 = "PassSharingV1"
-// public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-// }
+public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
+    case passItemHistoryV1 = "PassItemHistoryV1"
+}
 
 // swiftlint:enable orphaned_doc_comment
