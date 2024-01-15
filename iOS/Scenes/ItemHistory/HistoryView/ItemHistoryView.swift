@@ -113,7 +113,7 @@ private extension ItemHistoryView {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(viewModel.history, id: \.item.revision) { item in
                 if viewModel.isCurrentRevision(item) {
-                    currentCell()
+                    currentCell(item: item)
                 } else if viewModel.isCreationRevision(item) {
                     navigationLink(for: item, view: creationCell(item: item))
                 } else {
@@ -145,7 +145,7 @@ private extension ItemHistoryView {
         }
     }
 
-    func currentCell() -> some View {
+    func currentCell(item: ItemContent) -> some View {
         HStack {
             VStack(spacing: 0) {
                 Spacer(minLength: ElementSizes.minSpacerSize)
@@ -161,7 +161,7 @@ private extension ItemHistoryView {
                 }
             }
             infoRow(title: "Current version",
-                    infos: nil,
+                    infos: item.modificationDate,
                     icon: IconProvider.clock,
                     shouldDisplay: false)
         }
