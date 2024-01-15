@@ -72,7 +72,7 @@ public extension RemoteItemDatasource {
         let response = try await exec(endpoint: endpoint)
         return Paginated(lastToken: response.revisions.lastToken,
                          data: response.revisions.revisionsData,
-                         totalNumberOfElements: response.revisions.total)
+                         total: response.revisions.total)
     }
 
     func createItem(shareId: String, request: CreateItemRequest) async throws -> Item {

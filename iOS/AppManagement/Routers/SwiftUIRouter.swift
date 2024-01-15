@@ -37,8 +37,8 @@ final class MainNavViewRouter {
         case .shareSummary:
             SharingSummaryView()
         case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
-            DetailHistoryView(viewModel: DetailHistoryViewModel(currentItem: currentRevision,
-                                                                revision: pastRevision))
+            DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
+                                                                pastRevision: pastRevision))
         }
     }
 }
@@ -53,8 +53,8 @@ extension View {
             case .shareSummary:
                 SharingSummaryView()
             case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
-                DetailHistoryView(viewModel: DetailHistoryViewModel(currentItem: currentRevision,
-                                                                    revision: pastRevision))
+                DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
+                                                                    pastRevision: pastRevision))
             }
         }
     }

@@ -35,6 +35,7 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var canLoadMoreItems = true
     private var currentTask: Task<Void, Never>?
+    private var lastToken: String?
 
     init(item: ItemContent) {
         self.item = item
@@ -62,12 +63,16 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
                 currentTask = nil
             }
             do {
-                let items = try await getItemHistory(shareId: item.shareId, itemId: item.itemId)
-                guard !items.isEmpty else {
+                let items = try await getItemHistory(shareId: item.shareId,
+                                                     itemId: item.itemId,
+                                                     lastToken: lastToken)
+
+                history = history.appending(items.data)
+                guard items.lastToken != nil else {
                     canLoadMoreItems = false
                     return
                 }
-                history = history.appending(items)
+                lastToken = items.lastToken
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }

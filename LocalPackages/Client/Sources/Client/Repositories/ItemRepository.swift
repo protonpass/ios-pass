@@ -207,7 +207,7 @@ public extension ItemRepository {
         let itemsContent = contents.compactMap { $0 }
         return Paginated(lastToken: paginatedItems.lastToken,
                          data: itemsContent,
-                         totalNumberOfElements: paginatedItems.totalNumberOfElements)
+                         total: paginatedItems.total)
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
