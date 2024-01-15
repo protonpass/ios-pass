@@ -48,20 +48,20 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         return stubbedGetItemsResult
     }
     // MARK: - getItemRevisions
-    public var getItemRevisionsShareIdItemIdThrowableError2: Error?
+    public var getItemRevisionsShareIdItemIdLastTokenThrowableError2: Error?
     public var closureGetItemRevisions: () -> () = {}
     public var invokedGetItemRevisionsfunction = false
     public var invokedGetItemRevisionsCount = 0
-    public var invokedGetItemRevisionsParameters: (shareId: String, itemId: String)?
-    public var invokedGetItemRevisionsParametersList = [(shareId: String, itemId: String)]()
-    public var stubbedGetItemRevisionsResult: [Item]!
+    public var invokedGetItemRevisionsParameters: (shareId: String, itemId: String, lastToken: String?)?
+    public var invokedGetItemRevisionsParametersList = [(shareId: String, itemId: String, lastToken: String?)]()
+    public var stubbedGetItemRevisionsResult: Paginated<Item>!
 
-    public func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
+    public func getItemRevisions(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item> {
         invokedGetItemRevisionsfunction = true
         invokedGetItemRevisionsCount += 1
-        invokedGetItemRevisionsParameters = (shareId, itemId)
-        invokedGetItemRevisionsParametersList.append((shareId, itemId))
-        if let error = getItemRevisionsShareIdItemIdThrowableError2 {
+        invokedGetItemRevisionsParameters = (shareId, itemId, lastToken)
+        invokedGetItemRevisionsParametersList.append((shareId, itemId, lastToken))
+        if let error = getItemRevisionsShareIdItemIdLastTokenThrowableError2 {
             throw error
         }
         closureGetItemRevisions()

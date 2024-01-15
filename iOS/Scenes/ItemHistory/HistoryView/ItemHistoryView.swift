@@ -42,9 +42,6 @@ struct ItemHistoryView: View {
 
     var body: some View {
         mainContainer
-            .task {
-                await viewModel.loadItemHistory()
-            }
     }
 }
 
@@ -54,20 +51,20 @@ private extension ItemHistoryView {
             if let lastUsed = viewModel.lastUsedTime {
                 header(lastUsed: lastUsed)
             }
-            if viewModel.state == .loading {
-                progressView
-            } else if !viewModel.state.history.isEmpty {
+            if !viewModel.history.isEmpty {
                 historyListView
             } else {
                 EmptyView()
                     .frame(maxWidth: .infinity, alignment: .center)
             }
+            Spacer()
         }
-        .animation(.default, value: viewModel.state)
+        .animation(.default, value: viewModel.history)
         .navigationTitle("History")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
+        .showSpinner(viewModel.loading)
         .routingProvided
         .navigationStackEmbeded($path)
     }
@@ -96,7 +93,6 @@ private extension ItemHistoryView {
                 .font(.body)
                 .foregroundStyle(PassColor.textNorm.toColor)
         }
-        .padding(.horizontal, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, alignment: .center)
     }
 }
@@ -115,13 +111,16 @@ private extension ItemHistoryView {
 private extension ItemHistoryView {
     var historyListView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
-            ForEach(viewModel.state.history, id: \.item.revision) { item in
+            ForEach(viewModel.history, id: \.item.revision) { item in
                 if viewModel.isCurrentRevision(item) {
                     currentCell()
                 } else if viewModel.isCreationRevision(item) {
                     navigationLink(for: item, view: creationCell(item: item))
                 } else {
                     navigationLink(for: item, view: modificationCell(item: item))
+                        .onAppear {
+                            viewModel.loadMoreContentIfNeeded(item: item)
+                        }
                 }
             }
         }
@@ -155,7 +154,7 @@ private extension ItemHistoryView {
                     .strokeBorder(PassColor.textWeak.toColor, lineWidth: 1)
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
-                if viewModel.state.history.count > 1 {
+                if viewModel.history.count > 1 {
                     verticalLine
                 } else {
                     Spacer(minLength: ElementSizes.minSpacerSize)

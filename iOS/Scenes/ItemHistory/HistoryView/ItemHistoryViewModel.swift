@@ -24,28 +24,17 @@ import Entities
 import Factory
 import Foundation
 
-enum HistoryState: Equatable {
-    case loading
-    case loaded([ItemContent])
-    case error
-
-    var history: [ItemContent] {
-        if case let .loaded(data) = self {
-            return data
-        }
-
-        return []
-    }
-}
-
 @MainActor
 final class ItemHistoryViewModel: ObservableObject, Sendable {
-    @Published private(set) var state: HistoryState = .loading
     @Published private(set) var lastUsedTime: String?
+    @Published private(set) var history = [ItemContent]()
+    @Published private(set) var loading = true
 
     let item: ItemContent
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private var canLoadMoreItems = true
+    private var currentTask: Task<Void, Never>?
 
     init(item: ItemContent) {
         self.item = item
@@ -53,13 +42,35 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func loadItemHistory() async {
-        do {
-            let history = try await getItemHistory(shareId: item.shareId, itemId: item.itemId)
-            state = .loaded(history)
-        } catch {
-            state = .error
-            router.display(element: .displayErrorBanner(error))
+    deinit {
+        currentTask?.cancel()
+        currentTask = nil
+    }
+
+    func loadItemHistory() {
+        guard canLoadMoreItems, currentTask == nil else {
+            return
+        }
+        loading = true
+
+        currentTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                loading = false
+                currentTask = nil
+            }
+            do {
+                let items = try await getItemHistory(shareId: item.shareId, itemId: item.itemId)
+                guard !items.isEmpty else {
+                    canLoadMoreItems = false
+                    return
+                }
+                history = history.appending(items)
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
         }
     }
 
@@ -70,8 +81,17 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     func isCurrentRevision(_ currentItem: ItemContent) -> Bool {
         currentItem.item.revision == item.item.revision
     }
+
+    func loadMoreContentIfNeeded(item: ItemContent) {
+        guard let lastItem = history.last, lastItem.itemId == item.itemId else {
+            return
+        }
+        loadItemHistory()
+    }
 }
 
 private extension ItemHistoryViewModel {
-    func setUp() {}
+    func setUp() {
+        loadItemHistory()
+    }
 }

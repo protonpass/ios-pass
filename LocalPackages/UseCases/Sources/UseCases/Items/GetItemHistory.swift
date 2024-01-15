@@ -33,14 +33,28 @@ public extension GetItemHistoryUseCase {
     }
 }
 
-public final class GetItemHistory: GetItemHistoryUseCase {
+public actor GetItemHistory: GetItemHistoryUseCase {
     private let itemRepository: any ItemRepositoryProtocol
+    private var lastToken: String?
+    private var wasLastBatch = false
 
     public init(itemRepository: any ItemRepositoryProtocol) {
         self.itemRepository = itemRepository
     }
 
     public func execute(shareId: String, itemId: String) async throws -> [ItemContent] {
-        try await itemRepository.getItemRevisions(shareId: shareId, itemId: itemId)
+        guard !wasLastBatch else {
+            return []
+        }
+        let results = try await itemRepository.getItemRevisions(shareId: shareId,
+                                                                itemId: itemId,
+                                                                lastToken: lastToken)
+
+        if let newToken = results.lastToken {
+            lastToken = newToken
+        } else {
+            wasLastBatch = true
+        }
+        return results.data
     }
 }
