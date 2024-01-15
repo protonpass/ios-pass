@@ -25,66 +25,18 @@ import Entities
 import Factory
 import Foundation
 
-// This enum must have exact name of variables contained in ItemContent and it sub classes
-enum ItemElement: String {
-    case name
-    case note
-
-    // login
-    case password
-    case username
-    case urls
-    case website
-    case customFields
-
-    // card
-    case cardholderName
-    case verificationNumber
-    case expirationDate
-    case securityCode
-    case pin
-    case type
-
-    case alias
-    case forwardAddress
+protocol CompareProtocol {
+    func compare<T>(first: T, second: T, keyPath: KeyPath<T, some Equatable>) -> Bool
 }
 
-extension ItemContent: Diffable {}
-extension Item: Diffable {}
-extension ItemContentData: Diffable {}
-extension LogInItemData: Diffable {}
-extension CreditCardData: Diffable {}
-
-protocol Diffable {
-    associatedtype DiffableType: Diffable
-    func differences(from other: DiffableType) -> [String]
-}
-
-extension Diffable {
-    func differences(from other: Self) -> [String] {
-        var differences = [String]()
-        let mirror1 = Mirror(reflecting: self)
-        let mirror2 = Mirror(reflecting: other)
-
-        for (label, value1) in mirror1.children {
-            guard let label else { continue }
-            if let value2 = mirror2.children.first(where: { $0.label == label })?.value {
-                if let subDiffable1 = value1 as? Self,
-                   let subDiffable2 = value2 as? Self {
-                    let subDiffs = subDiffable1.differences(from: subDiffable2)
-                    differences.append(contentsOf: subDiffs.map { "\($0)" })
-                } else if !"\(value1)".elementsEqual("\(value2)") {
-                    differences.append("\(label)")
-                }
-            }
-        }
-
-        return differences
+extension CompareProtocol {
+    func compare<T>(first: T, second: T, keyPath: KeyPath<T, some Equatable>) -> Bool {
+        first[keyPath: keyPath] == second[keyPath: keyPath]
     }
 }
 
 @MainActor
-final class DetailHistoryViewModel: ObservableObject, Sendable {
+final class DetailHistoryViewModel: ObservableObject, Sendable, CompareProtocol {
     @Published var selectedItemIndex = 0
     @Published private(set) var selectedItem: ItemContent
     @Published private(set) var restoringItem = false
@@ -96,19 +48,16 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     let currentItem: ItemContent
     let revision: ItemContent
 
-    private let differences: [String]
-
     init(currentItem: ItemContent,
          revision: ItemContent) {
         self.currentItem = currentItem
         self.revision = revision
         selectedItem = revision
-        differences = currentItem.differences(from: revision)
         setUp()
     }
 
-    func isDifferent(for element: ItemElement) -> Bool {
-        differences.contains(element.rawValue)
+    func isDifferent(for element: KeyPath<ItemContent, some Hashable>) -> Bool {
+        !compare(first: currentItem, second: revision, keyPath: element)
     }
 
     func restore() {
