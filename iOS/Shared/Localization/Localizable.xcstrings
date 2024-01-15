@@ -13316,7 +13316,14 @@
       }
     },
     "Changelog" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changelog"
+          }
+        }
+      }
     },
     "Check out all the exclusive features that are available to you for a limited time" : {
       "extractionState" : "manual",
@@ -18512,10 +18519,24 @@
       }
     },
     "Current" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current"
+          }
+        }
+      }
     },
     "Current version" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current version"
+          }
+        }
+      }
     },
     "Custom fields" : {
       "extractionState" : "manual",
@@ -25965,7 +25986,14 @@
       }
     },
     "History" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        }
+      }
     },
     "How to import to Proton Pass" : {
       "extractionState" : "manual",
@@ -31801,7 +31829,14 @@
       }
     },
     "Modified" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modified"
+          }
+        }
+      }
     },
     "More info" : {
       "localizations" : {
@@ -41915,7 +41950,14 @@
       }
     },
     "Restore this version?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore this version?"
+          }
+        }
+      }
     },
     "Restored %lld items" : {
       "localizations" : {
@@ -58821,7 +58863,14 @@
       }
     },
     "Your current document will revert to the version from %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current document will revert to the version from %@"
+          }
+        }
+      }
     },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
