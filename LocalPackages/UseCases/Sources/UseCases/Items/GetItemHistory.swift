@@ -24,37 +24,29 @@ import Client
 import Entities
 
 public protocol GetItemHistoryUseCase: Sendable {
-    func execute(shareId: String, itemId: String) async throws -> [ItemContent]
+    func execute(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<ItemContent>
 }
 
 public extension GetItemHistoryUseCase {
-    func callAsFunction(shareId: String, itemId: String) async throws -> [ItemContent] {
-        try await execute(shareId: shareId, itemId: itemId)
+    func callAsFunction(shareId: String,
+                        itemId: String,
+                        lastToken: String?) async throws -> Paginated<ItemContent> {
+        try await execute(shareId: shareId, itemId: itemId, lastToken: lastToken)
     }
 }
 
-public actor GetItemHistory: GetItemHistoryUseCase {
+public final class GetItemHistory: GetItemHistoryUseCase {
     private let itemRepository: any ItemRepositoryProtocol
-    private var lastToken: String?
-    private var wasLastBatch = false
 
     public init(itemRepository: any ItemRepositoryProtocol) {
         self.itemRepository = itemRepository
     }
 
-    public func execute(shareId: String, itemId: String) async throws -> [ItemContent] {
-        guard !wasLastBatch else {
-            return []
-        }
-        let results = try await itemRepository.getItemRevisions(shareId: shareId,
-                                                                itemId: itemId,
-                                                                lastToken: lastToken)
-
-        if let newToken = results.lastToken {
-            lastToken = newToken
-        } else {
-            wasLastBatch = true
-        }
-        return results.data
+    public func execute(shareId: String,
+                        itemId: String,
+                        lastToken: String?) async throws -> Paginated<ItemContent> {
+        try await itemRepository.getItemRevisions(shareId: shareId,
+                                                  itemId: itemId,
+                                                  lastToken: lastToken)
     }
 }

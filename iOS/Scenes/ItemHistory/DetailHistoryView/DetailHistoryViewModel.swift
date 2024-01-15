@@ -45,19 +45,19 @@ final class DetailHistoryViewModel: ObservableObject, Sendable, CompareProtocol 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private var cancellables = Set<AnyCancellable>()
 
-    let currentItem: ItemContent
-    let revision: ItemContent
+    let currentRevision: ItemContent
+    let pastRevision: ItemContent
 
-    init(currentItem: ItemContent,
-         revision: ItemContent) {
-        self.currentItem = currentItem
-        self.revision = revision
-        selectedItem = revision
+    init(currentRevision: ItemContent,
+         pastRevision: ItemContent) {
+        self.currentRevision = currentRevision
+        self.pastRevision = pastRevision
+        selectedItem = pastRevision
         setUp()
     }
 
     func isDifferent(for element: KeyPath<ItemContent, some Hashable>) -> Bool {
-        !compare(first: currentItem, second: revision, keyPath: element)
+        !compare(first: currentRevision, second: pastRevision, keyPath: element)
     }
 
     func restore() {
@@ -70,14 +70,14 @@ final class DetailHistoryViewModel: ObservableObject, Sendable, CompareProtocol 
             }
             restoringItem = true
             do {
-                let protobuff = ItemContentProtobuf(name: revision.name,
-                                                    note: revision.note,
-                                                    itemUuid: revision.itemUuid,
-                                                    data: revision.contentData,
-                                                    customFields: revision.customFields)
-                try await itemRepository.updateItem(oldItem: currentItem.item,
+                let protobuff = ItemContentProtobuf(name: pastRevision.name,
+                                                    note: pastRevision.note,
+                                                    itemUuid: pastRevision.itemUuid,
+                                                    data: pastRevision.contentData,
+                                                    customFields: pastRevision.customFields)
+                try await itemRepository.updateItem(oldItem: currentRevision.item,
                                                     newItemContent: protobuff,
-                                                    shareId: currentItem.shareId)
+                                                    shareId: currentRevision.shareId)
                 router.present(for: .restoreHistory)
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -94,7 +94,7 @@ private extension DetailHistoryViewModel {
                 guard let self else {
                     return
                 }
-                selectedItem = index == 0 ? revision : currentItem
+                selectedItem = index == 0 ? pastRevision : currentRevision
             }
             .store(in: &cancellables)
     }
