@@ -193,9 +193,11 @@ public extension ItemRepository {
         return try encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
     }
 
-    func getItemRevisions(shareId: String, itemId: String,
+    func getItemRevisions(shareId: String,
+                          itemId: String,
                           lastToken: String?) async throws -> Paginated<ItemContent> {
-        let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: shareId, itemId: itemId,
+        let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: shareId,
+                                                                         itemId: itemId,
                                                                          lastToken: lastToken)
         let symmetricKey = try getSymmetricKey()
         let contents: [ItemContent?] = try await paginatedItems.data.parallelMap { [weak self] item in
