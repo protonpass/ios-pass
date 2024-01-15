@@ -719,7 +719,7 @@ private extension HomepageCoordinator {
     }
 }
 
-// MARK: - Item history {
+// MARK: - Item history
 
 extension HomepageCoordinator {
     func presentItemHistory(_ item: ItemContent) {

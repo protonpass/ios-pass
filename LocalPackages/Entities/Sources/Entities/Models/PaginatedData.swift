@@ -23,11 +23,11 @@ import Foundation
 public struct Paginated<DataType: Sendable>: Sendable {
     public let lastToken: String?
     public let data: [DataType]
-    public let totalNumberOfElements: Int?
+    public let total: Int
 
-    public init(lastToken: String?, data: [DataType], totalNumberOfElements: Int?) {
+    public init(lastToken: String?, data: [DataType], total: Int) {
         self.lastToken = lastToken
         self.data = data
-        self.totalNumberOfElements = totalNumberOfElements
+        self.total = total
     }
 }

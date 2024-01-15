@@ -43,7 +43,7 @@ struct DetailHistoryView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Restore this version?"),
                       message: Text(#localized("Your current document will revert to the version from %@",
-                                               viewModel.revision.revisionDate)),
+                                               viewModel.pastRevision.revisionDate)),
                       primaryButton: .default(Text("Restore"),
                                               action: { viewModel.restore() }),
                       secondaryButton: .cancel())
@@ -88,7 +88,7 @@ private extension DetailHistoryView {
             .padding(.bottom, DesignConstant.defaultPickerHeight)
 
             SegmentedPicker(selectedIndex: $viewModel.selectedItemIndex,
-                            options: [viewModel.revision.shortRevisionDate, #localized("Current")],
+                            options: [viewModel.pastRevision.shortRevisionDate, #localized("Current")],
                             highlightTextColor: PassColor.textInvert,
                             mainColor: viewModel.selectedItem.contentData.type.normMajor2Color,
                             backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color)
