@@ -45,6 +45,14 @@ extension ItemContent {
     var creationDate: String {
         item.createTime.fullDateString.capitalizingFirstLetter()
     }
+
+    var revisionDate: String {
+        item.revisionTime.fullDateString
+    }
+
+    var shortRevisionDate: String {
+        item.revisionTime.shortDateString
+    }
 }
 
 extension Int64 {
@@ -61,16 +69,27 @@ extension Int64 {
         let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
         return "\(dateString) (\(relativeString))"
     }
+
+    var shortDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM-dd-yy HH:mm"
+        let timeInterval = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        return dateFormatter.string(from: date)
+    }
 }
 
 struct ItemDetailHistorySection: View {
     private let item: ItemContent
+    private let itemHistoryEnable: Bool
     let action: () -> Void
 
     init(itemContent: ItemContent,
+         itemHistoryEnable: Bool,
          action: @escaping () -> Void) {
         item = itemContent
         self.action = action
+        self.itemHistoryEnable = itemHistoryEnable
     }
 
     var body: some View {
@@ -83,11 +102,13 @@ struct ItemDetailHistorySection: View {
 
             infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
 
-            CapsuleTextButton(title: "View Item history",
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              action: action)
-                .padding(.horizontal, DesignConstant.sectionPadding)
+            if itemHistoryEnable {
+                CapsuleTextButton(title: "View Item history",
+                                  titleColor: item.contentData.type.normMajor2Color,
+                                  backgroundColor: item.contentData.type.normMinor1Color,
+                                  action: action)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
+            }
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
