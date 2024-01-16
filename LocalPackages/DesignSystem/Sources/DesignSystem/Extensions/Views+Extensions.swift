@@ -49,9 +49,15 @@ public extension View {
     }
 
     @ViewBuilder
-    func navigationStackEmbeded() -> some View {
-        NavigationStack {
-            self
+    func navigationStackEmbeded(_ path: Binding<NavigationPath>? = nil) -> some View {
+        if let path {
+            NavigationStack(path: path) {
+                self
+            }
+        } else {
+            NavigationStack {
+                self
+            }
         }
     }
 

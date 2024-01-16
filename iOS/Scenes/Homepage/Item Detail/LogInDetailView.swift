@@ -77,7 +77,8 @@ struct LogInDetailView: View {
                                             onUpgrade: { viewModel.upgrade() })
 
                         ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                                 action: {})
+                                                 itemHistoryEnable: viewModel.itemHistoryEnabled,
+                                                 action: { viewModel.showItemHistory() })
 
                         ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)

@@ -18,11 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import SwiftUI
 
 enum GeneralRouterDestination: Hashable {
     case userSharePermission
     case shareSummary
+    case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
 }
 
 @MainActor
@@ -34,6 +36,26 @@ final class MainNavViewRouter {
             UserPermissionView()
         case .shareSummary:
             SharingSummaryView()
+        case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
+            DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
+                                                                pastRevision: pastRevision))
+        }
+    }
+}
+
+@MainActor
+extension View {
+    var routingProvided: some View {
+        navigationDestination(for: GeneralRouterDestination.self) { destination in
+            switch destination {
+            case .userSharePermission:
+                UserPermissionView()
+            case .shareSummary:
+                SharingSummaryView()
+            case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
+                DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
+                                                                    pastRevision: pastRevision))
+            }
         }
     }
 }

@@ -53,7 +53,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
-    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item]
+    func getItemRevisions(shareId: String, itemId: String, lastToken: String?) async throws
+        -> Paginated<ItemContent>
 
     /// Full sync for a given `shareId`
     func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws
@@ -192,8 +193,21 @@ public extension ItemRepository {
         return try encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
     }
 
-    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
-        try await remoteDatasource.getItemRevisions(shareId: shareId, itemId: itemId)
+    func getItemRevisions(shareId: String,
+                          itemId: String,
+                          lastToken: String?) async throws -> Paginated<ItemContent> {
+        let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: shareId,
+                                                                         itemId: itemId,
+                                                                         lastToken: lastToken)
+        let symmetricKey = try getSymmetricKey()
+        let contents: [ItemContent?] = try await paginatedItems.data.parallelMap { [weak self] item in
+            try await self?.symmetricallyEncrypt(itemRevision: item, shareId: shareId)
+                .getItemContent(symmetricKey: symmetricKey)
+        }
+        let itemsContent = contents.compactMap { $0 }
+        return Paginated(lastToken: paginatedItems.lastToken,
+                         data: itemsContent,
+                         total: paginatedItems.total)
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
