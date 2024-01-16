@@ -342,6 +342,8 @@
 		5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
 		5B0C75032A30806D00272CE8 /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
 		5B1092D32B5199F1002621A4 /* DetailHistoryView+Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092D22B5199F1002621A4 /* DetailHistoryView+Note.swift */; };
+		5B1092D52B56D45A002621A4 /* DetailHistoryView+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092D42B56D45A002621A4 /* DetailHistoryView+Login.swift */; };
+		5B1092D72B56D5B4002621A4 /* CustomField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */; };
 		5B1453672A6033F60048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453662A6033F60048B022 /* Entities */; };
 		5B1453792A6038FE0048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453782A6038FE0048B022 /* Entities */; };
 		5B14538D2A681B400048B022 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
@@ -757,6 +759,8 @@
 		5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedServices+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedTooling+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B1092D22B5199F1002621A4 /* DetailHistoryView+Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Note.swift"; sourceTree = "<group>"; };
+		5B1092D42B56D45A002621A4 /* DetailHistoryView+Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Login.swift"; sourceTree = "<group>"; };
+		5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomField+Extensions.swift"; sourceTree = "<group>"; };
 		5B14538C2A681B400048B022 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Router+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B1453922A6832780048B022 /* UserEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailView.swift; sourceTree = "<group>"; };
@@ -1611,6 +1615,7 @@
 				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
 				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
 				5B6639582B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift */,
+				5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1657,6 +1662,7 @@
 				5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */,
 				5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */,
 				5B1092D22B5199F1002621A4 /* DetailHistoryView+Note.swift */,
+				5B1092D42B56D45A002621A4 /* DetailHistoryView+Login.swift */,
 			);
 			path = DetailHistoryView;
 			sourceTree = "<group>";
@@ -2784,6 +2790,7 @@
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */,
+				5B1092D52B56D45A002621A4 /* DetailHistoryView+Login.swift in Sources */,
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,
 				3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,
@@ -2828,6 +2835,7 @@
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
 				35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */,
+				5B1092D72B56D5B4002621A4 /* CustomField+Extensions.swift in Sources */,
 				5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */,
 				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
 				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,

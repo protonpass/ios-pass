@@ -29,6 +29,15 @@ enum SelectedRevision {
     case current, past
 }
 
+extension ItemContent {
+    var loginItem: LogInItemData? {
+        if case let .login(item) = contentData {
+            return item
+        }
+        return nil
+    }
+}
+
 @MainActor
 final class DetailHistoryViewModel: ObservableObject, Sendable {
     @Published var selectedItemIndex = 0
