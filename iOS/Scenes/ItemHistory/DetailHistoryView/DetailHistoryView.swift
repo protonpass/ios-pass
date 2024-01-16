@@ -33,6 +33,9 @@ struct DetailHistoryView: View {
     @State private var showAlert = false
     @State var isShowingPassword = false
     @State var isShowingTotp = false
+    @State var isShowingCardNumber = false
+    @State var isShowingVerificationNumber = false
+    @State var isShowingPIN = false
 
     var body: some View {
         mainContainer
@@ -108,10 +111,10 @@ private extension DetailHistoryView {
                     noteView
                 case .login:
                     loginView
-                default:
-                    Text(verbatim: "This is a temporary empty state")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(PassColor.backgroundNorm.toColor)
+                case .creditCard:
+                    creditCardView
+                case .alias:
+                    aliasView
                 }
             }
             .animation(.default, value: viewModel.selectedRevision)
@@ -125,4 +128,3 @@ private extension DetailHistoryView {
         }
     }
 }
-
