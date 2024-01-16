@@ -31,6 +31,8 @@ struct DetailHistoryView: View {
     @StateObject var viewModel: DetailHistoryViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showAlert = false
+    @State var isShowingPassword = false
+    @State var isShowingTotp = false
 
     var body: some View {
         mainContainer
@@ -50,9 +52,30 @@ struct DetailHistoryView: View {
             }
             .showSpinner(viewModel.restoringItem)
     }
+}
 
-    func color(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
+// MARK: - Utils {
+
+extension DetailHistoryView {
+    func borderColor(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
         viewModel.isDifferent(for: element) ? PassColor.signalWarning : PassColor.inputBorderNorm
+    }
+
+    func textColor(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
+        viewModel.isDifferent(for: element) ? PassColor.signalWarning : PassColor.textNorm
+    }
+
+    func noteRow(item: ItemContent) -> some View {
+        Group {
+            if item.note.isEmpty {
+                Text("Empty note")
+                    .placeholderText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                Text(item.note)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
+        }
     }
 }
 
@@ -83,6 +106,8 @@ private extension DetailHistoryView {
                 switch viewModel.currentRevision.contentData {
                 case .note:
                     noteView
+                case .login:
+                    loginView
                 default:
                     Text(verbatim: "This is a temporary empty state")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -100,3 +125,4 @@ private extension DetailHistoryView {
         }
     }
 }
+
