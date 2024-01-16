@@ -344,6 +344,8 @@
 		5B1092D32B5199F1002621A4 /* DetailHistoryView+Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092D22B5199F1002621A4 /* DetailHistoryView+Note.swift */; };
 		5B1092D52B56D45A002621A4 /* DetailHistoryView+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092D42B56D45A002621A4 /* DetailHistoryView+Login.swift */; };
 		5B1092D72B56D5B4002621A4 /* CustomField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */; };
+		5B1092D92B56E17B002621A4 /* DetailHistoryView+CreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092D82B56E17B002621A4 /* DetailHistoryView+CreditCard.swift */; };
+		5B1092DB2B56EA93002621A4 /* DetailHistoryView+Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1092DA2B56EA93002621A4 /* DetailHistoryView+Alias.swift */; };
 		5B1453672A6033F60048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453662A6033F60048B022 /* Entities */; };
 		5B1453792A6038FE0048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453782A6038FE0048B022 /* Entities */; };
 		5B14538D2A681B400048B022 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
@@ -761,6 +763,8 @@
 		5B1092D22B5199F1002621A4 /* DetailHistoryView+Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Note.swift"; sourceTree = "<group>"; };
 		5B1092D42B56D45A002621A4 /* DetailHistoryView+Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Login.swift"; sourceTree = "<group>"; };
 		5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomField+Extensions.swift"; sourceTree = "<group>"; };
+		5B1092D82B56E17B002621A4 /* DetailHistoryView+CreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+CreditCard.swift"; sourceTree = "<group>"; };
+		5B1092DA2B56EA93002621A4 /* DetailHistoryView+Alias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Alias.swift"; sourceTree = "<group>"; };
 		5B14538C2A681B400048B022 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Router+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B1453922A6832780048B022 /* UserEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailView.swift; sourceTree = "<group>"; };
@@ -1663,6 +1667,8 @@
 				5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */,
 				5B1092D22B5199F1002621A4 /* DetailHistoryView+Note.swift */,
 				5B1092D42B56D45A002621A4 /* DetailHistoryView+Login.swift */,
+				5B1092D82B56E17B002621A4 /* DetailHistoryView+CreditCard.swift */,
+				5B1092DA2B56EA93002621A4 /* DetailHistoryView+Alias.swift */,
 			);
 			path = DetailHistoryView;
 			sourceTree = "<group>";
@@ -2645,6 +2651,7 @@
 				356BC35029D6C57100F03497 /* SettingsView.swift in Sources */,
 				35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */,
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
+				5B1092DB2B56EA93002621A4 /* DetailHistoryView+Alias.swift in Sources */,
 				35AC9A682A0C16FE00FBCEEC /* EditCustomFieldView.swift in Sources */,
 				5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
@@ -2863,6 +2870,7 @@
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
+				5B1092D92B56E17B002621A4 /* DetailHistoryView+CreditCard.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
 				356650D92AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift in Sources */,
 				5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */,
