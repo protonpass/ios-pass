@@ -36,23 +36,15 @@ extension DetailHistoryView {
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .padding(DesignConstant.sectionPadding)
-                    .roundedDetailSection(color: color(for: \.name))
+                    .roundedDetailSection(color: borderColor(for: \.name))
                 Spacer()
             }
 
             Spacer(minLength: 16)
 
-            Group {
-                if itemContent.note.isEmpty {
-                    Text("Empty note")
-                        .placeholderText()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                } else {
-                    Text(itemContent.note)
-                }
-            }
-            .padding(DesignConstant.sectionPadding)
-            .roundedDetailSection(color: color(for: \.note))
+            noteRow(item: itemContent)
+                .padding(DesignConstant.sectionPadding)
+                .roundedDetailSection(color: borderColor(for: \.note))
         }
         .frame(maxWidth: .infinity)
         .padding()
