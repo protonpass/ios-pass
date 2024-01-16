@@ -80,6 +80,42 @@ extension DetailHistoryView {
             }
         }
     }
+
+    func titleRow(itemContent: ItemContent) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemSquircleThumbnail(data: itemContent.thumbnailData(),
+                                  pinned: false,
+                                  size: .large)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(itemContent.name)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .textSelection(.enabled)
+                    .lineLimit(1)
+                    .foregroundColor(textColor(for: \.name).toColor)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 60)
+        .padding(.bottom, 40)
+    }
+
+    func noteFields(item: ItemContent) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.note, color: viewModel.currentRevision.type.normColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Note")
+                    .sectionTitleText()
+
+                noteRow(item: item)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection(color: borderColor(for: \.note))
+    }
 }
 
 private extension DetailHistoryView {
