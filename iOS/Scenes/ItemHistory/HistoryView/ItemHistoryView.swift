@@ -53,10 +53,8 @@ private extension ItemHistoryView {
             }
             if !viewModel.history.isEmpty {
                 historyListView
-            } else {
-                EmptyView()
-                    .frame(maxWidth: .infinity, alignment: .center)
             }
+
             Spacer()
         }
         .animation(.default, value: viewModel.history)

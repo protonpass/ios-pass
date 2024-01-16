@@ -25,21 +25,15 @@ import Entities
 import Factory
 import Foundation
 
-protocol CompareProtocol {
-    func compare<T>(first: T, second: T, keyPath: KeyPath<T, some Equatable>) -> Bool
-}
-
-extension CompareProtocol {
-    func compare<T>(first: T, second: T, keyPath: KeyPath<T, some Equatable>) -> Bool {
-        first[keyPath: keyPath] == second[keyPath: keyPath]
-    }
+enum SelectedRevision {
+    case current, past
 }
 
 @MainActor
-final class DetailHistoryViewModel: ObservableObject, Sendable, CompareProtocol {
+final class DetailHistoryViewModel: ObservableObject, Sendable {
     @Published var selectedItemIndex = 0
-    @Published private(set) var selectedItem: ItemContent
     @Published private(set) var restoringItem = false
+    @Published private(set) var selectedRevision: SelectedRevision = .past
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -48,16 +42,24 @@ final class DetailHistoryViewModel: ObservableObject, Sendable, CompareProtocol 
     let currentRevision: ItemContent
     let pastRevision: ItemContent
 
+    var selectedRevisionContent: ItemContent {
+        switch selectedRevision {
+        case .past:
+            pastRevision
+        case .current:
+            currentRevision
+        }
+    }
+
     init(currentRevision: ItemContent,
          pastRevision: ItemContent) {
         self.currentRevision = currentRevision
         self.pastRevision = pastRevision
-        selectedItem = pastRevision
         setUp()
     }
 
     func isDifferent(for element: KeyPath<ItemContent, some Hashable>) -> Bool {
-        !compare(first: currentRevision, second: pastRevision, keyPath: element)
+        currentRevision[keyPath: element] != pastRevision[keyPath: element]
     }
 
     func restore() {
@@ -94,7 +96,7 @@ private extension DetailHistoryViewModel {
                 guard let self else {
                     return
                 }
-                selectedItem = index == 0 ? pastRevision : currentRevision
+                selectedRevision = index == 0 ? .past : .current
             }
             .store(in: &cancellables)
     }
