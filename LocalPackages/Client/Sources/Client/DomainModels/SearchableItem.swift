@@ -56,6 +56,8 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
         name = itemContent.name
         note = itemContent.note
 
+        var optionalExtras: [String] = []
+
         switch itemContent.contentData {
         case let .login(data):
             url = data.urls.first
@@ -67,9 +69,14 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
             optionalExtras = []
         }
 
+        for customField in itemContent.customFields where customField.type == .text {
+            optionalExtras.append("\(customField.title): \(customField.content)")
+        }
+
         lastUseTime = itemContent.item.lastUseTime ?? 0
         modifyTime = item.item.modifyTime
         pinned = item.item.pinned
+        self.optionalExtras = optionalExtras
     }
 }
 
