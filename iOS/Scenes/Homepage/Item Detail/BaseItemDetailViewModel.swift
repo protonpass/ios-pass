@@ -56,12 +56,14 @@ class BaseItemDetailViewModel: ObservableObject {
     let vault: VaultListUiModel?
     let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -77,6 +79,10 @@ class BaseItemDetailViewModel: ObservableObject {
             return false
         }
         return canUserPerformActionOnVault(for: vault.vault)
+    }
+
+    var itemHistoryEnabled: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1)
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
@@ -252,6 +258,10 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func getSymmetricKey() throws -> SymmetricKey {
         try symmetricKeyProvider.getSymmetricKey()
+    }
+
+    func showItemHistory() {
+        router.present(for: .history(itemContent))
     }
 }
 

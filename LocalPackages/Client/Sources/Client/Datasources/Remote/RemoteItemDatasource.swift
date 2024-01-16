@@ -26,7 +26,7 @@ import Foundation
 public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
     func getItems(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item]
-    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item]
+    func getItemRevisions(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item>
     func createItem(shareId: String, request: CreateItemRequest) async throws -> Item
     func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> Item
     func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
@@ -67,10 +67,12 @@ public extension RemoteItemDatasource {
         return itemRevisions
     }
 
-    func getItemRevisions(shareId: String, itemId: String) async throws -> [Item] {
-        let endpoint = GetItemRevisionsEndpoint(shareId: shareId, itemId: itemId)
+    func getItemRevisions(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item> {
+        let endpoint = GetItemRevisionsEndpoint(shareId: shareId, itemId: itemId, sinceToken: lastToken)
         let response = try await exec(endpoint: endpoint)
-        return response.revisions.revisionsData
+        return Paginated(lastToken: response.revisions.lastToken,
+                         data: response.revisions.revisionsData,
+                         total: response.revisions.total)
     }
 
     func createItem(shareId: String, request: CreateItemRequest) async throws -> Item {

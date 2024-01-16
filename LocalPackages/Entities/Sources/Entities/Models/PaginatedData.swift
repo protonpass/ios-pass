@@ -1,7 +1,7 @@
 //
-// FeatureFlagType.swift
-// Proton Pass - Created on 04/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PaginatedData.swift
+// Proton Pass - Created on 15/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,12 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreFeatureFlags
+import Foundation
 
-/// Should be activated when new feature flags are added to the project
-/// following is how a flag should be added:
-/// Example:
-///    case passSharingV1 = "PassSharingV1"
-public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-    case passItemHistoryV1 = "PassItemHistoryV1"
+public struct Paginated<DataType: Sendable>: Sendable {
+    public let lastToken: String?
+    public let data: [DataType]
+    public let total: Int
+
+    public init(lastToken: String?, data: [DataType], total: Int) {
+        self.lastToken = lastToken
+        self.data = data
+        self.total = total
+    }
 }
