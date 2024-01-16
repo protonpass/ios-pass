@@ -50,6 +50,10 @@ struct DetailHistoryView: View {
             }
             .showSpinner(viewModel.restoringItem)
     }
+
+    func color(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
+        viewModel.isDifferent(for: element) ? PassColor.signalWarning : PassColor.inputBorderNorm
+    }
 }
 
 private extension DetailHistoryView {
@@ -57,16 +61,16 @@ private extension DetailHistoryView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.arrowLeft,
-                         iconColor: viewModel.selectedItem.contentData.type.normMajor2Color,
-                         backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color,
+                         iconColor: viewModel.currentRevision.contentData.type.normMajor2Color,
+                         backgroundColor: viewModel.currentRevision.contentData.type.normMinor1Color,
                          action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             CapsuleLabelButton(icon: IconProvider.clockRotateLeft,
                                title: #localized("Restore"),
-                               titleColor: viewModel.selectedItem.contentData.type.normMajor2Color,
-                               backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color,
+                               titleColor: viewModel.currentRevision.contentData.type.normMajor2Color,
+                               backgroundColor: viewModel.currentRevision.contentData.type.normMinor1Color,
                                action: { showAlert = true })
         }
     }
@@ -76,22 +80,23 @@ private extension DetailHistoryView {
     var mainContainer: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
-                if viewModel.selectedItem.contentData == .note {
+                switch viewModel.currentRevision.contentData {
+                case .note:
                     noteView
-                } else {
+                default:
                     Text(verbatim: "This is a temporary empty state")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(PassColor.backgroundNorm.toColor)
                 }
             }
-            .animation(.default, value: viewModel.selectedItem)
+            .animation(.default, value: viewModel.selectedRevision)
             .padding(.bottom, DesignConstant.defaultPickerHeight)
 
             SegmentedPicker(selectedIndex: $viewModel.selectedItemIndex,
                             options: [viewModel.pastRevision.shortRevisionDate, #localized("Current")],
                             highlightTextColor: PassColor.textInvert,
-                            mainColor: viewModel.selectedItem.contentData.type.normMajor2Color,
-                            backgroundColor: viewModel.selectedItem.contentData.type.normMinor1Color)
+                            mainColor: viewModel.currentRevision.contentData.type.normMajor2Color,
+                            backgroundColor: viewModel.currentRevision.contentData.type.normMinor1Color)
         }
     }
 }
