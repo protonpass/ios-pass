@@ -32,7 +32,7 @@ extension DetailHistoryView {
 
             HStack(spacing: DesignConstant.sectionPadding) {
                 ItemSquircleThumbnail(data: itemContent.thumbnailData(),
-                                      pinned: itemContent.item.pinned,
+                                      pinned: false,
                                       size: .large)
 
                 VStack(alignment: .leading, spacing: 4) {
