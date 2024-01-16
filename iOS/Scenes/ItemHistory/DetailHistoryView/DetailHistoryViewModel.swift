@@ -36,6 +36,13 @@ extension ItemContent {
         }
         return nil
     }
+
+    var creditCardItem: CreditCardData? {
+        if case let .creditCard(item) = contentData {
+            return item
+        }
+        return nil
+    }
 }
 
 @MainActor
