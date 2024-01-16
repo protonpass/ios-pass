@@ -346,6 +346,10 @@ private extension HomepageCoordinator {
                     presentSetPINCodeView()
                 case let .search(selection):
                     presentSearchScreen(selection)
+                case let .history(item):
+                    presentItemHistory(item)
+                case .restoreHistory:
+                    updateAfterRestoration()
                 }
             }
             .store(in: &cancellables)
@@ -712,6 +716,20 @@ private extension HomepageCoordinator {
                 userInterfaceStyle: preferences.theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible)
+    }
+}
+
+// MARK: - Item history
+
+extension HomepageCoordinator {
+    func presentItemHistory(_ item: ItemContent) {
+        let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
+        present(view)
+    }
+
+    func updateAfterRestoration() {
+        dismissTopMostViewController(animated: true, completion: nil)
+        itemDetailCoordinator?.refresh()
     }
 }
 

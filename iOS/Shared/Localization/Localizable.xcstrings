@@ -13315,6 +13315,16 @@
         }
       }
     },
+    "Changelog" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changelog"
+          }
+        }
+      }
+    },
     "Check out all the exclusive features that are available to you for a limited time" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -18504,6 +18514,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thẻ tín dụng"
+          }
+        }
+      }
+    },
+    "Current" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current"
+          }
+        }
+      }
+    },
+    "Current version" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current version"
           }
         }
       }
@@ -25955,6 +25985,16 @@
         }
       }
     },
+    "History" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        }
+      }
+    },
     "How to import to Proton Pass" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -31784,6 +31824,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "TT / NN"
+          }
+        }
+      }
+    },
+    "Modified" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modified"
           }
         }
       }
@@ -41895,6 +41945,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Khôi phục tất cả nội dung"
+          }
+        }
+      }
+    },
+    "Restore this version?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore this version?"
           }
         }
       }
@@ -58798,6 +58858,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You're invited to a shared vault. Tap for details."
+          }
+        }
+      }
+    },
+    "Your current document will revert to the version from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current document will revert to the version from %@"
           }
         }
       }
