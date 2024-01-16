@@ -98,17 +98,6 @@ private extension ItemHistoryView {
 }
 
 private extension ItemHistoryView {
-    var progressView: some View {
-        VStack {
-            Spacer()
-            ProgressView()
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
-    }
-}
-
-private extension ItemHistoryView {
     var historyListView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(viewModel.history, id: \.item.revision) { item in
