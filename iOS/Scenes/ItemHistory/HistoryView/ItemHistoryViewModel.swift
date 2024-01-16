@@ -67,7 +67,7 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
                                                      itemId: item.itemId,
                                                      lastToken: lastToken)
 
-                history = history.appending(items.data)
+                history.append(contentsOf: items.data)
                 guard items.lastToken != nil else {
                     canLoadMoreItems = false
                     return
@@ -88,7 +88,8 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     }
 
     func loadMoreContentIfNeeded(item: ItemContent) {
-        guard let lastItem = history.last, lastItem.itemId == item.itemId else {
+        guard let lastItem = history.last,
+              lastItem.item.revision == item.item.revision else {
             return
         }
         loadItemHistory()

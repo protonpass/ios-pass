@@ -28,7 +28,7 @@ import SwiftUI
 extension DetailHistoryView {
     var noteView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            let itemContent = viewModel.selectedItem
+            let itemContent = viewModel.selectedRevisionContent
 
             HStack(alignment: .firstTextBaseline) {
                 Text(itemContent.name)
@@ -36,8 +36,7 @@ extension DetailHistoryView {
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .padding(DesignConstant.sectionPadding)
-                    .roundedDetailSection(color: viewModel.isDifferent(for: \.name) ? PassColor
-                        .signalWarning : PassColor.inputBorderNorm)
+                    .roundedDetailSection(color: color(for: \.name))
                 Spacer()
             }
 
@@ -53,8 +52,7 @@ extension DetailHistoryView {
                 }
             }
             .padding(DesignConstant.sectionPadding)
-            .roundedDetailSection(color: viewModel.isDifferent(for: \.note) ? PassColor.signalWarning : PassColor
-                .inputBorderNorm)
+            .roundedDetailSection(color: color(for: \.note))
         }
         .frame(maxWidth: .infinity)
         .padding()
