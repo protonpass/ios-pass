@@ -30,24 +30,7 @@ extension DetailHistoryView {
         VStack(alignment: .leading, spacing: 0) {
             let itemContent = viewModel.selectedRevisionContent
 
-            HStack(spacing: DesignConstant.sectionPadding) {
-                ItemSquircleThumbnail(data: itemContent.thumbnailData(),
-                                      pinned: false,
-                                      size: .large)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(itemContent.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .textSelection(.enabled)
-                        .lineLimit(1)
-                        .foregroundColor(textColor(for: \.name).toColor)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 60)
-            .padding(.bottom, 40)
-
+            titleRow(itemContent: itemContent)
             aliasMailboxesSection(item: itemContent)
             noteFields(item: itemContent)
                 .padding(.top, 8)
@@ -55,18 +38,18 @@ extension DetailHistoryView {
         .frame(maxWidth: .infinity)
         .padding()
     }
+}
 
-    private func aliasMailboxesSection(item: ItemContent) -> some View {
+private extension DetailHistoryView {
+    func aliasMailboxesSection(item: ItemContent) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             aliasRow(item: item)
-//            PassSectionDivider()
-//            mailboxesRow
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
 
-    private func aliasRow(item: ItemContent) -> some View {
+    func aliasRow(item: ItemContent) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user, color: viewModel.currentRevision.type.normColor)
 
@@ -82,41 +65,4 @@ extension DetailHistoryView {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
-
-//    @ViewBuilder
-//    private var mailboxesRow: some View {
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            ItemDetailSectionIcon(icon: IconProvider.forward, color: viewModel.currentRevision.type.normColor)
-//
-//            VStack(alignment: .leading, spacing: 8) {
-//                Text("Forwarding to")
-//                    .sectionTitleText()
-//
-//                if let mailboxes = viewModel.mailboxes {
-//                    ForEach(mailboxes, id: \.ID) { mailbox in
-//                        Text(mailbox.email)
-//                            .sectionContentText()
-//                            .frame(maxWidth: .infinity, alignment: .leading)
-//                            .contentShape(Rectangle())
-//                            .contextMenu {
-//                                Button(action: {
-//                                    viewModel.copyMailboxEmail(mailbox.email)
-//                                }, label: {
-//                                    Text("Copy")
-//                                })
-//
-//                                Button(action: {
-//                                    viewModel.showLarge(.text(mailbox.email))
-//                                }, label: {
-//                                    Text("Show large")
-//                                })
-//                            }
-//                    }
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//        }
-//        .padding(.horizontal, DesignConstant.sectionPadding)
-//        .animation(.default, value: viewModel.mailboxes)
-//    }
 }
