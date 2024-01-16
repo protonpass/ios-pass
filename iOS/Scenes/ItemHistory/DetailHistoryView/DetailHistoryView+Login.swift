@@ -30,23 +30,7 @@ extension DetailHistoryView {
         VStack(alignment: .leading, spacing: 0) {
             let itemContent = viewModel.selectedRevisionContent
 
-            HStack(spacing: DesignConstant.sectionPadding) {
-                ItemSquircleThumbnail(data: itemContent.thumbnailData(),
-                                      pinned: false,
-                                      size: .large)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(itemContent.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .textSelection(.enabled)
-                        .lineLimit(1)
-                        .foregroundColor(textColor(for: \.name).toColor)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 60)
-            .padding(.bottom, 40)
+            titleRow(itemContent: itemContent)
 
             if let item = itemContent.loginItem {
                 usernamePassword2FaSection(logItem: item)
@@ -63,8 +47,10 @@ extension DetailHistoryView {
         .frame(maxWidth: .infinity)
         .padding()
     }
+}
 
-    private func usernamePassword2FaSection(logItem: LogInItemData) -> some View {
+private extension DetailHistoryView {
+    func usernamePassword2FaSection(logItem: LogInItemData) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             usernameRow(logItem: logItem)
             PassSectionDivider()
@@ -76,7 +62,7 @@ extension DetailHistoryView {
         .roundedDetailSection()
     }
 
-    private func usernameRow(logItem: LogInItemData) -> some View {
+    func usernameRow(logItem: LogInItemData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user,
                                   color: viewModel.currentRevision.type.normColor)
@@ -94,7 +80,7 @@ extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    private func passwordRow(logItem: LogInItemData) -> some View {
+    func passwordRow(logItem: LogInItemData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.key, color: viewModel.currentRevision.type.normColor)
 
@@ -124,7 +110,7 @@ extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    private func totpRow(logItem: LogInItemData) -> some View {
+    func totpRow(logItem: LogInItemData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock, color: viewModel.currentRevision.type.normColor)
 
@@ -154,7 +140,7 @@ extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    private func urlsSection(logItem: LogInItemData) -> some View {
+    func urlsSection(logItem: LogInItemData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth, color: viewModel.currentRevision.type.normColor)
 
@@ -175,22 +161,6 @@ extension DetailHistoryView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection(color: borderColor(for: \.loginItem?.urls))
-    }
-
-    func noteFields(item: ItemContent) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.note, color: viewModel.currentRevision.type.normColor)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Note")
-                    .sectionTitleText()
-
-                noteRow(item: item)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection(color: borderColor(for: \.note))
     }
 
     func customFields(item: ItemContent) -> some View {

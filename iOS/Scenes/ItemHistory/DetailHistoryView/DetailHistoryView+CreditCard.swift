@@ -30,23 +30,7 @@ extension DetailHistoryView {
         VStack(alignment: .leading, spacing: 0) {
             let itemContent = viewModel.selectedRevisionContent
 
-            HStack(spacing: DesignConstant.sectionPadding) {
-                ItemSquircleThumbnail(data: itemContent.thumbnailData(),
-                                      pinned: false,
-                                      size: .large)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(itemContent.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .textSelection(.enabled)
-                        .lineLimit(1)
-                        .foregroundColor(textColor(for: \.name).toColor)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 60)
-            .padding(.bottom, 40)
+            titleRow(itemContent: itemContent)
 
             if let item = itemContent.creditCardItem {
                 detailSection(creditCardItem: item)
