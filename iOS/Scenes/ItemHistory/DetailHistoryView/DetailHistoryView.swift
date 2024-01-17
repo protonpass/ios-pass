@@ -31,6 +31,11 @@ struct DetailHistoryView: View {
     @StateObject var viewModel: DetailHistoryViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showAlert = false
+    @State var isShowingPassword = false
+    @State var isShowingTotp = false
+    @State var isShowingCardNumber = false
+    @State var isShowingVerificationNumber = false
+    @State var isShowingPIN = false
 
     var body: some View {
         mainContainer
@@ -50,9 +55,66 @@ struct DetailHistoryView: View {
             }
             .showSpinner(viewModel.restoringItem)
     }
+}
 
-    func color(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
+// MARK: - Utils {
+
+extension DetailHistoryView {
+    func borderColor(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
         viewModel.isDifferent(for: element) ? PassColor.signalWarning : PassColor.inputBorderNorm
+    }
+
+    func textColor(for element: KeyPath<ItemContent, some Hashable>) -> UIColor {
+        viewModel.isDifferent(for: element) ? PassColor.signalWarning : PassColor.textNorm
+    }
+
+    func noteRow(item: ItemContent) -> some View {
+        Group {
+            if item.note.isEmpty {
+                Text("Empty note")
+                    .placeholderText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                Text(item.note)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
+        }
+    }
+
+    func titleRow(itemContent: ItemContent) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemSquircleThumbnail(data: itemContent.thumbnailData(),
+                                  pinned: false,
+                                  size: .large)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(itemContent.name)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .textSelection(.enabled)
+                    .lineLimit(1)
+                    .foregroundColor(textColor(for: \.name).toColor)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 60)
+        .padding(.bottom, 40)
+    }
+
+    func noteFields(item: ItemContent) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.note, color: viewModel.currentRevision.type.normColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Note")
+                    .sectionTitleText()
+
+                noteRow(item: item)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection(color: borderColor(for: \.note))
     }
 }
 
@@ -83,10 +145,12 @@ private extension DetailHistoryView {
                 switch viewModel.currentRevision.contentData {
                 case .note:
                     noteView
-                default:
-                    Text(verbatim: "This is a temporary empty state")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(PassColor.backgroundNorm.toColor)
+                case .login:
+                    loginView
+                case .creditCard:
+                    creditCardView
+                case .alias:
+                    aliasView
                 }
             }
             .animation(.default, value: viewModel.selectedRevision)
