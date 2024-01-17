@@ -41,16 +41,11 @@ struct ItemHistoryView: View {
     }
 
     var body: some View {
-        mainContainer
-    }
-}
-
-private extension ItemHistoryView {
-    var mainContainer: some View {
         VStack(alignment: .leading) {
             if let lastUsed = viewModel.lastUsedTime {
                 header(lastUsed: lastUsed)
             }
+
             if !viewModel.history.isEmpty {
                 historyListView
             }
@@ -58,10 +53,12 @@ private extension ItemHistoryView {
             Spacer()
         }
         .animation(.default, value: viewModel.history)
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .navigationTitle("History")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
+        .scrollViewEmbeded(maxWidth: .infinity)
+        .background(PassColor.backgroundNorm.toColor)
         .showSpinner(viewModel.loading)
         .routingProvided
         .navigationStackEmbeded($path)
@@ -69,29 +66,29 @@ private extension ItemHistoryView {
 }
 
 private extension ItemHistoryView {
+    @ViewBuilder
     func header(lastUsed: String) -> some View {
-        VStack(alignment: .leading) {
-            HStack(spacing: DesignConstant.sectionPadding) {
-                ItemDetailSectionIcon(icon: IconProvider.magicWand,
-                                      color: PassColor.textWeak)
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.magicWand,
+                                  color: PassColor.textWeak)
 
-                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                    Text("Last autofill")
-                        .font(.body)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                    Text(lastUsed)
-                        .font(.footnote)
-                        .foregroundColor(PassColor.textWeak.toColor)
-                }
-                .contentShape(Rectangle())
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Last autofill")
+                    .font(.body)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                Text(lastUsed)
+                    .font(.footnote)
+                    .foregroundColor(PassColor.textWeak.toColor)
             }
-            .padding(.bottom, 20)
-
-            Text("Changelog")
-                .font(.body)
-                .foregroundStyle(PassColor.textNorm.toColor)
+            .contentShape(Rectangle())
         }
-        .frame(maxWidth: .infinity, alignment: .center)
+        .padding(.bottom, 20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+
+        Text("Changelog")
+            .font(.body)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -112,8 +109,6 @@ private extension ItemHistoryView {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .scrollViewEmbeded(maxWidth: .infinity)
     }
 
     func creationCell(item: ItemContent) -> some View {
