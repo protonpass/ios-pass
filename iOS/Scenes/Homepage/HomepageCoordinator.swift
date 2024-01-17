@@ -72,6 +72,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
+    private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
+    private let openImportExportWebView = resolve(\UseCasesContainer.openImportExportWebView)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -739,7 +741,18 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func beginImportExportFlow() {
-        print(#function)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                showLoadingHud()
+                _ = try await forkSession()
+                hideLoadingHud()
+                try await openImportExportWebView(over: rootViewController)
+            } catch {
+                hideLoadingHud()
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
     }
 }
 

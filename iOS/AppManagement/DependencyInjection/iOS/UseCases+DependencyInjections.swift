@@ -40,10 +40,6 @@ private extension UseCasesContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var apiManager: APIManager {
-        SharedToolingContainer.shared.apiManager()
-    }
-
     var shareInviteService: ShareInviteServiceProtocol {
         ServiceContainer.shared.shareInviteService()
     }
@@ -299,6 +295,10 @@ extension UseCasesContainer {
     var getItemHistory: Factory<GetItemHistoryUseCase> {
         self { GetItemHistory(itemRepository: self.itemRepository) }
     }
+
+    var openImportExportWebView: Factory<OpenImportExportWebViewUseCase> {
+        self { OpenImportExportWebView() }
+    }
 }
 
 // MARK: - User
@@ -307,14 +307,6 @@ extension UseCasesContainer {
     var updateUserAddresses: Factory<UpdateUserAddressesUseCase> {
         self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
                                    authenticator: ServiceContainer.shared.authenticator()) }
-    }
-}
-
-// MARK: - Session
-
-extension UseCasesContainer {
-    var forkSession: Factory<ForkSessionUseCase> {
-        self { ForkSession(apiService: self.apiManager.apiService) }
     }
 }
 
