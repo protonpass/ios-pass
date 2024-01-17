@@ -41,10 +41,14 @@ public final class ForkSession: ForkSessionUseCase {
     }
 
     public func execute() async throws -> String {
-        let endpoint = ForkSessionEndpoint(request: .init(payload: "",
-                                                          childClientId: "pass-ios",
-                                                          independent: 1))
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.selector
+        try await Task.sleep(seconds: 3)
+        return ""
+        /*
+         let endpoint = ForkSessionEndpoint(request: .init(payload: "",
+                                                           childClientId: "pass-ios",
+                                                           independent: 1))
+         let response = try await apiService.exec(endpoint: endpoint)
+         return response.selector
+          */
     }
 }

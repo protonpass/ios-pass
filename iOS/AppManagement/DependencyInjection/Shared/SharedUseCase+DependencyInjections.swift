@@ -56,6 +56,10 @@ private extension SharedUseCasesContainer {
     var userDataProvider: any UserDataProvider {
         SharedDataContainer.shared.userDataProvider()
     }
+
+    var apiManager: APIManager {
+        SharedToolingContainer.shared.apiManager()
+    }
 }
 
 // MARK: Permission
@@ -247,5 +251,13 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var validateAliasPrefix: Factory<ValidateAliasPrefixUseCase> {
         self { ValidateAliasPrefix() }
+    }
+}
+
+// MARK: - Session
+
+extension SharedUseCasesContainer {
+    var forkSession: Factory<ForkSessionUseCase> {
+        self { ForkSession(apiService: self.apiManager.apiService) }
     }
 }
