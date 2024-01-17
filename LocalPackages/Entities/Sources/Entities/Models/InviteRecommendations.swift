@@ -24,9 +24,9 @@ import Foundation
 public struct InviteRecommendationsQuery: Sendable {
     public let lastToken: String?
     public let pageSize: Int
-    public let email: String?
+    public let email: String
 
-    public init(lastToken: String?, pageSize: Int, email: String?) {
+    public init(lastToken: String?, pageSize: Int, email: String) {
         self.lastToken = lastToken
         self.pageSize = pageSize
         self.email = email
@@ -42,5 +42,13 @@ public struct InviteRecommendations: Sendable, Decodable, Hashable {
 
     public var isEmpty: Bool {
         recommendedEmails.isEmpty && planRecommendedEmails.isEmpty
+    }
+
+    public func merging(with other: Self) -> Self {
+        .init(recommendedEmails: other.recommendedEmails,
+              planInternalName: planInternalName,
+              groupDisplayName: groupDisplayName,
+              planRecommendedEmails: planRecommendedEmails + other.planRecommendedEmails,
+              planRecommendedEmailsNextToken: other.planRecommendedEmailsNextToken)
     }
 }

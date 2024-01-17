@@ -28,10 +28,14 @@ public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
     @Binding private var selectedEmails: [String]
     private let recommendations: InviteRecommendations
+    private let onLoadMore: () -> Void
 
-    public init(selectedEmails: Binding<[String]>, recommendations: InviteRecommendations) {
+    public init(selectedEmails: Binding<[String]>,
+                recommendations: InviteRecommendations,
+                onLoadMore: @escaping () -> Void) {
         _selectedEmails = selectedEmails
         self.recommendations = recommendations
+        self.onLoadMore = onLoadMore
     }
 
     public var body: some View {
@@ -58,6 +62,11 @@ private extension InviteSuggestionsSection {
             SuggestedEmailView(email: email,
                                isSelected: selectedEmails.contains(email),
                                onSelect: { handleSelection(email) })
+                .onAppear {
+                    if selectedIndex == 1, email == recommendations.planRecommendedEmails.last {
+                        onLoadMore()
+                    }
+                }
         }
     }
 
