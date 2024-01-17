@@ -28,6 +28,12 @@ public enum InviteeData: Sendable, Equatable {
     case new(email: String, signature: String, role: ShareRole)
 }
 
+public extension InviteRecommendationsQuery {
+    static var `default`: Self {
+        .init(lastToken: nil, pageSize: Constants.Utils.defaultPageSize, email: nil)
+    }
+}
+
 extension [InviteeData] {
     func existingUserInvitesRequests(targetType: TargetType) -> [InviteUserToShareRequest] {
         compactMap {
@@ -75,7 +81,8 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
     @discardableResult
     func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool
 
-    func getInviteRecommendations(shareId: String) async throws -> InviteRecommendations
+    func getInviteRecommendations(shareId: String,
+                                  query: InviteRecommendationsQuery) async throws -> InviteRecommendations
 }
 
 public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
@@ -188,9 +195,10 @@ public extension ShareInviteRepository {
         }
     }
 
-    func getInviteRecommendations(shareId: String) async throws -> InviteRecommendations {
+    func getInviteRecommendations(shareId: String,
+                                  query: InviteRecommendationsQuery) async throws -> InviteRecommendations {
         logger.trace("Getting invite recommendations for share \(shareId)")
-        return try await remoteDataSource.getInviteRecommendations(shareId: shareId)
+        return try await remoteDataSource.getInviteRecommendations(shareId: shareId, query: query)
     }
 }
 

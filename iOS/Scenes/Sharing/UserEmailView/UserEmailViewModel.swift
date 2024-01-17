@@ -149,7 +149,7 @@ private extension UserEmailViewModel {
                 if let shareId = vault?.shareId {
                     recommendationsState = .loading
                     let recommendations = try await shareInviteRepository
-                        .getInviteRecommendations(shareId: shareId)
+                        .getInviteRecommendations(shareId: shareId, query: .default)
                     recommendationsState = .loaded(recommendations)
                 }
             } catch {
