@@ -32,7 +32,6 @@ struct ItemDetailSetUpModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .accentColor(tintColor.toColor)
             .tint(tintColor.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
             .navigationBarBackButtonHidden()
