@@ -284,7 +284,7 @@ private extension HomepageCoordinator {
 private extension HomepageCoordinator {
     // MARK: - Router setup
 
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func setUpRouting() {
         router
             .newPresentationDestination
@@ -351,7 +351,7 @@ private extension HomepageCoordinator {
                 case .restoreHistory:
                     updateAfterRestoration()
                 case .importExport:
-                    print("Import export")
+                    beginImportExportFlow()
                 }
             }
             .store(in: &cancellables)
@@ -732,6 +732,14 @@ extension HomepageCoordinator {
     func updateAfterRestoration() {
         dismissTopMostViewController(animated: true, completion: nil)
         itemDetailCoordinator?.refresh()
+    }
+}
+
+// MARK: - Import export
+
+extension HomepageCoordinator {
+    func beginImportExportFlow() {
+        print(#function)
     }
 }
 
