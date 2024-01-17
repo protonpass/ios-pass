@@ -34,10 +34,22 @@ public struct GetInviteRecommendationsEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
+    public var parameters: [String: Any]?
 
-    public init(shareId: String) {
+    public init(shareId: String, query: InviteRecommendationsQuery) {
         debugDescription = "Get invite recommendations"
         path = "/pass/v1/share/\(shareId)/invite/recommended_emails"
         method = .get
+        var parameters: [String: Any] = [:]
+        if let lastToken = query.lastToken {
+            parameters["PlanSince"] = lastToken
+        }
+
+        parameters["PlanPageSize"] = query.pageSize
+
+        if !query.email.isEmpty {
+            parameters["StartsWith"] = query.email
+        }
+        self.parameters = parameters
     }
 }
