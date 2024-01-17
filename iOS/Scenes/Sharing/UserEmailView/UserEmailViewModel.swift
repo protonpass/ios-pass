@@ -131,22 +131,21 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             guard let self else { return }
             defer { currentTask = nil }
             do {
-                if let shareId = vault?.shareId {
-                    if removingCurrentRecommendations {
-                        recommendationsState = .loading
-                    }
-                    let currentRecommendations = recommendationsState.recommendations
-                    let query = InviteRecommendationsQuery(lastToken: currentRecommendations?
-                        .planRecommendedEmailsNextToken,
-                        pageSize: Constants.Utils.defaultPageSize,
-                        email: email)
-                    let recommendations = try await shareInviteRepository
-                        .getInviteRecommendations(shareId: shareId, query: query)
-                    if let currentRecommendations, !removingCurrentRecommendations {
-                        recommendationsState = .loaded(currentRecommendations.merging(with: recommendations))
-                    } else {
-                        recommendationsState = .loaded(recommendations)
-                    }
+                guard let shareId = vault?.shareId else { return }
+                if removingCurrentRecommendations {
+                    recommendationsState = .loading
+                }
+                let currentRecommendations = recommendationsState.recommendations
+                let query = InviteRecommendationsQuery(lastToken: currentRecommendations?
+                    .planRecommendedEmailsNextToken,
+                    pageSize: Constants.Utils.defaultPageSize,
+                    email: email)
+                let recommendations = try await shareInviteRepository
+                    .getInviteRecommendations(shareId: shareId, query: query)
+                if let currentRecommendations, !removingCurrentRecommendations {
+                    recommendationsState = .loaded(currentRecommendations.merging(with: recommendations))
+                } else {
+                    recommendationsState = .loaded(recommendations)
                 }
             } catch {
                 recommendationsState = .loaded(nil)
