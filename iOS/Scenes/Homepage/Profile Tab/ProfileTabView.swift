@@ -283,8 +283,14 @@ struct ProfileTabView: View {
                 .padding(.bottom, DesignConstant.sectionPadding)
 
             VStack(spacing: 0) {
-                TextOptionRow(title: #localized("How to import to Proton Pass"),
-                              action: { viewModel.showImportInstructions() })
+                if Bundle.main.isQaBuild {
+                    TextOptionRow(title: "Import to/export from Proton Pass",
+                                  action: { viewModel.showImportExportFlow() })
+                } else {
+                    TextOptionRow(title: #localized("How to import to Proton Pass"),
+                                  action: { viewModel.showImportInstructions() })
+                }
+
                 PassSectionDivider()
                 TextOptionRow(title: #localized("Feedback"), action: { viewModel.showFeedback() })
             }

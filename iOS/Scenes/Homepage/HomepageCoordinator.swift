@@ -350,6 +350,8 @@ private extension HomepageCoordinator {
                     presentItemHistory(item)
                 case .restoreHistory:
                     updateAfterRestoration()
+                case .importExport:
+                    print("Import export")
                 }
             }
             .store(in: &cancellables)
