@@ -67,7 +67,11 @@ struct UserEmailView: View {
                 } else if let recommendations = viewModel.recommendationsState.recommendations,
                           !recommendations.isEmpty {
                     InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
-                                             recommendations: recommendations)
+                                             recommendations: recommendations,
+                                             onLoadMore: {
+                                                 viewModel
+                                                     .updateRecommendations(removingCurrentRecommendations: false)
+                                             })
                 }
 
                 Spacer()
