@@ -22,6 +22,7 @@
 
 import Client
 import Combine
+import Core
 import Entities
 import Factory
 import Foundation
@@ -57,9 +58,11 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private var currentTask: Task<Void, Never>?
 
     init() {
         setUp()
+        updateRecommendations(removingCurrentRecommendations: true)
     }
 
     func highlightLastEmail() {
@@ -121,10 +124,50 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     func resetShareInviteInformation() {
         shareInviteService.resetShareInviteInformations()
     }
+
+    func updateRecommendations(removingCurrentRecommendations: Bool) {
+        guard currentTask == nil else { return }
+        currentTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { currentTask = nil }
+            do {
+                guard let shareId = vault?.shareId else { return }
+                if removingCurrentRecommendations {
+                    recommendationsState = .loading
+                }
+                let currentRecommendations = recommendationsState.recommendations
+                let query = InviteRecommendationsQuery(lastToken: currentRecommendations?
+                    .planRecommendedEmailsNextToken,
+                    pageSize: Constants.Utils.defaultPageSize,
+                    email: email)
+                let recommendations = try await shareInviteRepository
+                    .getInviteRecommendations(shareId: shareId, query: query)
+                if let currentRecommendations, !removingCurrentRecommendations {
+                    recommendationsState = .loaded(currentRecommendations.merging(with: recommendations))
+                } else {
+                    recommendationsState = .loaded(recommendations)
+                }
+            } catch {
+                recommendationsState = .loaded(nil)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
 }
 
 private extension UserEmailViewModel {
     func setUp() {
+        $email
+            .dropFirst() // Ignore first event when the view model is initialized
+            .removeDuplicates()
+            .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateRecommendations(removingCurrentRecommendations: true)
+            }
+            .store(in: &cancellables)
+
         Publishers.CombineLatest($email, $selectedEmails)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] email, selectedEmails in
@@ -142,20 +185,6 @@ private extension UserEmailViewModel {
             }
             .store(in: &cancellables)
 
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            vault = shareInviteService.currentSelectedVault.value
-            do {
-                if let shareId = vault?.shareId {
-                    recommendationsState = .loading
-                    let recommendations = try await shareInviteRepository
-                        .getInviteRecommendations(shareId: shareId)
-                    recommendationsState = .loaded(recommendations)
-                }
-            } catch {
-                recommendationsState = .loaded(nil)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
+        vault = shareInviteService.currentSelectedVault.value
     }
 }
