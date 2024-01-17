@@ -28,12 +28,6 @@ public enum InviteeData: Sendable, Equatable {
     case new(email: String, signature: String, role: ShareRole)
 }
 
-public extension InviteRecommendationsQuery {
-    static var `default`: Self {
-        .init(lastToken: nil, pageSize: Constants.Utils.defaultPageSize, email: nil)
-    }
-}
-
 extension [InviteeData] {
     func existingUserInvitesRequests(targetType: TargetType) -> [InviteUserToShareRequest] {
         compactMap {

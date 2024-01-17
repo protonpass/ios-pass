@@ -47,8 +47,8 @@ public struct GetInviteRecommendationsEndpoint: Endpoint {
 
         parameters["PlanPageSize"] = query.pageSize
 
-        if let email = query.email {
-            parameters["StartsWith"] = email
+        if !query.email.isEmpty {
+            parameters["StartsWith"] = query.email
         }
         self.parameters = parameters
     }
