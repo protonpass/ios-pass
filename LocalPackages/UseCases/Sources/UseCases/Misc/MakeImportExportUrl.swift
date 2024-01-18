@@ -40,6 +40,7 @@ public final class MakeImportExportUrl: MakeImportExportUrlUseCase {
         self.doh = doh
     }
 
+    #warning("Make use of selector")
     public func execute(selector: String) throws -> URL {
         let urlString = "https://pass.\(doh.getSignUpString())"
         guard let url = URL(string: urlString) else {
