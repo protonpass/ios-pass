@@ -174,16 +174,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 getAliasAndAliasOptions()
             }
             .store(in: &cancellables)
-
-        Publishers
-            .CombineLatest($title, $prefix)
-            .combineLatest($note)
-            .dropFirst()
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-                didEditSomething = true
-            })
-            .store(in: &cancellables)
     }
 
     override func itemContentType() -> ItemContentType { .alias }
