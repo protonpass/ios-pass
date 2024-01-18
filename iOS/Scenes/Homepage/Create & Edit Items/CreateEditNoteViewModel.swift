@@ -52,15 +52,6 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 }
             }
             .store(in: &cancellables)
-
-        Publishers
-            .CombineLatest($title, $note)
-            .dropFirst(mode.isEditMode ? 1 : 3)
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-                didEditSomething = true
-            })
-            .store(in: &cancellables)
     }
 
     override func bindValues() {

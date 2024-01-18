@@ -297,18 +297,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 private extension CreateEditLoginViewModel {
     func setUp() {
         bindValues()
-        Publishers
-            .CombineLatest($title, $username)
-            .combineLatest($password)
-            .combineLatest($totpUri)
-            .combineLatest($urls)
-            .combineLatest($note)
-            .dropFirst(mode.isEditMode ? 1 : 3)
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-                didEditSomething = true
-            })
-            .store(in: &cancellables)
 
         $selectedVault
             .eraseToAnyPublisher()

@@ -24,10 +24,12 @@ public enum CustomFieldType: CaseIterable, Equatable, Sendable {
     case text, totp, hidden
 }
 
-public struct CustomField: Equatable, Hashable, Sendable {
+public struct CustomField: Equatable, Hashable, Sendable, Identifiable {
     public let title: String
     public let type: CustomFieldType
     public var content: String
+
+    public var id: Int { hashValue }
 
     public init(title: String, type: CustomFieldType, content: String) {
         self.title = title
