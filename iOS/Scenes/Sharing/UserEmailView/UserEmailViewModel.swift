@@ -59,6 +59,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var currentTask: Task<Void, Never>?
+    private var canFetchMoreEmails = true
 
     init() {
         setUp()
@@ -126,7 +127,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func updateRecommendations(removingCurrentRecommendations: Bool) {
-        guard currentTask == nil else { return }
+        guard canFetchMoreEmails, currentTask == nil else { return }
         currentTask = Task { @MainActor [weak self] in
             guard let self else { return }
             defer { currentTask = nil }
@@ -142,6 +143,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                     email: email)
                 let recommendations = try await shareInviteRepository
                     .getInviteRecommendations(shareId: shareId, query: query)
+                canFetchMoreEmails = recommendations.planRecommendedEmailsNextToken != nil
                 if let currentRecommendations, !removingCurrentRecommendations {
                     recommendationsState = .loaded(currentRecommendations.merging(with: recommendations))
                 } else {
@@ -164,6 +166,7 @@ private extension UserEmailViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
+                canFetchMoreEmails = true
                 updateRecommendations(removingCurrentRecommendations: true)
             }
             .store(in: &cancellables)
