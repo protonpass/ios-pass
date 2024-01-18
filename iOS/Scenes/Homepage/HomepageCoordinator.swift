@@ -72,6 +72,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
+    private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
+    private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -284,7 +286,7 @@ private extension HomepageCoordinator {
 private extension HomepageCoordinator {
     // MARK: - Router setup
 
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func setUpRouting() {
         router
             .newPresentationDestination
@@ -350,6 +352,8 @@ private extension HomepageCoordinator {
                     presentItemHistory(item)
                 case .restoreHistory:
                     updateAfterRestoration()
+                case .importExport:
+                    beginImportExportFlow()
                 }
             }
             .store(in: &cancellables)
@@ -730,6 +734,34 @@ extension HomepageCoordinator {
     func updateAfterRestoration() {
         dismissTopMostViewController(animated: true, completion: nil)
         itemDetailCoordinator?.refresh()
+    }
+}
+
+// MARK: - Import export
+
+extension HomepageCoordinator {
+    func beginImportExportFlow() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                showLoadingHud()
+                let selector = try await forkSession()
+                hideLoadingHud()
+                let url = try makeImportExportUrl(selector: selector)
+                presentImportExportView(url: url)
+            } catch {
+                hideLoadingHud()
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
+    }
+
+    func presentImportExportView(url: URL) {
+        let view = ImportExportWebView(url: url)
+        let viewController = UIHostingController(rootView: view)
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.isModalInPresentation = true
+        present(viewController)
     }
 }
 

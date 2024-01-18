@@ -25,6 +25,7 @@ import CryptoKit
 import Entities
 import Factory
 import LocalAuthentication
+import ProtonCoreDoh
 import ProtonCoreKeymaker
 import ProtonCoreLogin
 import ProtonCoreServices
@@ -73,6 +74,10 @@ extension SharedToolingContainer {
 // MARK: Data tools
 
 extension SharedToolingContainer {
+    var doh: Factory<DoHInterface> {
+        self { ProtonPassDoH() }
+    }
+
     var module: Factory<PassModule> {
         self { .hostApp }
             .onArg(PassModule.autoFillExtension) { .autoFillExtension }

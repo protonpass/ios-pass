@@ -44,6 +44,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case unmatchedRotationID(leftID: String, rightID: String)
     case sharing(SharingFailureReason)
     case network(NetworkFailureReason)
+    case invalidUrl(String)
 
     public var debugDescription: String {
         switch self {
@@ -89,6 +90,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             reason.debugDescription
         case let .network(reason):
             reason.debugDescription
+        case let .invalidUrl(url):
+            "Invalid URL \(url)"
         }
     }
 }
