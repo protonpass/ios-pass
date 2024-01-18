@@ -41,7 +41,7 @@ public final class ForkSession: ForkSessionUseCase {
     }
 
     public func execute() async throws -> String {
-        try await Task.sleep(seconds: 3)
+        try await Task.sleep(seconds: 1)
         return ""
         /*
          let endpoint = ForkSessionEndpoint(request: .init(payload: "",
