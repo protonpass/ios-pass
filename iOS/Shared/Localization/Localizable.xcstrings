@@ -16083,6 +16083,7 @@
       }
     },
     "Couldn't find \"%@\" in Trash" : {
+      "comment" : "Message shown when user searches for something in Trash and nothing is found",
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -16226,6 +16227,7 @@
       }
     },
     "Couldn't find \"%1$@\" in %2$@" : {
+      "comment" : "Message shown when user searches for something in a vault and nothing is found. The first placeholder is the search query and the second placeholder is the  name of the vault.",
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -37476,7 +37478,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Permanently deleted one item"
+                  "value" : "Permanently deleted %lld item"
                 }
               },
               "other" : {
@@ -57970,7 +57972,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You are going to delete one item irreversibly, are you sure?"
+                  "value" : "You are going to delete %lld item irreversibly, are you sure?"
                 }
               },
               "other" : {
