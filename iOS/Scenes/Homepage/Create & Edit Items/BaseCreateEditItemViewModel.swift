@@ -66,12 +66,7 @@ class BaseCreateEditItemViewModel {
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var recentlyAddedOrEditedField: CustomFieldUiModel?
 
-    @Published var customFieldUiModels = [CustomFieldUiModel]() {
-        didSet {
-            didEditSomething = true
-        }
-    }
-
+    @Published var customFieldUiModels = [CustomFieldUiModel]()
     @Published var isObsolete = false
 
     // Scanning
@@ -92,7 +87,17 @@ class BaseCreateEditItemViewModel {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
 
-    var didEditSomething = false
+    var didEditSomething: Bool {
+        switch mode {
+        case .create:
+            return true
+        case let .edit(oldItemContent):
+            if let newItemContent = generateItemContent() {
+                return !oldItemContent.protobuf.isLooselyEqual(to: newItemContent)
+            }
+            return true
+        }
+    }
 
     weak var delegate: CreateEditItemViewModelDelegate?
     var cancellables = Set<AnyCancellable>()

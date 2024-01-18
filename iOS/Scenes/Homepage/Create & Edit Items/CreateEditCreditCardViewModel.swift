@@ -89,21 +89,6 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                 }
             }
             .store(in: &cancellables)
-
-        Publishers
-            .CombineLatest($title, $cardholderName)
-            .combineLatest($cardNumber)
-            .combineLatest($verificationNumber)
-            .combineLatest($pin)
-            .combineLatest($month)
-            .combineLatest($year)
-            .combineLatest($note)
-            .dropFirst(mode.isEditMode ? 1 : 3)
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-                didEditSomething = true
-            })
-            .store(in: &cancellables)
     }
 
     var interpretor: ScanInterpreting {
