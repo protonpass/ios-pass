@@ -73,7 +73,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
-    private let openImportExportWebView = resolve(\UseCasesContainer.openImportExportWebView)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -747,12 +746,21 @@ extension HomepageCoordinator {
                 showLoadingHud()
                 _ = try await forkSession()
                 hideLoadingHud()
-                try await openImportExportWebView(over: rootViewController)
+                presentImportExportView()
             } catch {
                 hideLoadingHud()
                 bannerManager.displayTopErrorMessage(error)
             }
         }
+    }
+
+    func presentImportExportView() {
+        // swiftlint:disable:next force_unwrapping
+        let view = ImportExportWebView(url: URL(string: "https://pass.proton.black")!)
+        let viewController = UIHostingController(rootView: view)
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.isModalInPresentation = true
+        present(viewController)
     }
 }
 
