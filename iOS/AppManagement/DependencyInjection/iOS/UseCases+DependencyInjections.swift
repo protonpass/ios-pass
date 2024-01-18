@@ -295,10 +295,6 @@ extension UseCasesContainer {
     var getItemHistory: Factory<GetItemHistoryUseCase> {
         self { GetItemHistory(itemRepository: self.itemRepository) }
     }
-
-    var openImportExportWebView: Factory<OpenImportExportWebViewUseCase> {
-        self { OpenImportExportWebView() }
-    }
 }
 
 // MARK: - User
