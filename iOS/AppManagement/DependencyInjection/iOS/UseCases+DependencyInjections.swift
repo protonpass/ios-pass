@@ -306,6 +306,8 @@ extension UseCasesContainer {
     }
 }
 
+// MARK: - Misc
+
 extension UseCasesContainer {
     var getRustLibraryVersion: Factory<GetRustLibraryVersionUseCase> {
         self { GetRustLibraryVersion() }
@@ -314,5 +316,9 @@ extension UseCasesContainer {
     @MainActor
     var openAutoFillSettings: Factory<OpenAutoFillSettingsUseCase> {
         self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
+    }
+
+    var makeImportExportUrl: Factory<MakeImportExportUrlUseCase> {
+        self { MakeImportExportUrl(doh: SharedToolingContainer.shared.doh()) }
     }
 }
