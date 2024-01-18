@@ -60,7 +60,7 @@ struct UserEmailView: View {
 
                 if viewModel.recommendationsState == .loading {
                     VStack {
-                        Spacer(minLength: 50)
+                        Spacer(minLength: 150)
                         ProgressView()
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
