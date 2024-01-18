@@ -180,6 +180,10 @@ extension ProfileTabViewModel {
         router.navigate(to: .urlPage(urlString: ProtonLink.howToImport))
     }
 
+    func showImportExportFlow() {
+        router.present(for: .importExport)
+    }
+
     func showFeedback() {
         delegate?.profileTabViewModelWantsToShowFeedback()
     }

@@ -46,6 +46,7 @@ final class APIManager {
     private let appVer = resolve(\SharedToolingContainer.appVersion)
     private let appData = resolve(\SharedDataContainer.appData)
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let doh = resolve(\SharedToolingContainer.doh)
     private let trustKitDelegate: TrustKitDelegate
     let authHelper: AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
 
@@ -60,7 +61,6 @@ final class APIManager {
         APIManager.setUpCertificatePinning(trustKitDelegate: trustKitDelegate)
         self.trustKitDelegate = trustKitDelegate
 
-        let doh = ProtonPassDoH()
         let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
