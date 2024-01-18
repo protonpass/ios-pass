@@ -564,7 +564,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     }
 
     // Not applicable
-    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {}
+    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType, updated: Bool) {}
 }
 
 // MARK: - CreateEditLoginViewModelDelegate
