@@ -28,6 +28,7 @@ import Factory
 import Foundation
 import Macro
 import ProtonCoreLogin
+import SwiftUI
 
 enum VaultManagerState {
     case loading
@@ -54,8 +55,10 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
-    @Published private(set) var filterOption = ItemTypeFilterOption.all
     @Published private(set) var itemCount = ItemCount.zero
+
+    @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
+    private(set) var filterOption = ItemTypeFilterOption.all
 
     let currentVaults: CurrentValueSubject<[Vault], Never> = .init([])
 
@@ -71,7 +74,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     func reset() {
         state = .loading
         vaultSelection = .all
-        filterOption = .all
         itemCount = .zero
         currentVaults.send([])
     }
@@ -91,6 +93,7 @@ private extension VaultsManager {
             .store(in: &cancellables)
 
         $vaultSelection
+            .dropFirst()
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] _ in
