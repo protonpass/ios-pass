@@ -35,7 +35,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
                                                             delegate: CustomFieldEditionDelegate)
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
-    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
+    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType, updated: Bool)
 }
 
 enum ItemMode {
@@ -228,7 +228,8 @@ private extension BaseCreateEditItemViewModel {
         return try await itemRepository.createItem(itemContent: itemContent, shareId: shareId)
     }
 
-    func editItem(oldItemContent: ItemContent) async throws {
+    /// Return `true` if item is edited, `false` otherwise
+    func editItem(oldItemContent: ItemContent) async throws -> Bool {
         try await additionalEdit()
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
@@ -238,11 +239,16 @@ private extension BaseCreateEditItemViewModel {
         }
         guard let newItemContent = generateItemContent() else {
             logger.warning("No new item content")
-            return
+            return false
+        }
+        guard !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) else {
+            logger.trace("Skipped editing because no changes \(oldItemContent.debugDescription)")
+            return false
         }
         try await itemRepository.updateItem(oldItem: oldItem.item,
                                             newItemContent: newItemContent,
                                             shareId: oldItem.shareId)
+        return true
     }
 }
 
@@ -283,9 +289,10 @@ extension BaseCreateEditItemViewModel {
 
                 case let .edit(oldItemContent):
                     logger.trace("Editing \(oldItemContent.debugDescription)")
-                    try await editItem(oldItemContent: oldItemContent)
+                    let updated = try await editItem(oldItemContent: oldItemContent)
                     logger.info("Edited \(oldItemContent.debugDescription)")
-                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType(),
+                                                                   updated: updated)
                 }
 
                 addTelemetryEvent(with: telemetryEventTypes())
