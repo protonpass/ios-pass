@@ -1201,7 +1201,11 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         increaseCreatedItemsCountAndAskForReviewIfNecessary()
     }
 
-    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
+    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType, updated: Bool) {
+        guard updated else {
+            dismissTopMostViewController()
+            return
+        }
         addNewEvent(type: .update(type))
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
