@@ -73,3 +73,29 @@ private extension ItemContentType {
         return .init(icon: regularIcon, title: filterTitle, count: count)
     }
 }
+
+/// Conform to `RawRepresentable` to support `@AppStorage`
+/// This extension can be removed after moving away from `@AppStorage`
+extension ItemTypeFilterOption: RawRepresentable {
+    var rawValue: Int {
+        switch self {
+        case .all:
+            -1
+        case let .precise(type):
+            type.rawValue
+        }
+    }
+
+    init?(rawValue: Int) {
+        switch rawValue {
+        case -1:
+            self = .all
+        default:
+            if let type = ItemContentType(rawValue: rawValue) {
+                self = .precise(type)
+            } else {
+                return nil
+            }
+        }
+    }
+}
