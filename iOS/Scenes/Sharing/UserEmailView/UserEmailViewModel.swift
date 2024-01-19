@@ -127,11 +127,16 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func updateRecommendations(removingCurrentRecommendations: Bool) {
-        guard canFetchMoreEmails, currentTask == nil else { return }
+        guard canFetchMoreEmails else { return }
+        currentTask?.cancel()
+        currentTask = nil
         currentTask = Task { @MainActor [weak self] in
             guard let self else { return }
             defer { currentTask = nil }
             do {
+                if Task.isCancelled {
+                    return
+                }
                 guard let shareId = vault?.shareId else { return }
                 if removingCurrentRecommendations {
                     recommendationsState = .loading
