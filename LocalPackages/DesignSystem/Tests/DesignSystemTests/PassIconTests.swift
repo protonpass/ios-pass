@@ -82,6 +82,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.trialCustomFields
         _ = PassIcon.trialDetail
         _ = PassIcon.trialVaults
+        _ = PassIcon.youtube
 
         _ = PassIcon.vaultIcon1Big
         _ = PassIcon.vaultIcon1Small
