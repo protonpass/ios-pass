@@ -4842,16 +4842,6 @@
         }
       }
     },
-    "Account settings" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Account settings"
-          }
-        }
-      }
-    },
     "Add" : {
       "localizations" : {
         "be" : {
@@ -31257,6 +31247,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quản lý truy cập"
+          }
+        }
+      }
+    },
+    "Manage account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage account"
           }
         }
       }
