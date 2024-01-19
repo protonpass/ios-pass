@@ -70,7 +70,7 @@ struct ProfileTabView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
         }
         .task {
@@ -150,9 +150,9 @@ struct ProfileTabView: View {
                     OptionRow(height: .tall) {
                         Toggle(isOn: $viewModel.fallbackToPasscode) {
                             Text(type.fallbackToPasscodeMessage)
-                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                .foregroundColor(PassColor.textNorm.toColor)
                         }
-                        .tint(Color(uiColor: PassColor.interactionNorm))
+                        .tint(PassColor.interactionNorm.toColor)
                     }
 
                 case .pin:
@@ -183,7 +183,7 @@ struct ProfileTabView: View {
             OptionRow(height: .medium) {
                 HStack {
                     Text("AutoFill disabled")
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .foregroundColor(PassColor.textNorm.toColor)
 
                     Spacer()
 
@@ -211,9 +211,9 @@ struct ProfileTabView: View {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.quickTypeBar) {
                         Text("QuickType bar suggestions")
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            .foregroundColor(PassColor.textNorm.toColor)
                     }
-                    .tint(Color(uiColor: PassColor.interactionNorm))
+                    .tint(PassColor.interactionNorm.toColor)
                 }
 
                 PassSectionDivider()
@@ -221,9 +221,9 @@ struct ProfileTabView: View {
                 OptionRow(height: .medium) {
                     Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
                         Text("Copy 2FA code")
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            .foregroundColor(PassColor.textNorm.toColor)
                     }
-                    .tint(Color(uiColor: PassColor.interactionNorm))
+                    .tint(PassColor.interactionNorm.toColor)
                 }
             }
             .roundedEditableSection()
@@ -237,7 +237,7 @@ struct ProfileTabView: View {
                       content: {
                           HStack {
                               Text("Account")
-                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                  .foregroundColor(PassColor.textNorm.toColor)
 
                               Spacer()
 
@@ -251,7 +251,7 @@ struct ProfileTabView: View {
                                           .scaledToFit()
                                           .frame(maxWidth: associatedPlanInfo.iconWidth)
                                   })
-                                  .foregroundColor(Color(uiColor: associatedPlanInfo.tintColor))
+                                  .foregroundColor(associatedPlanInfo.tintColor.toColor)
                                   .padding(.horizontal)
                               }
                           }
@@ -298,7 +298,7 @@ struct ProfileTabView: View {
                 OptionRow(action: { viewModel.showTutorial() },
                           content: {
                               Text("How to use Proton Pass")
-                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                  .foregroundColor(PassColor.textNorm.toColor)
                           },
                           trailing: {
                               Image(uiImage: IconProvider.arrowOutSquare)
@@ -324,7 +324,7 @@ struct ProfileTabView: View {
 
 private extension View {
     func profileSectionTitle() -> some View {
-        foregroundColor(Color(uiColor: PassColor.textNorm))
+        foregroundColor(PassColor.textNorm.toColor)
             .font(.callout.weight(.bold))
             .frame(maxWidth: .infinity, alignment: .leading)
     }
