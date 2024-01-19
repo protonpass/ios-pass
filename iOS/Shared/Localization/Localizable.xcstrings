@@ -32693,12 +32693,13 @@
         }
       }
     },
-    "Moving an item will reset it's history" : {
+    "Moving an item will reset its history" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Moving an item will reset it's history"
+            "value" : "Moving an item will reset its history"
           }
         }
       }
