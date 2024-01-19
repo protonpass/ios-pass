@@ -26140,6 +26140,16 @@
         }
       }
     },
+    "How to use Proton Pass" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to use Proton Pass"
+          }
+        }
+      }
+    },
     "Hyphens" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -31237,6 +31247,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quản lý truy cập"
+          }
+        }
+      }
+    },
+    "Manage account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage account"
           }
         }
       }
@@ -56123,6 +56143,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nguy hiểm"
+          }
+        }
+      }
+    },
+    "Watch a short video on how to use Proton Pass" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch a short video on how to use Proton Pass"
           }
         }
       }

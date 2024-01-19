@@ -88,6 +88,7 @@ public extension PassIcon {
     static let trialCustomFields = Self.icon(named: "TrialCustomFields")
     static let trialDetail = Self.icon(named: "TrialDetail")
     static let trialVaults = Self.icon(named: "TrialVaults")
+    static let youtube = Self.icon(named: "Youtube")
 
     static let vaultIcon1Big = Self.icon(named: "VaultIcon1Big")
     static let vaultIcon1Small = Self.icon(named: "VaultIcon1Small")
