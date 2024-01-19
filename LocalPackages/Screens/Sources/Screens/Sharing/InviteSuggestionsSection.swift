@@ -28,13 +28,16 @@ public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
     @Binding private var selectedEmails: [String]
     private let recommendations: InviteRecommendations
+    private let displayCounts: Bool
     private let onLoadMore: () -> Void
 
     public init(selectedEmails: Binding<[String]>,
                 recommendations: InviteRecommendations,
+                displayCounts: Bool,
                 onLoadMore: @escaping () -> Void) {
         _selectedEmails = selectedEmails
         self.recommendations = recommendations
+        self.displayCounts = displayCounts
         self.onLoadMore = onLoadMore
     }
 
@@ -46,8 +49,12 @@ public struct InviteSuggestionsSection: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             if let planName = recommendations.groupDisplayName ?? recommendations.planInternalName {
+                let recentTabTitle = #localized("Recents") +
+                    (displayCounts ? " (\(recommendations.recommendedEmails.count))" : "")
+                let planTabTitle = planName +
+                    (displayCounts ? " (\(recommendations.planRecommendedEmails.count))" : "")
                 SegmentedPicker(selectedIndex: $selectedIndex,
-                                options: [#localized("Recents"), planName])
+                                options: [recentTabTitle, planTabTitle])
             }
 
             emailList(selectedIndex == 0 ?
