@@ -35,7 +35,7 @@ struct MoveVaultListView: View {
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
-                Label("Moving an item will reset it's history", systemImage: "info.circle.fill")
+                Label("Moving an item will reset its history", systemImage: "info.circle.fill")
                     .font(.callout)
                     .foregroundColor(PassColor.textWeak.toColor)
                     .padding(.horizontal, 16)
