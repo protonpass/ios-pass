@@ -184,6 +184,10 @@ extension ProfileTabViewModel {
         router.present(for: .importExport)
     }
 
+    func showTutorial() {
+        router.present(for: .tutorial)
+    }
+
     func showFeedback() {
         delegate?.profileTabViewModelWantsToShowFeedback()
     }

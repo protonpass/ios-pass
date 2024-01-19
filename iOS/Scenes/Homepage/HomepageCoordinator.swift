@@ -74,6 +74,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
+    private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -354,6 +355,10 @@ private extension HomepageCoordinator {
                     updateAfterRestoration()
                 case .importExport:
                     beginImportExportFlow()
+                case .tutorial:
+                    openTutorialVideo()
+                case .accountSettings:
+                    beginAccountSettingsFlow()
                 }
             }
             .store(in: &cancellables)
@@ -737,7 +742,7 @@ extension HomepageCoordinator {
     }
 }
 
-// MARK: - Import export
+// MARK: - Open webpages
 
 extension HomepageCoordinator {
     func beginImportExportFlow() {
@@ -745,7 +750,10 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 showLoadingHud()
-                let selector = try await forkSession()
+                let request = ForkSessionRequest(payload: nil,
+                                                 childClientId: "pass-ios",
+                                                 independent: 1)
+                let selector = try await forkSession(request)
                 hideLoadingHud()
                 let url = try makeImportExportUrl(selector: selector)
                 presentImportExportView(url: url)
@@ -762,6 +770,19 @@ extension HomepageCoordinator {
         viewController.modalPresentationStyle = .fullScreen
         viewController.isModalInPresentation = true
         present(viewController)
+    }
+
+    func beginAccountSettingsFlow() {
+        do {
+            let url = try makeAccountSettingsUrl()
+            urlOpener.open(urlString: url)
+        } catch {
+            bannerManager.displayTopErrorMessage(error)
+        }
+    }
+
+    func openTutorialVideo() {
+        urlOpener.open(urlString: ProtonLink.youtubeTutorial)
     }
 }
 
@@ -814,7 +835,11 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool) {
         guard forced || !preferences.onboarded else { return }
-        let vc = UIHostingController(rootView: OnboardingView())
+        let view = OnboardingView { [weak self] in
+            guard let self else { return }
+            openTutorialVideo()
+        }
+        let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
