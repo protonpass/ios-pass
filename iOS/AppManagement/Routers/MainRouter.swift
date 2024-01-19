@@ -77,6 +77,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case history(ItemContent)
     case restoreHistory
     case importExport
+    case accountSettings
 }
 
 enum UIElementDisplay: Sendable {
