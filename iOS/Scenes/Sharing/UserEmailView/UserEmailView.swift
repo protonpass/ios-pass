@@ -68,6 +68,7 @@ struct UserEmailView: View {
                           !recommendations.isEmpty {
                     InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
                                              recommendations: recommendations,
+                                             displayCounts: Bundle.main.isQaBuild,
                                              onLoadMore: {
                                                  viewModel
                                                      .updateRecommendations(removingCurrentRecommendations: false)
