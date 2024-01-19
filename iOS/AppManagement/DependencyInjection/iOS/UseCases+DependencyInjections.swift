@@ -321,4 +321,8 @@ extension UseCasesContainer {
     var makeImportExportUrl: Factory<MakeImportExportUrlUseCase> {
         self { MakeImportExportUrl(doh: SharedToolingContainer.shared.doh()) }
     }
+
+    var makeAccountSettingsUrl: Factory<MakeAccountSettingsUrlUseCase> {
+        self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
+    }
 }
