@@ -39,6 +39,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
@@ -87,7 +88,27 @@ extension AccountViewModel {
         }
     }
 
-    private func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
+    func openAccountSettings() {
+        router.present(for: .accountSettings)
+    }
+
+    func signOut() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            isLoading = true
+            await revokeCurrentSession()
+            isLoading = false
+            delegate?.accountViewModelWantsToSignOut()
+        }
+    }
+
+    func deleteAccount() {
+        delegate?.accountViewModelWantsToDeleteAccount()
+    }
+}
+
+private extension AccountViewModel {
+    func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
         switch result {
         case let .success(inAppPurchasePlan):
             if inAppPurchasePlan != nil {
@@ -103,19 +124,5 @@ extension AccountViewModel {
         case let .failure(error):
             logger.error(error)
         }
-    }
-
-    func signOut() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            isLoading = true
-            await revokeCurrentSession()
-            isLoading = false
-            delegate?.accountViewModelWantsToSignOut()
-        }
-    }
-
-    func deleteAccount() {
-        delegate?.accountViewModelWantsToDeleteAccount()
     }
 }

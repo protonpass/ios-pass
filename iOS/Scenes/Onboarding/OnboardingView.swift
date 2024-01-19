@@ -26,6 +26,7 @@ struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = OnboardingViewModel()
     private let theme = resolve(\SharedToolingContainer.theme)
+    let onWatchTutorial: () -> Void
 
     var body: some View {
         VStack {
@@ -84,6 +85,14 @@ struct OnboardingView: View {
                                 .animationsDisabled()
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
+                    } else if viewModel.state == .aliases {
+                        Button(action: onWatchTutorial) {
+                            Label(title: { Text("Watch a short video on how to use Proton Pass") },
+                                  icon: { Image(uiImage: PassIcon.youtube) })
+                                .foregroundStyle(PassColor.interactionNorm.toColor)
+                                .labelStyle(.belowIcon)
+                        }
+                        .buttonStyle(.plain)
                     } else {
                         Text(verbatim: "Dummy text that takes place")
                             .opacity(0)

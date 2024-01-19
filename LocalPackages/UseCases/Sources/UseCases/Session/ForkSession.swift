@@ -23,13 +23,14 @@ import Client
 import Foundation
 @preconcurrency import ProtonCoreServices
 
+/// Fork the session and return the `selector`
 public protocol ForkSessionUseCase: Sendable {
-    func execute() async throws -> String
+    func execute(_ request: ForkSessionRequest) async throws -> String
 }
 
 public extension ForkSessionUseCase {
-    func callAsFunction() async throws -> String {
-        try await execute()
+    func callAsFunction(_ request: ForkSessionRequest) async throws -> String {
+        try await execute(request)
     }
 }
 
@@ -40,16 +41,9 @@ public final class ForkSession: ForkSessionUseCase {
         self.apiService = apiService
     }
 
-    #warning("Do the real fork")
-    public func execute() async throws -> String {
-        try await Task.sleep(seconds: 1)
-        return ""
-        /*
-         let endpoint = ForkSessionEndpoint(request: .init(payload: "",
-                                                           childClientId: "pass-ios",
-                                                           independent: 1))
-         let response = try await apiService.exec(endpoint: endpoint)
-         return response.selector
-          */
+    public func execute(_ request: ForkSessionRequest) async throws -> String {
+        let endpoint = ForkSessionEndpoint(request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.selector
     }
 }

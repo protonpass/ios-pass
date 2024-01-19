@@ -44,6 +44,6 @@ struct OnboardSection: View {
 
     @MainActor
     private var onboardingView: some View {
-        OnboardingView()
+        OnboardingView(onWatchTutorial: {})
     }
 }
