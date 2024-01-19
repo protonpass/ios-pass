@@ -356,7 +356,7 @@ private extension HomepageCoordinator {
                 case .importExport:
                     beginImportExportFlow()
                 case .tutorial:
-                    urlOpener.open(urlString: "https://www.youtube.com/watch?v=Nm4DCAjePOM")
+                    openTutorialVideo()
                 case .accountSettings:
                     beginAccountSettingsFlow()
                 }
@@ -780,6 +780,10 @@ extension HomepageCoordinator {
             bannerManager.displayTopErrorMessage(error)
         }
     }
+
+    func openTutorialVideo() {
+        urlOpener.open(urlString: "https://www.youtube.com/watch?v=Nm4DCAjePOM")
+    }
 }
 
 // MARK: - Coordinators
@@ -831,7 +835,11 @@ private extension HomepageCoordinator {
 
     func presentOnboardView(forced: Bool) {
         guard forced || !preferences.onboarded else { return }
-        let vc = UIHostingController(rootView: OnboardingView())
+        let view = OnboardingView { [weak self] in
+            guard let self else { return }
+            openTutorialVideo()
+        }
+        let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)

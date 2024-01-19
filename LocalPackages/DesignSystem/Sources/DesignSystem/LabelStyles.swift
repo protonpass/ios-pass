@@ -1,5 +1,5 @@
 //
-// RightIconLabelStyle.swift
+// LabelStyles.swift
 // Proton Pass - Created on 26/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -29,8 +29,21 @@ public struct RightIconLabelStyle: LabelStyle {
     }
 }
 
+public struct BelowIconLabelStyle: LabelStyle {
+    public func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.title
+            configuration.icon
+        }
+    }
+}
+
 public extension LabelStyle where Self == RightIconLabelStyle {
     static var rightIcon: RightIconLabelStyle {
         RightIconLabelStyle()
+    }
+
+    static var belowIcon: BelowIconLabelStyle {
+        BelowIconLabelStyle()
     }
 }
