@@ -52,6 +52,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published private(set) var vault: SharingVaultData?
     @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
+    @Published private(set) var isFetchingMore = false
 
     private var cancellables = Set<AnyCancellable>()
     private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
@@ -132,12 +133,16 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         currentTask = nil
         currentTask = Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { currentTask = nil }
+            defer {
+                currentTask = nil
+                isFetchingMore = false
+            }
             do {
                 if Task.isCancelled {
                     return
                 }
                 guard let shareId = vault?.shareId else { return }
+                isFetchingMore = true
                 if removingCurrentRecommendations {
                     recommendationsState = .loading
                 }
