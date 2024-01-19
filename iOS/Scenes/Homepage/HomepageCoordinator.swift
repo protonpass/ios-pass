@@ -355,6 +355,8 @@ private extension HomepageCoordinator {
                     updateAfterRestoration()
                 case .importExport:
                     beginImportExportFlow()
+                case .tutorial:
+                    urlOpener.open(urlString: "https://www.youtube.com/watch?v=Nm4DCAjePOM")
                 case .accountSettings:
                     beginAccountSettingsFlow()
                 }

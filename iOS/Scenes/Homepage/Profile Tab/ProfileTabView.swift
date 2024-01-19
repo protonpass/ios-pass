@@ -292,6 +292,9 @@ struct ProfileTabView: View {
                 }
 
                 PassSectionDivider()
+                TextOptionRow(title: #localized("Tutorial"), action: { viewModel.showTutorial() })
+
+                PassSectionDivider()
                 TextOptionRow(title: #localized("Feedback"), action: { viewModel.showFeedback() })
             }
             .roundedEditableSection()
