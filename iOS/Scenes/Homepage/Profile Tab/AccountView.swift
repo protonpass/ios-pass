@@ -77,6 +77,20 @@ struct AccountView: View {
                           .roundedEditableSection()
                           .padding(.top)
 
+                OptionRow(action: { viewModel.openAccountSettings() },
+                          height: .tall,
+                          content: {
+                              Text("Account settings")
+                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                          },
+                          trailing: {
+                              CircleButton(icon: IconProvider.arrowOutSquare,
+                                           iconColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1)
+                          })
+                          .roundedEditableSection()
+                          .padding(.top)
+
                 OptionRow(action: { isShowingSignOutConfirmation.toggle() },
                           height: .tall,
                           content: {

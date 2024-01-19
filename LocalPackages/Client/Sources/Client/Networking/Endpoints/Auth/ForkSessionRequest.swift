@@ -22,7 +22,7 @@
 import Foundation
 
 public struct ForkSessionRequest: Sendable, Encodable {
-    public let payload: String
+    public let payload: String?
     public let childClientId: String
     public let independent: Int
 
@@ -32,7 +32,7 @@ public struct ForkSessionRequest: Sendable, Encodable {
         case independent = "Independent"
     }
 
-    public init(payload: String, childClientId: String, independent: Int) {
+    public init(payload: String?, childClientId: String, independent: Int) {
         self.payload = payload
         self.childClientId = childClientId
         self.independent = independent
