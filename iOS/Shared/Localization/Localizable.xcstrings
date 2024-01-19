@@ -51602,6 +51602,16 @@
         }
       }
     },
+    "Tutorial" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutorial"
+          }
+        }
+      }
+    },
     "Type" : {
       "localizations" : {
         "be" : {
