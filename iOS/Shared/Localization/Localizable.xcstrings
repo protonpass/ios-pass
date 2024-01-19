@@ -4842,6 +4842,16 @@
         }
       }
     },
+    "Account settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account settings"
+          }
+        }
+      }
+    },
     "Add" : {
       "localizations" : {
         "be" : {
