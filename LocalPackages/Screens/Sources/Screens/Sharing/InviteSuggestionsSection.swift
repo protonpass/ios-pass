@@ -28,21 +28,24 @@ public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
     @Binding private var selectedEmails: [String]
     private let recommendations: InviteRecommendations
+    private let isFetchingMore: Bool
     private let displayCounts: Bool
     private let onLoadMore: () -> Void
 
     public init(selectedEmails: Binding<[String]>,
                 recommendations: InviteRecommendations,
+                isFetchingMore: Bool,
                 displayCounts: Bool,
                 onLoadMore: @escaping () -> Void) {
         _selectedEmails = selectedEmails
         self.recommendations = recommendations
+        self.isFetchingMore = isFetchingMore
         self.displayCounts = displayCounts
         self.onLoadMore = onLoadMore
     }
 
     public var body: some View {
-        VStack {
+        LazyVStack {
             Text("Suggestions")
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .font(.body.weight(.medium))
@@ -59,7 +62,12 @@ public struct InviteSuggestionsSection: View {
 
             emailList(selectedIndex == 0 ?
                 recommendations.recommendedEmails : recommendations.planRecommendedEmails)
+
+            if isFetchingMore {
+                emailSkeleton
+            }
         }
+        .animation(.default, value: isFetchingMore)
     }
 }
 
@@ -83,5 +91,26 @@ private extension InviteSuggestionsSection {
         } else {
             selectedEmails.append(email)
         }
+    }
+
+    var emailSkeleton: some View {
+        HStack {
+            SkeletonBlock()
+                .frame(width: 40, height: 40)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+
+            Spacer()
+
+            SkeletonBlock()
+                .frame(height: 24)
+                .clipShape(Capsule())
+
+            Spacer()
+
+            SkeletonBlock()
+                .frame(width: 24, height: 24)
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        }
+        .shimmering()
     }
 }
