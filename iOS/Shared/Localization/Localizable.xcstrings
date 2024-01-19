@@ -56147,6 +56147,16 @@
         }
       }
     },
+    "Watch a short video on how to use Proton Pass" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch a short video on how to use Proton Pass"
+          }
+        }
+      }
+    },
     "We are downloading and decrypting your items." : {
       "localizations" : {
         "be" : {
