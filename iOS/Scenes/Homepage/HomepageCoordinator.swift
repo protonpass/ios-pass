@@ -782,7 +782,7 @@ extension HomepageCoordinator {
     }
 
     func openTutorialVideo() {
-        urlOpener.open(urlString: "https://www.youtube.com/watch?v=Nm4DCAjePOM")
+        urlOpener.open(urlString: ProtonLink.youtubeTutorial)
     }
 }
 

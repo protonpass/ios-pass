@@ -49,6 +49,7 @@ public enum ProtonLink {
     public static let howToImport = "https://proton.me/support/pass-import"
     public static let privacyPolicy = "https://proton.me/legal/privacy"
     public static let termsOfService = "https://proton.me/legal/terms"
+    public static let youtubeTutorial = "https://www.youtube.com/watch?v=Nm4DCAjePOM"
 }
 
 /// The following enum contains all the keys liked to the data contained in the custom plists `Pass-Constant-Black`
