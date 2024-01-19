@@ -32693,6 +32693,16 @@
         }
       }
     },
+    "Moving an item will reset it's history" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moving an item will reset it's history"
+          }
+        }
+      }
+    },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
       "extractionState" : "manual",
