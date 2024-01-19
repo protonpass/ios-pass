@@ -292,10 +292,21 @@ struct ProfileTabView: View {
                 }
 
                 PassSectionDivider()
-                TextOptionRow(title: #localized("Tutorial"), action: { viewModel.showTutorial() })
+                TextOptionRow(title: #localized("Feedback"), action: { viewModel.showFeedback() })
 
                 PassSectionDivider()
-                TextOptionRow(title: #localized("Feedback"), action: { viewModel.showFeedback() })
+                OptionRow(action: { viewModel.showTutorial() },
+                          content: {
+                              Text("How to use Proton Pass")
+                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                          },
+                          trailing: {
+                              Image(uiImage: IconProvider.arrowOutSquare)
+                                  .resizable()
+                                  .scaledToFit()
+                                  .frame(height: 16)
+                                  .foregroundColor(PassColor.textHint.toColor)
+                          })
             }
             .roundedEditableSection()
         }

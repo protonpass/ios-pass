@@ -26150,6 +26150,16 @@
         }
       }
     },
+    "How to use Proton Pass" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to use Proton Pass"
+          }
+        }
+      }
+    },
     "Hyphens" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -51598,16 +51608,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bật Tự động điền để Proton Pass điền thông tin cho bạn⏤10 giây sẽ giúp bạn tiết kiệm hàng giờ đó"
-          }
-        }
-      }
-    },
-    "Tutorial" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tutorial"
           }
         }
       }
