@@ -63,33 +63,35 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
-                OptionRow(action: { viewModel.manageSubscription() },
-                          height: .tall,
-                          content: {
-                              Text("Manage subscription")
-                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
-                          },
-                          trailing: {
-                              CircleButton(icon: IconProvider.arrowOutSquare,
-                                           iconColor: PassColor.interactionNormMajor2,
-                                           backgroundColor: PassColor.interactionNormMinor1)
-                          })
-                          .roundedEditableSection()
-                          .padding(.top)
+                VStack(spacing: 0) {
+                    OptionRow(action: { viewModel.openAccountSettings() },
+                              height: .tall,
+                              content: {
+                                  Text("Manage account")
+                                      .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                              },
+                              trailing: {
+                                  CircleButton(icon: IconProvider.arrowOutSquare,
+                                               iconColor: PassColor.interactionNormMajor2,
+                                               backgroundColor: PassColor.interactionNormMinor1)
+                              })
 
-                OptionRow(action: { viewModel.openAccountSettings() },
-                          height: .tall,
-                          content: {
-                              Text("Account settings")
-                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
-                          },
-                          trailing: {
-                              CircleButton(icon: IconProvider.arrowOutSquare,
-                                           iconColor: PassColor.interactionNormMajor2,
-                                           backgroundColor: PassColor.interactionNormMinor1)
-                          })
-                          .roundedEditableSection()
-                          .padding(.top)
+                    PassSectionDivider()
+
+                    OptionRow(action: { viewModel.manageSubscription() },
+                              height: .tall,
+                              content: {
+                                  Text("Manage subscription")
+                                      .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                              },
+                              trailing: {
+                                  CircleButton(icon: IconProvider.arrowOutSquare,
+                                               iconColor: PassColor.interactionNormMajor2,
+                                               backgroundColor: PassColor.interactionNormMinor1)
+                              })
+                }
+                .roundedEditableSection()
+                .padding(.top)
 
                 OptionRow(action: { isShowingSignOutConfirmation.toggle() },
                           height: .tall,
