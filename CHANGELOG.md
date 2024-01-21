@@ -1,3 +1,15 @@
+## Version 1.7.3
+Improvements:
+- Enabled search for custom text fields
+- Optimized item revision creation process by avoiding unnecessary changes
+
+Others:
+- Rust library updated to version 0.5.6
+- Sentry updated from 8.16.1 to 8.18.0
+- Addressed issue preventing bug reports after multiple file changes
+- Added persistent item filter option
+- Included link to tutorial video and account settings in-app
+
 ## Version 1.7.2
 Improvements:
 - Added email suggestions when sharing
