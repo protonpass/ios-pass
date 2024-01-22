@@ -262,6 +262,13 @@
 		35796CF82B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CF72B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade */; };
 		35796CFA2B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CF92B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation */; };
 		35796CFC2B5EE82D00BF4E9E /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CFB2B5EE82D00BF4E9E /* DocScanner */; };
+		35796CFE2B5EEAC800BF4E9E /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CFD2B5EEAC800BF4E9E /* Entities */; };
+		35796CFF2B5EEB1200BF4E9E /* ItemContentType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContentType+Extensions.swift */; };
+		35796D002B5EEE7000BF4E9E /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
+		35796D012B5EEE7400BF4E9E /* CreateEditLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */; };
+		35796D022B5EEE7700BF4E9E /* CreateEditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */; };
+		35796D032B5EEE7D00BF4E9E /* CreateEditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */; };
+		35796D042B5EEE8100BF4E9E /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		357ABEAC2B18782E003D05C8 /* ItemsTabOptionsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEAB2B18782E003D05C8 /* ItemsTabOptionsButton.swift */; };
 		357ABEAE2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */; };
 		357ABEB02B188A08003D05C8 /* ItemsTabTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEAF2B188A08003D05C8 /* ItemsTabTopBar.swift */; };
@@ -955,6 +962,7 @@
 				35796CF82B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade in Frameworks */,
 				35796CFC2B5EE82D00BF4E9E /* DocScanner in Frameworks */,
 				35C9B82F2B5E99940062D787 /* Client in Frameworks */,
+				35796CFE2B5EEAC800BF4E9E /* Entities in Frameworks */,
 				35796CFA2B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation in Frameworks */,
 				35796CE92B5EE5AE00BF4E9E /* Factory in Frameworks */,
 			);
@@ -2216,6 +2224,7 @@
 				35796CF72B5EE7CA00BF4E9E /* ProtonCoreForceUpgrade */,
 				35796CF92B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation */,
 				35796CFB2B5EE82D00BF4E9E /* DocScanner */,
+				35796CFD2B5EEAC800BF4E9E /* Entities */,
 			);
 			productName = Share;
 			productReference = 35C9B8142B5E8AA90062D787 /* Share.appex */;
@@ -2759,8 +2768,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35796D002B5EEE7000BF4E9E /* BaseCreateEditItemViewModel.swift in Sources */,
 				35796CEF2B5EE6B500BF4E9E /* AppLockTime.swift in Sources */,
+				35796D032B5EEE7D00BF4E9E /* CreateEditNoteView.swift in Sources */,
+				35796CFF2B5EEB1200BF4E9E /* ItemContentType+Extensions.swift in Sources */,
 				35C9B8292B5E940A0062D787 /* ShareCoordinator.swift in Sources */,
+				35796D012B5EEE7400BF4E9E /* CreateEditLoginView.swift in Sources */,
 				35C9B8172B5E8AA90062D787 /* ShareViewController.swift in Sources */,
 				35796CEB2B5EE66300BF4E9E /* Preferences.swift in Sources */,
 				35796CF42B5EE71100BF4E9E /* CredentialsMigrationStateProvider.swift in Sources */,
@@ -2768,12 +2781,14 @@
 				35796CF32B5EE6FF00BF4E9E /* LoggerManager+Extensions.swift in Sources */,
 				35796CED2B5EE68B00BF4E9E /* View+Extensions.swift in Sources */,
 				35796CEE2B5EE69E00BF4E9E /* Browser.swift in Sources */,
+				35796D022B5EEE7700BF4E9E /* CreateEditLoginViewModel.swift in Sources */,
 				35796CF02B5EE6C600BF4E9E /* Factory+Extensions.swift in Sources */,
 				35796CEC2B5EE66F00BF4E9E /* Theme.swift in Sources */,
 				35796CF22B5EE6EE00BF4E9E /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				35796CEA2B5EE5F300BF4E9E /* SharedTooling+DependencyInjections.swift in Sources */,
 				35C9B8332B5EA8890062D787 /* SharedContentView.swift in Sources */,
 				35796CF52B5EE71F00BF4E9E /* AppData.swift in Sources */,
+				35796D042B5EEE8100BF4E9E /* CreateEditNoteViewModel.swift in Sources */,
 				35796CF62B5EE72D00BF4E9E /* Theme+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5261,6 +5276,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */;
 			productName = DocScanner;
+		};
+		35796CFD2B5EEAC800BF4E9E /* Entities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Entities;
 		};
 		35855C102AC8743F00794DB4 /* UseCases */ = {
 			isa = XCSwiftPackageProductDependency;
