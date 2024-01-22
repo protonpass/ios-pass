@@ -30,6 +30,10 @@ enum SharedContent {
     case unknown
 }
 
+enum SharedItemType: CaseIterable {
+    case note, login
+}
+
 @MainActor
 final class ShareCoordinator {
     private var lastChildViewController: UIViewController?
@@ -48,10 +52,15 @@ extension ShareCoordinator {
             guard let self else { return }
             do {
                 let content = try await parseSharedContent()
-                let view = SharedContentView(content: content) { [weak self] in
-                    guard let self else { return }
-                    dismissExtension()
-                }
+                let view = SharedContentView(content: content,
+                                             onCreate: { [weak self] type in
+                                                 guard let self else { return }
+                                                 presentCreateItemView(for: type, content: content)
+                                             },
+                                             onDismiss: { [weak self] in
+                                                 guard let self else { return }
+                                                 dismissExtension()
+                                             })
                 showView(view)
             } catch {
                 alert(error: error) { [weak self] in
@@ -60,6 +69,10 @@ extension ShareCoordinator {
                 }
             }
         }
+    }
+
+    func presentCreateItemView(for type: SharedItemType, content: SharedContent) {
+        print(type)
     }
 
     func dismissExtension() {
@@ -91,7 +104,8 @@ private extension ShareCoordinator {
         for item in extensionItems {
             guard let attachments = item.attachments else { continue }
             for attachment in attachments {
-                if let url = try await attachment.loadItem(forTypeIdentifier: "public.url") as? URL {
+                // Optionally parse URL and fallback to text
+                if let url = try? await attachment.loadItem(forTypeIdentifier: "public.url") as? URL {
                     return .url(url)
                 }
 
