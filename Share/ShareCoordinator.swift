@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
+import SwiftUI
 import UIKit
 
 enum SharedContent {
@@ -30,7 +32,10 @@ enum SharedContent {
 
 @MainActor
 final class ShareCoordinator {
+    private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
+
+    private var context: NSExtensionContext? { rootViewController?.extensionContext }
 
     init(rootViewController: UIViewController) {
         self.rootViewController = rootViewController
@@ -43,23 +48,38 @@ extension ShareCoordinator {
             guard let self else { return }
             do {
                 let content = try await parseSharedContent()
-                print(content)
+                showView(SharedContentView(content: content))
             } catch {
-                print(error.localizedDescription)
+                alert(error: error) { [weak self] in
+                    guard let self else { return }
+                    dismissExtension()
+                }
             }
         }
+    }
+
+    func dismissExtension() {
+        context?.completeRequest(returningItems: nil)
+    }
+}
+
+extension ShareCoordinator: ExtensionCoordinator {
+    func getRootViewController() -> UIViewController? {
+        rootViewController
+    }
+
+    func getLastChildViewController() -> UIViewController? {
+        lastChildViewController
+    }
+
+    func setLastChildViewController(_ viewController: UIViewController) {
+        lastChildViewController = viewController
     }
 }
 
 private extension ShareCoordinator {
     func parseSharedContent() async throws -> SharedContent {
-        guard let rootViewController else {
-            assertionFailure("rootViewController is not set")
-            return .unknown
-        }
-
-        guard let extensionItems = await rootViewController.extensionContext?.inputItems as? [NSExtensionItem]
-        else {
+        guard let extensionItems = context?.inputItems as? [NSExtensionItem] else {
             assertionFailure("Failed to cast inputItems into NSExtensionItems")
             return .unknown
         }

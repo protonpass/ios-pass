@@ -269,7 +269,10 @@ private extension CredentialProviderCoordinator {
         let defaultHandler: (Error) -> Void = { [weak self] error in
             guard let self else { return }
             logger.error(error)
-            alert(error: error)
+            alert(error: error) { [weak self] in
+                guard let self else { return }
+                cancelAutoFill(reason: .failed)
+            }
         }
 
         guard let error = error as? PassError,
@@ -392,18 +395,6 @@ private extension CredentialProviderCoordinator {
         viewController.isModalInPresentation = !dismissible
         viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         topMostViewController?.present(viewController, animated: animated)
-    }
-
-    func alert(error: Error) {
-        let alert = UIAlertController(title: "Error occured",
-                                      message: error.localizedDescription,
-                                      preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
-            guard let self else { return }
-            cancelAutoFill(reason: .failed)
-        }
-        alert.addAction(cancelAction)
-        rootViewController?.present(alert, animated: true)
     }
 
     func startUpgradeFlow() {

@@ -20,7 +20,8 @@ let package = Package(name: "DesignSystem",
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
-                        .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.2")
+                        .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.2"),
+                        .package(name: "Macro", path: "../Macro")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -29,7 +30,8 @@ let package = Package(name: "DesignSystem",
                           // package depends on.
                           .target(name: "DesignSystem",
                                   dependencies: [
-                                    .product(name: "ProtonCoreLoginUI", package: "protoncore")
+                                    .product(name: "ProtonCoreLoginUI", package: "protoncore"),
+                                    .product(name: "Macro", package: "Macro")
                                   ],
                                   resources: [.process("Resources")]),
                           .testTarget(name: "DesignSystemTests",
