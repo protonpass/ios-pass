@@ -21,7 +21,7 @@
 import Social
 import UIKit
 
-final class ShareViewController: SLComposeServiceViewController {
+final class ShareViewController: UIViewController {
     private lazy var coordinator = ShareCoordinator(rootViewController: self)
 
     override func viewDidLoad() {
