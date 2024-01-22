@@ -433,60 +433,6 @@
     "%lld characters" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Zeichen"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Zeichen"
-                }
-              }
-            }
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld character"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld characters"
-                }
-              }
-            }
-          }
-        },
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld caractère"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld caractères"
-                }
-              }
-            }
-          }
-        },
         "be" : {
           "variations" : {
             "plural" : {
@@ -547,6 +493,24 @@
             }
           }
         },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Zeichen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Zeichen"
+                }
+              }
+            }
+          }
+        },
         "el" : {
           "variations" : {
             "plural" : {
@@ -560,6 +524,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld χαρακτήρες"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld character"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld characters"
                 }
               }
             }
@@ -614,6 +596,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld merkkiä"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld caractère"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld caractères"
                 }
               }
             }
@@ -863,24 +863,6 @@
     },
     "%lld invite remaining" : {
       "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "%lld invite remaining"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld invites remaining"
-                }
-              }
-            }
-          }
-        },
         "be" : {
           "variations" : {
             "plural" : {
@@ -942,6 +924,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld προσκλήσεις απομένουν"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld invite remaining"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld invites remaining"
                 }
               }
             }
@@ -1796,24 +1796,6 @@
     },
     "%lld items moved to trash" : {
       "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld item moved to trash"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              }
-            }
-          }
-        },
         "be" : {
           "variations" : {
             "plural" : {
@@ -1875,6 +1857,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld στοιχεία μετακινήθηκαν στα Διαγραμμένα"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item moved to trash"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld items moved to trash"
                 }
               }
             }
@@ -2142,24 +2142,6 @@
     },
     "%lld items moved to vault « %@ »" : {
       "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%1$lld item moved to vault « %2$@ »"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
-                }
-              }
-            }
-          }
-        },
         "be" : {
           "variations" : {
             "plural" : {
@@ -2221,6 +2203,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld στοιχεία μετακινήθηκαν στην κρύπτη « %2$@ »"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld item moved to vault « %2$@ »"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld items moved to vault « %2$@ »"
                 }
               }
             }
@@ -5574,12 +5574,6 @@
     },
     "2FA secret key (TOTP) custom field" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "2FA secret key (TOTP) custom field"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5596,6 +5590,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προσαρμοσμένο πεδίο μυστικού κλειδιού ελέγχου ταυτότητας δύο παραγόντων (TOTP)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA secret key (TOTP) custom field"
           }
         },
         "es" : {
@@ -6233,12 +6233,6 @@
       "comment" : "Used in sharing context",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Access level"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6261,6 +6255,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επίπεδο πρόσβασης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access level"
           }
         },
         "es" : {
@@ -6793,12 +6793,6 @@
       "comment" : "Title for the button to add a file to the bug report",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a file"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6821,6 +6815,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προσθήκη αρχείου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a file"
           }
         },
         "es" : {
@@ -7915,12 +7915,6 @@
       "comment" : "A sharing access level, user can do anything with the shared vault.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Admin"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7943,6 +7937,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Διαχειριστής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Admin"
           }
         },
         "es" : {
@@ -9867,6 +9867,12 @@
             "value" : "Alias can not contain 2 consecutive dots (..)"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias can't contain 2 consecutive dots (..)"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9974,12 +9980,6 @@
             "state" : "translated",
             "value" : "Bí danh không thể chứa 2 dấu chấm liên tiếp (..)"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alias can't contain 2 consecutive dots (..)"
-          }
         }
       }
     },
@@ -9987,12 +9987,6 @@
       "comment" : "Error message displayed to users when they try to create an alias",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alias can not start with a dot (.)"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10009,6 +10003,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το ψευδώνυμο δεν μπορεί να ξεκινήσει με τελεία (.)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias can not start with a dot (.)"
           }
         },
         "es" : {
@@ -14229,12 +14229,6 @@
       "comment" : "Used in sharing context, the title of the button to cancel an invitation",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel invitation"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14257,6 +14251,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ακύρωση πρόσκλησης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel invitation"
           }
         },
         "es" : {
@@ -15489,12 +15489,6 @@
     },
     "Changelog" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Changelog"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15517,6 +15511,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αρχείο αλλαγών"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changelog"
           }
         },
         "es" : {
@@ -15906,12 +15906,6 @@
       "comment" : "Title of a button to removed all attached files from the bug report",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clear all files"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15928,6 +15922,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Εκκαθάριση όλων των αρχείων"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear all files"
           }
         },
         "es" : {
@@ -17009,12 +17009,6 @@
       "comment" : "Confirm the invitation of a new user",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confirm access"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17037,6 +17031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επιβεβαιώστε την πρόσβαση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm access"
           }
         },
         "es" : {
@@ -17141,12 +17141,6 @@
       "comment" : "When an admin confirmed access of a new user",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Congratulations,\n your access has been confirmed"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17163,6 +17157,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Συγχαρητήρια,\n η πρόσβασή σας επιβεβαιώθηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Congratulations,\n your access has been confirmed"
           }
         },
         "es" : {
@@ -17398,12 +17398,6 @@
       "comment" : "Title for a button in alert when user is trying to create a new item and wants to proceed with creation",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue item creation"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17420,6 +17414,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Συνέχεια δημιουργίας στοιχείου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue item creation"
           }
         },
         "es" : {
@@ -19538,6 +19538,12 @@
             "value" : "Create a Hide My Email alias"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a hide-my-email alias"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19644,12 +19650,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo bí danh Hide My Email"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create a hide-my-email alias"
           }
         }
       }
@@ -19799,12 +19799,6 @@
     },
     "Create a new vault to share" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create a new vault to share"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19827,6 +19821,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Δημιουργία νέας κρύπτης για κοινή χρήση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a new vault to share"
           }
         },
         "es" : {
@@ -21354,12 +21354,6 @@
     },
     "Current" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Current"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21376,6 +21370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Τρέχουσα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current"
           }
         },
         "es" : {
@@ -21454,12 +21454,6 @@
     },
     "Current version" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Current version"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21482,6 +21476,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Τρέχουσα έκδοση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current version"
           }
         },
         "es" : {
@@ -21729,12 +21729,6 @@
       "comment" : "Customize a default value e.g customize default shared vault's information",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customize"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21757,6 +21751,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προσαρμογή"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customize"
           }
         },
         "es" : {
@@ -23571,12 +23571,6 @@
       "comment" : "Placeholder of hidden custom field",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E.g, Recovery key, PIN"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23593,6 +23587,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Π.χ. Κλειδί ανάκτησης, PIN"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g, Recovery key, PIN"
           }
         },
         "es" : {
@@ -23685,12 +23685,6 @@
       "comment" : "Placeholder of text custom field",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E.g., User ID, Acct number"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23707,6 +23701,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Π.χ. ID Χρήστη, Νούμερο Λογαριασμού"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g., User ID, Acct number"
           }
         },
         "es" : {
@@ -24501,12 +24501,6 @@
       "comment" : "A sharing access level, user can create, edit, delete items in a shared vault.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editor"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24529,6 +24523,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επεξεργαστής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editor"
           }
         },
         "es" : {
@@ -27035,12 +27035,6 @@
       "comment" : "Users failed to authenticate via Face ID/Touch ID or PIN. We log them out and show an alert with this message.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Failed to authenticate"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27063,6 +27057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αποτυχία επαλήθευσης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to authenticate"
           }
         },
         "es" : {
@@ -29300,12 +29300,6 @@
     },
     "Hidden custom field" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hidden custom field"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29328,6 +29322,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Κρυφό προσαρμοσμένο πεδίο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidden custom field"
           }
         },
         "es" : {
@@ -29603,6 +29603,12 @@
             "value" : "Hide my email"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29710,23 +29716,11 @@
             "state" : "translated",
             "value" : "Hide My Email"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hide-my-email"
-          }
         }
       }
     },
     "History" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "History"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29749,6 +29743,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ιστορία"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
           }
         },
         "es" : {
@@ -29988,12 +29988,6 @@
     },
     "How to use Proton Pass" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How to use Proton Pass"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30004,6 +29998,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wie man Proton Pass verwendet"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to use Proton Pass"
           }
         },
         "es-419" : {
@@ -30939,6 +30939,12 @@
             "value" : "Dirección de correo electrónico inválida"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Virheellinen sähköpostiosoite"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30993,6 +30999,12 @@
             "value" : "Adresă de e-mail nevalidă."
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neplatná e-mailová adresa"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31016,18 +31028,6 @@
             "state" : "translated",
             "value" : "Địa chỉ email không hợp lệ"
           }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Virheellinen sähköpostiosoite"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neplatná e-mailová adresa"
-          }
         }
       }
     },
@@ -31035,18 +31035,6 @@
       "comment" : "Error message displayed to user when they try to create a badly formatted alias ",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invalid prefix"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tiền tố không hợp lệ"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31063,6 +31051,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Μην έγκυρο πρόθεμα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid prefix"
           }
         },
         "es" : {
@@ -31141,6 +31135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ön ek geçersiz"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiền tố không hợp lệ"
           }
         }
       }
@@ -31291,12 +31291,6 @@
       "comment" : "Subtitle below an email address in manage sharing access page, indicating that the invitation is made but the invitee has not yet accepted.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invitation sent"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31319,6 +31313,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Η πρόσκληση στάλθηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitation sent"
           }
         },
         "es" : {
@@ -31423,12 +31423,6 @@
       "comment" : "Title of the section which shows the list of pending invitations",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invitations"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31451,6 +31445,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προσκλήσεις"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitations"
           }
         },
         "es" : {
@@ -31555,12 +31555,6 @@
       "comment" : "The description of the sheet to reject/accept invitation. This is prefixed by the inviter's email. E.g \"john.doe@example.com invites you to access items in\". Below this phrase are the vault's details like name and number of items.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "invites you to access items in"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31583,6 +31577,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "σας προσκαλεί να αποκτήσετε πρόσβαση σε στοιχεία στη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invites you to access items in"
           }
         },
         "es" : {
@@ -31685,12 +31685,6 @@
     },
     "Item ID" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item ID"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31713,6 +31707,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αναγνωριστικό στοιχείου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ID"
           }
         },
         "es" : {
@@ -31797,12 +31797,6 @@
     },
     "Item ID copied" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item ID copied"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31819,6 +31813,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το αναγνωριστικό στοιχείου αντιγράφηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ID copied"
           }
         },
         "es" : {
@@ -31934,6 +31934,12 @@
             "value" : "Item moved to vault « %@ »"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item moved to vault \"%@ \""
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32041,12 +32047,6 @@
             "state" : "translated",
             "value" : "Nội dung đã được dời vào kho lưu trữ « %@ »"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item moved to vault \"%@ \""
-          }
         }
       }
     },
@@ -32054,12 +32054,6 @@
       "comment" : "Message displayed to user after pinning an item",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item successfully pinned"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32082,6 +32076,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το στοιχείο καρφιτσώθηκε επιτυχώς"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully pinned"
           }
         },
         "es" : {
@@ -32162,12 +32162,6 @@
       "comment" : "Message displayed to user after unpinning an item",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item successfully unpinned"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32190,6 +32184,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το στοιχείο ξεκαρφιτσώθηκε επιτυχώς"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully unpinned"
           }
         },
         "es" : {
@@ -32447,6 +32447,12 @@
             "value" : "Items from « %@ » moved to vault « %@ »"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items from \" %@ \" moved to vault \"%@ \""
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32553,12 +32559,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các nội dung từ « %@ » đã chuyển tới kho lưu trữ « %@ »"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Items from \" %@ \" moved to vault \"%@ \""
           }
         }
       }
@@ -33709,12 +33709,6 @@
     },
     "Last autofill" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last autofill"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33737,6 +33731,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Τελευταία αυτόματη συμπλήρωση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last autofill"
           }
         },
         "es" : {
@@ -33840,12 +33840,6 @@
     "Last modified" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last modified"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33868,6 +33862,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Τελευταία τροποποίηση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last modified"
           }
         },
         "es" : {
@@ -36257,12 +36257,6 @@
     },
     "Manage account" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manage account"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36273,6 +36267,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Konto verwalten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage account"
           }
         },
         "es-419" : {
@@ -36596,12 +36596,6 @@
       "comment" : "Title of an alert to explain sharing limit",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Member Limit"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36618,6 +36612,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Όριο Μελών"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Member Limit"
           }
         },
         "es" : {
@@ -36710,12 +36710,6 @@
       "comment" : "Title of the section which shows the list of members",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Members"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36738,6 +36732,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Μέλη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Members"
           }
         },
         "es" : {
@@ -37120,12 +37120,6 @@
     },
     "Modified" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modified"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37148,6 +37142,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Τροποποιήθηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modified"
           }
         },
         "es" : {
@@ -38106,12 +38106,6 @@
     "Moving an item will reset its history" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moving an item will reset its history"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -38122,6 +38116,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Das Verschieben eines Eintrags setzt seinen Verlauf zurück."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moving an item will reset its history"
           }
         },
         "es-419" : {
@@ -38861,12 +38861,6 @@
     },
     "No logs for %@" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No logs for %@"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -38883,6 +38877,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Δεν υπάρχουν αρχεία καταγραφής για %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No logs for %@"
           }
         },
         "es" : {
@@ -39260,12 +39260,6 @@
       "comment" : "Alert title explaining that the current selected vault is not editable",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non editable vault"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39282,6 +39276,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Μη επεξεργάσιμη κρύπτη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non editable vault"
           }
         },
         "es" : {
@@ -39688,6 +39688,12 @@
             "value" : "Note content copied"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note copied"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39794,12 +39800,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép nội dung ghi chú"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Note copied"
           }
         }
       }
@@ -41093,12 +41093,6 @@
     },
     "OK" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41121,6 +41115,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ΟΚ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         },
         "es" : {
@@ -42644,12 +42644,6 @@
       "comment" : "Share access level",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Owner"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42672,6 +42666,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ιδιοκτήτης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Owner"
           }
         },
         "es" : {
@@ -43203,12 +43203,6 @@
       "comment" : "The subtitle to indicate the state of an invitation. In this case the invitation is made to a non Proton email and we're waiting for the owner of this email to create a Proton account.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pending account creation"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43231,6 +43225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Δημιουργία λογαριασμού σε εκκρεμότητα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending account creation"
           }
         },
         "es" : {
@@ -43476,12 +43476,6 @@
     },
     "Permanently delete" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Permanently delete"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43498,6 +43492,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Οριστική διαγραφή"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permanently delete"
           }
         },
         "es" : {
@@ -43588,24 +43588,6 @@
     },
     "Permanently deleted %lld items" : {
       "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Permanently deleted %lld item"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
-                }
-              }
-            }
-          }
-        },
         "be" : {
           "variations" : {
             "plural" : {
@@ -43649,6 +43631,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld Einträge dauerhaft gelöscht."
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Permanently deleted %lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Permanently deleted %lld items"
                 }
               }
             }
@@ -43750,12 +43750,6 @@
       "comment" : "The name of the default vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personal"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43778,6 +43772,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προσωπικό"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal"
           }
         },
         "es" : {
@@ -43882,12 +43882,6 @@
       "comment" : "Title for action to pin item",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pin "
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43910,6 +43904,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Καρφίτσωμα "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin "
           }
         },
         "es" : {
@@ -45140,12 +45140,6 @@
     },
     "Please log in again" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please log in again"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45162,6 +45156,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Παρακαλούμε συνδεθείτε ξανά"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please log in again"
           }
         },
         "es" : {
@@ -45567,6 +45567,12 @@
             "value" : "Prefix can not be empty"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter the prefix"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45674,12 +45680,6 @@
             "state" : "translated",
             "value" : "Tiền tố không thể để trống"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please enter the prefix"
-          }
         }
       }
     },
@@ -45714,6 +45714,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prefix can not contain 2 consecutive dots (..)"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix can 't contain 2 consecutive dots (..)"
           }
         },
         "es" : {
@@ -45822,12 +45828,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiền tố không thể chứa 2 dấu chấm liên tiếp (..)"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prefix can 't contain 2 consecutive dots (..)"
           }
         }
       }
@@ -48111,12 +48111,6 @@
     },
     "Resend invitation" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resend invitation"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48139,6 +48133,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επανάληψη αποστολής πρόσκλησης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resend invitation"
           }
         },
         "es" : {
@@ -48243,12 +48243,6 @@
       "comment" : "Reset to default filters (display all types of item & sort by most recently use time)",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset filters"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48265,6 +48259,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επαναφορά φίλτρων"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset filters"
           }
         },
         "es" : {
@@ -48776,12 +48776,6 @@
     },
     "Restore this version?" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restore this version?"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48804,6 +48798,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επαναφορά αυτής της έκδοσης?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore this version?"
           }
         },
         "es" : {
@@ -48900,24 +48900,6 @@
     },
     "Restored %lld items" : {
       "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Restored %lld item"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
-                }
-              }
-            }
-          }
-        },
         "be" : {
           "variations" : {
             "plural" : {
@@ -48979,6 +48961,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Έγινε επαναφορά %lld στοιχείων"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Restored %lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Restored %lld items"
                 }
               }
             }
@@ -49532,12 +49532,6 @@
       "comment" : "Used in sharing context, the title of the summary page to let users review sharing details (email, access level, vault) before sharing.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Review and share"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49560,6 +49554,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επανεξέταση και κοινή χρήση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review and share"
           }
         },
         "es" : {
@@ -49664,12 +49664,6 @@
       "comment" : "Used in sharing context, the title of the button to revoke access of a user to a shared vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Revoke access"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49692,6 +49686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ανάκληση πρόσβασης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revoke access"
           }
         },
         "es" : {
@@ -50368,12 +50368,6 @@
       "comment" : "Displayed to free user while searching in autofill",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search in oldest 2 vaults"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50390,6 +50384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αναζήτηση στις 2 παλαιότερες κρύπτες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search in oldest 2 vaults"
           }
         },
         "es" : {
@@ -50625,12 +50625,6 @@
       "comment" : "Pinned item search bar placeholder",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search pinned items"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50647,6 +50641,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αναζήτηση καρφιτσωμένων στοιχείων"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search pinned items"
           }
         },
         "es" : {
@@ -51430,12 +51430,6 @@
       "comment" : "Last button on the home page for pinned items. This will redirect the user to a search screen for pinned items",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "See all"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51458,6 +51452,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προβολή όλων"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
           }
         },
         "es" : {
@@ -51544,12 +51544,6 @@
       "comment" : "New user accepts the invitation",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "See the shared vault"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51572,6 +51566,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προβολή της κοινόχρηστης κρύπτης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the shared vault"
           }
         },
         "es" : {
@@ -51958,12 +51958,6 @@
       "comment" : "Enable bulk action mode",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select items"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51986,6 +51980,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Επιλέξτε στοιχεία"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select items"
           }
         },
         "es" : {
@@ -52226,12 +52226,6 @@
       "comment" : "Used in sharing context, this is the title of the page in which an owner of the vault can set permission before sharing.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set access level"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52254,6 +52248,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ορισμός επιπέδου πρόσβασης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set access level"
           }
         },
         "es" : {
@@ -52358,12 +52358,6 @@
       "comment" : "Title of menu helping set the role for all invitee to a vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set access level for all members"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52380,6 +52374,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ορισμός επιπέδου πρόσβασης για όλα τα μέλη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set access level for all members"
           }
         },
         "es" : {
@@ -53176,12 +53176,6 @@
     },
     "Share this vault" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share this vault"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53204,6 +53198,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Κοινή χρήση αυτής της κρύπτης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share this vault"
           }
         },
         "es" : {
@@ -53732,12 +53732,6 @@
       "comment" : "Used in sharing vault flow. The user has the option to create a new vault and share that new vault. This string is the default name for the vault.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shared vault"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53760,6 +53754,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Κοινόχρηστη κρύπτη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared vault"
           }
         },
         "es" : {
@@ -53858,12 +53858,6 @@
       "comment" : "Show all filter options",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53886,6 +53880,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Εμφάνιση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show"
           }
         },
         "es" : {
@@ -55131,12 +55131,6 @@
       "comment" : "Title for a button in alert when user is trying to create a new item and wants to cancel the creation",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop item creation process"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55153,6 +55147,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Διακοπή διαδικασίας δημιουργίας στοιχείου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop item creation process"
           }
         },
         "es" : {
@@ -56365,12 +56365,6 @@
       "comment" : "An option in \"Default browser\" settings menu. We have 3 options: \"Safari\", \"In-App Safari\" & \"System default\". This option means using the whatever current default browser of the system to open URLs.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "System default"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56393,6 +56387,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προεπιλογή συστήματος"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System default"
           }
         },
         "en-US" : {
@@ -57072,12 +57072,6 @@
     },
     "Text custom field" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Text custom field"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57100,6 +57094,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προσαρμοσμένο πεδίο κειμένου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text custom field"
           }
         },
         "es" : {
@@ -57204,12 +57204,6 @@
       "comment" : "Error message displayed to user when they try to create a badly formatted alias",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The alias prefix is too long"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57226,6 +57220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το πρόθεμα ψευδωνύμου είναι πολύ μεγάλο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The alias prefix is too long"
           }
         },
         "es" : {
@@ -57454,12 +57454,6 @@
       "comment" : "Used in share from item detail page flow. The users are offered the option to create a new vault on the fly and share that new vault. This message makes it clear that once the new vault is created, the current item will be migrated to that new vault.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The item will be moved to the new vault"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57476,6 +57470,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το στοιχείο θα μετακινηθεί στη νέα κρύπτη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The item will be moved to the new vault"
           }
         },
         "es" : {
@@ -58024,6 +58024,12 @@
             "value" : "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This will permanently delete the vault \" %@\" and all its contents. Enter the vault name to confirm deletion."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -58130,12 +58136,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Điều này sẽ xóa vĩnh viễn kho lưu trữ « %@ » và tất cả nội dung của nó. Nhập tên của kho để xác nhận xóa."
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This will permanently delete the vault \" %@\" and all its contents. Enter the vault name to confirm deletion."
           }
         }
       }
@@ -59571,12 +59571,6 @@
       "comment" : "Used in sharing context, the description of the confirmation dialog when transferring ownership of a vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transfer ownership of this vault to %@?"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59599,6 +59593,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Μεταφέρετε την ιδιοκτησία αυτής της κρύπτης στο %@;"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer ownership of this vault to %@?"
           }
         },
         "es" : {
@@ -61986,12 +61986,6 @@
       "comment" : "Title for action to unpin item",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unpin"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62014,6 +62008,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ξεκαρφίτσωμα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin"
           }
         },
         "es" : {
@@ -62242,12 +62242,6 @@
       "comment" : "The title for the save button when editing vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Update vault"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62270,6 +62264,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ενημέρωση κρύπτης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update vault"
           }
         },
         "es" : {
@@ -62508,12 +62508,6 @@
     },
     "Upgrade for custom domains" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade for custom domains"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62536,6 +62530,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αναβάθμιση για προσαρμοσμένους τομείς"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade for custom domains"
           }
         },
         "es" : {
@@ -62638,12 +62638,6 @@
     },
     "Upgrade for more mailboxes" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade for more mailboxes"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62660,6 +62654,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αναβάθμιση για περισσότερα γραμματοκιβώτια"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade for more mailboxes"
           }
         },
         "es" : {
@@ -62894,12 +62894,6 @@
       "comment" : "Message shown to user when they reach the limit of sharing when they are free",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade now to share with more people"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62922,6 +62916,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Κάντε αναβάθμιση τώρα για κοινή χρήση με περισσότερα άτομα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade now to share with more people"
           }
         },
         "es" : {
@@ -63160,12 +63160,6 @@
     },
     "Upgrade to create credit cards" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade to create credit cards"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63182,6 +63176,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αναβαθμίστε για να δημιουργήσετε περισσότερες πιστωτικές κάρτες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to create credit cards"
           }
         },
         "es" : {
@@ -63838,12 +63838,6 @@
     },
     "Use vaults to share this item with another person" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use vaults to share this item with another person"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63860,6 +63854,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Χρησιμοποιήστε κρύπτες για να μοιραστείτε αυτό το στοιχείο με άλλο άτομο."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use vaults to share this item with another person"
           }
         },
         "es" : {
@@ -64553,6 +64553,12 @@
             "value" : "Vault « %@ » deleted"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault \"%@ \" deleted"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64659,12 +64665,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã xóa kho lưu trữ « %@ »"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault \"%@ \" deleted"
           }
         }
       }
@@ -64814,12 +64814,6 @@
     },
     "Vault has been transferred" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault has been transferred"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64836,6 +64830,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Η κρύπτη έχει μεταφερθεί"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault has been transferred"
           }
         },
         "es" : {
@@ -64926,12 +64926,6 @@
     },
     "Vault ID" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault ID"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64954,6 +64948,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID Κρύπτης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault ID"
           }
         },
         "es" : {
@@ -65038,12 +65038,6 @@
     },
     "Vault ID copied" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault ID copied"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65066,6 +65060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το αναγνωριστικό κρύπτης αντιγράφηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault ID copied"
           }
         },
         "es" : {
@@ -65295,12 +65295,6 @@
       "comment" : "The title of the banner when the user has a pending invitation to join a vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault shared with you"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65323,6 +65317,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Η κρύπτη που έχει κοινοποιηθεί σε εσάς"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault shared with you"
           }
         },
         "es" : {
@@ -65570,12 +65570,6 @@
       "comment" : "Message shown to free user to explain the sharing limits in an alert",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vaults can’t contain more than 3 users with a free plan."
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65592,6 +65586,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Οι κρύπτες δεν μπορούν να περιέχουν περισσότερους από 3 χρήστες με δωρεάν πλάνο."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaults can’t contain more than 3 users with a free plan."
           }
         },
         "es" : {
@@ -65684,12 +65684,6 @@
       "comment" : "Message shown to paid user to explain the sharing limits in an alert",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vaults can’t contain more than 10 users."
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65712,6 +65706,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Οι κρύπτες δεν μπορούν να περιέχουν παραπάνω από 10 χρήστες."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaults can’t contain more than 10 users."
           }
         },
         "es" : {
@@ -66514,12 +66514,6 @@
       "comment" : "A sharing access level, user can only view items in a shared vault.",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viewer"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66542,6 +66536,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Θεατής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viewer"
           }
         },
         "es" : {
@@ -66819,6 +66819,18 @@
             "value" : "Vulnerable"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vulnerable"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vulnerable"
+          }
+        },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66890,29 +66902,11 @@
             "state" : "translated",
             "value" : "Nguy hiểm"
           }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vulnerable"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vulnerable"
-          }
         }
       }
     },
     "Watch a short video on how to use Proton Pass" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Watch a short video on how to use Proton Pass"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66923,6 +66917,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sieh dir ein kurzes Video zur Verwendung von Proton Pass an"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch a short video on how to use Proton Pass"
           }
         },
         "es-419" : {
@@ -67965,6 +67965,12 @@
             "value" : "Would you want to associate « %@ » with « %@ »?"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Would you want to associate \"%@ \" with \" %@ \"?"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68071,12 +68077,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn có muốn liên kết « %@ » với « %@ » không?"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Would you want to associate \"%@ \" with \" %@ \"?"
           }
         }
       }
@@ -68796,24 +68796,6 @@
     },
     "You are going to delete %lld items irreversibly, are you sure?" : {
       "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You are going to delete %lld item irreversibly, are you sure?"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
-                }
-              }
-            }
-          }
-        },
         "be" : {
           "variations" : {
             "plural" : {
@@ -68857,6 +68839,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Damit werden %lld Einträge unwiderruflich gelöscht. Bist du dir sicher?"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are going to delete %lld item irreversibly, are you sure?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
                 }
               }
             }
@@ -69272,12 +69272,6 @@
       "comment" : "The message in the alert explaining why the current vault for the item creation has been changed atomatically",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69294,6 +69288,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Δεν είχατε επεξεργάσιμη εκκαθάριση στην επιλεγμένη κρύπτη, επιλέξαμε μια νέα για εσάς"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
           }
         },
         "es" : {
@@ -69516,12 +69516,6 @@
       "comment" : "Message shown to free user when they reach sharing limits",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You have reached the limit of users in this vault."
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69544,6 +69538,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Έχετε φτάσει το όριο των χρηστών σε αυτή την κρύπτη."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have reached the limit of users in this vault."
           }
         },
         "es" : {
@@ -70063,12 +70063,6 @@
       "comment" : "The description of the banner when the user has a pending invitation to join a vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You're invited to a shared vault. Tap for details."
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70091,6 +70085,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Έχετε προσκληθεί σε κοινόχρηστη κρύπτη. Πατήστε για λεπτομέρειες."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're invited to a shared vault. Tap for details."
           }
         },
         "es" : {
@@ -70193,12 +70193,6 @@
     },
     "Your current document will revert to the version from %@" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your current document will revert to the version from %@"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70215,6 +70209,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το τρέχον έγγραφό σας θα επανέλθει στην έκδοση από %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current document will revert to the version from %@"
           }
         },
         "es" : {
@@ -70283,12 +70283,6 @@
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70305,6 +70299,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Το πλάνο σας επιτρέπει μόνο τη χρήση στοιχείων από την πρώτη κρύπτη σας για σκοπούς αυτόματης συμπλήρωσης."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
           }
         },
         "es" : {
@@ -70395,12 +70395,6 @@
     },
     "Your session is expired" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your session is expired"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70423,6 +70417,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Η περίοδος σύνδεσής σας έχει λήξει"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your session is expired"
           }
         },
         "es" : {
