@@ -56,7 +56,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     var quickTypeBar = true
 
     @AppStorage(Key.automaticallyCopyTotpCode.rawValue, store: kSharedUserDefaults)
-    var automaticallyCopyTotpCode = false
+    var automaticallyCopyTotpCode = true
 
     @AppStorage(Key.onboarded.rawValue, store: kSharedUserDefaults)
     var onboarded = false
@@ -112,7 +112,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @MainActor
     func reset(isTests: Bool = false) {
         quickTypeBar = true
-        automaticallyCopyTotpCode = false
+        automaticallyCopyTotpCode = true
         failedAttemptCount = 0
         localAuthenticationMethod = .none
         fallbackToPasscode = true
