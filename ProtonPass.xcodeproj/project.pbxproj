@@ -303,6 +303,9 @@
 		35C9B8172B5E8AA90062D787 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C9B8162B5E8AA90062D787 /* ShareViewController.swift */; };
 		35C9B81A2B5E8AA90062D787 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35C9B8182B5E8AA90062D787 /* MainInterface.storyboard */; };
 		35C9B81E2B5E8AA90062D787 /* Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 35C9B8142B5E8AA90062D787 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		35C9B8292B5E940A0062D787 /* ShareCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C9B8282B5E940A0062D787 /* ShareCoordinator.swift */; };
+		35C9B82D2B5E99910062D787 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 35C9B82C2B5E99910062D787 /* Core */; };
+		35C9B82F2B5E99940062D787 /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 35C9B82E2B5E99940062D787 /* Client */; };
 		35CACB9A2B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 35CACB992B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore */; };
 		35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */; };
 		35CEA8E42A60769E00343A4E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 35CEA8E32A60769E00343A4E /* Factory */; };
@@ -751,6 +754,7 @@
 		35C9B8252B5E8B210062D787 /* ShareRelease-Beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ShareRelease-Beta.entitlements"; sourceTree = "<group>"; };
 		35C9B8262B5E8B2C0062D787 /* ShareRelease-QA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ShareRelease-QA.entitlements"; sourceTree = "<group>"; };
 		35C9B8272B5E8B560062D787 /* ShareDebug-QA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ShareDebug-QA.entitlements"; sourceTree = "<group>"; };
+		35C9B8282B5E940A0062D787 /* ShareCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCoordinator.swift; sourceTree = "<group>"; };
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
 		35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsCoordinator.swift; sourceTree = "<group>"; };
 		35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardView.swift; sourceTree = "<group>"; };
@@ -926,6 +930,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35C9B82D2B5E99910062D787 /* Core in Frameworks */,
+				35C9B82F2B5E99940062D787 /* Client in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1399,6 +1405,7 @@
 				35C9B8262B5E8B2C0062D787 /* ShareRelease-QA.entitlements */,
 				35C9B8252B5E8B210062D787 /* ShareRelease-Beta.entitlements */,
 				35C9B8242B5E8AF20062D787 /* ShareRelease.entitlements */,
+				35C9B8282B5E940A0062D787 /* ShareCoordinator.swift */,
 				35C9B8162B5E8AA90062D787 /* ShareViewController.swift */,
 				35C9B8182B5E8AA90062D787 /* MainInterface.storyboard */,
 				35C9B81B2B5E8AA90062D787 /* Info.plist */,
@@ -2175,6 +2182,10 @@
 			dependencies = (
 			);
 			name = Share;
+			packageProductDependencies = (
+				35C9B82C2B5E99910062D787 /* Core */,
+				35C9B82E2B5E99940062D787 /* Client */,
+			);
 			productName = Share;
 			productReference = 35C9B8142B5E8AA90062D787 /* Share.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -2717,6 +2728,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35C9B8292B5E940A0062D787 /* ShareCoordinator.swift in Sources */,
 				35C9B8172B5E8AA90062D787 /* ShareViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5202,6 +5214,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */;
 			productName = DocScanner;
+		};
+		35C9B82C2B5E99910062D787 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		35C9B82E2B5E99940062D787 /* Client */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Client;
 		};
 		35CACB992B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore */ = {
 			isa = XCSwiftPackageProductDependency;
