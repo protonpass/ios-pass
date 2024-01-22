@@ -205,6 +205,20 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 }
 
+extension CredentialProviderCoordinator: ExtensionCoordinator {
+    public func getRootViewController() -> UIViewController? {
+        rootViewController
+    }
+
+    public func getLastChildViewController() -> UIViewController? {
+        lastChildViewController
+    }
+
+    public func setLastChildViewController(_ viewController: UIViewController) {
+        lastChildViewController = viewController
+    }
+}
+
 // MARK: - Setup & Utils
 
 private extension CredentialProviderCoordinator {
@@ -302,30 +316,6 @@ private extension CredentialProviderCoordinator {
 // MARK: - Views for routing
 
 private extension CredentialProviderCoordinator {
-    func showView(_ view: some View) {
-        guard let rootViewController else {
-            return
-        }
-        if let lastChildViewController {
-            lastChildViewController.willMove(toParent: nil)
-            lastChildViewController.view.removeFromSuperview()
-            lastChildViewController.removeFromParent()
-        }
-
-        let viewController = UIHostingController(rootView: view)
-        viewController.view.translatesAutoresizingMaskIntoConstraints = false
-        rootViewController.view.addSubview(viewController.view)
-        NSLayoutConstraint.activate([
-            viewController.view.topAnchor.constraint(equalTo: rootViewController.view.topAnchor),
-            viewController.view.leadingAnchor.constraint(equalTo: rootViewController.view.leadingAnchor),
-            viewController.view.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor),
-            viewController.view.trailingAnchor.constraint(equalTo: rootViewController.view.trailingAnchor)
-        ])
-        rootViewController.addChild(viewController)
-        viewController.didMove(toParent: rootViewController)
-        lastChildViewController = viewController
-    }
-
     func showCredentialsView(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         let viewModel = CredentialsViewModel(serviceIdentifiers: serviceIdentifiers)
         viewModel.delegate = self
