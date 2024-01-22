@@ -48,7 +48,11 @@ extension ShareCoordinator {
             guard let self else { return }
             do {
                 let content = try await parseSharedContent()
-                showView(SharedContentView(content: content))
+                let view = SharedContentView(content: content) { [weak self] in
+                    guard let self else { return }
+                    dismissExtension()
+                }
+                showView(view)
             } catch {
                 alert(error: error) { [weak self] in
                     guard let self else { return }

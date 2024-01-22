@@ -18,13 +18,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
+import Factory
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SharedContentView: View {
+    private let theme = resolve(\SharedToolingContainer.theme)
     let content: SharedContent
+    let onDismiss: () -> Void
 
     var body: some View {
-        Text(content.text)
+        ZStack {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+            VStack {
+                Text(content.text)
+            }
+        }
+        .toolbar { toolbarContent }
+        .theme(theme)
+        .navigationStackEmbeded()
+    }
+}
+
+private extension SharedContentView {
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            CircleButton(icon: IconProvider.cross,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         action: onDismiss)
+        }
     }
 }
 
