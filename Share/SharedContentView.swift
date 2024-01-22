@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -26,6 +27,7 @@ import SwiftUI
 struct SharedContentView: View {
     private let theme = resolve(\SharedToolingContainer.theme)
     let content: SharedContent
+    let onCreate: (SharedItemType) -> Void
     let onDismiss: () -> Void
 
     var body: some View {
@@ -34,7 +36,13 @@ struct SharedContentView: View {
                 .ignoresSafeArea()
             VStack {
                 Text(content.text)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+
+                ForEach(SharedItemType.allCases, id: \.self) { type in
+                    button(for: type)
+                }
             }
+            .padding()
         }
         .toolbar { toolbarContent }
         .theme(theme)
@@ -51,6 +59,14 @@ private extension SharedContentView {
                          action: onDismiss)
         }
     }
+
+    func button(for type: SharedItemType) -> some View {
+        Button(action: {
+            onCreate(type)
+        }, label: {
+            Text(type.contentType.createItemTitle)
+        })
+    }
 }
 
 private extension SharedContent {
@@ -64,6 +80,15 @@ private extension SharedContent {
             text
         case .unknown:
             ""
+        }
+    }
+}
+
+private extension SharedItemType {
+    var contentType: ItemContentType {
+        switch self {
+        case .note: .note
+        case .login: .login
         }
     }
 }
