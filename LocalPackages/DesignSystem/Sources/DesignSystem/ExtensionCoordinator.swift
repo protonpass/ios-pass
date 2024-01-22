@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Macro
 import SwiftUI
 
 public protocol ExtensionCoordinator: AnyObject {
@@ -26,6 +27,7 @@ public protocol ExtensionCoordinator: AnyObject {
     func getLastChildViewController() -> UIViewController?
     func setLastChildViewController(_ viewController: UIViewController)
     func showView(_ view: some View)
+    func alert(error: Error, onCancel: @escaping () -> Void)
 }
 
 public extension ExtensionCoordinator {
@@ -52,5 +54,17 @@ public extension ExtensionCoordinator {
         rootViewController.addChild(viewController)
         viewController.didMove(toParent: rootViewController)
         setLastChildViewController(viewController)
+    }
+
+    #warning("Localize Design System package")
+    func alert(error: Error, onCancel: @escaping () -> Void) {
+        let alert = UIAlertController(title: #localized("Error occured"),
+                                      message: error.localizedDescription,
+                                      preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: #localized("Cancel"), style: .cancel) { _ in
+            onCancel()
+        }
+        alert.addAction(cancelAction)
+        getRootViewController()?.present(alert, animated: true)
     }
 }
