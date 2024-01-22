@@ -22,11 +22,13 @@ import Foundation
 
 public struct UserSettings: Sendable {
     public let telemetry: Bool
+    public let highSecurity: HighSecurity
 }
 
 extension UserSettings: Decodable {
     enum CodingKeys: String, CodingKey {
         case telemetry
+        case highSecurity
     }
 
     public init(from decoder: any Decoder) throws {
@@ -35,5 +37,28 @@ extension UserSettings: Decodable {
         // 0 or 1, 1 means sending telemetry enabled
         let telemetry = try container.decode(Int.self, forKey: .telemetry)
         self.telemetry = telemetry >= 1
+        self.highSecurity = try container.decode(HighSecurity.self, forKey: .highSecurity)
+    }
+}
+
+
+public struct HighSecurity: Decodable, Sendable {
+    public let eligible: Bool
+    public let active: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case eligible
+        case active = "Value"
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        // 0 or 1, 1 means user is eligible to sentinel
+        let eligible = try container.decode(Int.self, forKey: .eligible)
+        self.eligible = eligible >= 1
+        // 0 or 1, 1 means sentinel is active
+        let active = try container.decode(Int.self, forKey: .active)
+        self.active = active >= 1
     }
 }
