@@ -346,6 +346,7 @@ private extension CredentialProviderCoordinator {
         do {
             let creationType = ItemCreationType.login(title: url?.host,
                                                       url: url?.schemeAndHost,
+                                                      note: nil,
                                                       autofill: true)
             let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                        type: creationType),
