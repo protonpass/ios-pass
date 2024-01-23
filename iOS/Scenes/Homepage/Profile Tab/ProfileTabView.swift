@@ -360,12 +360,14 @@ private extension ProfileTabView {
         .background(PassColor.inputBackgroundNorm.toColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(RoundedRectangle(cornerRadius: 16)
-            .stroke(LinearGradient(gradient: Gradient(colors: [
+            .stroke(LinearGradient(gradient:
+                Gradient(colors: [
                     PassColor.interactionNormMajor2.toColor,
                     PassColor.noteInteractionNormMajor2.toColor
                 ]),
                 startPoint: .leading,
-                endPoint: .trailing), lineWidth: 1))
+                endPoint: .trailing),
+            lineWidth: 1))
     }
 }
 
