@@ -47,15 +47,15 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(sut.quickTypeBar)
     }
 
-    func testAutomaticallyCopyTotpCodeDisabledByDefault() {
-        XCTAssertFalse(sut.automaticallyCopyTotpCode)
+    func testAutomaticallyCopyTotpCodeEnabledByDefault() {
+        XCTAssertTrue(sut.automaticallyCopyTotpCode)
     }
 
-    func testAutomaticallyCopyTotpCodeDisabledAfterResetting() async {
-        sut.automaticallyCopyTotpCode = true
-        XCTAssertTrue(sut.automaticallyCopyTotpCode)
-        await sut.reset()
+    func testAutomaticallyCopyTotpCodeEnableddAfterResetting() async {
+        sut.automaticallyCopyTotpCode = false
         XCTAssertFalse(sut.automaticallyCopyTotpCode)
+        await sut.reset()
+        XCTAssertTrue(sut.automaticallyCopyTotpCode)
     }
 
     func testFailedAttemptCountZeroByDefault() {
