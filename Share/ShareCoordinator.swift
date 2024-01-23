@@ -20,6 +20,8 @@
 
 import Core
 import DesignSystem
+import Factory
+import Screens
 import SwiftUI
 import UIKit
 
@@ -36,6 +38,9 @@ enum SharedItemType: CaseIterable {
 
 @MainActor
 final class ShareCoordinator {
+    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
+    private let theme = resolve(\SharedToolingContainer.theme)
+
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
 
@@ -46,55 +51,30 @@ final class ShareCoordinator {
     }
 }
 
+// MARK: Public APIs
+
 extension ShareCoordinator {
-    func start() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let content = try await parseSharedContent()
-                let view = SharedContentView(content: content,
-                                             onCreate: { [weak self] type in
-                                                 guard let self else { return }
-                                                 presentCreateItemView(for: type, content: content)
-                                             },
-                                             onDismiss: { [weak self] in
-                                                 guard let self else { return }
-                                                 dismissExtension()
-                                             })
-                showView(view)
-            } catch {
-                alert(error: error) { [weak self] in
-                    guard let self else { return }
-                    dismissExtension()
-                }
-            }
+    func start() async {
+        if credentialProvider.isAuthenticated {
+            showNotLoggedInView()
+        } else {
+            await parseSharedContentAndBeginShareFlow()
         }
     }
-
-    func presentCreateItemView(for type: SharedItemType, content: SharedContent) {
-        print(type)
-    }
-
-    func dismissExtension() {
-        context?.completeRequest(returningItems: nil)
-    }
 }
 
-extension ShareCoordinator: ExtensionCoordinator {
-    func getRootViewController() -> UIViewController? {
-        rootViewController
-    }
-
-    func getLastChildViewController() -> UIViewController? {
-        lastChildViewController
-    }
-
-    func setLastChildViewController(_ viewController: UIViewController) {
-        lastChildViewController = viewController
-    }
-}
+// MARK: Private APIs
 
 private extension ShareCoordinator {
+    func showNotLoggedInView() {
+        let view = NotLoggedInView(variant: .shareExtension) { [weak self] in
+            guard let self else { return }
+            dismissExtension()
+        }
+        .theme(theme)
+        showView(view)
+    }
+
     func parseSharedContent() async throws -> SharedContent {
         guard let extensionItems = context?.inputItems as? [NSExtensionItem] else {
             assertionFailure("Failed to cast inputItems into NSExtensionItems")
@@ -120,5 +100,50 @@ private extension ShareCoordinator {
         }
 
         return .unknown
+    }
+
+    func parseSharedContentAndBeginShareFlow() async {
+        do {
+            let content = try await parseSharedContent()
+            let view = SharedContentView(content: content,
+                                         onCreate: { [weak self] type in
+                                             guard let self else { return }
+                                             presentCreateItemView(for: type, content: content)
+                                         },
+                                         onDismiss: { [weak self] in
+                                             guard let self else { return }
+                                             dismissExtension()
+                                         })
+            showView(view)
+        } catch {
+            alert(error: error) { [weak self] in
+                guard let self else { return }
+                dismissExtension()
+            }
+        }
+    }
+
+    func presentCreateItemView(for type: SharedItemType, content: SharedContent) {
+        print(type)
+    }
+
+    func dismissExtension() {
+        context?.completeRequest(returningItems: nil)
+    }
+}
+
+// MARK: ExtensionCoordinator
+
+extension ShareCoordinator: ExtensionCoordinator {
+    func getRootViewController() -> UIViewController? {
+        rootViewController
+    }
+
+    func getLastChildViewController() -> UIViewController? {
+        lastChildViewController
+    }
+
+    func setLastChildViewController(_ viewController: UIViewController) {
+        lastChildViewController = viewController
     }
 }
