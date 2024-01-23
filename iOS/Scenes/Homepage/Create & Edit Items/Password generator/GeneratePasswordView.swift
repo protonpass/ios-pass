@@ -20,11 +20,13 @@
 
 import DesignSystem
 import Entities
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct GeneratePasswordView: View {
+    private var theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: GeneratePasswordViewModel
 
@@ -121,6 +123,7 @@ struct GeneratePasswordView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .theme(theme)
     }
 
     private var passwordTypeRow: some View {

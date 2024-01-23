@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import DesignSystem
@@ -77,10 +78,12 @@ final class ShareCoordinator {
     private weak var rootViewController: UIViewController?
     private var createEditItemViewModel: BaseCreateEditItemViewModel?
     private var customCoordinator: CustomCoordinator?
+    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var cancellables = Set<AnyCancellable>()
 
     private var context: NSExtensionContext? { rootViewController?.extensionContext }
+    private var topMostViewController: UIViewController? { rootViewController?.topMostViewController }
 
     init(rootViewController: UIViewController) {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
@@ -131,6 +134,10 @@ private extension ShareCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
+                case let .mailboxView(selection, _):
+                    presentMailboxSelection(selection)
+                case let .suffixView(selection):
+                    presentSuffixSelection(selection)
                 case .vaultSelection:
                     presentVaultSelector()
                 default:
@@ -243,7 +250,7 @@ private extension ShareCoordinator {
                                                                 vaults: vaults)
                     viewModel.delegate = self
                     createEditItemViewModel = viewModel
-                    let view = CreateEditNoteView(viewModel: viewModel).theme(theme)
+                    let view = CreateEditNoteView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
                 case .login:
                     let urlString = content.url?.absoluteString
@@ -256,8 +263,9 @@ private extension ShareCoordinator {
                         try CreateEditLoginViewModel(mode: .create(shareId: shareId, type: creationType),
                                                      upgradeChecker: upgradeChecker, vaults: vaults)
                     viewModel.delegate = self
+                    viewModel.createEditLoginViewModelDelegate = self
                     createEditItemViewModel = viewModel
-                    let view = CreateEditLoginView(viewModel: viewModel).theme(theme)
+                    let view = CreateEditLoginView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
                 }
                 rootViewController?.present(viewController, animated: true)
@@ -271,16 +279,16 @@ private extension ShareCoordinator {
     }
 
     func presentVaultSelector() {
-        guard let rootViewController else { return }
-        let view = VaultSelectorView(viewModel: .init()).theme(theme)
+        guard let topMostViewController else { return }
+        let view = VaultSelectorView(viewModel: .init())
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = 66 * vaultsManager.getVaultCount() + 180 // Space for upsell banner
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
+                                     parentViewController: topMostViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        rootViewController.topMostViewController.present(viewController, animated: true)
+        topMostViewController.present(viewController, animated: true)
     }
 
     func dismissExtension() {
@@ -300,6 +308,40 @@ private extension ShareCoordinator {
             showNotLoggedInView()
             completion?()
         }
+    }
+}
+
+// MARK: Create alias
+
+extension ShareCoordinator {
+    func presentMailboxSelection(_ mailboxSelection: MailboxSelection) {
+        guard let rootViewController else { return }
+        let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
+                                                  mode: .createAliasLite,
+                                                  titleMode: .create)
+        let view = MailboxSelectionView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+
+        let customHeight = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 150
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        topMostViewController?.present(viewController, animated: true)
+    }
+
+    func presentSuffixSelection(_ suffixSelection: SuffixSelection) {
+        guard let rootViewController else { return }
+        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
+        let view = SuffixSelectionView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+
+        let customHeight = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        topMostViewController?.present(viewController, animated: true)
     }
 }
 
@@ -323,8 +365,8 @@ extension ShareCoordinator: ExtensionCoordinator {
 
 extension ShareCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
-        guard let rootViewController else { return }
-        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+        guard let topMostViewController else { return }
+        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: topMostViewController,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
@@ -345,10 +387,42 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
             dismissExtension()
         }
         alert.addAction(closeAction)
-        rootViewController?.topMostViewController.present(alert, animated: true)
+        topMostViewController?.present(alert, animated: true)
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: Entities.ItemContentType, updated: Bool) {
         // Not applicable
+    }
+}
+
+// MARK: CreateEditLoginViewModelDelegate
+
+extension ShareCoordinator: CreateEditLoginViewModelDelegate {
+    func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
+                                                      creationInfo: AliasCreationLiteInfo,
+                                                      delegate: AliasCreationLiteInfoDelegate) {
+        let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
+        viewModel.aliasCreationDelegate = delegate
+        let view = CreateAliasLiteView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.detents = [.medium()]
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        topMostViewController?.present(viewController, animated: true)
+    }
+
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
+        let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
+                                                      mode: .createLogin)
+        coordinator.delegate = self
+        coordinator.start()
+        generatePasswordCoordinator = coordinator
+    }
+}
+
+// MARK: GeneratePasswordCoordinatorDelegate
+
+extension ShareCoordinator: GeneratePasswordCoordinatorDelegate {
+    func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
+        topMostViewController?.present(viewController, animated: true)
     }
 }
