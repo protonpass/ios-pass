@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreCryptoGoImplementation
 import Social
 import UIKit
 
@@ -26,6 +27,10 @@ final class ShareViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator.start()
+        injectDefaultCryptoImplementation()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            await coordinator.start()
+        }
     }
 }
