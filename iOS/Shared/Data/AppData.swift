@@ -43,6 +43,7 @@ enum AppDataKey: String {
     case mainCredential
     case hostAppCredential
     case autofillExtensionCredential
+    case shareExtensionCredential
 }
 
 extension UserData: @unchecked Sendable {}
@@ -63,6 +64,9 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
     private var autofillExtensionCredential: AuthCredential?
 
+    @LockedKeychainStorage(key: AppDataKey.shareExtensionCredential, defaultValue: nil)
+    private var shareExtensionCredential: AuthCredential?
+
     private let migrationStateProvider: CredentialsMigrationStateProvider
 
     private let module: PassModule
@@ -71,6 +75,7 @@ final class AppData: AppDataProtocol {
         self.module = module
         self.migrationStateProvider = migrationStateProvider
         migrateToSeparatedCredentialsIfNeccessary()
+        migrateCredentialsForShareExtensionIfNeccessary()
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
@@ -102,6 +107,7 @@ final class AppData: AppDataProtocol {
 
     func getCredential() -> AuthCredential? {
         migrateToSeparatedCredentialsIfNeccessary()
+        migrateCredentialsForShareExtensionIfNeccessary()
         switch module {
         case .hostApp:
             return hostAppCredential ?? mainCredential
@@ -109,6 +115,8 @@ final class AppData: AppDataProtocol {
             return autofillExtensionCredential ?? mainCredential
         case .keyboardExtension:
             fatalError("Not applicable")
+        case .shareExtension:
+            return shareExtensionCredential ?? mainCredential
         }
     }
 
@@ -130,6 +138,13 @@ final class AppData: AppDataProtocol {
 
         case .keyboardExtension:
             fatalError("Not applicable")
+
+        case .shareExtension:
+            shareExtensionCredential = credential
+
+            // Should be removed after session forking
+            hostAppCredential = credential
+            mainCredential = credential
         }
     }
 
@@ -139,6 +154,7 @@ final class AppData: AppDataProtocol {
         mainCredential = nil
         hostAppCredential = nil
         autofillExtensionCredential = nil
+        shareExtensionCredential = nil
     }
 
     // Should be removed after session forking
@@ -146,6 +162,12 @@ final class AppData: AppDataProtocol {
         guard migrationStateProvider.shouldMigrateToSeparatedCredentials() else { return }
         migrationStateProvider.markAsMigratedToSeparatedCredentials()
         useCredentialInUserDataForBothAppAndExtension()
+    }
+
+    func migrateCredentialsForShareExtensionIfNeccessary() {
+        guard migrationStateProvider.shouldMigrateCredentialsToShareExtension() else { return }
+        migrationStateProvider.markAsMigratedCredentialsToShareExtension()
+        shareExtensionCredential = mainCredential
     }
 }
 

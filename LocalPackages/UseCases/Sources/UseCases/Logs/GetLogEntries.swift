@@ -60,6 +60,7 @@ public final class GetLogEntries: GetLogEntriesUseCase {
     private let mainAppLogManager: any LogManagerProtocol
     private let autofillLogManager: any LogManagerProtocol
     private let keyboardLogManager: any LogManagerProtocol
+    private let shareLogManager: any LogManagerProtocol
 
     /**
      Initializes a new instance of `GetLogEntries` with the specified log managers.
@@ -71,10 +72,12 @@ public final class GetLogEntries: GetLogEntriesUseCase {
      */
     public init(mainAppLogManager: any LogManagerProtocol,
                 autofillLogManager: any LogManagerProtocol,
-                keyboardLogManager: any LogManagerProtocol) {
+                keyboardLogManager: any LogManagerProtocol,
+                shareLogManager: any LogManagerProtocol) {
         self.mainAppLogManager = mainAppLogManager
         self.autofillLogManager = autofillLogManager
         self.keyboardLogManager = keyboardLogManager
+        self.shareLogManager = shareLogManager
     }
 
     /**
@@ -94,6 +97,8 @@ public final class GetLogEntries: GetLogEntriesUseCase {
             try await autofillLogManager.getLogEntries()
         case .keyboardExtension:
             try await keyboardLogManager.getLogEntries()
+        case .shareExtension:
+            try await shareLogManager.getLogEntries()
         }
     }
 }

@@ -75,7 +75,9 @@ extension UseCasesContainer {
                              autofillLogManager: SharedToolingContainer.shared
                                  .specificLogManager(.autoFillExtension),
                              keyboardLogManager: SharedToolingContainer.shared
-                                 .specificLogManager(.keyboardExtension)) }
+                                 .specificLogManager(.keyboardExtension),
+                             shareLogManager: SharedToolingContainer.shared
+                                 .specificLogManager(.shareExtension)) }
     }
 }
 
