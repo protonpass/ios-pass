@@ -370,20 +370,6 @@ private extension CredentialProviderCoordinator {
         generatePasswordCoordinator = coordinator
     }
 
-    func showLoadingHud() {
-        guard let topMostViewController else {
-            return
-        }
-        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
-    }
-
-    func hideLoadingHud() {
-        guard let topMostViewController else {
-            return
-        }
-        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
-    }
-
     func handleCreatedItem(_ itemContentType: ItemContentType) {
         topMostViewController?.dismiss(animated: true) { [weak self] in
             guard let self else { return }

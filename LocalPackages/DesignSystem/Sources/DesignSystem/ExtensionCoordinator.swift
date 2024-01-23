@@ -20,6 +20,7 @@
 //
 
 import Macro
+import MBProgressHUD
 import SwiftUI
 
 public protocol ExtensionCoordinator: AnyObject {
@@ -28,6 +29,8 @@ public protocol ExtensionCoordinator: AnyObject {
     func setLastChildViewController(_ viewController: UIViewController)
     func showView(_ view: some View)
     func alert(error: Error, onCancel: @escaping () -> Void)
+    func showLoadingHud()
+    func hideLoadingHud()
 }
 
 public extension ExtensionCoordinator {
@@ -66,5 +69,19 @@ public extension ExtensionCoordinator {
         }
         alert.addAction(cancelAction)
         getRootViewController()?.present(alert, animated: true)
+    }
+
+    func showLoadingHud() {
+        guard let topMostViewController = getRootViewController()?.topMostViewController else {
+            return
+        }
+        MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
+    }
+
+    func hideLoadingHud() {
+        guard let topMostViewController = getRootViewController()?.topMostViewController else {
+            return
+        }
+        MBProgressHUD.hide(for: topMostViewController.view, animated: true)
     }
 }

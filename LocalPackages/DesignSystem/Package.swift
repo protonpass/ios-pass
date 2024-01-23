@@ -21,6 +21,7 @@ let package = Package(name: "DesignSystem",
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
                         .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.2"),
+                        .package(url: "https://github.com/jdg/MBProgressHUD", exact: "1.2.0"),
                         .package(name: "Macro", path: "../Macro")
                       ],
                       targets: [
@@ -31,6 +32,7 @@ let package = Package(name: "DesignSystem",
                           .target(name: "DesignSystem",
                                   dependencies: [
                                     .product(name: "ProtonCoreLoginUI", package: "protoncore"),
+                                    .product(name: "MBProgressHUD", package: "MBProgressHUD"),
                                     .product(name: "Macro", package: "Macro")
                                   ],
                                   resources: [.process("Resources")]),
