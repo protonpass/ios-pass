@@ -75,6 +75,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
+    private let updateUserSettings = resolve(\SharedUseCasesContainer.updateUserSettings)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -100,6 +101,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         start()
         synchroniseData()
         refreshAccess()
+        refreshSettings()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
     }
@@ -170,6 +172,7 @@ private extension HomepageCoordinator {
                 eventLoop.start()
                 eventLoop.forceSync()
                 refreshAccess()
+                refreshSettings()
                 refreshFeatureFlags()
             }
             .store(in: &cancellables)
@@ -240,6 +243,17 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func refreshSettings() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateUserSettings()
             } catch {
                 logger.error(error)
             }

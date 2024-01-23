@@ -32,6 +32,7 @@ struct SendEventsRequest: Encodable, Sendable {
 public struct EventInfo: Encodable, Sendable {
     let measurementGroup: String
     let event: String
+    // periphery:ignore
     let values: [String: String] = [:] // Not applicable to mobile apps
     let dimensions: Dimensions
 
