@@ -46,7 +46,7 @@ public protocol TelemetryEventRepositoryProtocol {
 public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     private let localDatasource: any LocalTelemetryEventDatasourceProtocol
     private let remoteDatasource: any RemoteTelemetryEventDatasourceProtocol
-    private let remoteUserSettingsDatasource: any RemoteUserSettingsDatasourceProtocol
+    private let userSettingsRepository: any UserSettingsRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let eventCount: Int
     private let logger: Logger
@@ -55,7 +55,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
 
     public init(localDatasource: any LocalTelemetryEventDatasourceProtocol,
                 remoteDatasource: any RemoteTelemetryEventDatasourceProtocol,
-                remoteUserSettingsDatasource: any RemoteUserSettingsDatasourceProtocol,
+                userSettingsRepository: any UserSettingsRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 logManager: any LogManagerProtocol,
                 scheduler: any TelemetrySchedulerProtocol,
@@ -63,7 +63,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 eventCount: Int = 500) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
+        self.userSettingsRepository = userSettingsRepository
         self.accessRepository = accessRepository
         self.eventCount = eventCount
         logger = .init(manager: logManager)
@@ -98,9 +98,9 @@ public extension TelemetryEventRepository {
 
         logger.debug("Threshold is reached. Checking telemetry settings before sending events.")
 
-        let userSettings = try await remoteUserSettingsDatasource.getUserSettings()
+        let telemetry = await userSettingsRepository.getSettings().telemetry
 
-        if !userSettings.telemetry {
+        if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
             try await localDatasource.removeAllEvents(userId: userId)
             return .thresholdReachedButTelemetryOff
