@@ -23,6 +23,7 @@ import Core
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import Screens
 import SwiftUI
 import UIKit
@@ -57,15 +58,20 @@ enum SharedItemType: CaseIterable {
 
 @MainActor
 final class ShareCoordinator {
+    private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
+    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -79,8 +85,27 @@ final class ShareCoordinator {
     init(rootViewController: UIViewController) {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
+        AppearanceSettings.apply()
         setUpSentry(bundle: .main)
         setUpRouter()
+
+        apiManager.sessionWasInvalidated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] sessionUID in
+                guard let self else { return }
+                logOut(error: PassError.unexpectedLogout, sessionId: sessionUID)
+            }
+            .store(in: &cancellables)
+
+        corruptedSessionEventStream
+            .removeDuplicates()
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] reason in
+                guard let self else { return }
+                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -89,9 +114,9 @@ final class ShareCoordinator {
 extension ShareCoordinator {
     func start() async {
         if credentialProvider.isAuthenticated {
-            showNotLoggedInView()
-        } else {
             await parseSharedContentAndBeginShareFlow()
+        } else {
+            showNotLoggedInView()
         }
     }
 }
@@ -260,6 +285,21 @@ private extension ShareCoordinator {
     func dismissExtension() {
         context?.completeRequest(returningItems: nil)
     }
+
+    func logOut(error: Error? = nil,
+                sessionId: String? = nil,
+                completion: (() -> Void)? = nil) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            if let error {
+                sendErrorToSentry(error, sessionId: sessionId)
+            }
+            await revokeCurrentSession()
+            await wipeAllData(isTests: false)
+            showNotLoggedInView()
+            completion?()
+        }
+    }
 }
 
 // MARK: ExtensionCoordinator
@@ -298,7 +338,13 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
-        dismissExtension()
+        let alert = UIAlertController(title: type.creationMessage, message: nil, preferredStyle: .alert)
+        let closeAction = UIAlertAction(title: #localized("Close"), style: .default) { [weak self] _ in
+            guard let self else { return }
+            dismissExtension()
+        }
+        alert.addAction(closeAction)
+        rootViewController?.topMostViewController.present(alert, animated: true)
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: Entities.ItemContentType, updated: Bool) {
