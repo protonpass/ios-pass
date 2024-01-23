@@ -43,24 +43,34 @@ extension UserSettings: Codable {
         self.telemetry = telemetry >= 1
         highSecurity = try container.decode(HighSecurity.self, forKey: .highSecurity)
     }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        // Encode `telemetry` as 1 if true, else 0
+        try container.encode(telemetry ? 1 : 0, forKey: .telemetry)
+
+        // Encode `highSecurity` as it is (it handles its own encoding logic)
+        try container.encode(highSecurity, forKey: .highSecurity)
+    }
 }
 
 public struct HighSecurity: Codable, Sendable {
     public let eligible: Bool
-    public let active: Bool
+    public let value: Bool
 
-    init(eligible: Bool, active: Bool) {
-        self.active = active
+    init(eligible: Bool, value: Bool) {
+        self.value = value
         self.eligible = eligible
     }
 
     static var `default`: HighSecurity {
-        HighSecurity(eligible: false, active: false)
+        HighSecurity(eligible: false, value: false)
     }
 
     enum CodingKeys: String, CodingKey {
         case eligible
-        case active = "Value"
+        case value
     }
 
     public init(from decoder: any Decoder) throws {
@@ -70,7 +80,17 @@ public struct HighSecurity: Codable, Sendable {
         let eligible = try container.decode(Int.self, forKey: .eligible)
         self.eligible = eligible >= 1
         // 0 or 1, 1 means sentinel is active
-        let active = try container.decode(Int.self, forKey: .active)
-        self.active = active >= 1
+        let value = try container.decode(Int.self, forKey: .value)
+        self.value = value >= 1
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        // Encode `eligible` as 1 if true, else 0
+        try container.encode(eligible ? 1 : 0, forKey: .eligible)
+
+        // Encode `value` as 1 if true, else 0
+        try container.encode(value ? 1 : 0, forKey: .value)
     }
 }
