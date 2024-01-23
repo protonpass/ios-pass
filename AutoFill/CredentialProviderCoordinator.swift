@@ -32,6 +32,7 @@ import ProtonCoreAuthentication
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
+import Screens
 import Sentry
 import SwiftUI
 
@@ -52,6 +53,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private let context = resolve(\AutoFillDataContainer.context)
+    private let theme = resolve(\SharedToolingContainer.theme)
     private weak var rootViewController: UIViewController?
     private var cancellables = Set<AnyCancellable>()
 
@@ -122,9 +124,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     func configureExtension() {
         guard credentialProvider.isAuthenticated else {
-            let notLoggedInView = NotLoggedInView { [context] in
+            let notLoggedInView = NotLoggedInView(variant: .autoFillExtension) { [weak self] in
+                guard let self else { return }
                 context.completeExtensionConfigurationRequest()
             }
+            .theme(theme)
             showView(notLoggedInView)
             return
         }
@@ -327,10 +331,11 @@ private extension CredentialProviderCoordinator {
     }
 
     func showNotLoggedInView() {
-        let view = NotLoggedInView { [weak self] in
+        let view = NotLoggedInView(variant: .autoFillExtension) { [weak self] in
             guard let self else { return }
             cancelAutoFill(reason: .userCanceled)
         }
+        .theme(theme)
         showView(view)
     }
 
