@@ -54,6 +54,8 @@ extension SharedContainer {
             FactoryContext.setArg(PassModule.autoFillExtension, forKey: key)
         case "KEYBOARD_EXTENSION":
             FactoryContext.setArg(PassModule.keyboardExtension, forKey: key)
+        case "SHARE_EXTENSION":
+            FactoryContext.setArg(PassModule.shareExtension, forKey: key)
         default:
             // Default to host app
             break
