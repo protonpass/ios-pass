@@ -261,3 +261,12 @@ extension SharedUseCasesContainer {
         self { ForkSession(apiService: self.apiManager.apiService) }
     }
 }
+
+// MARK: - User
+
+extension SharedUseCasesContainer {
+    var updateUserSettings: Factory<UpdateUserSettingsUseCase> {
+        self { UpdateUserSettings(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository(),
+                                  repository: SharedRepositoryContainer.shared.remoteUserSettingsDatasource()) }
+    }
+}

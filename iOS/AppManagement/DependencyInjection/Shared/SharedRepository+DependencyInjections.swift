@@ -168,11 +168,6 @@ private extension SharedRepositoryContainer {
                                               eventStream: self.corruptedSessionEventStream) }
     }
 
-    var remoteUserSettingsDatasource: Factory<RemoteUserSettingsDatasourceProtocol> {
-        self { RemoteUserSettingsDatasource(apiService: self.apiService,
-                                            eventStream: self.corruptedSessionEventStream) }
-    }
-
     var telemetryScheduler: Factory<TelemetrySchedulerProtocol> {
         self { TelemetryScheduler(currentDateProvider: self.currentDateProvider,
                                   thresholdProvider: self.preferences) }
@@ -187,6 +182,11 @@ private extension SharedRepositoryContainer {
 // MARK: Repositories
 
 extension SharedRepositoryContainer {
+    var remoteUserSettingsDatasource: Factory<RemoteUserSettingsDatasourceProtocol> {
+        self { RemoteUserSettingsDatasource(apiService: self.apiService,
+                                            eventStream: self.corruptedSessionEventStream) }
+    }
+
     var aliasRepository: Factory<AliasRepositoryProtocol> {
         self { AliasRepository(remoteDatasouce: self.remoteAliasDatasource()) }
     }
@@ -263,7 +263,7 @@ extension SharedRepositoryContainer {
         self {
             TelemetryEventRepository(localDatasource: self.localTelemetryEventDatasource(),
                                      remoteDatasource: self.remoteTelemetryEventDatasource(),
-                                     remoteUserSettingsDatasource: self.remoteUserSettingsDatasource(),
+                                     userSettingsRepository: self.userSettingsRepository(),
                                      accessRepository: self.accessRepository(),
                                      logManager: self.logManager,
                                      scheduler: self.telemetryScheduler(),
@@ -292,5 +292,9 @@ extension SharedRepositoryContainer {
     var remoteSyncEventsDatasource: Factory<RemoteSyncEventsDatasourceProtocol> {
         self { RemoteSyncEventsDatasource(apiService: self.apiService,
                                           eventStream: self.corruptedSessionEventStream) }
+    }
+
+    var userSettingsRepository: Factory<UserSettingsRepositoryProtocol> {
+        self { UserSettingsRepository(userDefaultService: SharedServiceContainer.shared.userDefaultService()) }
     }
 }

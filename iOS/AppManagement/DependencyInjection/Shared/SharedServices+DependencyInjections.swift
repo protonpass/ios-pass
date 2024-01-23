@@ -91,4 +91,8 @@ extension SharedServiceContainer {
     var reachabilityService: Factory<ReachabilityServicing> {
         self { ReachabilityService() }
     }
+
+    var userDefaultService: Factory<UserDefaultPersistency> {
+        self { UserDefaultService(appGroup: Constants.appGroup) }
+    }
 }
