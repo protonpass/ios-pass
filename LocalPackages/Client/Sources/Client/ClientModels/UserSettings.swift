@@ -24,11 +24,6 @@ public struct UserSettings: Sendable {
     public let telemetry: Bool
     public let highSecurity: HighSecurity
 
-    init(telemetry: Bool, highSecurity: HighSecurity) {
-        self.telemetry = telemetry
-        self.highSecurity = highSecurity
-    }
-
     static var `default`: UserSettings {
         UserSettings(telemetry: false, highSecurity: HighSecurity.default)
     }
