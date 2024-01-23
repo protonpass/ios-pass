@@ -55,7 +55,7 @@ enum ItemMode {
 enum ItemCreationType {
     case note(title: String, note: String)
     case alias
-    case login(title: String?, url: String?, autofill: Bool)
+    case login(title: String?, url: String?, note: String?, autofill: Bool)
     case other
 }
 
