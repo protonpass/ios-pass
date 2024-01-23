@@ -324,6 +324,13 @@
 		357C71D52B5FB52C00AA0BF1 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 357C71D42B5FB52C00AA0BF1 /* Screens */; };
 		357C71D62B5FB55300AA0BF1 /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
 		357C71D72B5FB9BC00AA0BF1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
+		357C71D92B5FE50C00AA0BF1 /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
+		357C71DA2B5FE50E00AA0BF1 /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
+		357C71DB2B5FE51000AA0BF1 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */; };
+		357C71DC2B5FF46600AA0BF1 /* VaultSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C932A1E41C90089B539 /* VaultSelectorViewModel.swift */; };
+		357C71DD2B5FF46900AA0BF1 /* VaultSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */; };
+		357C71DE2B5FF49700AA0BF1 /* VaultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355694A129D466C9005DD2EB /* VaultRow.swift */; };
+		357C71DF2B5FF49C00AA0BF1 /* LimitedVaultOperationsBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */; };
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
 		357E62702B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
 		357E62712B0E671300F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
@@ -2493,7 +2500,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				357C71DB2B5FE51000AA0BF1 /* Pass-Constant-Scientist.plist in Resources */,
+				357C71D92B5FE50C00AA0BF1 /* Pass-Constant-Black.plist in Resources */,
 				357C71D72B5FB9BC00AA0BF1 /* Localizable.xcstrings in Resources */,
+				357C71DA2B5FE50E00AA0BF1 /* Pass-Constant-Prod.plist in Resources */,
 				35C9B81A2B5E8AA90062D787 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2826,6 +2836,7 @@
 				35796CFF2B5EEB1200BF4E9E /* ItemContentType+Extensions.swift in Sources */,
 				357C71D62B5FB55300AA0BF1 /* Text+NavigationTitleText.swift in Sources */,
 				35C9B8292B5E940A0062D787 /* ShareCoordinator.swift in Sources */,
+				357C71DC2B5FF46600AA0BF1 /* VaultSelectorViewModel.swift in Sources */,
 				357C71A22B5FAE5F00AA0BF1 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35796D012B5EEE7400BF4E9E /* CreateEditLoginView.swift in Sources */,
 				357C71AE2B5FB05300AA0BF1 /* PrefixSuffixSection.swift in Sources */,
@@ -2838,6 +2849,7 @@
 				35796CEB2B5EE66300BF4E9E /* Preferences.swift in Sources */,
 				35796CF42B5EE71100BF4E9E /* CredentialsMigrationStateProvider.swift in Sources */,
 				357C71C02B5FB15400AA0BF1 /* OptionRow.swift in Sources */,
+				357C71DF2B5FF49C00AA0BF1 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35796CF12B5EE6D300BF4E9E /* APIManager.swift in Sources */,
 				35796CF32B5EE6FF00BF4E9E /* LoggerManager+Extensions.swift in Sources */,
 				357C71AB2B5FB03400AA0BF1 /* MainRouter.swift in Sources */,
@@ -2849,6 +2861,7 @@
 				35796CEE2B5EE69E00BF4E9E /* Browser.swift in Sources */,
 				35796D022B5EEE7700BF4E9E /* CreateEditLoginViewModel.swift in Sources */,
 				357C71A72B5FAECA00AA0BF1 /* CustomFieldAdditionCoordinator.swift in Sources */,
+				357C71DD2B5FF46900AA0BF1 /* VaultSelectorView.swift in Sources */,
 				357C71A42B5FAEA200AA0BF1 /* CreateEditAliasViewModel.swift in Sources */,
 				35796CF02B5EE6C600BF4E9E /* Factory+Extensions.swift in Sources */,
 				357C71AC2B5FB04100AA0BF1 /* CreateEditItemTitleSection.swift in Sources */,
@@ -2859,6 +2872,7 @@
 				35796CEC2B5EE66F00BF4E9E /* Theme.swift in Sources */,
 				35796CF22B5EE6EE00BF4E9E /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				357C71CF2B5FB41400AA0BF1 /* EditCustomFieldView.swift in Sources */,
+				357C71DE2B5FF49700AA0BF1 /* VaultRow.swift in Sources */,
 				357C71BA2B5FB0FD00AA0BF1 /* MailboxSection.swift in Sources */,
 				357C71AF2B5FB06200AA0BF1 /* GeneratePasswordViewModel.swift in Sources */,
 				357C71C22B5FB1F200AA0BF1 /* VaultColor.swift in Sources */,
@@ -4626,7 +4640,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.7.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4668,7 +4682,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4708,7 +4722,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4748,7 +4762,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
