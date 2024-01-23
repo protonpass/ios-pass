@@ -33,7 +33,15 @@ struct ProfileTabView: View {
             ScrollView {
                 VStack {
                     itemCountSection
-
+                    #if DEBUG
+                    if viewModel.isSentinelEligible {
+                        Button {} label: {
+                            sentinelView
+                                .padding()
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    #endif
                     securitySection
                         .padding(.vertical)
 
@@ -64,6 +72,7 @@ struct ProfileTabView: View {
                 .padding(.top)
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
                 .animation(.default, value: viewModel.localAuthenticationMethod)
+                .animation(.default, value: viewModel.isSentinelEligible)
                 .showSpinner(viewModel.loading)
             }
 
@@ -75,6 +84,7 @@ struct ProfileTabView: View {
         }
         .task {
             await viewModel.refreshPlan()
+            await viewModel.checkSentinel()
         }
         .navigationViewStyle(.stack)
     }
@@ -319,6 +329,43 @@ struct ProfileTabView: View {
         }
         .roundedEditableSection()
         .padding(.horizontal)
+    }
+}
+
+private extension ProfileTabView {
+    var sentinelView: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.calendarDay,
+                                  color: PassColor.textWeak)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(verbatim: "Proton Sentinel ")
+                    .font(.body)
+                    .foregroundColor(PassColor.textNorm.toColor)
+                    + Text(verbatim: viewModel.isSentinelActive ? "Active" : "Inactive")
+                    .font(.body)
+                    .foregroundColor(viewModel.isSentinelActive ? PassColor.interactionNormMajor2
+                        .toColor : PassColor.noteInteractionNormMajor2.toColor)
+                Text(verbatim: "Increase your security")
+                    .font(.footnote)
+                    .foregroundColor(PassColor.textWeak.toColor)
+            }
+            .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
+            .contentShape(Rectangle())
+            ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                  color: PassColor.textWeak,
+                                  width: 15)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .background(PassColor.inputBackgroundNorm.toColor)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16)
+            .stroke(LinearGradient(gradient: Gradient(colors: [
+                    PassColor.interactionNormMajor2.toColor,
+                    PassColor.noteInteractionNormMajor2.toColor
+                ]),
+                startPoint: .leading,
+                endPoint: .trailing), lineWidth: 1))
     }
 }
 

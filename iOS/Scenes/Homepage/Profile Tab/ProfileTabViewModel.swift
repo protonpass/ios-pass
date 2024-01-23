@@ -41,6 +41,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
@@ -75,6 +76,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var loading = false
     @Published private(set) var plan: Plan?
+    @Published private(set) var isSentinelEligible = false
+    @Published private(set) var isSentinelActive = false
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
@@ -127,6 +130,13 @@ extension ProfileTabViewModel {
             logger.error(error)
             router.display(element: .displayErrorBanner(error))
         }
+    }
+
+    @MainActor
+    func checkSentinel() async {
+        let settings = await userSettingsRepository.getSettings()
+        isSentinelEligible = settings.highSecurity.eligible
+        isSentinelActive = settings.highSecurity.value
     }
 
     func editLocalAuthenticationMethod() {
