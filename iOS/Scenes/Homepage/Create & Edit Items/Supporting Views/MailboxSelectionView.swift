@@ -21,10 +21,12 @@
 import Client
 import DesignSystem
 import Entities
+import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct MailboxSelectionView: View {
+    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: MailboxSelectionViewModel
 
@@ -92,6 +94,7 @@ struct MailboxSelectionView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .theme(theme)
     }
 
     private func isSelected(_ mailbox: Mailbox) -> Bool {

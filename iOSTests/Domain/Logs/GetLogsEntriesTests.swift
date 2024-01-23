@@ -67,11 +67,13 @@ class GetLogEntriesTests: XCTestCase {
         let mainAppLogManager = LogManagerMock()
         let autofillLogManager = LogManagerMock()
         let keyboardLogManager = LogManagerMock()
+        let shareLogManager = LogManagerMock()
 
         // Create an instance of GetLogEntries with mock dependencies
         let getLogEntries = GetLogEntries(mainAppLogManager: mainAppLogManager,
                                           autofillLogManager: autofillLogManager,
-                                          keyboardLogManager: keyboardLogManager)
+                                          keyboardLogManager: keyboardLogManager,
+                                          shareLogManager: shareLogManager)
 
         // Set up the expected behavior for the mock dependencies
         await mainAppLogManager.log(entry: LogEntryFactory.createMock())
