@@ -1,6 +1,6 @@
 //
-// DesactivateSentinelEndpoint.swift
-// Proton Pass - Created on 19/01/2024.
+// UserDefaultPersistency.swift
+// Proton Pass - Created on 22/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,20 +19,3 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreNetworking
-import ProtonCoreServices
-
-public struct DesactivateSentinelEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-
-    public init() {
-        debugDescription = "Desactivate Sentinel"
-        path = "/core/v4/settings/highsecurity"
-        method = .delete
-    }
-}
