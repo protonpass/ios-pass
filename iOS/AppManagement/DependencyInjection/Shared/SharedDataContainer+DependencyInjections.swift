@@ -58,6 +58,8 @@ extension SharedDataContainer {
                                                            migrationStateProvider: self.migrationStateProvider) }
             .onArg(PassModule.keyboardExtension) { AppData(module: .keyboardExtension,
                                                            migrationStateProvider: self.migrationStateProvider) }
+            .onArg(PassModule.shareExtension) { AppData(module: .shareExtension,
+                                                        migrationStateProvider: self.migrationStateProvider) }
     }
 
     var userDataProvider: Factory<UserDataProvider> {

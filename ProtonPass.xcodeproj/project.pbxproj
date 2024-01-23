@@ -3300,6 +3300,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APP_VERSION_IDENTIFIER =
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -3351,6 +3352,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = AutoFill;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IS_QA_BUILD =
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4558,6 +4560,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APP_VERSION_IDENTIFIER =
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -4616,6 +4619,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Share;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IS_QA_BUILD =
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4641,6 +4645,7 @@
 		35C9B8202B5E8AA90062D787 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_VERSION_IDENTIFIER =
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "Share/ShareRelease-QA.entitlements";
@@ -4656,6 +4661,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Share;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IS_QA_BUILD =
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4679,6 +4685,7 @@
 		35C9B8212B5E8AA90062D787 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_VERSION_IDENTIFIER =
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = Share/ShareRelease.entitlements;
@@ -4694,6 +4701,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Share;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IS_QA_BUILD =
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4717,6 +4725,7 @@
 		35C9B8222B5E8AA90062D787 /* Release-Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_VERSION_IDENTIFIER =
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "Share/ShareRelease-Beta.entitlements";
@@ -4732,6 +4741,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Share;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IS_QA_BUILD =
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
