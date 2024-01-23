@@ -76,7 +76,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     // Random password options
     @AppStorage("characterCount", store: kSharedUserDefaults)
-    var characterCount: Double = 16 { didSet { if characterCount != oldValue { regenerate() } } }
+    var characterCount: Double = 20 { didSet { if characterCount != oldValue { regenerate() } } }
 
     @AppStorage("hasSpecialCharacters", store: kSharedUserDefaults)
     var hasSpecialCharacters = true { didSet { regenerate() } }
