@@ -21,11 +21,13 @@
 import CodeScanner
 import Core
 import DesignSystem
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct CreateEditLoginView: View {
+    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
@@ -155,6 +157,7 @@ struct CreateEditLoginView: View {
         }
         .tint(viewModel.itemContentType().normMajor2Color.toColor)
         .navigationViewStyle(.stack)
+        .theme(theme)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
