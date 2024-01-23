@@ -179,6 +179,7 @@ private extension AppData {
             mainCredential = credential
             hostAppCredential = credential
             autofillExtensionCredential = credential
+            shareExtensionCredential = credential
         }
     }
 }
