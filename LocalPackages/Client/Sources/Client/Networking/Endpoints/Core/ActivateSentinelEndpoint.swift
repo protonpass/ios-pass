@@ -1,4 +1,4 @@
-//  
+//
 // ActivateSentinelEndpoint.swift
 // Proton Pass - Created on 19/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
@@ -36,5 +36,3 @@ public struct ActivateSentinelEndpoint: Endpoint {
         method = .post
     }
 }
-
-

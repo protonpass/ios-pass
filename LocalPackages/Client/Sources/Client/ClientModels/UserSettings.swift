@@ -23,9 +23,18 @@ import Foundation
 public struct UserSettings: Sendable {
     public let telemetry: Bool
     public let highSecurity: HighSecurity
+
+    init(telemetry: Bool, highSecurity: HighSecurity) {
+        self.telemetry = telemetry
+        self.highSecurity = highSecurity
+    }
+
+    static var `default`: UserSettings {
+        UserSettings(telemetry: false, highSecurity: HighSecurity.default)
+    }
 }
 
-extension UserSettings: Decodable {
+extension UserSettings: Codable {
     enum CodingKeys: String, CodingKey {
         case telemetry
         case highSecurity
@@ -37,20 +46,28 @@ extension UserSettings: Decodable {
         // 0 or 1, 1 means sending telemetry enabled
         let telemetry = try container.decode(Int.self, forKey: .telemetry)
         self.telemetry = telemetry >= 1
-        self.highSecurity = try container.decode(HighSecurity.self, forKey: .highSecurity)
+        highSecurity = try container.decode(HighSecurity.self, forKey: .highSecurity)
     }
 }
 
-
-public struct HighSecurity: Decodable, Sendable {
+public struct HighSecurity: Codable, Sendable {
     public let eligible: Bool
     public let active: Bool
-    
+
+    init(eligible: Bool, active: Bool) {
+        self.active = active
+        self.eligible = eligible
+    }
+
+    static var `default`: HighSecurity {
+        HighSecurity(eligible: false, active: false)
+    }
+
     enum CodingKeys: String, CodingKey {
         case eligible
         case active = "Value"
     }
-    
+
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
