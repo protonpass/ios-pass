@@ -335,8 +335,16 @@ struct ProfileTabView: View {
 private extension ProfileTabView {
     var sentinelView: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.calendarDay,
-                                  color: PassColor.textWeak)
+            ZStack(alignment: .bottomTrailing) {
+                ItemDetailSectionIcon(icon: IconProvider.calendarDay,
+                                      color: PassColor.textWeak,
+                                      width: 40)
+                Image(systemName: viewModel.isSentinelActive ? "checkmark.circle.fill" : "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 12, height: 12)
+                    .foregroundColor(viewModel.isSentinelActive ? PassColor.interactionNormMajor2.toColor :
+                        PassColor.noteInteractionNormMajor2.toColor)
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(verbatim: "Proton Sentinel ")
