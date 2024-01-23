@@ -5,12 +5,6 @@
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For security reasons, your access needs to be confirmed"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33,6 +27,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Για λόγους ασφαλείας, η πρόσβασή σας πρέπει να επιβεβαιωθεί"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For security reasons, your access needs to be confirmed"
           }
         },
         "es" : {
@@ -137,12 +137,6 @@
       "comment" : "Used in the upselling screen to explain benefits",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165,6 +159,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Λάβετε απεριόριστα ψευδώνυμα, απολαύστε αποκλειστικές λειτουργίες και υποστηρίξτε μας με την εγγραφή σας στο Pass Plus."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
           }
         },
         "es" : {
@@ -262,12 +262,6 @@
     "Learn more about Pass" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Learn more about Pass"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -290,6 +284,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Μάθετε περισσότερα για το Pass"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learn more about Pass"
           }
         },
         "es" : {
@@ -382,12 +382,6 @@
       "comment" : "Used in upselling screen to explain paid feature",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Multiple Vaults"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -410,6 +404,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Πολλαπλές Κρύπτες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Multiple Vaults"
           }
         },
         "es" : {
@@ -502,12 +502,6 @@
       "comment" : "Title on upselling screen",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pass Plus"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -527,6 +521,12 @@
           }
         },
         "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus"
+          }
+        },
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass Plus"
@@ -622,12 +622,6 @@
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pending access to the shared data"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -650,6 +644,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Εκκρεμής πρόσβαση στα κοινόχρηστα δεδομένα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending access to the shared data"
           }
         },
         "es" : {
@@ -750,16 +750,163 @@
         }
       }
     },
-    "Recents" : {
-      "comment" : "Title of recently invited emails section",
+    "Please log in in order to use Proton Pass AutoFill extension" : {
       "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увайдзіце, каб скарыстацца пашырэннем для аўтазапаўнення Proton Pass"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro použití rozšíření Proton Pass AutoFill se prosím přihlaste"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte melde dich an, um die Proton Pass AutoFill-Erweiterung zu nutzen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρακαλούμε συνδεθείτε για να χρησιμοποιήσετε την προέκταση Αυτόματης Συμπλήρωσης Proton Pass"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please log in in order to use Proton Pass AutoFill extension"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicia sesión para utilizar la extensión de rellenado automático de Proton Pass."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sesión para usar la extensión de completado automático de Proton Pass."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirjaudu käyttääksesi Proton Passin automaattitäytön laajennusta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connectez-vous pour utiliser l'extension de remplissage automatique de Proton Pass."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accedi per usare l'estensione di compilazione automatica di Proton Pass"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass 自動入力 拡張機能を使用するにはログインしてください"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass-ის ავტომატური შევსების ჩასართავად, გთხოვთ, შედით სისტემაში"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass 자동 완성 확장을 사용하기 위해선 로그인하십시오."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vennligst logg på for å bruke Proton Pass-AutoFyll-utvidelsen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaloguj się, aby uzupełniać dane logowania za pomocą rozszerzenia Proton Pass"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, inicie sessão para utilizar a extensão de preenchimento automático do Proton Pass"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sessão para usar a extensão de preenchimento automático do Proton Pass"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autentificați-vă pentru a putea folosi autocompletarea cu extensia Proton Pass."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prihláste sa, prosím, aby ste mohli používať rozšírenie s automatický vypĺňaním pomocou Proton Pass"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logga in för att använda Proton Pass autofyll-tillägg"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass Otomatik Doldurma eklentisini kullanabilmek için oturum açın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увійдіть, щоб скористатися розширенням автозаповнення Proton Pass"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vui lòng đăng nhập để sử dụng trình mở rộng tự động điền Proton Pass"
+          }
+        }
+      }
+    },
+    "Please log in in order to use Proton Pass Share extension" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Recents"
+            "value" : "Please log in in order to use Proton Pass Share extension"
           }
-        },
+        }
+      }
+    },
+    "Recents" : {
+      "comment" : "Title of recently invited emails section",
+      "extractionState" : "manual",
+      "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -782,6 +929,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Πρόσφατες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recents"
           }
         },
         "es" : {
@@ -886,12 +1039,6 @@
       "comment" : "Used in the upselling screen to explain benefits",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sharing with up to 10 people"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -914,6 +1061,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Κοινή χρήση με έως και 10 άτομα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sharing with up to 10 people"
           }
         },
         "es" : {
@@ -1006,12 +1159,6 @@
       "comment" : "Title of suggested emails section when sharing",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suggestions"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1034,6 +1181,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προτάσεις"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
           }
         },
         "es" : {
@@ -1120,12 +1273,6 @@
       "comment" : "Used in upselling screen to explain paid feature",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlimited 2FA Autofill"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1148,6 +1295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Απεριόριστη αυτόματη συμπλήρωση 2FA"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited 2FA Autofill"
           }
         },
         "es" : {
@@ -1240,12 +1393,6 @@
       "comment" : "Used in upselling screen to explain paid feature",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlimited email aliases"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1268,6 +1415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Απεριόριστα ψευδώνυμα email"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited email aliases"
           }
         },
         "es" : {
@@ -1372,12 +1525,6 @@
       "comment" : "Button on the upselling screen",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1400,6 +1547,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Αναβάθμιση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade"
           }
         },
         "es" : {
