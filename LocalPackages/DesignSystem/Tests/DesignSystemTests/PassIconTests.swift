@@ -146,7 +146,9 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.vaultIcon30Small
 
         _ = PassIcon.inviteBannerIcon
-
+        _ = PassIcon.netShield
+        _ = PassIcon.sentinelLogo
+        
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
     }
