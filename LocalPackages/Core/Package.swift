@@ -43,6 +43,7 @@ let package = Package(name: "Core",
                       dependencies: [
                           .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.2"),
                           .package(name: "Entities", path: "../Entities"),
+                          .package(name: "DesignSystem", path: "../DesignSystem"),
                           .package(name: "Macro", path: "../Macro")
                       ],
                       targets: [
@@ -60,6 +61,7 @@ let package = Package(name: "Core",
                                       .product(name: "ProtonCoreNetworking", package: "protoncore"),
                                       .product(name: "ProtonCoreSettings", package: "protoncore"),
                                       .product(name: "Entities", package: "Entities"),
+                                      .product(name: "DesignSystem", package: "DesignSystem"),
                                       .product(name: "Macro", package: "Macro")
                                   ],
                                   resources: [
