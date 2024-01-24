@@ -21,7 +21,6 @@
 import AuthenticationServices
 import Factory
 import ProtonCoreCryptoGoImplementation
-import ProtonCoreCryptoGoInterface
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
     private lazy var coordinator: CredentialProviderCoordinator = .init(rootViewController: self)
