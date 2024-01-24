@@ -34,19 +34,31 @@ struct SharedContentView: View {
         ZStack {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
-            VStack {
+            VStack(spacing: DesignConstant.sectionPadding) {
                 Text(content.text)
                     .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(DesignConstant.sectionPadding)
+                    .roundedEditableSection()
+
+                Spacer()
 
                 ForEach(SharedItemType.allCases, id: \.self) { type in
-                    button(for: type)
+                    CapsuleLabelButton(icon: type.contentType.regularIcon,
+                                       title: type.contentType.createItemTitle,
+                                       titleColor: type.contentType.normMajor2Color,
+                                       backgroundColor: type.contentType.normMinor1Color,
+                                       height: 52,
+                                       leadingIcon: true,
+                                       action: { onCreate(type) })
                 }
             }
             .padding()
         }
         .toolbar { toolbarContent }
-        .theme(theme)
+        .navigationTitle("Create")
         .navigationStackEmbeded()
+        .theme(theme)
     }
 }
 
@@ -58,14 +70,6 @@ private extension SharedContentView {
                          backgroundColor: PassColor.interactionNormMinor1,
                          action: onDismiss)
         }
-    }
-
-    func button(for type: SharedItemType) -> some View {
-        Button(action: {
-            onCreate(type)
-        }, label: {
-            Text(type.contentType.createItemTitle)
-        })
     }
 }
 
