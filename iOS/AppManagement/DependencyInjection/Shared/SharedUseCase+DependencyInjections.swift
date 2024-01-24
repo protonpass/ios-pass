@@ -266,7 +266,11 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var updateUserSettings: Factory<UpdateUserSettingsUseCase> {
-        self { UpdateUserSettings(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository(),
-                                  repository: SharedRepositoryContainer.shared.remoteUserSettingsDatasource()) }
+        self { UpdateUserSettings(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository())
+        }
+    }
+
+    var toggleSentinel: Factory<ToggleSentinelUseCase> {
+        self { ToggleSentinel(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository()) }
     }
 }

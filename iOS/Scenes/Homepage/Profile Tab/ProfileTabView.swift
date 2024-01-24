@@ -32,16 +32,18 @@ struct ProfileTabView: View {
         NavigationView {
             ScrollView {
                 VStack {
-                    itemCountSection
                     #if DEBUG
                     if viewModel.isSentinelEligible {
-                        Button {} label: {
+                        Button { viewModel.toggleSentinelState() } label: {
                             sentinelView
-                                .padding()
+                                .padding(.horizontal)
+                                .padding(.bottom)
                         }
                         .buttonStyle(.plain)
                     }
                     #endif
+                    itemCountSection
+
                     securitySection
                         .padding(.vertical)
 

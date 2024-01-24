@@ -1,7 +1,7 @@
 //
 //
-// UpdateUserSettings.swift
-// Proton Pass - Created on 22/01/2024.
+// ToggleSentinel.swift
+// Proton Pass - Created on 23/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,17 +22,17 @@
 
 import Client
 
-public protocol UpdateUserSettingsUseCase: Sendable {
+public protocol ToggleSentinelUseCase: Sendable {
     func execute() async throws
 }
 
-public extension UpdateUserSettingsUseCase {
+public extension ToggleSentinelUseCase {
     func callAsFunction() async throws {
         try await execute()
     }
 }
 
-public final class UpdateUserSettings: UpdateUserSettingsUseCase {
+public final class ToggleSentinel: ToggleSentinelUseCase {
     private let settingsService: any UserSettingsRepositoryProtocol
 
     public init(userSettingsProtocol: any UserSettingsRepositoryProtocol) {
@@ -40,6 +40,6 @@ public final class UpdateUserSettings: UpdateUserSettingsUseCase {
     }
 
     public func execute() async throws {
-        try await settingsService.updateSettings()
+        try await settingsService.toggleSentinel()
     }
 }
