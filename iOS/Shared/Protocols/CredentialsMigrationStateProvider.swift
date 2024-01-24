@@ -24,6 +24,8 @@ import Foundation
 protocol CredentialsMigrationStateProvider: Sendable {
     func shouldMigrateToSeparatedCredentials() -> Bool
     func markAsMigratedToSeparatedCredentials()
+    func shouldMigrateCredentialsToShareExtension() -> Bool
+    func markAsMigratedCredentialsToShareExtension()
 }
 
 extension Preferences: CredentialsMigrationStateProvider {
@@ -33,5 +35,13 @@ extension Preferences: CredentialsMigrationStateProvider {
 
     func markAsMigratedToSeparatedCredentials() {
         didMigrateToSeparatedCredentials = true
+    }
+
+    func shouldMigrateCredentialsToShareExtension() -> Bool {
+        !didMigrateCredentialsToShareExtension
+    }
+
+    func markAsMigratedCredentialsToShareExtension() {
+        didMigrateCredentialsToShareExtension = true
     }
 }

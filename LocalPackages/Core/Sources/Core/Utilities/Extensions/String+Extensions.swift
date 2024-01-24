@@ -121,6 +121,21 @@ public extension String {
             return formatted
         }
     }
+
+    // https://www.hackingwithswift.com/example-code/strings/how-to-detect-a-url-in-a-string-using-nsdatadetector
+    func firstUrl() -> URL? {
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+            return nil
+        }
+
+        let matches = detector.matches(in: self, range: .init(location: 0, length: utf16.count))
+        for match in matches {
+            guard let range = Range(match.range, in: self),
+                  let url = URL(string: String(self[range]).lowercased()) else { continue }
+            return url
+        }
+        return nil
+    }
 }
 
 // MARK: Computed Extensions

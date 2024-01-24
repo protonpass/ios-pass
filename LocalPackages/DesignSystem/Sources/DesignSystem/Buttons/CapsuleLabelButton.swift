@@ -30,6 +30,7 @@ public struct CapsuleLabelButton: View {
     let maxWidth: CGFloat?
     let action: () -> Void
     let isDisabled: Bool
+    let leadingIcon: Bool
 
     public init(icon: UIImage,
                 title: String,
@@ -38,6 +39,7 @@ public struct CapsuleLabelButton: View {
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 isDisabled: Bool = false,
+                leadingIcon: Bool = false,
                 action: @escaping () -> Void) {
         self.icon = icon
         self.title = title
@@ -47,18 +49,27 @@ public struct CapsuleLabelButton: View {
         self.maxWidth = maxWidth
         self.action = action
         self.isDisabled = isDisabled
+        self.leadingIcon = leadingIcon
     }
 
     public var body: some View {
         Button(action: action) {
-            HStack(spacing: 6) {
-                Image(uiImage: icon)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .frame(maxHeight: height / 2.2)
-                Text(title)
-                    .font(.callout)
+            Group {
+                if leadingIcon {
+                    ZStack(alignment: .leading) {
+                        iconView
+                        HStack {
+                            Spacer()
+                            titleView
+                            Spacer()
+                        }
+                    }
+                } else {
+                    HStack(spacing: 6) {
+                        iconView
+                        titleView
+                    }
+                }
             }
             .padding(.horizontal)
             .foregroundColor(titleColor.toColor)
@@ -69,5 +80,20 @@ public struct CapsuleLabelButton: View {
             .contentShape(Rectangle())
         }
         .disabled(isDisabled)
+    }
+}
+
+private extension CapsuleLabelButton {
+    var iconView: some View {
+        Image(uiImage: icon)
+            .resizable()
+            .renderingMode(.template)
+            .scaledToFit()
+            .frame(maxHeight: height / 2.2)
+    }
+
+    var titleView: some View {
+        Text(title)
+            .font(.callout)
     }
 }
