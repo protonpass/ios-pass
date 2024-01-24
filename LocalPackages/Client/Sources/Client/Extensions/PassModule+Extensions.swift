@@ -31,6 +31,8 @@ public extension PassModule {
             #localized("AutoFill extension logs")
         case .keyboardExtension:
             "Keyboard extension logs"
+        case .shareExtension:
+            #localized("Share extension logs")
         }
     }
 
@@ -42,6 +44,8 @@ public extension PassModule {
             "pass_autofill_extension.log"
         case .keyboardExtension:
             "pass_keyboard_extension.log"
+        case .shareExtension:
+            "pass_share_extension.log"
         }
     }
 
@@ -54,6 +58,8 @@ public extension PassModule {
             "pass_autofill_extension\(hash).log"
         case .keyboardExtension:
             "pass_keyboard_extension\(hash).log"
+        case .shareExtension:
+            "pass_share_extension\(hash).log"
         }
         return fileName
     }

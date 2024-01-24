@@ -19,11 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct CreateEditNoteView: View {
+    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var focusedField: Field?
@@ -103,6 +105,7 @@ struct CreateEditNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .theme(theme)
         .tint(viewModel.itemContentType().normMajor1Color.toColor)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
