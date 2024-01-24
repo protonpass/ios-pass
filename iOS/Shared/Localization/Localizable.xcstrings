@@ -6504,6 +6504,16 @@
         }
       }
     },
+    "Active" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active"
+          }
+        }
+      }
+    },
     "Add" : {
       "localizations" : {
         "be" : {
@@ -23139,6 +23149,16 @@
         }
       }
     },
+    "Disable Proton Sentinel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable Proton Sentinel"
+          }
+        }
+      }
+    },
     "Discard" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -25623,6 +25643,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kích hoạt Face ID"
+          }
+        }
+      }
+    },
+    "Enable Proton Sentinel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Proton Sentinel"
           }
         }
       }
@@ -30467,6 +30497,16 @@
         }
       }
     },
+    "Inactive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inactive"
+          }
+        }
+      }
+    },
     "Include numbers" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -30748,6 +30788,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mã PIN không chính xác."
+          }
+        }
+      }
+    },
+    "Increase your security" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increase your security"
           }
         }
       }
