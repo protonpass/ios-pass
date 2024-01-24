@@ -295,6 +295,7 @@ extension SharedRepositoryContainer {
     }
 
     var userSettingsRepository: Factory<UserSettingsRepositoryProtocol> {
-        self { UserSettingsRepository(userDefaultService: SharedServiceContainer.shared.userDefaultService()) }
+        self { UserSettingsRepository(userDefaultService: SharedServiceContainer.shared.userDefaultService(),
+                                      repository: self.remoteUserSettingsDatasource()) }
     }
 }
