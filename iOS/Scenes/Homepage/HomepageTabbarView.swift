@@ -170,7 +170,7 @@ extension HomepageTabBarController {
                 let (image, selectedImage): (UIImage, UIImage) = switch plan.planType {
                 case .free:
                     (IconProvider.user, IconProvider.user)
-                case .plus:
+                case .business, .plus:
                     (PassIcon.tabProfilePaidUnselected, PassIcon.tabProfilePaidSelected)
                 case .trial:
                     (PassIcon.tabProfileTrialUnselected, PassIcon.tabProfileTrialSelected)
