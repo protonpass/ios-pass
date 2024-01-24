@@ -20,7 +20,9 @@
 //
 
 import DesignSystem
+import Lottie
 import Macro
+import ProtonCoreLoginUIResourcesiOS
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -31,9 +33,9 @@ public extension NotLoggedInView {
         var message: String {
             switch self {
             case .autoFillExtension:
-                #localized("Please log in in order to use Proton Pass AutoFill extension")
+                #localized("Please sign in to use Proton Pass AutoFill extension")
             case .shareExtension:
-                #localized("Please log in in order to use Proton Pass Share extension")
+                #localized("Please sign in to use Proton Pass Share extension")
             }
         }
     }
@@ -50,12 +52,23 @@ public struct NotLoggedInView: View {
 
     public var body: some View {
         VStack {
-            Text(variant.message)
-                .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+            LottieView(animation: .named("sign-up-create-account",
+                                         bundle: ProtonCoreLoginUIResourcesiOS.spmResourcesBundle))
+                .playing(loopMode: .loop)
+                .frame(maxWidth: 160, maxHeight: 160)
+                .padding(.bottom)
+
+            Group {
+                Text("Signed out")
+                    .font(.title2.bold())
+                Text(variant.message)
+            }
+            .multilineTextAlignment(.center)
+            .foregroundColor(PassColor.textNorm.toColor)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
+        .padding(.bottom, 100)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
