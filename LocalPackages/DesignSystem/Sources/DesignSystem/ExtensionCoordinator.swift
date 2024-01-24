@@ -23,6 +23,7 @@ import Macro
 import MBProgressHUD
 import SwiftUI
 
+@MainActor
 public protocol ExtensionCoordinator: AnyObject {
     func getRootViewController() -> UIViewController?
     func getLastChildViewController() -> UIViewController?
