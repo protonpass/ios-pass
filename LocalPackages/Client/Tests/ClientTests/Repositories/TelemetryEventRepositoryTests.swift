@@ -50,6 +50,14 @@ private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepository
     func updateSettings(settings: UserSettings) async {
         self.settings = settings
     }
+    
+    func updateSettings() async throws {
+        
+    }
+    
+    func toggleSentinel() async throws {
+        
+    }
 }
 
 private final class MockedFreePlanRepository: AccessRepositoryProtocol {
