@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import DesignSystem
 import SwiftUI
 import UIKit
 
@@ -304,32 +305,5 @@ public final class PPSplitViewController: UISplitViewController {
     func setStatusBarStyle(_ style: UIStatusBarStyle) {
         statusBarStyle = style
         setNeedsStatusBarAppearanceUpdate()
-    }
-}
-
-public extension UIViewController {
-    /// Top most presented view controller
-    var topMostViewController: UIViewController {
-        var topMostViewController = self
-        while true {
-            if let presentationController = topMostViewController.presentedViewController {
-                if presentationController.isBeingDismissed {
-                    break
-                }
-                topMostViewController = presentationController
-            } else {
-                break
-            }
-        }
-        return topMostViewController
-    }
-
-    /// Override `userInterfaceStyle` of the current view controller as well as its presented view controllers
-    func setUserInterfaceStyle(_ userInterfaceStyle: UIUserInterfaceStyle) {
-        overrideUserInterfaceStyle = userInterfaceStyle
-        guard let presentationController = presentedViewController else {
-            return
-        }
-        presentationController.overrideUserInterfaceStyle = userInterfaceStyle
     }
 }
