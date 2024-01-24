@@ -157,7 +157,7 @@ struct AccountView: View {
                          action: { viewModel.goBack() })
         }
         ToolbarItem(placement: .navigationBarTrailing) {
-            if let plan = viewModel.plan, plan.planType != .plus {
+            if viewModel.plan?.hideUpgrade == false {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),
                                    titleColor: ColorProvider.TextInverted,
