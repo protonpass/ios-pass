@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import Entities
@@ -54,6 +55,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
@@ -79,9 +81,14 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var plan: Plan?
     @Published private(set) var isSentinelEligible = false
     @Published private(set) var isSentinelActive = false
+    @Published private(set) var updatingSentinel = false
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
+
+    var sentinelEnabled: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1)
+    }
 
     init(childCoordinatorDelegate: ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
@@ -135,23 +142,33 @@ extension ProfileTabViewModel {
 
     @MainActor
     func checkSentinel() async {
+        guard sentinelEnabled else {
+            return
+        }
         let settings = await userSettingsRepository.getSettings()
         isSentinelEligible = settings.highSecurity.eligible
         isSentinelActive = settings.highSecurity.value
     }
 
     func toggleSentinelState() {
-//        Task { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            do {
-//                try await toggleSentinel()
-//                await checkSentinel()
-//            } catch {
-//                router.display(element: .displayErrorBanner(error))
-//            }
-//        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                updatingSentinel = false
+            }
+            do {
+                updatingSentinel = true
+                try await toggleSentinel()
+                await checkSentinel()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func showSentinelInformation() {
         router.navigate(to: .urlPage(urlString: "https://proton.me/support/proton-sentinel"))
     }
 

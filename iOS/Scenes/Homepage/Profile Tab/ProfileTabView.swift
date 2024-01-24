@@ -27,21 +27,21 @@ import SwiftUI
 
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
+    @State private var presentSheet = false
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
-                    #if DEBUG
-                    if viewModel.isSentinelEligible {
-                        Button { viewModel.toggleSentinelState() } label: {
-                            sentinelView
+                    if viewModel.sentinelEnabled, viewModel.isSentinelEligible {
+                        Button { presentSheet = true } label: {
+                            sentinelCell
                                 .padding(.horizontal)
                                 .padding(.bottom)
+                                .showSpinner(viewModel.updatingSentinel)
                         }
                         .buttonStyle(.plain)
                     }
-                    #endif
                     itemCountSection
 
                     securitySection
@@ -87,6 +87,10 @@ struct ProfileTabView: View {
         .task {
             await viewModel.refreshPlan()
             await viewModel.checkSentinel()
+        }
+        .sheet(isPresented: $presentSheet) {
+            sentinelSheetView
+                .presentationDetents([.height(500)])
         }
         .navigationViewStyle(.stack)
     }
@@ -335,12 +339,14 @@ struct ProfileTabView: View {
 }
 
 private extension ProfileTabView {
-    var sentinelView: some View {
+    var sentinelCell: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ZStack(alignment: .bottomTrailing) {
-                ItemDetailSectionIcon(icon: IconProvider.calendarDay,
-                                      color: PassColor.textWeak,
-                                      width: 40)
+                Image(uiImage: PassIcon.sentinelLogo)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40)
+
                 Image(systemName: viewModel.isSentinelActive ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .resizable()
                     .frame(width: 12, height: 12)
@@ -378,6 +384,50 @@ private extension ProfileTabView {
                 startPoint: .leading,
                 endPoint: .trailing),
             lineWidth: 1))
+    }
+
+    var sentinelSheetView: some View {
+        ViewThatFits {
+            mainSentinelSheet.padding(20)
+            ScrollView(showsIndicators: false) {
+                mainSentinelSheet
+            }.padding(20)
+        }
+    }
+
+    var mainSentinelSheet: some View {
+        VStack(spacing: 16) {
+            Image(uiImage: PassIcon.netShield)
+                .resizable()
+                .scaledToFit()
+
+            Text("Proton Sentinel")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+
+            Text("Sentinel description")
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .top)
+
+            CapsuleTextButton(title: viewModel
+                .isSentinelActive ? "Disable Proton Sentinel" : "Enable Proton Sentinel",
+                titleColor: PassColor.interactionNormMinor2,
+                backgroundColor: PassColor.interactionNormMajor1,
+                action: {
+                    viewModel.toggleSentinelState()
+                    presentSheet = false
+                })
+                .padding(.horizontal, DesignConstant.sectionPadding)
+
+            CapsuleTextButton(title: "Learn more",
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              action: { viewModel.showSentinelInformation() })
+                .padding(.horizontal, DesignConstant.sectionPadding)
+        }
     }
 }
 
