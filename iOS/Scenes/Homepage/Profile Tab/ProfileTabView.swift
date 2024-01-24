@@ -82,7 +82,7 @@ struct ProfileTabView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            if let plan = viewModel.plan, plan.planType != .plus {
+            if viewModel.plan?.hideUpgrade == false {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),
                                    titleColor: PassColor.interactionNorm,
@@ -349,7 +349,7 @@ private extension Plan {
                   iconWidth: 12,
                   tintColor: PassColor.interactionNormMajor2)
 
-        case .plus:
+        case .business, .plus:
             .init(title: displayName,
                   icon: PassIcon.badgePaid,
                   iconWidth: 16,
