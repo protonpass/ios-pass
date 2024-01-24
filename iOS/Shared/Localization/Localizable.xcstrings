@@ -35252,6 +35252,16 @@
         }
       }
     },
+    "Login for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login for %@"
+          }
+        }
+      }
+    },
     "Login moved to trash" : {
       "comment" : "Messages when items are moved to trash",
       "extractionState" : "manual",
@@ -39943,6 +39953,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã tạo ghi chú"
+          }
+        }
+      }
+    },
+    "Note for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note for %@"
           }
         }
       }
