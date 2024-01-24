@@ -42,7 +42,7 @@ public struct Plan: Decodable, Equatable, Sendable {
 
     /// Enum representation of `type`
     public enum PlanType {
-        case free, plus, trial
+        case free, plus, trial, business
     }
 
     public var planType: PlanType {
@@ -53,6 +53,9 @@ public struct Plan: Decodable, Equatable, Sendable {
             } else {
                 .plus
             }
+
+        case "business":
+            .business
 
         default:
             .free
