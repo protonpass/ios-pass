@@ -750,7 +750,7 @@
         }
       }
     },
-    "Please log in in order to use Proton Pass AutoFill extension" : {
+    "Please sign in to use Proton Pass AutoFill extension" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -780,7 +780,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please log in in order to use Proton Pass AutoFill extension"
+            "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
         },
         "es" : {
@@ -893,12 +893,13 @@
         }
       }
     },
-    "Please log in in order to use Proton Pass Share extension" : {
+    "Please sign in to use Proton Pass Share extension" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please log in in order to use Proton Pass Share extension"
+            "value" : "Please sign in to use Proton Pass Share extension"
           }
         }
       }
@@ -1151,6 +1152,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẻ với tối đa 10 người"
+          }
+        }
+      }
+    },
+    "Signed out" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signed out"
           }
         }
       }
