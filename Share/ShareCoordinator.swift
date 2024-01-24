@@ -51,6 +51,15 @@ enum SharedContent {
         case .unknown: ""
         }
     }
+
+    func title(for type: SharedItemType) -> String {
+        guard case let .url(url) = self else { return "" }
+        let urlString = url.absoluteString
+        return switch type {
+        case .note: #localized("Note for %@", urlString)
+        case .login: #localized("Login for %@", urlString)
+        }
+    }
 }
 
 enum SharedItemType: CaseIterable {
@@ -233,11 +242,12 @@ private extension ShareCoordinator {
                 }
                 let shareId = await getMainVault()?.shareId ?? ""
                 let vaults = vaultsManager.getAllVaults()
+                let title = content.title(for: type)
 
                 let viewController: UIViewController
                 switch type {
                 case .note:
-                    let creationType = ItemCreationType.note(title: "", note: content.note)
+                    let creationType = ItemCreationType.note(title: title, note: content.note)
                     let viewModel = try CreateEditNoteViewModel(mode: .create(shareId: shareId,
                                                                               type: creationType),
                                                                 upgradeChecker: upgradeChecker,
@@ -248,7 +258,7 @@ private extension ShareCoordinator {
                     viewController = UIHostingController(rootView: view)
                 case .login:
                     let urlString = content.url?.absoluteString
-                    let creationType = ItemCreationType.login(title: urlString,
+                    let creationType = ItemCreationType.login(title: title,
                                                               url: urlString,
                                                               note: content.note,
                                                               autofill: false)
