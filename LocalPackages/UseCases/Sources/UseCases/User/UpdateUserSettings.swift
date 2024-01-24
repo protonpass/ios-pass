@@ -34,16 +34,12 @@ public extension UpdateUserSettingsUseCase {
 
 public final class UpdateUserSettings: UpdateUserSettingsUseCase {
     private let settingsService: any UserSettingsRepositoryProtocol
-    private let repository: any RemoteUserSettingsDatasourceProtocol
 
-    public init(userSettingsProtocol: any UserSettingsRepositoryProtocol,
-                repository: any RemoteUserSettingsDatasourceProtocol) {
-        self.repository = repository
+    public init(userSettingsProtocol: any UserSettingsRepositoryProtocol) {
         settingsService = userSettingsProtocol
     }
 
     public func execute() async throws {
-        let settings = try await repository.getUserSettings()
-        await settingsService.updateSettings(settings: settings)
+        try await settingsService.updateSettings()
     }
 }

@@ -23,13 +23,18 @@ import Foundation
 public protocol UserSettingsRepositoryProtocol: Sendable {
     func getSettings() async -> UserSettings
     func updateSettings(settings: UserSettings) async
+    func updateSettings() async throws
+    func toggleSentinel() async throws
 }
 
 public actor UserSettingsRepository: UserSettingsRepositoryProtocol {
     private let userDefaultService: any UserDefaultPersistency
+    private let repository: any RemoteUserSettingsDatasourceProtocol
 
-    public init(userDefaultService: any UserDefaultPersistency) {
+    public init(userDefaultService: any UserDefaultPersistency,
+                repository: any RemoteUserSettingsDatasourceProtocol) {
         self.userDefaultService = userDefaultService
+        self.repository = repository
     }
 
     public func getSettings() async -> UserSettings {
@@ -47,5 +52,20 @@ public actor UserSettingsRepository: UserSettingsRepositoryProtocol {
         } catch {
             print(error.localizedDescription)
         }
+    }
+
+    public func updateSettings() async throws {
+        let settings = try await repository.getUserSettings()
+        updateSettings(settings: settings)
+    }
+
+    public func toggleSentinel() async throws {
+        let settings = await getSettings()
+        if settings.highSecurity.value {
+            try await repository.desactivateSentinel()
+        } else {
+            try await repository.activateSentinel()
+        }
+        try await updateSettings()
     }
 }

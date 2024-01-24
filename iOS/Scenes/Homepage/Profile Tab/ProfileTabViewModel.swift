@@ -53,6 +53,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
@@ -137,6 +138,21 @@ extension ProfileTabViewModel {
         let settings = await userSettingsRepository.getSettings()
         isSentinelEligible = settings.highSecurity.eligible
         isSentinelActive = settings.highSecurity.value
+    }
+
+    func toggleSentinelState() {
+//        Task { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            do {
+//                try await toggleSentinel()
+//                await checkSentinel()
+//            } catch {
+//                router.display(element: .displayErrorBanner(error))
+//            }
+//        }
+        router.navigate(to: .urlPage(urlString: "https://proton.me/support/proton-sentinel"))
     }
 
     func editLocalAuthenticationMethod() {
