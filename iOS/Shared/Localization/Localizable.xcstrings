@@ -46547,6 +46547,18 @@
         }
       }
     },
+    "Proton Sentinel" : {
+      "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Sentinel"
+          }
+        }
+      }
+    },
     "Quickly pick a login item from suggestions above the keyboard" : {
       "localizations" : {
         "be" : {
@@ -52218,6 +52230,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gửi nhật ký"
+          }
+        }
+      }
+    },
+    "Sentinel description" : {
+      "comment" : "Description of the sentinel feature.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Sentinel is an advanced account protection program powered by sophisticated AI systems and specialists working around the clock to protect you from bad actors and security threats."
           }
         }
       }
