@@ -352,17 +352,19 @@ private extension ProfileTabView {
                     .frame(width: 12, height: 12)
                     .foregroundColor(viewModel.isSentinelActive ? PassColor.interactionNormMajor2.toColor :
                         PassColor.noteInteractionNormMajor2.toColor)
+                    .background(viewModel.isSentinelActive ? .white : .black)
+                    .clipShape(.circle)
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(verbatim: "Proton Sentinel ")
                     .font(.body)
                     .foregroundColor(PassColor.textNorm.toColor)
-                    + Text(verbatim: viewModel.isSentinelActive ? "Active" : "Inactive")
+                    + Text(verbatim: viewModel.isSentinelActive ? #localized("Active") : #localized("Inactive"))
                     .font(.body)
                     .foregroundColor(viewModel.isSentinelActive ? PassColor.interactionNormMajor2
                         .toColor : PassColor.noteInteractionNormMajor2.toColor)
-                Text(verbatim: "Increase your security")
+                Text("Increase your security")
                     .font(.footnote)
                     .foregroundColor(PassColor.textWeak.toColor)
             }
@@ -387,11 +389,24 @@ private extension ProfileTabView {
     }
 
     var sentinelSheetView: some View {
-        ViewThatFits {
-            mainSentinelSheet.padding(20)
-            ScrollView(showsIndicators: false) {
-                mainSentinelSheet
-            }.padding(20)
+        ZStack(alignment: .topTrailing) {
+            ViewThatFits {
+                mainSentinelSheet.padding(20)
+                ScrollView(showsIndicators: false) {
+                    mainSentinelSheet
+                }.padding(20)
+            }
+
+            Button { presentSheet = false } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(PassColor.interactionNormMinor1.toColor)
+                    .background(PassColor.interactionNormMajor2.toColor)
+                    .clipShape(.circle)
+            }
+            .buttonStyle(.plain)
+            .padding(15)
         }
     }
 
@@ -413,7 +428,7 @@ private extension ProfileTabView {
                 .frame(maxWidth: .infinity, alignment: .top)
 
             CapsuleTextButton(title: viewModel
-                .isSentinelActive ? "Disable Proton Sentinel" : "Enable Proton Sentinel",
+                .isSentinelActive ? #localized("Disable Proton Sentinel") : #localized("Enable Proton Sentinel"),
                 titleColor: PassColor.interactionNormMinor2,
                 backgroundColor: PassColor.interactionNormMajor1,
                 action: {
@@ -422,7 +437,7 @@ private extension ProfileTabView {
                 })
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
-            CapsuleTextButton(title: "Learn more",
+            CapsuleTextButton(title: #localized("Learn more"),
                               titleColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1,
                               action: { viewModel.showSentinelInformation() })
