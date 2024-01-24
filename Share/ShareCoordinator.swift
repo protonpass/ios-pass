@@ -28,6 +28,7 @@ import Macro
 import Screens
 import SwiftUI
 import UIKit
+import UniformTypeIdentifiers
 
 enum SharedContent {
     case url(URL)
@@ -195,11 +196,12 @@ private extension ShareCoordinator {
             guard let attachments = item.attachments else { continue }
             for attachment in attachments {
                 // Optionally parse URL and fallback to text
-                if let url = try? await attachment.loadItem(forTypeIdentifier: "public.url") as? URL {
+                if let url = try? await attachment.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL {
                     return .url(url)
                 }
 
-                if let text = try await attachment.loadItem(forTypeIdentifier: "public.text") as? String {
+                if let text = try await attachment
+                    .loadItem(forTypeIdentifier: UTType.plainText.identifier) as? String {
                     if let url = text.firstUrl() {
                         return .textWithUrl(text, url)
                     } else {
