@@ -234,16 +234,10 @@ private extension ShareCoordinator {
                 let shareId = await getMainVault()?.shareId ?? ""
                 let vaults = vaultsManager.getAllVaults()
 
-                let formatter = DateFormatter()
-                formatter.dateStyle = .long
-                formatter.timeStyle = .medium
-                let defaultTitle = formatter.string(from: .now)
-
                 let viewController: UIViewController
                 switch type {
                 case .note:
-                    let creationType = ItemCreationType.note(title: defaultTitle,
-                                                             note: content.note)
+                    let creationType = ItemCreationType.note(title: "", note: content.note)
                     let viewModel = try CreateEditNoteViewModel(mode: .create(shareId: shareId,
                                                                               type: creationType),
                                                                 upgradeChecker: upgradeChecker,
@@ -254,8 +248,7 @@ private extension ShareCoordinator {
                     viewController = UIHostingController(rootView: view)
                 case .login:
                     let urlString = content.url?.absoluteString
-                    let title = urlString ?? defaultTitle
-                    let creationType = ItemCreationType.login(title: title,
+                    let creationType = ItemCreationType.login(title: urlString,
                                                               url: urlString,
                                                               note: content.note,
                                                               autofill: false)
