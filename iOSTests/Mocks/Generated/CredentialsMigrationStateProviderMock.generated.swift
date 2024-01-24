@@ -47,4 +47,26 @@ public final class CredentialsMigrationStateProviderMock: @unchecked Sendable, C
         invokedMarkAsMigratedToSeparatedCredentialsCount += 1
         closureMarkAsMigratedToSeparatedCredentials()
     }
+    // MARK: - shouldMigrateCredentialsToShareExtension
+    public var closureShouldMigrateCredentialsToShareExtension: () -> () = {}
+    public var invokedShouldMigrateCredentialsToShareExtensionfunction = false
+    public var invokedShouldMigrateCredentialsToShareExtensionCount = 0
+    public var stubbedShouldMigrateCredentialsToShareExtensionResult: Bool!
+
+    public func shouldMigrateCredentialsToShareExtension() -> Bool {
+        invokedShouldMigrateCredentialsToShareExtensionfunction = true
+        invokedShouldMigrateCredentialsToShareExtensionCount += 1
+        closureShouldMigrateCredentialsToShareExtension()
+        return stubbedShouldMigrateCredentialsToShareExtensionResult
+    }
+    // MARK: - markAsMigratedCredentialsToShareExtension
+    public var closureMarkAsMigratedCredentialsToShareExtension: () -> () = {}
+    public var invokedMarkAsMigratedCredentialsToShareExtensionfunction = false
+    public var invokedMarkAsMigratedCredentialsToShareExtensionCount = 0
+
+    public func markAsMigratedCredentialsToShareExtension() {
+        invokedMarkAsMigratedCredentialsToShareExtensionfunction = true
+        invokedMarkAsMigratedCredentialsToShareExtensionCount += 1
+        closureMarkAsMigratedCredentialsToShareExtension()
+    }
 }

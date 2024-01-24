@@ -82,6 +82,9 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @AppStorage(Key.didMigrateToSeparatedCredentials.rawValue, store: kSharedUserDefaults)
     var didMigrateToSeparatedCredentials = false
 
+    @AppStorage(Key.didMigrateCredentialsToShareExtension.rawValue, store: kSharedUserDefaults)
+    var didMigrateCredentialsToShareExtension = false
+
     // MARK: Sensitive prefs
 
     @KeychainStorage(key: Key.failedAttemptCount, defaultValue: 0)
@@ -153,8 +156,11 @@ private extension Preferences {
         case isFirstRun
         case createdItemsCount
 
-        // Temporary keys, can be removed several versions after 1.5.7
+        // Temporary keys
+        // Can be removed several versions after 1.5.7
         case didMigrateToSeparatedCredentials
+        // Can be removed several versions after 1.8.0
+        case didMigrateCredentialsToShareExtension
     }
 }
 
