@@ -75,7 +75,7 @@ final class AppData: AppDataProtocol {
         self.module = module
         self.migrationStateProvider = migrationStateProvider
         migrateToSeparatedCredentialsIfNeccessary()
-        migrateCredentialsForShareExtensionIfNeccessary()
+        migrateCredentialsForShareExtensionIfNecessary()
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
@@ -107,7 +107,7 @@ final class AppData: AppDataProtocol {
 
     func getCredential() -> AuthCredential? {
         migrateToSeparatedCredentialsIfNeccessary()
-        migrateCredentialsForShareExtensionIfNeccessary()
+        migrateCredentialsForShareExtensionIfNecessary()
         switch module {
         case .hostApp:
             return hostAppCredential ?? mainCredential
@@ -127,6 +127,7 @@ final class AppData: AppDataProtocol {
 
             // Should be removed after session forking
             autofillExtensionCredential = credential
+            shareExtensionCredential = credential
             mainCredential = credential
 
         case .autoFillExtension:
@@ -135,6 +136,7 @@ final class AppData: AppDataProtocol {
             // Should be removed after session forking
             hostAppCredential = credential
             mainCredential = credential
+            shareExtensionCredential = credential
 
         case .keyboardExtension:
             fatalError("Not applicable")
@@ -145,6 +147,7 @@ final class AppData: AppDataProtocol {
             // Should be removed after session forking
             hostAppCredential = credential
             mainCredential = credential
+            autofillExtensionCredential = credential
         }
     }
 
@@ -164,7 +167,7 @@ final class AppData: AppDataProtocol {
         useCredentialInUserDataForBothAppAndExtension()
     }
 
-    func migrateCredentialsForShareExtensionIfNeccessary() {
+    func migrateCredentialsForShareExtensionIfNecessary() {
         guard migrationStateProvider.shouldMigrateCredentialsToShareExtension() else { return }
         migrationStateProvider.markAsMigratedCredentialsToShareExtension()
         shareExtensionCredential = mainCredential
