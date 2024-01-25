@@ -27,14 +27,14 @@ import SwiftUI
 
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
-    @State private var presentSheet = false
+    @State private var presentSentinelSheet = false
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
                     if viewModel.sentinelEnabled, viewModel.isSentinelEligible {
-                        Button { presentSheet = true } label: {
+                        Button { presentSentinelSheet = true } label: {
                             sentinelCell
                                 .padding(.horizontal)
                                 .padding(.bottom)
@@ -88,8 +88,13 @@ struct ProfileTabView: View {
             await viewModel.refreshPlan()
             await viewModel.checkSentinel()
         }
-        .sheet(isPresented: $presentSheet) {
-            sentinelSheetView
+        .sheet(isPresented: $presentSentinelSheet) {
+            SentinelSheetView(isPresented: $presentSentinelSheet,
+                              sentinelActive: viewModel.isSentinelActive,
+                              mainAction: { viewModel.toggleSentinelState()
+                                  presentSentinelSheet = false
+                              },
+                              secondaryAction: { viewModel.showSentinelInformation() })
                 .presentationDetents([.height(500)])
         }
         .navigationViewStyle(.stack)
@@ -338,6 +343,8 @@ struct ProfileTabView: View {
     }
 }
 
+// MARK: - Sentinel
+
 private extension ProfileTabView {
     var sentinelCell: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
@@ -387,63 +394,6 @@ private extension ProfileTabView {
                 endPoint: .trailing),
             lineWidth: 1))
     }
-
-    var sentinelSheetView: some View {
-        ZStack(alignment: .topTrailing) {
-            ViewThatFits {
-                mainSentinelSheet.padding(20)
-                ScrollView(showsIndicators: false) {
-                    mainSentinelSheet
-                }.padding(20)
-            }
-
-            Button { presentSheet = false } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(PassColor.interactionNormMinor1.toColor)
-                    .background(PassColor.interactionNormMajor2.toColor)
-                    .clipShape(.circle)
-            }
-            .buttonStyle(.plain)
-            .padding(15)
-        }
-    }
-
-    var mainSentinelSheet: some View {
-        VStack(spacing: 16) {
-            Image(uiImage: PassIcon.netShield)
-                .resizable()
-                .scaledToFit()
-
-            Text("Proton Sentinel")
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-
-            Text("Sentinel description")
-                .font(.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity, alignment: .top)
-
-            CapsuleTextButton(title: viewModel
-                .isSentinelActive ? #localized("Disable Proton Sentinel") : #localized("Enable Proton Sentinel"),
-                titleColor: PassColor.interactionNormMinor2,
-                backgroundColor: PassColor.interactionNormMajor1,
-                action: {
-                    viewModel.toggleSentinelState()
-                    presentSheet = false
-                })
-                .padding(.horizontal, DesignConstant.sectionPadding)
-
-            CapsuleTextButton(title: #localized("Learn more"),
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              action: { viewModel.showSentinelInformation() })
-                .padding(.horizontal, DesignConstant.sectionPadding)
-        }
-    }
 }
 
 private extension View {
@@ -478,6 +428,69 @@ private extension Plan {
                   icon: PassIcon.badgePaid,
                   iconWidth: 16,
                   tintColor: PassColor.noteInteractionNormMajor2)
+        }
+    }
+}
+
+struct SentinelSheetView: View {
+    @Binding var isPresented: Bool
+    let sentinelActive: Bool
+    let mainAction: () -> Void
+    let secondaryAction: () -> Void
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            ViewThatFits {
+                mainSentinelSheet.padding(20)
+                ScrollView(showsIndicators: false) {
+                    mainSentinelSheet
+                }.padding(20)
+            }
+
+            Button { isPresented = false } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(PassColor.interactionNormMinor1.toColor)
+                    .background(PassColor.interactionNormMajor2.toColor)
+                    .clipShape(.circle)
+            }
+            .buttonStyle(.plain)
+            .padding(15)
+        }
+    }
+
+    private var mainSentinelSheet: some View {
+        VStack(spacing: 16) {
+            Image(uiImage: PassIcon.netShield)
+                .resizable()
+                .scaledToFit()
+
+            Text("Proton Sentinel")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+
+            Text("Sentinel description")
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .top)
+
+            CapsuleTextButton(title: sentinelActive ? #localized("Disable Proton Sentinel") :
+                #localized("Enable Proton Sentinel"),
+                titleColor: PassColor.interactionNormMinor2,
+                backgroundColor: PassColor.interactionNormMajor1,
+                action: {
+                    mainAction()
+                })
+                .padding(.horizontal, DesignConstant.sectionPadding)
+
+            CapsuleTextButton(title: #localized("Learn more"),
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              action: { secondaryAction() })
+                .padding(.horizontal, DesignConstant.sectionPadding)
         }
     }
 }

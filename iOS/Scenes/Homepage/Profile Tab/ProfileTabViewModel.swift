@@ -45,6 +45,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
 
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
@@ -101,22 +102,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
         refresh()
 
-        NotificationCenter.default
-            .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                refresh()
-            }
-            .store(in: &cancellables)
-
-        preferences.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                updateAutoFillAvalability()
-                updateSecuritySettings()
-            }
-            .store(in: &cancellables)
+        setUp()
     }
 }
 
@@ -142,10 +128,10 @@ extension ProfileTabViewModel {
 
     @MainActor
     func checkSentinel() async {
-        guard sentinelEnabled else {
+        guard sentinelEnabled, let userId = try? userDataProvider.getUserId() else {
             return
         }
-        let settings = await userSettingsRepository.getSettings()
+        let settings = await userSettingsRepository.getSettings(for: userId)
         isSentinelEligible = settings.highSecurity.eligible
         isSentinelActive = settings.highSecurity.value
     }
@@ -160,7 +146,8 @@ extension ProfileTabViewModel {
             }
             do {
                 updatingSentinel = true
-                try await toggleSentinel()
+                let userId = try userDataProvider.getUserId()
+                try await toggleSentinel(for: userId)
                 await checkSentinel()
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -243,6 +230,32 @@ extension ProfileTabViewModel {
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
+    func setUp() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await checkSentinel()
+        }
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                refresh()
+            }
+            .store(in: &cancellables)
+
+        preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateAutoFillAvalability()
+                updateSecuritySettings()
+            }
+            .store(in: &cancellables)
+    }
+
     func refresh() {
         updateAutoFillAvalability()
         updateSecuritySettings()
