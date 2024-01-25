@@ -265,8 +265,8 @@ extension SharedUseCasesContainer {
 // MARK: - User
 
 extension SharedUseCasesContainer {
-    var updateUserSettings: Factory<UpdateUserSettingsUseCase> {
-        self { UpdateUserSettings(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository())
+    var refreshUserSettings: Factory<RefreshUserSettingsUseCase> {
+        self { RefreshUserSettings(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository())
         }
     }
 

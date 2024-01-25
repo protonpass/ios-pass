@@ -62,6 +62,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -75,7 +76,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
-    private let updateUserSettings = resolve(\SharedUseCasesContainer.updateUserSettings)
+    private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -253,7 +254,8 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await updateUserSettings()
+                let userId = try userDataProvider.getUserId()
+                try await refreshUserSettings(for: userId)
             } catch {
                 logger.error(error)
             }
