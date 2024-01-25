@@ -630,16 +630,4 @@ public extension FullTextField {
         .padding(.horizontal, leadingPadding)
         .shadow(color: shadowColor, radius: 5, x: 0, y: 4)
     }
-
-    // swiftlint:disable line_length
-    /// Since Apple has not given us a way yet to parse a `Font` 🔠🔡  object, this function must be deprecated 😔.
-    /// Please use `.fontFromUIFont(_:)` instead 🙂.
-    /// - Parameter font:
-    /// - Returns:
-    @available(*, deprecated,
-               renamed: "fontFromUIFont",
-               message: "At this time, Apple will not let us parse a `Font` object❗️ Please use `.fontFromUIFont(_:)` instead.")
-    func font(_ font: Font?) -> some View { EmptyView() }
 }
-
-// swiftlint:enable line_length
