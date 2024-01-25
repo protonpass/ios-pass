@@ -37,13 +37,14 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
 }
 
 private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepositoryProtocol {
+    
     var settings = UserSettings(telemetry: true, highSecurity: HighSecurity.default)
     
     init(settings: UserSettings = UserSettings(telemetry: true, highSecurity: HighSecurity.default)) {
         self.settings = settings
     }
    
-    func getSettings()  async -> UserSettings {
+    func getSettings(for id: String)  async -> UserSettings {
         settings
     }
     
@@ -51,11 +52,11 @@ private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepository
         self.settings = settings
     }
     
-    func updateSettings() async throws {
+    func refreshSettings(for id: String) async throws {
         
     }
     
-    func toggleSentinel() async throws {
+    func toggleSentinel(for id: String) async throws {
         
     }
 }
