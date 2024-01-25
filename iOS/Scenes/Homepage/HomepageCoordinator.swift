@@ -62,6 +62,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -75,6 +76,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
+    private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -100,6 +102,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         start()
         synchroniseData()
         refreshAccess()
+        refreshSettings()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
     }
@@ -170,6 +173,7 @@ private extension HomepageCoordinator {
                 eventLoop.start()
                 eventLoop.forceSync()
                 refreshAccess()
+                refreshSettings()
                 refreshFeatureFlags()
             }
             .store(in: &cancellables)
@@ -240,6 +244,18 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func refreshSettings() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try userDataProvider.getUserId()
+                try await refreshUserSettings(for: userId)
             } catch {
                 logger.error(error)
             }

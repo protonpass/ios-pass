@@ -1,7 +1,7 @@
 //
-// FeatureFlagType.swift
-// Proton Pass - Created on 04/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// DesactivateSentinelEndpoint.swift
+// Proton Pass - Created on 19/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,13 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreFeatureFlags
+import Foundation
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-/// Should be activated when new feature flags are added to the project
-/// following is how a flag should be added:
-/// Example:
-///    case passSharingV1 = "PassSharingV1"
-public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-    case passItemHistoryV1 = "PassItemHistoryV1"
-    case passSentinelV1 = "PassSentinelV1"
+public struct DesactivateSentinelEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = CodeOnlyResponse
+
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init() {
+        debugDescription = "Desactivate Sentinel"
+        path = "/core/v4/settings/highsecurity"
+        method = .delete
+    }
 }
