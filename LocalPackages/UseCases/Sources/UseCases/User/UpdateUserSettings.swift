@@ -22,24 +22,24 @@
 
 import Client
 
-public protocol UpdateUserSettingsUseCase: Sendable {
-    func execute() async throws
+public protocol RefreshUserSettingsUseCase: Sendable {
+    func execute(for id: String) async throws
 }
 
-public extension UpdateUserSettingsUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+public extension RefreshUserSettingsUseCase {
+    func callAsFunction(for id: String) async throws {
+        try await execute(for: id)
     }
 }
 
-public final class UpdateUserSettings: UpdateUserSettingsUseCase {
+public final class RefreshUserSettings: RefreshUserSettingsUseCase {
     private let settingsService: any UserSettingsRepositoryProtocol
 
     public init(userSettingsProtocol: any UserSettingsRepositoryProtocol) {
         settingsService = userSettingsProtocol
     }
 
-    public func execute() async throws {
-        try await settingsService.updateSettings()
+    public func execute(for id: String) async throws {
+        try await settingsService.refreshSettings(for: id)
     }
 }

@@ -1,6 +1,6 @@
 //
-// UserDefaultPersistency.swift
-// Proton Pass - Created on 22/01/2024.
+// UserDefaultFailureReason.swift
+// Proton Pass - Created on 25/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,4 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+public extension PassError {
+    enum UserDefaultFailureReason: CustomDebugStringConvertible, Sendable {
+        case invalidType
+
+        public var debugDescription: String {
+            switch self {
+            case .invalidType:
+                "This is not a type accepted by UserDefault"
+            }
+        }
+    }
+}

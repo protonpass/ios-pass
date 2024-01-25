@@ -23,12 +23,12 @@
 import Client
 
 public protocol ToggleSentinelUseCase: Sendable {
-    func execute() async throws
+    func execute(for id: String) async throws
 }
 
 public extension ToggleSentinelUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(for id: String) async throws {
+        try await execute(for: id)
     }
 }
 
@@ -39,7 +39,7 @@ public final class ToggleSentinel: ToggleSentinelUseCase {
         settingsService = userSettingsProtocol
     }
 
-    public func execute() async throws {
-        try await settingsService.toggleSentinel()
+    public func execute(for id: String) async throws {
+        try await settingsService.toggleSentinel(for: id)
     }
 }

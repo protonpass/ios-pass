@@ -21,51 +21,52 @@
 import Foundation
 
 public protocol UserSettingsRepositoryProtocol: Sendable {
-    func getSettings() async -> UserSettings
-    func updateSettings(settings: UserSettings) async
-    func updateSettings() async throws
-    func toggleSentinel() async throws
+    func getSettings(for id: String) async -> UserSettings
+    func refreshSettings(for id: String) async throws
+    func toggleSentinel(for id: String) async throws
 }
 
 public actor UserSettingsRepository: UserSettingsRepositoryProtocol {
     private let userDefaultService: any UserDefaultPersistency
-    private let repository: any RemoteUserSettingsDatasourceProtocol
+    private let remoteDatasource: any RemoteUserSettingsDatasourceProtocol
 
     public init(userDefaultService: any UserDefaultPersistency,
-                repository: any RemoteUserSettingsDatasourceProtocol) {
+                remoteDatasource: any RemoteUserSettingsDatasourceProtocol) {
         self.userDefaultService = userDefaultService
-        self.repository = repository
+        self.remoteDatasource = remoteDatasource
     }
 
-    public func getSettings() async -> UserSettings {
-        guard let data: Data = userDefaultService.value(forKey: UserDefaultsKey.settings),
+    public func getSettings(for id: String) async -> UserSettings {
+        guard let data: Data = userDefaultService.value(forKey: UserDefaultsKey.settings, and: id),
               let settings = try? JSONDecoder().decode(UserSettings.self, from: data) else {
             return UserSettings.default
         }
         return settings
     }
 
-    public func updateSettings(settings: UserSettings) {
+    public func refreshSettings(for id: String) async throws {
+        let settings = try await remoteDatasource.getUserSettings()
+        updateSettings(settings: settings, and: id)
+    }
+
+    public func toggleSentinel(for id: String) async throws {
+        let settings = try await remoteDatasource.getUserSettings()
+        if settings.highSecurity.value {
+            try await remoteDatasource.desactivateSentinel()
+        } else {
+            try await remoteDatasource.activateSentinel()
+        }
+        try await refreshSettings(for: id)
+    }
+}
+
+private extension UserSettingsRepository {
+    func updateSettings(settings: UserSettings, and id: String) {
         do {
             let encodedSettings = try JSONEncoder().encode(settings)
-            try userDefaultService.set(value: encodedSettings, forKey: UserDefaultsKey.settings)
+            try userDefaultService.set(value: encodedSettings, forKey: UserDefaultsKey.settings, and: id)
         } catch {
             print(error.localizedDescription)
         }
-    }
-
-    public func updateSettings() async throws {
-        let settings = try await repository.getUserSettings()
-        updateSettings(settings: settings)
-    }
-
-    public func toggleSentinel() async throws {
-        let settings = await getSettings()
-        if settings.highSecurity.value {
-            try await repository.desactivateSentinel()
-        } else {
-            try await repository.activateSentinel()
-        }
-        try await updateSettings()
     }
 }

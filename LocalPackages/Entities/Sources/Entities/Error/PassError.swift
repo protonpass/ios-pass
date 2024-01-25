@@ -45,6 +45,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case sharing(SharingFailureReason)
     case network(NetworkFailureReason)
     case invalidUrl(String)
+    case userDefault(UserDefaultFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -92,6 +93,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             reason.debugDescription
         case let .invalidUrl(url):
             "Invalid URL \(url)"
+        case let .userDefault(reason):
+            reason.debugDescription
         }
     }
 }
