@@ -36,17 +36,28 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
     func getCurrentDate() -> Date { currentDate }
 }
 
-private final class MockedTelemetryOnUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol {
-    func getUserSettings() async throws -> UserSettings {
-        .init(telemetry: true)
+private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepositoryProtocol {
+    
+    var settings = UserSettings(telemetry: true, highSecurity: HighSecurity.default)
+    
+    init(settings: UserSettings = UserSettings(telemetry: true, highSecurity: HighSecurity.default)) {
+        self.settings = settings
     }
-}
-
-private final class MockedTelemetryOffUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol {
-    let apiService = PMAPIService.dummyService()
-
-    func getUserSettings() async throws -> UserSettings {
-        .init(telemetry: false)
+   
+    func getSettings(for id: String)  async -> UserSettings {
+        settings
+    }
+    
+    func updateSettings(settings: UserSettings) async {
+        self.settings = settings
+    }
+    
+    func refreshSettings(for id: String) async throws {
+        
+    }
+    
+    func toggleSentinel(for id: String) async throws {
+        
     }
 }
 
@@ -100,7 +111,7 @@ extension TelemetryEventRepositoryTests {
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
-                                       remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
+                                       userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
@@ -127,7 +138,7 @@ extension TelemetryEventRepositoryTests {
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
-                                       remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
+                                       userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
@@ -155,7 +166,7 @@ extension TelemetryEventRepositoryTests {
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
-                                       remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
+                                       userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
@@ -182,7 +193,7 @@ extension TelemetryEventRepositoryTests {
         // works correctly when dealing with a large number of events
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
-                                       remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
+                                       userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
@@ -224,9 +235,10 @@ extension TelemetryEventRepositoryTests {
         thresholdProvider.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
                                                     thresholdProvider: thresholdProvider)
+        let settingsService = MockedUserSettingsRepositoryProtocol(settings: UserSettings(telemetry: false, highSecurity: .default))
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
-                                       remoteUserSettingsDatasource: MockedTelemetryOffUserSettingsDatasource(),
+                                       userSettingsRepository: settingsService,
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,

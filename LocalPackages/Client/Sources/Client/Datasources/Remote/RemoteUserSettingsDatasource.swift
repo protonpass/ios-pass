@@ -20,6 +20,10 @@
 
 public protocol RemoteUserSettingsDatasourceProtocol: Sendable {
     func getUserSettings() async throws -> UserSettings
+    @discardableResult
+    func activateSentinel() async throws -> Bool
+    @discardableResult
+    func desactivateSentinel() async throws -> Bool
 }
 
 public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol {}
@@ -29,5 +33,17 @@ public extension RemoteUserSettingsDatasource {
         let endpoint = GetUserSettingsEndpoint()
         let response = try await exec(endpoint: endpoint)
         return response.userSettings
+    }
+
+    func activateSentinel() async throws -> Bool {
+        let endpoint = ActivateSentinelEndpoint()
+        let response = try await exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+
+    func desactivateSentinel() async throws -> Bool {
+        let endpoint = DesactivateSentinelEndpoint()
+        let response = try await exec(endpoint: endpoint)
+        return response.isSuccessful
     }
 }
