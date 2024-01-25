@@ -327,20 +327,9 @@ private extension CreateEditLoginViewModel {
             .removeDuplicates()
             .sink { [weak self] passwordValue in
                 guard let self else { return }
-                password = removeSmartQuotes(from: passwordValue)
                 passwordStrength = getPasswordStrength(password: passwordValue)
             }
             .store(in: &cancellables)
-    }
-
-    func removeSmartQuotes(from password: String) -> String {
-        var nonSmartQuotePassword = password
-        nonSmartQuotePassword = nonSmartQuotePassword
-            .replacingOccurrences(of: "“", with: "\"") // replaces smart quotes
-        nonSmartQuotePassword = nonSmartQuotePassword.replacingOccurrences(of: "”", with: "\"")
-        nonSmartQuotePassword = nonSmartQuotePassword.replacingOccurrences(of: "‘", with: "'")
-        nonSmartQuotePassword = nonSmartQuotePassword.replacingOccurrences(of: "’", with: "'")
-        return nonSmartQuotePassword
     }
 }
 
