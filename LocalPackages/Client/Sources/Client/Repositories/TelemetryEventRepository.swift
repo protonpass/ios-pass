@@ -98,7 +98,7 @@ public extension TelemetryEventRepository {
 
         logger.debug("Threshold is reached. Checking telemetry settings before sending events.")
 
-        let telemetry = await userSettingsRepository.getSettings().telemetry
+        let telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
 
         if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
