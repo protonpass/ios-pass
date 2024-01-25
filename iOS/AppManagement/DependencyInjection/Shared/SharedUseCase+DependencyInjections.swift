@@ -261,3 +261,16 @@ extension SharedUseCasesContainer {
         self { ForkSession(apiService: self.apiManager.apiService) }
     }
 }
+
+// MARK: - User
+
+extension SharedUseCasesContainer {
+    var refreshUserSettings: Factory<RefreshUserSettingsUseCase> {
+        self { RefreshUserSettings(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository())
+        }
+    }
+
+    var toggleSentinel: Factory<ToggleSentinelUseCase> {
+        self { ToggleSentinel(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository()) }
+    }
+}
