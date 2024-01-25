@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
+import Entities
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
@@ -39,9 +41,33 @@ public extension AuthenticateBiometricallyUseCase {
  (maybe the result is cached but found no info in the docs)
  */
 public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
-    public init() {}
+    private let keychainService: any KeychainProtocol
+    private let biometricKey = "BiometricsPolicyState"
+
+    public init(keychainService: any KeychainProtocol) {
+        self.keychainService = keychainService
+    }
 
     public func execute(policy: LAPolicy, reason: String) async throws -> Bool {
-        try await LAContext().evaluatePolicy(policy, localizedReason: reason)
+        let context = LAContext()
+        do {
+            let result = try await context.evaluatePolicy(policy, localizedReason: reason)
+            let currentBiometricData = keychainService.data(forKey: biometricKey)
+            let newBiometricData = context.evaluatedPolicyDomainState
+
+            guard currentBiometricData == nil || currentBiometricData == newBiometricData else {
+                // todo logout and clean current saved biometrics
+                keychainService.remove(forKey: biometricKey)
+                throw PassError.biometricChange
+            }
+
+            if currentBiometricData == nil, let newBiometricData {
+                keychainService.set(newBiometricData, forKey: biometricKey)
+            }
+
+            return result
+        } catch {
+            throw error
+        }
     }
 }
