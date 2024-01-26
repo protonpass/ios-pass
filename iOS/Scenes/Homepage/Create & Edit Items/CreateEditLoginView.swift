@@ -371,8 +371,8 @@ private extension CreateEditLoginView {
                                    focusedField: $focusedField,
                                    field: Field.password,
                                    font: .body.monospacedFont(for: viewModel.password),
-                                   isSmart: false,
                                    onSubmit: { focusedField = .totp })
+                    .keyboardType(.asciiCapable)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundColor(PassColor.textNorm.toColor)

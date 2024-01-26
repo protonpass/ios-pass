@@ -54,7 +54,7 @@ public extension PassIcon {
 
     static let inviteBannerIcon = Self.icon(named: "InviteBannerIcon")
 
-    static let netShield = Self.icon(named: "NetShield")
+    static let netShield = Self.icon(named: "Netshield")
     static let sentinelLogo = Self.icon(named: "SentinelLogo")
 
     static let onboardAliases = Self.icon(named: "OnboardAliases")
