@@ -29,7 +29,6 @@ public struct SensitiveTextField<Field: Hashable>: View {
     let field: Field
     let font: UIFont
     let fontWeight: UIFont.Weight
-    let isSmart: Bool
     let onSubmit: (() -> Void)?
 
     private var isFocused: Bool { focusedField.wrappedValue == field }
@@ -41,7 +40,6 @@ public struct SensitiveTextField<Field: Hashable>: View {
                 field: Field,
                 font: UIFont = .body,
                 fontWeight: UIFont.Weight = .regular,
-                isSmart: Bool = true,
                 onSubmit: (() -> Void)? = nil) {
         _text = text
         self.placeholder = placeholder
@@ -49,7 +47,6 @@ public struct SensitiveTextField<Field: Hashable>: View {
         self.field = field
         self.font = font
         self.fontWeight = fontWeight
-        self.isSmart = isSmart
         self.onSubmit = onSubmit
     }
 
@@ -61,7 +58,6 @@ public struct SensitiveTextField<Field: Hashable>: View {
                                       placeholder: placeholder,
                                       font: font,
                                       fontWeight: fontWeight,
-                                      isSmart: isSmart,
                                       onSubmit: onSubmit)
                 .frame(maxHeight: shouldShowTextEditor ? .infinity : 0)
                 .opacity(shouldShowTextEditor ? 1 : 0)
