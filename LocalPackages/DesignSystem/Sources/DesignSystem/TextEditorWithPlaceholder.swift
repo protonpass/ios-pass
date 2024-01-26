@@ -28,6 +28,7 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
     let field: Field
     let placeholder: String
     let minHeight: CGFloat?
+    let isSmart: Bool
     let onSubmit: (() -> Void)?
 
     public init(text: Binding<String>,
@@ -37,6 +38,7 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
                 minHeight: CGFloat? = nil,
                 font: UIFont = .body,
                 fontWeight: UIFont.Weight = .regular,
+                isSmart: Bool = true,
                 onSubmit: (() -> Void)? = nil) {
         _text = text
         self.font = font
@@ -46,14 +48,15 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
         self.placeholder = placeholder
         self.minHeight = minHeight
         self.onSubmit = onSubmit
+        self.isSmart = isSmart
     }
 
     public var body: some View {
-        TextField(placeholder, text: $text, axis: .vertical)
+        currentTextField
             .focused(focusedField, equals: field)
             .scrollContentBackground(.hidden)
             .submitLabel(onSubmit != nil ? .next : .return)
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .foregroundColor(PassColor.textNorm.toColor)
             .font(Font(font.weight(fontWeight)))
             .frame(minHeight: minHeight, alignment: .topLeading)
             .onChange(of: text) { text in
@@ -62,5 +65,19 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
                     onSubmit()
                 }
             }
+    }
+
+    @ViewBuilder
+    private var currentTextField: some View {
+        if isSmart {
+            TextField(placeholder, text: $text, axis: .vertical)
+        } else {
+            FullTextField(placeholder, text: $text)
+                .smartDashes(false)
+                .smartQuotes(false)
+                .spellChecking(false)
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
+        }
     }
 }
