@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import Entities
 import Factory
 import Foundation
 
@@ -80,14 +81,17 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let authenticated = try await self.authenticate(policy: self.preferences.localAuthenticationPolicy)
+                let authenticated = try await authenticate(policy: self.preferences.localAuthenticationPolicy)
                 if authenticated {
-                    self.recordSuccess()
+                    recordSuccess()
                 } else {
-                    self.recordFailure(nil)
+                    recordFailure(nil)
                 }
+            } catch PassError.biometricChange {
+                /// We need to logout the user as we detected that the biometric settings have changed
+                onFailure()
             } catch {
-                self.recordFailure(error)
+                recordFailure(error)
             }
         }
     }
