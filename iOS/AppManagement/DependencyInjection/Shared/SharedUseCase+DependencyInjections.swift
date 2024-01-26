@@ -78,7 +78,7 @@ extension SharedUseCasesContainer {
     }
 
     var authenticateBiometrically: Factory<AuthenticateBiometricallyUseCase> {
-        self { AuthenticateBiometrically() }
+        self { AuthenticateBiometrically(keychainService: SharedToolingContainer.shared.keychain()) }
     }
 
     var getLocalAuthenticationMethods: Factory<GetLocalAuthenticationMethodsUseCase> {

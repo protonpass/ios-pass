@@ -21,7 +21,7 @@
 import Foundation
 import ProtonCoreKeymaker
 
-public protocol KeychainProtocol: AnyObject {
+public protocol KeychainProtocol: AnyObject, Sendable {
     // Getters
     func data(forKey key: String) -> Data?
     func string(forKey key: String) -> String?
@@ -34,7 +34,7 @@ public protocol KeychainProtocol: AnyObject {
     func remove(forKey key: String)
 }
 
-extension Keychain: KeychainProtocol {}
+extension Keychain: @unchecked Sendable, KeychainProtocol {}
 
 public final class PPKeychain: Keychain {
     public init() {
