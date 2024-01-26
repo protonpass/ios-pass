@@ -4,14 +4,35 @@
 <dict>
 	<key>APP_VERSION_IDENTIFIER</key>
 	<string>$(APP_VERSION_IDENTIFIER)</string>
-	<key>IS_QA_BUILD</key>
-	<string>$(IS_QA_BUILD)</string>
-	<key>IS_BETA_BUILD</key>
-	<string>$(IS_BETA_BUILD)</string>
-	<key>MODULE</key>
-	<string>HOST_APP</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLName</key>
+			<string>me.proton.pass.ios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>otpauth</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>me.proton.pass.ios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>deeplink</string>
+			</array>
+		</dict>
+	</array>
 	<key>GIT_COMMIT_HASH</key>
 	<string></string>
+	<key>IS_BETA_BUILD</key>
+	<string>$(IS_BETA_BUILD)</string>
+	<key>IS_QA_BUILD</key>
+	<string>$(IS_QA_BUILD)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>ITSEncryptionExportComplianceCode</key>
@@ -25,6 +46,8 @@
 		<string>brave</string>
 		<string>microsoft-edge</string>
 	</array>
+	<key>MODULE</key>
+	<string>HOST_APP</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
