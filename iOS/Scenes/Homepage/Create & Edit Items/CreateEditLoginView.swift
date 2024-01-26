@@ -372,9 +372,10 @@ private extension CreateEditLoginView {
                                    field: Field.password,
                                    font: .body.monospacedFont(for: viewModel.password),
                                    onSubmit: { focusedField = .totp })
+                    .keyboardType(.asciiCapable)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundColor(PassColor.textNorm.toColor)
                     .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
