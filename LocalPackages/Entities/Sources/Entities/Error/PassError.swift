@@ -46,6 +46,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case network(NetworkFailureReason)
     case invalidUrl(String)
     case userDefault(UserDefaultFailureReason)
+    case biometricChange
 
     public var debugDescription: String {
         switch self {
@@ -95,6 +96,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             "Invalid URL \(url)"
         case let .userDefault(reason):
             reason.debugDescription
+        case .biometricChange:
+            "We detected a change in recorded biometric"
         }
     }
 }
