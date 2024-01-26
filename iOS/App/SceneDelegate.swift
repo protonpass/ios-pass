@@ -50,6 +50,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         uncoverApp()
     }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let firstUrl = URLContexts.first?.url else {
+            return
+        }
+
+        print("Woot url \(firstUrl.absoluteString)")
+    }
 }
 
 // MARK: - App cover
