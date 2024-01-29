@@ -22,7 +22,7 @@
 import CoreSpotlight
 import Foundation
 
-public enum SpotlightSearchableItemType {
+public enum SpotlightSearchableItemType: Sendable {
     case all
     case precise(ItemContentType)
 }
@@ -35,6 +35,9 @@ public extension ItemContent {
     func toSearchableItem() throws -> CSSearchableItem {
         let attributeSet = CSSearchableItemAttributeSet(contentType: .item)
         attributeSet.title = name
+        // "displayName" is required by iOS 17
+        // https://forums.developer.apple.com/forums/thread/734996?answerId=763586022#763586022
+        attributeSet.displayName = name
 
         var contents = [String?]()
 
