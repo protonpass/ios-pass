@@ -47,6 +47,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case invalidUrl(String)
     case userDefault(UserDefaultFailureReason)
     case biometricChange
+    case failedToConvertBase64StringToData(String)
 
     public var debugDescription: String {
         switch self {
@@ -98,6 +99,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             reason.debugDescription
         case .biometricChange:
             "We detected a change in recorded biometric"
+        case let .failedToConvertBase64StringToData(string):
+            "Failed to convert base 64 string to data \"\(string)\""
         }
     }
 }

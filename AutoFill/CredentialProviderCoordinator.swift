@@ -154,7 +154,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 logger.trace("Autofilling from QuickType bar")
-                let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
+                let ids = try IDs.deserializeBase64(recordIdentifier)
                 if Task.isCancelled {
                     cancelAutoFill(reason: .failed)
                 }
