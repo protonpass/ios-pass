@@ -49,6 +49,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+    private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
 
     private var cancellables = Set<AnyCancellable>()
@@ -157,12 +158,27 @@ private extension VaultsManager {
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
 
-        if await loginMethod.isManualLogIn() {
-            try await indexAllLoginItems(ignorePreferences: false)
-        } else {
-            Task.detached(priority: .background) { [weak self] in
-                guard let self else { return }
+        let indexForAutoFillAndSplotlight: @Sendable () async -> Void = { [weak self] in
+            guard let self else { return }
+            // "Do catch" separately because we don't want an operation to fail the others
+            do {
                 try await indexAllLoginItems(ignorePreferences: false)
+            } catch {
+                logger.error(error)
+            }
+
+            do {
+                try await indexItemsForSpotlight(for: .all)
+            } catch {
+                logger.error(error)
+            }
+        }
+
+        if await loginMethod.isManualLogIn() {
+            await indexForAutoFillAndSplotlight()
+        } else {
+            Task.detached(priority: .background) {
+                await indexForAutoFillAndSplotlight()
             }
         }
     }
