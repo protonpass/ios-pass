@@ -1,7 +1,7 @@
 //
-// PPCoreError.swift
-// Proton Pass - Created on 07/02/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// IDs.swift
+// Proton Pass - Created on 29/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,20 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-/// Proton Pass core module related errors.
-public enum PPCoreError: Error, CustomDebugStringConvertible, Sendable {
-    case biometryTypeNotInitialized
-    case failedToRandomizeData
+/// A combination of `shareId` and `itemId` of an item to make up an unique ID
+public struct IDs: CodableBase64, ItemIdentifiable, Sendable {
+    public let shareId: String
+    public let itemId: String
 
-    public var debugDescription: String {
-        switch self {
-        case .biometryTypeNotInitialized:
-            "Biometry type not initialized"
-        case .failedToRandomizeData:
-            "Failed to randomize data"
-        }
+    public init(shareId: String, itemId: String) {
+        self.shareId = shareId
+        self.itemId = itemId
     }
 }
