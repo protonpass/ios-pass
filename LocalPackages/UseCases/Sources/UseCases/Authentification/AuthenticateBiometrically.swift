@@ -52,7 +52,7 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         let context = LAContext()
         do {
             let result = try await context.evaluatePolicy(policy, localizedReason: reason)
-            
+
             #warning("commented out check until core keychain is updated")
 //            let currentBiometricData = keychainService.data(forKey: biometricKey)
 //            let newBiometricData = context.evaluatedPolicyDomainState
