@@ -328,3 +328,11 @@ extension UseCasesContainer {
         self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
     }
 }
+
+// MARK: - Rust
+
+extension UseCasesContainer {
+    var parseTotpUrl: Factory<ParseTotpUrlUseCase> {
+        self { ParseTotpUrl() }
+    }
+}
