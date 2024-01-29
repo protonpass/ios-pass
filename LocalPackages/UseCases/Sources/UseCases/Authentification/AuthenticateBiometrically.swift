@@ -42,6 +42,7 @@ public extension AuthenticateBiometricallyUseCase {
  */
 public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     private let keychainService: any KeychainProtocol
+    // periphery:ignore
     private let biometricKey = "BiometricsPolicyState"
 
     public init(keychainService: any KeychainProtocol) {
