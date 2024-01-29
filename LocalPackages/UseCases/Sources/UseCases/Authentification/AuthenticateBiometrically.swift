@@ -52,18 +52,20 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         let context = LAContext()
         do {
             let result = try await context.evaluatePolicy(policy, localizedReason: reason)
-            let currentBiometricData = keychainService.data(forKey: biometricKey)
-            let newBiometricData = context.evaluatedPolicyDomainState
-
-            guard currentBiometricData == nil || currentBiometricData == newBiometricData else {
-                // todo logout and clean current saved biometrics
-                keychainService.remove(forKey: biometricKey)
-                throw PassError.biometricChange
-            }
-
-            if currentBiometricData == nil, let newBiometricData {
-                keychainService.set(newBiometricData, forKey: biometricKey)
-            }
+            
+            #warning("commented out check until core keychain is updated")
+//            let currentBiometricData = keychainService.data(forKey: biometricKey)
+//            let newBiometricData = context.evaluatedPolicyDomainState
+//
+//            guard currentBiometricData == nil || currentBiometricData == newBiometricData else {
+//                // todo logout and clean current saved biometrics
+//                keychainService.remove(forKey: biometricKey)
+//                throw PassError.biometricChange
+//            }
+//
+//            if currentBiometricData == nil, let newBiometricData {
+//                keychainService.set(newBiometricData, forKey: biometricKey)
+//            }
 
             return result
         } catch {
