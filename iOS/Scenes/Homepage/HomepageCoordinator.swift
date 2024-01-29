@@ -382,6 +382,8 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
+                case let .itemDetail(content):
+                    presentItemDetailView(for: content, asSheet: shouldShowAsSheet())
                 }
             }
             .store(in: &cancellables)
