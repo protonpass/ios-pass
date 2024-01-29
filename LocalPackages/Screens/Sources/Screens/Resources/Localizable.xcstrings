@@ -50,7 +50,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turvallisuussyistä pääsysi on vahvistettava"
+            "value" : "Käyttöoikeutesi on tietoturvasyistä vahvistettava"
           }
         },
         "fr" : {
@@ -129,6 +129,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vì lý do bảo mật, truy cập của bạn cần được xác nhận"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "For security reasons, your access needs to be confirmed"
           }
         }
       }
@@ -256,6 +262,18 @@
             "state" : "translated",
             "value" : "Nhận không giới hạn bí danh, tận hưởng các tính năng độc quyền, vầ hỗ trợ chúng tôi bằng việc đăng ký gói Pass Plus."
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
+          }
         }
       }
     },
@@ -374,6 +392,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm hiểu thêm về Pass"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learn more about Pass"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learn more about Pass"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learn more about Pass"
           }
         }
       }
@@ -495,6 +531,24 @@
             "state" : "translated",
             "value" : "Nhiều kho lưu trữ"
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Multiple Vaults"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Multiple Vaults"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Multiple Vaults"
+          }
         }
       }
     },
@@ -615,6 +669,24 @@
             "state" : "translated",
             "value" : "Pass Plus"
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pass Plus"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pass Plus"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pass Plus"
+          }
         }
       }
     },
@@ -667,7 +739,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odotetaan pääsyä jaettuihin tietoihin"
+            "value" : "Odotetaan jaettujen tietojen käyttöoikeutta"
           }
         },
         "fr" : {
@@ -747,6 +819,12 @@
             "state" : "translated",
             "value" : "Đang chờ truy cập vào dữ liệu được chia sẻ"
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pending access to the shared data"
+          }
         }
       }
     },
@@ -761,8 +839,8 @@
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pro použití rozšíření Proton Pass AutoFill se prosím přihlaste"
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
         },
         "de" : {
@@ -786,43 +864,43 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inicia sesión para utilizar la extensión de rellenado automático de Proton Pass."
+            "value" : "Inicia sesión para usar la extensión de relleno automático de Proton Pass"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inicie sesión para usar la extensión de completado automático de Proton Pass."
+            "value" : "Inicie sesión para usar la extensión de completado automático de Proton Pass"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kirjaudu käyttääksesi Proton Passin automaattitäytön laajennusta"
+            "value" : "Käytä Proton Passin automaattitäytön laajennusta kirjautumalla sisään"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connectez-vous pour utiliser l'extension de remplissage automatique de Proton Pass."
+            "value" : "Veuillez vous connecter pour utiliser la fonction de remplissage automatique Proton Pass."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Accedi per usare l'estensione di compilazione automatica di Proton Pass"
+            "value" : "Effettua l'accesso per usare l'estensione di compilazione automatica di Proton Pass"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass 自動入力 拡張機能を使用するにはログインしてください"
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass-ის ავტომატური შევსების ჩასართავად, გთხოვთ, შედით სისტემაში"
+            "value" : "Proton Pass Autofill გაფართოების გამოსაყენებლად, გთხოვთ, შედით სისტემაში"
           }
         },
         "ko" : {
@@ -858,13 +936,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autentificați-vă pentru a putea folosi autocompletarea cu extensia Proton Pass."
+            "value" : "Conectați-vă pentru a putea folosi autocompletarea cu extensia Proton Pass."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prihláste sa, prosím, aby ste mohli používať rozšírenie s automatický vypĺňaním pomocou Proton Pass"
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
         },
         "sv" : {
@@ -881,14 +959,20 @@
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Увійдіть, щоб скористатися розширенням автозаповнення Proton Pass"
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vui lòng đăng nhập để sử dụng trình mở rộng tự động điền Proton Pass"
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass AutoFill extension"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
         }
       }
@@ -899,6 +983,132 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Please sign in to use Proton Pass Share extension"
+          }
+        },
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увайдзіце, каб скарыстацца пашырэннем для абагулення Proton Pass"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass Share extension"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte melde dich an, um die Proton Pass Share-Erweiterung zu nutzen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρακαλούμε συνδεθείτε για να χρησιμοποιήσετε την προέκταση Κοινοποίησης Proton Pass"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass Share extension"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicia sesión para usar la extensión de compartir de Proton Pass"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sesión para usar la extensión de compartir de Proton Pass"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä Proton Passin jakamisen laajennusta kirjautumalla sisään"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez vous connecter pour utiliser la fonction de partage Proton Pass."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effettua l'accesso per usare l'estensione di condivisione di Proton Pass"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass Share extension"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass Share გაფართოების გამოსაყენებლად, გთხოვთ, შედით სისტემაში"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass 공유 확장을 사용하기 위해선 로그인하십시오."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaloguj się, aby udostępniać dane za pomocą rozszerzenia Proton Pass"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sessão para usar a extensão de compartilhar do Proton Pass"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectați-vă pentru a putea folosi partajarea cu extensia Proton Pass."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass Share extension"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logga in för att använda Proton Pass delnings-tillägg"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass Paylaşma eklentisini kullanabilmek için oturum açın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Please sign in to use Proton Pass Share extension"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Please sign in to use Proton Pass Share extension"
           }
         }
@@ -1033,6 +1243,12 @@
             "state" : "translated",
             "value" : "Mới dùng"
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Recents"
+          }
         }
       }
     },
@@ -1085,7 +1301,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jaetaan enintään kymmenelle henkilölle"
+            "value" : "Jakaminen kymmenelle henkilölle"
           }
         },
         "fr" : {
@@ -1153,6 +1369,24 @@
             "state" : "translated",
             "value" : "Chia sẻ với tối đa 10 người"
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sharing with up to 10 people"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sharing with up to 10 people"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sharing with up to 10 people"
+          }
         }
       }
     },
@@ -1161,6 +1395,132 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Signed out"
+          }
+        },
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы выйшлі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Signed out"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abgemeldet"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποσυνδεδεμένος"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Signed out"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión cerrada"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirjattu ulos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déconnecté"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disconnesso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Signed out"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამოსული"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그아웃됨"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wylogowano"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessão encerrada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deconectat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Signed out"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utloggad"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oturum kapatıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Signed out"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Signed out"
           }
         }
@@ -1277,6 +1637,30 @@
             "state" : "translated",
             "value" : "Öneriler"
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Suggestions"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Suggestions"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Suggestions"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Suggestions"
+          }
         }
       }
     },
@@ -1329,7 +1713,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rajoittamaton 2FA Automaattitäyttö"
+            "value" : "Rajoittamaton 2FA-automaattitäyttö"
           }
         },
         "fr" : {
@@ -1396,6 +1780,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tự động điền 2FA không giới hạn"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlimited 2FA Autofill"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlimited 2FA Autofill"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlimited 2FA Autofill"
           }
         }
       }
@@ -1529,6 +1931,12 @@
             "state" : "translated",
             "value" : "Không giới hạn email bí danh"
           }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlimited email aliases"
+          }
         }
       }
     },
@@ -1581,7 +1989,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Päivitä"
+            "value" : "Päivitä tilaus"
           }
         },
         "fr" : {
@@ -1660,6 +2068,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nâng cấp"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Upgrade"
           }
         }
       }
