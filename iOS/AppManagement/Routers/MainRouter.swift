@@ -82,6 +82,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case createEditLogin(mode: ItemMode)
     case createItem(item: SymmetricallyEncryptedItem, type: ItemContentType)
     case updateItem(type: ItemContentType, updated: Bool)
+    case itemDetail(ItemContent)
 }
 
 enum UIElementDisplay: Sendable {
