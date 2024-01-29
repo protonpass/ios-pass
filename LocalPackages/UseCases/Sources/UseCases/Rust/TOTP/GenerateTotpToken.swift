@@ -48,3 +48,32 @@ public final class GenerateTotpToken: GenerateTotpTokenUseCase {
                      timerData: .init(total: Int(period), remaining: Int(remainingSeconds)))
     }
 }
+
+import Core
+import Entities
+import Foundation
+
+@preconcurrency import PassRustCore
+
+public protocol ParseTotpUrlUseCase: Sendable {
+    func execute(uri: String) throws
+}
+
+public extension ParseTotpUrlUseCase {
+    func callAsFunction(uri: String) throws {
+        try execute(uri: uri)
+    }
+}
+
+public final class ParseTotpUrl: ParseTotpUrlUseCase {
+    private let parser: any TotpUriParserProtocol
+
+    public init(parser: any TotpUriParserProtocol = TotpUriParser()) {
+        self.parser = parser
+    }
+
+    public func execute(uri: String) throws {
+        let totp = try parser.parse(uriString: uri)
+        print("woot totp: \(totp)")
+    }
+}
