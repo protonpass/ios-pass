@@ -51,6 +51,10 @@ private extension UseCasesContainer {
     var itemRepository: any ItemRepositoryProtocol {
         SharedRepositoryContainer.shared.itemRepository()
     }
+
+    var symmetricKeyProvider: any SymmetricKeyProvider {
+        SharedDataContainer.shared.symmetricKeyProvider()
+    }
 }
 
 // MARK: User report
@@ -291,11 +295,16 @@ extension UseCasesContainer {
         self { GetSearchableItems(itemRepository: self.itemRepository,
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                   getAllPinnedItems: self.getAllPinnedItems(),
-                                  symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
+                                  symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 
     var getItemHistory: Factory<GetItemHistoryUseCase> {
         self { GetItemHistory(itemRepository: self.itemRepository) }
+    }
+
+    var getItemContentFromBase64IDs: Factory<GetItemContentFromBase64IDsUseCase> {
+        self { GetItemContentFromBase64IDs(itemRepository: self.itemRepository,
+                                           symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 }
 

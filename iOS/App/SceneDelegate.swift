@@ -19,7 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import CoreSpotlight
 import DesignSystem
+import Entities
 import Factory
 import SwiftUI
 
@@ -28,8 +30,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var appCoverView: UIView?
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let saveAllLogs = resolve(\SharedUseCasesContainer.saveAllLogs)
     private let deepLinkRoutingService = resolve(\RouterContainer.deepLinkRoutingService)
+    private let getItemContentFromBase64IDs = resolve(\UseCasesContainer.getItemContentFromBase64IDs)
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -56,6 +60,17 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         deepLinkRoutingService.parseAndDispatch(context: URLContexts)
+    }
+    
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        switch userActivity.activityType {
+        case CSSearchableItemActionType:
+            if let base64Ids = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+                showItemDetail(base64Ids: base64Ids)
+            }
+        default:
+            break
+        }
     }
 }
 
@@ -108,5 +123,23 @@ private extension SceneDelegate {
                            appCoverView?.removeFromSuperview()
                            appCoverView = nil
                        })
+    }
+}
+
+private extension SceneDelegate {
+    func showItemDetail(base64Ids: String) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let itemContent = try await getItemContentFromBase64IDs(for: base64Ids)
+                // Wait until the app is completely uncovered
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
+                    guard let self else { return }
+                    router.present(for: .itemDetail(itemContent))
+                }
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
