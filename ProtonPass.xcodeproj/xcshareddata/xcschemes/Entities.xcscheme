@@ -17,7 +17,7 @@
                BlueprintIdentifier = "Entities"
                BuildableName = "Entities"
                BlueprintName = "Entities"
-               ReferencedContainer = "container:">
+               ReferencedContainer = "container:LocalPackages/Entities">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -52,7 +52,7 @@
             BlueprintIdentifier = "Entities"
             BuildableName = "Entities"
             BlueprintName = "Entities"
-            ReferencedContainer = "container:">
+            ReferencedContainer = "container:LocalPackages/Entities">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
