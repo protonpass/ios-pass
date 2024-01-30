@@ -24,6 +24,7 @@ import Core
 import Factory
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreCryptoGoInterface
+import ProtonCoreLog
 import UIKit
 
 @main
@@ -36,6 +37,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         injectDefaultCryptoImplementation()
         setUpSentry(bundle: .main)
         setUpDefaultValuesForSettingsBundle()
+        configureCoreLogger()
         return true
     }
 
@@ -51,6 +53,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 private extension AppDelegate {
+    private func configureCoreLogger() {
+        let environment = ProtonPassDoH(bundle: .main).environment.name
+        PMLog.setEnvironment(environment: environment)
+    }
+
     func setUpDefaultValuesForSettingsBundle() {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
