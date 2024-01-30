@@ -385,7 +385,7 @@ extension HomepageCoordinator {
                 case let .itemDetail(content):
                     presentItemDetailView(for: content, asSheet: shouldShowAsSheet())
                 case .editSpotlightSearchableContent:
-                    print(#function)
+                    presentEditSpotlightSearchableContentView()
                 }
             }
             .store(in: &cancellables)
@@ -635,6 +635,17 @@ extension HomepageCoordinator {
         alert.addAction(deleteAction)
         alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
         present(alert)
+    }
+
+    func presentEditSpotlightSearchableContentView() {
+        let viewController = UIHostingController(rootView: EditSpotlightSearchableContentView())
+
+        let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableContent.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 
     func presentSearchScreen(_ searchMode: SearchMode) {
