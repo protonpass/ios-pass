@@ -90,7 +90,7 @@ public protocol ItemContentProtocol: Sendable {
     var customFields: [CustomField] { get }
 }
 
-public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable {
+public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, Identifiable {
     public let shareId: String
     public let itemUuid: String
     public let item: Item
@@ -98,6 +98,26 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable {
     public let note: String
     public let contentData: ItemContentData
     public let customFields: [CustomField]
+
+    public var id: String {
+        item.itemID
+    }
+
+    public init(shareId: String,
+                itemUuid: String,
+                item: Item,
+                name: String,
+                note: String,
+                contentData: ItemContentData,
+                customFields: [CustomField]) {
+        self.shareId = shareId
+        self.itemUuid = itemUuid
+        self.item = item
+        self.name = name
+        self.note = note
+        self.contentData = contentData
+        self.customFields = customFields
+    }
 
     public init(shareId: String,
                 item: Item,
@@ -139,6 +159,22 @@ extension ItemContent: ItemThumbnailable {
         default:
             nil
         }
+    }
+}
+
+public extension ItemContent {
+    var loginItem: LogInItemData? {
+        if case let .login(item) = contentData {
+            return item
+        }
+        return nil
+    }
+
+    var creditCardItem: CreditCardData? {
+        if case let .creditCard(item) = contentData {
+            return item
+        }
+        return nil
     }
 }
 
