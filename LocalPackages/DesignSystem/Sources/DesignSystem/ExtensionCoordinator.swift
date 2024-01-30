@@ -60,7 +60,6 @@ public extension ExtensionCoordinator {
         setLastChildViewController(viewController)
     }
 
-    #warning("Localize Design System package")
     func alert(error: Error, onCancel: @escaping () -> Void) {
         let alert = UIAlertController(title: #localized("Error occured"),
                                       message: error.localizedDescription,

@@ -29,25 +29,26 @@ struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
-        if viewModel.isShownAsSheet {
-            NavigationView {
-                realBody
+        realBody
+            .if(viewModel.isShownAsSheet) { view in
+                view.navigationStackEmbeded()
             }
-            .navigationViewStyle(.stack)
             .theme(viewModel.selectedTheme)
-        } else {
-            realBody
-                .theme(viewModel.selectedTheme)
-        }
     }
+}
 
-    private var realBody: some View {
+private extension SettingsView {
+    var realBody: some View {
         ScrollView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 untitledSection
 
                 clipboardSection
                     .padding(.vertical)
+
+                if Bundle.main.isQaBuild {
+                    spotlightSection
+                }
 
                 logsSection
 
@@ -63,10 +64,11 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.large)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
+        .animation(.default, value: viewModel.spotlightEnabled)
     }
 
     @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
+    var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
@@ -74,8 +76,10 @@ struct SettingsView: View {
                          action: { viewModel.goBack() })
         }
     }
+}
 
-    private var untitledSection: some View {
+private extension SettingsView {
+    var untitledSection: some View {
         VStack(spacing: 0) {
             if !ProcessInfo.processInfo.isiOSAppOnMac {
                 OptionRow(action: { viewModel.editDefaultBrowser() },
@@ -118,8 +122,10 @@ struct SettingsView: View {
         }
         .roundedEditableSection()
     }
+}
 
-    private var clipboardSection: some View {
+private extension SettingsView {
+    var clipboardSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             Text("Clipboard")
                 .sectionHeaderText()
@@ -148,8 +154,41 @@ struct SettingsView: View {
             .roundedEditableSection()
         }
     }
+}
 
-    private var logsSection: some View {
+private extension SettingsView {
+    var spotlightSection: some View {
+        VStack(spacing: 0) {
+            Text("Spotlight")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, DesignConstant.sectionPadding)
+
+            VStack(spacing: 0) {
+                OptionRow(height: .tall) {
+                    Toggle(isOn: $viewModel.spotlightEnabled) {
+                        Text("Show content in search")
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    }
+                    .tint(Color(uiColor: PassColor.interactionNorm))
+                }
+
+                if viewModel.spotlightEnabled {
+                    PassSectionDivider()
+                }
+            }
+            .roundedEditableSection()
+
+            Text("Allow items to appear in Search")
+                .sectionTitleText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, DesignConstant.sectionPadding / 2)
+        }
+    }
+}
+
+private extension SettingsView {
+    var logsSection: some View {
         VStack(spacing: 0) {
             Text("Logs")
                 .sectionHeaderText()
@@ -182,8 +221,10 @@ struct SettingsView: View {
                       .padding(.top, DesignConstant.sectionPadding / 2)
         }
     }
+}
 
-    private var applicationSection: some View {
+private extension SettingsView {
+    var applicationSection: some View {
         VStack(spacing: 0) {
             Text("Application")
                 .sectionHeaderText()
