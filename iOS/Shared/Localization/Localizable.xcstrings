@@ -35312,6 +35312,9 @@
         }
       }
     },
+    "Login items" : {
+
+    },
     "Login moved to trash" : {
       "comment" : "Messages when items are moved to trash",
       "extractionState" : "manual",
@@ -52699,6 +52702,9 @@
           }
         }
       }
+    },
+    "Set up a login 2FA" : {
+
     },
     "Settings" : {
       "localizations" : {

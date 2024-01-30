@@ -84,7 +84,7 @@ extension CreateEditItemCoordinator {
         guard let shareId = await getCurrentSelectedShareId() else { return }
         switch itemType {
         case .login:
-            let logInType = ItemCreationType.login(title: nil, url: nil, note: nil, autofill: false)
+            let logInType = ItemCreationType.login(autofill: false)
             try presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
         case .alias:
             try presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))

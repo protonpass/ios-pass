@@ -18,4 +18,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import DesignSystem
+import Entities
+import SwiftUI
+
+extension HomepageCoordinator {
+    func totpDeepLink(totpUri: String) {
+        let viewModel = TotpLoginsViewModel(totpUri: totpUri)
+        let view = TotpLoginsView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.large, parentViewController: rootViewController)
+
+        present(viewController)
+    }
+
+    func presentCreateEditLoginView(mode: ItemMode) {
+        do {
+            let viewModel = try CreateEditLoginViewModel(mode: mode,
+                                                         upgradeChecker: upgradeChecker,
+                                                         vaults: vaultsManager.getAllVaults())
+            viewModel.delegate = self
+            viewModel.createEditLoginViewModelDelegate = self
+            let view = CreateEditLoginView(viewModel: viewModel)
+            present(view)
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
+        }
+    }
+}
