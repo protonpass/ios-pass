@@ -18,4 +18,62 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Factory
 import Foundation
+
+enum DeeplinkType {
+    case otpauth
+    case none
+}
+
+extension URL {
+    var linkType: DeeplinkType {
+        if scheme == "otpauth" {
+            return .otpauth
+        }
+        return .none
+    }
+}
+
+final class DeepLinkRoutingService {
+    private let router: MainUIKitSwiftUIRouter
+
+    init(router: MainUIKitSwiftUIRouter) {
+        self.router = router
+    }
+
+    @MainActor func parseAndDispatch(url: URL) {
+        switch url.linkType {
+        case .otpauth:
+            let uri = url.absoluteString.decodeHTMLAndPercentEntities()
+            guard !uri.isEmpty else {
+                return
+            }
+            router.deeplink(to: .totp(uri))
+        default:
+            return
+        }
+    }
+}
+
+extension String {
+    func decodeHTMLAndPercentEntities() -> String {
+        let decodedHTML = decodingHTMLEntities()
+        return decodedHTML.removingPercentEncoding ?? decodedHTML
+    }
+
+    private func decodingHTMLEntities() -> String {
+        guard let data = data(using: .utf8) else { return self }
+
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+
+        if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
+            return attributedString.string
+        } else {
+            return self
+        }
+    }
+}

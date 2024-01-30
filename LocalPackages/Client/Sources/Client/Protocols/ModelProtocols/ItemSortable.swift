@@ -19,47 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Foundation
 import Macro
-
-public enum SortType: Int, CaseIterable, Equatable {
-    case mostRecent = 0, alphabeticalAsc, alphabeticalDesc, newestToOldest, oldestToNewest
-
-    public var title: String {
-        switch self {
-        case .mostRecent:
-            #localized("Most recent")
-        case .alphabeticalAsc:
-            #localized("Title (A-Z)")
-        case .alphabeticalDesc:
-            #localized("Title (Z-A)")
-        case .newestToOldest:
-            #localized("Newest to oldest")
-        case .oldestToNewest:
-            #localized("Oldest to newest")
-        }
-    }
-
-    public var isAlphabetical: Bool {
-        switch self {
-        case .alphabeticalAsc, .alphabeticalDesc:
-            true
-        default:
-            false
-        }
-    }
-
-    public var sortDirection: SortDirection? {
-        switch self {
-        case .alphabeticalAsc:
-            .ascending
-        case .alphabeticalDesc:
-            .descending
-        default:
-            nil
-        }
-    }
-}
 
 public protocol DateSortable: Hashable, Sendable {
     var dateForSorting: Date { get }

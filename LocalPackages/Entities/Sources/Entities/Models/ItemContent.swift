@@ -176,6 +176,15 @@ public extension ItemContent {
         }
         return nil
     }
+
+    var hasTotpUri: Bool {
+        switch contentData {
+        case let .login(data):
+            !data.totpUri.isEmpty
+        default:
+            false
+        }
+    }
 }
 
 extension ItemContentProtobuf: ProtobufableItemContentProtocol {
