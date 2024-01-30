@@ -244,6 +244,11 @@ extension SharedUseCasesContainer {
     var canEditItem: Factory<CanEditItemUseCase> {
         self { CanEditItem() }
     }
+
+    var getActiveLoginItems: Factory<GetActiveLoginItemsUseCase> {
+        self { GetActiveLoginItems(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                                   repository: self.itemRepository) }
+    }
 }
 
 // MARK: - Rust Validators

@@ -78,6 +78,45 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
         pinned = item.item.pinned
         self.optionalExtras = optionalExtras
     }
+
+    public init(from itemContent: ItemContent,
+                allVaults: [Vault]) {
+        itemId = itemContent.item.itemID
+        shareId = itemContent.shareId
+
+        if allVaults.count > 1 {
+            vault = allVaults.first { $0.shareId == itemContent.shareId }
+        } else {
+            vault = nil
+        }
+
+        type = itemContent.contentData.type
+        aliasEmail = itemContent.item.aliasEmail
+        name = itemContent.name
+        note = itemContent.note
+
+        var optionalExtras: [String] = []
+
+        switch itemContent.contentData {
+        case let .login(data):
+            url = data.urls.first
+            requiredExtras = [data.username]
+            optionalExtras = data.urls
+        default:
+            url = nil
+            requiredExtras = []
+            optionalExtras = []
+        }
+
+        for customField in itemContent.customFields where customField.type == .text {
+            optionalExtras.append("\(customField.title): \(customField.content)")
+        }
+
+        lastUseTime = itemContent.item.lastUseTime ?? 0
+        modifyTime = itemContent.item.modifyTime
+        pinned = itemContent.item.pinned
+        self.optionalExtras = optionalExtras
+    }
 }
 
 extension SearchableItem {
