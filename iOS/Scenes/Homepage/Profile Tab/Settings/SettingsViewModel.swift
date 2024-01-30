@@ -61,7 +61,14 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
-    @Published var spotlightEnabled: Bool { didSet { preferences.spotlight = spotlightEnabled } }
+    @Published var spotlightEnabled: Bool {
+        didSet {
+            preferences.spotlight = spotlightEnabled
+            indexOrUnindexForSpotlight()
+        }
+    }
+
+    @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
 
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
@@ -74,6 +81,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         displayFavIcons = preferences.displayFavIcons
         shareClipboard = preferences.shareClipboard
         spotlightEnabled = preferences.spotlight
+        spotlightSearchableContent = preferences.spotlightSearchableContent
 
         setup()
     }
@@ -96,6 +104,10 @@ extension SettingsViewModel {
 
     func editClipboardExpiration() {
         delegate?.settingsViewModelWantsToEditClipboardExpiration()
+    }
+
+    func editSpotlightSearchableContent() {
+        router.present(for: .editSpotlightSearchableContent)
     }
 
     func viewHostAppLogs() {
@@ -144,6 +156,11 @@ private extension SettingsViewModel {
                 selectedBrowser = preferences.browser
                 selectedTheme = preferences.theme
                 selectedClipboardExpiration = preferences.clipboardExpiration
+
+                if preferences.spotlightSearchableContent != spotlightSearchableContent {
+                    spotlightSearchableContent = preferences.spotlightSearchableContent
+                    indexOrUnindexForSpotlight()
+                }
             }
             .store(in: &cancellables)
 
@@ -161,5 +178,9 @@ private extension SettingsViewModel {
                 logger.error(error)
             }
         }
+    }
+
+    func indexOrUnindexForSpotlight() {
+        print(#function)
     }
 }
