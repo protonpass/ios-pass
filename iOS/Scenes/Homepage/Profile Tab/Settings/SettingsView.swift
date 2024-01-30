@@ -175,6 +175,19 @@ private extension SettingsView {
 
                 if viewModel.spotlightEnabled {
                     PassSectionDivider()
+
+                    OptionRow(action: { viewModel.editSpotlightSearchableContent() },
+                              height: .tall,
+                              content: {
+                                  VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
+                                      Text("Searchable content")
+                                          .sectionTitleText()
+
+                                      Text(viewModel.spotlightSearchableContent.title)
+                                          .foregroundColor(PassColor.textNorm.toColor)
+                                  }
+                              },
+                              trailing: { ChevronRight() })
                 }
             }
             .roundedEditableSection()

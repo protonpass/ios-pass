@@ -384,6 +384,8 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
                 case let .itemDetail(content):
                     presentItemDetailView(for: content, asSheet: shouldShowAsSheet())
+                case .editSpotlightSearchableContent:
+                    print(#function)
                 }
             }
             .store(in: &cancellables)
