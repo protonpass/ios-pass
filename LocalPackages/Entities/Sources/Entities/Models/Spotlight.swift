@@ -27,7 +27,7 @@ public enum SpotlightSearchableItemType: Sendable {
     case precise(ItemContentType)
 }
 
-public enum SpotlightSearchableContent: Int, Codable, Sendable {
+public enum SpotlightSearchableContent: Int, Codable, CaseIterable, Sendable {
     case title = 0
     case titleAndNote = 1
     case allExceptSensitiveData = 2

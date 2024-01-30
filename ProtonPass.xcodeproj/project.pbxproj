@@ -38,6 +38,7 @@
 		354192842AC1CB9B001F2996 /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = 354192832AC1CB9B001F2996 /* Macro */; };
 		354192862AC1CB9F001F2996 /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = 354192852AC1CB9F001F2996 /* Macro */; };
 		3541C0792B68C337006B35D9 /* SpotlightSearchableContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3541C0782B68C337006B35D9 /* SpotlightSearchableContent+Extensions.swift */; };
+		3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */; };
 		354361552941D251000CAE12 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361542941D251000CAE12 /* OnboardingView.swift */; };
 		354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361562941D419000CAE12 /* OnboardingViewModel.swift */; };
 		354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361582941DA0C000CAE12 /* OnboardingViewState.swift */; };
@@ -652,6 +653,7 @@
 		353739E629EAEE6F00A3255E /* OnboardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardSection.swift; sourceTree = "<group>"; };
 		353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashItemsSection.swift; sourceTree = "<group>"; };
 		3541C0782B68C337006B35D9 /* SpotlightSearchableContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpotlightSearchableContent+Extensions.swift"; sourceTree = "<group>"; };
+		3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightSearchableContentView.swift; sourceTree = "<group>"; };
 		354361542941D251000CAE12 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		354361562941D419000CAE12 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		354361582941DA0C000CAE12 /* OnboardingViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewState.swift; sourceTree = "<group>"; };
@@ -1420,6 +1422,7 @@
 				356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */,
 				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
 				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
+				3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */,
 				355895AE29D76E67001E2207 /* LogsView.swift */,
 				355895B029D76E9F001E2207 /* LogsViewModel.swift */,
 				356BC34F29D6C57100F03497 /* SettingsView.swift */,
@@ -3048,6 +3051,7 @@
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */,
 				354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */,
+				3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */,
 				3559BA9E2A5B32550020E172 /* Theme.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
