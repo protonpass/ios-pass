@@ -150,6 +150,8 @@ private extension ShareCoordinator {
                     presentSuffixSelection(selection)
                 case .vaultSelection:
                     presentVaultSelector()
+                case let .createItem(item: item, type: type):
+                    createEditItemViewModelDidCreateItem(item, type: type)
                 default:
                     break
                 }
@@ -263,6 +265,7 @@ private extension ShareCoordinator {
                     let creationType = ItemCreationType.login(title: title,
                                                               url: urlString,
                                                               note: content.note,
+                                                              totp: nil,
                                                               autofill: false)
                     let viewModel =
                         try CreateEditLoginViewModel(mode: .create(shareId: shareId, type: creationType),
@@ -393,10 +396,6 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
         }
         alert.addAction(closeAction)
         topMostViewController?.present(alert, animated: true)
-    }
-
-    func createEditItemViewModelDidUpdateItem(_ type: Entities.ItemContentType, updated: Bool) {
-        // Not applicable
     }
 }
 

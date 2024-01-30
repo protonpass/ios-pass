@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
-public struct SymmetricallyEncryptedItem: Equatable, Sendable {
+public struct SymmetricallyEncryptedItem: Equatable, Sendable, Hashable {
     /// ID of the share that the item belongs to
     public let shareId: String
 

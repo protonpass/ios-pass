@@ -29,6 +29,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var appCoverView: UIView?
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
     private let saveAllLogs = resolve(\SharedUseCasesContainer.saveAllLogs)
+    private let deepLinkRoutingService = resolve(\RouterContainer.deepLinkRoutingService)
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -55,7 +56,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let firstUrl = URLContexts.first?.url else {
             return
         }
-       
+        deepLinkRoutingService.parseAndDispatch(url: firstUrl)
     }
 }
 
@@ -108,61 +109,5 @@ private extension SceneDelegate {
                            appCoverView?.removeFromSuperview()
                            appCoverView = nil
                        })
-    }
-}
-
-extension String {
-    func decodeHTMLAndPercentEntities() -> String {
-        let decodedHTML = decodingHTMLEntities()
-        return decodedHTML.removingPercentEncoding ?? decodedHTML
-    }
-
-    private func decodingHTMLEntities() -> String {
-        guard let data = data(using: .utf8) else { return self }
-
-        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: String.Encoding.utf8.rawValue
-        ]
-
-        if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
-            return attributedString.string
-        } else {
-            return self
-        }
-    }
-}
-
-
-final class DeepLinkRoutingService {
-    private let parseTotpUrl = resolve(\UseCasesContainer.parseTotpUrl)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
-    init() {}
-    
-    @MainActor func parseAndDispatch(url: URL) {
-        switch url.linkType {
-        case .otpauth:
-            try? parseTotpUrl(uri: url.absoluteString.decodeHTMLAndPercentEntities())
-            print("Woot url \(url.absoluteString.decodeHTMLAndPercentEntities())")
-            router.deeplink(to: .totp)
-        default:
-            return
-        }
-    }
-    
-}
-
-enum DeeplinkType {
-    case otpauth
-    case none
-}
-
-extension URL {
-    var linkType: DeeplinkType {
-        if self.scheme == "otpauth" {
-            return .otpauth
-        }
-        return .none
     }
 }
