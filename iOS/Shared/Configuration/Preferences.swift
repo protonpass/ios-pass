@@ -108,6 +108,9 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @KeychainStorage(key: Key.shareClipboard, defaultValue: false)
     var shareClipboard: Bool
 
+    @KeychainStorage(key: Key.spotlight, defaultValue: false)
+    var spotlight: Bool
+
     /// Not really sensitive but `@AppStorage` does not support array so we rely on `@KeychainStorage`
     @KeychainStorage(key: Key.dismissedBannerIds, defaultValue: [])
     var dismissedBannerIds: [String]
@@ -125,6 +128,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
         browser = .systemDefault
         clipboardExpiration = .twoMinutes
         shareClipboard = false
+        spotlight = false
         telemetryThreshold = nil
         displayFavIcons = true
         dismissedBannerIds = []
@@ -150,6 +154,7 @@ private extension Preferences {
         case browser
         case clipboardExpiration
         case shareClipboard
+        case spotlight
         case telemetryThreshold
         case displayFavIcons
         case dismissedBannerIds
