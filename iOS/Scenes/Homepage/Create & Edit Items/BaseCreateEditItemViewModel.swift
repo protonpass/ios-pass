@@ -33,12 +33,9 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate)
-    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
-                                              type: ItemContentType)
-    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType, updated: Bool)
 }
 
-enum ItemMode {
+enum ItemMode: Equatable, Hashable {
     case create(shareId: String, type: ItemCreationType)
     case edit(ItemContent)
 
@@ -52,10 +49,15 @@ enum ItemMode {
     }
 }
 
-enum ItemCreationType {
+enum ItemCreationType: Equatable, Hashable {
     case note(title: String, note: String)
     case alias
-    case login(title: String?, url: String?, note: String?, autofill: Bool)
+    // swiftlint:disable:next enum_case_associated_values_count
+    case login(title: String? = nil,
+               url: String? = nil,
+               note: String? = nil,
+               totpUri: String? = nil,
+               autofill: Bool)
     case other
 }
 
@@ -290,15 +292,14 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
-                        delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
+                        router.present(for: .createItem(item: createdItem, type: itemContentType()))
                     }
 
                 case let .edit(oldItemContent):
                     logger.trace("Editing \(oldItemContent.debugDescription)")
                     let updated = try await editItem(oldItemContent: oldItemContent)
                     logger.info("Edited \(oldItemContent.debugDescription)")
-                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType(),
-                                                                   updated: updated)
+                    router.present(for: .updateItem(type: itemContentType(), updated: updated))
                 }
 
                 addTelemetryEvent(with: telemetryEventTypes())

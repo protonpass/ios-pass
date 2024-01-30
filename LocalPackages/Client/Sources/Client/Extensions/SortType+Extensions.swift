@@ -1,7 +1,7 @@
 //
-// SortDirection.swift
-// Proton Pass - Created on 11/11/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// SortType+Extensions.swift
+// Proton Pass - Created on 30/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,8 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
+import Macro
 
-public enum SortDirection: CaseIterable, Sendable {
-    case ascending, descending
+public extension SortType {
+    var title: String {
+        switch self {
+        case .mostRecent:
+            #localized("Most recent")
+        case .alphabeticalAsc:
+            #localized("Title (A-Z)")
+        case .alphabeticalDesc:
+            #localized("Title (Z-A)")
+        case .newestToOldest:
+            #localized("Newest to oldest")
+        case .oldestToNewest:
+            #localized("Oldest to newest")
+        }
+    }
 }
