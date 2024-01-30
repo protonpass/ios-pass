@@ -193,6 +193,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.spotlight)
     }
 
+    func testSpotlightTitleSearchableByDefault() {
+        XCTAssertEqual(sut.spotlightSearchableContent, .title)
+    }
+
+    func testSpotlightTitleSearchableAfterResetting() async {
+        sut.spotlightSearchableContent = .allExceptSensitiveData
+        XCTAssertEqual(sut.spotlightSearchableContent, .allExceptSensitiveData)
+        await sut.reset()
+        XCTAssertEqual(sut.spotlightSearchableContent, .title)
+    }
+
     @MainActor
     func testTelemetryThresholdNilByDefault() {
         XCTAssertNil(sut.telemetryThreshold)
