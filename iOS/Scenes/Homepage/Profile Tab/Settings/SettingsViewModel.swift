@@ -61,6 +61,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
+    @Published var spotlightEnabled: Bool { didSet { preferences.spotlight = spotlightEnabled } }
 
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
@@ -72,6 +73,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         selectedClipboardExpiration = preferences.clipboardExpiration
         displayFavIcons = preferences.displayFavIcons
         shareClipboard = preferences.shareClipboard
+        spotlightEnabled = preferences.spotlight
 
         setup()
     }

@@ -12935,6 +12935,16 @@
         }
       }
     },
+    "Allow items to appear in Search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow items to appear in Search"
+          }
+        }
+      }
+    },
     "Application" : {
       "localizations" : {
         "be" : {
@@ -57088,6 +57098,16 @@
         }
       }
     },
+    "Show content in search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show content in search"
+          }
+        }
+      }
+    },
     "Show large" : {
       "localizations" : {
         "be" : {
@@ -58124,6 +58144,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ký tự đặc biệt"
+          }
+        }
+      }
+    },
+    "Spotlight" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotlight"
           }
         }
       }
