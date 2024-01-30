@@ -1,7 +1,8 @@
 //
-// Router+DependencyInjections.swift
-// Proton Pass - Created on 19/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// TotpLoginsViewModel.swift
+// Proton Pass - Created on 29/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,29 +18,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Factory
 import Foundation
 
-final class RouterContainer: SharedContainer, AutoRegistering, Sendable {
-    static let shared = RouterContainer()
-    let manager = ContainerManager()
-
-    func autoRegister() {
-        manager.defaultScope = .singleton
+@MainActor
+final class TotpLoginsViewModel: ObservableObject, Sendable {
+        
+    init() {
+        setUp()
     }
 }
 
-// MARK: Main Router
-
-extension RouterContainer {
-    @MainActor
-    var mainNavViewRouter: Factory<MainNavViewRouter> {
-        self { MainNavViewRouter() }
-    }
-
-    @MainActor
-    var deepLinkRoutingService: Factory<DeepLinkRoutingService> {
-        self { DeepLinkRoutingService(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
+private extension TotpLoginsViewModel {
+    func setUp() {
     }
 }
