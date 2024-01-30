@@ -79,6 +79,9 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case importExport
     case tutorial
     case accountSettings
+    case createEditLogin(mode: ItemMode)
+    case createItem(item: SymmetricallyEncryptedItem, type: ItemContentType)
+    case updateItem(type: ItemContentType, updated: Bool)
 }
 
 enum UIElementDisplay: Sendable {
@@ -93,9 +96,8 @@ enum AlertDestination: Sendable {
     case bulkPermanentDeleteConfirmation(itemCount: Int)
 }
 
-
 enum DeeplinkDestination: Hashable, Sendable {
-    case totp
+    case totp(String)
 }
 
 @MainActor
@@ -121,7 +123,7 @@ final class MainUIKitSwiftUIRouter: Sendable {
     func alert(_ destination: AlertDestination) {
         alertDestination.send(destination)
     }
-    
+
     func deeplink(to destination: DeeplinkDestination) {
         deeplinkDestination.send(destination)
     }

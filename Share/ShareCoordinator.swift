@@ -265,7 +265,6 @@ private extension ShareCoordinator {
                     let creationType = ItemCreationType.login(title: title,
                                                               url: urlString,
                                                               note: content.note,
-                                                              totp: nil,
                                                               autofill: false)
                     let viewModel =
                         try CreateEditLoginViewModel(mode: .create(shareId: shareId, type: creationType),
