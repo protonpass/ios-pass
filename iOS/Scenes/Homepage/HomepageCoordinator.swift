@@ -386,6 +386,10 @@ extension HomepageCoordinator {
                     presentItemDetailView(for: content, asSheet: shouldShowAsSheet())
                 case .editSpotlightSearchableContent:
                     presentEditSpotlightSearchableContentView()
+                case .editSpotlightSearchableVaults:
+                    presentEditSpotlightSearchableVaultsView()
+                case .editSpotlightSearchableSelectedVaults:
+                    print(#function)
                 }
             }
             .store(in: &cancellables)
@@ -641,6 +645,17 @@ extension HomepageCoordinator {
         let viewController = UIHostingController(rootView: EditSpotlightSearchableContentView())
 
         let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableContent.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+
+    func presentEditSpotlightSearchableVaultsView() {
+        let viewController = UIHostingController(rootView: SpotlightSearchableContentView())
+
+        let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableVaults.allCases.count + 60
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 

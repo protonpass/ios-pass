@@ -69,6 +69,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
+    @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
 
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
@@ -82,6 +83,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         shareClipboard = preferences.shareClipboard
         spotlightEnabled = preferences.spotlight
         spotlightSearchableContent = preferences.spotlightSearchableContent
+        spotlightSearchableVaults = preferences.spotlightSearchableVaults
 
         setup()
     }
@@ -108,6 +110,14 @@ extension SettingsViewModel {
 
     func editSpotlightSearchableContent() {
         router.present(for: .editSpotlightSearchableContent)
+    }
+
+    func editSpotlightSearchableVaults() {
+        router.present(for: .editSpotlightSearchableVaults)
+    }
+
+    func editSpotlightSearchableSelectedVaults() {
+        router.present(for: .editSpotlightSearchableSelectedVaults)
     }
 
     func viewHostAppLogs() {
@@ -160,6 +170,10 @@ private extension SettingsViewModel {
                 if preferences.spotlightSearchableContent != spotlightSearchableContent {
                     spotlightSearchableContent = preferences.spotlightSearchableContent
                     indexOrUnindexForSpotlight()
+                }
+
+                if preferences.spotlightSearchableVaults != spotlightSearchableVaults {
+                    spotlightSearchableVaults = preferences.spotlightSearchableVaults
                 }
             }
             .store(in: &cancellables)
