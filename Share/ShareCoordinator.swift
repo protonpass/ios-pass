@@ -150,8 +150,8 @@ private extension ShareCoordinator {
                     presentSuffixSelection(selection)
                 case .vaultSelection:
                     presentVaultSelector()
-                case let .createItem(item: item, type: type):
-                    createEditItemViewModelDidCreateItem(item, type: type)
+                case let .createItem(_, type: type):
+                    createEditItemViewModelDidCreateItem(type: type)
                 default:
                     break
                 }
@@ -394,7 +394,7 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
+    func createEditItemViewModelDidCreateItem(type: ItemContentType) {
         let alert = UIAlertController(title: type.creationMessage, message: nil, preferredStyle: .alert)
         let closeAction = UIAlertAction(title: #localized("Close"), style: .default) { [weak self] _ in
             guard let self else { return }

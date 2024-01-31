@@ -37780,7 +37780,16 @@
       }
     },
     "Login items" : {
-
+      "comment" : "Title in totp deeplink login view",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login items"
+          }
+        }
+      }
     },
     "Login moved to trash" : {
       "comment" : "Messages when items are moved to trash",
@@ -57062,8 +57071,17 @@
         }
       }
     },
-    "Set up a login 2FA" : {
-
+    "Set up 2FA" : {
+      "comment" : "Title on the deep link totp login list page",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set up 2FA"
+          }
+        }
+      }
     },
     "Settings" : {
       "localizations" : {

@@ -378,8 +378,8 @@ extension HomepageCoordinator {
                     beginAccountSettingsFlow()
                 case let .createEditLogin(item):
                     presentCreateEditLoginView(mode: item)
-                case let .createItem(item: item, type: type):
-                    createEditItemViewModelDidCreateItem(item, type: type)
+                case let .createItem(_, type: type):
+                    createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
                 }
@@ -1276,7 +1276,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
+    func createEditItemViewModelDidCreateItem(type: ItemContentType) {
         addNewEvent(type: .create(type))
         dismissAllViewControllers(animated: true) { [weak self] in
             // We have eventual crashes after creating items
