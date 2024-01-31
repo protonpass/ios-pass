@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import Entities
@@ -65,7 +66,8 @@ class BaseItemDetailViewModel: ObservableObject {
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
+    private var cancellable = Set<AnyCancellable>()
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -105,7 +107,17 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
-        refreshUserPlan()
+
+        getUserPlan()
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .compactMap { $0 }
+            .sink { [weak self] refreshedPlan in
+                guard let self else {
+                    return
+                }
+                plan = refreshedPlan
+            }.store(in: &cancellable)
     }
 
     /// To be overidden by subclasses
@@ -293,20 +305,6 @@ private extension BaseItemDetailViewModel {
                 throw PassError.itemNotFound(item)
             }
             return item
-        }
-    }
-
-    private func refreshUserPlan() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                // First get local plan to optimistically display it
-                // and then try to refresh the plan to have it updated
-                plan = try await accessRepository.getPlan()
-                plan = try await accessRepository.refreshAccess().plan
-            } catch {
-                logger.error(error)
-            }
         }
     }
 }
