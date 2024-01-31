@@ -50,32 +50,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to select a configuration to create the new scene with.
         UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
-    func application(_ application: UIApplication,
-                     open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        print("Woot url: \(url)")
-        if let otpAuth = parseOTPAuthURL(url) {
-            // Handle the parsed OTPAuth details
-            // E.g., Pass to a view controller, store securely, etc.
-            print("Secret: \(otpAuth.secret)")
-        }
-        return true
-    }
-
-    func parseOTPAuthURL(_ url: URL) -> OTPAuth? {
-        guard url.scheme == "otpauth" else { return nil }
-        let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
-        let secret = queryItems?.first(where: { $0.name == "secret" })?.value
-        let issuer = queryItems?.first(where: { $0.name == "issuer" })?.value
-        let accountName = url.host // or extract from the URL path
-
-        if let secret {
-            return OTPAuth(secret: secret, issuer: issuer, accountName: accountName)
-        } else {
-            return nil
-        }
-    }
 }
 
 private extension AppDelegate {
@@ -108,11 +82,4 @@ private extension AppDelegate {
             }
         }
     }
-}
-
-struct OTPAuth {
-    let secret: String
-    let issuer: String?
-    let accountName: String?
-    // Add other fields as needed
 }
