@@ -440,6 +440,9 @@ struct SentinelSheetView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+
             ViewThatFits {
                 mainSentinelSheet.padding(20)
                 ScrollView(showsIndicators: false) {

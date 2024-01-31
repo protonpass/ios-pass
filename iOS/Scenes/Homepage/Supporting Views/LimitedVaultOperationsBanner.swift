@@ -28,6 +28,7 @@ struct LimitedVaultOperationsBanner: View {
         texts
             .padding()
             .frame(maxWidth: .infinity)
+            .fixedSize(horizontal: false, vertical: true)
             .background(Color(uiColor: PassColor.interactionNormMinor1))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .onTapGesture(perform: onUpgrade)

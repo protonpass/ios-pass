@@ -705,8 +705,8 @@ extension HomepageCoordinator {
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
-        let customHeight = 66 * allVaults.count + 180
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
+        let customHeight = 66 * allVaults.count + 300
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true

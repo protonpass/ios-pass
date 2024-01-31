@@ -78,62 +78,20 @@ public extension Array where Element: DateSortable {
             }
         }
 
-        return .init(numberOfItems: sortedElements.count,
-                     today: today,
-                     yesterday: yesterday,
-                     last7Days: last7Days,
-                     last14Days: last14Days,
-                     last30Days: last30Days,
-                     last60Days: last60Days,
-                     last90Days: last90Days,
-                     others: others)
+        return MostRecentSortResult(numberOfItems: sortedElements.count,
+                                    today: today,
+                                    yesterday: yesterday,
+                                    last7Days: last7Days,
+                                    last14Days: last14Days,
+                                    last30Days: last30Days,
+                                    last60Days: last60Days,
+                                    last90Days: last90Days,
+                                    others: others)
     }
 
     func asyncMostRecentSortResult() async -> MostRecentSortResult<Element> {
         await Task {
-            var today = [Element]()
-            var yesterday = [Element]()
-            var last7Days = [Element]()
-            var last14Days = [Element]()
-            var last30Days = [Element]()
-            var last60Days = [Element]()
-            var last90Days = [Element]()
-            var others = [Element]()
-
-            let calendar = Calendar.current
-            let now = Date()
-            let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
-            for item in sortedElements {
-                let numberOfDaysFromNow = calendar.numberOfDaysBetween(now, and: item.dateForSorting)
-                switch abs(numberOfDaysFromNow) {
-                case 0:
-                    today.append(item)
-                case 1:
-                    yesterday.append(item)
-                case 2..<7:
-                    last7Days.append(item)
-                case 7..<14:
-                    last14Days.append(item)
-                case 14..<30:
-                    last30Days.append(item)
-                case 30..<60:
-                    last60Days.append(item)
-                case 60..<90:
-                    last90Days.append(item)
-                default:
-                    others.append(item)
-                }
-            }
-
-            return MostRecentSortResult(numberOfItems: sortedElements.count,
-                                        today: today,
-                                        yesterday: yesterday,
-                                        last7Days: last7Days,
-                                        last14Days: last14Days,
-                                        last30Days: last30Days,
-                                        last60Days: last60Days,
-                                        last90Days: last90Days,
-                                        others: others)
+            mostRecentSortResult()
         }.value
     }
 }
@@ -366,32 +324,7 @@ public extension Array where Element: DateSortable {
 
     func asyncMonthYearSortResult(direction: SortDirection) async -> MonthYearSortResult<Element> {
         await Task {
-            let sortedElements: [Element] = switch direction {
-            case .ascending:
-                sorted(by: { $0.dateForSorting < $1.dateForSorting })
-            case .descending:
-                sorted(by: { $0.dateForSorting > $1.dateForSorting })
-            }
-            let dict = Dictionary(grouping: sortedElements) { element in
-                MonthYear(date: element.dateForSorting)
-            }
-
-            var buckets = [MonthYearBucket<Element>]()
-            for key in dict.keys {
-                guard let elements = dict[key] else { continue }
-                buckets.append(.init(monthYear: key, items: elements))
-            }
-
-            buckets = buckets.sorted(by: { lhs, rhs in
-                switch direction {
-                case .ascending:
-                    lhs.monthYear < rhs.monthYear
-                case .descending:
-                    lhs.monthYear > rhs.monthYear
-                }
-            })
-
-            return MonthYearSortResult(numberOfItems: sortedElements.count, buckets: buckets)
+            monthYearSortResult(direction: direction)
         }.value
     }
 }
