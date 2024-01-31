@@ -72,7 +72,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
                 return
             }
 
-            router.present(for: .createEditItem(mode: .edit(itemContent.updateTotp(uri: totpUri))))
+            router.present(for: .createEditLogin(mode: .edit(itemContent.updateTotp(uri: totpUri))))
         }
     }
 
@@ -90,7 +90,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
             let creationType = ItemCreationType.login(totpUri: totpUri,
                                                       autofill: false)
 
-            router.present(for: .createEditItem(mode: .create(shareId: shareId, type: creationType)))
+            router.present(for: .createEditLogin(mode: .create(shareId: shareId, type: creationType)))
         }
     }
 }

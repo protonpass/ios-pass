@@ -11,6 +11,7 @@ var platforms: [SupportedPlatform] = [
 ]
 
 let package = Package(name: "DesignSystem",
+                      defaultLocalization: "en",
                       platforms: platforms,
                       products: [
                           // Products define the executables and libraries a package produces, and make them
@@ -20,7 +21,7 @@ let package = Package(name: "DesignSystem",
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
-                        .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "16.3.2"),
+                        .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "18.0.1"),
                         .package(url: "https://github.com/jdg/MBProgressHUD", exact: "1.2.0"),
                         .package(name: "Macro", path: "../Macro")
                       ],
