@@ -86,7 +86,10 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var itemHistoryEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1) && (plan?.hideUpgrade ?? false)
+        guard getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1), let plan, !plan.isFreeUser else {
+            return false
+        }
+        return true
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
