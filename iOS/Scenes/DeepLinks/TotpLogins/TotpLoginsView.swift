@@ -45,7 +45,7 @@ struct TotpLoginsView: View {
         }
         .theme(preferences.theme)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Set up a login 2FA")
+        .navigationTitle("Set up 2FA")
         .navigationStackEmbeded()
     }
 }
