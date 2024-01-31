@@ -228,6 +228,13 @@ private extension ShareCoordinator {
                                              guard let self else { return }
                                              dismissExtension()
                                          })
+                                         .localAuthentication(delayed: false,
+                                                              onAuth: {},
+                                                              onSuccess: {},
+                                                              onFailure: { [weak self] in
+                                                                  guard let self else { return }
+                                                                  logOut()
+                                                              })
             showView(view)
         } catch {
             alert(error: error) { [weak self] in

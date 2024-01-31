@@ -1,3 +1,18 @@
+## Version 1.8.0
+Features:
+- Item history: easily review and restore previous versions of an item
+- Share Extension: quickly create note or login item from an URL or text
+
+Bug fixes:
+- Fixed crash when removing custom fields
+
+Others:
+- Bumped to core 16.3.2 -> 18.0.1
+- Take into account business plan
+- Default password length increased to 20 characters
+- Auto-copy 2FA code enabled by default
+- Fixed issue with sequential dashes being converted into a single long dash
+
 ## Version 1.7.3
 Improvements:
 - Enabled search for custom text fields
