@@ -41,6 +41,13 @@ enum VaultMode {
     case create
     case editExistingVault(Vault)
     case editNewVault(VaultProtobuf, ItemContent)
+
+    var isCreation: Bool {
+        if case .create = self {
+            return true
+        }
+        return false
+    }
 }
 
 @MainActor
@@ -103,7 +110,7 @@ final class CreateEditVaultViewModel: ObservableObject {
 private extension CreateEditVaultViewModel {
     func verifyLimitation() {
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self, mode.isCreation else { return }
             do {
                 canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
             } catch {
