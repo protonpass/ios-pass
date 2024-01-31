@@ -1,5 +1,5 @@
 //
-// SpotlightSearchableContent+Extensions.swift
+// Spotlight+Extensions.swift
 // Proton Pass - Created on 30/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -30,6 +30,17 @@ extension SpotlightSearchableContent {
             #localized("Title and note")
         case .allExceptSensitiveData:
             #localized("All except sensitive data")
+        }
+    }
+}
+
+extension SpotlightSearchableVaults {
+    var title: String {
+        switch self {
+        case .all:
+            #localized("All vaults")
+        case .selected:
+            #localized("Selected vaults")
         }
     }
 }

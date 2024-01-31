@@ -204,6 +204,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.spotlightSearchableContent, .title)
     }
 
+    func testSpotlightSearchableAllVaultsByDefault() {
+        XCTAssertEqual(sut.spotlightSearchableVaults, .all)
+    }
+
+    func testSpotlightSearchableAllVaultsAfterResetting() async {
+        sut.spotlightSearchableVaults = .selected
+        XCTAssertEqual(sut.spotlightSearchableVaults, .selected)
+        await sut.reset()
+        XCTAssertEqual(sut.spotlightSearchableVaults, .all)
+    }
+
     @MainActor
     func testTelemetryThresholdNilByDefault() {
         XCTAssertNil(sut.telemetryThreshold)

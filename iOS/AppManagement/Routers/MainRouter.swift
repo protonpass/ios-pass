@@ -84,6 +84,8 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case updateItem(type: ItemContentType, updated: Bool)
     case itemDetail(ItemContent)
     case editSpotlightSearchableContent
+    case editSpotlightSearchableVaults
+    case editSpotlightSearchableSelectedVaults
 }
 
 enum UIElementDisplay: Sendable {

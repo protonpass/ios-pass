@@ -114,6 +114,9 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @KeychainStorage(key: Key.spotlightSearchableContent, defaultValue: .title)
     var spotlightSearchableContent: SpotlightSearchableContent
 
+    @KeychainStorage(key: Key.spotlightSearchableVaults, defaultValue: .all)
+    var spotlightSearchableVaults: SpotlightSearchableVaults
+
     /// Not really sensitive but `@AppStorage` does not support array so we rely on `@KeychainStorage`
     @KeychainStorage(key: Key.dismissedBannerIds, defaultValue: [])
     var dismissedBannerIds: [String]
@@ -133,6 +136,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
         shareClipboard = false
         spotlight = false
         spotlightSearchableContent = .title
+        spotlightSearchableVaults = .all
         telemetryThreshold = nil
         displayFavIcons = true
         dismissedBannerIds = []
@@ -160,6 +164,7 @@ private extension Preferences {
         case shareClipboard
         case spotlight
         case spotlightSearchableContent
+        case spotlightSearchableVaults
         case telemetryThreshold
         case displayFavIcons
         case dismissedBannerIds
