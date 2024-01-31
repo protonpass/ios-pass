@@ -38,42 +38,4 @@ extension ItemContent {
                            contentData: .login(updatedData),
                            customFields: customFields)
     }
-
-    var toItemUiModel: ItemUiModel {
-        let note: String
-        var url: String?
-        var isAlias = false
-        var hasTotpUri = false
-
-        switch contentData {
-        case let .login(data):
-            note = data.username
-            url = data.urls.first
-            hasTotpUri = !data.totpUri.isEmpty
-
-        case .alias:
-            note = item.aliasEmail ?? ""
-            isAlias = true
-
-        case let .creditCard(data):
-            note = data.number.toMaskedCreditCardNumber()
-
-        case .note:
-            note = String(self.note.prefix(50))
-        }
-
-        return .init(itemId: item.itemID,
-                     shareId: shareId,
-                     type: contentData.type,
-                     aliasEmail: item.aliasEmail,
-                     title: name,
-                     description: note,
-                     url: url,
-                     isAlias: isAlias,
-                     hasTotpUri: hasTotpUri,
-                     lastUseTime: item.lastUseTime ?? 0,
-                     modifyTime: item.modifyTime,
-                     state: item.itemState,
-                     pinned: item.pinned)
-    }
 }

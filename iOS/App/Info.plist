@@ -16,16 +16,6 @@
 				<string>otpauth</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>me.proton.pass.ios</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>deeplink</string>
-			</array>
-		</dict>
 	</array>
 	<key>GIT_COMMIT_HASH</key>
 	<string></string>
