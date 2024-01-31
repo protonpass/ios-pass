@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import Entities
@@ -40,6 +41,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
+    @Published private(set) var plan: Plan?
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -64,6 +66,8 @@ class BaseItemDetailViewModel: ObservableObject {
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
+    private var cancellable = Set<AnyCancellable>()
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -82,7 +86,10 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var itemHistoryEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1)
+        guard getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1), let plan, !plan.isFreeUser else {
+            return false
+        }
+        return true
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
@@ -103,6 +110,17 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
+
+        getUserPlan()
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .compactMap { $0 }
+            .sink { [weak self] refreshedPlan in
+                guard let self else {
+                    return
+                }
+                plan = refreshedPlan
+            }.store(in: &cancellable)
     }
 
     /// To be overidden by subclasses
