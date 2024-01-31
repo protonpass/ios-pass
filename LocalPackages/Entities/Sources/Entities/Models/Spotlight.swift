@@ -33,6 +33,11 @@ public enum SpotlightSearchableContent: Int, Codable, CaseIterable, Sendable {
     case allExceptSensitiveData = 2
 }
 
+public enum SpotlightSearchableVaults: Int, Codable, CaseIterable, Sendable {
+    case all = 0
+    case selected = 1
+}
+
 public extension ItemContent {
     var spotlightDomainId: String {
         type.debugDescription

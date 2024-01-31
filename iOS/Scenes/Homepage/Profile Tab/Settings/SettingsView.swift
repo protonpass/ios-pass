@@ -65,6 +65,7 @@ private extension SettingsView {
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
         .animation(.default, value: viewModel.spotlightEnabled)
+        .animation(.default, value: viewModel.spotlightSearchableVaults)
     }
 
     @ToolbarContentBuilder
@@ -188,6 +189,37 @@ private extension SettingsView {
                                   }
                               },
                               trailing: { ChevronRight() })
+
+                    PassSectionDivider()
+
+                    OptionRow(action: { viewModel.editSpotlightSearchableVaults() },
+                              height: .tall,
+                              content: {
+                                  VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
+                                      Text("Searchable vaults")
+                                          .sectionTitleText()
+
+                                      Text(viewModel.spotlightSearchableVaults.title)
+                                          .foregroundColor(PassColor.textNorm.toColor)
+                                  }
+                              },
+                              trailing: { ChevronRight() })
+
+                    if viewModel.spotlightSearchableVaults == .selected {
+                        PassSectionDivider()
+                        OptionRow(action: { viewModel.editSpotlightSearchableSelectedVaults() },
+                                  height: .tall,
+                                  content: {
+                                      VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
+                                          Text("Selected vaults")
+                                              .sectionTitleText()
+
+                                          Text(verbatim: "Test")
+                                              .foregroundColor(PassColor.textNorm.toColor)
+                                      }
+                                  },
+                                  trailing: { ChevronRight() })
+                    }
                 }
             }
             .roundedEditableSection()

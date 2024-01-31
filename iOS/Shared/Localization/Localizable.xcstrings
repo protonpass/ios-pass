@@ -53774,6 +53774,16 @@
         }
       }
     },
+    "Searchable vaults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Searchable vaults"
+          }
+        }
+      }
+    },
     "Secure password manager and more" : {
       "comment" : "Slogan",
       "extractionState" : "manual",
@@ -55225,6 +55235,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chọn các nội dung"
+          }
+        }
+      }
+    },
+    "Selected vaults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected vaults"
           }
         }
       }
