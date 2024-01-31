@@ -40,6 +40,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
+    @Published private(set) var plan: Plan?
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -64,6 +65,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -82,7 +84,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var itemHistoryEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1)
+        getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1) && (plan?.hideUpgrade ?? false)
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
@@ -103,6 +105,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
+        refreshUserPlan()
     }
 
     /// To be overidden by subclasses
@@ -290,6 +293,20 @@ private extension BaseItemDetailViewModel {
                 throw PassError.itemNotFound(item)
             }
             return item
+        }
+    }
+
+    private func refreshUserPlan() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                // First get local plan to optimistically display it
+                // and then try to refresh the plan to have it updated
+                plan = try await accessRepository.getPlan()
+                plan = try await accessRepository.refreshAccess().plan
+            } catch {
+                logger.error(error)
+            }
         }
     }
 }
