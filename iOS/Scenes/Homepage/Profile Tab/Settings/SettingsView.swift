@@ -207,15 +207,13 @@ private extension SettingsView {
 
                     if viewModel.spotlightSearchableVaults == .selected {
                         PassSectionDivider()
+
                         OptionRow(action: { viewModel.editSpotlightSearchableSelectedVaults() },
                                   height: .tall,
                                   content: {
                                       VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
-                                          Text("Selected vaults")
-                                              .sectionTitleText()
-
-                                          Text(verbatim: "Test")
-                                              .foregroundColor(PassColor.textNorm.toColor)
+                                          selectedVaultsRowTitle
+                                          selectedVaultsRowDescription
                                       }
                                   },
                                   trailing: { ChevronRight() })
@@ -228,6 +226,47 @@ private extension SettingsView {
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding / 2)
+        }
+    }
+
+    @ViewBuilder
+    var selectedVaultsRowTitle: some View {
+        if let vaults = viewModel.selectedSearchableVaults, !vaults.isEmpty {
+            Text("Selected vaults")
+                .sectionTitleText() +
+                Text(verbatim: " • ")
+                .sectionTitleText() +
+                Text(verbatim: "(\(vaults.count))")
+                .sectionTitleText()
+        } else {
+            Text("Selected vaults")
+                .sectionTitleText()
+        }
+    }
+
+    @ViewBuilder
+    var selectedVaultsRowDescription: some View {
+        if let vaults = viewModel.selectedSearchableVaults {
+            if vaults.isEmpty {
+                Text("No vaults")
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                Text(verbatim: vaults.map(\.name).joined(separator: ", "))
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(1)
+            }
+        } else {
+            Text(verbatim: "Dummy text")
+                .foregroundStyle(Color.clear)
+                .frame(maxWidth: .infinity)
+                .fixedSize(horizontal: false, vertical: true)
+                .background(SkeletonBlock()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 24)
+                    .clipShape(Capsule())
+                    .shimmering())
         }
     }
 }

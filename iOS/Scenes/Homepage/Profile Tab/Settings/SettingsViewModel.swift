@@ -44,6 +44,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getSelectedSpotlightSearchableVaults = resolve(\UseCasesContainer
+        .getSelectedSpotlightSearchableVaults)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
@@ -70,6 +72,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
+    @Published private(set) var selectedSearchableVaults: [Vault]?
 
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
@@ -117,6 +120,7 @@ extension SettingsViewModel {
     }
 
     func editSpotlightSearchableSelectedVaults() {
+        guard selectedSearchableVaults != nil else { return }
         router.present(for: .editSpotlightSearchableSelectedVaults)
     }
 
@@ -179,6 +183,7 @@ private extension SettingsViewModel {
             .store(in: &cancellables)
 
         vaultsManager.attach(to: self, storeIn: &cancellables)
+        refreshSelectedSearchableVaults()
     }
 
     func emptyFavIconCache() {
@@ -196,5 +201,16 @@ private extension SettingsViewModel {
 
     func indexOrUnindexForSpotlight() {
         print(#function)
+    }
+
+    func refreshSelectedSearchableVaults() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                selectedSearchableVaults = try await getSelectedSpotlightSearchableVaults()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }
