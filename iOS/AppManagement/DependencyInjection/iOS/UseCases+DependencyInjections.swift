@@ -52,6 +52,10 @@ private extension UseCasesContainer {
         SharedRepositoryContainer.shared.itemRepository()
     }
 
+    var shareRepository: any ShareRepositoryProtocol {
+        SharedRepositoryContainer.shared.shareRepository()
+    }
+
     var symmetricKeyProvider: any SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
@@ -281,6 +285,13 @@ extension UseCasesContainer {
     var reachedVaultLimit: Factory<ReachedVaultLimitUseCase> {
         self { ReachedVaultLimit(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                  vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+
+    var getSelectedSpotlightSearchableVaults: Factory<GetSelectedSpotlightSearchableVaultsUseCase> {
+        self { GetSelectedSpotlightSearchableVaults(userDataProvider: self.userDataProvider,
+                                                    shareRepository: self.shareRepository,
+                                                    localSpotlightSearchableVaultDatasource: SharedRepositoryContainer
+                                                        .shared.localSpotlightSearchableVaultDatasource()) }
     }
 }
 

@@ -41628,6 +41628,16 @@
         }
       }
     },
+    "No vaults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No vaults"
+          }
+        }
+      }
+    },
     "Non editable vault" : {
       "comment" : "Alert title explaining that the current selected vault is not editable",
       "extractionState" : "manual",
