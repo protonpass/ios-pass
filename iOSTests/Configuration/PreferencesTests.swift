@@ -183,14 +183,14 @@ final class PreferencesTests: XCTestCase {
     }
 
     func testSpotlightDisabledByDefault() {
-        XCTAssertFalse(sut.spotlight)
+        XCTAssertFalse(sut.spotlightEnabled)
     }
 
     func testSpotlightDisabledAfterResetting() async {
-        sut.spotlight = true
-        XCTAssertTrue(sut.spotlight)
+        sut.spotlightEnabled = true
+        XCTAssertTrue(sut.spotlightEnabled)
         await sut.reset()
-        XCTAssertFalse(sut.spotlight)
+        XCTAssertFalse(sut.spotlightEnabled)
     }
 
     func testSpotlightTitleSearchableByDefault() {

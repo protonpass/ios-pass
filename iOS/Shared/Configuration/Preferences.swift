@@ -108,8 +108,8 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @KeychainStorage(key: Key.shareClipboard, defaultValue: false)
     var shareClipboard: Bool
 
-    @KeychainStorage(key: Key.spotlight, defaultValue: false)
-    var spotlight: Bool
+    @KeychainStorage(key: Key.spotlightEnabled, defaultValue: false)
+    var spotlightEnabled: Bool
 
     @KeychainStorage(key: Key.spotlightSearchableContent, defaultValue: .title)
     var spotlightSearchableContent: SpotlightSearchableContent
@@ -134,7 +134,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
         browser = .systemDefault
         clipboardExpiration = .twoMinutes
         shareClipboard = false
-        spotlight = false
+        spotlightEnabled = false
         spotlightSearchableContent = .title
         spotlightSearchableVaults = .all
         telemetryThreshold = nil
@@ -162,7 +162,7 @@ private extension Preferences {
         case browser
         case clipboardExpiration
         case shareClipboard
-        case spotlight
+        case spotlightEnabled
         case spotlightSearchableContent
         case spotlightSearchableVaults
         case telemetryThreshold
@@ -191,3 +191,7 @@ extension Preferences: TelemetryThresholdProviderProtocol {
 extension Preferences: FavIconSettings {
     var shouldDisplayFavIcons: Bool { displayFavIcons }
 }
+
+// MAR: - SpotlightSettingsProvider
+
+extension Preferences: SpotlightSettingsProvider {}

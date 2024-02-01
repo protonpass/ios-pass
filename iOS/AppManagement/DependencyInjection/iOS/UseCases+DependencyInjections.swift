@@ -59,6 +59,10 @@ private extension UseCasesContainer {
     var symmetricKeyProvider: any SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
+
+    var localSpotlightSearchableVaultDatasource: any LocalSpotlightSearchableVaultDatasourceProtocol {
+        SharedRepositoryContainer.shared.localSpotlightSearchableVaultDatasource()
+    }
 }
 
 // MARK: User report
@@ -286,12 +290,21 @@ extension UseCasesContainer {
         self { ReachedVaultLimit(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                  vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
+}
 
+// MARK: Spotlight
+
+extension UseCasesContainer {
     var getSelectedSpotlightSearchableVaults: Factory<GetSelectedSpotlightSearchableVaultsUseCase> {
         self { GetSelectedSpotlightSearchableVaults(userDataProvider: self.userDataProvider,
                                                     shareRepository: self.shareRepository,
-                                                    localSpotlightSearchableVaultDatasource: SharedRepositoryContainer
-                                                        .shared.localSpotlightSearchableVaultDatasource()) }
+                                                    localSpotlightSearchableVaultDatasource: self
+                                                        .localSpotlightSearchableVaultDatasource) }
+    }
+
+    var updateSelectedSpotlightSearchableVaults: Factory<UpdateSelectedSpotlightSearchableVaultsUseCase> {
+        self { UpdateSelectedSpotlightSearchableVaults(userDataProvider: self.userDataProvider,
+                                                       datasource: self.localSpotlightSearchableVaultDatasource) }
     }
 }
 
