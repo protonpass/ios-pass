@@ -653,7 +653,7 @@ extension HomepageCoordinator {
     }
 
     func presentEditSpotlightSearchableVaultsView() {
-        let viewController = UIHostingController(rootView: SpotlightSearchableContentView())
+        let viewController = UIHostingController(rootView: EditSpotlightSearchableVaultsView())
 
         let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableVaults.allCases.count + 60
         viewController.setDetentType(.custom(CGFloat(customHeight)),
