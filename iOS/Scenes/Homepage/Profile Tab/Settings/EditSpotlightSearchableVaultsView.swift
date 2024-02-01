@@ -1,5 +1,5 @@
 //
-// SpotlightSearchableContentView.swift
+// EditSpotlightSearchableVaultsView.swift
 // Proton Pass - Created on 31/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,7 +23,7 @@ import Entities
 import Factory
 import SwiftUI
 
-struct SpotlightSearchableContentView: View {
+struct EditSpotlightSearchableVaultsView: View {
     @Environment(\.dismiss) private var dismiss
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
@@ -49,7 +49,7 @@ struct SpotlightSearchableContentView: View {
     }
 }
 
-private extension SpotlightSearchableContentView {
+private extension EditSpotlightSearchableVaultsView {
     func row(for vaults: SpotlightSearchableVaults) -> some View {
         SelectableOptionRow(action: {
                                 preferences.spotlightSearchableVaults = vaults
