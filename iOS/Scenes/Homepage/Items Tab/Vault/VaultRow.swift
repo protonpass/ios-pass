@@ -84,5 +84,6 @@ struct VaultRow<Thumbnail: View>: View {
         .frame(maxWidth: maxWidth)
         .frame(height: height)
         .contentShape(Rectangle())
+        .animation(.default, value: isSelected)
     }
 }

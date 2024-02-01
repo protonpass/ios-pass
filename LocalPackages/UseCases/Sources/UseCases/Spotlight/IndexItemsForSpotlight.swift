@@ -26,29 +26,44 @@ import Entities
 import Foundation
 
 public protocol IndexItemsForSpotlightUseCase: Sendable {
-    func execute(for type: SpotlightSearchableItemType) async throws
+    func execute() async throws
 }
 
 public extension IndexItemsForSpotlightUseCase {
-    func callAsFunction(for type: SpotlightSearchableItemType) async throws {
-        try await execute(for: type)
+    func callAsFunction() async throws {
+        try await execute()
     }
 }
 
 public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
+    private let userDataProvider: any UserDataProvider
+    private let settingsProvider: any SpotlightSettingsProvider
     private let itemRepository: any ItemRepositoryProtocol
+    private let datasource: any LocalSpotlightSearchableVaultDatasourceProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let logger: Logger
 
-    public init(itemRepository: any ItemRepositoryProtocol,
+    public init(userDataProvider: any UserDataProvider,
+                settingsProvider: any SpotlightSettingsProvider,
+                itemRepository: any ItemRepositoryProtocol,
+                datasource: any LocalSpotlightSearchableVaultDatasourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol) {
+        self.userDataProvider = userDataProvider
+        self.settingsProvider = settingsProvider
         self.itemRepository = itemRepository
+        self.datasource = datasource
         self.symmetricKeyProvider = symmetricKeyProvider
         logger = .init(manager: logManager)
     }
 
-    public func execute(for type: SpotlightSearchableItemType) async throws {
+    public func execute() async throws {
+        guard settingsProvider.spotlightEnabled else {
+            logger.trace("Spotlight is disabled, removing all indexed items")
+            try await CSSearchableIndex.default().deleteAllSearchableItems()
+            logger.trace("Removed all spotlight indexed items")
+            return
+        }
         logger.trace("Begin to index items for Spotlight")
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository
@@ -57,14 +72,17 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
 
         logger.trace("Found \(allItems.count) items")
 
-        let selectedItems = switch type {
+        let selectedItems: [ItemContent]
+        switch settingsProvider.spotlightSearchableVaults {
         case .all:
-            allItems
-        case let .precise(type):
-            allItems.filter { $0.type == type }
+            selectedItems = allItems
+            logger.trace("Indexing \(selectedItems.count) items in all vaults for Spotlight")
+        case .selected:
+            let userId = try userDataProvider.getUserId()
+            let ids = try await datasource.getIdsForSearchableVaults(for: userId)
+            selectedItems = allItems.filter { ids.contains($0.shareId) }
+            logger.trace("Indexing \(selectedItems.count) items in \(ids.count) vaults for Spotlight")
         }
-
-        logger.trace("Indexing \(selectedItems.count) items for Spotlight")
 
         let searchableItems = try selectedItems.map { try $0.toSearchableItem() }
         try await CSSearchableIndex.default().deleteAllSearchableItems()
