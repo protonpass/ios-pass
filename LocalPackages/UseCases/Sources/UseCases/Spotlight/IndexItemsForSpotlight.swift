@@ -84,7 +84,8 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             logger.trace("Indexing \(selectedItems.count) items in \(ids.count) vaults for Spotlight")
         }
 
-        let searchableItems = try selectedItems.map { try $0.toSearchableItem() }
+        let content = settingsProvider.spotlightSearchableContent
+        let searchableItems = try selectedItems.map { try $0.toSearchableItem(content: content) }
         try await CSSearchableIndex.default().deleteAllSearchableItems()
         try await CSSearchableIndex.default().indexSearchableItems(searchableItems)
         logger.info("Finish indexing \(selectedItems.count) items for Spotlight")
