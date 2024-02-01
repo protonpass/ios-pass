@@ -50,12 +50,15 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         .getSelectedSpotlightSearchableVaults)
     private let updateSelectedSpotlightSearchableVaults = resolve(\UseCasesContainer
         .updateSelectedSpotlightSearchableVaults)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
+    @Published private(set) var plan: Plan?
 
     @Published var displayFavIcons: Bool {
         didSet {
@@ -67,9 +70,16 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
+
+    @Published private(set) var spotlightFlagAvailable = false
     @Published var spotlightEnabled: Bool {
         didSet {
-            preferences.spotlightEnabled = spotlightEnabled
+            if spotlightEnabled, plan?.isFreeUser == true {
+                spotlightEnabled = false
+                router.present(for: .upselling)
+            } else {
+                preferences.spotlightEnabled = spotlightEnabled
+            }
             reindexItemsForSpotlight()
         }
     }
@@ -88,6 +98,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         selectedClipboardExpiration = preferences.clipboardExpiration
         displayFavIcons = preferences.displayFavIcons
         shareClipboard = preferences.shareClipboard
+        spotlightFlagAvailable = getFeatureFlagStatus(with: FeatureFlagType.passSpotlight)
         spotlightEnabled = preferences.spotlightEnabled
         spotlightSearchableContent = preferences.spotlightSearchableContent
         spotlightSearchableVaults = preferences.spotlightSearchableVaults
@@ -195,6 +206,21 @@ private extension SettingsViewModel {
                 guard let self else { return }
                 selectedSearchableVaults = vaults
                 reindexItemsForSpotlight()
+            }
+            .store(in: &cancellables)
+
+        getUserPlan()
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .compactMap { $0 }
+            .sink { [weak self] refreshedPlan in
+                guard let self else {
+                    return
+                }
+                plan = refreshedPlan
+                if refreshedPlan.isFreeUser {
+                    spotlightEnabled = false
+                }
             }
             .store(in: &cancellables)
 
