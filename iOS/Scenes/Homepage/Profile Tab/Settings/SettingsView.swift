@@ -46,7 +46,7 @@ private extension SettingsView {
                 clipboardSection
                     .padding(.vertical)
 
-                if Bundle.main.isQaBuild {
+                if viewModel.spotlightFlagAvailable {
                     spotlightSection
                 }
 
