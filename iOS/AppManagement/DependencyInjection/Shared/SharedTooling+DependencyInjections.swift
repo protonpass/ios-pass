@@ -111,6 +111,10 @@ extension SharedToolingContainer {
     var currentDateProvider: Factory<CurrentDateProviderProtocol> {
         self { CurrentDateProvider() }
     }
+
+    var spotlightSettingsProvider: Factory<SpotlightSettingsProvider> {
+        self { self.preferences() }
+    }
 }
 
 // MARK: Keychain tools

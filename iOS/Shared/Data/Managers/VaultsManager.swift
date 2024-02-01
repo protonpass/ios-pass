@@ -168,7 +168,7 @@ private extension VaultsManager {
             }
 
             do {
-                try await indexItemsForSpotlight(for: .all)
+                try await indexItemsForSpotlight()
             } catch {
                 logger.error(error)
             }

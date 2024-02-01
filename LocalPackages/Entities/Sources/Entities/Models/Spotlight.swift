@@ -22,11 +22,6 @@
 import CoreSpotlight
 import Foundation
 
-public enum SpotlightSearchableItemType: Sendable {
-    case all
-    case precise(ItemContentType)
-}
-
 public enum SpotlightSearchableContent: Int, Codable, CaseIterable, Sendable {
     case title = 0
     case titleAndNote = 1
@@ -36,6 +31,12 @@ public enum SpotlightSearchableContent: Int, Codable, CaseIterable, Sendable {
 public enum SpotlightSearchableVaults: Int, Codable, CaseIterable, Sendable {
     case all = 0
     case selected = 1
+}
+
+public protocol SpotlightSettingsProvider: Sendable {
+    var spotlightEnabled: Bool { get }
+    var spotlightSearchableContent: SpotlightSearchableContent { get }
+    var spotlightSearchableVaults: SpotlightSearchableVaults { get }
 }
 
 public extension ItemContent {
