@@ -63,6 +63,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let pendingSpotlightItem = resolve(\DataStreamContainer.pendingSpotlightItem)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -91,6 +92,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // MARK: - Navigation Router
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    private var authenticated = true
 
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
@@ -139,6 +142,15 @@ private extension HomepageCoordinator {
                     .theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
+
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                guard authenticated, let itemContent = pendingSpotlightItem.value else { return }
+                pendingSpotlightItem.send(nil)
+                router.present(for: .itemDetail(itemContent))
+            }
+        }
 
         Publishers.CombineLatest(vaultsManager.$vaultSelection, vaultsManager.$state)
             .receive(on: DispatchQueue.main)
@@ -211,11 +223,13 @@ private extension HomepageCoordinator {
             .localAuthentication(delayed: false,
                                  onAuth: { [weak self] in
                                      guard let self else { return }
+                                     authenticated = false
                                      dismissAllViewControllers(animated: false)
                                      hideSecondaryView()
                                  },
                                  onSuccess: { [weak self] in
                                      guard let self else { return }
+                                     authenticated = true
                                      showSecondaryView()
                                      logger.info("Local authentication succesful")
                                  },
@@ -1102,7 +1116,10 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
     func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
         if asSheet {
-            present(view)
+            dismissAllViewControllers(animated: true) { [weak self] in
+                guard let self else { return }
+                present(view)
+            }
         } else {
             push(view)
         }
