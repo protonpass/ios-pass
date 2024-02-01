@@ -26,6 +26,20 @@ public enum SpotlightSearchableContent: Int, Codable, CaseIterable, Sendable {
     case title = 0
     case titleAndNote = 1
     case allExceptSensitiveData = 2
+
+    var includeNote: Bool {
+        if case .title = self {
+            return false
+        }
+        return true
+    }
+
+    var includeCustomData: Bool {
+        if case .allExceptSensitiveData = self {
+            return true
+        }
+        return false
+    }
 }
 
 public enum SpotlightSearchableVaults: Int, Codable, CaseIterable, Sendable {
@@ -44,7 +58,7 @@ public extension ItemContent {
         type.debugDescription
     }
 
-    func toSearchableItem() throws -> CSSearchableItem {
+    func toSearchableItem(content: SpotlightSearchableContent) throws -> CSSearchableItem {
         let attributeSet = CSSearchableItemAttributeSet(contentType: .item)
         attributeSet.title = name
         // "displayName" is required by iOS 17
@@ -53,24 +67,28 @@ public extension ItemContent {
 
         var contents = [String?]()
 
-        // Index custom data first
-        switch contentData {
-        case .alias:
-            contents.append(aliasEmail)
-        case let .login(data):
-            contents.append(contentsOf: [data.username] + data.urls)
-        case let .creditCard(data):
-            contents.append(contentsOf: [data.cardholderName, data.expirationDate])
-        case .note:
-            break
+        if content.includeNote {
+            contents.append(note)
         }
 
-        // Then index common data like note & custom fields
-        contents.append(note)
-        let customFieldValues = customFields
-            .filter { $0.type == .text }
-            .map { "\($0.title): \($0.content)" }
-        contents.append(contentsOf: customFieldValues)
+        if content.includeCustomData {
+            switch contentData {
+            case .alias:
+                contents.append(aliasEmail)
+            case let .login(data):
+                contents.append(contentsOf: [data.username] + data.urls)
+            case let .creditCard(data):
+                contents.append(contentsOf: [data.cardholderName, data.expirationDate])
+            case .note:
+                break
+            }
+
+            let customFieldValues = customFields
+                .filter { $0.type == .text }
+                .map { "\($0.title): \($0.content)" }
+
+            contents.append(contentsOf: customFieldValues)
+        }
 
         attributeSet.contentDescription = contents.compactMap { $0 }.joined(separator: "\n")
         let id = try ids.serializeBase64()
