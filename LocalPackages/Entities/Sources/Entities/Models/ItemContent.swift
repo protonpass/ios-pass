@@ -100,7 +100,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let customFields: [CustomField]
 
     public var id: String {
-        item.itemID
+        "\(item.itemID + shareId)"
     }
 
     public init(shareId: String,
