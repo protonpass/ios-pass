@@ -37,6 +37,7 @@ struct TotpLoginsView: View {
         ZStack {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
+
             mainContainer
                 .showSpinner(viewModel.loading)
         }
@@ -46,13 +47,16 @@ struct TotpLoginsView: View {
         .theme(preferences.theme)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Set up 2FA")
+        .toolbarBackground(
+            PassColor.backgroundNorm.toColor,
+            for: .navigationBar)
         .navigationStackEmbeded()
     }
 }
 
 private extension TotpLoginsView {
     var mainContainer: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 15) {
             SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: "Find login to update",
@@ -70,7 +74,7 @@ private extension TotpLoginsView {
                     SmallSortTypeButton(selectedSortType: $viewModel.selectedSortType)
                 }
                 .plainListRow()
-                .padding([.top, .horizontal])
+                .padding([.horizontal])
             }
 
             itemList
