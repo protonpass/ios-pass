@@ -27,6 +27,8 @@ import Factory
 import Macro
 import SwiftUI
 
+//TODO: ajouter une alerte pour associer un totp avec un element et si oui dismiss le tt
+ 
 struct TotpLoginsView: View {
     @StateObject var viewModel: TotpLoginsViewModel
     @FocusState private var isFocusedOnSearchBar
@@ -47,9 +49,8 @@ struct TotpLoginsView: View {
         .theme(preferences.theme)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Set up 2FA")
-        .toolbarBackground(
-            PassColor.backgroundNorm.toColor,
-            for: .navigationBar)
+        .toolbarBackground(PassColor.backgroundNorm.toColor,
+                           for: .navigationBar)
         .navigationStackEmbeded()
     }
 }
@@ -208,8 +209,8 @@ struct ResultItemRow: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
             }
+            .padding(.bottom, 10)
         }
     }
 }
