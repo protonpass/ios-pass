@@ -20,6 +20,7 @@
 
 import Factory
 import Foundation
+import UIKit
 
 enum DeeplinkType {
     case otpauth
@@ -42,7 +43,10 @@ final class DeepLinkRoutingService {
         self.router = router
     }
 
-    @MainActor func parseAndDispatch(url: URL) {
+    @MainActor func parseAndDispatch(context: Set<UIOpenURLContext>) {
+        guard let url = context.first?.url else {
+            return
+        }
         switch url.linkType {
         case .otpauth:
             let uri = url.absoluteString.decodeHTMLAndPercentEntities()
