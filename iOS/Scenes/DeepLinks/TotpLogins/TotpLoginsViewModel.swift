@@ -34,15 +34,15 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
     @Published private(set) var results = [ItemSearchResult]()
     @Published var query = ""
 
-    private var searchableItems = [SearchableItem]()
-    private var logins = [ItemContent]()
-
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    private var searchableItems = [SearchableItem]()
     private let totpUri: String
     private var cancellables = Set<AnyCancellable>()
 
@@ -58,7 +58,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
         }
 
         do {
-            logins = try await getActiveLoginItems().filter { !$0.hasTotpUri }
+            let logins = try await getActiveLoginItems().filter { !$0.hasTotpUri }
             searchableItems = logins.map { SearchableItem(from: $0, allVaults: []) }
             results = searchableItems.toItemSearchResults
         } catch {
@@ -68,7 +68,9 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
 
     func updateLogin(item: ItemSearchResult) {
         Task { [weak self] in
-            guard let self, let itemContent = logins.first(where: { $0.id == item.itemId }) else {
+            guard let self,
+                  let itemContent = try? await itemRepository.getItemContent(shareId: item.shareId,
+                                                                             itemId: item.itemId) else {
                 return
             }
 
