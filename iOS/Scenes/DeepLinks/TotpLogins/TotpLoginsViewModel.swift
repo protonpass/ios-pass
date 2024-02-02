@@ -99,7 +99,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
 
 private extension TotpLoginsViewModel {
     func setUp() {
-        isCleanQuery
+        cleanedQuery
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink { [weak self] search in
@@ -112,7 +112,7 @@ private extension TotpLoginsViewModel {
             .store(in: &cancellables)
     }
 
-    private var isCleanQuery: AnyPublisher<String, Never> {
+    private var cleanedQuery: AnyPublisher<String, Never> {
         $query
             .dropFirst()
             .debounce(for: 0.4, scheduler: RunLoop.main)
