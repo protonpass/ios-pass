@@ -41,6 +41,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         AppearanceSettings.apply()
         appCoordinator.start()
+
+        deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -53,10 +55,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        guard let firstUrl = URLContexts.first?.url else {
-            return
-        }
-        deepLinkRoutingService.parseAndDispatch(url: firstUrl)
+        deepLinkRoutingService.parseAndDispatch(context: URLContexts)
     }
 }
 
