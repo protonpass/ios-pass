@@ -1,5 +1,5 @@
 //
-// LocalSpotlightSearchableVaultDatasourceTests.swift
+// LocalSpotlightVaultDatasourceTests.swift
 // Proton Pass - Created on 31/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,8 +22,8 @@
 @testable import Client
 import XCTest
 
-final class LocalSpotlightSearchableVaultDatasourceTests: XCTestCase {
-    var sut: LocalSpotlightSearchableVaultDatasource!
+final class LocalSpotlightVaultDatasourceTests: XCTestCase {
+    var sut: LocalSpotlightVaultDatasource!
 
     override func setUp() {
         super.setUp()
@@ -36,7 +36,7 @@ final class LocalSpotlightSearchableVaultDatasourceTests: XCTestCase {
     }
 }
 
-extension LocalSpotlightSearchableVaultDatasourceTests {
+extension LocalSpotlightVaultDatasourceTests {
     func testUpdateGetRemoveVaults() async throws {
         // Given
         let userId1 = String.random()
@@ -48,21 +48,21 @@ extension LocalSpotlightSearchableVaultDatasourceTests {
         let shareId4 = String.random()
 
         // When
-        try await sut.setIdsForSearchableVaults(for: userId1, ids: [shareId1, shareId2, shareId3])
-        try await sut.setIdsForSearchableVaults(for: userId2, ids: [shareId4])
+        try await sut.setIds(for: userId1, ids: [shareId1, shareId2, shareId3])
+        try await sut.setIds(for: userId2, ids: [shareId4])
 
         // Then
-        let user1ShareIds1 = try await sut.getIdsForSearchableVaults(for: userId1)
-        let user2ShareIds1 = try await sut.getIdsForSearchableVaults(for: userId2)
+        let user1ShareIds1 = try await sut.getIds(for: userId1)
+        let user2ShareIds1 = try await sut.getIds(for: userId2)
         XCTAssertEqual(Set([shareId1, shareId2, shareId3]), Set(user1ShareIds1))
         XCTAssertEqual(Set([shareId4]), Set(user2ShareIds1))
 
         // When
-        try await sut.removeAllSearchableVaults(for: userId1)
+        try await sut.removeAll(for: userId1)
 
         // Then
-        let user1ShareIds2 = try await sut.getIdsForSearchableVaults(for: userId1)
-        let user2ShareIds2 = try await sut.getIdsForSearchableVaults(for: userId2)
+        let user1ShareIds2 = try await sut.getIds(for: userId1)
+        let user2ShareIds2 = try await sut.getIds(for: userId2)
         XCTAssertTrue(user1ShareIds2.isEmpty)
         XCTAssertEqual(Set([shareId4]), Set(user2ShareIds2))
     }

@@ -411,8 +411,8 @@
 		35CEA8E62A607D2F00343A4E /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
 		35CEA8E72A607D3200343A4E /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
 		35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */; };
-		35D708F82B6B8517001CBB03 /* EditSpotlightSelectedVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F72B6B8517001CBB03 /* EditSpotlightSelectedVaultsView.swift */; };
-		35D708FA2B6B8640001CBB03 /* EditSpotlightSelectedVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F92B6B8640001CBB03 /* EditSpotlightSelectedVaultsViewModel.swift */; };
+		35D708F82B6B8517001CBB03 /* EditSpotlightVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */; };
+		35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */; };
 		35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */; };
 		35E152C42A38866900E47E57 /* CreateEditCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E152C32A38866900E47E57 /* CreateEditCreditCardViewModel.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -866,8 +866,8 @@
 		35C9B8322B5EA8890062D787 /* SharedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContentView.swift; sourceTree = "<group>"; };
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
 		35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsCoordinator.swift; sourceTree = "<group>"; };
-		35D708F72B6B8517001CBB03 /* EditSpotlightSelectedVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightSelectedVaultsView.swift; sourceTree = "<group>"; };
-		35D708F92B6B8640001CBB03 /* EditSpotlightSelectedVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightSelectedVaultsViewModel.swift; sourceTree = "<group>"; };
+		35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsView.swift; sourceTree = "<group>"; };
+		35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsViewModel.swift; sourceTree = "<group>"; };
 		35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardView.swift; sourceTree = "<group>"; };
 		35E152C32A38866900E47E57 /* CreateEditCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardViewModel.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1430,8 +1430,8 @@
 				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
 				3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */,
 				35AC8E372B6A29CB00B06CF4 /* EditSpotlightSearchableVaultsView.swift */,
-				35D708F72B6B8517001CBB03 /* EditSpotlightSelectedVaultsView.swift */,
-				35D708F92B6B8640001CBB03 /* EditSpotlightSelectedVaultsViewModel.swift */,
+				35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */,
+				35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */,
 				355895AE29D76E67001E2207 /* LogsView.swift */,
 				355895B029D76E9F001E2207 /* LogsViewModel.swift */,
 				356BC34F29D6C57100F03497 /* SettingsView.swift */,
@@ -3070,7 +3070,7 @@
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
 				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				356B830E29C339110084488A /* SortTypeButton.swift in Sources */,
-				35D708FA2B6B8640001CBB03 /* EditSpotlightSelectedVaultsViewModel.swift in Sources */,
+				35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */,
 				35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */,
 				5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
@@ -3095,7 +3095,7 @@
 				5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */,
 				35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */,
-				35D708F82B6B8517001CBB03 /* EditSpotlightSelectedVaultsView.swift in Sources */,
+				35D708F82B6B8517001CBB03 /* EditSpotlightVaultsView.swift in Sources */,
 				5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,

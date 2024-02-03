@@ -402,8 +402,8 @@ extension HomepageCoordinator {
                     presentEditSpotlightSearchableContentView()
                 case .editSpotlightSearchableVaults:
                     presentEditSpotlightSearchableVaultsView()
-                case .editSpotlightSearchableSelectedVaults:
-                    presentEditSpotlightSelectedVaultsView()
+                case .editSpotlightVaults:
+                    presentEditSpotlightVaultsView()
                 }
             }
             .store(in: &cancellables)
@@ -677,8 +677,8 @@ extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentEditSpotlightSelectedVaultsView() {
-        let viewController = UIHostingController(rootView: EditSpotlightSelectedVaultsView())
+    func presentEditSpotlightVaultsView() {
+        let viewController = UIHostingController(rootView: EditSpotlightVaultsView())
         let allVaults = vaultsManager.getAllVaults()
         let customHeight = Int(OptionRowHeight.short.value) * allVaults.count + 60
         viewController.setDetentType(.custom(CGFloat(customHeight)),

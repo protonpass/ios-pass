@@ -1,5 +1,5 @@
 //
-// GetSelectedSpotlightSearchableVaults.swift
+// GetSpotlightVaults.swift
 // Proton Pass - Created on 01/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,17 +22,17 @@
 import Client
 import Entities
 
-public protocol GetSelectedSpotlightSearchableVaultsUseCase: Sendable {
+public protocol GetSpotlightVaultsUseCase: Sendable {
     func execute() async throws -> [Vault]
 }
 
-public extension GetSelectedSpotlightSearchableVaultsUseCase {
+public extension GetSpotlightVaultsUseCase {
     func callAsFunction() async throws -> [Vault] {
         try await execute()
     }
 }
 
-public final class GetSelectedSpotlightSearchableVaults: GetSelectedSpotlightSearchableVaultsUseCase {
+public final class GetSpotlightVaults: GetSpotlightVaultsUseCase {
     private let userDataProvider: any UserDataProvider
     private let shareRepository: any ShareRepositoryProtocol
     private let localSpotlightVaultDatasource: any LocalSpotlightVaultDatasourceProtocol
@@ -47,7 +47,7 @@ public final class GetSelectedSpotlightSearchableVaults: GetSelectedSpotlightSea
 
     public func execute() async throws -> [Vault] {
         let userId = try userDataProvider.getUserId()
-        let selectedIds = try await localSpotlightVaultDatasource.getIdsForSearchableVaults(for: userId)
+        let selectedIds = try await localSpotlightVaultDatasource.getIds(for: userId)
         let vaults = try await shareRepository.getVaults()
         return vaults.filter { vault in
             selectedIds.contains(vault.shareId)

@@ -22,15 +22,15 @@
 import CoreData
 
 public protocol LocalSpotlightVaultDatasourceProtocol: Sendable {
-    func getIdsForSearchableVaults(for userId: String) async throws -> [ShareID]
-    func setIdsForSearchableVaults(for userId: String, ids: [ShareID]) async throws
-    func removeAllSearchableVaults(for userId: String) async throws
+    func getIds(for userId: String) async throws -> [ShareID]
+    func setIds(for userId: String, ids: [ShareID]) async throws
+    func removeAll(for userId: String) async throws
 }
 
 public final class LocalSpotlightVaultDatasource: LocalDatasource, LocalSpotlightVaultDatasourceProtocol {}
 
 public extension LocalSpotlightVaultDatasource {
-    func getIdsForSearchableVaults(for userId: String) async throws -> [ShareID] {
+    func getIds(for userId: String) async throws -> [ShareID] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = SpotlightVaultEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
@@ -38,7 +38,7 @@ public extension LocalSpotlightVaultDatasource {
         return entities.map(\.shareID)
     }
 
-    func setIdsForSearchableVaults(for userId: String, ids: [ShareID]) async throws {
+    func setIds(for userId: String, ids: [ShareID]) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
@@ -51,7 +51,7 @@ public extension LocalSpotlightVaultDatasource {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    func removeAllSearchableVaults(for userId: String) async throws {
+    func removeAll(for userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "SpotlightVaultEntity")
         fetchRequest.predicate = .init(format: "userID = %@", userId)
