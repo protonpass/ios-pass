@@ -1,5 +1,5 @@
 //
-// EditSpotlightSelectedVaultsViewModel.swift
+// EditSpotlightVaultsViewModel.swift
 // Proton Pass - Created on 01/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Entities
 import Factory
 import Foundation
 
-final class EditSpotlightSelectedVaultsViewModel: ObservableObject {
+final class EditSpotlightVaultsViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let currentSpotlightSelectedVaults = resolve(\DataStreamContainer
         .currentSpotlightSelectedVaults)
@@ -35,7 +35,7 @@ final class EditSpotlightSelectedVaultsViewModel: ObservableObject {
         selectedVaults = currentSpotlightSelectedVaults.value
     }
 
-    func selectOrDeselect(vault: Vault) {
+    func toggleSelection(vault: Vault) {
         if isSelected(vault: vault) {
             selectedVaults.removeAll(where: { $0 == vault })
         } else {

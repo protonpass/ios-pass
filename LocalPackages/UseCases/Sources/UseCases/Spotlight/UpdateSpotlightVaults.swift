@@ -1,5 +1,5 @@
 //
-// UpdateSelectedSpotlightSearchableVaults.swift
+// UpdateSpotlightVaults.swift
 // Proton Pass - Created on 01/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,18 +23,17 @@ import Client
 import Entities
 import Foundation
 
-// swiftlint:disable:next type_name
-public protocol UpdateSelectedSpotlightSearchableVaultsUseCase: Sendable {
+public protocol UpdateSpotlightVaultsUseCase: Sendable {
     func execute(for vaults: [Vault]) async throws
 }
 
-public extension UpdateSelectedSpotlightSearchableVaultsUseCase {
+public extension UpdateSpotlightVaultsUseCase {
     func callAsFunction(for vaults: [Vault]) async throws {
         try await execute(for: vaults)
     }
 }
 
-public final class UpdateSelectedSpotlightSearchableVaults: UpdateSelectedSpotlightSearchableVaultsUseCase {
+public final class UpdateSpotlightVaults: UpdateSpotlightVaultsUseCase {
     private let userDataProvider: any UserDataProvider
     private let datasource: any LocalSpotlightVaultDatasourceProtocol
 
@@ -46,6 +45,6 @@ public final class UpdateSelectedSpotlightSearchableVaults: UpdateSelectedSpotli
 
     public func execute(for vaults: [Vault]) async throws {
         let userId = try userDataProvider.getUserId()
-        try await datasource.setIdsForSearchableVaults(for: userId, ids: vaults.map(\.shareId))
+        try await datasource.setIds(for: userId, ids: vaults.map(\.shareId))
     }
 }
