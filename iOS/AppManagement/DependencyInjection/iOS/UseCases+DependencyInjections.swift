@@ -60,8 +60,8 @@ private extension UseCasesContainer {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
 
-    var localSpotlightSearchableVaultDatasource: any LocalSpotlightSearchableVaultDatasourceProtocol {
-        SharedRepositoryContainer.shared.localSpotlightSearchableVaultDatasource()
+    var localSpotlightVaultDatasource: any LocalSpotlightVaultDatasourceProtocol {
+        SharedRepositoryContainer.shared.localSpotlightVaultDatasource()
     }
 }
 
@@ -298,13 +298,13 @@ extension UseCasesContainer {
     var getSelectedSpotlightSearchableVaults: Factory<GetSelectedSpotlightSearchableVaultsUseCase> {
         self { GetSelectedSpotlightSearchableVaults(userDataProvider: self.userDataProvider,
                                                     shareRepository: self.shareRepository,
-                                                    localSpotlightSearchableVaultDatasource: self
-                                                        .localSpotlightSearchableVaultDatasource) }
+                                                    localSpotlightVaultDatasource: self
+                                                        .localSpotlightVaultDatasource) }
     }
 
     var updateSelectedSpotlightSearchableVaults: Factory<UpdateSelectedSpotlightSearchableVaultsUseCase> {
         self { UpdateSelectedSpotlightSearchableVaults(userDataProvider: self.userDataProvider,
-                                                       datasource: self.localSpotlightSearchableVaultDatasource) }
+                                                       datasource: self.localSpotlightVaultDatasource) }
     }
 }
 
