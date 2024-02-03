@@ -35,19 +35,19 @@ public extension GetSelectedSpotlightSearchableVaultsUseCase {
 public final class GetSelectedSpotlightSearchableVaults: GetSelectedSpotlightSearchableVaultsUseCase {
     private let userDataProvider: any UserDataProvider
     private let shareRepository: any ShareRepositoryProtocol
-    private let localSpotlightSearchableVaultDatasource: any LocalSpotlightSearchableVaultDatasourceProtocol
+    private let localSpotlightVaultDatasource: any LocalSpotlightVaultDatasourceProtocol
 
     public init(userDataProvider: any UserDataProvider,
                 shareRepository: any ShareRepositoryProtocol,
-                localSpotlightSearchableVaultDatasource: any LocalSpotlightSearchableVaultDatasourceProtocol) {
+                localSpotlightVaultDatasource: any LocalSpotlightVaultDatasourceProtocol) {
         self.userDataProvider = userDataProvider
         self.shareRepository = shareRepository
-        self.localSpotlightSearchableVaultDatasource = localSpotlightSearchableVaultDatasource
+        self.localSpotlightVaultDatasource = localSpotlightVaultDatasource
     }
 
     public func execute() async throws -> [Vault] {
         let userId = try userDataProvider.getUserId()
-        let selectedIds = try await localSpotlightSearchableVaultDatasource.getIdsForSearchableVaults(for: userId)
+        let selectedIds = try await localSpotlightVaultDatasource.getIdsForSearchableVaults(for: userId)
         let vaults = try await shareRepository.getVaults()
         return vaults.filter { vault in
             selectedIds.contains(vault.shareId)

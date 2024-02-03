@@ -110,7 +110,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="SpotlightSearchableVaultEntity" representedClassName="SpotlightSearchableVaultEntity" syncable="YES">
+    <entity name="SpotlightVaultEntity" representedClassName="SpotlightVaultEntity" syncable="YES">
         <attribute name="shareID" optional="YES" attributeType="String"/>
         <attribute name="userID" optional="YES" attributeType="String"/>
         <uniquenessConstraints>

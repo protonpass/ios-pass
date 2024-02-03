@@ -39,14 +39,14 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
     private let userDataProvider: any UserDataProvider
     private let settingsProvider: any SpotlightSettingsProvider
     private let itemRepository: any ItemRepositoryProtocol
-    private let datasource: any LocalSpotlightSearchableVaultDatasourceProtocol
+    private let datasource: any LocalSpotlightVaultDatasourceProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let logger: Logger
 
     public init(userDataProvider: any UserDataProvider,
                 settingsProvider: any SpotlightSettingsProvider,
                 itemRepository: any ItemRepositoryProtocol,
-                datasource: any LocalSpotlightSearchableVaultDatasourceProtocol,
+                datasource: any LocalSpotlightVaultDatasourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol) {
         self.userDataProvider = userDataProvider

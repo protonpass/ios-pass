@@ -146,8 +146,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "waitingNewUserInvites", on: sut, hasType: .integer64)
     }
 
-    func testSpotlightSearchableVaultEntity() {
-        let sut = entity(byName: "SpotlightSearchableVaultEntity")
+    func testSpotlightVaultEntity() {
+        let sut = entity(byName: "SpotlightVaultEntity")
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }

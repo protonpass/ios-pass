@@ -141,7 +141,7 @@ extension SharedUseCasesContainer {
                                       settingsProvider: SharedToolingContainer.shared.spotlightSettingsProvider(),
                                       itemRepository: self.itemRepository,
                                       datasource: SharedRepositoryContainer.shared
-                                          .localSpotlightSearchableVaultDatasource(),
+                                          .localSpotlightVaultDatasource(),
                                       symmetricKeyProvider: self.symmetricKeyProvider,
                                       logManager: self.logManager) }
     }
