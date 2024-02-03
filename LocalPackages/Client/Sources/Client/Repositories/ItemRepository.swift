@@ -38,6 +38,9 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
 
+    /// Get all item contents
+    func getAllItemContents() async throws -> [ItemContent]
+
     /// Get all local items of all shares by state
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
@@ -170,6 +173,14 @@ public actor ItemRepository: ItemRepositoryProtocol {
 public extension ItemRepository {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
         try await localDatasource.getAllItems()
+    }
+
+    func getAllItemContents() async throws -> [ItemContent] {
+        let items: [ItemContent?] = try await getAllItems().parallelMap { [weak self] item in
+            guard let self else { return nil }
+            return try await item.getItemContent(symmetricKey: getSymmetricKey())
+        }
+        return items.compactMap { $0 }
     }
 
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {

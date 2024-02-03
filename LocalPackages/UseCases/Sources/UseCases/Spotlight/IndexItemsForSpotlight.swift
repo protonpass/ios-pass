@@ -40,20 +40,17 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
     private let settingsProvider: any SpotlightSettingsProvider
     private let itemRepository: any ItemRepositoryProtocol
     private let datasource: any LocalSpotlightVaultDatasourceProtocol
-    private let symmetricKeyProvider: any SymmetricKeyProvider
     private let logger: Logger
 
     public init(userDataProvider: any UserDataProvider,
                 settingsProvider: any SpotlightSettingsProvider,
                 itemRepository: any ItemRepositoryProtocol,
                 datasource: any LocalSpotlightVaultDatasourceProtocol,
-                symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol) {
         self.userDataProvider = userDataProvider
         self.settingsProvider = settingsProvider
         self.itemRepository = itemRepository
         self.datasource = datasource
-        self.symmetricKeyProvider = symmetricKeyProvider
         logger = .init(manager: logManager)
     }
 
@@ -65,10 +62,7 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             return
         }
         logger.trace("Begin to index items for Spotlight")
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let allItems = try await itemRepository
-            .getAllItems()
-            .parallelMap { try $0.getItemContent(symmetricKey: symmetricKey) }
+        let allItems = try await itemRepository.getAllItemContents()
 
         logger.trace("Found \(allItems.count) items")
 
