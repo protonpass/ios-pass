@@ -1,5 +1,5 @@
 //
-// SpotlightSearchableVaultEntity.swift
+// SpotlightVaultEntity.swift
 // Proton Pass - Created on 31/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,15 +21,15 @@
 
 import CoreData
 
-@objc(SpotlightSearchableVaultEntity)
-public final class SpotlightSearchableVaultEntity: NSManagedObject {}
+@objc(SpotlightVaultEntity)
+public final class SpotlightVaultEntity: NSManagedObject {}
 
-extension SpotlightSearchableVaultEntity: Identifiable {}
+extension SpotlightVaultEntity: Identifiable {}
 
-extension SpotlightSearchableVaultEntity {
+extension SpotlightVaultEntity {
     @nonobjc
-    class func fetchRequest() -> NSFetchRequest<SpotlightSearchableVaultEntity> {
-        NSFetchRequest<SpotlightSearchableVaultEntity>(entityName: "SpotlightSearchableVaultEntity")
+    class func fetchRequest() -> NSFetchRequest<SpotlightVaultEntity> {
+        NSFetchRequest<SpotlightVaultEntity>(entityName: "SpotlightVaultEntity")
     }
 
     @NSManaged var userID: String
