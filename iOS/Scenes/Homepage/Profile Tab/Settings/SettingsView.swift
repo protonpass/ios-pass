@@ -231,7 +231,7 @@ private extension SettingsView {
 
     @ViewBuilder
     var selectedVaultsRowTitle: some View {
-        if let vaults = viewModel.selectedSearchableVaults, !vaults.isEmpty {
+        if let vaults = viewModel.spotlightVaults, !vaults.isEmpty {
             Text("Selected vaults")
                 .sectionTitleText() +
                 Text(verbatim: " • ")
@@ -246,7 +246,7 @@ private extension SettingsView {
 
     @ViewBuilder
     var selectedVaultsRowDescription: some View {
-        if let vaults = viewModel.selectedSearchableVaults {
+        if let vaults = viewModel.spotlightVaults {
             if vaults.isEmpty {
                 Text("No vaults")
                     .foregroundStyle(PassColor.textWeak.toColor)
