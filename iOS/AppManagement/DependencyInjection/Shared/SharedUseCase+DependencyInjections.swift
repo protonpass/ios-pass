@@ -142,7 +142,6 @@ extension SharedUseCasesContainer {
                                       itemRepository: self.itemRepository,
                                       datasource: SharedRepositoryContainer.shared
                                           .localSpotlightVaultDatasource(),
-                                      symmetricKeyProvider: self.symmetricKeyProvider,
                                       logManager: self.logManager) }
     }
 }
