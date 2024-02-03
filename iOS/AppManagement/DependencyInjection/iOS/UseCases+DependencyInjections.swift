@@ -295,16 +295,16 @@ extension UseCasesContainer {
 // MARK: Spotlight
 
 extension UseCasesContainer {
-    var getSelectedSpotlightSearchableVaults: Factory<GetSelectedSpotlightSearchableVaultsUseCase> {
-        self { GetSelectedSpotlightSearchableVaults(userDataProvider: self.userDataProvider,
-                                                    shareRepository: self.shareRepository,
-                                                    localSpotlightVaultDatasource: self
-                                                        .localSpotlightVaultDatasource) }
+    var getSpotlightVaults: Factory<GetSpotlightVaultsUseCase> {
+        self { GetSpotlightVaults(userDataProvider: self.userDataProvider,
+                                  shareRepository: self.shareRepository,
+                                  localSpotlightVaultDatasource: self
+                                      .localSpotlightVaultDatasource) }
     }
 
-    var updateSelectedSpotlightSearchableVaults: Factory<UpdateSelectedSpotlightSearchableVaultsUseCase> {
-        self { UpdateSelectedSpotlightSearchableVaults(userDataProvider: self.userDataProvider,
-                                                       datasource: self.localSpotlightVaultDatasource) }
+    var updateSpotlightVaults: Factory<UpdateSpotlightVaultsUseCase> {
+        self { UpdateSpotlightVaults(userDataProvider: self.userDataProvider,
+                                     datasource: self.localSpotlightVaultDatasource) }
     }
 }
 

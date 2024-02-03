@@ -1,5 +1,5 @@
 //
-// EditSpotlightSelectedVaultsView.swift
+// EditSpotlightVaultsView.swift
 // Proton Pass - Created on 01/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,8 +23,8 @@ import Entities
 import Factory
 import SwiftUI
 
-struct EditSpotlightSelectedVaultsView: View {
-    @StateObject private var viewModel = EditSpotlightSelectedVaultsViewModel()
+struct EditSpotlightVaultsView: View {
+    @StateObject private var viewModel = EditSpotlightVaultsViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -49,7 +49,7 @@ struct EditSpotlightSelectedVaultsView: View {
     @MainActor
     private func view(for vault: VaultListUiModel) -> some View {
         Button(action: {
-            viewModel.selectOrDeselect(vault: vault.vault)
+            viewModel.toggleSelection(vault: vault.vault)
         }, label: {
             VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
                      title: vault.vault.name,

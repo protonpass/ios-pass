@@ -73,7 +73,7 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             logger.trace("Indexing \(selectedItems.count) items in all vaults for Spotlight")
         case .selected:
             let userId = try userDataProvider.getUserId()
-            let ids = try await datasource.getIdsForSearchableVaults(for: userId)
+            let ids = try await datasource.getIds(for: userId)
             selectedItems = allItems.filter { ids.contains($0.shareId) }
             logger.trace("Indexing \(selectedItems.count) items in \(ids.count) vaults for Spotlight")
         }

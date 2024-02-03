@@ -45,11 +45,9 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
-    private let currentSpotlightSelectedVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)
-    private let getSelectedSpotlightSearchableVaults = resolve(\UseCasesContainer
-        .getSelectedSpotlightSearchableVaults)
-    private let updateSelectedSpotlightSearchableVaults = resolve(\UseCasesContainer
-        .updateSelectedSpotlightSearchableVaults)
+    private let currentSpotlightVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)
+    private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
+    private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
 
@@ -86,7 +84,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
-    @Published private(set) var selectedSearchableVaults: [Vault]?
+    @Published private(set) var spotlightVaults: [Vault]?
 
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
@@ -135,8 +133,8 @@ extension SettingsViewModel {
     }
 
     func editSpotlightSearchableSelectedVaults() {
-        guard selectedSearchableVaults != nil else { return }
-        router.present(for: .editSpotlightSearchableSelectedVaults)
+        guard spotlightVaults != nil else { return }
+        router.present(for: .editSpotlightVaults)
     }
 
     func viewHostAppLogs() {
@@ -198,13 +196,15 @@ private extension SettingsViewModel {
             }
             .store(in: &cancellables)
 
-        currentSpotlightSelectedVaults
+        currentSpotlightVaults
             .dropFirst() // Drop first event when the stream is init
             .receive(on: DispatchQueue.main)
+            // Debouncing 1.5 secs because this will trigger expensive database operations
+            // and Spotlight indexation
             .debounce(for: .seconds(1.5), scheduler: DispatchQueue.main)
             .sink { [weak self] vaults in
                 guard let self else { return }
-                selectedSearchableVaults = vaults
+                spotlightVaults = vaults
                 reindexItemsForSpotlight()
             }
             .store(in: &cancellables)
@@ -225,7 +225,7 @@ private extension SettingsViewModel {
             .store(in: &cancellables)
 
         vaultsManager.attach(to: self, storeIn: &cancellables)
-        refreshSpotlightSelectedVaults()
+        refreshSpotlightVaults()
     }
 
     func emptyFavIconCache() {
@@ -246,10 +246,9 @@ private extension SettingsViewModel {
             guard let self else { return }
             do {
                 if preferences.spotlightEnabled {
-                    if let selectedSearchableVaults {
-                        try await updateSelectedSpotlightSearchableVaults(for: selectedSearchableVaults)
+                    if let spotlightVaults {
+                        try await updateSpotlightVaults(for: spotlightVaults)
                     }
-                    selectedSearchableVaults = try await getSelectedSpotlightSearchableVaults()
                 }
                 try await indexItemsForSpotlight()
             } catch {
@@ -258,15 +257,15 @@ private extension SettingsViewModel {
         }
     }
 
-    func refreshSpotlightSelectedVaults() {
+    func refreshSpotlightVaults() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                logger.trace("Refreshing spotlight selected vaults")
-                let vaults = try await getSelectedSpotlightSearchableVaults()
-                selectedSearchableVaults = vaults
-                currentSpotlightSelectedVaults.send(vaults)
-                logger.trace("Found \(selectedSearchableVaults?.count ?? 0) spotlight selected vaults")
+                logger.trace("Refreshing spotlight vaults")
+                let vaults = try await getSpotlightVaults()
+                spotlightVaults = vaults
+                currentSpotlightVaults.send(vaults)
+                logger.trace("Found \(spotlightVaults?.count ?? 0) spotlight vaults")
             } catch {
                 handle(error)
             }
