@@ -182,8 +182,8 @@ private extension SharedRepositoryContainer {
 // MARK: Public datasources
 
 extension SharedRepositoryContainer {
-    var localSpotlightSearchableVaultDatasource: Factory<LocalSpotlightSearchableVaultDatasourceProtocol> {
-        self { LocalSpotlightSearchableVaultDatasource(databaseService: self.databaseService) }
+    var localSpotlightVaultDatasource: Factory<LocalSpotlightVaultDatasourceProtocol> {
+        self { LocalSpotlightVaultDatasource(databaseService: self.databaseService) }
     }
 }
 

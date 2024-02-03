@@ -36,10 +36,10 @@ public extension UpdateSelectedSpotlightSearchableVaultsUseCase {
 
 public final class UpdateSelectedSpotlightSearchableVaults: UpdateSelectedSpotlightSearchableVaultsUseCase {
     private let userDataProvider: any UserDataProvider
-    private let datasource: any LocalSpotlightSearchableVaultDatasourceProtocol
+    private let datasource: any LocalSpotlightVaultDatasourceProtocol
 
     public init(userDataProvider: any UserDataProvider,
-                datasource: any LocalSpotlightSearchableVaultDatasourceProtocol) {
+                datasource: any LocalSpotlightVaultDatasourceProtocol) {
         self.userDataProvider = userDataProvider
         self.datasource = datasource
     }
