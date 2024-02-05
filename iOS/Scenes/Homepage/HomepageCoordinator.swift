@@ -650,39 +650,6 @@ extension HomepageCoordinator {
         present(alert)
     }
 
-    func presentEditSpotlightSearchableContentView() {
-        let viewController = UIHostingController(rootView: EditSpotlightSearchableContentView())
-
-        let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableContent.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func presentEditSpotlightSearchableVaultsView() {
-        let viewController = UIHostingController(rootView: EditSpotlightSearchableVaultsView())
-
-        let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableVaults.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func presentEditSpotlightVaultsView() {
-        let viewController = UIHostingController(rootView: EditSpotlightVaultsView())
-        let allVaults = vaultsManager.getAllVaults()
-        let customHeight = Int(OptionRowHeight.short.value) * allVaults.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func presentSearchScreen(_ searchMode: SearchMode) {
         let viewModel = SearchViewModel(searchMode: searchMode)
         viewModel.delegate = self

@@ -169,9 +169,9 @@ private extension SettingsView {
                 OptionRow(height: .tall) {
                     Toggle(isOn: $viewModel.spotlightEnabled) {
                         Text("Show content in search")
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            .foregroundColor(PassColor.textNorm.toColor)
                     }
-                    .tint(Color(uiColor: PassColor.interactionNorm))
+                    .tint(PassColor.interactionNorm.toColor)
                 }
 
                 if viewModel.spotlightEnabled {
