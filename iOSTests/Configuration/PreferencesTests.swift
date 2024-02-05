@@ -182,6 +182,39 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.shareClipboard)
     }
 
+    func testSpotlightDisabledByDefault() {
+        XCTAssertFalse(sut.spotlightEnabled)
+    }
+
+    func testSpotlightDisabledAfterResetting() async {
+        sut.spotlightEnabled = true
+        XCTAssertTrue(sut.spotlightEnabled)
+        await sut.reset()
+        XCTAssertFalse(sut.spotlightEnabled)
+    }
+
+    func testSpotlightTitleSearchableByDefault() {
+        XCTAssertEqual(sut.spotlightSearchableContent, .title)
+    }
+
+    func testSpotlightTitleSearchableAfterResetting() async {
+        sut.spotlightSearchableContent = .allExceptSensitiveData
+        XCTAssertEqual(sut.spotlightSearchableContent, .allExceptSensitiveData)
+        await sut.reset()
+        XCTAssertEqual(sut.spotlightSearchableContent, .title)
+    }
+
+    func testSpotlightSearchableAllVaultsByDefault() {
+        XCTAssertEqual(sut.spotlightSearchableVaults, .all)
+    }
+
+    func testSpotlightSearchableAllVaultsAfterResetting() async {
+        sut.spotlightSearchableVaults = .selected
+        XCTAssertEqual(sut.spotlightSearchableVaults, .selected)
+        await sut.reset()
+        XCTAssertEqual(sut.spotlightSearchableVaults, .all)
+    }
+
     @MainActor
     func testTelemetryThresholdNilByDefault() {
         XCTAssertNil(sut.telemetryThreshold)
