@@ -13232,6 +13232,26 @@
         }
       }
     },
+    "Are you sure you want to add a 2FA to « %@ »?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to add a 2FA to « %@ »?"
+          }
+        }
+      }
+    },
+    "Associate 2FA?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Associate 2FA?"
+          }
+        }
+      }
+    },
     "Associate and autofill" : {
       "localizations" : {
         "be" : {
@@ -13376,6 +13396,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kết hợp và tự động điền"
+          }
+        }
+      }
+    },
+    "Associate and save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Associate and save"
           }
         }
       }

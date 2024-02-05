@@ -33,6 +33,8 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
     @Published private(set) var loading = true
     @Published private(set) var results = [ItemSearchResult]()
     @Published var query = ""
+    @Published var showConfirmation = false
+    @Published private(set) var shouldDismiss = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
@@ -43,7 +45,8 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var searchableItems = [SearchableItem]()
-    private let totpUri: String
+    private(set) var selectedItem: ItemContent?
+    let totpUri: String
     private var cancellables = Set<AnyCancellable>()
 
     init(totpUri: String) {
@@ -74,7 +77,8 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
                 return
             }
 
-            router.present(for: .createEditLogin(mode: .edit(itemContent.updateTotp(uri: totpUri))))
+            selectedItem = itemContent
+            showConfirmation = true
         }
     }
 
@@ -87,12 +91,29 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
+
             let shareId = await getMainVault()?.shareId ?? ""
-
-            let creationType = ItemCreationType.login(totpUri: totpUri,
-                                                      autofill: false)
-
+            let creationType = ItemCreationType.login(totpUri: totpUri, autofill: false)
             router.present(for: .createEditLogin(mode: .create(shareId: shareId, type: creationType)))
+        }
+    }
+
+    func saveChange() {
+        Task { [weak self] in
+            guard let self,
+                  let selectedItem else {
+                return
+            }
+            defer { loading = false }
+            do {
+                loading = true
+                try await itemRepository.updateItem(oldItem: selectedItem.item,
+                                                    newItemContent: selectedItem.updateTotp(uri: totpUri).protobuf,
+                                                    shareId: selectedItem.shareId)
+                shouldDismiss = true
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
         }
     }
 }
