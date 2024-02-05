@@ -31,7 +31,6 @@ import UIKit
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
-    func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData)
     func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable)
 }
@@ -131,7 +130,7 @@ class BaseItemDetailViewModel: ObservableObject {
     ///    - text: The text to be copied to clipboard.
     ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
-        delegate?.itemDetailViewModelWantsToCopy(text: text, bannerMessage: message)
+        router.action(.copyToClipboard(text: text, message: message))
     }
 
     func goBack() {

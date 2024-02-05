@@ -29,6 +29,7 @@ struct SearchBar: View {
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
     let onCancel: () -> Void
+    var hideCancel = false
 
     var body: some View {
         HStack(spacing: 16) {
@@ -59,21 +60,22 @@ struct SearchBar: View {
                     })
                     .buttonStyle(.plain)
                     .opacity(query.isEmpty ? 0 : 1)
-                    .animation(.default, value: query.isEmpty)
                 }
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .containerShape(Rectangle())
-
-            Button(action: onCancel) {
-                Text("Cancel")
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+            if !hideCancel || (hideCancel && !query.isEmpty) {
+                Button(action: onCancel) {
+                    Text("Cancel")
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                }
             }
         }
         .frame(height: kSearchBarHeight)
         .padding()
+        .animation(.default, value: query.isEmpty)
     }
 }

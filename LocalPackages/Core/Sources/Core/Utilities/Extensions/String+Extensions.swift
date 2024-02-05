@@ -136,6 +136,26 @@ public extension String {
         }
         return nil
     }
+
+    func decodeHTMLAndPercentEntities() -> String {
+        let decodedHTML = decodingHTMLEntities()
+        return decodedHTML.removingPercentEncoding ?? decodedHTML
+    }
+
+    private func decodingHTMLEntities() -> String {
+        guard let data = data(using: .utf8) else { return self }
+
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+
+        if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
+            return attributedString.string
+        } else {
+            return self
+        }
+    }
 }
 
 // MARK: Computed Extensions

@@ -53,21 +53,22 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Injected & self-initialized properties
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
-    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -300,7 +301,7 @@ private extension HomepageCoordinator {
 
 // MARK: - Navigation & Routing & View presentation
 
-private extension HomepageCoordinator {
+extension HomepageCoordinator {
     // MARK: - Router setup
 
     // swiftlint:disable:next cyclomatic_complexity function_body_length
@@ -375,6 +376,12 @@ private extension HomepageCoordinator {
                     openTutorialVideo()
                 case .accountSettings:
                     beginAccountSettingsFlow()
+                case let .createEditLogin(item):
+                    presentCreateEditLoginView(mode: item)
+                case let .createItem(_, type):
+                    createEditItemViewModelDidCreateItem(type: type)
+                case let .updateItem(type: type, updated: upgrade):
+                    createEditItemViewModelDidUpdateItem(type, updated: upgrade)
                 }
             }
             .store(in: &cancellables)
@@ -411,6 +418,28 @@ private extension HomepageCoordinator {
                 switch destination {
                 case let .bulkPermanentDeleteConfirmation(itemCount):
                     presentBulkPermanentDeleteConfirmation(itemCount: itemCount)
+                }
+            }
+            .store(in: &cancellables)
+
+        router.deeplinkDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .totp(totpUri):
+                    totpDeepLink(totpUri: totpUri)
+                }
+            }
+            .store(in: &cancellables)
+
+        router.actionDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .copyToClipboard(text, message):
+                    clipboardManager.copy(text: text, bannerMessage: message)
                 }
             }
             .store(in: &cancellables)
@@ -1258,9 +1287,9 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
+    func createEditItemViewModelDidCreateItem(type: ItemContentType) {
         addNewEvent(type: .create(type))
-        dismissTopMostViewController(animated: true) { [weak self] in
+        dismissAllViewControllers(animated: true) { [weak self] in
             // We have eventual crashes after creating items
             // Looks like it's because the keyboard is not fully dismissed
             // and in between we try to show a banner
@@ -1347,10 +1376,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
         presentEditItemView(for: itemContent)
-    }
-
-    func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
-        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
