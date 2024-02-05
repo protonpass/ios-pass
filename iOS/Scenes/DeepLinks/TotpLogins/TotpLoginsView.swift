@@ -52,20 +52,23 @@ struct TotpLoginsView: View {
                            for: .navigationBar)
         .navigationStackEmbeded()
         .alert("Associate 2FA?",
-               isPresented: $viewModel.showConfirmation,
+               isPresented: $viewModel.showAlert,
                actions: {
-                   Button(action: {
-                       viewModel.saveChange()
-                   }, label: {
-                       Text("Associate and save")
-                   })
-
+                   if viewModel.selectedItem != nil {
+                       Button(action: {
+                           viewModel.saveChange()
+                       }, label: {
+                           Text("Associate and save")
+                       })
+                   }
                    Button(role: .cancel) {
                        Text("Cancel")
                    }
                }, message: {
                    if let selectedItem = viewModel.selectedItem {
                        Text("Are you sure you want to add a 2FA to \"\(selectedItem.title)\"?")
+                   } else {
+                       Text("This login item already contains a 2FA you cannot add anymore")
                    }
                })
         .onChange(of: viewModel.shouldDismiss) { value in
