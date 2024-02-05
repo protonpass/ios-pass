@@ -65,7 +65,7 @@ struct TotpLoginsView: View {
                    }
                }, message: {
                    if let selectedItem = viewModel.selectedItem {
-                       Text("Are you sure you want to add a 2FA to « \(selectedItem.title) »?")
+                       Text("Are you sure you want to add a 2FA to \"\(selectedItem.title)\"?")
                    }
                })
         .onChange(of: viewModel.shouldDismiss) { value in

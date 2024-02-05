@@ -439,7 +439,7 @@ extension HomepageCoordinator {
                 guard let self else { return }
                 switch destination {
                 case let .copyToClipboard(text, message):
-                    itemDetailViewModelWantsToCopy(text: text, bannerMessage: message)
+                    clipboardManager.copy(text: text, bannerMessage: message)
                 }
             }
             .store(in: &cancellables)
@@ -1376,10 +1376,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent) {
         presentEditItemView(for: itemContent)
-    }
-
-    func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String) {
-        clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
