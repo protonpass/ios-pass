@@ -30,11 +30,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var appCoverView: UIView?
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let saveAllLogs = resolve(\SharedUseCasesContainer.saveAllLogs)
     private let deepLinkRoutingService = resolve(\RouterContainer.deepLinkRoutingService)
-    private let getItemContentFromBase64IDs = resolve(\UseCasesContainer.getItemContentFromBase64IDs)
-    private let pendingSpotlightItem = resolve(\DataStreamContainer.pendingSpotlightItem)
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -48,7 +45,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator.start()
 
         deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
-        handle(userActivities: connectionOptions.userActivities)
+        deepLinkRoutingService.handle(userActivities: connectionOptions.userActivities)
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -65,7 +62,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-        handle(userActivities: [userActivity])
+        deepLinkRoutingService.handle(userActivities: [userActivity])
     }
 }
 
@@ -118,32 +115,5 @@ private extension SceneDelegate {
                            appCoverView?.removeFromSuperview()
                            appCoverView = nil
                        })
-    }
-}
-
-private extension SceneDelegate {
-    func handle(userActivities: Set<NSUserActivity>) {
-        for activity in userActivities {
-            switch activity.activityType {
-            case CSSearchableItemActionType:
-                if let base64Ids = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
-                    showItemDetail(base64Ids: base64Ids)
-                }
-            default:
-                break
-            }
-        }
-    }
-
-    func showItemDetail(base64Ids: String) {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let itemContent = try await getItemContentFromBase64IDs(for: base64Ids)
-                pendingSpotlightItem.send(itemContent)
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
     }
 }

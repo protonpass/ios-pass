@@ -1805,7 +1805,7 @@
 				5B6639582B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift */,
 				5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */,
 				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
-				3541C0782B68C337006B35D9 /* SpotlightSearchableContent+Extensions.swift */,
+				3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */,
 				3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */,
 			);
 			path = Extensions;
