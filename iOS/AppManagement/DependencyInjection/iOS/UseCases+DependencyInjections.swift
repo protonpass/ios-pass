@@ -51,6 +51,18 @@ private extension UseCasesContainer {
     var itemRepository: any ItemRepositoryProtocol {
         SharedRepositoryContainer.shared.itemRepository()
     }
+
+    var shareRepository: any ShareRepositoryProtocol {
+        SharedRepositoryContainer.shared.shareRepository()
+    }
+
+    var symmetricKeyProvider: any SymmetricKeyProvider {
+        SharedDataContainer.shared.symmetricKeyProvider()
+    }
+
+    var localSpotlightVaultDatasource: any LocalSpotlightVaultDatasourceProtocol {
+        SharedRepositoryContainer.shared.localSpotlightVaultDatasource()
+    }
 }
 
 // MARK: User report
@@ -280,6 +292,22 @@ extension UseCasesContainer {
     }
 }
 
+// MARK: Spotlight
+
+extension UseCasesContainer {
+    var getSpotlightVaults: Factory<GetSpotlightVaultsUseCase> {
+        self { GetSpotlightVaults(userDataProvider: self.userDataProvider,
+                                  shareRepository: self.shareRepository,
+                                  localSpotlightVaultDatasource: self
+                                      .localSpotlightVaultDatasource) }
+    }
+
+    var updateSpotlightVaults: Factory<UpdateSpotlightVaultsUseCase> {
+        self { UpdateSpotlightVaults(userDataProvider: self.userDataProvider,
+                                     datasource: self.localSpotlightVaultDatasource) }
+    }
+}
+
 // MARK: - items
 
 extension UseCasesContainer {
@@ -291,11 +319,16 @@ extension UseCasesContainer {
         self { GetSearchableItems(itemRepository: self.itemRepository,
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                   getAllPinnedItems: self.getAllPinnedItems(),
-                                  symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
+                                  symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 
     var getItemHistory: Factory<GetItemHistoryUseCase> {
         self { GetItemHistory(itemRepository: self.itemRepository) }
+    }
+
+    var getItemContentFromBase64IDs: Factory<GetItemContentFromBase64IDsUseCase> {
+        self { GetItemContentFromBase64IDs(itemRepository: self.itemRepository,
+                                           symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 }
 

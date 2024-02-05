@@ -36,4 +36,8 @@ extension DataStreamContainer {
     var currentSelectedItems: Factory<CurrentValueSubject<[any ItemIdentifiable], Never>> {
         self { .init([]) }
     }
+
+    var currentSpotlightSelectedVaults: Factory<CurrentValueSubject<[Vault], Never>> {
+        self { .init([]) }
+    }
 }

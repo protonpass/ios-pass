@@ -92,6 +92,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
+    private var authenticated = true
+
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
 
@@ -114,7 +116,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 private extension HomepageCoordinator {
     /// Some properties are dependant on other propeties which are in turn not initialized
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
-    func finalizeInitialization() {
+    func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity
         eventLoop.delegate = self
         itemContextMenuHandler.delegate = self
         urlOpener.rootViewController = rootViewController
@@ -139,6 +141,22 @@ private extension HomepageCoordinator {
                     .theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
+
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                guard authenticated, let destination = router.pendingDeeplinkDestination else { return }
+                switch destination {
+                case let .totp(uri):
+                    totpDeepLink(totpUri: uri)
+                case let .spotlightItemDetail(itemContent):
+                    router.present(for: .itemDetail(itemContent))
+                case let .error(error):
+                    router.display(element: .displayErrorBanner(error))
+                }
+                router.resolveDeeplink()
+            }
+        }
 
         Publishers.CombineLatest(vaultsManager.$vaultSelection, vaultsManager.$state)
             .receive(on: DispatchQueue.main)
@@ -211,11 +229,13 @@ private extension HomepageCoordinator {
             .localAuthentication(delayed: false,
                                  onAuth: { [weak self] in
                                      guard let self else { return }
+                                     authenticated = false
                                      dismissAllViewControllers(animated: false)
                                      hideSecondaryView()
                                  },
                                  onSuccess: { [weak self] in
                                      guard let self else { return }
+                                     authenticated = true
                                      showSecondaryView()
                                      logger.info("Local authentication succesful")
                                  },
@@ -382,6 +402,14 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
+                case let .itemDetail(content):
+                    presentItemDetailView(for: content, asSheet: shouldShowAsSheet())
+                case .editSpotlightSearchableContent:
+                    presentEditSpotlightSearchableContentView()
+                case .editSpotlightSearchableVaults:
+                    presentEditSpotlightSearchableVaultsView()
+                case .editSpotlightVaults:
+                    presentEditSpotlightVaultsView()
                 }
             }
             .store(in: &cancellables)
@@ -418,17 +446,6 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .bulkPermanentDeleteConfirmation(itemCount):
                     presentBulkPermanentDeleteConfirmation(itemCount: itemCount)
-                }
-            }
-            .store(in: &cancellables)
-
-        router.deeplinkDestination
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] destination in
-                guard let self else { return }
-                switch destination {
-                case let .totp(totpUri):
-                    totpDeepLink(totpUri: totpUri)
                 }
             }
             .store(in: &cancellables)
@@ -1061,7 +1078,10 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
     func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
         if asSheet {
-            present(view)
+            dismissAllViewControllers(animated: true) { [weak self] in
+                guard let self else { return }
+                present(view)
+            }
         } else {
             push(view)
         }

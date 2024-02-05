@@ -49,7 +49,7 @@ final class LockedCredentialViewModel: ObservableObject {
                     throw PassError.credentialProvider(.missingRecordIdentifier)
                 }
                 let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-                let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
+                let ids = try IDs.deserializeBase64(recordIdentifier)
                 logger.trace("Loading credential \(ids.debugDescription)")
                 guard let item = try await itemRepository.getItem(shareId: ids.shareId,
                                                                   itemId: ids.itemId) else {

@@ -37,7 +37,7 @@ public extension CodableBase64 {
 
     static func deserializeBase64(_ base64String: String) throws -> Self {
         guard let data = Data(base64Encoded: base64String) else {
-            throw PPCoreError.failedToConvertBase64StringToData(base64String)
+            throw PassError.failedToConvertBase64StringToData(base64String)
         }
         return try JSONDecoder().decode(Self.self, from: data)
     }

@@ -58,10 +58,6 @@ public extension [SymmetricallyEncryptedItem] {
     }
 }
 
-extension SymmetricallyEncryptedItem: ItemIdentifiable {
-    public var itemId: String { item.itemID }
-}
-
 private typealias ScoredAreInDecreasingOrder = (ScoredSymmetricallyEncryptedItem,
                                                 ScoredSymmetricallyEncryptedItem) -> Bool
 
