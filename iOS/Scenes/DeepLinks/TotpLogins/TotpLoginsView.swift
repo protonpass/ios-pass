@@ -78,12 +78,13 @@ struct TotpLoginsView: View {
 
 private extension TotpLoginsView {
     var mainContainer: some View {
-        VStack(spacing: 15) {
+        VStack(spacing: 0) {
             SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: "Find login to update",
                       onCancel: { viewModel.clearSearch() },
                       hideCancel: true)
+
             if !viewModel.results.isEmpty {
                 HStack {
                     Text("Login items")
@@ -97,11 +98,23 @@ private extension TotpLoginsView {
                 }
                 .plainListRow()
                 .padding([.horizontal])
+                .padding(.bottom, DesignConstant.sectionPadding)
             }
 
             itemList
 
             Spacer()
+
+            TOTPRow(totpManager: viewModel.totpManager,
+                    tintColor: PassColor.loginInteractionNormMajor2,
+                    onCopyTotpToken: { viewModel.copyTotpToken($0) })
+                .frame(height: 52)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 16)
+                .background(PassColor.loginInteractionNormMinor1.toColor)
+                .clipShape(Capsule())
+                .padding(.horizontal)
+                .padding(.bottom, 8)
 
             CapsuleTextButton(title: #localized("Create login"),
                               titleColor: PassColor.loginInteractionNormMajor2,
