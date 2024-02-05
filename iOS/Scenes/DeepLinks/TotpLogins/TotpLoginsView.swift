@@ -54,7 +54,7 @@ struct TotpLoginsView: View {
         .alert("Associate 2FA?",
                isPresented: $viewModel.showAlert,
                actions: {
-                   if viewModel.selectedItem != nil {
+                   if let selectedItem = viewModel.selectedItem, !selectedItem.hasTotpUri {
                        Button(action: {
                            viewModel.saveChange()
                        }, label: {
@@ -65,10 +65,10 @@ struct TotpLoginsView: View {
                        Text("Cancel")
                    }
                }, message: {
-                   if let selectedItem = viewModel.selectedItem {
-                       Text("Are you sure you want to add a 2FA to \"\(selectedItem.title)\"?")
+                   if let selectedItem = viewModel.selectedItem, !selectedItem.hasTotpUri {
+                       Text("Are you sure you want to add a 2FA secret to \"\(selectedItem.title)\"?")
                    } else {
-                       Text("This login item already contains a 2FA you cannot add anymore")
+                       Text("This login item already contains a 2FA secret")
                    }
                })
         .onChange(of: viewModel.shouldDismiss) { value in
