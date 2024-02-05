@@ -432,6 +432,17 @@ extension HomepageCoordinator {
                 }
             }
             .store(in: &cancellables)
+
+        router.actionDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .copyToClipboard(text, message):
+                    itemDetailViewModelWantsToCopy(text: text, bannerMessage: message)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: - UI view presenting functions
