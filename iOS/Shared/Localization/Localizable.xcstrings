@@ -54658,12 +54658,6 @@
             "value" : "Пошук замацаваных элементаў"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
