@@ -63,7 +63,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
-    private let pendingSpotlightItem = resolve(\DataStreamContainer.pendingSpotlightItem)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -117,7 +116,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 private extension HomepageCoordinator {
     /// Some properties are dependant on other propeties which are in turn not initialized
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
-    func finalizeInitialization() {
+    func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity
         eventLoop.delegate = self
         itemContextMenuHandler.delegate = self
         urlOpener.rootViewController = rootViewController
@@ -146,9 +145,16 @@ private extension HomepageCoordinator {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
                 guard let self else { return }
-                guard authenticated, let itemContent = pendingSpotlightItem.value else { return }
-                pendingSpotlightItem.send(nil)
-                router.present(for: .itemDetail(itemContent))
+                guard authenticated, let destination = router.pendingDeeplinkDestination else { return }
+                switch destination {
+                case let .totp(uri):
+                    totpDeepLink(totpUri: uri)
+                case let .spotlightItemDetail(itemContent):
+                    router.present(for: .itemDetail(itemContent))
+                case let .error(error):
+                    router.display(element: .displayErrorBanner(error))
+                }
+                router.resolveDeeplink()
             }
         }
 
@@ -440,17 +446,6 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .bulkPermanentDeleteConfirmation(itemCount):
                     presentBulkPermanentDeleteConfirmation(itemCount: itemCount)
-                }
-            }
-            .store(in: &cancellables)
-
-        router.deeplinkDestination
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] destination in
-                guard let self else { return }
-                switch destination {
-                case let .totp(totpUri):
-                    totpDeepLink(totpUri: totpUri)
                 }
             }
             .store(in: &cancellables)

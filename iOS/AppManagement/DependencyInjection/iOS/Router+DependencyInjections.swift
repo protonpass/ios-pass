@@ -40,6 +40,8 @@ extension RouterContainer {
 
     @MainActor
     var deepLinkRoutingService: Factory<DeepLinkRoutingService> {
-        self { DeepLinkRoutingService(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
+        self { DeepLinkRoutingService(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
+                                      getItemContentFromBase64IDs: UseCasesContainer.shared
+                                          .getItemContentFromBase64IDs()) }
     }
 }
