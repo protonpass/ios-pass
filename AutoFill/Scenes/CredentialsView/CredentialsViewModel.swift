@@ -378,7 +378,7 @@ private extension CredentialsViewModel {
                 continue
             }
 
-            if case let .login(data) = decryptedItemContent.contentData {
+            if let data = decryptedItemContent.loginItem {
                 try searchableItems.append(SearchableItem(from: encryptedItem,
                                                           symmetricKey: symmetricKey,
                                                           allVaults: vaults))

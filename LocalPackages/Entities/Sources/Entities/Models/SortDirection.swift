@@ -1,7 +1,7 @@
 //
 // SortDirection.swift
-// Proton Pass - Created on 11/11/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 30/01/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,8 +17,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-
-import Foundation
 
 public enum SortDirection: CaseIterable, Sendable {
     case ascending, descending
