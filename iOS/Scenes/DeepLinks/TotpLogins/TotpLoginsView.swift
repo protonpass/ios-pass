@@ -27,11 +27,10 @@ import Factory
 import Macro
 import SwiftUI
 
-//TODO: ajouter une alerte pour associer un totp avec un element et si oui dismiss le tt
- 
 struct TotpLoginsView: View {
     @StateObject var viewModel: TotpLoginsViewModel
     @FocusState private var isFocusedOnSearchBar
+    @Environment(\.dismiss) private var dismiss
 
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
@@ -52,6 +51,28 @@ struct TotpLoginsView: View {
         .toolbarBackground(PassColor.backgroundNorm.toColor,
                            for: .navigationBar)
         .navigationStackEmbeded()
+        .alert("Associate 2FA?",
+               isPresented: $viewModel.showConfirmation,
+               actions: {
+                   Button(action: {
+                       viewModel.saveChange()
+                   }, label: {
+                       Text("Associate and save")
+                   })
+
+                   Button(role: .cancel) {
+                       Text("Cancel")
+                   }
+               }, message: {
+                   if let selectedItem = viewModel.selectedItem {
+                       Text("Are you sure you want to add a 2FA to « \(selectedItem.title) »?")
+                   }
+               })
+        .onChange(of: viewModel.shouldDismiss) { value in
+            if value {
+                dismiss()
+            }
+        }
     }
 }
 
@@ -239,7 +260,7 @@ struct SmallSortTypeButton: View {
     private func sortTypeLabel() -> some View {
         Label(selectedSortType.title, systemImage: "arrow.up.arrow.down")
             .font(.callout.weight(.medium))
-            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+            .foregroundColor(PassColor.interactionNormMajor2.toColor)
             .animationsDisabled()
     }
 }
