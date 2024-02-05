@@ -26,6 +26,7 @@ import Core
 import Entities
 import Factory
 import Foundation
+import Macro
 import SwiftUI
 
 @MainActor
@@ -43,6 +44,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let totpManager = resolve(\ServiceContainer.totpManager)
 
     private var searchableItems = [SearchableItem]()
     private(set) var selectedItem: ItemContent?
@@ -51,6 +53,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
 
     init(totpUri: String) {
         self.totpUri = totpUri
+        totpManager.bind(uri: totpUri)
         setUp()
     }
 
@@ -110,11 +113,16 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
                 try await itemRepository.updateItem(oldItem: selectedItem.item,
                                                     newItemContent: selectedItem.updateTotp(uri: totpUri).protobuf,
                                                     shareId: selectedItem.shareId)
+                copyTotpToken(totpUri)
                 shouldDismiss = true
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
         }
+    }
+
+    func copyTotpToken(_ token: String) {
+        router.action(.copyToClipboard(text: token, message: #localized("TOTP copied")))
     }
 }
 
