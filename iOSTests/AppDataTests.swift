@@ -35,20 +35,23 @@ final class AppDataTests: XCTestCase {
     override func setUp() {
         super.setUp()
         keychain = KeychainMock()
-        keychain.setDataStub.bodyIs { _, data, key in
+        keychain.setDataStub.bodyIs { _, data, key, _ in
             self.keychainData[key] = data
         }
-        keychain.dataStub.bodyIs { _, key in
+        keychain.dataStub.bodyIs { _, key, _ in
             self.keychainData[key]
         }
         keychain.removeStub.bodyIs { _, key in
             self.keychainData[key] = nil
         }
 
+        
         mainKeyProvider = MainKeyProviderMock()
         mainKeyProvider.mainKeyStub.fixture = Array(repeating: .zero, count: 32)
         let migrationStateProviderMock = CredentialsMigrationStateProviderMock()
         migrationStateProviderMock.stubbedShouldMigrateToSeparatedCredentialsResult = false
+        migrationStateProviderMock.closureShouldMigrateCredentialsToShareExtension = {}
+        migrationStateProviderMock.stubbedShouldMigrateCredentialsToShareExtensionResult = false
         migrationStateProvider = migrationStateProviderMock
         Scope.singleton.reset()
         SharedToolingContainer.shared.keychain.register { self.keychain }
@@ -67,12 +70,13 @@ final class AppDataTests: XCTestCase {
 
 extension AppDataTests {
     func testSeparatedCredentialsMigration() throws {
+
         // Given
         let givenUserData = UserData.mock
         let data = try JSONEncoder().encode(givenUserData)
         let lockedData = try Locked<Data>(clearValue: data, with: mainKeyProvider.mainKey!)
         let cypherdata = lockedData.encryptedValue
-        keychain.set(cypherdata, forKey: AppDataKey.userData.rawValue,attributes: nil)
+        keychain.set(cypherdata, forKey: AppDataKey.userData.rawValue, attributes: nil)
 
         // When
         // Get credential when not yet migrated
