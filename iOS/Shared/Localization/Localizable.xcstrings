@@ -13103,13 +13103,12 @@
         }
       }
     },
-    "Are you sure you want to add a 2FA to \"%@\"?" : {
-      "extractionState" : "manual",
+    "Are you sure you want to add a 2FA secret to \"%@\"?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Are you sure you want to add a 2FA to \"%@\"?"
+            "value" : "Are you sure you want to add a 2FA secret to \"%@\"?"
           }
         }
       }
@@ -61548,6 +61547,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đây là lần thử cuối cùng của bạn. Bạn sẽ bị đăng xuất sau khi xác thực thất bại một lần nữa."
+          }
+        }
+      }
+    },
+    "This login item already contains a 2FA secret" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This login item already contains a 2FA secret"
           }
         }
       }
