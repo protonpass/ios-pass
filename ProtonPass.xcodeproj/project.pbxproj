@@ -252,6 +252,7 @@
 		35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7C29CC5DB700052229 /* VaultIcon.swift */; };
 		35733B7F29CC60D200052229 /* VaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7E29CC60D200052229 /* VaultColor.swift */; };
 		3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */; };
+		357919B12B70E7630085B532 /* HomepageCoordinator+Spotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */; };
 		35796CE92B5EE5AE00BF4E9E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CE82B5EE5AE00BF4E9E /* Factory */; };
 		35796CEA2B5EE5F300BF4E9E /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
 		35796CEB2B5EE66300BF4E9E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
@@ -810,6 +811,7 @@
 		35733B7E29CC60D200052229 /* VaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultColor.swift; sourceTree = "<group>"; };
 		3575EB5229FAB017000FFD53 /* AppLockTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTime.swift; sourceTree = "<group>"; };
 		3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAppLockTimeView.swift; sourceTree = "<group>"; };
+		357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Spotlight.swift"; sourceTree = "<group>"; };
 		357ABEAB2B18782E003D05C8 /* ItemsTabOptionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabOptionsButton.swift; sourceTree = "<group>"; };
 		357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabOptionsButtonViewModel.swift; sourceTree = "<group>"; };
 		357ABEAF2B188A08003D05C8 /* ItemsTabTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabTopBar.swift; sourceTree = "<group>"; };
@@ -1681,6 +1683,7 @@
 			children = (
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				5B5DBF122B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift */,
+				357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */,
 				355C138829DB71D800264CD0 /* HomepageTabbarView.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
 				356650D72AAF606500BFF4F3 /* Full Sync Progress */,
@@ -1805,7 +1808,6 @@
 				5B6639582B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift */,
 				5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */,
 				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
-				3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */,
 				3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */,
 			);
 			path = Extensions;
@@ -3115,6 +3117,7 @@
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
+				357919B12B70E7630085B532 /* HomepageCoordinator+Spotlight.swift in Sources */,
 				5B0C75002A2F61D000272CE8 /* SharedServices+DependencyInjections.swift in Sources */,
 				357ABEB22B188A30003D05C8 /* ItemsTabTopBarViewModel.swift in Sources */,
 				358C68282A68131E006E720F /* Preferences+LocalAuthentication.swift in Sources */,
