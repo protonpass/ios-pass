@@ -80,9 +80,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
                 return
             }
 
-            if !itemContent.hasTotpUri {
-                selectedItem = itemContent
-            }
+            selectedItem = itemContent
             showAlert = true
         }
     }
