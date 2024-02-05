@@ -19,7 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import CoreSpotlight
 import DesignSystem
+import Entities
 import Factory
 import SwiftUI
 
@@ -43,6 +45,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator.start()
 
         deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
+        deepLinkRoutingService.handle(userActivities: connectionOptions.userActivities)
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -56,6 +59,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         deepLinkRoutingService.parseAndDispatch(context: URLContexts)
+    }
+
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        deepLinkRoutingService.handle(userActivities: [userActivity])
     }
 }
 

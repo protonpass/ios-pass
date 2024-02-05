@@ -29,25 +29,26 @@ struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
-        if viewModel.isShownAsSheet {
-            NavigationView {
-                realBody
+        realBody
+            .if(viewModel.isShownAsSheet) { view in
+                view.navigationStackEmbeded()
             }
-            .navigationViewStyle(.stack)
             .theme(viewModel.selectedTheme)
-        } else {
-            realBody
-                .theme(viewModel.selectedTheme)
-        }
     }
+}
 
-    private var realBody: some View {
+private extension SettingsView {
+    var realBody: some View {
         ScrollView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 untitledSection
 
                 clipboardSection
                     .padding(.vertical)
+
+                if viewModel.spotlightFlagAvailable {
+                    spotlightSection
+                }
 
                 logsSection
 
@@ -63,10 +64,12 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.large)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
+        .animation(.default, value: viewModel.spotlightEnabled)
+        .animation(.default, value: viewModel.spotlightSearchableVaults)
     }
 
     @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
+    var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
@@ -74,8 +77,10 @@ struct SettingsView: View {
                          action: { viewModel.goBack() })
         }
     }
+}
 
-    private var untitledSection: some View {
+private extension SettingsView {
+    var untitledSection: some View {
         VStack(spacing: 0) {
             if !ProcessInfo.processInfo.isiOSAppOnMac {
                 OptionRow(action: { viewModel.editDefaultBrowser() },
@@ -118,8 +123,10 @@ struct SettingsView: View {
         }
         .roundedEditableSection()
     }
+}
 
-    private var clipboardSection: some View {
+private extension SettingsView {
+    var clipboardSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             Text("Clipboard")
                 .sectionHeaderText()
@@ -148,8 +155,124 @@ struct SettingsView: View {
             .roundedEditableSection()
         }
     }
+}
 
-    private var logsSection: some View {
+private extension SettingsView {
+    var spotlightSection: some View {
+        VStack(spacing: 0) {
+            Text("Spotlight")
+                .sectionHeaderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, DesignConstant.sectionPadding)
+
+            VStack(spacing: 0) {
+                OptionRow(height: .tall) {
+                    Toggle(isOn: $viewModel.spotlightEnabled) {
+                        Text("Show content in search")
+                            .foregroundColor(PassColor.textNorm.toColor)
+                    }
+                    .tint(PassColor.interactionNorm.toColor)
+                }
+
+                if viewModel.spotlightEnabled {
+                    PassSectionDivider()
+
+                    OptionRow(action: { viewModel.editSpotlightSearchableContent() },
+                              height: .tall,
+                              content: {
+                                  VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
+                                      Text("Searchable content")
+                                          .sectionTitleText()
+
+                                      Text(viewModel.spotlightSearchableContent.title)
+                                          .foregroundColor(PassColor.textNorm.toColor)
+                                  }
+                              },
+                              trailing: { ChevronRight() })
+
+                    PassSectionDivider()
+
+                    OptionRow(action: { viewModel.editSpotlightSearchableVaults() },
+                              height: .tall,
+                              content: {
+                                  VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
+                                      Text("Searchable vaults")
+                                          .sectionTitleText()
+
+                                      Text(viewModel.spotlightSearchableVaults.title)
+                                          .foregroundColor(PassColor.textNorm.toColor)
+                                  }
+                              },
+                              trailing: { ChevronRight() })
+
+                    if viewModel.spotlightSearchableVaults == .selected {
+                        PassSectionDivider()
+
+                        OptionRow(action: { viewModel.editSpotlightSearchableSelectedVaults() },
+                                  height: .tall,
+                                  content: {
+                                      VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
+                                          selectedVaultsRowTitle
+                                          selectedVaultsRowDescription
+                                      }
+                                  },
+                                  trailing: { ChevronRight() })
+                    }
+                }
+            }
+            .roundedEditableSection()
+
+            Text("Allow items to appear in Search")
+                .sectionTitleText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, DesignConstant.sectionPadding / 2)
+        }
+    }
+
+    @ViewBuilder
+    var selectedVaultsRowTitle: some View {
+        if let vaults = viewModel.spotlightVaults, !vaults.isEmpty {
+            Text("Selected vaults")
+                .sectionTitleText() +
+                Text(verbatim: " • ")
+                .sectionTitleText() +
+                Text(verbatim: "(\(vaults.count))")
+                .sectionTitleText()
+        } else {
+            Text("Selected vaults")
+                .sectionTitleText()
+        }
+    }
+
+    @ViewBuilder
+    var selectedVaultsRowDescription: some View {
+        if let vaults = viewModel.spotlightVaults {
+            if vaults.isEmpty {
+                Text("No vaults")
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                Text(verbatim: vaults.map(\.name).joined(separator: ", "))
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(1)
+            }
+        } else {
+            Text(verbatim: "Dummy text")
+                .foregroundStyle(Color.clear)
+                .frame(maxWidth: .infinity)
+                .fixedSize(horizontal: false, vertical: true)
+                .background(SkeletonBlock()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 24)
+                    .clipShape(Capsule())
+                    .shimmering())
+        }
+    }
+}
+
+private extension SettingsView {
+    var logsSection: some View {
         VStack(spacing: 0) {
             Text("Logs")
                 .sectionHeaderText()
@@ -182,8 +305,10 @@ struct SettingsView: View {
                       .padding(.top, DesignConstant.sectionPadding / 2)
         }
     }
+}
 
-    private var applicationSection: some View {
+private extension SettingsView {
+    var applicationSection: some View {
         VStack(spacing: 0) {
             Text("Application")
                 .sectionHeaderText()

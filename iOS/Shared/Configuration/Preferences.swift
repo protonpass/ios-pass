@@ -108,6 +108,15 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @KeychainStorage(key: Key.shareClipboard, defaultValue: false)
     var shareClipboard: Bool
 
+    @KeychainStorage(key: Key.spotlightEnabled, defaultValue: false)
+    var spotlightEnabled: Bool
+
+    @KeychainStorage(key: Key.spotlightSearchableContent, defaultValue: .title)
+    var spotlightSearchableContent: SpotlightSearchableContent
+
+    @KeychainStorage(key: Key.spotlightSearchableVaults, defaultValue: .all)
+    var spotlightSearchableVaults: SpotlightSearchableVaults
+
     /// Not really sensitive but `@AppStorage` does not support array so we rely on `@KeychainStorage`
     @KeychainStorage(key: Key.dismissedBannerIds, defaultValue: [])
     var dismissedBannerIds: [String]
@@ -125,6 +134,9 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
         browser = .systemDefault
         clipboardExpiration = .twoMinutes
         shareClipboard = false
+        spotlightEnabled = false
+        spotlightSearchableContent = .title
+        spotlightSearchableVaults = .all
         telemetryThreshold = nil
         displayFavIcons = true
         dismissedBannerIds = []
@@ -150,6 +162,9 @@ private extension Preferences {
         case browser
         case clipboardExpiration
         case shareClipboard
+        case spotlightEnabled
+        case spotlightSearchableContent
+        case spotlightSearchableVaults
         case telemetryThreshold
         case displayFavIcons
         case dismissedBannerIds
@@ -176,3 +191,7 @@ extension Preferences: TelemetryThresholdProviderProtocol {
 extension Preferences: FavIconSettings {
     var shouldDisplayFavIcons: Bool { displayFavIcons }
 }
+
+// MAR: - SpotlightSettingsProvider
+
+extension Preferences: SpotlightSettingsProvider {}

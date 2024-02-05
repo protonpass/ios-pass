@@ -23,39 +23,14 @@ import Foundation
 /// Proton Pass core module related errors.
 public enum PPCoreError: Error, CustomDebugStringConvertible, Sendable {
     case biometryTypeNotInitialized
-    case failedToConvertBase64StringToData(String)
     case failedToRandomizeData
-    case totp(TOTPDataCurruptionReason)
 
     public var debugDescription: String {
         switch self {
         case .biometryTypeNotInitialized:
             "Biometry type not initialized"
-        case let .failedToConvertBase64StringToData(string):
-            "Failed to convert base 64 string to data \"\(string)\""
         case .failedToRandomizeData:
             "Failed to randomize data"
-        case let .totp(reason):
-            reason.debugDescription
-        }
-    }
-}
-
-public extension PPCoreError {
-    enum TOTPDataCurruptionReason: CustomDebugStringConvertible, Sendable {
-        case unsupportedOTP
-        case failedToDecodeSecret
-        case failedToInitializeTOTPObject
-
-        public var debugDescription: String {
-            switch self {
-            case .unsupportedOTP:
-                "Unsupported OTP type (not TOTP)"
-            case .failedToDecodeSecret:
-                "Failed to decode secret"
-            case .failedToInitializeTOTPObject:
-                "Failed to initialize TOTP object"
-            }
         }
     }
 }

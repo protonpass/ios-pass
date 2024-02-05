@@ -19,9 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import CoreSpotlight
 import Factory
 import Foundation
 import UIKit
+import UseCases
 
 enum DeeplinkType {
     case otpauth
@@ -39,12 +41,16 @@ extension URL {
 
 final class DeepLinkRoutingService {
     private let router: MainUIKitSwiftUIRouter
+    private let getItemContentFromBase64IDs: GetItemContentFromBase64IDsUseCase
 
-    init(router: MainUIKitSwiftUIRouter) {
+    init(router: MainUIKitSwiftUIRouter,
+         getItemContentFromBase64IDs: GetItemContentFromBase64IDsUseCase) {
         self.router = router
+        self.getItemContentFromBase64IDs = getItemContentFromBase64IDs
     }
 
-    @MainActor func parseAndDispatch(context: Set<UIOpenURLContext>) {
+    @MainActor
+    func parseAndDispatch(context: Set<UIOpenURLContext>) {
         guard let url = context.first?.url else {
             return
         }
@@ -54,9 +60,31 @@ final class DeepLinkRoutingService {
             guard !uri.isEmpty else {
                 return
             }
-            router.deeplink(to: .totp(uri))
+            router.requestDeeplink(.totp(uri))
         default:
             return
+        }
+    }
+
+    @MainActor
+    func handle(userActivities: Set<NSUserActivity>) {
+        for activity in userActivities {
+            switch activity.activityType {
+            case CSSearchableItemActionType:
+                if let base64Ids = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+                    Task { [weak self] in
+                        guard let self else { return }
+                        do {
+                            let itemContent = try await getItemContentFromBase64IDs(for: base64Ids)
+                            router.requestDeeplink(.spotlightItemDetail(itemContent))
+                        } catch {
+                            router.requestDeeplink(.error(error))
+                        }
+                    }
+                }
+            default:
+                break
+            }
         }
     }
 }
