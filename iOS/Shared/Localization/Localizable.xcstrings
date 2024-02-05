@@ -13083,12 +13083,13 @@
         }
       }
     },
-    "Are you sure you want to add a 2FA to « %@ »?" : {
+    "Are you sure you want to add a 2FA to \"%@\"?" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Are you sure you want to add a 2FA to « %@ »?"
+            "value" : "Are you sure you want to add a 2FA to \"%@\"?"
           }
         }
       }
