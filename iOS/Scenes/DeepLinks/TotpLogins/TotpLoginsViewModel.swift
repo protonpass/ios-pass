@@ -34,7 +34,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
     @Published private(set) var loading = true
     @Published private(set) var results = [ItemSearchResult]()
     @Published var query = ""
-    @Published var showConfirmation = false
+    @Published var showAlert = false
     @Published private(set) var shouldDismiss = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -64,7 +64,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
         }
 
         do {
-            let logins = try await getActiveLoginItems().filter { !$0.hasTotpUri }
+            let logins = try await getActiveLoginItems()
             searchableItems = logins.map { SearchableItem(from: $0, allVaults: []) }
             results = searchableItems.toItemSearchResults
         } catch {
@@ -81,7 +81,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
             }
 
             selectedItem = itemContent
-            showConfirmation = true
+            showAlert = true
         }
     }
 
