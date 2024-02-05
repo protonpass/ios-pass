@@ -40,8 +40,4 @@ extension DataStreamContainer {
     var currentSpotlightSelectedVaults: Factory<CurrentValueSubject<[Vault], Never>> {
         self { .init([]) }
     }
-
-    var pendingSpotlightItem: Factory<CurrentValueSubject<ItemContent?, Never>> {
-        self { .init(nil) }
-    }
 }
