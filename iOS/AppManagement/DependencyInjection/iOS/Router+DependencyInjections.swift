@@ -37,4 +37,9 @@ extension RouterContainer {
     var mainNavViewRouter: Factory<MainNavViewRouter> {
         self { MainNavViewRouter() }
     }
+
+    @MainActor
+    var deepLinkRoutingService: Factory<DeepLinkRoutingService> {
+        self { DeepLinkRoutingService(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
+    }
 }

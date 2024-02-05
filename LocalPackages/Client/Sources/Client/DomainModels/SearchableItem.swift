@@ -41,18 +41,24 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
     public init(from item: SymmetricallyEncryptedItem,
                 symmetricKey: SymmetricKey,
                 allVaults: [Vault]) throws {
-        itemId = item.item.itemID
-        shareId = item.shareId
+        let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
+
+        self.init(from: itemContent, allVaults: allVaults)
+    }
+
+    public init(from itemContent: ItemContent,
+                allVaults: [Vault]) {
+        itemId = itemContent.item.itemID
+        shareId = itemContent.shareId
 
         if allVaults.count > 1 {
-            vault = allVaults.first { $0.shareId == item.shareId }
+            vault = allVaults.first { $0.shareId == itemContent.shareId }
         } else {
             vault = nil
         }
 
-        let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
         type = itemContent.contentData.type
-        aliasEmail = item.item.aliasEmail
+        aliasEmail = itemContent.item.aliasEmail
         name = itemContent.name
         note = itemContent.note
 
@@ -74,8 +80,8 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
         }
 
         lastUseTime = itemContent.item.lastUseTime ?? 0
-        modifyTime = item.item.modifyTime
-        pinned = item.item.pinned
+        modifyTime = itemContent.item.modifyTime
+        pinned = itemContent.item.pinned
         self.optionalExtras = optionalExtras
     }
 }
