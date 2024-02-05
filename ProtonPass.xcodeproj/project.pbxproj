@@ -5397,7 +5397,7 @@
 			repositoryURL = "https://gitlab.protontech.ch/apple/shared/protoncore.git";
 			requirement = {
 				kind = exactVersion;
-				version = 18.0.1;
+				version = 19.0.0;
 			};
 		};
 		575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */ = {
