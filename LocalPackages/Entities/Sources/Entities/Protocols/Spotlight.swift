@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import CoreSpotlight
 import Foundation
 
 public enum SpotlightSearchableContent: Int, Codable, CaseIterable, Sendable {
@@ -51,49 +50,4 @@ public protocol SpotlightSettingsProvider: Sendable {
     var spotlightEnabled: Bool { get }
     var spotlightSearchableContent: SpotlightSearchableContent { get }
     var spotlightSearchableVaults: SpotlightSearchableVaults { get }
-}
-
-public extension ItemContent {
-    var spotlightDomainId: String {
-        type.debugDescription
-    }
-
-    func toSearchableItem(content: SpotlightSearchableContent) throws -> CSSearchableItem {
-        let attributeSet = CSSearchableItemAttributeSet(contentType: .item)
-        attributeSet.title = name
-        // "displayName" is required by iOS 17
-        // https://forums.developer.apple.com/forums/thread/734996?answerId=763586022#763586022
-        attributeSet.displayName = name
-
-        var contents = [String?]()
-
-        if content.includeNote {
-            contents.append(note)
-        }
-
-        if content.includeCustomData {
-            switch contentData {
-            case .alias:
-                contents.append(aliasEmail)
-            case let .login(data):
-                contents.append(contentsOf: [data.username] + data.urls)
-            case let .creditCard(data):
-                contents.append(contentsOf: [data.cardholderName, data.expirationDate])
-            case .note:
-                break
-            }
-
-            let customFieldValues = customFields
-                .filter { $0.type == .text }
-                .map { "\($0.title): \($0.content)" }
-
-            contents.append(contentsOf: customFieldValues)
-        }
-
-        attributeSet.contentDescription = contents.compactMap { $0 }.joined(separator: "\n")
-        let id = try ids.serializeBase64()
-        return .init(uniqueIdentifier: id,
-                     domainIdentifier: spotlightDomainId,
-                     attributeSet: attributeSet)
-    }
 }
