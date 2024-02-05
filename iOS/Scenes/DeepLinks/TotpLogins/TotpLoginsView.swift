@@ -52,20 +52,23 @@ struct TotpLoginsView: View {
                            for: .navigationBar)
         .navigationStackEmbeded()
         .alert("Associate 2FA?",
-               isPresented: $viewModel.showConfirmation,
+               isPresented: $viewModel.showAlert,
                actions: {
-                   Button(action: {
-                       viewModel.saveChange()
-                   }, label: {
-                       Text("Associate and save")
-                   })
-
+                   if let selectedItem = viewModel.selectedItem, !selectedItem.hasTotpUri {
+                       Button(action: {
+                           viewModel.saveChange()
+                       }, label: {
+                           Text("Associate and save")
+                       })
+                   }
                    Button(role: .cancel) {
                        Text("Cancel")
                    }
                }, message: {
-                   if let selectedItem = viewModel.selectedItem {
-                       Text("Are you sure you want to add a 2FA to \"\(selectedItem.title)\"?")
+                   if let selectedItem = viewModel.selectedItem, !selectedItem.hasTotpUri {
+                       Text("Are you sure you want to add a 2FA secret to \"\(selectedItem.title)\"?")
+                   } else {
+                       Text("This login item already contains a 2FA secret")
                    }
                })
         .onChange(of: viewModel.shouldDismiss) { value in
