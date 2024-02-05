@@ -96,6 +96,10 @@ enum AlertDestination: Sendable {
     case bulkPermanentDeleteConfirmation(itemCount: Int)
 }
 
+enum ActionDestination: Sendable {
+    case copyToClipboard(text: String, message: String)
+}
+
 enum DeeplinkDestination: Hashable, Sendable {
     case totp(String)
 }
@@ -107,6 +111,7 @@ final class MainUIKitSwiftUIRouter: Sendable {
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
     let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
     let deeplinkDestination: PassthroughSubject<DeeplinkDestination, Never> = .init()
+    let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
 
     func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
@@ -122,6 +127,10 @@ final class MainUIKitSwiftUIRouter: Sendable {
 
     func alert(_ destination: AlertDestination) {
         alertDestination.send(destination)
+    }
+
+    func action(_ destination: ActionDestination) {
+        actionDestination.send(destination)
     }
 
     func deeplink(to destination: DeeplinkDestination) {

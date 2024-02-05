@@ -32,6 +32,7 @@ let swiftSettings: [SwiftSetting] = [
 ]
 
 let package = Package(name: "Client",
+                      defaultLocalization: "en",
                       platforms: platforms,
                       products: [
                           // Products define the executables and libraries a package produces, and make them
