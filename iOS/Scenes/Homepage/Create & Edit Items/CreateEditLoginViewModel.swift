@@ -106,9 +106,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
 
         case let .create(_, type):
-            if case let .login(title, url, note, _) = type {
+            if case let .login(title, url, note, totpUri, _) = type {
                 self.title = title ?? ""
                 self.note = note ?? ""
+                if let totpUri {
+                    self.totpUri = sanitizeTotpUriForEditing(totpUri)
+                }
                 urls = [url ?? ""].map { .init(value: $0) }
             }
 
@@ -131,7 +134,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func saveButtonTitle() -> String {
         guard case let .create(_, type) = mode,
-              case let .login(_, _, _, autofill) = type,
+              case let .login(_, _, _, _, autofill) = type,
               autofill else {
             return super.saveButtonTitle()
         }

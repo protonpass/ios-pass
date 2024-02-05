@@ -242,6 +242,8 @@ private extension CredentialProviderCoordinator {
                     createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
                 case .vaultSelection:
                     createEditItemViewModelWantsToChangeVault()
+                case let .createItem(item: item, type: type):
+                    createEditItemViewModelDidCreateItem(item, type: type)
                 default:
                     break
                 }
@@ -346,7 +348,6 @@ private extension CredentialProviderCoordinator {
         do {
             let creationType = ItemCreationType.login(title: url?.host,
                                                       url: url?.schemeAndHost,
-                                                      note: nil,
                                                       autofill: true)
             let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                        type: creationType),
@@ -535,9 +536,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         }
         addNewEvent(type: .create(type))
     }
-
-    // Not applicable
-    func createEditItemViewModelDidUpdateItem(_ type: ItemContentType, updated: Bool) {}
 }
 
 // MARK: - CreateEditLoginViewModelDelegate
