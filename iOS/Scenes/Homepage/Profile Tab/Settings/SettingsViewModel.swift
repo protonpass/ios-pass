@@ -44,12 +44,19 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
+    private let currentSpotlightVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)
+    private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
+    private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
+    @Published private(set) var plan: Plan?
 
     @Published var displayFavIcons: Bool {
         didSet {
@@ -62,6 +69,23 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
+    @Published private(set) var spotlightFlagAvailable = false
+    @Published var spotlightEnabled: Bool {
+        didSet {
+            if spotlightEnabled, plan?.isFreeUser == true {
+                spotlightEnabled = false
+                router.present(for: .upselling)
+            } else {
+                preferences.spotlightEnabled = spotlightEnabled
+            }
+            reindexItemsForSpotlight()
+        }
+    }
+
+    @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
+    @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
+    @Published private(set) var spotlightVaults: [Vault]?
+
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
@@ -72,6 +96,10 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         selectedClipboardExpiration = preferences.clipboardExpiration
         displayFavIcons = preferences.displayFavIcons
         shareClipboard = preferences.shareClipboard
+        spotlightFlagAvailable = getFeatureFlagStatus(with: FeatureFlagType.passSpotlight)
+        spotlightEnabled = preferences.spotlightEnabled
+        spotlightSearchableContent = preferences.spotlightSearchableContent
+        spotlightSearchableVaults = preferences.spotlightSearchableVaults
 
         setup()
     }
@@ -94,6 +122,19 @@ extension SettingsViewModel {
 
     func editClipboardExpiration() {
         delegate?.settingsViewModelWantsToEditClipboardExpiration()
+    }
+
+    func editSpotlightSearchableContent() {
+        router.present(for: .editSpotlightSearchableContent)
+    }
+
+    func editSpotlightSearchableVaults() {
+        router.present(for: .editSpotlightSearchableVaults)
+    }
+
+    func editSpotlightSearchableSelectedVaults() {
+        guard spotlightVaults != nil else { return }
+        router.present(for: .editSpotlightVaults)
     }
 
     func viewHostAppLogs() {
@@ -142,10 +183,49 @@ private extension SettingsViewModel {
                 selectedBrowser = preferences.browser
                 selectedTheme = preferences.theme
                 selectedClipboardExpiration = preferences.clipboardExpiration
+
+                if preferences.spotlightSearchableContent != spotlightSearchableContent {
+                    spotlightSearchableContent = preferences.spotlightSearchableContent
+                    reindexItemsForSpotlight()
+                }
+
+                if preferences.spotlightSearchableVaults != spotlightSearchableVaults {
+                    spotlightSearchableVaults = preferences.spotlightSearchableVaults
+                    reindexItemsForSpotlight()
+                }
+            }
+            .store(in: &cancellables)
+
+        currentSpotlightVaults
+            .dropFirst() // Drop first event when the stream is init
+            .receive(on: DispatchQueue.main)
+            // Debouncing 1.5 secs because this will trigger expensive database operations
+            // and Spotlight indexation
+            .debounce(for: .seconds(1.5), scheduler: DispatchQueue.main)
+            .sink { [weak self] vaults in
+                guard let self else { return }
+                spotlightVaults = vaults
+                reindexItemsForSpotlight()
+            }
+            .store(in: &cancellables)
+
+        getUserPlan()
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .compactMap { $0 }
+            .sink { [weak self] refreshedPlan in
+                guard let self else {
+                    return
+                }
+                plan = refreshedPlan
+                if refreshedPlan.isFreeUser {
+                    spotlightEnabled = false
+                }
             }
             .store(in: &cancellables)
 
         vaultsManager.attach(to: self, storeIn: &cancellables)
+        refreshSpotlightVaults()
     }
 
     func emptyFavIconCache() {
@@ -156,8 +236,44 @@ private extension SettingsViewModel {
                 try await favIconRepository.emptyCache()
                 logger.info("Removed all cached fav icons")
             } catch {
-                logger.error(error)
+                handle(error)
             }
         }
+    }
+
+    func reindexItemsForSpotlight() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                if preferences.spotlightEnabled {
+                    if let spotlightVaults {
+                        try await updateSpotlightVaults(for: spotlightVaults)
+                    }
+                }
+                try await indexItemsForSpotlight()
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func refreshSpotlightVaults() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                logger.trace("Refreshing spotlight vaults")
+                let vaults = try await getSpotlightVaults()
+                spotlightVaults = vaults
+                currentSpotlightVaults.send(vaults)
+                logger.trace("Found \(spotlightVaults?.count ?? 0) spotlight vaults")
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func handle(_ error: Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }

@@ -87,7 +87,7 @@ private extension SharedRepositoryContainer {
     }
 }
 
-// MARK: Datasources
+// MARK: Private datasources
 
 private extension SharedRepositoryContainer {
     var remoteAliasDatasource: Factory<RemoteAliasDatasourceProtocol> {
@@ -176,6 +176,14 @@ private extension SharedRepositoryContainer {
     var remoteFavIconDatasource: Factory<RemoteFavIconDatasourceProtocol> {
         self { RemoteFavIconDatasource(apiService: self.apiService,
                                        eventStream: self.corruptedSessionEventStream) }
+    }
+}
+
+// MARK: Public datasources
+
+extension SharedRepositoryContainer {
+    var localSpotlightVaultDatasource: Factory<LocalSpotlightVaultDatasourceProtocol> {
+        self { LocalSpotlightVaultDatasource(databaseService: self.databaseService) }
     }
 }
 

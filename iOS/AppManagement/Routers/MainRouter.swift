@@ -82,6 +82,10 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case createEditLogin(mode: ItemMode)
     case createItem(item: SymmetricallyEncryptedItem, type: ItemContentType)
     case updateItem(type: ItemContentType, updated: Bool)
+    case itemDetail(ItemContent)
+    case editSpotlightSearchableContent
+    case editSpotlightSearchableVaults
+    case editSpotlightVaults
 }
 
 enum UIElementDisplay: Sendable {
@@ -100,8 +104,10 @@ enum ActionDestination: Sendable {
     case copyToClipboard(text: String, message: String)
 }
 
-enum DeeplinkDestination: Hashable, Sendable {
+enum DeeplinkDestination: Sendable {
     case totp(String)
+    case spotlightItemDetail(ItemContent)
+    case error(Error)
 }
 
 @MainActor
@@ -110,8 +116,9 @@ final class MainUIKitSwiftUIRouter: Sendable {
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
     let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
-    let deeplinkDestination: PassthroughSubject<DeeplinkDestination, Never> = .init()
     let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
+
+    private(set) var pendingDeeplinkDestination: DeeplinkDestination?
 
     func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
@@ -133,8 +140,12 @@ final class MainUIKitSwiftUIRouter: Sendable {
         actionDestination.send(destination)
     }
 
-    func deeplink(to destination: DeeplinkDestination) {
-        deeplinkDestination.send(destination)
+    func requestDeeplink(_ destination: DeeplinkDestination) {
+        pendingDeeplinkDestination = destination
+    }
+
+    func resolveDeeplink() {
+        pendingDeeplinkDestination = nil
     }
 }
 

@@ -60,6 +60,10 @@ private extension SharedUseCasesContainer {
     var apiManager: APIManager {
         SharedToolingContainer.shared.apiManager()
     }
+
+    var symmetricKeyProvider: any SymmetricKeyProvider {
+        SharedDataContainer.shared.symmetricKeyProvider()
+    }
 }
 
 // MARK: Permission
@@ -111,7 +115,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var mapLoginItem: Factory<MapLoginItemUseCase> {
-        self { MapLoginItem(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
+        self { MapLoginItem(symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 
     var indexAllLoginItems: Factory<IndexAllLoginItemsUseCase> {
@@ -126,6 +130,19 @@ extension SharedUseCasesContainer {
 
     var unindexAllLoginItems: Factory<UnindexAllLoginItemsUseCase> {
         self { UnindexAllLoginItems(manager: self.credentialManager) }
+    }
+}
+
+// MARK: Spotlight
+
+extension SharedUseCasesContainer {
+    var indexItemsForSpotlight: Factory<IndexItemsForSpotlightUseCase> {
+        self { IndexItemsForSpotlight(userDataProvider: self.userDataProvider,
+                                      settingsProvider: SharedToolingContainer.shared.spotlightSettingsProvider(),
+                                      itemRepository: self.itemRepository,
+                                      datasource: SharedRepositoryContainer.shared
+                                          .localSpotlightVaultDatasource(),
+                                      logManager: self.logManager) }
     }
 }
 
