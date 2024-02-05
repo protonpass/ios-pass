@@ -61552,6 +61552,16 @@
         }
       }
     },
+    "This login item already contains a 2FA you cannot add anymore" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This login item already contains a 2FA you cannot add anymore"
+          }
+        }
+      }
+    },
     "This might take a few minutes." : {
       "localizations" : {
         "be" : {
