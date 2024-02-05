@@ -72,7 +72,7 @@ extension AppDataTests {
         let data = try JSONEncoder().encode(givenUserData)
         let lockedData = try Locked<Data>(clearValue: data, with: mainKeyProvider.mainKey!)
         let cypherdata = lockedData.encryptedValue
-        keychain.set(cypherdata, forKey: AppDataKey.userData.rawValue)
+        keychain.set(cypherdata, forKey: AppDataKey.userData.rawValue,attributes: nil)
 
         // When
         // Get credential when not yet migrated

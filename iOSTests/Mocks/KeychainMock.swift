@@ -25,21 +25,21 @@ import ProtonCoreTestingToolkitUnitTestsCore
 final class KeychainMock: KeychainProtocol {
     @FuncStub(KeychainMock.data, initialReturn: nil) var dataStub
 
-    func data(forKey key: String) -> Data? { dataStub(key) }
+    func data(forKey key: String, attributes: [CFString: Any]?) -> Data? { dataStub(key, attributes) }
 
     @FuncStub(KeychainMock.string, initialReturn: nil) var stringStub
 
-    func string(forKey key: String) -> String? { stringStub(key) }
+    func string(forKey key: String, attributes: [CFString: Any]?) -> String? { stringStub(key, attributes: ) }
 
     @FuncStub(KeychainMock.set(data:forKey:)) var setDataStub
 
-    private func set(data: Data, forKey key: String) { setDataStub(data, key) }
-    func set(_ data: Data, forKey key: String) { set(data: data, forKey: key) }
+    private func set(data: Data, forKey key: String) { setDataStub(data, key, nil) }
+    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?) { set(data: data, forKey: key) }
 
     @FuncStub(KeychainMock.set(string:forKey:)) var setStringStub
 
-    private func set(string: String, forKey key: String) { setStringStub(string, key) }
-    func set(_ string: String, forKey key: String) { set(string: string, forKey: key) }
+    private func set(string: String, forKey key: String) { setStringStub(string, key, nil) }
+    func set(_ string: String, forKey key: String, attributes: [CFString: Any]?) { set(string: string, forKey: key) }
 
     @FuncStub(KeychainMock.remove) var removeStub
 
