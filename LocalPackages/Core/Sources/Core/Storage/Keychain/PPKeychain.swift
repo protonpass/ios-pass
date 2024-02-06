@@ -23,15 +23,35 @@ import ProtonCoreKeymaker
 
 public protocol KeychainProtocol: AnyObject, Sendable {
     // Getters
-    func data(forKey key: String) -> Data?
-    func string(forKey key: String) -> String?
+    func data(forKey key: String, attributes: [CFString: Any]?) -> Data?
+    func string(forKey key: String, attributes: [CFString: Any]?) -> String?
 
     // Setters
-    func set(_ data: Data, forKey key: String)
-    func set(_ string: String, forKey key: String)
+    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?)
+    func set(_ string: String, forKey key: String, attributes: [CFString: Any]?)
 
     // Cleaner
     func remove(forKey key: String)
+}
+
+extension KeychainProtocol {
+    // Getters
+    func data(forKey key: String, attributes: [CFString: Any]? = nil) -> Data? {
+        data(forKey: key, attributes: attributes)
+    }
+
+    func string(forKey key: String, attributes: [CFString: Any]? = nil) -> String? {
+        string(forKey: key, attributes: attributes)
+    }
+
+    // Setters
+    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]? = nil) {
+        set(data, forKey: key, attributes: attributes)
+    }
+
+    func set(_ string: String, forKey key: String, attributes: [CFString: Any]? = nil) {
+        set(string, forKey: key, attributes: attributes)
+    }
 }
 
 extension Keychain: @unchecked Sendable, KeychainProtocol {}

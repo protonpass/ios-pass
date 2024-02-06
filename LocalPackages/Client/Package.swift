@@ -46,7 +46,7 @@ let package = Package(name: "Client",
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro"),
-                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "18.0.1")
+                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "19.0.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
