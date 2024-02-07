@@ -47,17 +47,20 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
     public let totpUri: String
     public let urls: [String]
     public let allowedAndroidApps: [AllowedAndroidApp]
+    public let passkeys: [Passkey]
 
     public init(username: String,
                 password: String,
                 totpUri: String,
                 urls: [String],
-                allowedAndroidApps: [AllowedAndroidApp]) {
+                allowedAndroidApps: [AllowedAndroidApp],
+                passkeys: [Passkey]) {
         self.username = username
         self.password = password
         self.totpUri = totpUri
         self.urls = urls
         self.allowedAndroidApps = allowedAndroidApps
+        self.passkeys = passkeys
     }
 }
 
@@ -257,7 +260,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                          password: data.password,
                          totpUri: data.totpUri,
                          urls: data.urls,
-                         allowedAndroidApps: platformSpecific.android.allowedApps))
+                         allowedAndroidApps: platformSpecific.android.allowedApps,
+                         passkeys: data.passkeys))
         case .none:
             .note
         }

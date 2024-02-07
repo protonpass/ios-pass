@@ -21,3 +21,4 @@
 public typealias ItemContentProtobuf = ProtonPassItemV1_Item
 public typealias ProtobufableItemContentProtocol = ItemContentProtocol & Protobufable
 public typealias AllowedAndroidApp = ProtonPassItemV1_AllowedAndroidApp
+public typealias Passkey = ProtonPassItemV1_Passkey
