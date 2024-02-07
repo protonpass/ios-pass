@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import Entities
 import ProtonCoreKeyManager
@@ -51,7 +52,7 @@ public extension UpdateItemRequest {
         self.init(keyRotation: latestItemKey.keyRotation,
                   lastRevision: oldRevision.revision,
                   content: updatedContent,
-                  contentFormatVersion: 1)
+                  contentFormatVersion: Int16(Constants.contentFormatVersion))
     }
 }
 

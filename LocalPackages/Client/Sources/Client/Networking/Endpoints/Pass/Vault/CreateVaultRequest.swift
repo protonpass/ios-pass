@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -42,7 +43,7 @@ public struct CreateVaultRequest: Sendable {
 
 public extension CreateVaultRequest {
     init(userData: UserData, vault: VaultProtobuf) throws {
-        contentFormatVersion = 1
+        contentFormatVersion = Constants.contentFormatVersion
         addressID = userData.addresses.first?.addressID ?? ""
 
         guard let userKey = userData.user.keys.first else {
