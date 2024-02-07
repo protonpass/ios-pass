@@ -185,7 +185,8 @@ extension CredentialsViewModel {
                                                                password: oldData.password,
                                                                totpUri: oldData.totpUri,
                                                                urls: oldData.urls + [newUrl],
-                                                               allowedAndroidApps: oldData.allowedAndroidApps))
+                                                               allowedAndroidApps: oldData.allowedAndroidApps,
+                                                               passkeys: oldData.passkeys))
                 let newContent = ItemContentProtobuf(name: oldContent.name,
                                                      note: oldContent.note,
                                                      itemUuid: oldContent.itemUuid,
