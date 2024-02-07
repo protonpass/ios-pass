@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -68,7 +69,7 @@ extension MoveItemsRequest {
                                                 associatedData: .itemKey)
         let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
         let itemToBeMoved = ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
-                                          contentFormatVersion: 1,
+                                          contentFormatVersion: Constants.contentFormatVersion,
                                           content: content,
                                           itemKey: encryptedItemKeyData.base64EncodedString())
         return ItemToBeMovedContainer(itemId: itemContent.itemId,

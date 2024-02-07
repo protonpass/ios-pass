@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import Entities
 import ProtonCoreLogin
@@ -37,7 +38,7 @@ public struct UpdateVaultRequest: Sendable {
 
 public extension UpdateVaultRequest {
     init(vault: VaultProtobuf, shareKey: DecryptedShareKey) throws {
-        contentFormatVersion = 1
+        contentFormatVersion = Constants.contentFormatVersion
         let vaultKey = shareKey.keyData
 
         let encryptedContent = try AES.GCM.seal(vault.data(),
