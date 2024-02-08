@@ -45,6 +45,7 @@ public final class UpdateSpotlightVaults: UpdateSpotlightVaultsUseCase {
 
     public func execute(for vaults: [Vault]) async throws {
         let userId = try userDataProvider.getUserId()
+        try await datasource.removeAll(for: userId)
         try await datasource.setIds(for: userId, ids: vaults.map(\.shareId))
     }
 }
