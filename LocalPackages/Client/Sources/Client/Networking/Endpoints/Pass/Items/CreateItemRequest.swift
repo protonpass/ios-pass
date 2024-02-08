@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -64,7 +65,7 @@ public extension CreateItemRequest {
         let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
 
         self.init(keyRotation: vaultKey.keyRotation,
-                  contentFormatVersion: 1,
+                  contentFormatVersion: Int16(Constants.contentFormatVersion),
                   content: content,
                   itemKey: encryptedItemKeyData.base64EncodedString())
     }
