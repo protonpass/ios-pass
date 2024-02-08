@@ -211,7 +211,7 @@ public extension ItemContent {
             case let .login(data):
                 contents.append(contentsOf: [data.username] + data.urls)
             case let .creditCard(data):
-                contents.append(contentsOf: [data.cardholderName, data.expirationDate])
+                contents.append(data.cardholderName)
             case .note:
                 break
             }
