@@ -38,7 +38,7 @@ public struct UpdateVaultRequest: Sendable {
 
 public extension UpdateVaultRequest {
     init(vault: VaultProtobuf, shareKey: DecryptedShareKey) throws {
-        contentFormatVersion = Constants.contentFormatVersion
+        contentFormatVersion = Constants.ContentFormatVersion.vault
         let vaultKey = shareKey.keyData
 
         let encryptedContent = try AES.GCM.seal(vault.data(),
