@@ -43,7 +43,7 @@ public struct CreateVaultRequest: Sendable {
 
 public extension CreateVaultRequest {
     init(userData: UserData, vault: VaultProtobuf) throws {
-        contentFormatVersion = Constants.contentFormatVersion
+        contentFormatVersion = Constants.ContentFormatVersion.vault
         addressID = userData.addresses.first?.addressID ?? ""
 
         guard let userKey = userData.user.keys.first else {
