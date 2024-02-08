@@ -29,7 +29,6 @@ public enum Constants {
     public static let appStoreUrl = "itms-apps://itunes.apple.com/app/id6443490629"
     public static let existingUserSharingSignatureContext = "pass.invite.vault.existing-user"
     public static let newUserSharingSignatureContext = "pass.invite.vault.new-user"
-    public static let contentFormatVersion = 2
 
     public enum PINCode {
         public static let minLength = 4
@@ -41,6 +40,11 @@ public enum Constants {
             CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
         public static let defaultPageSize = 100
+    }
+
+    public enum ContentFormatVersion {
+        public static let item = 2
+        public static let vault = 1
     }
 }
 

@@ -65,7 +65,7 @@ extension MoveItemRequest {
 
         self.init(shareId: destinationShareId,
                   item: .init(keyRotation: destinationShareKey.keyRotation,
-                              contentFormatVersion: Constants.contentFormatVersion,
+                              contentFormatVersion: Constants.ContentFormatVersion.item,
                               content: content,
                               itemKey: encryptedItemKeyData.base64EncodedString()))
     }
