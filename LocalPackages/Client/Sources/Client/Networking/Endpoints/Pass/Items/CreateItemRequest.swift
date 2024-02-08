@@ -65,7 +65,7 @@ public extension CreateItemRequest {
         let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
 
         self.init(keyRotation: vaultKey.keyRotation,
-                  contentFormatVersion: Int16(Constants.contentFormatVersion),
+                  contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
                   content: content,
                   itemKey: encryptedItemKeyData.base64EncodedString())
     }
