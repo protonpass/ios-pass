@@ -29,7 +29,8 @@ extension ItemContent {
                                         password: data.password,
                                         totpUri: uri,
                                         urls: data.urls,
-                                        allowedAndroidApps: data.allowedAndroidApps)
+                                        allowedAndroidApps: data.allowedAndroidApps,
+                                        passkeys: data.passkeys)
         return ItemContent(shareId: shareId,
                            itemUuid: itemUuid,
                            item: item,
