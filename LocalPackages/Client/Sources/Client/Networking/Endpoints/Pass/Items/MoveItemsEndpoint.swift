@@ -69,7 +69,7 @@ extension MoveItemsRequest {
                                                 associatedData: .itemKey)
         let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
         let itemToBeMoved = ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
-                                          contentFormatVersion: Constants.contentFormatVersion,
+                                          contentFormatVersion: Constants.ContentFormatVersion.item,
                                           content: content,
                                           itemKey: encryptedItemKeyData.base64EncodedString())
         return ItemToBeMovedContainer(itemId: itemContent.itemId,
