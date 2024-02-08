@@ -52,7 +52,7 @@ public extension UpdateItemRequest {
         self.init(keyRotation: latestItemKey.keyRotation,
                   lastRevision: oldRevision.revision,
                   content: updatedContent,
-                  contentFormatVersion: Int16(Constants.contentFormatVersion))
+                  contentFormatVersion: Int16(Constants.ContentFormatVersion.item))
     }
 }
 
