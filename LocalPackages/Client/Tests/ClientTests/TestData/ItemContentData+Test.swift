@@ -34,7 +34,8 @@ extension ItemContentData {
                                 password: .random(),
                                 totpUri: .random(),
                                 urls: .random(randomElement: .random()),
-                                allowedAndroidApps: []))
+                                allowedAndroidApps: [],
+                                passkeys: []))
         }
     }
 }
