@@ -92,7 +92,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private var authenticated = true
+    private var authenticated = false
 
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
@@ -123,6 +123,8 @@ private extension HomepageCoordinator {
 
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                           task: refreshInvitations.callAsFunction))
+
+        authenticated = preferences.localAuthenticationMethod == .none
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
