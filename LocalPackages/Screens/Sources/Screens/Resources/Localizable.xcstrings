@@ -130,12 +130,6 @@
             "state" : "translated",
             "value" : "Vì lý do bảo mật, truy cập của bạn cần được xác nhận"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "For security reasons, your access needs to be confirmed"
-          }
         }
       }
     },
@@ -146,7 +140,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Атрымайце неабмежаваную колькасць псеўданімаў, атрымлівайце асалоду ад эксклюзіўных функцый і падтрымлівайце нас падпісаўшыся на Pass Plus."
+            "value" : "Атрымайце неабмежаваную колькасць псеўданімаў і асалоду ад эксклюзіўных функцый, а таксама падтрымайце нас падпісаўшыся на Pass Plus."
           }
         },
         "cs" : {
@@ -257,22 +251,16 @@
             "value" : "Sınırsız sayıda takma ad edinin, ücretli özelliklerin tadını çıkarın ve Pass Plus tarifesine abone olarak bizi destekleyin."
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhận không giới hạn bí danh, tận hưởng các tính năng độc quyền, vầ hỗ trợ chúng tôi bằng việc đăng ký gói Pass Plus."
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
-          }
-        },
         "uk" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhận không giới hạn bí danh, tận hưởng các tính năng độc quyền, vầ hỗ trợ chúng tôi bằng việc đăng ký gói Pass Plus."
           }
         }
       }
@@ -340,6 +328,12 @@
             "value" : "Scopri di più su Pass"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learn more about Pass"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -388,28 +382,16 @@
             "value" : "Pass hakkında ayrıntılı bilgi alın"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tìm hiểu thêm về Pass"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Learn more about Pass"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Learn more about Pass"
-          }
-        },
         "uk" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Learn more about Pass"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tìm hiểu thêm về Pass"
           }
         }
       }
@@ -478,6 +460,12 @@
             "value" : "Molteplici casseforti"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Multiple Vaults"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -526,28 +514,16 @@
             "value" : "Birden çok kasa"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhiều kho lưu trữ"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Multiple Vaults"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Multiple Vaults"
-          }
-        },
         "uk" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Multiple Vaults"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhiều kho lưu trữ"
           }
         }
       }
@@ -616,6 +592,12 @@
             "value" : "Pass Plus"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pass Plus"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -664,27 +646,15 @@
             "value" : "Pass Plus"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pass Plus"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Plus"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Plus"
-          }
-        },
         "uk" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Pass Plus"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Pass Plus"
           }
         }
@@ -819,12 +789,6 @@
             "state" : "translated",
             "value" : "Đang chờ truy cập vào dữ liệu được chia sẻ"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pending access to the shared data"
-          }
         }
       }
     },
@@ -882,7 +846,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Veuillez vous connecter pour utiliser la fonction de remplissage automatique Proton Pass."
+            "value" : "Veuillez vous connecter pour utiliser la fonction de remplissage automatique de Proton Pass."
           }
         },
         "it" : {
@@ -909,22 +873,10 @@
             "value" : "Proton Pass 자동 완성 확장을 사용하기 위해선 로그인하십시오."
           }
         },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vennligst logg på for å bruke Proton Pass-AutoFyll-utvidelsen"
-          }
-        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zaloguj się, aby uzupełniać dane logowania za pomocą rozszerzenia Proton Pass"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por favor, inicie sessão para utilizar a extensão de preenchimento automático do Proton Pass"
           }
         },
         "pt-BR" : {
@@ -941,8 +893,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass AutoFill extension"
+            "state" : "translated",
+            "value" : "Ak chcete používať rozšírenie automatického vypĺňania Proton Pass AutoFill, prosím prihláste sa."
           }
         },
         "sv" : {
@@ -968,28 +920,16 @@
             "state" : "new",
             "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass AutoFill extension"
-          }
         }
       }
     },
     "Please sign in to use Proton Pass Share extension" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please sign in to use Proton Pass Share extension"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Увайдзіце, каб скарыстацца пашырэннем для абагулення Proton Pass"
+            "value" : "Увайдзіце, каб скарыстацца пашырэннем Proton Pass Share"
           }
         },
         "cs" : {
@@ -1010,9 +950,9 @@
             "value" : "Παρακαλούμε συνδεθείτε για να χρησιμοποιήσετε την προέκταση Κοινοποίησης Proton Pass"
           }
         },
-        "en-US" : {
+        "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Please sign in to use Proton Pass Share extension"
           }
         },
@@ -1037,7 +977,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Veuillez vous connecter pour utiliser la fonction de partage Proton Pass."
+            "value" : "Veuillez vous connecter pour utiliser la fonction de partage de Proton Pass."
           }
         },
         "it" : {
@@ -1084,8 +1024,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass Share extension"
+            "state" : "translated",
+            "value" : "Ak chcete používať rozšírenie Proton Pass Share, prosím prihláste sa."
           }
         },
         "sv" : {
@@ -1243,12 +1183,6 @@
             "state" : "translated",
             "value" : "Mới dùng"
           }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Recents"
-          }
         }
       }
     },
@@ -1316,6 +1250,12 @@
             "value" : "Condivisione fino a 10 persone"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sharing with up to 10 people"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1364,40 +1304,22 @@
             "value" : "10 kişiye kadar paylaşma olanağı"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chia sẻ với tối đa 10 người"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Sharing with up to 10 people"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Sharing with up to 10 people"
-          }
-        },
         "uk" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Sharing with up to 10 people"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chia sẻ với tối đa 10 người"
           }
         }
       }
     },
     "Signed out" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Signed out"
-          }
-        },
         "be" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1406,8 +1328,8 @@
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Signed out"
+            "state" : "translated",
+            "value" : "Odhlášeno"
           }
         },
         "de" : {
@@ -1422,9 +1344,9 @@
             "value" : "Αποσυνδεδεμένος"
           }
         },
-        "en-US" : {
+        "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Signed out"
           }
         },
@@ -1496,8 +1418,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Signed out"
+            "state" : "translated",
+            "value" : "Odhlásené"
           }
         },
         "sv" : {
@@ -1590,6 +1512,12 @@
             "value" : "Suggerimenti"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Suggestions"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1636,18 +1564,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öneriler"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggestions"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggestions"
           }
         },
         "uk" : {
@@ -1728,6 +1644,12 @@
             "value" : "Compilazione automatica 2FA illimitata"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlimited 2FA Autofill"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1776,28 +1698,16 @@
             "value" : "Sınırsız iki adımlı otomatik doldurma"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tự động điền 2FA không giới hạn"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlimited 2FA Autofill"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlimited 2FA Autofill"
-          }
-        },
         "uk" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Unlimited 2FA Autofill"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tự động điền 2FA không giới hạn"
           }
         }
       }
@@ -1851,7 +1761,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rajoittamaton määrä sähköpostialiaksia"
+            "value" : "Rajattomasti sähköpostialiaksia"
           }
         },
         "fr" : {
@@ -1930,12 +1840,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không giới hạn email bí danh"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlimited email aliases"
           }
         }
       }
@@ -2068,12 +1972,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nâng cấp"
-          }
-        },
-        "en-US" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade"
           }
         }
       }
