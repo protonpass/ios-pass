@@ -47,6 +47,12 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         coordinator.start(with: serviceIdentifiers)
     }
 
+    @available(iOSApplicationExtension 17.0, *)
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
+                                        requestParameters: ASPasskeyCredentialRequestParameters) {
+        coordinator.start(with: serviceIdentifiers)
+    }
+
     /* Implement this method if your extension supports showing credentials in the QuickType bar.
      When the user selects a credential from your app, this method will be called with the
      ASPasswordCredentialIdentity your app has previously saved to the ASCredentialIdentityStore.
@@ -58,6 +64,11 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         coordinator.provideCredentialWithoutUserInteraction(for: credentialIdentity)
     }
 
+    @available(iOSApplicationExtension 17.0, *)
+    override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
+        coordinator.configureExtension()
+    }
+
     /* Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
      ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
      UI and call this method. Show appropriate UI for authenticating the user then provide the password
@@ -67,7 +78,17 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)
     }
 
+    @available(iOSApplicationExtension 17.0, *)
+    override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
+        coordinator.configureExtension()
+    }
+
     override func prepareInterfaceForExtensionConfiguration() {
+        coordinator.configureExtension()
+    }
+
+    @available(iOSApplicationExtension 17.0, *)
+    override func prepareInterface(forPasskeyRegistration registrationRequest: ASCredentialRequest) {
         coordinator.configureExtension()
     }
 }

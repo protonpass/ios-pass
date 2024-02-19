@@ -14,6 +14,11 @@
 		<dict>
 			<key>ASCredentialProviderExtensionShowsConfigurationUI</key>
 			<true/>
+			<key>ASCredentialProviderExtensionCapabilities</key>
+			<dict>
+				<key>ProvidesPasskeys</key>
+				<true/>
+			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
