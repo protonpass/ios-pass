@@ -1,3 +1,12 @@
+## Version 1.9.0
+Features:
+- Added support for "Set up verification codes"
+- Added support for Spotlight
+
+Others:
+- Bumped core version from 18.0.1 to 19.0.0
+- Updated protobuf models & bumped item content format version from 1 to 2
+
 ## Version 1.8.0
 Features:
 - Item history: easily review and restore previous versions of an item
