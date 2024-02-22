@@ -38,57 +38,47 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         resetFactory()
     }
 
-    /*
-     Prepare your UI to list available credentials for the user to choose from. The items in
-     'serviceIdentifiers' describe the service the user is logging in to, so your extension can
-     prioritize the most relevant credentials in the list.
-     */
+    /// Can be removed onced dropped iOS 16
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         coordinator.start(with: serviceIdentifiers)
     }
 
-    @available(iOSApplicationExtension 17.0, *)
-    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
-                                        requestParameters: ASPasskeyCredentialRequestParameters) {
-        coordinator.start(with: serviceIdentifiers)
-    }
-
-    /* Implement this method if your extension supports showing credentials in the QuickType bar.
-     When the user selects a credential from your app, this method will be called with the
-     ASPasswordCredentialIdentity your app has previously saved to the ASCredentialIdentityStore.
-     Provide the password by completing the extension request with the associated ASPasswordCredential.
-     If using the credential would require showing custom UI for authenticating the user, cancel
-     the request with error code ASExtensionError.userInteractionRequired. */
-
+    /// Can be removed onced dropped iOS 16
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         coordinator.provideCredentialWithoutUserInteraction(for: credentialIdentity)
     }
 
-    @available(iOSApplicationExtension 17.0, *)
-    override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
-        coordinator.configureExtension()
-    }
-
-    /* Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
-     ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
-     UI and call this method. Show appropriate UI for authenticating the user then provide the password
-     by completing the extension request with the associated ASPasswordCredential. */
-
+    /// Can be removed onced dropped iOS 16
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
         coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)
     }
 
-    @available(iOSApplicationExtension 17.0, *)
-    override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
-        coordinator.configureExtension()
-    }
-
+    /// Passkey-agnostic, must always implement this function
     override func prepareInterfaceForExtensionConfiguration() {
         coordinator.configureExtension()
     }
+}
 
-    @available(iOSApplicationExtension 17.0, *)
+/* Other callbacks are superseded by these new callbacks on iOS 17 in the below extension */
+
+// MARK: Passkey support
+
+@available(iOSApplicationExtension 17.0, *)
+extension CredentialProviderViewController {
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
+                                        requestParameters: ASPasskeyCredentialRequestParameters) {
+        print(#function)
+    }
+
+    override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
+        print(#function)
+    }
+
+    override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
+        print(#function)
+    }
+
     override func prepareInterface(forPasskeyRegistration registrationRequest: ASCredentialRequest) {
-        coordinator.configureExtension()
+        print(#function)
     }
 }
