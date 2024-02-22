@@ -91,3 +91,12 @@ extension AutoFillUseCaseContainer {
                                            reindexLoginItem: self.reindexLoginItem()) }
     }
 }
+
+// MARK: Passkey
+
+@available(iOS 17, *)
+extension AutoFillUseCaseContainer {
+    var createPasskey: Factory<CreatePasskeyUseCase> {
+        self { CreatePasskey() }
+    }
+}
