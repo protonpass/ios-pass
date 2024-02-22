@@ -95,6 +95,13 @@ extension SearchableItem {
         }
 
         var detail = [SearchResultEither]()
+
+        if let aliasEmail {
+            if let result = SearchUtils.fuzzySearch(query: term, in: aliasEmail) {
+                detail.append(.matched(result))
+            }
+        }
+
         if let result = SearchUtils.fuzzySearch(query: term, in: note) {
             detail.append(.matched(result))
         } else {
