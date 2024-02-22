@@ -67,6 +67,10 @@ struct ManageSharedVaultView: View {
                        .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
                        "Vaults can’t contain more than 10 users.")
                })
+        .alert("Error occured",
+               isPresented: $viewModel.showContactSupportAlert,
+               actions: { Button(role: .cancel, label: { Text("OK") }) },
+               message: { Text("Please contact us for investigating the issue") })
         .navigationStackEmbeded()
     }
 
@@ -171,7 +175,7 @@ private extension ManageSharedVaultView {
                                         backgroundColor: PassColor.interactionNorm,
                                         disableBackgroundColor: PassColor.interactionNorm
                                             .withAlphaComponent(0.5),
-                                        disabled: viewModel.reachedLimit,
+                                        disabled: viewModel.reachedLimit && !viewModel.isBusinessUser,
                                         action: { viewModel.shareWithMorePeople() })
 
             if viewModel.showVaultLimitMessage {
