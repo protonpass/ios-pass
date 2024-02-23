@@ -412,6 +412,8 @@ extension HomepageCoordinator {
                     presentEditSpotlightSearchableVaultsView()
                 case .editSpotlightVaults:
                     presentEditSpotlightVaultsView()
+                case let .passkeyDetail(passkey):
+                    presentPasskeyDetailView(for: passkey)
                 }
             }
             .store(in: &cancellables)

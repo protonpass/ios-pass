@@ -160,7 +160,7 @@ private extension DetailHistoryView {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection(color: borderColor(for: \.loginItem?.urls))
+        .roundedDetailSection(borderColor: borderColor(for: \.loginItem?.urls))
     }
 
     func customFields(item: ItemContent) -> some View {
@@ -190,6 +190,6 @@ private extension DetailHistoryView {
                 .padding(8)
             }
         }
-        .roundedDetailSection(color: borderColor(for: \.customFields))
+        .roundedDetailSection(borderColor: borderColor(for: \.customFields))
     }
 }
