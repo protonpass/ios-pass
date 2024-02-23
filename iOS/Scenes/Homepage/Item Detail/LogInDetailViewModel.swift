@@ -42,6 +42,7 @@ enum TOTPTokenState {
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var passkeys = [Passkey]()
     @Published private(set) var name = ""
     @Published private(set) var username = ""
     @Published private(set) var urls: [String] = []
@@ -74,6 +75,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     override func bindValues() {
         if case let .login(data) = itemContent.contentData {
+            passkeys = data.passkeys
             name = itemContent.name
             note = itemContent.note
             username = data.username
@@ -130,6 +132,10 @@ private extension LogInDetailViewModel {
 // MARK: - Public actions
 
 extension LogInDetailViewModel {
+    func viewPasskey(_ passkey: Passkey) {
+        router.present(for: .passkeyDetail(passkey))
+    }
+
     func copyUsername() {
         copyToClipboard(text: username, message: #localized("Username copied"))
     }

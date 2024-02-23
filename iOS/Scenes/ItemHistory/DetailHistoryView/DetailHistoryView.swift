@@ -114,7 +114,7 @@ extension DetailHistoryView {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection(color: borderColor(for: \.note))
+        .roundedDetailSection(borderColor: borderColor(for: \.note))
     }
 }
 
