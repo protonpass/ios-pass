@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -45,8 +46,10 @@ struct LogInDetailView: View {
             realBody
         }
     }
+}
 
-    private var realBody: some View {
+private extension LogInDetailView {
+    var realBody: some View {
         VStack {
             ScrollViewReader { value in
                 ScrollView {
@@ -55,6 +58,13 @@ struct LogInDetailView: View {
                                             vault: viewModel.vault?.vault,
                                             shouldShowVault: viewModel.shouldShowVault)
                             .padding(.bottom, 40)
+
+                        if !viewModel.passkeys.isEmpty {
+                            ForEach(viewModel.passkeys, id: \.keyID) {
+                                passkeyRow($0)
+                                    .padding(.bottom, 8)
+                            }
+                        }
 
                         usernamePassword2FaSection
 
@@ -101,8 +111,39 @@ struct LogInDetailView: View {
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
     }
+}
 
-    private var usernamePassword2FaSection: some View {
+private extension LogInDetailView {
+    func passkeyRow(_ passkey: Passkey) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: PassIcon.passkey, color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Passkey")
+                    .sectionTitleText() +
+                    Text(verbatim: " • ")
+                    .sectionTitleText() +
+                    Text(verbatim: passkey.domain)
+                    .sectionTitleText()
+
+                Text(passkey.userName)
+                    .sectionContentText()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Spacer()
+
+            ItemDetailSectionIcon(icon: IconProvider.chevronRight, width: 12)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection(backgroundColor: viewModel.itemContent.type.normMinor2Color)
+        .contentShape(Rectangle())
+        .onTapGesture(perform: { viewModel.viewPasskey(passkey) })
+    }
+}
+
+private extension LogInDetailView {
+    var usernamePassword2FaSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             usernameRow
             PassSectionDivider()
@@ -132,7 +173,7 @@ struct LogInDetailView: View {
         .animation(.default, value: viewModel.totpTokenState)
     }
 
-    private var usernameRow: some View {
+    var usernameRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
                                   color: iconTintColor)
@@ -177,7 +218,7 @@ struct LogInDetailView: View {
         }
     }
 
-    private var passwordRow: some View {
+    var passwordRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             if let passwordStrength = viewModel.passwordStrength {
                 PasswordStrengthIcon(strength: passwordStrength)
@@ -237,8 +278,10 @@ struct LogInDetailView: View {
             }
         }
     }
+}
 
-    private var totpNotAllowedRow: some View {
+private extension LogInDetailView {
+    var totpNotAllowedRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
 
@@ -252,7 +295,7 @@ struct LogInDetailView: View {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    private var urlsSection: some View {
+    var urlsSection: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
 
@@ -293,7 +336,7 @@ struct LogInDetailView: View {
         .roundedDetailSection()
     }
 
-    private var viewAliasCard: some View {
+    var viewAliasCard: some View {
         Group {
             Text("View and edit details for this alias on the separate alias page.")
                 .font(.callout)
