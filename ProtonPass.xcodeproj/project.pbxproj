@@ -211,6 +211,7 @@
 		3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */; };
 		356A1EFE2B889D9900561950 /* PasskeyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */; };
 		356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */; };
+		356A1F032B88AEB800561950 /* PasskeyDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */; };
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
@@ -778,6 +779,7 @@
 		3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabViewModel.swift; sourceTree = "<group>"; };
 		356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyDetailView.swift; sourceTree = "<group>"; };
 		356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Passkey.swift"; sourceTree = "<group>"; };
+		356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyDetailRow.swift; sourceTree = "<group>"; };
 		356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailPlaceholderView.swift; sourceTree = "<group>"; };
@@ -1344,6 +1346,7 @@
 		3565622529BA760800C43F72 /* Item Detail */ = {
 			isa = PBXGroup;
 			children = (
+				356A1F012B88AEA200561950 /* Passkey */,
 				3572E5262994043C00775FAC /* Supporting Views */,
 				35AC9A532A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift */,
 				354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */,
@@ -1355,7 +1358,6 @@
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
 				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
 				354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */,
-				356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */,
 			);
 			path = "Item Detail";
 			sourceTree = "<group>";
@@ -1427,6 +1429,15 @@
 				356BC35329D6CDA300F03497 /* Settings */,
 			);
 			path = "Profile Tab";
+			sourceTree = "<group>";
+		};
+		356A1F012B88AEA200561950 /* Passkey */ = {
+			isa = PBXGroup;
+			children = (
+				356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */,
+				356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */,
+			);
+			path = Passkey;
 			sourceTree = "<group>";
 		};
 		356BC35329D6CDA300F03497 /* Settings */ = {
@@ -3001,6 +3012,7 @@
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
+				356A1F032B88AEB800561950 /* PasskeyDetailRow.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
 				35EC5C9A2AE015DE0050614F /* ShareInviteeView.swift in Sources */,
 				5B5DBF192B68048600F72F6C /* TotpLoginsViewModel.swift in Sources */,

@@ -62,6 +62,10 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
         currentRevision[keyPath: element] != pastRevision[keyPath: element]
     }
 
+    func viewPasskey(_ passkey: Passkey) {
+        router.present(for: .passkeyDetail(passkey))
+    }
+
     func restore() {
         Task { [weak self] in
             guard let self else {

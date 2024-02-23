@@ -33,8 +33,8 @@ extension DetailHistoryView {
             titleRow(itemContent: itemContent)
 
             if let item = itemContent.loginItem {
+                passkeySection(logItem: item)
                 usernamePassword2FaSection(logItem: item)
-
                 urlsSection(logItem: item)
                     .padding(.top, 8)
             }
@@ -50,6 +50,20 @@ extension DetailHistoryView {
 }
 
 private extension DetailHistoryView {
+    @ViewBuilder
+    func passkeySection(logItem: LogInItemData) -> some View {
+        if logItem.passkeys.isEmpty {
+            EmptyView()
+        } else {
+            ForEach(logItem.passkeys, id: \.keyID) { passkey in
+                PasskeyDetailRow(passkey: passkey,
+                                 borderColor: borderColor(for: \.loginItem?.passkeys),
+                                 onTap: { viewModel.viewPasskey(passkey) })
+                    .padding(.bottom, 8)
+            }
+        }
+    }
+
     func usernamePassword2FaSection(logItem: LogInItemData) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             usernameRow(logItem: logItem)
