@@ -112,6 +112,56 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             .store(in: &cancellables)
     }
 
+    func start(mode: AutoFillMode) {
+        switch mode {
+        case let .showAllLogins(mode):
+            handleShowAllLoginsMode(mode)
+
+        case let .checkAndAutoFill(mode):
+            handleCheckAndAutoFillMode(mode)
+
+        case let .authenticateAndAutofill(mode):
+            handleAuthenticateAndAutofillMode(mode)
+
+        case .configuration:
+            configureExtension()
+
+        case .passkeyRegistration:
+            print("Handle passkey registration")
+        }
+    }
+}
+
+private extension CredentialProviderCoordinator {
+    func handleShowAllLoginsMode(_ mode: ShowAllLoginsMode) {
+        switch mode {
+        case let .password(serviceIdentifiers):
+            showCredentialsView(serviceIdentifiers: serviceIdentifiers)
+        case let .passkey(serviceIdentifiers, passkeyRequestParameters):
+            showCredentialsView(serviceIdentifiers: serviceIdentifiers)
+        }
+    }
+
+    func handleCheckAndAutoFillMode(_ mode: CheckAndAutoFillMode) {
+        switch mode {
+        case let .password(passwordCredentialIdentity):
+            provideCredentialWithoutUserInteraction(for: passwordCredentialIdentity)
+        case let .passkey(passkeyCredentialIdentity):
+            break
+        }
+    }
+
+    func handleAuthenticateAndAutofillMode(_ mode: AuthenticateAndAutofillMode) {
+        switch mode {
+        case let .password(passwordCredentialIdentity):
+            provideCredentialWithBiometricAuthentication(for: passwordCredentialIdentity)
+        case let .passkey(passkeyCredentialIdentity):
+            break
+        }
+    }
+}
+
+private extension CredentialProviderCoordinator {
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         guard credentialProvider.isAuthenticated else {
             showNotLoggedInView()
