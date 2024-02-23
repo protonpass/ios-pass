@@ -60,8 +60,9 @@ private extension LogInDetailView {
                             .padding(.bottom, 40)
 
                         if !viewModel.passkeys.isEmpty {
-                            ForEach(viewModel.passkeys, id: \.keyID) {
-                                passkeyRow($0)
+                            ForEach(viewModel.passkeys, id: \.keyID) { passkey in
+                                PasskeyDetailRow(passkey: passkey,
+                                                 onTap: { viewModel.viewPasskey(passkey) })
                                     .padding(.bottom, 8)
                             }
                         }
@@ -110,35 +111,6 @@ private extension LogInDetailView {
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
-    }
-}
-
-private extension LogInDetailView {
-    func passkeyRow(_ passkey: Passkey) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: PassIcon.passkey, color: iconTintColor)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Passkey")
-                    .sectionTitleText() +
-                    Text(verbatim: " • ")
-                    .sectionTitleText() +
-                    Text(verbatim: passkey.domain)
-                    .sectionTitleText()
-
-                Text(passkey.userName)
-                    .sectionContentText()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Spacer()
-
-            ItemDetailSectionIcon(icon: IconProvider.chevronRight, width: 12)
-        }
-        .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: viewModel.itemContent.type.normMinor2Color)
-        .contentShape(Rectangle())
-        .onTapGesture(perform: { viewModel.viewPasskey(passkey) })
     }
 }
 
