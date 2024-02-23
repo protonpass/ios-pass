@@ -22,28 +22,31 @@ import AuthenticationServices
 
 /// Possible entry points when autofilling
 enum AutoFillMode {
-    case showAllLogins(ShowAllLogins)
-    case checkAndAutoFill(CheckAndAutoFill)
-    case authenticateAndAutofill(AuthenticateAndAutofill)
+    case showAllLogins(ShowAllLoginsMode)
+    case checkAndAutoFill(CheckAndAutoFillMode)
+    case authenticateAndAutofill(AuthenticateAndAutofillMode)
+    /// Proton Pass is chosen as credential provider in Settings
+    case configuration
+    case passkeyRegistration
 }
 
 /// User wants to manually select an item to autofill
-enum ShowAllLogins {
-    case password([URL])
-    case passkey([URL], PasskeyRequestParametersProtocol)
+enum ShowAllLoginsMode {
+    case password([ASCredentialServiceIdentifier])
+    case passkey([ASCredentialServiceIdentifier], PasskeyRequestParametersProtocol)
 }
 
 /// When user picks a proposed email from QuickType bar
 /// Check if user has local authentication enabled (Face ID/Touch ID/PIN)
 /// If authentication required: ask for authentication, pass to mode `AuthenticateAndAutofill`
 /// If authentication not required: autofill straight away
-enum CheckAndAutoFill {
+enum CheckAndAutoFillMode {
     case password(ASPasswordCredentialIdentity)
     case passkey(PasskeyIdentityProtocol)
 }
 
 /// User picks a proposed email from QuickType bar but authentication (Face ID/Touch ID/PIN)  is required
-enum AuthenticateAndAutofill {
+enum AuthenticateAndAutofillMode {
     case password(ASPasswordCredentialIdentity)
     case passkey(PasskeyIdentityProtocol)
 }

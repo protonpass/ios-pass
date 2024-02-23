@@ -40,22 +40,22 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     /// Can be removed onced dropped iOS 16
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        coordinator.start(with: serviceIdentifiers)
+        coordinator.start(mode: .showAllLogins(.password(serviceIdentifiers)))
     }
 
     /// Can be removed onced dropped iOS 16
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.provideCredentialWithoutUserInteraction(for: credentialIdentity)
+        coordinator.start(mode: .checkAndAutoFill(.password(credentialIdentity)))
     }
 
     /// Can be removed onced dropped iOS 16
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)
+        coordinator.start(mode: .authenticateAndAutofill(.password(credentialIdentity)))
     }
 
     /// Passkey-agnostic, must always implement this function
     override func prepareInterfaceForExtensionConfiguration() {
-        coordinator.configureExtension()
+        coordinator.start(mode: .configuration)
     }
 }
 
@@ -67,18 +67,56 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 extension CredentialProviderViewController {
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
                                         requestParameters: ASPasskeyCredentialRequestParameters) {
-        print(#function)
+        coordinator.start(mode: .showAllLogins(.passkey(serviceIdentifiers, requestParameters)))
     }
 
     override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
-        print(#function)
+        switch credentialRequest.type {
+        case .password:
+            guard let request = credentialRequest as? ASPasswordCredentialRequest,
+                  let credentialIdentity = request.credentialIdentity as? ASPasswordCredentialIdentity else {
+                assertionFailure("Failed to extract request's information")
+                return
+            }
+            coordinator.start(mode: .checkAndAutoFill(.password(credentialIdentity)))
+
+        case .passkeyAssertion:
+            guard let request = credentialRequest as? ASPasskeyCredentialRequest,
+                  let credentialIdentity = request.credentialIdentity as? ASPasskeyCredentialIdentity else {
+                assertionFailure("Failed to extract request's information")
+                return
+            }
+            coordinator.start(mode: .checkAndAutoFill(.passkey(credentialIdentity)))
+
+        @unknown default:
+            assertionFailure("Unknown credential request type")
+        }
     }
 
     override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
-        print(#function)
+        switch credentialRequest.type {
+        case .password:
+            guard let request = credentialRequest as? ASPasswordCredentialRequest,
+                  let credentialIdentity = request.credentialIdentity as? ASPasswordCredentialIdentity else {
+                assertionFailure("Failed to extract request's information")
+                return
+            }
+            coordinator.start(mode: .authenticateAndAutofill(.password(credentialIdentity)))
+
+        case .passkeyAssertion:
+            guard let request = credentialRequest as? ASPasskeyCredentialRequest,
+                  let credentialIdentity = request.credentialIdentity as? ASPasskeyCredentialIdentity else {
+                assertionFailure("Failed to extract request's information")
+                return
+            }
+            coordinator.start(mode: .authenticateAndAutofill(.passkey(credentialIdentity)))
+
+        @unknown default:
+            assertionFailure("Unknown credential request type")
+        }
     }
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: ASCredentialRequest) {
-        print(#function)
+        coordinator.start(mode: .passkeyRegistration)
     }
 }
