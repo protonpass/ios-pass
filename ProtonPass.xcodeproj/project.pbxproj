@@ -212,6 +212,8 @@
 		356A1EFE2B889D9900561950 /* PasskeyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */; };
 		356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */; };
 		356A1F032B88AEB800561950 /* PasskeyDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */; };
+		356A1F052B88C56800561950 /* AutoFillMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F042B88C56800561950 /* AutoFillMode.swift */; };
+		356A1F072B88C59C00561950 /* PasskeyProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F062B88C59C00561950 /* PasskeyProtocols.swift */; };
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
@@ -780,6 +782,8 @@
 		356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyDetailView.swift; sourceTree = "<group>"; };
 		356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Passkey.swift"; sourceTree = "<group>"; };
 		356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyDetailRow.swift; sourceTree = "<group>"; };
+		356A1F042B88C56800561950 /* AutoFillMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillMode.swift; sourceTree = "<group>"; };
+		356A1F062B88C59C00561950 /* PasskeyProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyProtocols.swift; sourceTree = "<group>"; };
 		356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailPlaceholderView.swift; sourceTree = "<group>"; };
@@ -2151,8 +2155,10 @@
 		5BFFB5012A58035A00C2D1F9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				356A1F042B88C56800561950 /* AutoFillMode.swift */,
 				5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */,
 				5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */,
+				356A1F062B88C59C00561950 /* PasskeyProtocols.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2786,6 +2792,7 @@
 				35AC9A662A0BE4C700FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				35702C952A1E44140089B539 /* VaultSelectorViewModel.swift in Sources */,
 				5BFFB5132A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
+				356A1F072B88C59C00561950 /* PasskeyProtocols.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				3553C22D296575560087518A /* LoggerManager+Extensions.swift in Sources */,
@@ -2798,6 +2805,7 @@
 				5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */,
 				35AC9A5D2A0BDB7D00FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
+				356A1F052B88C56800561950 /* AutoFillMode.swift in Sources */,
 				3559BAA22A5B32600020E172 /* Browser.swift in Sources */,
 				5B229A662A863F6D0009103E /* MainRouter.swift in Sources */,
 				5BD4A8FF2B10C48B00C44C08 /* View+Extensions.swift in Sources */,
