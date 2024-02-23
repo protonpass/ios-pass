@@ -18,13 +18,113 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
+import DesignSystem
 import Entities
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct PasskeyDetailView: View {
+    private let tintColor = ItemContentType.login.normColor
     let passkey: Passkey
 
     var body: some View {
-        Text(passkey.userName)
+        ZStack {
+            PassColor.backgroundWeak.toColor
+                .ignoresSafeArea()
+            content
+        }
+        .navigationTitle("Passkey")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationStackEmbeded()
+    }
+}
+
+private extension PasskeyDetailView {
+    var content: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            usernameRow
+            PassSectionDivider()
+            domainRow
+            PassSectionDivider()
+            keyRow
+            PassSectionDivider()
+            creationTimeRow
+        }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedDetailSection()
+        .padding(DesignConstant.sectionPadding)
+    }
+}
+
+private extension PasskeyDetailView {
+    var usernameRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: PassIcon.passkey, color: tintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Username")
+                    .sectionTitleText()
+                Text(passkey.userName)
+                    .sectionContentText()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+}
+
+private extension PasskeyDetailView {
+    var domainRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.globe, color: tintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Domain")
+                    .sectionTitleText()
+                Text(passkey.domain)
+                    .sectionContentText()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+}
+
+private extension PasskeyDetailView {
+    var keyRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.key, color: tintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Key")
+                    .sectionTitleText()
+                Text(passkey.keyID)
+                    .sectionContentText()
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(2)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+}
+
+private extension PasskeyDetailView {
+    var creationTimeRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.calendarToday, color: tintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Created")
+                    .sectionTitleText()
+                Text(Int64(passkey.createTime).fullDateString.capitalizingFirstLetter())
+                    .sectionContentText()
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(2)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 }

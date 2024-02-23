@@ -22861,6 +22861,18 @@
         }
       }
     },
+    "Domain" : {
+      "comment" : "Passkey's domain",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domain"
+          }
+        }
+      }
+    },
     "Download all your items again to make sure you are in sync" : {
       "localizations" : {
         "be" : {
@@ -32547,6 +32559,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chỉ tự động điền"
+          }
+        }
+      }
+    },
+    "Key" : {
+      "comment" : "Passkey's key ID",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Key"
           }
         }
       }
