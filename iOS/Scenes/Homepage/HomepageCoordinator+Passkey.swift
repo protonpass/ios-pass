@@ -25,7 +25,7 @@ import SwiftUI
 extension HomepageCoordinator {
     func presentPasskeyDetailView(for passkey: Passkey) {
         let vc = UIHostingController(rootView: PasskeyDetailView(passkey: passkey))
-        vc.setDetentType(.custom(CGFloat(500)), parentViewController: rootViewController)
+        vc.setDetentType(.custom(CGFloat(380)), parentViewController: rootViewController)
         present(vc)
     }
 }
