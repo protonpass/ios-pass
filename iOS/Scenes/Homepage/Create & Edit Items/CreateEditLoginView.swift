@@ -21,6 +21,7 @@
 import CodeScanner
 import Core
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
@@ -70,6 +71,7 @@ struct CreateEditLoginView: View {
                                                    onChangeVault: { viewModel.changeVault() },
                                                    onSubmit: { focusedField = .username })
                             .padding(.bottom, DesignConstant.sectionPadding / 2)
+                        passkeySection
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel,
                                        focusedField: $focusedField,
@@ -96,6 +98,7 @@ struct CreateEditLoginView: View {
                     .padding()
                     .animation(.default, value: viewModel.customFieldUiModels.count)
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
+                    .animation(.default, value: viewModel.passkeys.count)
                     .showSpinner(viewModel.loading)
                 }
                 .onChange(of: focusedField) { focusedField in
@@ -266,6 +269,46 @@ private extension CreateEditLoginView {
         Image(uiImage: uiImage)
             .resizable()
             .frame(width: 18, height: 18)
+    }
+}
+
+private extension CreateEditLoginView {
+    @ViewBuilder
+    var passkeySection: some View {
+        if viewModel.passkeys.isEmpty {
+            EmptyView()
+        } else {
+            ForEach(viewModel.passkeys, id: \.keyID) {
+                passkeyRow($0)
+            }
+        }
+    }
+
+    func passkeyRow(_ passkey: Passkey) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: PassIcon.passkey)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Passkey")
+                    .sectionTitleText() +
+                    Text(verbatim: " • ")
+                    .sectionTitleText() +
+                    Text(verbatim: passkey.domain)
+                    .sectionTitleText()
+
+                Text(passkey.userName)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button(action: {
+                viewModel.remove(passkey: passkey)
+            }, label: {
+                ItemDetailSectionIcon(icon: IconProvider.cross)
+            })
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection()
     }
 }
 

@@ -43,6 +43,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @Published private(set) var canAddOrEdit2FAURI = true
     @Published var title = ""
+    @Published private(set) var passkeys: [Passkey] = []
     @Published var username = ""
     @Published var password = ""
     @Published private(set) var passwordStrength: PasswordStrength?
@@ -58,7 +59,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var loading = false
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
-    private var passkeys: [Passkey] = []
 
     /// Proton account email address
     let emailAddress: String
@@ -296,6 +296,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return nil
         }
         return invalidURLs.isEmpty
+    }
+
+    func remove(passkey: Passkey) {
+        passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
 }
 
