@@ -41706,6 +41706,16 @@
         }
       }
     },
+    "Passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkey"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "be" : {

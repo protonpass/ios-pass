@@ -209,6 +209,8 @@
 		3569B2A629B7C39F0070830B /* Theme+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A529B7C39F0070830B /* Theme+Extensions.swift */; };
 		3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A829B7D22E0070830B /* ProfileTabView.swift */; };
 		3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */; };
+		356A1EFE2B889D9900561950 /* PasskeyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */; };
+		356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */; };
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
@@ -774,6 +776,8 @@
 		3569B2A529B7C39F0070830B /* Theme+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Extensions.swift"; sourceTree = "<group>"; };
 		3569B2A829B7D22E0070830B /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabViewModel.swift; sourceTree = "<group>"; };
+		356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyDetailView.swift; sourceTree = "<group>"; };
+		356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Passkey.swift"; sourceTree = "<group>"; };
 		356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailPlaceholderView.swift; sourceTree = "<group>"; };
@@ -1351,6 +1355,7 @@
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
 				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
 				354F769728C879CC00EB2383 /* NoteDetailViewModel.swift */,
+				356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */,
 			);
 			path = "Item Detail";
 			sourceTree = "<group>";
@@ -1683,6 +1688,7 @@
 			children = (
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				5B5DBF122B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift */,
+				356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */,
 				357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */,
 				355C138829DB71D800264CD0 /* HomepageTabbarView.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
@@ -3073,6 +3079,7 @@
 				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				356B830E29C339110084488A /* SortTypeButton.swift in Sources */,
 				35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */,
+				356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */,
 				35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */,
 				5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
@@ -3228,6 +3235,7 @@
 				5B1453942A6832780048B022 /* UserEmailView.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 				354F1F1A29D8C2A200A6B1E8 /* AppData.swift in Sources */,
+				356A1EFE2B889D9900561950 /* PasskeyDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
