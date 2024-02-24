@@ -103,6 +103,7 @@
 		354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
 		354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
 		354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
+		3550F5702B8A72410027BA2A /* CheckAndAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3552272C29DC660300B9607E /* Theme+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A529B7C39F0070830B /* Theme+Extensions.swift */; };
@@ -213,7 +214,7 @@
 		356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */; };
 		356A1F032B88AEB800561950 /* PasskeyDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */; };
 		356A1F052B88C56800561950 /* AutoFillMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F042B88C56800561950 /* AutoFillMode.swift */; };
-		356A1F072B88C59C00561950 /* PasskeyProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F062B88C59C00561950 /* PasskeyProtocols.swift */; };
+		356A1F072B88C59C00561950 /* Passkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F062B88C59C00561950 /* Passkey.swift */; };
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
@@ -711,6 +712,7 @@
 		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
 		354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionViewModel.swift; sourceTree = "<group>"; };
 		354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionViewModel.swift; sourceTree = "<group>"; };
+		3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAndAutoFill.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFavIconsSection.swift; sourceTree = "<group>"; };
@@ -783,7 +785,7 @@
 		356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Passkey.swift"; sourceTree = "<group>"; };
 		356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyDetailRow.swift; sourceTree = "<group>"; };
 		356A1F042B88C56800561950 /* AutoFillMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillMode.swift; sourceTree = "<group>"; };
-		356A1F062B88C59C00561950 /* PasskeyProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyProtocols.swift; sourceTree = "<group>"; };
+		356A1F062B88C59C00561950 /* Passkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Passkey.swift; sourceTree = "<group>"; };
 		356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailPlaceholderView.swift; sourceTree = "<group>"; };
@@ -1205,6 +1207,7 @@
 			children = (
 				5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */,
 				5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */,
+				3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */,
 				354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
 			);
@@ -2158,7 +2161,7 @@
 				356A1F042B88C56800561950 /* AutoFillMode.swift */,
 				5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */,
 				5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */,
-				356A1F062B88C59C00561950 /* PasskeyProtocols.swift */,
+				356A1F062B88C59C00561950 /* Passkey.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2792,10 +2795,11 @@
 				35AC9A662A0BE4C700FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				35702C952A1E44140089B539 /* VaultSelectorViewModel.swift in Sources */,
 				5BFFB5132A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
-				356A1F072B88C59C00561950 /* PasskeyProtocols.swift in Sources */,
+				356A1F072B88C59C00561950 /* Passkey.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				3553C22D296575560087518A /* LoggerManager+Extensions.swift in Sources */,
+				3550F5702B8A72410027BA2A /* CheckAndAutoFill.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				5BF35D6C2B21FA4200D3E297 /* Item+Extensions.swift in Sources */,
 				359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */,

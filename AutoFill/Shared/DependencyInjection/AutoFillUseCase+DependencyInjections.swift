@@ -46,6 +46,10 @@ private extension AutoFillUseCaseContainer {
     var context: ASCredentialProviderExtensionContext {
         AutoFillDataContainer.shared.context()
     }
+
+    var itemRepository: any ItemRepositoryProtocol {
+        SharedRepositoryContainer.shared.itemRepository()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -59,6 +63,14 @@ extension AutoFillUseCaseContainer {
                                       generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
                                       notificationService: SharedServiceContainer.shared.notificationService(),
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
+    }
+
+    var checkAndAutoFill: Factory<CheckAndAutoFillUseCase> {
+        self { CheckAndAutoFill(itemRepository: self.itemRepository,
+                                resolvePasskeyChallenge: self.resolvePasskeyChallenge(),
+                                cancelAutoFill: self.cancelAutoFill(),
+                                completeAutoFill: self.completeAutoFill(),
+                                preferences: self.preferences) }
     }
 
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
@@ -87,22 +99,22 @@ extension AutoFillUseCaseContainer {
     }
 
     var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
-        self { UpdateLastUseTimeAndReindex(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
                                            reindexLoginItem: self.reindexLoginItem()) }
     }
 }
 
 // MARK: Passkey
 
-/*
- @available(iOS 17, *)
- extension AutoFillUseCaseContainer {
-     var createPasskey: Factory<CreatePasskeyUseCase> {
-         self { CreatePasskey() }
-     }
+extension AutoFillUseCaseContainer {
+    var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
+        self { ResolvePasskeyChallenge() }
+    }
+}
 
-     var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
-         self { ResolvePasskeyChallenge() }
-     }
- }
- */
+@available(iOS 17, *)
+extension AutoFillUseCaseContainer {
+    var createPasskey: Factory<CreatePasskeyUseCase> {
+        self { CreatePasskey() }
+    }
+}

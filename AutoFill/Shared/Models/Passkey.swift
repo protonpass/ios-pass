@@ -1,5 +1,5 @@
 //
-// PasskeyProtocols.swift
+// Passkey.swift
 // Proton Pass - Created on 23/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -31,17 +31,3 @@ protocol PasskeyRequestParametersProtocol {
 
 @available(iOS 17.0, *)
 extension ASPasskeyCredentialRequestParameters: PasskeyRequestParametersProtocol {}
-
-/// Wrap `ASPasskeyCredentialIdentity` as it's iOS 17 only
-/// This protocol can be removed once iOS 16 is dropped
-protocol PasskeyIdentityProtocol {
-    var relyingPartyIdentifier: String { get }
-    var userName: String { get }
-    var credentialID: Data { get }
-    var userHandle: Data { get }
-    var recordIdentifier: String? { get }
-    var rank: Int { get }
-}
-
-@available(iOS 17.0, *)
-extension ASPasskeyCredentialIdentity: PasskeyIdentityProtocol {}
