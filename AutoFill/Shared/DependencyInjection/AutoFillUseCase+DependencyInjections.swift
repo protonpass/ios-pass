@@ -94,9 +94,15 @@ extension AutoFillUseCaseContainer {
 
 // MARK: Passkey
 
-@available(iOS 17, *)
-extension AutoFillUseCaseContainer {
-    var createPasskey: Factory<CreatePasskeyUseCase> {
-        self { CreatePasskey() }
-    }
-}
+/*
+ @available(iOS 17, *)
+ extension AutoFillUseCaseContainer {
+     var createPasskey: Factory<CreatePasskeyUseCase> {
+         self { CreatePasskey() }
+     }
+
+     var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
+         self { ResolvePasskeyChallenge() }
+     }
+ }
+ */
