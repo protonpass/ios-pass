@@ -66,6 +66,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     // which are not registered when the user is not logged in
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
+    @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
@@ -134,19 +135,31 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
 private extension CredentialProviderCoordinator {
     func handleShowAllLoginsMode(_ mode: ShowAllLoginsMode) {
+        guard credentialProvider.isAuthenticated else {
+            showNotLoggedInView()
+            return
+        }
+
         switch mode {
         case let .password(serviceIdentifiers):
             showCredentialsView(serviceIdentifiers: serviceIdentifiers)
         case let .passkey(serviceIdentifiers, passkeyRequestParameters):
             showCredentialsView(serviceIdentifiers: serviceIdentifiers)
         }
+
+        addNewEvent(type: .autofillDisplay)
     }
 
     func handleCheckAndAutoFillMode(_ mode: CheckAndAutoFillMode) {
+        guard credentialProvider.isAuthenticated else {
+            cancelAutoFill(reason: .userInteractionRequired)
+            return
+        }
+
         switch mode {
         case let .password(passwordCredentialIdentity):
-            provideCredentialWithoutUserInteraction(for: passwordCredentialIdentity)
-        case let .passkey(passkeyCredentialIdentity):
+            checkAndAutoFillPassword(for: passwordCredentialIdentity)
+        case let .passkey(passkeyCredentialRequest):
             break
         }
     }
@@ -155,23 +168,13 @@ private extension CredentialProviderCoordinator {
         switch mode {
         case let .password(passwordCredentialIdentity):
             provideCredentialWithBiometricAuthentication(for: passwordCredentialIdentity)
-        case let .passkey(passkeyCredentialIdentity):
+        case let .passkey(passkeyCredentialRequest):
             break
         }
     }
 }
 
 private extension CredentialProviderCoordinator {
-    func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard credentialProvider.isAuthenticated else {
-            showNotLoggedInView()
-            return
-        }
-
-        showCredentialsView(serviceIdentifiers: serviceIdentifiers)
-        addNewEvent(type: .autofillDisplay)
-    }
-
     func configureExtension() {
         guard credentialProvider.isAuthenticated else {
             let notLoggedInView = NotLoggedInView(variant: .autoFillExtension) { [weak self] in
@@ -189,8 +192,7 @@ private extension CredentialProviderCoordinator {
         showView(settingsView)
     }
 
-    /// QuickType bar support
-    func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
+    func checkAndAutoFillPassword(for credentialIdentity: ASPasswordCredentialIdentity) {
         guard let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancelAutoFill(reason: .failed)
             return
@@ -217,10 +219,11 @@ private extension CredentialProviderCoordinator {
                         if Task.isCancelled {
                             cancelAutoFill(reason: .credentialIdentityNotFound)
                         }
+                        let credential = ASPasswordCredential(user: data.username,
+                                                              password: data.password)
                         try await completeAutoFill(quickTypeBar: true,
                                                    identifiers: [credentialIdentity.serviceIdentifier],
-                                                   credential: .init(user: data.username,
-                                                                     password: data.password),
+                                                   credential: credential,
                                                    itemContent: itemContent)
                     } else {
                         logger.error("Failed to autofill. Not log in item.")

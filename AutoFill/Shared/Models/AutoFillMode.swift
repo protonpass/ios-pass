@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Entities
 
 /// Possible entry points when autofilling
 enum AutoFillMode {
@@ -42,11 +43,11 @@ enum ShowAllLoginsMode {
 /// If authentication not required: autofill straight away
 enum CheckAndAutoFillMode {
     case password(ASPasswordCredentialIdentity)
-    case passkey(PasskeyIdentityProtocol)
+    case passkey(PasskeyCredentialRequest)
 }
 
 /// User picks a proposed email from QuickType bar but authentication (Face ID/Touch ID/PIN)  is required
 enum AuthenticateAndAutofillMode {
     case password(ASPasswordCredentialIdentity)
-    case passkey(PasskeyIdentityProtocol)
+    case passkey(PasskeyCredentialRequest)
 }
