@@ -26,13 +26,13 @@ import PassRustCore
 
 @available(iOS 17, *)
 public protocol CreatePasskeyUseCase: Sendable {
-    func execute(_ request: any ASCredentialRequest)
+    func execute(_ request: any ASCredentialRequest) throws -> CreatePasskeyIosResponse
 }
 
 @available(iOS 17, *)
 public extension CreatePasskeyUseCase {
-    func callAsFunction(_ request: any ASCredentialRequest) {
-        execute(request)
+    func callAsFunction(_ request: any ASCredentialRequest) throws -> CreatePasskeyIosResponse {
+        try execute(request)
     }
 }
 
@@ -40,38 +40,19 @@ public extension CreatePasskeyUseCase {
 public final class CreatePasskey: CreatePasskeyUseCase {
     public init() {}
 
-    public func execute(_ request: any ASCredentialRequest) {}
+    public func execute(_ request: any ASCredentialRequest) throws -> CreatePasskeyIosResponse {
+        guard let request = request as? ASPasskeyCredentialRequest,
+              let credentialIdentity = request.credentialIdentity as? ASPasskeyCredentialIdentity else {
+            throw PassError.passkey(.failedToParseCredentialRequest)
+        }
+        let supportedAlgorithms = request.supportedAlgorithms.map { Int64($0.rawValue) }
+        let createRequest = CreatePasskeyIosRequest(serviceIdentifier: credentialIdentity.serviceIdentifier
+            .identifier,
+            rpId: credentialIdentity.relyingPartyIdentifier,
+            userName: credentialIdentity.userName,
+            userHandle: credentialIdentity.userHandle,
+            clientDataHash: request.clientDataHash,
+            supportedAlgorithms: supportedAlgorithms)
+        return try PasskeyManager().generateIosPasskey(request: createRequest)
+    }
 }
-
-/*
- @available(iOS 17, *)
- public protocol CreatePasskeyUseCase: Sendable {
-     func execute(_ request: any ASCredentialRequest) throws -> CreatePasskeyIosResponse
- }
-
- @available(iOS 17, *)
- public extension CreatePasskeyUseCase {
-     func callAsFunction(_ request: any ASCredentialRequest) throws -> CreatePasskeyIosResponse {
-         try execute(request)
-     }
- }
-
- @available(iOS 17, *)
- public final class CreatePasskey: CreatePasskeyUseCase {
-     public init() {}
-
-     public func execute(_ request: any ASCredentialRequest) throws -> CreatePasskeyIosResponse {
-         guard let request = request as? ASPasskeyCredentialRequest,
-               let credentialIdentity = request.credentialIdentity as? ASPasskeyCredentialIdentity else {
-             throw PassError.passkey(.failedToParseCredentialRequest)
-         }
-         let createRequest = CreatePasskeyIosRequest(serviceIdentifier: credentialIdentity.serviceIdentifier
-             .identifier,
-             rpId: credentialIdentity.relyingPartyIdentifier,
-             userName: credentialIdentity.userName,
-             userHandle: credentialIdentity.userHandle)
-         let manager = try PasskeyManager()
-         return try manager.generateIosPasskey(request: createRequest)
-     }
- }
- */
