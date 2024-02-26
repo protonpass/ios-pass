@@ -41,7 +41,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     /// Can be removed onced dropped iOS 16
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        coordinator.start(mode: .showAllLogins(.password(serviceIdentifiers)))
+        coordinator.start(mode: .showAllLogins(serviceIdentifiers, nil))
     }
 
     /// Can be removed onced dropped iOS 16
@@ -68,7 +68,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 extension CredentialProviderViewController {
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
                                         requestParameters: ASPasskeyCredentialRequestParameters) {
-        coordinator.start(mode: .showAllLogins(.passkey(serviceIdentifiers, requestParameters)))
+        coordinator.start(mode: .showAllLogins(serviceIdentifiers, requestParameters))
     }
 
     override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {

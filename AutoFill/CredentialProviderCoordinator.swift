@@ -115,14 +115,15 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     func start(mode: AutoFillMode) {
         switch mode {
-        case let .showAllLogins(mode):
-            handleShowAllLoginsMode(mode)
+        case let .showAllLogins(identifiers, requestParams):
+            handleShowAllLoginsMode(identifiers: identifiers,
+                                    passkeyRequestParams: requestParams)
 
-        case let .checkAndAutoFill(mode):
-            handleCheckAndAutoFillMode(mode)
+        case let .checkAndAutoFill(request):
+            handleCheckAndAutoFill(request)
 
-        case let .authenticateAndAutofill(mode):
-            handleAuthenticateAndAutofillMode(mode)
+        case let .authenticateAndAutofill(request):
+            handleAuthenticateAndAutofill(request)
 
         case .configuration:
             configureExtension()
@@ -134,39 +135,27 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 }
 
 private extension CredentialProviderCoordinator {
-    func handleShowAllLoginsMode(_ mode: ShowAllLoginsMode) {
+    func handleShowAllLoginsMode(identifiers: [ASCredentialServiceIdentifier],
+                                 passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard credentialProvider.isAuthenticated else {
             showNotLoggedInView()
             return
         }
 
-        switch mode {
-        case let .password(serviceIdentifiers):
-            showCredentialsView(serviceIdentifiers: serviceIdentifiers)
-        case let .passkey(serviceIdentifiers, passkeyRequestParameters):
-            showCredentialsView(serviceIdentifiers: serviceIdentifiers)
-        }
+        let viewModel = CredentialsViewModel(serviceIdentifiers: identifiers,
+                                             passkeyRequestParams: passkeyRequestParams)
+        viewModel.delegate = self
+        credentialsViewModel = viewModel
+        showView(CredentialsView(viewModel: viewModel))
 
         addNewEvent(type: .autofillDisplay)
     }
 
-    func handleCheckAndAutoFillMode(_ mode: CheckAndAutoFillMode) {
-        guard credentialProvider.isAuthenticated else {
-            cancelAutoFill(reason: .userInteractionRequired)
-            return
-        }
-
+    func handleCheckAndAutoFill(_ request: AutoFillRequest) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                switch mode {
-                case let .password(passwordCredentialIdentity):
-                    try await checkAndAutoFill(passwordCredentialIdentity)
-                case let .passkey(passkeyCredentialRequest):
-                    if #available(iOS 17, *) {
-                        try await checkAndAutoFill(passkeyCredentialRequest)
-                    }
-                }
+                try await checkAndAutoFill(request)
             } catch {
                 logger.error(error)
                 cancelAutoFill(reason: .failed)
@@ -174,8 +163,8 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func handleAuthenticateAndAutofillMode(_ mode: AuthenticateAndAutofillMode) {
-        switch mode {
+    func handleAuthenticateAndAutofill(_ request: AutoFillRequest) {
+        switch request {
         case let .password(passwordCredentialIdentity):
             provideCredentialWithBiometricAuthentication(for: passwordCredentialIdentity)
         case let .passkey(passkeyCredentialRequest):
@@ -340,13 +329,6 @@ private extension CredentialProviderCoordinator {
 // MARK: - Views for routing
 
 private extension CredentialProviderCoordinator {
-    func showCredentialsView(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        let viewModel = CredentialsViewModel(serviceIdentifiers: serviceIdentifiers)
-        viewModel.delegate = self
-        credentialsViewModel = viewModel
-        showView(CredentialsView(viewModel: viewModel))
-    }
-
     func showNotLoggedInView() {
         let view = NotLoggedInView(variant: .autoFillExtension) { [weak self] in
             guard let self else { return }
