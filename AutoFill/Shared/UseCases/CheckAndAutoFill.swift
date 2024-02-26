@@ -26,6 +26,8 @@ import UseCases
 
 protocol CheckAndAutoFillUseCase: Sendable {
     func execute(_ credentialIdentity: ASPasswordCredentialIdentity) async throws
+
+    @available(iOS 17, *)
     func execute(_ request: PasskeyCredentialRequest) async throws
 }
 
@@ -34,6 +36,7 @@ extension CheckAndAutoFillUseCase {
         try await execute(credentialIdentity)
     }
 
+    @available(iOS 17, *)
     func callAsFunction(_ request: PasskeyCredentialRequest) async throws {
         try await execute(request)
     }
@@ -69,6 +72,7 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
                                    itemContent: itemContent)
     }
 
+    @available(iOS 17, *)
     func execute(_ request: PasskeyCredentialRequest) async throws {
         let (itemContent,
              logInData) = try await getLogInData(recordIdentifier: request.recordIdentifier)
@@ -80,8 +84,12 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
         }
 
         let response = try resolvePasskeyChallenge(request: request, passkey: passkey.content)
-        let credential = ASPasswordCredential(user: logInData.username,
-                                              password: logInData.password)
+        let credential = ASPasskeyAssertionCredential(userHandle: passkey.userHandle,
+                                                      relyingParty: passkey.rpName,
+                                                      signature: response.signature,
+                                                      clientDataHash: response.clientDataHash,
+                                                      authenticatorData: response.authenticatorData,
+                                                      credentialID: response.credentialId)
         try await completeAutoFill(quickTypeBar: true,
                                    identifiers: [request.serviceIdentifier],
                                    credential: credential,
