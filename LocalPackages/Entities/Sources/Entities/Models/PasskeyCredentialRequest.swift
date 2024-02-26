@@ -29,16 +29,22 @@ public struct PasskeyCredentialRequest: Sendable {
     public let serviceIdentifier: ASCredentialServiceIdentifier
     public let recordIdentifier: String?
     public let clientDataHash: Data
+    public let userHandle: Data
+    public let supportedAlgorithms: [ASCOSEAlgorithmIdentifier]
 
     public init(userName: String,
                 relyingPartyIdentifier: String,
                 serviceIdentifier: ASCredentialServiceIdentifier,
                 recordIdentifier: String?,
-                clientDataHash: Data) {
+                clientDataHash: Data,
+                userHandle: Data,
+                supportedAlgorithms: [ASCOSEAlgorithmIdentifier]) {
         self.userName = userName
         self.relyingPartyIdentifier = relyingPartyIdentifier
         self.serviceIdentifier = serviceIdentifier
         self.recordIdentifier = recordIdentifier
         self.clientDataHash = clientDataHash
+        self.userHandle = userHandle
+        self.supportedAlgorithms = supportedAlgorithms
     }
 }
