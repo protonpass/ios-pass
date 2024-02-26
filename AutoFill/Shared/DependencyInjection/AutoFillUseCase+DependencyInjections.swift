@@ -67,6 +67,7 @@ extension AutoFillUseCaseContainer {
 
     var checkAndAutoFill: Factory<CheckAndAutoFillUseCase> {
         self { CheckAndAutoFill(itemRepository: self.itemRepository,
+                                credentialProvider: SharedDataContainer.shared.credentialProvider(),
                                 resolvePasskeyChallenge: self.resolvePasskeyChallenge(),
                                 cancelAutoFill: self.cancelAutoFill(),
                                 completeAutoFill: self.completeAutoFill(),
