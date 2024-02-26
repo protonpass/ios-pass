@@ -164,12 +164,21 @@ private extension CredentialProviderCoordinator {
     }
 
     func handleAuthenticateAndAutofill(_ request: AutoFillRequest) {
-        switch request {
-        case let .password(passwordCredentialIdentity):
-            provideCredentialWithBiometricAuthentication(for: passwordCredentialIdentity)
-        case let .passkey(passkeyCredentialRequest):
-            break
+        let viewModel = LockedCredentialViewModel(request: request)
+        viewModel.onFailure = { [weak self] error in
+            guard let self else { return }
+            handle(error: error)
         }
+        viewModel.onSuccess = { [weak self] credential, itemContent in
+            Task { [weak self] in
+                guard let self else { return }
+                try? await completeAutoFill(quickTypeBar: false,
+                                            identifiers: request.serviceIdentifiers,
+                                            credential: credential,
+                                            itemContent: itemContent)
+            }
+        }
+        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
     }
 }
 
@@ -189,27 +198,6 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = self
         let settingsView = ExtensionSettingsView(viewModel: viewModel)
         showView(settingsView)
-    }
-
-    // Biometric authentication
-    func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
-        let viewModel = LockedCredentialViewModel(credentialIdentity: credentialIdentity)
-        viewModel.onFailure = { [weak self] error in
-            guard let self else { return }
-            handle(error: error)
-        }
-        viewModel.onSuccess = { [weak self] credential, itemContent in
-            guard let self else { return }
-            Task { [weak self] in
-                guard let self else { return }
-
-                try? await completeAutoFill(quickTypeBar: false,
-                                            identifiers: [credentialIdentity.serviceIdentifier],
-                                            credential: credential,
-                                            itemContent: itemContent)
-            }
-        }
-        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
     }
 }
 

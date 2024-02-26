@@ -18,26 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AuthenticationServices
-import Client
-import Core
-import CryptoKit
+@preconcurrency import AuthenticationServices
 import Entities
 import Factory
-import SwiftUI
 
 @MainActor
 final class LockedCredentialViewModel: ObservableObject {
-    private let credentialIdentity: ASPasswordCredentialIdentity
+    private let request: AutoFillRequest
     private let logger = resolve(\SharedToolingContainer.logger)
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
+
+    @LazyInjected(\AutoFillUseCaseContainer.generateAuthorizationCredential)
+    private var generateAuthorizationCredential
 
     var onFailure: ((Error) -> Void)?
-    var onSuccess: ((ASPasswordCredential, ItemContent) -> Void)?
+    var onSuccess: ((any ASAuthorizationCredential, ItemContent) -> Void)?
 
-    init(credentialIdentity: ASPasswordCredentialIdentity) {
-        self.credentialIdentity = credentialIdentity
+    init(request: AutoFillRequest) {
+        self.request = request
     }
 
     func getAndReturnCredential() {
@@ -45,28 +42,8 @@ final class LockedCredentialViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             do {
-                guard let recordIdentifier = credentialIdentity.recordIdentifier else {
-                    throw PassError.credentialProvider(.missingRecordIdentifier)
-                }
-                let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-                let ids = try IDs.deserializeBase64(recordIdentifier)
-                logger.trace("Loading credential \(ids.debugDescription)")
-                guard let item = try await itemRepository.getItem(shareId: ids.shareId,
-                                                                  itemId: ids.itemId) else {
-                    throw PassError.itemNotFound(ids)
-                }
-
-                let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
-
-                switch itemContent.contentData {
-                case let .login(data):
-                    let credential = ASPasswordCredential(user: data.username,
-                                                          password: data.password)
-                    onSuccess?(credential, itemContent)
-                    logger.info("Loaded and returned credential \(ids.debugDescription)")
-                default:
-                    throw PassError.credentialProvider(.notLogInItem)
-                }
+                let (itemContent, credential) = try await generateAuthorizationCredential(request)
+                onSuccess?(credential, itemContent)
             } catch {
                 logger.error(error)
                 onFailure?(error)
