@@ -38,13 +38,14 @@ extension ASCredentialRequest {
             assertionFailure("Failed to extract request's information")
             return nil
         }
-
         return PasskeyCredentialRequest(userName: credentialIdentity.userName,
                                         relyingPartyIdentifier: credentialIdentity
                                             .relyingPartyIdentifier,
                                         serviceIdentifier: credentialIdentity.serviceIdentifier,
                                         recordIdentifier: credentialIdentity.recordIdentifier,
-                                        clientDataHash: request.clientDataHash)
+                                        clientDataHash: request.clientDataHash,
+                                        userHandle: credentialIdentity.userHandle,
+                                        supportedAlgorithms: request.supportedAlgorithms)
     }
 
     var autoFillRequest: AutoFillRequest? {
