@@ -27,14 +27,14 @@ import UseCases
 protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
-                 credential: ASAuthorizationCredential,
+                 credential: any ASAuthorizationCredential,
                  itemContent: ItemContent) async throws
 }
 
 extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
                         identifiers: [ASCredentialServiceIdentifier],
-                        credential: ASAuthorizationCredential,
+                        credential: any ASAuthorizationCredential,
                         itemContent: ItemContent) async throws {
         try await execute(quickTypeBar: quickTypeBar,
                           identifiers: identifiers,
@@ -78,7 +78,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
      */
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
-                 credential: ASAuthorizationCredential,
+                 credential: any ASAuthorizationCredential,
                  itemContent: ItemContent) async throws {
         defer {
             resetFactory()

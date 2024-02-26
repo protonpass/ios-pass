@@ -18,36 +18,48 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 import Entities
+
+enum AutoFillRequest: Sendable {
+    case password(ASPasswordCredentialIdentity)
+    case passkey(PasskeyCredentialRequest)
+
+    var recordIdentifier: String? {
+        switch self {
+        case let .password(credential):
+            credential.recordIdentifier
+        case let .passkey(credential):
+            credential.recordIdentifier
+        }
+    }
+
+    var serviceIdentifiers: [ASCredentialServiceIdentifier] {
+        switch self {
+        case let .password(credential):
+            [credential.serviceIdentifier]
+        case let .passkey(credential):
+            [credential.serviceIdentifier]
+        }
+    }
+}
 
 /// Possible entry points when autofilling
 enum AutoFillMode {
-    case showAllLogins(ShowAllLoginsMode)
-    case checkAndAutoFill(CheckAndAutoFillMode)
-    case authenticateAndAutofill(AuthenticateAndAutofillMode)
+    /// User wants to manually select an item to autofill
+    case showAllLogins([ASCredentialServiceIdentifier], PasskeyRequestParametersProtocol?)
+
+    /// When user picks a proposed email from QuickType bar
+    /// Check if user has local authentication enabled (Face ID/Touch ID/PIN)
+    /// If authentication required: ask for authentication, pass to mode `AuthenticateAndAutofill`
+    /// If authentication not required: autofill straight away
+    case checkAndAutoFill(AutoFillRequest)
+
+    /// User picks a proposed email from QuickType bar but authentication (Face ID/Touch ID/PIN)  is required
+    case authenticateAndAutofill(AutoFillRequest)
+
     /// Proton Pass is chosen as credential provider in Settings
     case configuration
+
     case passkeyRegistration
-}
-
-/// User wants to manually select an item to autofill
-enum ShowAllLoginsMode {
-    case password([ASCredentialServiceIdentifier])
-    case passkey([ASCredentialServiceIdentifier], PasskeyRequestParametersProtocol)
-}
-
-/// When user picks a proposed email from QuickType bar
-/// Check if user has local authentication enabled (Face ID/Touch ID/PIN)
-/// If authentication required: ask for authentication, pass to mode `AuthenticateAndAutofill`
-/// If authentication not required: autofill straight away
-enum CheckAndAutoFillMode {
-    case password(ASPasswordCredentialIdentity)
-    case passkey(PasskeyCredentialRequest)
-}
-
-/// User picks a proposed email from QuickType bar but authentication (Face ID/Touch ID/PIN)  is required
-enum AuthenticateAndAutofillMode {
-    case password(ASPasswordCredentialIdentity)
-    case passkey(PasskeyCredentialRequest)
 }
