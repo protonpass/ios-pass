@@ -72,52 +72,19 @@ extension CredentialProviderViewController {
     }
 
     override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
-        autoFill(with: credentialRequest, withoutUserInteraction: true)
+        guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
+        coordinator.start(mode: .checkAndAutoFill(autoFillRequest))
     }
 
     override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
-        autoFill(with: credentialRequest, withoutUserInteraction: false)
+        guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
+        coordinator.start(mode: .authenticateAndAutofill(autoFillRequest))
     }
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: ASCredentialRequest) {
-        coordinator.start(mode: .passkeyRegistration)
-    }
-
-    func autoFill(with credentialRequest: ASCredentialRequest, withoutUserInteraction: Bool) {
-        switch credentialRequest.type {
-        case .password:
-            guard let request = credentialRequest as? ASPasswordCredentialRequest,
-                  let credentialIdentity = request.credentialIdentity as? ASPasswordCredentialIdentity else {
-                assertionFailure("Failed to extract request's information")
-                return
-            }
-            if withoutUserInteraction {
-                coordinator.start(mode: .checkAndAutoFill(.password(credentialIdentity)))
-            } else {
-                coordinator.start(mode: .authenticateAndAutofill(.password(credentialIdentity)))
-            }
-
-        case .passkeyAssertion:
-            guard let request = credentialRequest as? ASPasskeyCredentialRequest,
-                  let credentialIdentity = request.credentialIdentity as? ASPasskeyCredentialIdentity else {
-                assertionFailure("Failed to extract request's information")
-                return
-            }
-
-            let passkeyRequest = PasskeyCredentialRequest(userName: credentialIdentity.userName,
-                                                          relyingPartyIdentifier: credentialIdentity
-                                                              .relyingPartyIdentifier,
-                                                          serviceIdentifier: credentialIdentity.serviceIdentifier,
-                                                          recordIdentifier: credentialIdentity.recordIdentifier,
-                                                          clientDataHash: request.clientDataHash)
-            if withoutUserInteraction {
-                coordinator.start(mode: .checkAndAutoFill(.passkey(passkeyRequest)))
-            } else {
-                coordinator.start(mode: .authenticateAndAutofill(.passkey(passkeyRequest)))
-            }
-
-        @unknown default:
-            assertionFailure("Unknown credential request type")
+        guard let passkeyCredentialRequest = registrationRequest.passkeyCredentialRequest else {
+            return
         }
+        coordinator.start(mode: .passkeyRegistration(passkeyCredentialRequest))
     }
 }

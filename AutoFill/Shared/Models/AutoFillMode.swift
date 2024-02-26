@@ -61,5 +61,5 @@ enum AutoFillMode {
     /// Proton Pass is chosen as credential provider in Settings
     case configuration
 
-    case passkeyRegistration
+    case passkeyRegistration(PasskeyCredentialRequest)
 }
