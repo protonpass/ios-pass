@@ -69,7 +69,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
@@ -182,7 +181,7 @@ private extension CredentialProviderCoordinator {
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
-        showView(Text(verbatim: "\(#function)"))
+        showView(Text(verbatim: "\(request)"))
     }
 }
 
