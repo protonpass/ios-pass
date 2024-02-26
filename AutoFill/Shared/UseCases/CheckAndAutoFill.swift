@@ -25,73 +25,76 @@ import Foundation
 import UseCases
 
 protocol CheckAndAutoFillUseCase: Sendable {
-    func execute(_ credentialIdentity: ASPasswordCredentialIdentity) async throws
-
-    @available(iOS 17, *)
-    func execute(_ request: PasskeyCredentialRequest) async throws
+    func execute(_ request: AutoFillRequest) async throws
 }
 
 extension CheckAndAutoFillUseCase {
-    func callAsFunction(_ credentialIdentity: ASPasswordCredentialIdentity) async throws {
-        try await execute(credentialIdentity)
-    }
-
-    @available(iOS 17, *)
-    func callAsFunction(_ request: PasskeyCredentialRequest) async throws {
+    func callAsFunction(_ request: AutoFillRequest) async throws {
         try await execute(request)
     }
 }
 
 final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     private let itemRepository: any ItemRepositoryProtocol
+    private let credentialProvider: any CredentialProvider
     private let resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
     private let preferences: Preferences
 
     init(itemRepository: any ItemRepositoryProtocol,
+         credentialProvider: any CredentialProvider,
          resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
          completeAutoFill: any CompleteAutoFillUseCase,
          preferences: Preferences) {
         self.itemRepository = itemRepository
+        self.credentialProvider = credentialProvider
         self.resolvePasskeyChallenge = resolvePasskeyChallenge
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
         self.preferences = preferences
     }
 
-    func execute(_ credentialIdentity: ASPasswordCredentialIdentity) async throws {
-        let (itemContent,
-             logInData) = try await getLogInData(recordIdentifier: credentialIdentity.recordIdentifier)
-        let credential = ASPasswordCredential(user: logInData.username,
-                                              password: logInData.password)
-        try await completeAutoFill(quickTypeBar: true,
-                                   identifiers: [credentialIdentity.serviceIdentifier],
-                                   credential: credential,
-                                   itemContent: itemContent)
-    }
-
-    @available(iOS 17, *)
-    func execute(_ request: PasskeyCredentialRequest) async throws {
-        let (itemContent,
-             logInData) = try await getLogInData(recordIdentifier: request.recordIdentifier)
-
-        guard let passkey = logInData.passkeys.first(where: { $0.rpID == request.relyingPartyIdentifier }) else {
-            let error = ASExtensionError(.credentialIdentityNotFound)
-            cancelAutoFill(reason: error.code)
-            throw error
+    func execute(_ request: AutoFillRequest) async throws {
+        guard credentialProvider.isAuthenticated else {
+            cancelAutoFill(reason: .userInteractionRequired)
+            return
         }
 
-        let response = try resolvePasskeyChallenge(request: request, passkey: passkey.content)
-        let credential = ASPasskeyAssertionCredential(userHandle: passkey.userHandle,
-                                                      relyingParty: passkey.rpName,
-                                                      signature: response.signature,
-                                                      clientDataHash: response.clientDataHash,
-                                                      authenticatorData: response.authenticatorData,
-                                                      credentialID: response.credentialId)
+        let (itemContent, logInData) = try await getLogInData(recordIdentifier: request.recordIdentifier)
+        let credential: any ASAuthorizationCredential
+
+        switch request {
+        case .password:
+            credential = ASPasswordCredential(user: logInData.username,
+                                              password: logInData.password)
+        case let .passkey(credentialRequest):
+            guard let passkey = logInData.passkeys
+                .first(where: { $0.rpID == credentialRequest.relyingPartyIdentifier }) else {
+                let error = ASExtensionError(.credentialIdentityNotFound)
+                cancelAutoFill(reason: error.code)
+                throw error
+            }
+
+            let response = try resolvePasskeyChallenge(request: credentialRequest,
+                                                       passkey: passkey.content)
+            if #available(iOS 17.0, *) {
+                credential = ASPasskeyAssertionCredential(userHandle: passkey.userHandle,
+                                                          relyingParty: passkey.rpName,
+                                                          signature: response.signature,
+                                                          clientDataHash: response.clientDataHash,
+                                                          authenticatorData: response.authenticatorData,
+                                                          credentialID: response.credentialId)
+            } else {
+                credential = ASPasswordCredential(user: logInData.username,
+                                                  password: logInData.password)
+                assertionFailure("Should be on iOS 17 and above when entering this case")
+            }
+        }
+
         try await completeAutoFill(quickTypeBar: true,
-                                   identifiers: [request.serviceIdentifier],
+                                   identifiers: request.serviceIdentifiers,
                                    credential: credential,
                                    itemContent: itemContent)
     }

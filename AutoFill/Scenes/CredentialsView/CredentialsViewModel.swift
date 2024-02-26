@@ -100,6 +100,7 @@ final class CredentialsViewModel: ObservableObject {
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
+    private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
@@ -110,8 +111,10 @@ final class CredentialsViewModel: ObservableObject {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    init(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+    init(serviceIdentifiers: [ASCredentialServiceIdentifier],
+         passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         self.serviceIdentifiers = serviceIdentifiers
+        self.passkeyRequestParams = passkeyRequestParams
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         setup()
     }
