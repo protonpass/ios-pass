@@ -35,94 +35,34 @@ extension CheckAndAutoFillUseCase {
 }
 
 final class CheckAndAutoFill: CheckAndAutoFillUseCase {
-    private let itemRepository: any ItemRepositoryProtocol
     private let credentialProvider: any CredentialProvider
-    private let resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase
+    private let generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
     private let preferences: Preferences
 
-    init(itemRepository: any ItemRepositoryProtocol,
-         credentialProvider: any CredentialProvider,
-         resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase,
+    init(credentialProvider: any CredentialProvider,
+         generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
          completeAutoFill: any CompleteAutoFillUseCase,
          preferences: Preferences) {
-        self.itemRepository = itemRepository
         self.credentialProvider = credentialProvider
-        self.resolvePasskeyChallenge = resolvePasskeyChallenge
+        self.generateAuthorizationCredential = generateAuthorizationCredential
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
         self.preferences = preferences
     }
 
     func execute(_ request: AutoFillRequest) async throws {
-        guard credentialProvider.isAuthenticated else {
+        guard credentialProvider.isAuthenticated,
+              preferences.localAuthenticationMethod == .none else {
             cancelAutoFill(reason: .userInteractionRequired)
             return
         }
-
-        let (itemContent, logInData) = try await getLogInData(recordIdentifier: request.recordIdentifier)
-        let credential: any ASAuthorizationCredential
-
-        switch request {
-        case .password:
-            credential = ASPasswordCredential(user: logInData.username,
-                                              password: logInData.password)
-        case let .passkey(credentialRequest):
-            guard let passkey = logInData.passkeys
-                .first(where: { $0.rpID == credentialRequest.relyingPartyIdentifier }) else {
-                let error = ASExtensionError(.credentialIdentityNotFound)
-                cancelAutoFill(reason: error.code)
-                throw error
-            }
-
-            let response = try resolvePasskeyChallenge(request: credentialRequest,
-                                                       passkey: passkey.content)
-            if #available(iOS 17.0, *) {
-                credential = ASPasskeyAssertionCredential(userHandle: passkey.userHandle,
-                                                          relyingParty: passkey.rpName,
-                                                          signature: response.signature,
-                                                          clientDataHash: response.clientDataHash,
-                                                          authenticatorData: response.authenticatorData,
-                                                          credentialID: response.credentialId)
-            } else {
-                credential = ASPasswordCredential(user: logInData.username,
-                                                  password: logInData.password)
-                assertionFailure("Should be on iOS 17 and above when entering this case")
-            }
-        }
-
+        let (itemContent, credential) = try await generateAuthorizationCredential(request)
         try await completeAutoFill(quickTypeBar: true,
                                    identifiers: request.serviceIdentifiers,
                                    credential: credential,
                                    itemContent: itemContent)
-    }
-}
-
-private extension CheckAndAutoFill {
-    func getLogInData(recordIdentifier: String?) async throws -> (ItemContent, LogInItemData) {
-        guard let recordIdentifier else {
-            let error = ASExtensionError(.credentialIdentityNotFound)
-            cancelAutoFill(reason: error.code)
-            throw error
-        }
-
-        guard preferences.localAuthenticationMethod == .none else {
-            let error = ASExtensionError(.userInteractionRequired)
-            cancelAutoFill(reason: error.code)
-            throw error
-        }
-
-        let ids = try IDs.deserializeBase64(recordIdentifier)
-
-        guard let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
-                                                                        itemId: ids.itemId),
-            let logInData = itemContent.loginItem else {
-            let error = ASExtensionError(.credentialIdentityNotFound)
-            cancelAutoFill(reason: error.code)
-            throw error
-        }
-        return (itemContent, logInData)
     }
 }
