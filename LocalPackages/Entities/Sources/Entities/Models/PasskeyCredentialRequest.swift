@@ -19,11 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 
 /// Wrap `ASPasskeyCredentialRequest` as it's iOS 17 only
 /// Can be removed once iOS 16 is dropped
-public struct PasskeyCredentialRequest {
+public struct PasskeyCredentialRequest: Sendable {
     public let userName: String
     public let relyingPartyIdentifier: String
     public let serviceIdentifier: ASCredentialServiceIdentifier

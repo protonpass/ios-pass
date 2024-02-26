@@ -156,11 +156,21 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        switch mode {
-        case let .password(passwordCredentialIdentity):
-            checkAndAutoFillPassword(for: passwordCredentialIdentity)
-        case let .passkey(passkeyCredentialRequest):
-            break
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                switch mode {
+                case let .password(passwordCredentialIdentity):
+                    try await checkAndAutoFill(passwordCredentialIdentity)
+                case let .passkey(passkeyCredentialRequest):
+                    if #available(iOS 17, *) {
+                        try await checkAndAutoFill(passkeyCredentialRequest)
+                    }
+                }
+            } catch {
+                logger.error(error)
+                cancelAutoFill(reason: .failed)
+            }
         }
     }
 
@@ -190,54 +200,6 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = self
         let settingsView = ExtensionSettingsView(viewModel: viewModel)
         showView(settingsView)
-    }
-
-    func checkAndAutoFillPassword(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let recordIdentifier = credentialIdentity.recordIdentifier else {
-            cancelAutoFill(reason: .failed)
-            return
-        }
-        guard preferences.localAuthenticationMethod == .none else {
-            cancelAutoFill(reason: .userInteractionRequired)
-            return
-        }
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                logger.trace("Autofilling from QuickType bar")
-                let ids = try IDs.deserializeBase64(recordIdentifier)
-                if Task.isCancelled {
-                    cancelAutoFill(reason: .failed)
-                }
-                if let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
-                                                                             itemId: ids.itemId) {
-                    if Task.isCancelled {
-                        cancelAutoFill(reason: .failed)
-                    }
-                    if case let .login(data) = itemContent.contentData {
-                        if Task.isCancelled {
-                            cancelAutoFill(reason: .credentialIdentityNotFound)
-                        }
-                        let credential = ASPasswordCredential(user: data.username,
-                                                              password: data.password)
-                        try await completeAutoFill(quickTypeBar: true,
-                                                   identifiers: [credentialIdentity.serviceIdentifier],
-                                                   credential: credential,
-                                                   itemContent: itemContent)
-                    } else {
-                        logger.error("Failed to autofill. Not log in item.")
-                        cancelAutoFill(reason: .credentialIdentityNotFound)
-                    }
-                } else {
-                    logger.warning("Failed to autofill. Item not found.")
-                    cancelAutoFill(reason: .failed)
-                }
-            } catch {
-                logger.error(error)
-                cancelAutoFill(reason: .failed)
-            }
-        }
     }
 
     // Biometric authentication

@@ -109,6 +109,8 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                       let passkeyCredential = credential as? ASPasskeyAssertionCredential {
                 context.completeAssertionRequest(using: passkeyCredential,
                                                  completionHandler: completion)
+            } else {
+                assertionFailure("Unsupported credential")
             }
         } catch {
             // Do nothing but only log the errors
