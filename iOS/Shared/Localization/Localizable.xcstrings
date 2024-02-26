@@ -12488,7 +12488,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associar 2FA?"
+            "value" : "Associar A2F?"
           }
         },
         "ro" : {
@@ -15939,7 +15939,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyčistit všechny soubory"
+            "value" : "Odebrat všechny soubory"
           }
         },
         "de" : {
@@ -18555,7 +18555,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nelze najít \"%@\""
+            "value" : "Nepodařilo se najít \"%@\""
           }
         },
         "de" : {
@@ -37917,7 +37917,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Žádné logy pro %@"
+            "value" : "Žádné logy %@"
           }
         },
         "de" : {
@@ -42361,7 +42361,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permanentně smazat"
+            "value" : "Trvale smazat"
           }
         },
         "de" : {
@@ -42518,25 +42518,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Permanentně smazány %lld položky"
+                  "value" : "Trvale smazány %lld položky"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Permanentně smazáno %lld položek"
+                  "value" : "Trvale smazáno %lld položek"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Permanentně smazána %lld položka"
+                  "value" : "Trvale smazána %lld položka"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Permanentně smazáno %lld položek"
+                  "value" : "Trvale smazáno %lld položek"
                 }
               }
             }
@@ -52069,7 +52069,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configurar 2FA"
+            "value" : "Configurar A2F"
           }
         },
         "ro" : {
@@ -57302,7 +57302,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este item de login já contém um segredo 2FA"
+            "value" : "Este item de login já contém um segredo A2F"
           }
         },
         "ro" : {
@@ -62191,7 +62191,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Navyšte nyní a sdílejte s více lidmi"
+            "value" : "Navyšte nyní pro sdílení s více lidmi"
           }
         },
         "de" : {
@@ -64020,8 +64020,8 @@
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault has been transferred"
+            "state" : "translated",
+            "value" : "Trezor byl přenesen"
           }
         },
         "de" : {
@@ -69966,13 +69966,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disfruta de tu prueba gratuita"
+            "value" : "Tu regalo de bienvenida"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disfrute de su prueba gratuita"
+            "value" : "Su regalo de bienvenida"
           }
         },
         "fi" : {
