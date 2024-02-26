@@ -128,8 +128,8 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         case .configuration:
             configureExtension()
 
-        case .passkeyRegistration:
-            print("Handle passkey registration")
+        case let .passkeyRegistration(request):
+            handlePasskeyRegistration(request)
         }
     }
 }
@@ -179,6 +179,10 @@ private extension CredentialProviderCoordinator {
             }
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
+    }
+
+    func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
+        showView(Text(verbatim: "\(#function)"))
     }
 }
 
