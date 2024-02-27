@@ -21,14 +21,19 @@
 
 import Client
 import Combine
+import Entities
 import Foundation
 
 @MainActor
 final class LoginItemsViewModel: ObservableObject {
-    let items: [SearchableItem]
+    private let searchableItems: [SearchableItem]
+    let uiModels: [ItemUiModel]
+
     @Published var query = ""
 
-    init(items: [SearchableItem]) {
-        self.items = items
+    init(searchableItems: [SearchableItem],
+         uiModels: [ItemUiModel]) {
+        self.searchableItems = searchableItems
+        self.uiModels = uiModels
     }
 }
