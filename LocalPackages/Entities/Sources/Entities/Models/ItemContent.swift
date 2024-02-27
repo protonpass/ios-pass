@@ -298,6 +298,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             content.login.password = logInData.password
             content.login.totpUri = logInData.totpUri
             content.login.urls = logInData.urls
+            content.login.passkeys = logInData.passkeys
             platformSpecific.android.allowedApps = logInData.allowedAndroidApps
 
         case let .creditCard(data):
