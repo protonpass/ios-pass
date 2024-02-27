@@ -73,8 +73,6 @@ class BaseCreateEditItemViewModel {
     @Published var customFieldUiModels = [CustomFieldUiModel]()
     @Published var isObsolete = false
 
-    @Published var passkeyCredentialRequest: PasskeyCredentialRequest?
-
     // Scanning
     @Published var isShowingScanner = false
     let scanResponsePublisher: PassthroughSubject<ScanResult?, Error> = .init()
@@ -88,7 +86,6 @@ class BaseCreateEditItemViewModel {
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -151,6 +148,9 @@ class BaseCreateEditItemViewModel {
     func generateItemContent() -> ItemContentProtobuf? {
         fatalError("Must be overridden by subclasses")
     }
+
+    /// The new passkey associated with this item
+    func newPasskey() throws -> CreatePasskeyResponse? { nil }
 
     func saveButtonTitle() -> String {
         switch mode {
@@ -296,15 +296,9 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
-
-                        var createPasskeyResponse: CreatePasskeyResponse?
-                        if let passkeyCredentialRequest {
-                            createPasskeyResponse = try createPasskey(passkeyCredentialRequest)
-                        }
-
-                        router.present(for: .createItem(item: createdItem,
-                                                        type: itemContentType(),
-                                                        createPasskeyResponse: createPasskeyResponse))
+                        try router.present(for: .createItem(item: createdItem,
+                                                            type: itemContentType(),
+                                                            createPasskeyResponse: newPasskey()))
                     }
 
                 case let .edit(oldItemContent):
