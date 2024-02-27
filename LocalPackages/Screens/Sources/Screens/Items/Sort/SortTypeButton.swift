@@ -22,11 +22,17 @@ import DesignSystem
 import Entities
 import SwiftUI
 
-struct SortTypeButton: View {
+public struct SortTypeButton: View {
     @Binding var selectedSortType: SortType
     let action: () -> Void
 
-    var body: some View {
+    public init(selectedSortType: Binding<SortType>,
+                action: @escaping () -> Void) {
+        _selectedSortType = selectedSortType
+        self.action = action
+    }
+
+    public var body: some View {
         if UIDevice.current.isIpad {
             Menu(content: {
                 ForEach(SortType.allCases, id: \.self) { type in

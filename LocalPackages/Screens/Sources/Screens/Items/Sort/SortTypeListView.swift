@@ -25,12 +25,12 @@ import Entities
 import SwiftUI
 
 @MainActor
-protocol SortTypeListViewModelDelegate: AnyObject {
+public protocol SortTypeListViewModelDelegate: AnyObject {
     func sortTypeListViewDidSelect(_ sortType: SortType)
 }
 
 @MainActor
-final class SortTypeListViewModel: ObservableObject, DeinitPrintable, Sendable {
+public final class SortTypeListViewModel: ObservableObject, DeinitPrintable, Sendable {
     deinit { print(deinitMessage) }
 
     @Published var selectedSortType: SortType {
@@ -39,18 +39,22 @@ final class SortTypeListViewModel: ObservableObject, DeinitPrintable, Sendable {
         }
     }
 
-    weak var delegate: SortTypeListViewModelDelegate?
+    public weak var delegate: SortTypeListViewModelDelegate?
 
-    init(sortType: SortType) {
+    public init(sortType: SortType) {
         selectedSortType = sortType
     }
 }
 
-struct SortTypeListView: View {
+public struct SortTypeListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: SortTypeListViewModel
 
-    var body: some View {
+    public init(viewModel: SortTypeListViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    public var body: some View {
         NavigationView {
             VStack(alignment: .center, spacing: 0) {
                 ForEach(SortType.allCases, id: \.self) { type in
