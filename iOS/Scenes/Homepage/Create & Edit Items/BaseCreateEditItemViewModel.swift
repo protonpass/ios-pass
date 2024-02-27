@@ -57,7 +57,8 @@ enum ItemCreationType: Equatable, Hashable {
                url: String? = nil,
                note: String? = nil,
                totpUri: String? = nil,
-               autofill: Bool)
+               autofill: Bool,
+               passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
     case other
 }
 
@@ -72,6 +73,8 @@ class BaseCreateEditItemViewModel {
     @Published var customFieldUiModels = [CustomFieldUiModel]()
     @Published var isObsolete = false
 
+    @Published var passkeyCredentialRequest: PasskeyCredentialRequest?
+
     // Scanning
     @Published var isShowingScanner = false
     let scanResponsePublisher: PassthroughSubject<ScanResult?, Error> = .init()
@@ -85,6 +88,7 @@ class BaseCreateEditItemViewModel {
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -292,7 +296,15 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
-                        router.present(for: .createItem(item: createdItem, type: itemContentType()))
+
+                        var createPasskeyResponse: CreatePasskeyResponse?
+                        if let passkeyCredentialRequest {
+                            createPasskeyResponse = try createPasskey(passkeyCredentialRequest)
+                        }
+
+                        router.present(for: .createItem(item: createdItem,
+                                                        type: itemContentType(),
+                                                        createPasskeyResponse: createPasskeyResponse))
                     }
 
                 case let .edit(oldItemContent):

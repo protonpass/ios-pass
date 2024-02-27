@@ -68,6 +68,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
+    @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
@@ -181,12 +182,22 @@ private extension CredentialProviderCoordinator {
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
-        let view = PasskeyCredentialsView(onCreate: {},
+        let view = PasskeyCredentialsView(onCreate: { [weak self] in
+                                              guard let self else { return }
+                                              createNewLoginWithPasskey(request)
+                                          },
                                           onCancel: { [weak self] in
                                               guard let self else { return }
                                               cancelAutoFill(reason: .userCanceled)
                                           })
         showView(view)
+    }
+
+    func createNewLoginWithPasskey(_ request: PasskeyCredentialRequest) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            await showCreateLoginView(url: nil, request: request)
+        }
     }
 }
 
@@ -242,8 +253,8 @@ private extension CredentialProviderCoordinator {
                     createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
                 case .vaultSelection:
                     createEditItemViewModelWantsToChangeVault()
-                case let .createItem(item: item, type: type):
-                    createEditItemViewModelDidCreateItem(item, type: type)
+                case let .createItem(item, type, response):
+                    handleItemCreation(item, type: type, response: response)
                 default:
                     break
                 }
@@ -334,15 +345,20 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func showCreateLoginView(shareId: String,
-                             upgradeChecker: UpgradeCheckerProtocol,
-                             vaults: [Vault],
-                             url: URL?) {
+    func showCreateLoginView(url: URL?, request: PasskeyCredentialRequest?) async {
         do {
+            showLoadingHud()
+            if vaultsManager.getAllVaultContents().isEmpty {
+                try await vaultsManager.asyncRefresh()
+            }
+            let vaults = vaultsManager.getAllVaultContents().map(\.vault)
+
+            hideLoadingHud()
             let creationType = ItemCreationType.login(title: url?.host,
                                                       url: url?.schemeAndHost,
-                                                      autofill: true)
-            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
+                                                      autofill: true,
+                                                      passkeyCredentialRequest: request)
+            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: vaults.oldestOwned?.shareId ?? "",
                                                                        type: creationType),
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaults)
@@ -433,26 +449,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         present(viewController, dismissible: true)
     }
 
-    func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
+    func credentialsViewModelWantsToCreateLoginItem(url: URL?) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            do {
-                showLoadingHud()
-                if vaultsManager.getAllVaultContents().isEmpty {
-                    try await vaultsManager.asyncRefresh()
-                }
-                let vaults = vaultsManager.getAllVaultContents()
-
-                hideLoadingHud()
-                showCreateLoginView(shareId: shareId,
-                                    upgradeChecker: upgradeChecker,
-                                    vaults: vaults.map(\.vault),
-                                    url: url)
-            } catch {
-                logger.error(error)
-                hideLoadingHud()
-                bannerManager.displayTopErrorMessage(error)
-            }
+            await showCreateLoginView(url: url, request: nil)
         }
     }
 
@@ -511,15 +511,20 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
-                                              type: ItemContentType) {
+    func handleItemCreation(_ item: SymmetricallyEncryptedItem,
+                            type: ItemContentType,
+                            response: CreatePasskeyResponse?) {
         switch type {
         case .login:
             Task { [weak self] in
                 guard let self else { return }
                 do {
                     try await indexAllLoginItems(ignorePreferences: false)
-                    credentialsViewModel?.select(item: item)
+                    if let response {
+                        completePasskeyRegistration(response)
+                    } else {
+                        credentialsViewModel?.select(item: item)
+                    }
                 } catch {
                     logger.error(error)
                 }

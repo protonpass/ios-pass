@@ -34,7 +34,7 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToLogOut()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate)
-    func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
+    func credentialsViewModelWantsToCreateLoginItem(url: URL?)
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        itemContent: ItemContent,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier])
@@ -262,12 +262,7 @@ extension CredentialsViewModel {
 
     func createLoginItem() {
         guard case .idle = state else { return }
-        Task { @MainActor [weak self] in
-            guard let self,
-                  let mainVault = vaults.oldestOwned else { return }
-            self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: mainVault.shareId,
-                                                                      url: self.urls.first)
-        }
+        delegate?.credentialsViewModelWantsToCreateLoginItem(url: urls.first)
     }
 
     func upgrade() {

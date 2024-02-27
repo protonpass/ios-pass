@@ -23,7 +23,7 @@
 
 /// Wrap `ASPasskeyCredentialRequest` as it's iOS 17 only
 /// Can be removed once iOS 16 is dropped
-public struct PasskeyCredentialRequest: Sendable {
+public struct PasskeyCredentialRequest: Sendable, Equatable, Hashable {
     public let userName: String
     public let relyingPartyIdentifier: String
     public let serviceIdentifier: ASCredentialServiceIdentifier

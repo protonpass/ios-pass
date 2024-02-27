@@ -71,7 +71,8 @@ struct CreateEditLoginView: View {
                                                    onChangeVault: { viewModel.changeVault() },
                                                    onSubmit: { focusedField = .username })
                             .padding(.bottom, DesignConstant.sectionPadding / 2)
-                        passkeySection
+                        editablePasskeySection
+                        readOnlyPasskeySection
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel,
                                        focusedField: $focusedField,
@@ -274,7 +275,7 @@ private extension CreateEditLoginView {
 
 private extension CreateEditLoginView {
     @ViewBuilder
-    var passkeySection: some View {
+    var editablePasskeySection: some View {
         if viewModel.passkeys.isEmpty {
             EmptyView()
         } else {
@@ -309,6 +310,28 @@ private extension CreateEditLoginView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
+    }
+
+    @ViewBuilder
+    var readOnlyPasskeySection: some View {
+        if let request = viewModel.passkeyCredentialRequest {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                ItemDetailSectionIcon(icon: PassIcon.passkey)
+
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text("Passkey")
+                        .sectionTitleText()
+
+                    Text(request.userName)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(DesignConstant.sectionPadding)
+            .roundedEditableSection(backgroundColor: PassColor.backgroundMedium)
+        } else {
+            EmptyView()
+        }
     }
 }
 
