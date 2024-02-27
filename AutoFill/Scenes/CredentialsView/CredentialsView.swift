@@ -313,10 +313,10 @@ private struct CredentialsSkeletonView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
                 SkeletonBlock()
-                    .frame(width: kSearchBarHeight)
+                    .frame(width: DesignConstant.searchBarHeight)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .frame(height: kSearchBarHeight)
+            .frame(height: DesignConstant.searchBarHeight)
             .padding(.vertical)
             .shimmering()
 

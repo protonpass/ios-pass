@@ -58,21 +58,21 @@ private extension ItemsTabTopBar {
                              backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
                              type: .big,
                              action: onShowVaultList)
-                    .frame(width: kSearchBarHeight)
+                    .frame(width: DesignConstant.searchBarHeight)
 
             case let .precise(vault):
                 CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
                              iconColor: vault.displayPreferences.color.color.color,
                              backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
                              action: onShowVaultList)
-                    .frame(width: kSearchBarHeight)
+                    .frame(width: DesignConstant.searchBarHeight)
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,
                              iconColor: VaultSelection.trash.color,
                              backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16),
                              action: onShowVaultList)
-                    .frame(width: kSearchBarHeight)
+                    .frame(width: DesignConstant.searchBarHeight)
             }
 
             // Search bar
@@ -93,7 +93,7 @@ private extension ItemsTabTopBar {
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .contentShape(Rectangle())
-            .frame(height: kSearchBarHeight)
+            .frame(height: DesignConstant.searchBarHeight)
             .onTapGesture(perform: onSearch)
 
             ItemsTabOptionsButton(isEditMode: $isEditMode)
