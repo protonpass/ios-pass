@@ -60,6 +60,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
 
+    @Published private(set) var passkeyGenerator: PasskeyGenerator?
+
     /// Proton account email address
     let emailAddress: String
 
@@ -77,6 +79,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
+    private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
@@ -109,7 +112,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
         case let .create(_, type):
             if case let .login(title, url, note, totpUri, _, request) = type {
-                passkeyCredentialRequest = request
+                if let request {
+                    passkeyGenerator = .init(request: request)
+                }
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
                 if let totpUri {
@@ -150,6 +155,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
             let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
                                                                 editedUri: totpUri)
+            var passkeys = passkeys
+            if let newPasskey = try newPasskey() {
+                passkeys.append(.from(newPasskey))
+            }
             let logInData = ItemContentData.login(.init(username: username,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
@@ -165,6 +174,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             totpUriErrorMessage = #localized("Invalid TOTP URI")
             return nil
         }
+    }
+
+    override func newPasskey() throws -> CreatePasskeyResponse? {
+        try passkeyGenerator?.getPasskey(createPasskey: createPasskey)
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
