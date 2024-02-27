@@ -21,22 +21,28 @@
 
 import Client
 import DesignSystem
+import Entities
 import Macro
 import SwiftUI
 
-public struct LoginItemsView: View {
+public struct LoginItemsView<ItemRow: View>: View {
     @StateObject private var viewModel: LoginItemsViewModel
     @FocusState private var isFocused
     private let mode: Mode
+    private let itemRow: (ItemUiModel) -> ItemRow
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
-    public init(items: [SearchableItem],
+    public init(searchableItems: [SearchableItem],
+                uiModels: [ItemUiModel],
                 mode: Mode,
+                itemRow: @escaping (ItemUiModel) -> ItemRow,
                 onCreate: @escaping () -> Void,
                 onCancel: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(items: items))
+        _viewModel = .init(wrappedValue: .init(searchableItems: searchableItems,
+                                               uiModels: uiModels))
         self.mode = mode
+        self.itemRow = itemRow
         self.onCreate = onCreate
         self.onCancel = onCancel
     }
@@ -45,13 +51,19 @@ public struct LoginItemsView: View {
         VStack {
             searchBar
 
-            VStack {
+            List {
                 title
+                    .plainListRow()
                 description
+                    .plainListRow()
                     .padding(.vertical)
+                ForEach(viewModel.uiModels, id: \.id) { item in
+                    itemRow(item)
+                        .plainListRow()
+                }
                 Spacer()
             }
-            .scrollViewEmbeded()
+            .listStyle(.plain)
             .padding(.horizontal)
 
             if mode.allowCreation {

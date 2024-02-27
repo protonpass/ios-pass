@@ -19,17 +19,21 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Entities
+import Factory
 import Foundation
 
 enum PasskeyCredentialsViewModelState {
     case loading
-    case loaded([SearchableItem])
+    case loaded([SearchableItem], [ItemUiModel])
     case error(Error)
 }
 
 @MainActor
 final class PasskeyCredentialsViewModel: ObservableObject {
     @Published private(set) var state: PasskeyCredentialsViewModelState = .loading
+
+    @LazyInjected(\AutoFillUseCaseContainer.getItemsForPasskeyCreation) private var getItemsForPasskeyCreation
 
     init() {}
 }
@@ -40,8 +44,8 @@ extension PasskeyCredentialsViewModel {
             if case .error = state {
                 state = .loading
             }
-            try await Task.sleep(seconds: 2)
-            state = .loaded([])
+            let result = try await getItemsForPasskeyCreation()
+            state = .loaded(result.0, result.1)
         } catch {
             state = .error(error)
         }

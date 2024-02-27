@@ -246,6 +246,7 @@
 		3570E0582B8E25ED005B8186 /* PasskeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E0532B8E2245005B8186 /* PasskeyGenerator.swift */; };
 		3570E0592B8E25EE005B8186 /* PasskeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E0532B8E2245005B8186 /* PasskeyGenerator.swift */; };
 		3570E05A2B8E25F0005B8186 /* PasskeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E0532B8E2245005B8186 /* PasskeyGenerator.swift */; };
+		3570E05C2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
@@ -819,6 +820,7 @@
 		3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsViewModel.swift; sourceTree = "<group>"; };
 		3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletePasskeyRegistration.swift; sourceTree = "<group>"; };
 		3570E0532B8E2245005B8186 /* PasskeyGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyGenerator.swift; sourceTree = "<group>"; };
+		3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsForPasskeyCreation.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3571B5A029BF7225008D4350 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -1224,6 +1226,7 @@
 				3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
 				35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */,
+				3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -2879,6 +2882,7 @@
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
 				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
+				3570E05C2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift in Sources */,
 				35733B7829CC525900052229 /* APIManager.swift in Sources */,
 				354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */,
 				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,

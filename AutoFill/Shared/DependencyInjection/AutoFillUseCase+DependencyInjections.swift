@@ -65,6 +65,13 @@ extension AutoFillUseCaseContainer {
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
 
+    var getItemsForPasskeyCreation: Factory<GetItemsForPasskeyCreationUseCase> {
+        self { GetItemsForPasskeyCreation(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                                          shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                          itemRepositiry: self.itemRepository,
+                                          accessRepository: SharedRepositoryContainer.shared.accessRepository()) }
+    }
+
     var generateAuthorizationCredential: Factory<GenerateAuthorizationCredentialUseCase> {
         self { GenerateAuthorizationCredential(itemRepository: self.itemRepository,
                                                resolvePasskeyChallenge: SharedUseCasesContainer.shared
