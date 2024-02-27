@@ -56,4 +56,9 @@ public extension Text {
     func placeholderText() -> Text {
         font(.body.italic()).foregroundColor(PassColor.textWeak.toColor)
     }
+
+    func navigationTitleText() -> Text {
+        font(.callout.bold())
+            .foregroundColor(Color(uiColor: PassColor.textNorm))
+    }
 }

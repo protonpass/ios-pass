@@ -1488,6 +1488,16 @@
         }
       }
     },
+    "Sort By" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort By"
+          }
+        }
+      }
+    },
     "Suggestions" : {
       "comment" : "Title of suggested emails section when sharing",
       "extractionState" : "manual",

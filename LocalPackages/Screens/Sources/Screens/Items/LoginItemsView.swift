@@ -54,13 +54,18 @@ public struct LoginItemsView<ItemRow: View>: View {
             List {
                 title
                     .plainListRow()
+
                 description
                     .plainListRow()
                     .padding(.vertical)
-                ForEach(viewModel.uiModels, id: \.id) { item in
-                    itemRow(item)
-                        .plainListRow()
+
+                if !viewModel.uiModels.isEmpty {
+                    ForEach(viewModel.uiModels, id: \.id) { item in
+                        itemRow(item)
+                            .plainListRow()
+                    }
                 }
+
                 Spacer()
             }
             .listStyle(.plain)

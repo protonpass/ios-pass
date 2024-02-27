@@ -23,6 +23,7 @@ import Core
 import DesignSystem
 import Entities
 import Macro
+import Screens
 import SwiftUI
 
 struct CredentialSearchResultView: View, Equatable {
