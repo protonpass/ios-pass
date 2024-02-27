@@ -1,7 +1,7 @@
 //
-// View+Extensions.swift
-// Proton Pass - Created on 30/08/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// View+ColorScheme.swift
+// Proton Pass - Created on 27/02/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,27 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Combine
-import DesignSystem
-import DocScanner
 import SwiftUI
 
-// MARK: - Doc & credit card scanner View extension
-
-extension View {
-    func scannerSheet(isPresented: Binding<Bool>,
-                      interpreter: ScanInterpreting,
-                      resultStream: PassthroughSubject<ScanResult?, Error>) -> some View {
-        sheet(isPresented: isPresented) {
-            DocScanner(with: interpreter, resultStream: resultStream)
+public extension View {
+    @ViewBuilder
+    func colorScheme(_ colorScheme: ColorScheme?) -> some View {
+        if let colorScheme {
+            environment(\.colorScheme, colorScheme)
+        } else {
+            self
         }
-    }
-}
-
-extension View {
-    func theme(_ theme: Theme) -> some View {
-        colorScheme(theme.colorScheme)
-            .animation(.default, value: theme)
     }
 }
