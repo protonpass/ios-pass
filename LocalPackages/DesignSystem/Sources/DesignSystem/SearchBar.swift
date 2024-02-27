@@ -1,7 +1,7 @@
 //
 // SearchBar.swift
-// Proton Pass - Created on 04/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 27/02/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,21 +17,31 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-let kSearchBarHeight: CGFloat = 48
-
-struct SearchBar: View {
+public struct SearchBar: View {
     @Binding var query: String
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
     let onCancel: () -> Void
     var hideCancel = false
 
-    var body: some View {
+    public init(query: Binding<String>,
+                isFocused: FocusState<Bool>.Binding,
+                placeholder: String,
+                onCancel: @escaping () -> Void,
+                hideCancel: Bool = false) {
+        _query = query
+        self.isFocused = isFocused
+        self.placeholder = placeholder
+        self.onCancel = onCancel
+        self.hideCancel = hideCancel
+    }
+
+    public var body: some View {
         HStack(spacing: 16) {
             ZStack {
                 Color(uiColor: PassColor.backgroundStrong)
@@ -74,7 +84,7 @@ struct SearchBar: View {
                 }
             }
         }
-        .frame(height: kSearchBarHeight)
+        .frame(height: DesignConstant.searchBarHeight)
         .padding()
         .animation(.default, value: query.isEmpty)
     }

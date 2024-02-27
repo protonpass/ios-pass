@@ -107,8 +107,6 @@
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3552272C29DC660300B9607E /* Theme+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B2A529B7C39F0070830B /* Theme+Extensions.swift */; };
-		3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552272D29DC9EAC00B9607E /* SearchBar.swift */; };
-		3552272F29DC9FFC00B9607E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552272D29DC9EAC00B9607E /* SearchBar.swift */; };
 		3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830D29C339110084488A /* SortTypeButton.swift */; };
 		3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565622329BA5C5900C43F72 /* SortTypeListView.swift */; };
 		3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */; };
@@ -716,7 +714,6 @@
 		354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionViewModel.swift; sourceTree = "<group>"; };
 		3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAndAutoFill.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
-		3552272D29DC9EAC00B9607E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFavIconsSection.swift; sourceTree = "<group>"; };
 		3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		3552F48D28D3467100547146 /* AliasDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailView.swift; sourceTree = "<group>"; };
@@ -1346,7 +1343,6 @@
 				35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */,
 				3571B59329BF1321008D4350 /* HighlightText.swift */,
 				35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */,
-				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
 				3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */,
 				35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */,
 				354FBF602A02961D00A0B27D /* UpgradeButton.swift */,
@@ -2773,7 +2769,6 @@
 				3562BC3229954334003FCB13 /* ItemDetailSectionIcon.swift in Sources */,
 				355BDED8299E6F9C009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,
-				3552272F29DC9FFC00B9607E /* SearchBar.swift in Sources */,
 				3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */,
 				3560844229DDA1C4001F7487 /* ExtensionSettingsView.swift in Sources */,
 				3552A28E29EC8B5600ABDB6E /* URL+Extensions.swift in Sources */,
@@ -3057,7 +3052,6 @@
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
 				5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */,
 				5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */,
-				3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */,
 				5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */,
 				5B66395E2B4D88290029F8DA /* ItemHistoryView.swift in Sources */,
 				357ABEAE2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift in Sources */,
