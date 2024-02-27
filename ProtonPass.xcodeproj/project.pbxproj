@@ -240,6 +240,8 @@
 		3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */; };
 		3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20229C1F14D00805445 /* SearchResultChips.swift */; };
 		3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20629C20A7E00805445 /* SearchResultsView.swift */; };
+		3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04D2B8E06F5005B8186 /* PasskeyCredentialsView.swift */; };
+		3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
@@ -809,6 +811,8 @@
 		3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemContextMenus.swift"; sourceTree = "<group>"; };
 		3570D20229C1F14D00805445 /* SearchResultChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultChips.swift; sourceTree = "<group>"; };
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
+		3570E04D2B8E06F5005B8186 /* PasskeyCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsView.swift; sourceTree = "<group>"; };
+		3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsViewModel.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3571B5A029BF7225008D4350 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -1466,6 +1470,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		3570E04C2B8E06D8005B8186 /* Passkey */ = {
+			isa = PBXGroup;
+			children = (
+				3570E04D2B8E06F5005B8186 /* PasskeyCredentialsView.swift */,
+				3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */,
+			);
+			path = Passkey;
+			sourceTree = "<group>";
+		};
 		3572E5262994043C00775FAC /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2088,6 +2101,7 @@
 				5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */,
 				5BD4A9062B10E3CE00C44C08 /* ExtensionSettings */,
 				5BD4A9052B10E3BB00C44C08 /* LockedCredential */,
+				3570E04C2B8E06D8005B8186 /* Passkey */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -2829,6 +2843,7 @@
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				35363D472B14F24B00846179 /* CredentialsMigrationStateProvider.swift in Sources */,
+				3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */,
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
@@ -2862,6 +2877,7 @@
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3561C9F929E6E65600D6E518 /* VaultThumbnail.swift in Sources */,
+				3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */,
 				354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */,
 				5B0C75032A30806D00272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 			);

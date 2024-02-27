@@ -19,24 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import DesignSystem
 import Macro
 import SwiftUI
 
 public struct LoginItemsView: View {
-    @StateObject private var viewModel = LoginItemsViewModel()
+    @StateObject private var viewModel: LoginItemsViewModel
     @FocusState private var isFocused
     private let mode: Mode
-    private let colorScheme: ColorScheme?
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
-    public init(mode: Mode,
-                colorScheme: ColorScheme?,
+    public init(items: [SearchableItem],
+                mode: Mode,
                 onCreate: @escaping () -> Void,
                 onCancel: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(items: items))
         self.mode = mode
-        self.colorScheme = colorScheme
         self.onCreate = onCreate
         self.onCancel = onCancel
     }
@@ -48,18 +48,18 @@ public struct LoginItemsView: View {
             VStack {
                 title
                 description
+                    .padding(.vertical)
                 Spacer()
             }
             .scrollViewEmbeded()
+            .padding(.horizontal)
 
             if mode.allowCreation {
                 createButton
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
         .background(PassColor.backgroundNorm.toColor)
-        .colorScheme(colorScheme)
     }
 }
 
@@ -76,13 +76,14 @@ private extension LoginItemsView {
     var title: some View {
         Text(mode.title)
             .foregroundStyle(PassColor.textNorm.toColor)
-            .font(.title3.bold())
+            .font(.title.bold())
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     var description: some View {
         Text(mode.description)
             .foregroundStyle(PassColor.textNorm.toColor)
+            .font(.headline)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 

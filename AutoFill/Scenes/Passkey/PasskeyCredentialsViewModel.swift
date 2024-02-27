@@ -1,5 +1,5 @@
 //
-// LoginItemsViewModel.swift
+// PasskeyCredentialsViewModel.swift
 // Proton Pass - Created on 27/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -17,18 +17,33 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Client
-import Combine
 import Foundation
 
-@MainActor
-final class LoginItemsViewModel: ObservableObject {
-    let items: [SearchableItem]
-    @Published var query = ""
+enum PasskeyCredentialsViewModelState {
+    case loading
+    case loaded([SearchableItem])
+    case error(Error)
+}
 
-    init(items: [SearchableItem]) {
-        self.items = items
+@MainActor
+final class PasskeyCredentialsViewModel: ObservableObject {
+    @Published private(set) var state: PasskeyCredentialsViewModelState = .loading
+
+    init() {}
+}
+
+extension PasskeyCredentialsViewModel {
+    func loadCredentials() async {
+        do {
+            if case .error = state {
+                state = .loading
+            }
+            try await Task.sleep(seconds: 2)
+            state = .loaded([])
+        } catch {
+            state = .error(error)
+        }
     }
 }

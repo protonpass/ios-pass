@@ -181,13 +181,11 @@ private extension CredentialProviderCoordinator {
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
-        let view = LoginItemsView(mode: .passkeyCreation,
-                                  colorScheme: preferences.theme.colorScheme,
-                                  onCreate: {},
-                                  onCancel: { [weak self] in
-                                      guard let self else { return }
-                                      cancelAutoFill(reason: .userCanceled)
-                                  })
+        let view = PasskeyCredentialsView(onCreate: {},
+                                          onCancel: { [weak self] in
+                                              guard let self else { return }
+                                              cancelAutoFill(reason: .userCanceled)
+                                          })
         showView(view)
     }
 }
