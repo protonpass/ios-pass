@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Create passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create passkey"
+          }
+        }
+      }
+    },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "extractionState" : "manual",
@@ -1182,6 +1192,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mới dùng"
+          }
+        }
+      }
+    },
+    "Search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        }
+      }
+    },
+    "Select an existing login or create a new one." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select an existing login or create a new one."
           }
         }
       }
