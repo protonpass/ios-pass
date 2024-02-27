@@ -19,12 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Combine
 import Foundation
 
 @MainActor
 final class LoginItemsViewModel: ObservableObject {
+    let items: [SearchableItem]
     @Published var query = ""
 
-    init() {}
+    init(items: [SearchableItem]) {
+        self.items = items
+    }
 }
