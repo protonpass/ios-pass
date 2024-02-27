@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import Core
+import DesignSystem
 import DocScanner
 import SwiftUI
 
@@ -37,19 +37,7 @@ extension View {
 
 extension View {
     func theme(_ theme: Theme) -> some View {
-        modifier(ThemeModifier(theme: theme))
+        colorScheme(theme.colorScheme)
             .animation(.default, value: theme)
-    }
-}
-
-private struct ThemeModifier: ViewModifier {
-    let theme: Theme
-
-    func body(content: Content) -> some View {
-        if let colorScheme = theme.colorScheme {
-            content.environment(\.colorScheme, colorScheme)
-        } else {
-            content
-        }
     }
 }
