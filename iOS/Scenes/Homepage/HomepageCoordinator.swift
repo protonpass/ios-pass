@@ -400,7 +400,7 @@ extension HomepageCoordinator {
                     beginAccountSettingsFlow()
                 case let .createEditLogin(item):
                     presentCreateEditLoginView(mode: item)
-                case let .createItem(_, type):
+                case let .createItem(_, type, _):
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)

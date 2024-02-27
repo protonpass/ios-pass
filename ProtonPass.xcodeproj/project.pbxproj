@@ -242,6 +242,7 @@
 		3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20629C20A7E00805445 /* SearchResultsView.swift */; };
 		3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04D2B8E06F5005B8186 /* PasskeyCredentialsView.swift */; };
 		3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */; };
+		3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
@@ -813,6 +814,7 @@
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		3570E04D2B8E06F5005B8186 /* PasskeyCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsView.swift; sourceTree = "<group>"; };
 		3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsViewModel.swift; sourceTree = "<group>"; };
+		3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletePasskeyRegistration.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3571B5A029BF7225008D4350 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -1214,6 +1216,7 @@
 				5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */,
 				3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */,
 				354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */,
+				3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
 				35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */,
 			);
@@ -2797,6 +2800,7 @@
 				5BFFB5052A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift in Sources */,
 				5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */,
 				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,
+				3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */,
 				3561C9FB29E6E79B00D6E518 /* VaultColor.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContentType+Extensions.swift in Sources */,
 				5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */,

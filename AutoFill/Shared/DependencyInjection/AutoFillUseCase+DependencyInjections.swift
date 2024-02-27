@@ -67,7 +67,12 @@ extension AutoFillUseCaseContainer {
 
     var generateAuthorizationCredential: Factory<GenerateAuthorizationCredentialUseCase> {
         self { GenerateAuthorizationCredential(itemRepository: self.itemRepository,
-                                               resolvePasskeyChallenge: self.resolvePasskeyChallenge()) }
+                                               resolvePasskeyChallenge: SharedUseCasesContainer.shared
+                                                   .resolvePasskeyChallenge()) }
+    }
+
+    var completePasskeyRegistration: Factory<CompletePasskeyRegistrationUseCase> {
+        self { CompletePasskeyRegistration(context: self.context) }
     }
 
     var checkAndAutoFill: Factory<CheckAndAutoFillUseCase> {
@@ -106,17 +111,5 @@ extension AutoFillUseCaseContainer {
     var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
         self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
                                            reindexLoginItem: self.reindexLoginItem()) }
-    }
-}
-
-// MARK: Passkey
-
-extension AutoFillUseCaseContainer {
-    var createPasskey: Factory<CreatePasskeyUseCase> {
-        self { CreatePasskey() }
-    }
-
-    var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
-        self { ResolvePasskeyChallenge() }
     }
 }

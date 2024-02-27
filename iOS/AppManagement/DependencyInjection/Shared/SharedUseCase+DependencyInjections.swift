@@ -300,3 +300,15 @@ extension SharedUseCasesContainer {
         self { GetUserPlan(repository: SharedRepositoryContainer.shared.accessRepository()) }
     }
 }
+
+// MARK: Passkey
+
+extension SharedUseCasesContainer {
+    var createPasskey: Factory<CreatePasskeyUseCase> {
+        self { CreatePasskey() }
+    }
+
+    var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
+        self { ResolvePasskeyChallenge() }
+    }
+}
