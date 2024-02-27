@@ -22,7 +22,7 @@
 import Foundation
 
 /// A combination of `shareId` and `itemId` of an item to make up an unique ID
-public struct IDs: CodableBase64, ItemIdentifiable, Sendable {
+public struct IDs: CodableBase64, ItemIdentifiable, Sendable, Hashable {
     public let shareId: String
     public let itemId: String
 

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Factory
 import Screens
 import SwiftUI
@@ -43,9 +44,11 @@ struct PasskeyCredentialsView: View {
             case .loading:
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .loaded(items):
-                LoginItemsView(items: items,
+            case let .loaded(searchableItems, uiModels):
+                LoginItemsView(searchableItems: searchableItems,
+                               uiModels: uiModels,
                                mode: .passkeyCreation,
+                               itemRow: { row(for: $0) },
                                onCreate: onCreate,
                                onCancel: onCancel)
             case let .error(error):
@@ -55,5 +58,11 @@ struct PasskeyCredentialsView: View {
         }
         .theme(preferences.theme)
         .task { await viewModel.loadCredentials() }
+    }
+}
+
+private extension PasskeyCredentialsView {
+    func row(for uiModel: ItemUiModel) -> some View {
+        GenericCredentialItemRow(item: uiModel, selectItem: { _ in })
     }
 }
