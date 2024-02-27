@@ -18,13 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
 import SwiftUI
 
-enum OptionRowHeight {
+public enum OptionRowHeight {
     case compact, short, medium, tall
 
-    var value: CGFloat {
+    public var value: CGFloat {
         switch self {
         case .compact:
             44
@@ -38,7 +37,7 @@ enum OptionRowHeight {
     }
 }
 
-struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
+public struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     let action: (() -> Void)?
     let title: String?
     let height: OptionRowHeight
@@ -47,13 +46,13 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     let leading: LeadingView
     let trailing: TrailingView
 
-    init(action: (() -> Void)? = nil,
-         title: String? = nil,
-         height: OptionRowHeight = .short,
-         horizontalPadding: CGFloat = DesignConstant.sectionPadding,
-         @ViewBuilder content: () -> Content,
-         @ViewBuilder leading: (() -> LeadingView) = { EmptyView() },
-         @ViewBuilder trailing: (() -> TrailingView) = { EmptyView() }) {
+    public init(action: (() -> Void)? = nil,
+                title: String? = nil,
+                height: OptionRowHeight = .short,
+                horizontalPadding: CGFloat = DesignConstant.sectionPadding,
+                @ViewBuilder content: () -> Content,
+                @ViewBuilder leading: (() -> LeadingView) = { EmptyView() },
+                @ViewBuilder trailing: (() -> TrailingView) = { EmptyView() }) {
         self.action = action
         self.title = title
         self.height = height
@@ -63,7 +62,7 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
         self.trailing = trailing()
     }
 
-    var body: some View {
+    public var body: some View {
         Group {
             if let action {
                 Button(action: action) {
@@ -98,11 +97,16 @@ struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: View {
     }
 }
 
-struct TextOptionRow: View {
+public struct TextOptionRow: View {
     let title: String
     let action: () -> Void
 
-    var body: some View {
+    public init(title: String, action: @escaping () -> Void) {
+        self.title = title
+        self.action = action
+    }
+
+    public var body: some View {
         OptionRow(action: action,
                   content: {
                       Text(title)
@@ -112,13 +116,23 @@ struct TextOptionRow: View {
     }
 }
 
-struct SelectableOptionRow<Content: View>: View {
+public struct SelectableOptionRow<Content: View>: View {
     let action: () -> Void
     let height: OptionRowHeight
-    @ViewBuilder let content: () -> Content
+    let content: () -> Content
     let isSelected: Bool
 
-    var body: some View {
+    public init(action: @escaping () -> Void,
+                height: OptionRowHeight,
+                content: @escaping () -> Content,
+                isSelected: Bool) {
+        self.action = action
+        self.height = height
+        self.content = content
+        self.isSelected = isSelected
+    }
+
+    public var body: some View {
         OptionRow(action: action,
                   height: height,
                   horizontalPadding: 0,
@@ -133,8 +147,10 @@ struct SelectableOptionRow<Content: View>: View {
     }
 }
 
-struct ChevronRight: View {
-    var body: some View {
+public struct ChevronRight: View {
+    public init() {}
+
+    public var body: some View {
         Image(systemName: "chevron.right")
             .resizable()
             .scaledToFit()
