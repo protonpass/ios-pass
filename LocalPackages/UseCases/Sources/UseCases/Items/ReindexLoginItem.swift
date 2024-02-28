@@ -61,17 +61,20 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
         }
 
         // First we remove existing indexed credentials
-        let oldCredentials = data.urls.map { AutoFillCredential(shareId: item.shareId,
-                                                                itemId: item.item.itemID,
-                                                                username: data.username,
-                                                                url: $0,
-                                                                lastUseTime: item.item.lastUseTime ?? 0) }
+        let oldPasswordCredentials = data.urls.map { PasswordCredentialIdentity(shareId: item.shareId,
+                                                                                itemId: item.item.itemID,
+                                                                                username: data.username,
+                                                                                url: $0,
+                                                                                lastUseTime: item.item
+                                                                                    .lastUseTime ?? 0) }
+
+        let oldCredentials = oldPasswordCredentials.map { CredentialIdentity.password($0) }
         try await manager.remove(credentials: oldCredentials)
 
         // Then we insert updated credentials
         let givenUrls = identifiers.compactMap(mapServiceIdentifierToUrl.callAsFunction)
         let parser = try DomainParser()
-        let credentials = data.urls.map { url -> AutoFillCredential in
+        let passwords = data.urls.map { url -> PasswordCredentialIdentity in
             let isMatched = givenUrls.map { givenUrl -> Bool in
                 guard let url = URL(string: url) else {
                     return false
@@ -98,6 +101,16 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
                          url: url,
                          lastUseTime: lastUseTime)
         }
+
+        let passkeys = data.passkeys.map { PasskeyCredentialIdentity(shareId: item.shareId,
+                                                                     itemId: item.itemId,
+                                                                     relyingPartyIdentifier: $0.rpID,
+                                                                     userName: $0.userName,
+                                                                     userHandle: $0.userHandle,
+                                                                     credentialId: $0.credentialID) }
+
+        let credentials = passwords.map { CredentialIdentity.password($0) } + passkeys
+            .map { CredentialIdentity.passkey($0) }
         try await manager.insert(credentials: credentials)
     }
 }
