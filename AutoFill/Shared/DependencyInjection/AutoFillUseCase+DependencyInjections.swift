@@ -79,6 +79,7 @@ extension AutoFillUseCaseContainer {
     var createAndAssociatePasskey: Factory<CreateAndAssociatePasskeyUseCase> {
         self { CreateAndAssociatePasskey(itemRepository: self.itemRepository,
                                          createPasskey: self.createPasskey,
+                                         updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                          completePasskeyRegistration: self.completePasskeyRegistration()) }
     }
 
