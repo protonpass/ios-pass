@@ -182,7 +182,8 @@ private extension CredentialProviderCoordinator {
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
-        let view = PasskeyCredentialsView(onCreate: { [weak self] in
+        let view = PasskeyCredentialsView(request: request,
+                                          onCreate: { [weak self] in
                                               guard let self else { return }
                                               createNewLoginWithPasskey(request)
                                           },

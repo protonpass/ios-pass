@@ -6169,6 +6169,16 @@
         }
       }
     },
+    "A passkey will be created for the \"%@\" login." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A passkey will be created for the \"%@\" login."
+          }
+        }
+      }
+    },
     "Access level" : {
       "comment" : "Used in sharing context",
       "extractionState" : "manual",
@@ -19982,6 +19992,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo đăng nhập"
+          }
+        }
+      }
+    },
+    "Create passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create passkey"
           }
         }
       }

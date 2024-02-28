@@ -34,9 +34,12 @@ extension CompletePasskeyRegistrationUseCase {
 
 final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
     private let context: ASCredentialProviderExtensionContext
+    private let resetFactory: any ResetFactoryUseCase
 
-    init(context: ASCredentialProviderExtensionContext) {
+    init(context: ASCredentialProviderExtensionContext,
+         resetFactory: any ResetFactoryUseCase) {
         self.context = context
+        self.resetFactory = resetFactory
     }
 
     func execute(_ response: CreatePasskeyResponse) {
@@ -49,5 +52,6 @@ final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
                                                          credentialID: response.credentialId,
                                                          attestationObject: response.attestationObject)
         context.completeRegistrationRequest(using: credential)
+        resetFactory()
     }
 }
