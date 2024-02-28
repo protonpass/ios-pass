@@ -36,13 +36,16 @@ extension CreateAndAssociatePasskeyUseCase {
 final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
     private let itemRepository: any ItemRepositoryProtocol
     private let createPasskey: any CreatePasskeyUseCase
+    private let updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase
     private let completePasskeyRegistration: any CompletePasskeyRegistrationUseCase
 
     init(itemRepository: any ItemRepositoryProtocol,
          createPasskey: any CreatePasskeyUseCase,
+         updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
          completePasskeyRegistration: any CompletePasskeyRegistrationUseCase) {
         self.itemRepository = itemRepository
         self.createPasskey = createPasskey
+        self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.completePasskeyRegistration = completePasskeyRegistration
     }
 
@@ -71,6 +74,13 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
         try await itemRepository.updateItem(oldItem: oldItemContent.item,
                                             newItemContent: newContent,
                                             shareId: item.shareId)
+        if let updatedItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                            itemId: item.itemId) {
+            try await updateLastUseTimeAndReindex(item: updatedItemContent,
+                                                  date: .now,
+                                                  identifiers: [request.serviceIdentifier])
+        }
+
         completePasskeyRegistration(passkeyResponse)
     }
 }
