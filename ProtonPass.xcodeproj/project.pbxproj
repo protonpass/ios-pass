@@ -257,6 +257,7 @@
 		35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7C29CC5DB700052229 /* VaultIcon.swift */; };
 		35733B7F29CC60D200052229 /* VaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7E29CC60D200052229 /* VaultColor.swift */; };
 		3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */; };
+		3577746D2B8F24670087A275 /* CreateAndAssociatePasskey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3577746C2B8F24670087A275 /* CreateAndAssociatePasskey.swift */; };
 		357919B12B70E7630085B532 /* HomepageCoordinator+Spotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */; };
 		35796CE92B5EE5AE00BF4E9E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 35796CE82B5EE5AE00BF4E9E /* Factory */; };
 		35796CEA2B5EE5F300BF4E9E /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
@@ -821,6 +822,7 @@
 		35733B7E29CC60D200052229 /* VaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultColor.swift; sourceTree = "<group>"; };
 		3575EB5229FAB017000FFD53 /* AppLockTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTime.swift; sourceTree = "<group>"; };
 		3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAppLockTimeView.swift; sourceTree = "<group>"; };
+		3577746C2B8F24670087A275 /* CreateAndAssociatePasskey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndAssociatePasskey.swift; sourceTree = "<group>"; };
 		357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Spotlight.swift"; sourceTree = "<group>"; };
 		357ABEAB2B18782E003D05C8 /* ItemsTabOptionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabOptionsButton.swift; sourceTree = "<group>"; };
 		357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabOptionsButtonViewModel.swift; sourceTree = "<group>"; };
@@ -1211,6 +1213,7 @@
 				354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */,
 				3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
+				3577746C2B8F24670087A275 /* CreateAndAssociatePasskey.swift */,
 				35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */,
 				3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */,
 			);
@@ -2791,6 +2794,7 @@
 				3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */,
 				3561C9FB29E6E79B00D6E518 /* VaultColor.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContentType+Extensions.swift in Sources */,
+				3577746D2B8F24670087A275 /* CreateAndAssociatePasskey.swift in Sources */,
 				5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */,
 				3552272C29DC660300B9607E /* Theme+Extensions.swift in Sources */,
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,

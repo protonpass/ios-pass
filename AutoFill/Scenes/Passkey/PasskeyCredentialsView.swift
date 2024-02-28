@@ -25,13 +25,15 @@ import Screens
 import SwiftUI
 
 struct PasskeyCredentialsView: View {
-    @StateObject private var viewModel = PasskeyCredentialsViewModel()
+    @StateObject private var viewModel: PasskeyCredentialsViewModel
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
-    init(onCreate: @escaping () -> Void,
+    init(request: PasskeyCredentialRequest,
+         onCreate: @escaping () -> Void,
          onCancel: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(request: request))
         self.onCreate = onCreate
         self.onCancel = onCancel
     }
@@ -57,12 +59,26 @@ struct PasskeyCredentialsView: View {
             }
         }
         .theme(preferences.theme)
+        .showSpinner(viewModel.isLoading)
+        .alert("Create passkey",
+               isPresented: $viewModel.isShowingAssociationConfirmation,
+               actions: {
+                   Button(role: .cancel,
+                          label: { Text("Cancel") })
+
+                   Button(role: nil,
+                          action: { await viewModel.createAndAssociatePasskey() },
+                          label: { Text("Confirm") })
+               },
+               message: {
+                   Text("A passkey will be created for the \"\(viewModel.selectedItem?.itemTitle ?? "")\" login.")
+               })
         .task { await viewModel.loadCredentials() }
     }
 }
 
 private extension PasskeyCredentialsView {
     func row(for uiModel: ItemUiModel) -> some View {
-        GenericCredentialItemRow(item: uiModel, selectItem: { _ in })
+        GenericCredentialItemRow(item: uiModel, selectItem: { viewModel.selectedItem = $0 })
     }
 }
