@@ -25,11 +25,11 @@ import Entities
 /// so we need to make a separate entry for each URL in the credential database.
 /// This use case map a login item into multiple `AutoFillCredential`
 public protocol MapLoginItemUseCase: Sendable {
-    func execute(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential]
+    func execute(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity]
 }
 
 public extension MapLoginItemUseCase {
-    func callAsFunction(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential] {
+    func callAsFunction(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity] {
         try execute(for: item)
     }
 }
@@ -41,15 +41,26 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
-    public func execute(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential] {
+    public func execute(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity] {
         let itemContent = try item.getItemContent(symmetricKey: symmetricKeyProvider.getSymmetricKey())
         guard let data = itemContent.loginItem else {
             throw PassError.credentialProvider(.notLogInItem)
         }
-        return data.urls.map { .init(shareId: itemContent.shareId,
-                                     itemId: itemContent.item.itemID,
-                                     username: data.username,
-                                     url: $0,
-                                     lastUseTime: itemContent.item.lastUseTime ?? 0) }
+
+        let passwords = data.urls.map { PasswordCredentialIdentity(shareId: itemContent.shareId,
+                                                                   itemId: itemContent.item.itemID,
+                                                                   username: data.username,
+                                                                   url: $0,
+                                                                   lastUseTime: itemContent.item.lastUseTime ?? 0)
+        }
+
+        let passkeys = data.passkeys.map { PasskeyCredentialIdentity(shareId: itemContent.shareId,
+                                                                     itemId: itemContent.itemId,
+                                                                     relyingPartyIdentifier: $0.rpID,
+                                                                     userName: $0.userName,
+                                                                     userHandle: $0.userHandle,
+                                                                     credentialId: $0.credentialID) }
+
+        return passwords.map { CredentialIdentity.password($0) } + passkeys.map { CredentialIdentity.passkey($0) }
     }
 }
