@@ -32,10 +32,25 @@ enum PasskeyCredentialsViewModelState {
 @MainActor
 final class PasskeyCredentialsViewModel: ObservableObject {
     @Published private(set) var state: PasskeyCredentialsViewModelState = .loading
+    @Published private(set) var isLoading = false
+    @Published var isShowingAssociationConfirmation = false
+
+    var selectedItem: (any TitledItemIdentifiable)? {
+        didSet {
+            if selectedItem != nil {
+                isShowingAssociationConfirmation = true
+            }
+        }
+    }
 
     @LazyInjected(\AutoFillUseCaseContainer.getItemsForPasskeyCreation) private var getItemsForPasskeyCreation
+    @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
 
-    init() {}
+    private let request: PasskeyCredentialRequest
+
+    init(request: PasskeyCredentialRequest) {
+        self.request = request
+    }
 }
 
 extension PasskeyCredentialsViewModel {
@@ -46,6 +61,22 @@ extension PasskeyCredentialsViewModel {
             }
             let result = try await getItemsForPasskeyCreation()
             state = .loaded(result.0, result.1)
+        } catch {
+            state = .error(error)
+        }
+    }
+
+    func createAndAssociatePasskey() async {
+        guard let selectedItem else {
+            assertionFailure("Item shall not be nil")
+            return
+        }
+
+        defer { isLoading = false }
+
+        do {
+            isLoading = true
+            try await createAndAssociatePasskey(item: selectedItem, request: request)
         } catch {
             state = .error(error)
         }
