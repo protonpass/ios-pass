@@ -36,9 +36,6 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(url: URL?)
-    func credentialsViewModelDidSelect(credential: ASPasswordCredential,
-                                       itemContent: ItemContent,
-                                       serviceIdentifiers: [ASCredentialServiceIdentifier])
 }
 
 enum CredentialsViewState: Equatable {
@@ -94,11 +91,13 @@ final class CredentialsViewModel: ObservableObject {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
+    @LazyInjected(\AutoFillUseCaseContainer.autoFillPassword) private var autoFillPassword
+    @LazyInjected(\AutoFillUseCaseContainer
+        .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
@@ -156,6 +155,7 @@ extension CredentialsViewModel {
                 let plan = try await accessRepository.getPlan()
                 planType = plan.planType
 
+                vaults = try await shareRepository.getVaults()
                 results = try await fetchCredentials(identifiers: serviceIdentifiers,
                                                      params: passkeyRequestParams)
                 state = .idle
@@ -180,31 +180,10 @@ extension CredentialsViewModel {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             router.display(element: .globalLoading(shouldShow: true))
             do {
-                let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
                 logger.trace("Associate and autofilling \(item.debugDescription)")
-                let encryptedItem = try await getItem(item: item)
-                let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                guard case let .login(oldData) = oldContent.contentData else {
-                    throw PassError.credentialProvider(.notLogInItem)
-                }
-                guard let newUrl = self.urls.first?.schemeAndHost, !newUrl.isEmpty else {
-                    throw PassError.credentialProvider(.invalidURL(urls.first))
-                }
-                let newLoginData = ItemContentData.login(.init(username: oldData.username,
-                                                               password: oldData.password,
-                                                               totpUri: oldData.totpUri,
-                                                               urls: oldData.urls + [newUrl],
-                                                               allowedAndroidApps: oldData.allowedAndroidApps,
-                                                               passkeys: oldData.passkeys))
-                let newContent = ItemContentProtobuf(name: oldContent.name,
-                                                     note: oldContent.note,
-                                                     itemUuid: oldContent.itemUuid,
-                                                     data: newLoginData,
-                                                     customFields: oldContent.customFields)
-                try await itemRepository.updateItem(oldItem: encryptedItem.item,
-                                                    newItemContent: newContent,
-                                                    shareId: encryptedItem.shareId)
-                autoFill(item: item)
+                try await associateUrlAndAutoFillPassword(item: item,
+                                                          urls: urls,
+                                                          serviceIdentifiers: serviceIdentifiers)
                 logger.info("Associate and autofill successfully \(item.debugDescription)")
             } catch {
                 logger.error(error)
@@ -221,35 +200,21 @@ extension CredentialsViewModel {
             guard let self else {
                 return
             }
-            // Check if given URL is valid before proposing "associate & autofill"
-            if canEditItem(vaults: vaults, item: item),
-               notMatchedItemInformation == nil,
-               let schemeAndHost = urls.first?.schemeAndHost,
-               !schemeAndHost.isEmpty,
-               let notMatchedItem = results.notMatchedItems
-               .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
-                notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
-                                                                          url: schemeAndHost)
-                return
-            }
-
-            // Given URL is not valid or item is matched, in either case just autofill normally
-            autoFill(item: item)
-        }
-    }
-
-    func autoFill(item: any ItemIdentifiable) {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
             do {
-                logger.trace("Selecting \(item.debugDescription)")
-                let (credential, itemContent) = try await getCredential(for: item)
-                delegate?.credentialsViewModelDidSelect(credential: credential,
-                                                        itemContent: itemContent,
-                                                        serviceIdentifiers: serviceIdentifiers)
-                logger.info("Selected \(item.debugDescription)")
+                // Check if given URL is valid before proposing "associate & autofill"
+                if canEditItem(vaults: vaults, item: item),
+                   notMatchedItemInformation == nil,
+                   let schemeAndHost = urls.first?.schemeAndHost,
+                   !schemeAndHost.isEmpty,
+                   let notMatchedItem = results.notMatchedItems
+                   .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
+                    notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
+                                                                              url: schemeAndHost)
+                    return
+                }
+
+                // Given URL is not valid or item is matched, in either case just autofill normally
+                try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers)
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -340,45 +305,6 @@ private extension CredentialsViewModel {
                 notMatchedItemInformation = nil
             }
             .store(in: &cancellables)
-    }
-}
-
-// MARK: - Private APIs
-
-private extension CredentialsViewModel {
-    func getItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        guard let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
-                                                                   itemId: item.itemId) else {
-            throw PassError.itemNotFound(item)
-        }
-        return encryptedItem
-    }
-
-    func getCredential(for item: any ItemIdentifiable) async throws -> (ASPasswordCredential, ItemContent) {
-        guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId, itemId:
-            item.itemId) else {
-            throw PassError.itemNotFound(item)
-        }
-        switch itemContent.contentData {
-        case let .login(data):
-            let credential = ASPasswordCredential(user: data.username, password: data.password)
-            return (credential, itemContent)
-        default:
-            throw PassError.credentialProvider(.notLogInItem)
-        }
-    }
-
-    /// When in free plan, only take 2 oldest vaults into account (suggestions & search)
-    /// Otherwise take everything into account
-    func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: Plan) async -> Bool {
-        guard let vault else { return true }
-        switch plan.planType {
-        case .free:
-            let oldestVaults = vaults.twoOldestVaults
-            return oldestVaults.isOneOf(shareId: vault.shareId)
-        default:
-            return true
-        }
     }
 }
 
