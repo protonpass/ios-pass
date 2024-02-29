@@ -68,7 +68,9 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
                 throw ASExtensionError(.credentialIdentityNotFound)
             }
 
-            let response = try resolvePasskeyChallenge(request: credentialRequest,
+            let serviceId = credentialRequest.serviceIdentifier.identifier
+            let response = try resolvePasskeyChallenge(serviceIdentifier: serviceId,
+                                                       clientDataHash: credentialRequest.clientDataHash,
                                                        passkey: key.content)
             if #available(iOS 17.0, *) {
                 credential = ASPasskeyAssertionCredential(userHandle: key.userHandle,
