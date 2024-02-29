@@ -22,7 +22,7 @@ import AuthenticationServices
 
 /// Wrap `ASPasskeyCredentialRequestParameters` as it's iOS 17 only
 /// This protocol can be removed once iOS 16 is dropped
-protocol PasskeyRequestParametersProtocol {
+protocol PasskeyRequestParametersProtocol: Sendable {
     var relyingPartyIdentifier: String { get }
     var clientDataHash: Data { get }
     var userVerificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference { get }
