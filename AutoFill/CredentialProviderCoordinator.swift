@@ -456,22 +456,6 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
             await showCreateLoginView(url: url, request: nil)
         }
     }
-
-    func credentialsViewModelDidSelect(credential: ASPasswordCredential,
-                                       itemContent: ItemContent,
-                                       serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await completeAutoFill(quickTypeBar: false,
-                                           identifiers: serviceIdentifiers,
-                                           credential: credential,
-                                           itemContent: itemContent)
-            } catch {
-                cancelAutoFill(reason: .failed)
-            }
-        }
-    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
