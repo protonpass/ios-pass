@@ -47,8 +47,20 @@ private extension AutoFillUseCaseContainer {
         AutoFillDataContainer.shared.context()
     }
 
+    var symmetricKeyProvider: any SymmetricKeyProvider {
+        SharedDataContainer.shared.symmetricKeyProvider()
+    }
+
     var itemRepository: any ItemRepositoryProtocol {
         SharedRepositoryContainer.shared.itemRepository()
+    }
+
+    var shareRepository: any ShareRepositoryProtocol {
+        SharedRepositoryContainer.shared.shareRepository()
+    }
+
+    var accessRepository: any AccessRepositoryProtocol {
+        SharedRepositoryContainer.shared.accessRepository()
     }
 
     var createPasskey: any CreatePasskeyUseCase {
@@ -69,11 +81,20 @@ extension AutoFillUseCaseContainer {
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
 
+    var fetchCredentials: Factory<FetchCredentialsUseCase> {
+        self { FetchCredentials(symmetricKeyProvider: self.symmetricKeyProvider,
+                                accessRepository: self.accessRepository,
+                                itemRepository: self.itemRepository,
+                                shareRepository: self.shareRepository,
+                                mapServiceIdentifierToURL: self.mapServiceIdentifierToURL(),
+                                logManager: self.logManager) }
+    }
+
     var getItemsForPasskeyCreation: Factory<GetItemsForPasskeyCreationUseCase> {
-        self { GetItemsForPasskeyCreation(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
-                                          shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+        self { GetItemsForPasskeyCreation(symmetricKeyProvider: self.symmetricKeyProvider,
+                                          shareRepository: self.shareRepository,
                                           itemRepositiry: self.itemRepository,
-                                          accessRepository: SharedRepositoryContainer.shared.accessRepository()) }
+                                          accessRepository: self.accessRepository) }
     }
 
     var createAndAssociatePasskey: Factory<CreateAndAssociatePasskeyUseCase> {

@@ -94,23 +94,27 @@ final class CredentialsViewModel: ObservableObject {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
+    @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
+    private let urls: [URL]
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
-    let urls: [URL]
     private var vaults = [Vault]()
 
     weak var delegate: CredentialsViewModelDelegate?
+
+    var domain: String {
+        passkeyRequestParams?.relyingPartyIdentifier ?? urls.first?.host() ?? ""
+    }
 
     init(serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
@@ -152,7 +156,8 @@ extension CredentialsViewModel {
                 let plan = try await accessRepository.getPlan()
                 planType = plan.planType
 
-                results = try await fetchCredentials(plan: plan)
+                results = try await fetchCredentials(identifiers: serviceIdentifiers,
+                                                     params: passkeyRequestParams)
                 state = .idle
                 logger.info("Loaded log in items")
             } catch {
@@ -349,71 +354,6 @@ private extension CredentialsViewModel {
         return encryptedItem
     }
 
-    func fetchCredentials(plan: Plan) async throws
-        -> CredentialsFetchResult {
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-
-        vaults = try await shareRepository.getVaults()
-        let encryptedItems = try await itemRepository.getActiveLogInItems()
-        logger.debug("Mapping \(encryptedItems.count) encrypted items")
-
-        let domainParser = try DomainParser()
-        var searchableItems = [SearchableItem]()
-        var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
-        var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
-        for encryptedItem in encryptedItems {
-            let decryptedItemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-
-            let vault = vaults.first { $0.shareId == encryptedItem.shareId }
-            assert(vault != nil, "Must have at least 1 vault")
-            guard await shouldTakeIntoAccount(vaults: vaults,
-                                              vault: vault,
-                                              withPlan: plan) else {
-                continue
-            }
-
-            if let data = decryptedItemContent.loginItem {
-                try searchableItems.append(SearchableItem(from: encryptedItem,
-                                                          symmetricKey: symmetricKey,
-                                                          allVaults: vaults))
-
-                let itemUrls = data.urls.compactMap { URL(string: $0) }
-                var matchResults = [URLUtils.Matcher.MatchResult]()
-                for itemUrl in itemUrls {
-                    for url in urls {
-                        let result = URLUtils.Matcher.compare(itemUrl, url, domainParser: domainParser)
-                        if case .matched = result {
-                            matchResults.append(result)
-                        }
-                    }
-                }
-
-                if matchResults.isEmpty {
-                    notMatchedEncryptedItems.append(encryptedItem)
-                } else {
-                    let totalScore = matchResults.reduce(into: 0) { partialResult, next in
-                        partialResult += next.score
-                    }
-                    matchedEncryptedItems.append(.init(item: encryptedItem,
-                                                       matchScore: totalScore))
-                }
-            }
-        }
-
-        let matchedItems = try await matchedEncryptedItems.sorted()
-            .parallelMap { try $0.item.toItemUiModel(symmetricKey) }
-        let notMatchedItems = try await notMatchedEncryptedItems.sorted()
-            .parallelMap { try $0.toItemUiModel(symmetricKey) }
-
-        logger.debug("Mapped \(encryptedItems.count) encrypted items.")
-        logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
-        logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-        return CredentialsFetchResult(vaults: vaults,
-                                      searchableItems: searchableItems,
-                                      matchedItems: matchedItems,
-                                      notMatchedItems: notMatchedItems)
-    }
-
     func getCredential(for item: any ItemIdentifiable) async throws -> (ASPasswordCredential, ItemContent) {
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId, itemId:
             item.itemId) else {
@@ -447,14 +387,6 @@ private extension CredentialsViewModel {
 extension CredentialsViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
-    }
-}
-
-// MARK: - VaultsProvider
-
-extension CredentialsViewModel: VaultsProvider {
-    func getAllVaults() async -> [Vault] {
-        vaults
     }
 }
 

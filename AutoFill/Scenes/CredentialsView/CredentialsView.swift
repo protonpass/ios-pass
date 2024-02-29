@@ -172,27 +172,25 @@ private extension CredentialsView {
 
     @ViewBuilder
     func matchedItemsSection(_ items: [ItemUiModel]) -> some View {
-        if let matchedUrl = viewModel.urls.first {
-            let matchedItemsHeaderTitle = #localized("Suggestions for %@", matchedUrl.host ?? "")
-            if items.isEmpty {
-                Section(content: {
-                    Text("No suggestions")
-                        .font(.callout.italic())
-                        .padding(.horizontal)
-                        .foregroundColor(PassColor.textWeak.toColor)
-                        .plainListRow()
-                }, header: {
-                    Text(matchedItemsHeaderTitle)
-                        .font(.callout)
-                        .fontWeight(.bold)
-                        .foregroundColor(PassColor.textNorm.toColor)
-                })
-            } else {
-                section(for: items,
-                        headerTitle: matchedItemsHeaderTitle,
-                        headerColor: PassColor.textNorm,
-                        headerFontWeight: .bold)
-            }
+        let matchedItemsHeaderTitle = #localized("Suggestions for %@", viewModel.domain)
+        if items.isEmpty {
+            Section(content: {
+                Text("No suggestions")
+                    .font(.callout.italic())
+                    .padding(.horizontal)
+                    .foregroundColor(PassColor.textWeak.toColor)
+                    .plainListRow()
+            }, header: {
+                Text(matchedItemsHeaderTitle)
+                    .font(.callout)
+                    .fontWeight(.bold)
+                    .foregroundColor(PassColor.textNorm.toColor)
+            })
+        } else {
+            section(for: items,
+                    headerTitle: matchedItemsHeaderTitle,
+                    headerColor: PassColor.textNorm,
+                    headerFontWeight: .bold)
         }
     }
 
