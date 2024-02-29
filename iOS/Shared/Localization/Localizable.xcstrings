@@ -26001,6 +26001,16 @@
         }
       }
     },
+    "Error occured" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error occured"
+          }
+        }
+      }
+    },
     "Expiration date" : {
       "localizations" : {
         "be" : {
@@ -43953,6 +43963,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vui lòng xác thực"
+          }
+        }
+      }
+    },
+    "Please contact us to investigate the issue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please contact us to investigate the issue"
           }
         }
       }
