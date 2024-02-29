@@ -82,6 +82,7 @@ final class CredentialsViewModel: ObservableObject {
     @Published private(set) var planType: Plan.PlanType?
     @Published var query = ""
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
+    @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
     @Published var isShowingConfirmationAlert = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -113,11 +114,11 @@ final class CredentialsViewModel: ObservableObject {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    var matchedItemsSectionTitle: String {
+    var domain: String {
         if let passkeyRequestParams {
             passkeyRequestParams.relyingPartyIdentifier
         } else {
-            #localized("Suggestions for %@", urls.first?.host() ?? "")
+            urls.first?.host() ?? ""
         }
     }
 
@@ -278,6 +279,10 @@ private extension CredentialsViewModel {
                                       params: params)
         } else {
             // Item has more than 1 passkey => ask user to choose
+            selectPasskeySheetInformation = .init(itemContent: itemContent,
+                                                  identifiers: serviceIdentifiers,
+                                                  params: params,
+                                                  passkeys: loginData.passkeys)
         }
     }
 }
