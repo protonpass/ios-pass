@@ -172,7 +172,6 @@ private extension CredentialsView {
 
     @ViewBuilder
     func matchedItemsSection(_ items: [ItemUiModel]) -> some View {
-        let matchedItemsHeaderTitle = #localized("Suggestions for %@", viewModel.domain)
         if items.isEmpty {
             Section(content: {
                 Text("No suggestions")
@@ -181,14 +180,14 @@ private extension CredentialsView {
                     .foregroundColor(PassColor.textWeak.toColor)
                     .plainListRow()
             }, header: {
-                Text(matchedItemsHeaderTitle)
+                Text(viewModel.matchedItemsSectionTitle)
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
             })
         } else {
             section(for: items,
-                    headerTitle: matchedItemsHeaderTitle,
+                    headerTitle: viewModel.matchedItemsSectionTitle,
                     headerColor: PassColor.textNorm,
                     headerFontWeight: .bold)
         }
