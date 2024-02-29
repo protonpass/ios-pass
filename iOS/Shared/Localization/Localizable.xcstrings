@@ -51134,6 +51134,16 @@
         }
       }
     },
+    "Select Passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Passkey"
+          }
+        }
+      }
+    },
     "Selected vaults" : {
       "localizations" : {
         "be" : {
