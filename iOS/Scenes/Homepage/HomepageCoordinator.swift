@@ -1080,10 +1080,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
     func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
         if asSheet {
-            dismissAllViewControllers(animated: true) { [weak self] in
-                guard let self else { return }
-                present(view)
-            }
+            present(view)
         } else {
             push(view)
         }
