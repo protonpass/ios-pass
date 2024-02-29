@@ -79,6 +79,13 @@ struct CredentialsView: View {
                        Text("Would you want to associate « \(information.url) » with « \(information.item.itemTitle) »?")
                    }
                })
+        .sheet(isPresented: selectPasskeySheetBinding) {
+            if let info = viewModel.selectPasskeySheetInformation {
+                SelectPasskeyView(info: info)
+                    .theme(preferences.theme)
+                    .presentationDetents([.height(CGFloat(info.passkeys.count * 60) + 80)])
+            }
+        }
     }
 }
 
@@ -145,6 +152,18 @@ private extension CredentialsView {
     }
 }
 
+private extension CredentialsView {
+    var selectPasskeySheetBinding: Binding<Bool> {
+        .init(get: {
+            viewModel.selectPasskeySheetInformation != nil
+        }, set: { newValue in
+            if !newValue {
+                viewModel.selectPasskeySheetInformation = nil
+            }
+        })
+    }
+}
+
 // MARK: ResultView & elements
 
 private extension CredentialsView {
@@ -172,6 +191,7 @@ private extension CredentialsView {
 
     @ViewBuilder
     func matchedItemsSection(_ items: [ItemUiModel]) -> some View {
+        let sectionTitle = #localized("Suggestions for %@", viewModel.domain)
         if items.isEmpty {
             Section(content: {
                 Text("No suggestions")
@@ -180,14 +200,14 @@ private extension CredentialsView {
                     .foregroundColor(PassColor.textWeak.toColor)
                     .plainListRow()
             }, header: {
-                Text(viewModel.matchedItemsSectionTitle)
+                Text(sectionTitle)
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
             })
         } else {
             section(for: items,
-                    headerTitle: viewModel.matchedItemsSectionTitle,
+                    headerTitle: sectionTitle,
                     headerColor: PassColor.textNorm,
                     headerFontWeight: .bold)
         }

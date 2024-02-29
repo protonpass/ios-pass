@@ -19,15 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Entities
 
 /// Wrap `ASPasskeyCredentialRequestParameters` as it's iOS 17 only
 /// This protocol can be removed once iOS 16 is dropped
 protocol PasskeyRequestParametersProtocol: Sendable {
     var relyingPartyIdentifier: String { get }
     var clientDataHash: Data { get }
-    var userVerificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference { get }
-    var allowedCredentials: [Data] { get }
 }
 
 @available(iOS 17.0, *)
 extension ASPasskeyCredentialRequestParameters: PasskeyRequestParametersProtocol {}
+
+struct SelectPasskeySheetInformation {
+    let itemContent: ItemContent
+    let identifiers: [ASCredentialServiceIdentifier]
+    let params: any PasskeyRequestParametersProtocol
+    let passkeys: [Passkey]
+}
+
+extension ASCredentialServiceIdentifier: @unchecked Sendable {}
