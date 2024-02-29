@@ -43967,12 +43967,12 @@
         }
       }
     },
-    "Please contact us for investigating the issue" : {
+    "Please contact us to investigate the issue" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please contact us for investigating the issue"
+            "value" : "Please contact us to investigate the issue"
           }
         }
       }
