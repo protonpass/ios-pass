@@ -104,6 +104,10 @@ public struct ProtonPassItemV1_Passkey {
 
   public var userID: Data = Data()
 
+  public var createTime: UInt32 = 0
+
+  public var note: String = String()
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
@@ -519,6 +523,8 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     6: .standard(proto: "user_name"),
     7: .standard(proto: "user_display_name"),
     8: .standard(proto: "user_id"),
+    9: .standard(proto: "create_time"),
+    10: .same(proto: "note"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -535,6 +541,8 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
       case 6: try { try decoder.decodeSingularStringField(value: &self.userName) }()
       case 7: try { try decoder.decodeSingularStringField(value: &self.userDisplayName) }()
       case 8: try { try decoder.decodeSingularBytesField(value: &self.userID) }()
+      case 9: try { try decoder.decodeSingularUInt32Field(value: &self.createTime) }()
+      case 10: try { try decoder.decodeSingularStringField(value: &self.note) }()
       default: break
       }
     }
@@ -565,6 +573,12 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     if !self.userID.isEmpty {
       try visitor.visitSingularBytesField(value: self.userID, fieldNumber: 8)
     }
+    if self.createTime != 0 {
+      try visitor.visitSingularUInt32Field(value: self.createTime, fieldNumber: 9)
+    }
+    if !self.note.isEmpty {
+      try visitor.visitSingularStringField(value: self.note, fieldNumber: 10)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -577,6 +591,8 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     if lhs.userName != rhs.userName {return false}
     if lhs.userDisplayName != rhs.userDisplayName {return false}
     if lhs.userID != rhs.userID {return false}
+    if lhs.createTime != rhs.createTime {return false}
+    if lhs.note != rhs.note {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
