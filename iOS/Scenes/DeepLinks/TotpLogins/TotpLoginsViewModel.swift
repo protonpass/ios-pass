@@ -113,7 +113,9 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
                 try await itemRepository.updateItem(oldItem: selectedItem.item,
                                                     newItemContent: selectedItem.updateTotp(uri: totpUri).protobuf,
                                                     shareId: selectedItem.shareId)
-                copyTotpToken(totpUri)
+                if let token = totpManager.totpData?.code {
+                    copyTotpToken(token)
+                }
                 shouldDismiss = true
             } catch {
                 router.display(element: .displayErrorBanner(error))
