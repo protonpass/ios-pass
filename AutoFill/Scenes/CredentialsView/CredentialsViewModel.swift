@@ -91,6 +91,7 @@ final class CredentialsViewModel: ObservableObject {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
@@ -98,6 +99,7 @@ final class CredentialsViewModel: ObservableObject {
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPassword) private var autoFillPassword
     @LazyInjected(\AutoFillUseCaseContainer
         .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
+    @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
@@ -206,7 +208,7 @@ extension CredentialsViewModel {
             }
             do {
                 if let passkeyRequestParams {
-                    try await handlePasskeySelection(for: item)
+                    try await handlePasskeySelection(for: item, params: passkeyRequestParams)
                 } else {
                     try await handlePasswordSelection(for: item, with: results)
                 }
@@ -255,8 +257,28 @@ private extension CredentialsViewModel {
         try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers)
     }
 
-    func handlePasskeySelection(for item: any ItemIdentifiable) async throws {
-        print(#function)
+    func handlePasskeySelection(for item: any ItemIdentifiable,
+                                params: PasskeyRequestParametersProtocol) async throws {
+        guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                        itemId: item.itemId),
+            let loginData = itemContent.loginItem else {
+            throw PassError.itemNotFound(item)
+        }
+
+        guard !loginData.passkeys.isEmpty else {
+            throw PassError.passkey(.noPasskeys(item))
+        }
+
+        if loginData.passkeys.count == 1,
+           let passkey = loginData.passkeys.first {
+            // Item has only 1 passkey => autofill right away
+            try await autoFillPasskey(passkey,
+                                      itemContent: itemContent,
+                                      identifiers: serviceIdentifiers,
+                                      params: params)
+        } else {
+            // Item has more than 1 passkey => ask user to choose
+        }
     }
 }
 

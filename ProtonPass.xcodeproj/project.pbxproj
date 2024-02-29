@@ -376,6 +376,7 @@
 		3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
 		359A902A2B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A90292B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift */; };
 		359A902C2B90AFFC00A50138 /* AutoFillPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A902B2B90AFFC00A50138 /* AutoFillPassword.swift */; };
+		359A90302B90C58300A50138 /* AutoFillPasskey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A902F2B90C58300A50138 /* AutoFillPasskey.swift */; };
 		359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29A29B76BF60070830B /* VaultsManager.swift */; };
 		359DB2A92A70435800549466 /* Service+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359DB2A82A70435800549466 /* Service+DependencyInjections.swift */; };
 		359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88B2A20CF74009588A9 /* InfoBannerView.swift */; };
@@ -849,6 +850,7 @@
 		35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionView.swift; sourceTree = "<group>"; };
 		359A90292B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociateUrlAndAutoFillPassword.swift; sourceTree = "<group>"; };
 		359A902B2B90AFFC00A50138 /* AutoFillPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillPassword.swift; sourceTree = "<group>"; };
+		359A902F2B90C58300A50138 /* AutoFillPasskey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillPasskey.swift; sourceTree = "<group>"; };
 		359DB2A82A70435800549466 /* Service+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+DependencyInjections.swift"; sourceTree = "<group>"; };
 		359EB88B2A20CF74009588A9 /* InfoBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerView.swift; sourceTree = "<group>"; };
 		359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerViewStack.swift; sourceTree = "<group>"; };
@@ -1215,6 +1217,7 @@
 			children = (
 				359A90292B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift */,
 				359A902B2B90AFFC00A50138 /* AutoFillPassword.swift */,
+				359A902F2B90C58300A50138 /* AutoFillPasskey.swift */,
 				5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */,
 				5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */,
 				3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */,
@@ -1222,8 +1225,8 @@
 				3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
 				3577746C2B8F24670087A275 /* CreateAndAssociatePasskey.swift */,
-				35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */,
 				3577746E2B8FD71D0087A275 /* FetchCredentials.swift */,
+				35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */,
 				3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */,
 			);
 			path = UseCases;
@@ -2881,6 +2884,7 @@
 				354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */,
 				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
 				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
+				359A90302B90C58300A50138 /* AutoFillPasskey.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
