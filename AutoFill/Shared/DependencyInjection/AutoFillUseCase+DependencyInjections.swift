@@ -66,6 +66,10 @@ private extension AutoFillUseCaseContainer {
     var createPasskey: any CreatePasskeyUseCase {
         SharedUseCasesContainer.shared.createPasskey()
     }
+
+    var resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase {
+        SharedUseCasesContainer.shared.resolvePasskeyChallenge()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -106,8 +110,7 @@ extension AutoFillUseCaseContainer {
 
     var generateAuthorizationCredential: Factory<GenerateAuthorizationCredentialUseCase> {
         self { GenerateAuthorizationCredential(itemRepository: self.itemRepository,
-                                               resolvePasskeyChallenge: SharedUseCasesContainer.shared
-                                                   .resolvePasskeyChallenge()) }
+                                               resolvePasskeyChallenge: self.resolvePasskeyChallenge) }
     }
 
     var completePasskeyRegistration: Factory<CompletePasskeyRegistrationUseCase> {
@@ -126,6 +129,11 @@ extension AutoFillUseCaseContainer {
     var autoFillPassword: Factory<AutoFillPasswordUseCase> {
         self { AutoFillPassword(itemRepository: self.itemRepository,
                                 completeAutoFill: self.completeAutoFill()) }
+    }
+
+    var autoFillPasskey: Factory<AutoFillPasskeyUseCase> {
+        self { AutoFillPasskey(resolveChallenge: self.resolvePasskeyChallenge,
+                               completeAutoFill: self.completeAutoFill()) }
     }
 
     var associateUrlAndAutoFillPassword: Factory<AssociateUrlAndAutoFillPasswordUseCase> {
