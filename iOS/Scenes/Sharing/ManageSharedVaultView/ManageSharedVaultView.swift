@@ -70,7 +70,7 @@ struct ManageSharedVaultView: View {
         .alert("Error occured",
                isPresented: $viewModel.showContactSupportAlert,
                actions: { Button(role: .cancel, label: { Text("OK") }) },
-               message: { Text("Please contact us for investigating the issue") })
+               message: { Text("Please contact us to investigate the issue") })
         .navigationStackEmbeded()
     }
 
