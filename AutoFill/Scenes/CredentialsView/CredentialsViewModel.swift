@@ -111,8 +111,12 @@ final class CredentialsViewModel: ObservableObject {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    var domain: String {
-        passkeyRequestParams?.relyingPartyIdentifier ?? urls.first?.host() ?? ""
+    var matchedItemsSectionTitle: String {
+        if let passkeyRequestParams {
+            passkeyRequestParams.relyingPartyIdentifier
+        } else {
+            #localized("Suggestions for %@", urls.first?.host() ?? "")
+        }
     }
 
     init(serviceIdentifiers: [ASCredentialServiceIdentifier],
@@ -201,20 +205,11 @@ extension CredentialsViewModel {
                 return
             }
             do {
-                // Check if given URL is valid before proposing "associate & autofill"
-                if canEditItem(vaults: vaults, item: item),
-                   notMatchedItemInformation == nil,
-                   let schemeAndHost = urls.first?.schemeAndHost,
-                   !schemeAndHost.isEmpty,
-                   let notMatchedItem = results.notMatchedItems
-                   .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
-                    notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
-                                                                              url: schemeAndHost)
-                    return
+                if let passkeyRequestParams {
+                    try await handlePasskeySelection(for: item)
+                } else {
+                    try await handlePasswordSelection(for: item, with: results)
                 }
-
-                // Given URL is not valid or item is matched, in either case just autofill normally
-                try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers)
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -238,6 +233,30 @@ extension CredentialsViewModel {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+}
+
+private extension CredentialsViewModel {
+    func handlePasswordSelection(for item: any ItemIdentifiable,
+                                 with results: CredentialsFetchResult) async throws {
+        // Check if given URL is valid and user has edit right before proposing "associate & autofill"
+        if notMatchedItemInformation == nil,
+           canEditItem(vaults: vaults, item: item),
+           let schemeAndHost = urls.first?.schemeAndHost,
+           !schemeAndHost.isEmpty,
+           let notMatchedItem = results.notMatchedItems
+           .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
+            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
+                                                                      url: schemeAndHost)
+            return
+        }
+
+        // Given URL is not valid or item is matched, in either case just autofill normally
+        try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers)
+    }
+
+    func handlePasskeySelection(for item: any ItemIdentifiable) async throws {
+        print(#function)
     }
 }
 
