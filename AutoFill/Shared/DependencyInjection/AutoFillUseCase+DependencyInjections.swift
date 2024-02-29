@@ -123,6 +123,16 @@ extension AutoFillUseCaseContainer {
                                 preferences: self.preferences) }
     }
 
+    var autoFillPassword: Factory<AutoFillPasswordUseCase> {
+        self { AutoFillPassword(itemRepository: self.itemRepository,
+                                completeAutoFill: self.completeAutoFill()) }
+    }
+
+    var associateUrlAndAutoFillPassword: Factory<AssociateUrlAndAutoFillPasswordUseCase> {
+        self { AssociateUrlAndAutoFillPassword(itemRepository: self.itemRepository,
+                                               completeAutoFill: self.completeAutoFill()) }
+    }
+
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
         self { CancelAutoFill(context: self.context,
                               saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs(),
