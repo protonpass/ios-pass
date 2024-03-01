@@ -90,6 +90,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
 
         // Post init
+        rootViewController.view.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         setUpSentry(bundle: .main)
         AppearanceSettings.apply()
         setUpRouting()
