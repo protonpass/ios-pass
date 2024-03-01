@@ -23,14 +23,12 @@ import Entities
 import Foundation
 import PassRustCore
 
-public typealias CreatePasskeyResponse = CreatePasskeyIosResponse
-
 public protocol CreatePasskeyUseCase: Sendable {
-    func execute(_ request: PasskeyCredentialRequest) throws -> CreatePasskeyResponse
+    func execute(_ request: PasskeyCredentialRequest) throws -> Entities.CreatePasskeyResponse
 }
 
 public extension CreatePasskeyUseCase {
-    func callAsFunction(_ request: PasskeyCredentialRequest) throws -> CreatePasskeyResponse {
+    func callAsFunction(_ request: PasskeyCredentialRequest) throws -> Entities.CreatePasskeyResponse {
         try execute(request)
     }
 }
@@ -38,7 +36,7 @@ public extension CreatePasskeyUseCase {
 public final class CreatePasskey: CreatePasskeyUseCase {
     public init() {}
 
-    public func execute(_ request: PasskeyCredentialRequest) throws -> CreatePasskeyResponse {
+    public func execute(_ request: PasskeyCredentialRequest) throws -> Entities.CreatePasskeyResponse {
         let supportedAlgorithms = request.supportedAlgorithms.map { Int64($0.rawValue) }
         let createRequest = CreatePasskeyIosRequest(serviceIdentifier: request.serviceIdentifier.identifier,
                                                     rpId: request.relyingPartyIdentifier,
