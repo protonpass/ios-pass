@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Factory
@@ -50,7 +51,8 @@ struct PasskeyCredentialsView: View {
                 LoginItemsView(searchableItems: searchableItems,
                                uiModels: uiModels,
                                mode: .passkeyCreation,
-                               itemRow: { row(for: $0) },
+                               itemRow: { itemRow(for: $0) },
+                               searchResultRow: { searchResultRow(for: $0) },
                                onCreate: onCreate,
                                onCancel: onCancel)
             case let .error(error):
@@ -78,7 +80,16 @@ struct PasskeyCredentialsView: View {
 }
 
 private extension PasskeyCredentialsView {
-    func row(for uiModel: ItemUiModel) -> some View {
+    func itemRow(for uiModel: ItemUiModel) -> some View {
         GenericCredentialItemRow(item: uiModel, selectItem: { viewModel.selectedItem = $0 })
+    }
+
+    func searchResultRow(for result: ItemSearchResult) -> some View {
+        Button(action: {
+            viewModel.selectedItem = result
+        }, label: {
+            ItemSearchResultView(result: result)
+        })
+        .buttonStyle(.plain)
     }
 }

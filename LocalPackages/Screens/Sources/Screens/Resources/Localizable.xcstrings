@@ -1,6 +1,36 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Couldn't find \"%@\"" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't find \"%@\""
+          }
+        }
+      }
+    },
+    "Couldn't find \"%@\" in Trash" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't find \"%@\" in Trash"
+          }
+        }
+      }
+    },
+    "Couldn't find \"%1$@\" in %2$@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't find \"%1$@\" in %2$@"
+          }
+        }
+      }
+    },
     "Create login" : {
       "localizations" : {
         "en" : {
@@ -1216,6 +1246,16 @@
         }
       }
     },
+    "Search in all vaults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search in all vaults"
+          }
+        }
+      }
+    },
     "Select an existing login or create a new one." : {
       "localizations" : {
         "en" : {
@@ -1626,6 +1666,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Suggestions"
+          }
+        }
+      }
+    },
+    "Try searching using different spelling or keywords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try searching using different spelling or keywords"
           }
         }
       }
