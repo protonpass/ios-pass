@@ -59649,6 +59649,7 @@
       }
     },
     "Try searching using different spelling or keywords" : {
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
