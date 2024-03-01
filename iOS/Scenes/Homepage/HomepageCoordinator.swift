@@ -95,7 +95,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var authenticated = false
 
     weak var delegate: HomepageCoordinatorDelegate?
-    weak var homepageTabDelegete: HomepageTabDelegete?
+    weak var homepageTabDelegate: HomepageTabDelegate?
 
     override init() {
         super.init()
@@ -131,7 +131,7 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.trace("Found new plan, refreshing credential database")
-                homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
+                homepageTabDelegate?.refreshTabIcons()
             }
             .store(in: &cancellables)
 
@@ -172,7 +172,7 @@ private extension HomepageCoordinator {
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
                 }
-                homepageTabDelegete?.homepageTabShouldDisableCreateButton(createButtonDisabled)
+                homepageTabDelegate?.disableCreateButton(createButtonDisabled)
             }
             .store(in: &cancellables)
 
@@ -208,7 +208,7 @@ private extension HomepageCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isEditMode in
                 guard let self else { return }
-                homepageTabDelegete?.homepageTabShouldHideTabbar(isEditMode)
+                homepageTabDelegate?.hideTabbar(isEditMode)
             }
             .store(in: &cancellables)
 
@@ -225,6 +225,7 @@ private extension HomepageCoordinator {
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
+                                          mainSecurityCenterViewModel: MainSecurityCenterViewModel(),
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
@@ -552,15 +553,6 @@ extension HomepageCoordinator {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
         }
-    }
-
-    func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel()
-        viewModel.delegate = self
-        let view = ItemTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.medium, parentViewController: rootViewController)
-        present(viewController)
     }
 
     func presentCreateItemView(for itemType: ItemType) {
@@ -909,30 +901,6 @@ private extension HomepageCoordinator {
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
-    }
-}
-
-// MARK: - HomepageTabBarControllerDelegate
-
-extension HomepageCoordinator: HomepageTabBarControllerDelegate {
-    func homepageTabBarControllerDidSelectItemsTab() {
-        if !isCollapsed() {
-            let placeholderView = ItemDetailPlaceholderView { [weak self] in
-                guard let self else { return }
-                popTopViewController(animated: true)
-            }
-            push(placeholderView)
-        }
-    }
-
-    func homepageTabBarControllerWantToCreateNewItem() {
-        presentItemTypeListView()
-    }
-
-    func homepageTabBarControllerDidSelectProfileTab() {
-        if !isCollapsed() {
-            profileTabViewModelWantsToShowAccountMenu()
-        }
     }
 }
 
@@ -1320,7 +1288,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
             }
         }
         vaultsManager.refresh()
-        homepageTabDelegete?.homepageTabShouldChange(tab: .items)
+        homepageTabDelegate?.change(tab: .items)
         increaseCreatedItemsCountAndAskForReviewIfNecessary()
     }
 
