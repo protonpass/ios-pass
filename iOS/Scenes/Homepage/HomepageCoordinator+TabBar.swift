@@ -58,23 +58,12 @@ private extension HomepageCoordinator {
     }
 
     func securityCenter() {
-//        guard isCollapsed() else {
-//            return
-//        }
-//        if !isCollapsed() {
-//            let asSheet = shouldShowAsSheet()
-//            let view = MainSecurityCenterView()
-//            //        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
-//            //        viewModel.delegate = self
-//            //        let view = AccountView(viewModel: viewModel)
-//            showView(view: view, asSheet: asSheet)
-//            //
-//        }
-//        let placeholderView = ItemDetailPlaceholderView { [weak self] in
-//            guard let self else { return }
-//            popTopViewController(animated: true)
-//        }
-//        push(placeholderView)
+        guard !isCollapsed() else {
+            return
+        }
+        let asSheet = shouldShowAsSheet()
+        let view = SecurityCenterView(viewModel: SecurityCenterViewModel())
+        showView(view: view, asSheet: asSheet)
     }
 
     func profileTab() {
