@@ -47,12 +47,15 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
             throw PassError.credentialProvider(.notLogInItem)
         }
 
-        let passwords = data.urls.map { CredentialIdentity.password(.init(shareId: itemContent.shareId,
+        var passwords = [CredentialIdentity]()
+        if !data.username.isEmpty, !data.password.isEmpty {
+            passwords = data.urls.map { CredentialIdentity.password(.init(shareId: itemContent.shareId,
                                                                           itemId: itemContent.item.itemID,
                                                                           username: data.username,
                                                                           url: $0,
                                                                           lastUseTime: itemContent.item
                                                                               .lastUseTime ?? 0)) }
+        }
 
         let passkeys = data.passkeys.map { CredentialIdentity.passkey(.init(shareId: itemContent.shareId,
                                                                             itemId: itemContent.itemId,
