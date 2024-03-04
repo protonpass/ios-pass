@@ -50,14 +50,14 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
     func execute(item: any ItemIdentifiable,
                  urls: [URL],
                  serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
+        guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
+            throw PassError.credentialProvider(.invalidURL(urls.first))
+        }
+
         guard let oldContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                        itemId: item.itemId),
             let oldData = oldContent.loginItem else {
             throw PassError.itemNotFound(item)
-        }
-
-        guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
-            throw PassError.credentialProvider(.invalidURL(urls.first))
         }
 
         let newLoginData = ItemContentData.login(.init(username: oldData.username,

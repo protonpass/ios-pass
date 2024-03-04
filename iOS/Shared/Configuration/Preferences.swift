@@ -192,6 +192,10 @@ extension Preferences: FavIconSettings {
     var shouldDisplayFavIcons: Bool { displayFavIcons }
 }
 
-// MAR: - SpotlightSettingsProvider
+// MARK: - SpotlightSettingsProvider
 
 extension Preferences: SpotlightSettingsProvider {}
+
+// MARK: LocalAuthenticationMethodProvider
+
+extension Preferences: LocalAuthenticationMethodProvider {}
