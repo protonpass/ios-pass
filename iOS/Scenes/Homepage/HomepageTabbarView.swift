@@ -90,13 +90,13 @@ protocol HomepageTabDelegate: AnyObject {
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
-    let mainSecurityCenterViewModel: MainSecurityCenterViewModel
+    let mainSecurityCenterViewModel: SecurityCenterViewModel
     weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
     init(itemsTabViewModel: ItemsTabViewModel,
          profileTabViewModel: ProfileTabViewModel,
-         mainSecurityCenterViewModel: MainSecurityCenterViewModel,
+         mainSecurityCenterViewModel: SecurityCenterViewModel,
          homepageCoordinator: HomepageCoordinator? = nil,
          delegate: HomepageTabBarControllerDelegate? = nil) {
         self.itemsTabViewModel = itemsTabViewModel
@@ -152,7 +152,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
-    private let mainSecurityCenterView: MainSecurityCenterView
+    private let mainSecurityCenterView: SecurityCenterView
     private var profileTabViewController: UIViewController?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -160,7 +160,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
-    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView, securityCenter: MainSecurityCenterView) {
+    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView, securityCenter: SecurityCenterView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
         mainSecurityCenterView = securityCenter
@@ -290,7 +290,7 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
 
         if viewController == viewControllers[HomepageTab.securityCenter.index] {
             homepageTabBarControllerDelegate?.selected(tab: HomepageTab.securityCenter)
-            return false
+            return true
         }
 
         if viewController == viewControllers[HomepageTab.profile.index] {
