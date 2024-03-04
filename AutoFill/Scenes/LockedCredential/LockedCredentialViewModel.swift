@@ -22,6 +22,8 @@
 import Entities
 import Factory
 
+typealias LockedCredentialResult = Result<(any ASAuthorizationCredential, ItemContent), Error>
+
 @MainActor
 final class LockedCredentialViewModel: ObservableObject {
     private let request: AutoFillRequest
@@ -30,11 +32,12 @@ final class LockedCredentialViewModel: ObservableObject {
     @LazyInjected(\AutoFillUseCaseContainer.generateAuthorizationCredential)
     private var generateAuthorizationCredential
 
-    var onFailure: ((Error) -> Void)?
-    var onSuccess: ((any ASAuthorizationCredential, ItemContent) -> Void)?
+    var onResult: (LockedCredentialResult) -> Void
 
-    init(request: AutoFillRequest) {
+    init(request: AutoFillRequest,
+         onResult: @escaping (LockedCredentialResult) -> Void) {
         self.request = request
+        self.onResult = onResult
     }
 
     func getAndReturnCredential() {
@@ -43,20 +46,20 @@ final class LockedCredentialViewModel: ObservableObject {
             guard let self else { return }
             do {
                 let (itemContent, credential) = try await generateAuthorizationCredential(request)
-                onSuccess?(credential, itemContent)
+                onResult(.success((credential, itemContent)))
             } catch {
                 logger.error(error)
-                onFailure?(error)
+                onResult(.failure(error))
             }
         }
     }
 
     func handleAuthenticationFailure() {
         logger.info("Failed to locally authenticate. Logging out.")
-        onFailure?(PassError.credentialProvider(.failedToAuthenticate))
+        onResult(.failure(PassError.credentialProvider(.failedToAuthenticate)))
     }
 
     func handleCancellation() {
-        onFailure?(PassError.credentialProvider(.userCancelled))
+        onResult(.failure(PassError.credentialProvider(.userCancelled)))
     }
 }

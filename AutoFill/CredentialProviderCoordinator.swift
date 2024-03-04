@@ -165,18 +165,19 @@ private extension CredentialProviderCoordinator {
     }
 
     func handleAuthenticateAndAutofill(_ request: AutoFillRequest) {
-        let viewModel = LockedCredentialViewModel(request: request)
-        viewModel.onFailure = { [weak self] error in
+        let viewModel = LockedCredentialViewModel(request: request) { [weak self] result in
             guard let self else { return }
-            handle(error: error)
-        }
-        viewModel.onSuccess = { [weak self] credential, itemContent in
-            Task { [weak self] in
-                guard let self else { return }
-                try? await completeAutoFill(quickTypeBar: false,
-                                            identifiers: request.serviceIdentifiers,
-                                            credential: credential,
-                                            itemContent: itemContent)
+            switch result {
+            case let .success((credential, itemContent)):
+                Task { [weak self] in
+                    guard let self else { return }
+                    try? await completeAutoFill(quickTypeBar: false,
+                                                identifiers: request.serviceIdentifiers,
+                                                credential: credential,
+                                                itemContent: itemContent)
+                }
+            case let .failure(error):
+                handle(error: error)
             }
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
