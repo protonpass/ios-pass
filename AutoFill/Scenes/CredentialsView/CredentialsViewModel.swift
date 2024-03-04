@@ -82,6 +82,7 @@ final class CredentialsViewModel: ObservableObject {
     @Published private(set) var planType: Plan.PlanType?
     @Published var query = ""
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
+    @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
     @Published var isShowingConfirmationAlert = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -91,6 +92,7 @@ final class CredentialsViewModel: ObservableObject {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
@@ -98,6 +100,7 @@ final class CredentialsViewModel: ObservableObject {
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPassword) private var autoFillPassword
     @LazyInjected(\AutoFillUseCaseContainer
         .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
+    @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
@@ -112,7 +115,11 @@ final class CredentialsViewModel: ObservableObject {
     weak var delegate: CredentialsViewModelDelegate?
 
     var domain: String {
-        passkeyRequestParams?.relyingPartyIdentifier ?? urls.first?.host() ?? ""
+        if let passkeyRequestParams {
+            passkeyRequestParams.relyingPartyIdentifier
+        } else {
+            urls.first?.host() ?? ""
+        }
     }
 
     init(serviceIdentifiers: [ASCredentialServiceIdentifier],
@@ -201,20 +208,11 @@ extension CredentialsViewModel {
                 return
             }
             do {
-                // Check if given URL is valid before proposing "associate & autofill"
-                if canEditItem(vaults: vaults, item: item),
-                   notMatchedItemInformation == nil,
-                   let schemeAndHost = urls.first?.schemeAndHost,
-                   !schemeAndHost.isEmpty,
-                   let notMatchedItem = results.notMatchedItems
-                   .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
-                    notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
-                                                                              url: schemeAndHost)
-                    return
+                if let passkeyRequestParams {
+                    try await handlePasskeySelection(for: item, params: passkeyRequestParams)
+                } else {
+                    try await handlePasswordSelection(for: item, with: results)
                 }
-
-                // Given URL is not valid or item is matched, in either case just autofill normally
-                try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers)
             } catch {
                 logger.error(error)
                 state = .error(error)
@@ -238,6 +236,54 @@ extension CredentialsViewModel {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+}
+
+private extension CredentialsViewModel {
+    func handlePasswordSelection(for item: any ItemIdentifiable,
+                                 with results: CredentialsFetchResult) async throws {
+        // Check if given URL is valid and user has edit right before proposing "associate & autofill"
+        if notMatchedItemInformation == nil,
+           canEditItem(vaults: vaults, item: item),
+           let schemeAndHost = urls.first?.schemeAndHost,
+           !schemeAndHost.isEmpty,
+           let notMatchedItem = results.notMatchedItems
+           .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
+            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
+                                                                      url: schemeAndHost)
+            return
+        }
+
+        // Given URL is not valid or item is matched, in either case just autofill normally
+        try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers)
+    }
+
+    func handlePasskeySelection(for item: any ItemIdentifiable,
+                                params: PasskeyRequestParametersProtocol) async throws {
+        guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                        itemId: item.itemId),
+            let loginData = itemContent.loginItem else {
+            throw PassError.itemNotFound(item)
+        }
+
+        guard !loginData.passkeys.isEmpty else {
+            throw PassError.passkey(.noPasskeys(item))
+        }
+
+        if loginData.passkeys.count == 1,
+           let passkey = loginData.passkeys.first {
+            // Item has only 1 passkey => autofill right away
+            try await autoFillPasskey(passkey,
+                                      itemContent: itemContent,
+                                      identifiers: serviceIdentifiers,
+                                      params: params)
+        } else {
+            // Item has more than 1 passkey => ask user to choose
+            selectPasskeySheetInformation = .init(itemContent: itemContent,
+                                                  identifiers: serviceIdentifiers,
+                                                  params: params,
+                                                  passkeys: loginData.passkeys)
+        }
     }
 }
 

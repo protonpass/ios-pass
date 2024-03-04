@@ -1,6 +1,6 @@
 //
 // Rust+Alias.swift
-// Proton Pass - Created on 27/02/2024.
+// Proton Pass - Created on 01/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.

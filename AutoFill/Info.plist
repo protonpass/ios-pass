@@ -10,12 +10,14 @@
 	<string>AUTOFILL_EXTENSION</string>
 	<key>NSExtension</key>
 	<dict>
+		<key>ASCredentialProviderExtensionShowsConfigurationUI</key>
+		<true/>
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>ASCredentialProviderExtensionCapabilities</key>
 			<dict>
 				<key>ProvidesPasskeys</key>
-				<true/>
+				<false/>
 				<key>ProvidesPasswords</key>
 				<true/>
 				<key>ShowsConfigurationUI</key>

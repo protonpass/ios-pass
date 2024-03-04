@@ -24,16 +24,71 @@ import Combine
 import Entities
 import Foundation
 
+enum LoginItemsViewModelState: Equatable {
+    case idle
+    case searching
+    case searchResults([ItemSearchResult])
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle),
+             (.searching, .searching),
+             (.searchResults, .searchResults):
+            true
+        default:
+            false
+        }
+    }
+}
+
 @MainActor
 final class LoginItemsViewModel: ObservableObject {
+    @Published private(set) var state: LoginItemsViewModelState = .idle
+    @Published var query = ""
+
     private let searchableItems: [SearchableItem]
     let uiModels: [ItemUiModel]
 
-    @Published var query = ""
+    private var lastTask: Task<Void, Never>?
+    private var cancellables = Set<AnyCancellable>()
 
-    init(searchableItems: [SearchableItem],
-         uiModels: [ItemUiModel]) {
+    init(searchableItems: [SearchableItem], uiModels: [ItemUiModel]) {
         self.searchableItems = searchableItems
         self.uiModels = uiModels
+        setUp()
+    }
+}
+
+private extension LoginItemsViewModel {
+    func setUp() {
+        $query
+            .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] term in
+                guard let self else { return }
+                doSearch(term: term)
+            }
+            .store(in: &cancellables)
+    }
+
+    func doSearch(term: String) {
+        guard state != .searching else { return }
+        guard !term.isEmpty else {
+            state = .idle
+            return
+        }
+
+        lastTask?.cancel()
+        lastTask = Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            state = .searching
+            let results = searchableItems.result(for: term)
+            state = .searchResults(results)
+        }
     }
 }
