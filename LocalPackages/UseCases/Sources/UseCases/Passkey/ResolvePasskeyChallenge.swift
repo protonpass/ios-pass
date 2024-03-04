@@ -25,26 +25,30 @@ import Foundation
 import PassRustCore
 
 public protocol ResolvePasskeyChallengeUseCase: Sendable {
-    func execute(request: PasskeyCredentialRequest,
+    func execute(serviceIdentifier: String,
+                 clientDataHash: Data,
                  passkey: Data) throws -> AuthenticateWithPasskeyIosResponse
 }
 
 public extension ResolvePasskeyChallengeUseCase {
-    func callAsFunction(request: PasskeyCredentialRequest,
+    func callAsFunction(serviceIdentifier: String,
+                        clientDataHash: Data,
                         passkey: Data) throws -> AuthenticateWithPasskeyIosResponse {
-        try execute(request: request, passkey: passkey)
+        try execute(serviceIdentifier: serviceIdentifier,
+                    clientDataHash: clientDataHash,
+                    passkey: passkey)
     }
 }
 
 public final class ResolvePasskeyChallenge: ResolvePasskeyChallengeUseCase {
     public init() {}
 
-    public func execute(request: PasskeyCredentialRequest,
+    public func execute(serviceIdentifier: String,
+                        clientDataHash: Data,
                         passkey: Data) throws -> AuthenticateWithPasskeyIosResponse {
-        let serviceIdentifier = request.serviceIdentifier.identifier
         let resolveRequest = AuthenticateWithPasskeyIosRequest(serviceIdentifier: serviceIdentifier,
                                                                passkey: passkey,
-                                                               clientDataHash: request.clientDataHash)
+                                                               clientDataHash: clientDataHash)
         return try PasskeyManager().resolveChallengeForIos(request: resolveRequest)
     }
 }

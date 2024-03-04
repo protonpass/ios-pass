@@ -29,7 +29,6 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         injectDefaultCryptoImplementation()
         AutoFillDataContainer.shared.register(context: extensionContext)
     }
