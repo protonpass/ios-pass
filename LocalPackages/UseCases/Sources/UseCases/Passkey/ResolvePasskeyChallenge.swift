@@ -41,7 +41,11 @@ public extension ResolvePasskeyChallengeUseCase {
 }
 
 public final class ResolvePasskeyChallenge: ResolvePasskeyChallengeUseCase {
-    public init() {}
+    private let managerProvider: any PasskeyManagerProvider
+
+    public init(managerProvider: any PasskeyManagerProvider) {
+        self.managerProvider = managerProvider
+    }
 
     public func execute(serviceIdentifier: String,
                         clientDataHash: Data,
@@ -49,6 +53,6 @@ public final class ResolvePasskeyChallenge: ResolvePasskeyChallengeUseCase {
         let resolveRequest = AuthenticateWithPasskeyIosRequest(serviceIdentifier: serviceIdentifier,
                                                                passkey: passkey,
                                                                clientDataHash: clientDataHash)
-        return try PasskeyManager().resolveChallengeForIos(request: resolveRequest)
+        return try managerProvider.providePasskeyManager().resolveChallengeForIos(request: resolveRequest)
     }
 }
