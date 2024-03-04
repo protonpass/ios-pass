@@ -159,12 +159,14 @@ extension CredentialsViewModel {
                 if case .error = state {
                     state = .loading
                 }
-                let plan = try await accessRepository.getPlan()
-                planType = plan.planType
+                async let plan = try await accessRepository.getPlan()
+                async let vaults = try await shareRepository.getVaults()
+                async let results = try await fetchCredentials(identifiers: serviceIdentifiers,
+                                                               params: passkeyRequestParams)
+                planType = try await plan.planType
+                self.vaults = try await vaults
+                self.results = try await results
 
-                vaults = try await shareRepository.getVaults()
-                results = try await fetchCredentials(identifiers: serviceIdentifiers,
-                                                     params: passkeyRequestParams)
                 state = .idle
                 logger.info("Loaded log in items")
             } catch {
