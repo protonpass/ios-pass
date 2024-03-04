@@ -1,6 +1,6 @@
 //
 //
-// MainSecurityCenterView.swift
+// SecurityCenterViewModel.swift
 // Proton Pass - Created on 29/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,26 +20,37 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import SwiftUI
+import Entities
+import Factory
+import Foundation
 
-struct MainSecurityCenterView: View {
-    @StateObject var viewModel: MainSecurityCenterViewModel
+@MainActor
+final class SecurityCenterViewModel: ObservableObject, Sendable {
+    @Published private(set) var weakPasswordsLogins: [PasswordStrength: [ItemContent]]?
+    @Published private(set) var loading = false
 
-    var body: some View {
-        NavigationView {
-            VStack {
-                Spacer()
-                Text("Add some view here")
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .navigationViewStyle(.stack)
+    private let getWeakPasswordLogins = resolve(\UseCasesContainer.getAllWeakPasswordLogins)
+
+    init() {
+        setUp()
+    }
+
+    func loadContent() async {
+        loading = true
+        defer { loading = false }
+        do {
+            weakPasswordsLogins = try await getWeakPasswordLogins()
+        } catch {}
     }
 }
 
-// struct MainSecurityCenterView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainSecurityCenterView()
-//    }
-// }
+private extension SecurityCenterViewModel {
+    func setUp() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await loadContent()
+        }
+    }
+}
