@@ -304,11 +304,15 @@ extension SharedUseCasesContainer {
 // MARK: Passkey
 
 extension SharedUseCasesContainer {
+    var passkeyManagerProvider: Factory<PasskeyManagerProvider> {
+        self { PasskeyManagerProviderImpl() }
+    }
+
     var createPasskey: Factory<CreatePasskeyUseCase> {
-        self { CreatePasskey() }
+        self { CreatePasskey(managerProvider: self.passkeyManagerProvider()) }
     }
 
     var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
-        self { ResolvePasskeyChallenge() }
+        self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
     }
 }
