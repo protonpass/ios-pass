@@ -108,6 +108,10 @@ public struct ProtonPassItemV1_Passkey {
 
   public var note: String = String()
 
+  public var credentialID: Data = Data()
+
+  public var userHandle: Data = Data()
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
@@ -525,6 +529,8 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     8: .standard(proto: "user_id"),
     9: .standard(proto: "create_time"),
     10: .same(proto: "note"),
+    11: .standard(proto: "credential_id"),
+    12: .standard(proto: "user_handle"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -543,6 +549,8 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
       case 8: try { try decoder.decodeSingularBytesField(value: &self.userID) }()
       case 9: try { try decoder.decodeSingularUInt32Field(value: &self.createTime) }()
       case 10: try { try decoder.decodeSingularStringField(value: &self.note) }()
+      case 11: try { try decoder.decodeSingularBytesField(value: &self.credentialID) }()
+      case 12: try { try decoder.decodeSingularBytesField(value: &self.userHandle) }()
       default: break
       }
     }
@@ -579,6 +587,12 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     if !self.note.isEmpty {
       try visitor.visitSingularStringField(value: self.note, fieldNumber: 10)
     }
+    if !self.credentialID.isEmpty {
+      try visitor.visitSingularBytesField(value: self.credentialID, fieldNumber: 11)
+    }
+    if !self.userHandle.isEmpty {
+      try visitor.visitSingularBytesField(value: self.userHandle, fieldNumber: 12)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -593,6 +607,8 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     if lhs.userID != rhs.userID {return false}
     if lhs.createTime != rhs.createTime {return false}
     if lhs.note != rhs.note {return false}
+    if lhs.credentialID != rhs.credentialID {return false}
+    if lhs.userHandle != rhs.userHandle {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
