@@ -49,10 +49,15 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
     }
 
     func execute() async throws -> ([SearchableItem], [ItemUiModel]) {
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let vaults = try await shareRepository.getVaults()
-        let items = try await itemRepositiry.getActiveLogInItems()
-        let plan = try await accessRepository.getPlan()
+        async let getSymmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        async let getVaults = try await shareRepository.getVaults()
+        async let getActiveLogInItems = try await itemRepositiry.getActiveLogInItems()
+        async let getPlan = try await accessRepository.getPlan()
+
+        let symmetricKey = try await getSymmetricKey
+        let vaults = try await getVaults
+        let items = try await getActiveLogInItems
+        let plan = try await getPlan
 
         var searchableItems = [SearchableItem]()
         var includedItems = [SymmetricallyEncryptedItem]()
