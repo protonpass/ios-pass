@@ -361,3 +361,13 @@ extension UseCasesContainer {
         self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
     }
 }
+
+// MARK: - Security
+
+extension UseCasesContainer {
+    var getAllWeakPasswordLogins: Factory<GetAllWeakPasswordLoginsUseCase> {
+        self { GetAllWeakPasswordLogins(itemRepository: self.itemRepository,
+                                        getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
+        }
+    }
+}
