@@ -61,7 +61,7 @@ struct PasskeyCredentialsView: View {
             }
         }
         .theme(preferences.theme)
-        .showSpinner(viewModel.isLoading)
+        .showSpinner(viewModel.isCreatingPasskey)
         .alert("Create passkey",
                isPresented: $viewModel.isShowingAssociationConfirmation,
                actions: {
