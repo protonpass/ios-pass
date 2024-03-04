@@ -42,7 +42,7 @@ public extension [Vault] {
         }
         var oldestOwned: Vault?
         var secondOldest: Vault?
-        for vault in self where vault.shareRole != .read {
+        for vault in self {
             if oldestOwned == nil, vault.isOwner {
                 oldestOwned = vault
             } else {

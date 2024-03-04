@@ -1,7 +1,7 @@
 //
-// TextExtensions.swift
-// Proton Pass - Created on 09/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// PasskeyFailureReason.swift
+// Proton Pass - Created on 29/02/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,15 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import SwiftUI
+import Foundation
 
-public extension Text {
-    init(_ texts: [Text]) {
-        self.init(verbatim: "")
-        for text in texts {
-            // swiftlint:disable:next shorthand_operator
-            self = self + text
+public enum PasskeyFailureReason: CustomDebugStringConvertible, Sendable {
+    case noPasskeys(any ItemIdentifiable)
+
+    public var debugDescription: String {
+        switch self {
+        case let .noPasskeys(item):
+            "Item has no passkeys \(item.debugDescription)"
         }
     }
 }
