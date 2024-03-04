@@ -1,3 +1,12 @@
+## Version 1.9.1
+Improvements:
+- Made alias addresses searchable
+
+Others:
+- Updated protobuf models & bumped item content format version from 2 to 3
+- Do not dismiss search page when selecting results
+- Fixed free users can not autofill from shared vaults
+
 ## Version 1.9.0
 Features:
 - Added support for "Set up verification codes"
