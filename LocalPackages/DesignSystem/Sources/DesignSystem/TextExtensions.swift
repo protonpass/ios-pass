@@ -22,7 +22,7 @@ import SwiftUI
 
 public extension Text {
     init(_ texts: [Text]) {
-        self.init("")
+        self.init(verbatim: "")
         for text in texts {
             // swiftlint:disable:next shorthand_operator
             self = self + text
