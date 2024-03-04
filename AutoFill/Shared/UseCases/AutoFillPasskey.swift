@@ -27,14 +27,14 @@ protocol AutoFillPasskeyUseCase: Sendable {
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: PasskeyRequestParametersProtocol) async throws
+                 params: any PasskeyRequestParametersProtocol) async throws
 }
 
 extension AutoFillPasskeyUseCase {
     func callAsFunction(_ passkey: Passkey,
                         itemContent: ItemContent,
                         identifiers: [ASCredentialServiceIdentifier],
-                        params: PasskeyRequestParametersProtocol) async throws {
+                        params: any PasskeyRequestParametersProtocol) async throws {
         try await execute(passkey,
                           itemContent: itemContent,
                           identifiers: identifiers,
@@ -55,7 +55,7 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: PasskeyRequestParametersProtocol) async throws {
+                 params: any PasskeyRequestParametersProtocol) async throws {
         guard #available(iOS 17, *) else {
             assertionFailure("Should be called on iOS 17 and above")
             return
