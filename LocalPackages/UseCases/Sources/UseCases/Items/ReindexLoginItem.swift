@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-#if canImport(AuthenticationServices)
 import AuthenticationServices
 import Client
 import Core
@@ -61,57 +60,57 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
         }
 
         // First we remove existing indexed credentials
-        let oldPasswordCredentials = data.urls.map { PasswordCredentialIdentity(shareId: item.shareId,
-                                                                                itemId: item.item.itemID,
-                                                                                username: data.username,
-                                                                                url: $0,
-                                                                                lastUseTime: item.item
-                                                                                    .lastUseTime ?? 0) }
+        let oldPasswords = data.urls.map { CredentialIdentity.password(.init(shareId: item.shareId,
+                                                                             itemId: item.item.itemID,
+                                                                             username: data.username,
+                                                                             url: $0,
+                                                                             lastUseTime: item.item
+                                                                                 .lastUseTime ?? 0)) }
 
-        let oldCredentials = oldPasswordCredentials.map { CredentialIdentity.password($0) }
-        try await manager.remove(credentials: oldCredentials)
+        try await manager.remove(credentials: oldPasswords)
 
         // Then we insert updated credentials
         let givenUrls = identifiers.compactMap(mapServiceIdentifierToUrl.callAsFunction)
         let parser = try DomainParser()
-        let passwords = data.urls.map { url -> PasswordCredentialIdentity in
-            let isMatched = givenUrls.map { givenUrl -> Bool in
-                guard let url = URL(string: url) else {
-                    return false
-                }
-                let result = URLUtils.Matcher.compare(url, givenUrl, domainParser: parser)
-                return switch result {
-                case .matched:
-                    true
-                case .notMatched:
-                    false
-                }
-            }
-            .contains(true)
 
-            let lastUseTime = if isMatched {
-                Int64(lastUseTime.timeIntervalSince1970)
-            } else {
-                item.item.lastUseTime ?? 0
-            }
+        var passwords = [CredentialIdentity]()
+        if !data.username.isEmpty, !data.password.isEmpty {
+            passwords = data.urls.map { url -> CredentialIdentity in
+                let isMatched = givenUrls.map { givenUrl -> Bool in
+                    guard let url = URL(string: url) else {
+                        return false
+                    }
+                    let result = URLUtils.Matcher.compare(url, givenUrl, domainParser: parser)
+                    return switch result {
+                    case .matched:
+                        true
+                    case .notMatched:
+                        false
+                    }
+                }
+                .contains(true)
 
-            return .init(shareId: item.shareId,
-                         itemId: item.itemId,
-                         username: data.username,
-                         url: url,
-                         lastUseTime: lastUseTime)
+                let lastUseTime = if isMatched {
+                    Int64(lastUseTime.timeIntervalSince1970)
+                } else {
+                    item.item.lastUseTime ?? 0
+                }
+
+                return CredentialIdentity.password(.init(shareId: item.shareId,
+                                                         itemId: item.itemId,
+                                                         username: data.username,
+                                                         url: url,
+                                                         lastUseTime: lastUseTime))
+            }
         }
 
-        let passkeys = data.passkeys.map { PasskeyCredentialIdentity(shareId: item.shareId,
-                                                                     itemId: item.itemId,
-                                                                     relyingPartyIdentifier: $0.rpID,
-                                                                     userName: $0.userName,
-                                                                     userHandle: $0.userHandle,
-                                                                     credentialId: $0.credentialID) }
+        let passkeys = data.passkeys.map { CredentialIdentity.passkey(.init(shareId: item.shareId,
+                                                                            itemId: item.itemId,
+                                                                            relyingPartyIdentifier: $0.rpID,
+                                                                            userName: $0.userName,
+                                                                            userHandle: $0.userHandle,
+                                                                            credentialId: $0.credentialID)) }
 
-        let credentials = passwords.map { CredentialIdentity.password($0) } + passkeys
-            .map { CredentialIdentity.passkey($0) }
-        try await manager.insert(credentials: credentials)
+        try await manager.insert(credentials: passwords + passkeys)
     }
 }
-#endif
