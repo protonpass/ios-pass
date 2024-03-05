@@ -82,7 +82,8 @@ struct ItemsTabView: View {
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },
                            label: {
-                               TextBanner("The app version is not supported anymore, please update your app.")
+                               // swiftlint:disable:next line_length
+                               TextBanner("Your current version of the app is no longer supported. Please update to the latest version.")
                                    .padding()
                            })
                 }
