@@ -174,15 +174,20 @@ public extension LocalItemDatasource {
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws {
         let taskContext = newTaskContext(type: .fetch)
-        for item in lastUseItems {
-            let fetchRequest = ItemEntity.fetchRequest()
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "itemID = %@", item.itemID)
-            ])
-            if let fetchedItem = try await execute(fetchRequest: fetchRequest,
-                                                   context: taskContext).first {
-                fetchedItem.lastUseTime = Int64(item.lastUseTime)
+        try taskContext.performAndWait {
+            for item in lastUseItems {
+                let fetchRequest: NSFetchRequest<ItemEntity> = ItemEntity.fetchRequest()
+                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "shareID = %@", shareId),
+                    NSPredicate(format: "itemID = %@", item.itemID)
+                ])
+                let results = try taskContext.fetch(fetchRequest)
+                if let fetchedItem = results.first {
+                    fetchedItem.lastUseTime = Int64(item.lastUseTime)
+                }
+            }
+            if taskContext.hasChanges {
+                try taskContext.save()
             }
         }
     }
