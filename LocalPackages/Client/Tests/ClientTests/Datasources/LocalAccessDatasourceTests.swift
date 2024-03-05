@@ -49,7 +49,8 @@ extension LocalAccessDatasourceTests {
                                              aliasLimit: .random(in: 1...100),
                                              totpLimit: .random(in: 1...100)),
                                  pendingInvites: 1,
-                                 waitingNewUserInvites: 2)
+                                 waitingNewUserInvites: 2,
+                                 minVersionUpgrade: nil)
         // When
         try await sut.upsert(access: givenAccess, userId: givenUserId)
         let retrievedAccess1 = try await sut.getAccess(userId: givenUserId)
@@ -67,7 +68,8 @@ extension LocalAccessDatasourceTests {
                                                aliasLimit: nil,
                                                totpLimit: nil),
                                    pendingInvites: 3,
-                                   waitingNewUserInvites: 4)
+                                   waitingNewUserInvites: 4,
+                                   minVersionUpgrade: nil)
 
         // When
         try await sut.upsert(access: updatedAccess, userId: givenUserId)
