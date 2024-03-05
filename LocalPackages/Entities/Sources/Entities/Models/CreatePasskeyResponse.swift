@@ -61,3 +61,21 @@ public struct CreatePasskeyResponse: Hashable {
         self.attestationObject = attestationObject
     }
 }
+
+public extension CreatePasskeyResponse {
+    var toPasskey: Passkey {
+        var passkey = Passkey()
+        passkey.keyID = keyId
+        passkey.content = self.passkey
+        passkey.domain = domain
+        passkey.rpID = rpId ?? ""
+        passkey.rpName = rpName
+        passkey.userName = userName
+        passkey.userDisplayName = userDisplayName
+        passkey.userID = userId
+        passkey.createTime = UInt32(Date.now.timeIntervalSince1970)
+        passkey.credentialID = credentialId
+        passkey.userHandle = userHandle ?? .init()
+        return passkey
+    }
+}

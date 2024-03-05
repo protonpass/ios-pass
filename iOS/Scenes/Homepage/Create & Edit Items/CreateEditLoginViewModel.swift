@@ -60,7 +60,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
 
-    @Published private(set) var passkeyGenerator: PasskeyGenerator?
+    @Published private(set) var passkeyRequest: PasskeyCredentialRequest?
+    private var passkeyResponse: CreatePasskeyResponse?
 
     /// Proton account email address
     let emailAddress: String
@@ -112,9 +113,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
         case let .create(_, type):
             if case let .login(title, url, note, totpUri, _, request) = type {
-                if let request {
-                    passkeyGenerator = .init(request: request)
-                }
+                passkeyRequest = request
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
                 if let totpUri {
@@ -157,7 +156,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                                                 editedUri: totpUri)
             var passkeys = passkeys
             if let newPasskey = try newPasskey() {
-                passkeys.append(.from(newPasskey))
+                passkeys.append(newPasskey.toPasskey)
             }
             let logInData = ItemContentData.login(.init(username: username,
                                                         password: password,
@@ -177,7 +176,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func newPasskey() throws -> CreatePasskeyResponse? {
-        try passkeyGenerator?.getPasskey(createPasskey: createPasskey)
+        if let passkeyRequest, passkeyResponse == nil {
+            passkeyResponse = try createPasskey(passkeyRequest)
+        }
+        return passkeyResponse
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
