@@ -34,7 +34,11 @@ public extension CreatePasskeyUseCase {
 }
 
 public final class CreatePasskey: CreatePasskeyUseCase {
-    public init() {}
+    private let managerProvider: any PasskeyManagerProvider
+
+    public init(managerProvider: any PasskeyManagerProvider) {
+        self.managerProvider = managerProvider
+    }
 
     public func execute(_ request: PasskeyCredentialRequest) throws -> Entities.CreatePasskeyResponse {
         let supportedAlgorithms = request.supportedAlgorithms.map { Int64($0.rawValue) }
@@ -44,6 +48,24 @@ public final class CreatePasskey: CreatePasskeyUseCase {
                                                     userHandle: request.userHandle,
                                                     clientDataHash: request.clientDataHash,
                                                     supportedAlgorithms: supportedAlgorithms)
-        return try PasskeyManager().generateIosPasskey(request: createRequest)
+        let response = try managerProvider.manager.generateIosPasskey(request: createRequest)
+        return .from(response)
+    }
+}
+
+private extension Entities.CreatePasskeyResponse {
+    static func from(_ response: CreatePasskeyIosResponse) -> Self {
+        .init(passkey: response.passkey,
+              keyId: response.keyId,
+              domain: response.domain,
+              rpId: response.rpId,
+              rpName: response.rpName,
+              userName: response.userName,
+              userDisplayName: response.userDisplayName,
+              userId: response.userId,
+              credentialId: response.credentialId,
+              clientDataHash: response.clientDataHash,
+              userHandle: response.userHandle,
+              attestationObject: response.attestationObject)
     }
 }

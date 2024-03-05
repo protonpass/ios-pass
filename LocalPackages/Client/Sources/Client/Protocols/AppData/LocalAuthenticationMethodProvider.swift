@@ -1,6 +1,6 @@
 //
-// Rust+Alias.swift
-// Proton Pass - Created on 01/03/2024.
+// LocalAuthenticationMethodProvider.swift
+// Proton Pass - Created on 04/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import PassRustCore
+import Entities
 
-public typealias CreatePasskeyResponse = CreatePasskeyIosResponse
+public protocol LocalAuthenticationMethodProvider: Sendable {
+    var localAuthenticationMethod: LocalAuthenticationMethod { get }
+}

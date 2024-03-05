@@ -32,7 +32,7 @@ enum PasskeyCredentialsViewModelState {
 @MainActor
 final class PasskeyCredentialsViewModel: ObservableObject {
     @Published private(set) var state: PasskeyCredentialsViewModelState = .loading
-    @Published private(set) var isLoading = false
+    @Published private(set) var isCreatingPasskey = false
     @Published var isShowingAssociationConfirmation = false
 
     var selectedItem: (any TitledItemIdentifiable)? {
@@ -72,10 +72,10 @@ extension PasskeyCredentialsViewModel {
             return
         }
 
-        defer { isLoading = false }
+        defer { isCreatingPasskey = false }
 
         do {
-            isLoading = true
+            isCreatingPasskey = true
             try await createAndAssociatePasskey(item: selectedItem, request: request)
         } catch {
             state = .error(error)
