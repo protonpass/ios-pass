@@ -39,23 +39,23 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     private let generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
-    private let preferences: Preferences
+    private let localAuthenticationMethodProvider: LocalAuthenticationMethodProvider
 
     init(credentialProvider: any CredentialProvider,
          generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
          completeAutoFill: any CompleteAutoFillUseCase,
-         preferences: Preferences) {
+         localAuthenticationMethodProvider: any LocalAuthenticationMethodProvider) {
         self.credentialProvider = credentialProvider
         self.generateAuthorizationCredential = generateAuthorizationCredential
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
-        self.preferences = preferences
+        self.localAuthenticationMethodProvider = localAuthenticationMethodProvider
     }
 
     func execute(_ request: AutoFillRequest) async throws {
         guard credentialProvider.isAuthenticated,
-              preferences.localAuthenticationMethod == .none else {
+              localAuthenticationMethodProvider.localAuthenticationMethod == .none else {
             cancelAutoFill(reason: .userInteractionRequired)
             return
         }

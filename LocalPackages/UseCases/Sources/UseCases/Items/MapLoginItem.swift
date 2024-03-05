@@ -23,7 +23,7 @@ import Entities
 
 /// A login item can have multiple associated URLs while the OS expects a single URL per item,
 /// so we need to make a separate entry for each URL in the credential database.
-/// This use case map a login item into multiple `AutoFillCredential`
+/// This use case map a login item into multiple `CredentialIdentity`
 public protocol MapLoginItemUseCase: Sendable {
     func execute(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity]
 }
@@ -47,20 +47,23 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
             throw PassError.credentialProvider(.notLogInItem)
         }
 
-        let passwords = data.urls.map { PasswordCredentialIdentity(shareId: itemContent.shareId,
-                                                                   itemId: itemContent.item.itemID,
-                                                                   username: data.username,
-                                                                   url: $0,
-                                                                   lastUseTime: itemContent.item.lastUseTime ?? 0)
+        var passwords = [CredentialIdentity]()
+        if !data.username.isEmpty, !data.password.isEmpty {
+            passwords = data.urls.map { CredentialIdentity.password(.init(shareId: itemContent.shareId,
+                                                                          itemId: itemContent.item.itemID,
+                                                                          username: data.username,
+                                                                          url: $0,
+                                                                          lastUseTime: itemContent.item
+                                                                              .lastUseTime ?? 0)) }
         }
 
-        let passkeys = data.passkeys.map { PasskeyCredentialIdentity(shareId: itemContent.shareId,
-                                                                     itemId: itemContent.itemId,
-                                                                     relyingPartyIdentifier: $0.rpID,
-                                                                     userName: $0.userName,
-                                                                     userHandle: $0.userHandle,
-                                                                     credentialId: $0.credentialID) }
+        let passkeys = data.passkeys.map { CredentialIdentity.passkey(.init(shareId: itemContent.shareId,
+                                                                            itemId: itemContent.itemId,
+                                                                            relyingPartyIdentifier: $0.rpID,
+                                                                            userName: $0.userName,
+                                                                            userHandle: $0.userHandle,
+                                                                            credentialId: $0.credentialID)) }
 
-        return passwords.map { CredentialIdentity.password($0) } + passkeys.map { CredentialIdentity.passkey($0) }
+        return passwords + passkeys
     }
 }
