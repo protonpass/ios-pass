@@ -262,13 +262,13 @@ private struct ItemsTabsSkeleton: View {
         VStack {
             HStack {
                 SkeletonBlock()
-                    .frame(width: kSearchBarHeight)
+                    .frame(width: DesignConstant.searchBarHeight)
                     .clipShape(Circle())
 
                 SkeletonBlock()
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .frame(height: kSearchBarHeight)
+            .frame(height: DesignConstant.searchBarHeight)
             .shimmering()
 
             HStack {

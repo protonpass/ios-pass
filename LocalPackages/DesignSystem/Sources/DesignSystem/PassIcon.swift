@@ -72,6 +72,7 @@ public extension PassIcon {
     static let passCreditCardOneStripe = Self.icon(named: "PassCreditCardOneStripe")
     static let passCreditCardTwoStripes = Self.icon(named: "PassCreditCardTwoStripes")
     static let passIcon = Self.icon(named: "PassIcon")
+    static let passkey = Self.icon(named: "Passkey")
     static let passTextLogo = Self.icon(named: "PassTextLogo")
     static let pinAngled = Self.icon(named: "PinAngled")
     static let pinAngledFilled = Self.icon(named: "PinAngledFilled")

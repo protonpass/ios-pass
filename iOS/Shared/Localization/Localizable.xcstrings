@@ -6169,6 +6169,16 @@
         }
       }
     },
+    "A passkey will be created for the \"%@\" login." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A passkey will be created for the \"%@\" login."
+          }
+        }
+      }
+    },
     "Access level" : {
       "comment" : "Used in sharing context",
       "extractionState" : "manual",
@@ -19986,6 +19996,16 @@
         }
       }
     },
+    "Create passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create passkey"
+          }
+        }
+      }
+    },
     "Create vault" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -22857,6 +22877,18 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Disable Proton Sentinel"
+          }
+        }
+      }
+    },
+    "Domain" : {
+      "comment" : "Passkey's domain",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domain"
           }
         }
       }
@@ -32671,6 +32703,18 @@
         }
       }
     },
+    "Key" : {
+      "comment" : "Passkey's key ID",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Key"
+          }
+        }
+      }
+    },
     "Last 30 days" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -41822,6 +41866,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chủ sở hữu"
+          }
+        }
+      }
+    },
+    "Passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkey"
           }
         }
       }
@@ -51320,6 +51374,16 @@
         }
       }
     },
+    "Select Passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Passkey"
+          }
+        }
+      }
+    },
     "Selected vaults" : {
       "localizations" : {
         "be" : {
@@ -59825,6 +59889,7 @@
       }
     },
     "Try searching using different spelling or keywords" : {
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {

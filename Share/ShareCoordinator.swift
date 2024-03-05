@@ -150,7 +150,7 @@ private extension ShareCoordinator {
                     presentSuffixSelection(selection)
                 case .vaultSelection:
                     presentVaultSelector()
-                case let .createItem(_, type: type):
+                case let .createItem(_, type, _):
                     createEditItemViewModelDidCreateItem(type: type)
                 default:
                     break

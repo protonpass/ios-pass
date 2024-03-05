@@ -21,13 +21,17 @@
 import SwiftUI
 
 public extension View {
-    func roundedDetailSection(color: UIColor = PassColor.inputBorderNorm) -> some View {
-        overlay(RoundedRectangle(cornerRadius: 16)
-            .stroke(color.toColor, lineWidth: 1))
+    func roundedDetailSection(backgroundColor: UIColor = .clear,
+                              borderColor: UIColor = PassColor.inputBorderNorm) -> some View {
+        background(backgroundColor.toColor)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16)
+                .stroke(borderColor.toColor, lineWidth: 1))
     }
 
-    func roundedEditableSection(borderColor: UIColor = PassColor.inputBorderNorm) -> some View {
-        background(PassColor.inputBackgroundNorm.toColor)
+    func roundedEditableSection(backgroundColor: UIColor = PassColor.inputBackgroundNorm,
+                                borderColor: UIColor = PassColor.inputBorderNorm) -> some View {
+        background(backgroundColor.toColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(RoundedRectangle(cornerRadius: 16)
                 .stroke(borderColor.toColor, lineWidth: 1))
@@ -51,5 +55,10 @@ public extension Text {
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
         font(.body.italic()).foregroundColor(PassColor.textWeak.toColor)
+    }
+
+    func navigationTitleText() -> Text {
+        font(.callout.bold())
+            .foregroundColor(Color(uiColor: PassColor.textNorm))
     }
 }
