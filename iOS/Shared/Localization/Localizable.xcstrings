@@ -57144,16 +57144,6 @@
         }
       }
     },
-    "The app version is not supported anymore, please update your app." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The app version is not supported anymore, please update your app."
-          }
-        }
-      }
-    },
     "The item will be moved to the new vault" : {
       "comment" : "Used in share from item detail page flow. The users are offered the option to create a new vault on the fly and share that new vault. This message makes it clear that once the new vault is created, the current item will be migrated to that new vault.",
       "extractionState" : "manual",
@@ -69869,6 +69859,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Your current document will revert to the version from %@"
+          }
+        }
+      }
+    },
+    "Your current version of the app is no longer supported. Please update to the latest version." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current version of the app is no longer supported. Please update to the latest version."
           }
         }
       }
