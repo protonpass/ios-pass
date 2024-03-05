@@ -159,10 +159,10 @@ extension CredentialsViewModel {
                 if case .error = state {
                     state = .loading
                 }
-                async let plan = try await accessRepository.getPlan()
-                async let vaults = try await shareRepository.getVaults()
-                async let results = try await fetchCredentials(identifiers: serviceIdentifiers,
-                                                               params: passkeyRequestParams)
+                async let plan = accessRepository.getPlan()
+                async let vaults = shareRepository.getVaults()
+                async let results = fetchCredentials(identifiers: serviceIdentifiers,
+                                                     params: passkeyRequestParams)
                 planType = try await plan.planType
                 self.vaults = try await vaults
                 self.results = try await results
