@@ -63,10 +63,10 @@ final class FetchCredentials: FetchCredentialsUseCase {
 
     func execute(identifiers: [ASCredentialServiceIdentifier],
                  params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult {
-        async let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        async let plan = try await accessRepository.getPlan()
-        async let vaults = try await shareRepository.getVaults()
-        async let encryptedItems = try await itemRepository.getActiveLogInItems()
+        async let symmetricKey = symmetricKeyProvider.getSymmetricKey()
+        async let plan = accessRepository.getPlan()
+        async let vaults = shareRepository.getVaults()
+        async let encryptedItems = itemRepository.getActiveLogInItems()
         try await logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
         if let params {
