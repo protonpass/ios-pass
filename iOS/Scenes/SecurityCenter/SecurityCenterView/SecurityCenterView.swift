@@ -134,7 +134,6 @@ struct SecurityCenterView: View {
 
         mainContent
             .animation(.default, value: viewModel.weakPasswordsLogins)
-            .padding(.horizontal, DesignConstant.sectionPadding)
             .navigationTitle("Security Center")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
@@ -161,26 +160,73 @@ struct SecurityCenterView: View {
 
 private extension SecurityCenterView {
     var mainContent: some View {
-        VStack {
-            if let weakPasswords = viewModel.weakPasswordsLogins {
-                warningRow(rowType: .warning, title: "test", subTitle: "test", info: "9")
-                warningRow(rowType: .danger, title: "test", subTitle: "test", info: "9")
-                warningRow(rowType: .success, title: "test", subTitle: "test", info: "9")
-                warningRow(rowType: .info, title: "test", subTitle: "test", info: "9")
-//
-//                dangerRow()
-//                successRow()
-//                infoRow()
+        LazyVStack {
+            if let breachedEmails = viewModel.breachedEmails {
+//                weakPasswordsRow(weakPasswords)
             }
+            if let breachedPasswords = viewModel.breachedPasswords {
+//                weakPasswordsRow(weakPasswords)
+            }
+            if let weakPasswords = viewModel.weakPasswordsLogins {
+                weakPasswordsRow(weakPasswords)
+            }
+            if let reusedPasswords = viewModel.reusedPasswordsLogins {
+                reusedPasswordsRow(reusedPasswords)
+            }
+            missing2FARow(viewModel.missing2FA)
+            excludedItemsRow(viewModel.excludedItemsForMonitoring)
             Spacer()
         }
+        .padding(DesignConstant.sectionPadding)
+    }
+}
+
+private extension SecurityCenterView {
+    @ViewBuilder
+    func weakPasswordsRow(_ weakPasswords: [PasswordStrength: [ItemContent]]) -> some View {
+        securityCenterRow(rowType: weakPasswords.totalElementsCount > 0 ? .warning : .success,
+                          title: "Weak Passwords",
+                          subTitle: weakPasswords
+                              .totalElementsCount > 0 ? "Create strong passwords" :
+                              "you don't have any weak passwords",
+                          info: "\(weakPasswords.totalElementsCount)")
+    }
+}
+
+private extension SecurityCenterView {
+    @ViewBuilder
+    func reusedPasswordsRow(_ reusedPasswords: [Int: [ItemContent]]) -> some View {
+        securityCenterRow(rowType: reusedPasswords.totalElementsCount > 0 ? .warning : .success,
+                          title: "Reused passwords",
+                          subTitle: "Create unique passwords",
+                          info: "\(reusedPasswords.totalElementsCount)")
+    }
+}
+
+private extension SecurityCenterView {
+    @ViewBuilder
+    func missing2FARow(_ missing2FA: [ItemContent]) -> some View {
+        securityCenterRow(rowType: !missing2FA.isEmpty ? .warning : .success,
+                          title: "Missing two-factor authentication",
+                          subTitle: !missing2FA
+                              .isEmpty ? "Increase your security" : "You're security is on point",
+                          info: "\(missing2FA.count)")
+    }
+}
+
+private extension SecurityCenterView {
+    @ViewBuilder
+    func excludedItemsRow(_ excludedItems: [ItemContent]) -> some View {
+        securityCenterRow(rowType: .info, title: "Excluded items",
+                          subTitle: "These items remain at risk",
+                          info: "\(excludedItems.count)")
     }
 }
 
 // MARK: - Rows
 
 private extension SecurityCenterView {
-    func warningRow(rowType: SecureRowType, title: String, subTitle: String, info: String) -> some View {
+    func securityCenterRow(rowType: SecureRowType, title: String, subTitle: String, info: String) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             if let iconName = rowType.icon {
                 Image(systemName: iconName)
@@ -204,145 +250,16 @@ private extension SecurityCenterView {
 
             Text(info)
                 .padding(.vertical, 4)
-                .padding(.horizontal, 11) // Add padding around the text to ensure the capsule has space
-                .foregroundColor(rowType.infoForeground) // Set text color
-                .background(rowType.infoBackground) // Set the background color of the capsule
+                .padding(.horizontal, 11)
+                .foregroundColor(rowType.infoForeground)
+                .background(rowType.infoBackground)
                 .clipShape(Capsule())
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .roundedDetailSection(backgroundColor: rowType.background,
                               borderColor: rowType.border)
     }
-
-    func dangerRow() -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            Image(systemName: "exclamationmark.square.fill")
-                .resizable()
-                .renderingMode(.template)
-                .scaledToFit()
-                .foregroundColor(PassColor.passwordInteractionNormMajor1.toColor)
-                .frame(width: 20)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Warning")
-                    .font(.body)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text("subwarning")
-                    .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
-            }
-            .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
-            .contentShape(Rectangle())
-
-            Text("9")
-                .padding(.vertical, 4)
-                .padding(.horizontal, 11) // Add padding around the text to ensure the capsule has space
-                .foregroundColor(PassColor.passwordInteractionNormMajor2.toColor) // Set text color
-                .background(PassColor.passwordInteractionNormMinor1
-                    .toColor) // Set the background color of the capsule
-                .clipShape(Capsule())
-        }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: PassColor.passwordInteractionNormMinor2,
-                              borderColor: PassColor.passwordInteractionNormMinor1)
-    }
-
-    func successRow() -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            Image(systemName: "exclamationmark.square.fill")
-                .resizable()
-                .renderingMode(.template)
-                .scaledToFit()
-                .foregroundColor(PassColor.cardInteractionNormMajor1.toColor)
-                .frame(width: 20)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Warning")
-                    .font(.body)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text("subwarning")
-                    .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
-            }
-            .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
-            .contentShape(Rectangle())
-
-            Text("9")
-                .padding(.vertical, 4)
-                .padding(.horizontal, 11) // Add padding around the text to ensure the capsule has space
-                .foregroundColor(PassColor.cardInteractionNormMajor2.toColor) // Set text color
-                .background(PassColor.cardInteractionNormMinor1.toColor) // Set the background color of the capsule
-                .clipShape(Capsule())
-        }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .roundedDetailSection(borderColor: PassColor.cardInteractionNormMinor1)
-    }
-
-    func infoRow() -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Warning")
-                    .font(.body)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text("subwarning")
-                    .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
-            }
-            .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
-            .contentShape(Rectangle())
-
-            Text("9")
-                .padding(.vertical, 4)
-                .padding(.horizontal, 11) // Add padding around the text to ensure the capsule has space
-                .foregroundColor(PassColor.textNorm.toColor) // Set text color
-                .background(PassColor.backgroundMedium.toColor) // Set the background color of the capsule
-                .clipShape(Capsule())
-        }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: PassColor.backgroundNorm,
-                              borderColor: PassColor.inputBorderNorm)
-    }
 }
-
-// var color: Color {
-//    switch self {
-//    case .vulnerable:
-//        PassColor.signalDanger.toColor
-//    case .weak:
-//        PassColor.signalWarning.toColor
-//    case .strong:
-//        PassColor.signalSuccess.toColor
-//    }
-// }
-
-// func infoRow(title: LocalizedStringKey,
-//             infos: String?,
-//             icon: UIImage,
-//             shouldDisplay: Bool = true) -> some View {
-//    HStack(spacing: DesignConstant.sectionPadding) {
-//        ItemDetailSectionIcon(icon: icon,
-//                              color: PassColor.textWeak)
-//
-//        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//            Text(title)
-//                .font(.body)
-//                .foregroundStyle(PassColor.textNorm.toColor)
-//            if let infos {
-//                Text(infos)
-//                    .font(.footnote)
-//                    .foregroundColor(PassColor.textWeak.toColor)
-//            }
-//        }
-//        .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
-//        .contentShape(Rectangle())
-//        if shouldDisplay {
-//            ItemDetailSectionIcon(icon: IconProvider.chevronRight,
-//                                  color: PassColor.textWeak)
-//        }
-//    }
-//    .padding(.horizontal, DesignConstant.sectionPadding)
-//    .roundedDetailSection()
-// }
 
 // struct MainSecurityCenterView_Previews: PreviewProvider {
 //    static var previews: some View {
