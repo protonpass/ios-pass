@@ -1,7 +1,7 @@
 //
-// ASPasswordCredentialIdentity+Extensions.swift
-// Proton Pass - Created on 01/08/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PasskeyFailureReason.swift
+// Proton Pass - Created on 29/02/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,14 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import AuthenticationServices
+import Foundation
 
-extension ASPasswordCredentialIdentity {
-    convenience init(_ credential: AutoFillCredential) throws {
-        try self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
-                      user: credential.username,
-                      recordIdentifier: credential.ids.serializeBase64())
-        rank = Int(credential.lastUseTime)
+public enum PasskeyFailureReason: CustomDebugStringConvertible, Sendable {
+    case noPasskeys(any ItemIdentifiable)
+
+    public var debugDescription: String {
+        switch self {
+        case let .noPasskeys(item):
+            "Item has no passkeys \(item.debugDescription)"
+        }
     }
 }
