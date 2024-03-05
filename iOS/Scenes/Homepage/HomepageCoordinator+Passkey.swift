@@ -1,7 +1,7 @@
 //
-// Text+NavigationTitleText.swift
-// Proton Pass - Created on 09/05/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// HomepageCoordinator+Passkey.swift
+// Proton Pass - Created on 23/02/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,11 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import SwiftUI
 
-extension Text {
-    func navigationTitleText() -> Text {
-        font(.callout.bold())
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
+extension HomepageCoordinator {
+    func presentPasskeyDetailView(for passkey: Passkey) {
+        let vc = UIHostingController(rootView: PasskeyDetailView(passkey: passkey))
+        vc.setDetentType(.custom(CGFloat(380)), parentViewController: rootViewController)
+        present(vc)
     }
 }

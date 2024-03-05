@@ -20,13 +20,14 @@
 
 @preconcurrency import AuthenticationServices
 import Core
+import Entities
 
 public protocol CredentialManagerProtocol: Sendable {
     /// Whether users had choosen Proton Pass as AutoFill Provider
     var isAutoFillEnabled: Bool { get async }
 
-    func remove(credentials: [AutoFillCredential]) async throws
-    func insert(credentials: [AutoFillCredential]) async throws
+    func remove(credentials: [CredentialIdentity]) async throws
+    func insert(credentials: [CredentialIdentity]) async throws
     func removeAllCredentials() async throws
 }
 
@@ -48,7 +49,7 @@ extension CredentialManager: CredentialManagerProtocol {
         }
     }
 
-    public func remove(credentials: [AutoFillCredential]) async throws {
+    public func remove(credentials: [CredentialIdentity]) async throws {
         logger.trace("Trying to remove \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
@@ -56,16 +57,15 @@ extension CredentialManager: CredentialManagerProtocol {
             return
         }
 
-        let domainCredentials = try credentials.map { try ASPasswordCredentialIdentity($0) }
         if state.supportsIncrementalUpdates {
             logger.trace("Non empty credential store. Removing \(credentials.count) credentials.")
-            try await store.removeCredentialIdentities(domainCredentials)
+            try await store.performAction(.remove, on: credentials)
         } else {
             logger.trace("Empty credential store. Nothing to remove.")
         }
     }
 
-    public func insert(credentials: [AutoFillCredential]) async throws {
+    public func insert(credentials: [CredentialIdentity]) async throws {
         logger.trace("Trying to insert \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
@@ -73,14 +73,12 @@ extension CredentialManager: CredentialManagerProtocol {
             return
         }
 
-        let domainCredentials = try credentials.map { try ASPasswordCredentialIdentity($0) }
-
         if state.supportsIncrementalUpdates {
             logger.trace("Non empty credential store. Inserting \(credentials.count) credentials.")
-            try await store.saveCredentialIdentities(domainCredentials)
+            try await store.performAction(.save, on: credentials)
         } else {
             logger.trace("Empty credential store. Inserting \(credentials.count) credentials.")
-            try await store.replaceCredentialIdentities(with: domainCredentials)
+            try await store.performAction(.replace, on: credentials)
         }
         logger.trace("Inserted \(credentials.count) credentials.")
     }

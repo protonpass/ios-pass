@@ -27,14 +27,14 @@ import UseCases
 protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
-                 credential: ASPasswordCredential,
+                 credential: any ASAuthorizationCredential,
                  itemContent: ItemContent) async throws
 }
 
 extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
                         identifiers: [ASCredentialServiceIdentifier],
-                        credential: ASPasswordCredential,
+                        credential: any ASAuthorizationCredential,
                         itemContent: ItemContent) async throws {
         try await execute(quickTypeBar: quickTypeBar,
                           identifiers: identifiers,
@@ -78,7 +78,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
      */
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
-                 credential: ASPasswordCredential,
+                 credential: any ASAuthorizationCredential,
                  itemContent: ItemContent) async throws {
         defer {
             resetFactory()
@@ -97,9 +97,20 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             await logManager.saveAllLogs()
             try await copyTotpTokenAndNotify(itemContent: itemContent,
                                              clipboardManager: clipboardManager)
-            context.completeRequest(withSelectedCredential: credential) { [weak self] _ in
+            let completion: (Bool) -> Void = { [weak self] _ in
                 guard let self else { return }
                 update(item: itemContent, identifiers: identifiers)
+            }
+
+            if let passwordCredential = credential as? ASPasswordCredential {
+                context.completeRequest(withSelectedCredential: passwordCredential,
+                                        completionHandler: completion)
+            } else if #available(iOS 17, *),
+                      let passkeyCredential = credential as? ASPasskeyAssertionCredential {
+                context.completeAssertionRequest(using: passkeyCredential,
+                                                 completionHandler: completion)
+            } else {
+                assertionFailure("Unsupported credential")
             }
         } catch {
             // Do nothing but only log the errors

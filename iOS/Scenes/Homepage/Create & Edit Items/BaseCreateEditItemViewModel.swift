@@ -57,7 +57,8 @@ enum ItemCreationType: Equatable, Hashable {
                url: String? = nil,
                note: String? = nil,
                totpUri: String? = nil,
-               autofill: Bool)
+               autofill: Bool,
+               passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
     case other
 }
 
@@ -147,6 +148,9 @@ class BaseCreateEditItemViewModel {
     func generateItemContent() -> ItemContentProtobuf? {
         fatalError("Must be overridden by subclasses")
     }
+
+    /// The new passkey associated with this item
+    func newPasskey() throws -> CreatePasskeyResponse? { nil }
 
     func saveButtonTitle() -> String {
         switch mode {
@@ -292,7 +296,9 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
-                        router.present(for: .createItem(item: createdItem, type: itemContentType()))
+                        try router.present(for: .createItem(item: createdItem,
+                                                            type: itemContentType(),
+                                                            createPasskeyResponse: newPasskey()))
                     }
 
                 case let .edit(oldItemContent):

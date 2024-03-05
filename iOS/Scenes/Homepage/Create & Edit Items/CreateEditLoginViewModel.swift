@@ -43,6 +43,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @Published private(set) var canAddOrEdit2FAURI = true
     @Published var title = ""
+    @Published private(set) var passkeys: [Passkey] = []
     @Published var username = ""
     @Published var password = ""
     @Published private(set) var passwordStrength: PasswordStrength?
@@ -58,7 +59,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var loading = false
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
-    private var passkeys: [Passkey] = []
+
+    @Published private(set) var passkeyRequest: PasskeyCredentialRequest?
+    private var passkeyResponse: CreatePasskeyResponse?
 
     /// Proton account email address
     let emailAddress: String
@@ -77,6 +80,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
+    private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
@@ -108,13 +112,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
 
         case let .create(_, type):
-            if case let .login(title, url, note, totpUri, _) = type {
-                self.title = title ?? ""
+            if case let .login(title, url, note, totpUri, _, request) = type {
+                passkeyRequest = request
+                self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
                 }
-                urls = [url ?? ""].map { .init(value: $0) }
+                urls = [url ?? request?.relyingPartyIdentifier ?? ""].map { .init(value: $0) }
             }
 
             // We only show upsell button when in create mode
@@ -136,7 +141,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func saveButtonTitle() -> String {
         guard case let .create(_, type) = mode,
-              case let .login(_, _, _, _, autofill) = type,
+              case let .login(_, _, _, _, autofill, _) = type,
               autofill else {
             return super.saveButtonTitle()
         }
@@ -149,6 +154,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
             let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
                                                                 editedUri: totpUri)
+            var passkeys = passkeys
+            if let newPasskey = try newPasskey() {
+                passkeys.append(newPasskey.toPasskey)
+            }
             let logInData = ItemContentData.login(.init(username: username,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
@@ -164,6 +173,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             totpUriErrorMessage = #localized("Invalid TOTP URI")
             return nil
         }
+    }
+
+    override func newPasskey() throws -> CreatePasskeyResponse? {
+        if let passkeyRequest, passkeyResponse == nil {
+            passkeyResponse = try createPasskey(passkeyRequest)
+        }
+        return passkeyResponse
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
@@ -296,6 +312,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return nil
         }
         return invalidURLs.isEmpty
+    }
+
+    func remove(passkey: Passkey) {
+        passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
 }
 

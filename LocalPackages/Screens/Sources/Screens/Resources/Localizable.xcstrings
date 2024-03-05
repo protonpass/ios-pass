@@ -1,6 +1,56 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Couldn't find \"%@\"" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't find \"%@\""
+          }
+        }
+      }
+    },
+    "Couldn't find \"%@\" in Trash" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't find \"%@\" in Trash"
+          }
+        }
+      }
+    },
+    "Couldn't find \"%1$@\" in %2$@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't find \"%1$@\" in %2$@"
+          }
+        }
+      }
+    },
+    "Create login" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create login"
+          }
+        }
+      }
+    },
+    "Create passkey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create passkey"
+          }
+        }
+      }
+    },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "extractionState" : "manual",
@@ -1186,6 +1236,36 @@
         }
       }
     },
+    "Search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        }
+      }
+    },
+    "Search in all vaults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search in all vaults"
+          }
+        }
+      }
+    },
+    "Select an existing login or create a new one." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select an existing login or create a new one."
+          }
+        }
+      }
+    },
     "Sharing with up to 10 people" : {
       "comment" : "Used in the upselling screen to explain benefits",
       "extractionState" : "manual",
@@ -1448,6 +1528,16 @@
         }
       }
     },
+    "Sort By" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort By"
+          }
+        }
+      }
+    },
     "Suggestions" : {
       "comment" : "Title of suggested emails section when sharing",
       "extractionState" : "manual",
@@ -1576,6 +1666,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Suggestions"
+          }
+        }
+      }
+    },
+    "Try searching using different spelling or keywords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try searching using different spelling or keywords"
           }
         }
       }

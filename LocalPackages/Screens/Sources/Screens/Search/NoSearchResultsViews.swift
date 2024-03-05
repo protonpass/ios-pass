@@ -22,10 +22,14 @@ import DesignSystem
 import Macro
 import SwiftUI
 
-struct NoSearchResultsInAllVaultView: View {
+public struct NoSearchResultsInAllVaultView: View {
     let query: String
 
-    var body: some View {
+    public init(query: String) {
+        self.query = query
+    }
+
+    public var body: some View {
         VStack {
             Text("Couldn't find \"\(query)\"")
                 .fontWeight(.semibold)
@@ -41,12 +45,18 @@ struct NoSearchResultsInAllVaultView: View {
     }
 }
 
-struct NoSearchResultsInPreciseVaultView: View {
+public struct NoSearchResultsInPreciseVaultView: View {
     let query: String
     let vaultName: String
     let action: () -> Void
 
-    var body: some View {
+    public init(query: String, vaultName: String, action: @escaping () -> Void) {
+        self.query = query
+        self.vaultName = vaultName
+        self.action = action
+    }
+
+    public var body: some View {
         VStack {
             Text(#localized("Couldn't find \"%1$@\" in %2$@", query, vaultName))
                 .fontWeight(.semibold)
@@ -71,10 +81,14 @@ struct NoSearchResultsInPreciseVaultView: View {
     }
 }
 
-struct NoSearchResultsInTrashView: View {
+public struct NoSearchResultsInTrashView: View {
     let query: String
 
-    var body: some View {
+    public init(query: String) {
+        self.query = query
+    }
+
+    public var body: some View {
         VStack {
             Text("Couldn't find \"\(query)\" in Trash")
                 .fontWeight(.semibold)
