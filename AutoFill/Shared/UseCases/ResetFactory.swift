@@ -37,5 +37,10 @@ final class ResetFactory: ResetFactoryUseCase {
 
     func execute() {
         SharedViewContainer.shared.reset()
+        SharedRepositoryContainer.shared.reset()
+        SharedToolingContainer.shared.reset()
+        SharedDataContainer.shared.reset()
+        AutoFillDataContainer.shared.reset()
+        AutoFillUseCaseContainer.shared.reset()
     }
 }

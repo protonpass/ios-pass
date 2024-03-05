@@ -54,7 +54,7 @@ let package = Package(name: "Entities",
                           // package depends on.
                           .target(name: "Entities",
                                   dependencies: [
-                                    .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+                                    .product(name: "SwiftProtobuf", package: "swift-protobuf")
                                   ],
                                   swiftSettings: swiftSettings),
                           .target(

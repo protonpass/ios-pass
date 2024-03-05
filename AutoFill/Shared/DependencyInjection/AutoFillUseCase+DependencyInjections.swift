@@ -46,6 +46,30 @@ private extension AutoFillUseCaseContainer {
     var context: ASCredentialProviderExtensionContext {
         AutoFillDataContainer.shared.context()
     }
+
+    var symmetricKeyProvider: any SymmetricKeyProvider {
+        SharedDataContainer.shared.symmetricKeyProvider()
+    }
+
+    var itemRepository: any ItemRepositoryProtocol {
+        SharedRepositoryContainer.shared.itemRepository()
+    }
+
+    var shareRepository: any ShareRepositoryProtocol {
+        SharedRepositoryContainer.shared.shareRepository()
+    }
+
+    var accessRepository: any AccessRepositoryProtocol {
+        SharedRepositoryContainer.shared.accessRepository()
+    }
+
+    var createPasskey: any CreatePasskeyUseCase {
+        SharedUseCasesContainer.shared.createPasskey()
+    }
+
+    var resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase {
+        SharedUseCasesContainer.shared.resolvePasskeyChallenge()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -59,6 +83,62 @@ extension AutoFillUseCaseContainer {
                                       generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
                                       notificationService: SharedServiceContainer.shared.notificationService(),
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
+    }
+
+    var fetchCredentials: Factory<FetchCredentialsUseCase> {
+        self { FetchCredentials(symmetricKeyProvider: self.symmetricKeyProvider,
+                                accessRepository: self.accessRepository,
+                                itemRepository: self.itemRepository,
+                                shareRepository: self.shareRepository,
+                                mapServiceIdentifierToURL: self.mapServiceIdentifierToURL(),
+                                logManager: self.logManager) }
+    }
+
+    var getItemsForPasskeyCreation: Factory<GetItemsForPasskeyCreationUseCase> {
+        self { GetItemsForPasskeyCreation(symmetricKeyProvider: self.symmetricKeyProvider,
+                                          shareRepository: self.shareRepository,
+                                          itemRepositiry: self.itemRepository,
+                                          accessRepository: self.accessRepository) }
+    }
+
+    var createAndAssociatePasskey: Factory<CreateAndAssociatePasskeyUseCase> {
+        self { CreateAndAssociatePasskey(itemRepository: self.itemRepository,
+                                         createPasskey: self.createPasskey,
+                                         updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
+                                         completePasskeyRegistration: self.completePasskeyRegistration()) }
+    }
+
+    var generateAuthorizationCredential: Factory<GenerateAuthorizationCredentialUseCase> {
+        self { GenerateAuthorizationCredential(itemRepository: self.itemRepository,
+                                               resolvePasskeyChallenge: self.resolvePasskeyChallenge) }
+    }
+
+    var completePasskeyRegistration: Factory<CompletePasskeyRegistrationUseCase> {
+        self { CompletePasskeyRegistration(context: self.context,
+                                           resetFactory: self.resetFactory()) }
+    }
+
+    var checkAndAutoFill: Factory<CheckAndAutoFillUseCase> {
+        self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
+                                generateAuthorizationCredential: self.generateAuthorizationCredential(),
+                                cancelAutoFill: self.cancelAutoFill(),
+                                completeAutoFill: self.completeAutoFill(),
+                                localAuthenticationMethodProvider: self.preferences) }
+    }
+
+    var autoFillPassword: Factory<AutoFillPasswordUseCase> {
+        self { AutoFillPassword(itemRepository: self.itemRepository,
+                                completeAutoFill: self.completeAutoFill()) }
+    }
+
+    var autoFillPasskey: Factory<AutoFillPasskeyUseCase> {
+        self { AutoFillPasskey(resolveChallenge: self.resolvePasskeyChallenge,
+                               completeAutoFill: self.completeAutoFill()) }
+    }
+
+    var associateUrlAndAutoFillPassword: Factory<AssociateUrlAndAutoFillPasswordUseCase> {
+        self { AssociateUrlAndAutoFillPassword(itemRepository: self.itemRepository,
+                                               completeAutoFill: self.completeAutoFill()) }
     }
 
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
@@ -87,7 +167,7 @@ extension AutoFillUseCaseContainer {
     }
 
     var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
-        self { UpdateLastUseTimeAndReindex(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
                                            reindexLoginItem: self.reindexLoginItem()) }
     }
 }

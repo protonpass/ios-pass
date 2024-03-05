@@ -36,7 +36,7 @@ extension DetailHistoryView {
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .padding(DesignConstant.sectionPadding)
-                    .roundedDetailSection(color: borderColor(for: \.name))
+                    .roundedDetailSection(borderColor: borderColor(for: \.name))
                 Spacer()
             }
 
@@ -44,7 +44,7 @@ extension DetailHistoryView {
 
             noteRow(item: itemContent)
                 .padding(DesignConstant.sectionPadding)
-                .roundedDetailSection(color: borderColor(for: \.note))
+                .roundedDetailSection(borderColor: borderColor(for: \.note))
         }
         .frame(maxWidth: .infinity)
         .padding()

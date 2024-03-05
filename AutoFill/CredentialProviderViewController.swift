@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Entities
 import Factory
 import ProtonCoreCryptoGoImplementation
 
@@ -28,7 +29,6 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         injectDefaultCryptoImplementation()
         AutoFillDataContainer.shared.register(context: extensionContext)
     }
@@ -38,36 +38,52 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         resetFactory()
     }
 
-    /*
-     Prepare your UI to list available credentials for the user to choose from. The items in
-     'serviceIdentifiers' describe the service the user is logging in to, so your extension can
-     prioritize the most relevant credentials in the list.
-     */
+    /// Can be removed onced dropped iOS 16
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        coordinator.start(with: serviceIdentifiers)
+        coordinator.start(mode: .showAllLogins(serviceIdentifiers, nil))
     }
 
-    /* Implement this method if your extension supports showing credentials in the QuickType bar.
-     When the user selects a credential from your app, this method will be called with the
-     ASPasswordCredentialIdentity your app has previously saved to the ASCredentialIdentityStore.
-     Provide the password by completing the extension request with the associated ASPasswordCredential.
-     If using the credential would require showing custom UI for authenticating the user, cancel
-     the request with error code ASExtensionError.userInteractionRequired. */
-
+    /// Can be removed onced dropped iOS 16
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.provideCredentialWithoutUserInteraction(for: credentialIdentity)
+        coordinator.start(mode: .checkAndAutoFill(.password(credentialIdentity)))
     }
 
-    /* Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
-     ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
-     UI and call this method. Show appropriate UI for authenticating the user then provide the password
-     by completing the extension request with the associated ASPasswordCredential. */
-
+    /// Can be removed onced dropped iOS 16
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)
+        coordinator.start(mode: .authenticateAndAutofill(.password(credentialIdentity)))
     }
 
+    /// Passkey-agnostic, must always implement this function
     override func prepareInterfaceForExtensionConfiguration() {
-        coordinator.configureExtension()
+        coordinator.start(mode: .configuration)
+    }
+}
+
+/* Other callbacks are superseded by these new callbacks on iOS 17 in the below extension */
+
+// MARK: Passkey support
+
+@available(iOSApplicationExtension 17.0, *)
+extension CredentialProviderViewController {
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
+                                        requestParameters: ASPasskeyCredentialRequestParameters) {
+        coordinator.start(mode: .showAllLogins(serviceIdentifiers, requestParameters))
+    }
+
+    override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
+        guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
+        coordinator.start(mode: .checkAndAutoFill(autoFillRequest))
+    }
+
+    override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
+        guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
+        coordinator.start(mode: .authenticateAndAutofill(autoFillRequest))
+    }
+
+    override func prepareInterface(forPasskeyRegistration registrationRequest: ASCredentialRequest) {
+        guard let passkeyCredentialRequest = registrationRequest.passkeyCredentialRequest else {
+            return
+        }
+        coordinator.start(mode: .passkeyRegistration(passkeyCredentialRequest))
     }
 }
