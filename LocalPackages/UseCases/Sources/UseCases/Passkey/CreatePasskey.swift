@@ -48,6 +48,25 @@ public final class CreatePasskey: CreatePasskeyUseCase {
                                                     userHandle: request.userHandle,
                                                     clientDataHash: request.clientDataHash,
                                                     supportedAlgorithms: supportedAlgorithms)
-        return try managerProvider.providePasskeyManager().generateIosPasskey(request: createRequest)
+        let manager = try managerProvider.providePasskeyManager()
+        let response = try manager.generateIosPasskey(request: createRequest)
+        return .from(response)
+    }
+}
+
+private extension Entities.CreatePasskeyResponse {
+    static func from(_ response: CreatePasskeyIosResponse) -> Self {
+        .init(passkey: response.passkey,
+              keyId: response.keyId,
+              domain: response.domain,
+              rpId: response.rpId,
+              rpName: response.rpName,
+              userName: response.userName,
+              userDisplayName: response.userDisplayName,
+              userId: response.userId,
+              credentialId: response.credentialId,
+              clientDataHash: response.clientDataHash,
+              userHandle: response.userHandle,
+              attestationObject: response.attestationObject)
     }
 }
