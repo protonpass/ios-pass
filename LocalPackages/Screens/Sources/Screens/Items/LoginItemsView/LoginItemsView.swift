@@ -98,11 +98,9 @@ private extension LoginItemsView {
                 .plainListRow()
                 .padding(.vertical)
 
-            if !viewModel.uiModels.isEmpty {
-                ForEach(viewModel.uiModels, id: \.id) { item in
-                    itemRow(item)
-                        .plainListRow()
-                }
+            ForEach(viewModel.uiModels) { item in
+                itemRow(item)
+                    .plainListRow()
             }
         }
         .listStyle(.plain)
@@ -111,7 +109,7 @@ private extension LoginItemsView {
 
     func searchResults(_ results: [ItemSearchResult]) -> some View {
         List {
-            ForEach(results, id: \.id) { result in
+            ForEach(results) { result in
                 searchResultRow(result)
                     .plainListRow()
                     .padding(.top, DesignConstant.sectionPadding)

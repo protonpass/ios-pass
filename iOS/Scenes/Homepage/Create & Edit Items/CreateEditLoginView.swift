@@ -314,7 +314,7 @@ private extension CreateEditLoginView {
 
     @ViewBuilder
     var readOnlyPasskeySection: some View {
-        if let request = viewModel.passkeyGenerator?.request {
+        if let request = viewModel.passkeyRequest {
             HStack(spacing: DesignConstant.sectionPadding) {
                 ItemDetailSectionIcon(icon: PassIcon.passkey)
 
