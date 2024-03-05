@@ -46,6 +46,11 @@ public enum Constants {
         public static let item = 3
         public static let vault = 1
     }
+
+    // swiftlint:disable:next type_name
+    public enum QA {
+        public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"
+    }
 }
 
 /// Links to KB articles or useful pages

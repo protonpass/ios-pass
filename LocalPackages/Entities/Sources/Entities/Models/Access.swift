@@ -25,10 +25,15 @@ public struct Access: Decodable, Equatable, Sendable {
     public let plan: Plan
     public let pendingInvites: Int
     public let waitingNewUserInvites: Int
+    public let minVersionUpgrade: String?
 
-    public init(plan: Plan, pendingInvites: Int, waitingNewUserInvites: Int) {
+    public init(plan: Plan,
+                pendingInvites: Int,
+                waitingNewUserInvites: Int,
+                minVersionUpgrade: String?) {
         self.plan = plan
         self.pendingInvites = pendingInvites
         self.waitingNewUserInvites = waitingNewUserInvites
+        self.minVersionUpgrade = minVersionUpgrade
     }
 }

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CoreData
 import Entities
 
@@ -46,6 +47,7 @@ extension AccessEntity {
 
     @NSManaged var pendingInvites: Int64
     @NSManaged var waitingNewUserInvites: Int64
+    @NSManaged var minVersionUpgrade: String
 }
 
 extension AccessEntity {
@@ -60,7 +62,8 @@ extension AccessEntity {
                         totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
         return .init(plan: plan,
                      pendingInvites: Int(pendingInvites),
-                     waitingNewUserInvites: Int(waitingNewUserInvites))
+                     waitingNewUserInvites: Int(waitingNewUserInvites),
+                     minVersionUpgrade: minVersionUpgrade.nilIfEmpty)
     }
 
     func hydrate(from access: Access, userId: String) {
@@ -77,5 +80,6 @@ extension AccessEntity {
 
         pendingInvites = Int64(access.pendingInvites)
         waitingNewUserInvites = Int64(access.waitingNewUserInvites)
+        minVersionUpgrade = access.minVersionUpgrade ?? ""
     }
 }
