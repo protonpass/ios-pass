@@ -185,7 +185,6 @@ public extension LocalItemDatasource {
                 fetchedItem.lastUseTime = Int64(item.lastUseTime)
             }
         }
-        try taskContext.save()
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
