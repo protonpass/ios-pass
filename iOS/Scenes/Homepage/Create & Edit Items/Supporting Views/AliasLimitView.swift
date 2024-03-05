@@ -26,10 +26,7 @@ struct AliasLimitView: View {
 
     var body: some View {
         // swiftlint:disable:next line_length
-        Text("You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription.")
-            .padding()
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
-            .background(Color(uiColor: backgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+        TextBanner("You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription.",
+                   backgroundColor: backgroundColor)
     }
 }
