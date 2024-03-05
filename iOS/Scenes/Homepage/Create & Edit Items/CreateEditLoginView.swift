@@ -32,6 +32,7 @@ struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
     @State private var isShowingDiscardAlert = false
     @Namespace private var usernameID
     @Namespace private var passwordID
@@ -217,7 +218,10 @@ private extension CreateEditLoginView {
         HStack {
             toolbarButton("Open camera",
                           image: IconProvider.camera,
-                          action: { viewModel.openCodeScanner() })
+                          action: {
+                              lastFocusedField = focusedField
+                              viewModel.openCodeScanner()
+                          })
 
             PassDivider()
 
@@ -504,7 +508,7 @@ private extension CreateEditLoginView {
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView { result in
-                switch focusedField {
+                switch lastFocusedField {
                 case .totp:
                     viewModel.handleScanResult(result)
                 case let .custom(model) where model?.customField.type == .totp:
