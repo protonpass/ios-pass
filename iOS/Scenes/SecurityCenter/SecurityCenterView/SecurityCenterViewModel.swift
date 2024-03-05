@@ -24,9 +24,21 @@ import Entities
 import Factory
 import Foundation
 
+extension Dictionary where Value: Collection {
+    var totalElementsCount: Int {
+        values.reduce(0) { $0 + $1.count }
+    }
+}
+
 @MainActor
 final class SecurityCenterViewModel: ObservableObject, Sendable {
     @Published private(set) var weakPasswordsLogins: [PasswordStrength: [ItemContent]]?
+    @Published private(set) var reusedPasswordsLogins: [Int: [ItemContent]]?
+    @Published private(set) var breachedPasswords: [Int: [ItemContent]]?
+    @Published private(set) var breachedEmails: [Int: [ItemContent]]?
+    @Published private(set) var missing2FA: [ItemContent] = []
+    @Published private(set) var excludedItemsForMonitoring: [ItemContent] = []
+
     @Published private(set) var loading = false
 
     private let getWeakPasswordLogins = resolve(\UseCasesContainer.getAllWeakPasswordLogins)
@@ -39,7 +51,9 @@ final class SecurityCenterViewModel: ObservableObject, Sendable {
         loading = true
         defer { loading = false }
         do {
-            weakPasswordsLogins = try await getWeakPasswordLogins()
+            async let weakPasswords = getWeakPasswordLogins()
+            let results = try await [weakPasswords]
+            weakPasswordsLogins = results.first
         } catch {}
     }
 }
