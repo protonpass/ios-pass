@@ -55,8 +55,9 @@ final class CheckAccessResponseTests: XCTestCase {
                                                        aliasLimit: 10,
                                                        totpLimit: 3),
                                            pendingInvites: 3,
-                                           waitingNewUserInvites: 0))
-        
+                                           waitingNewUserInvites: 0,
+                                           minVersionUpgrade: nil))
+
         // When
         let sut = try CheckAccessResponse.decode(from: string)
 
