@@ -22,13 +22,15 @@
 import PassRustCore
 
 public protocol PasskeyManagerProvider: Sendable {
-    func providePasskeyManager() throws -> any PasskeyManagerProtocol
+    var manager: any PasskeyManagerProtocol { get throws }
 }
 
 public final class PasskeyManagerProviderImpl: PasskeyManagerProvider {
     public init() {}
 
-    public func providePasskeyManager() throws -> any PasskeyManagerProtocol {
-        try PasskeyManager()
+    public var manager: any PasskeyManagerProtocol {
+        get throws {
+            try PasskeyManager()
+        }
     }
 }
