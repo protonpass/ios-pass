@@ -26,6 +26,9 @@ import SwiftUI
 struct QAFeaturesView: View {
     @Environment(\.dismiss) private var dismiss
 
+    @AppStorage(Constants.QA.forceDisplayUpgradeAppBanner)
+    private var displayUpgradeAppBanner = false
+
     var body: some View {
         let tintColor = Color(uiColor: PassColor.interactionNorm)
         NavigationView {
@@ -37,6 +40,9 @@ struct QAFeaturesView: View {
                     TelemetryEventsSection()
                     TrashItemsSection()
                     BannersSection()
+                    Toggle(isOn: $displayUpgradeAppBanner) {
+                        Text(verbatim: "Display upgrade app banner")
+                    }
                 }
             }
             .navigationTitle(Text(verbatim: "QA Features"))

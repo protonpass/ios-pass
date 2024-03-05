@@ -69863,6 +69863,16 @@
         }
       }
     },
+    "Your current version of the app is no longer supported. Please update to the latest version." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current version of the app is no longer supported. Please update to the latest version."
+          }
+        }
+      }
+    },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
       "extractionState" : "manual",
