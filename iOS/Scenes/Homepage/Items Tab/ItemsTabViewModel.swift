@@ -43,6 +43,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var pinnedItems: [ItemUiModel]?
+    @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
     @Published var isEditMode = false
     @Published var shouldShowSyncProgress = false
@@ -71,6 +72,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -96,6 +98,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         else { return }
         pinnedItems = Array(newPinnedItems.prefix(5))
     }
+
+    func openAppOnAppStore() {
+        router.navigate(to: .urlPage(urlString: Constants.appStoreUrl))
+    }
 }
 
 // MARK: - Private APIs
@@ -103,6 +109,16 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                showingUpgradeAppBanner = try await shouldDisplayUpgradeAppBanner()
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
 
         currentSelectedItems
             .receive(on: DispatchQueue.main)
