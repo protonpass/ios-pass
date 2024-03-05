@@ -1,7 +1,7 @@
 //
-// Access.swift
-// Proton Pass - Created on 16/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Collection+Extensions.swift
+// Proton Pass - Created on 05/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,19 +21,8 @@
 
 import Foundation
 
-public struct Access: Decodable, Equatable, Sendable {
-    public let plan: Plan
-    public let pendingInvites: Int
-    public let waitingNewUserInvites: Int
-    public let minVersionUpgrade: String?
-
-    public init(plan: Plan,
-                pendingInvites: Int,
-                waitingNewUserInvites: Int,
-                minVersionUpgrade: String?) {
-        self.plan = plan
-        self.pendingInvites = pendingInvites
-        self.waitingNewUserInvites = waitingNewUserInvites
-        self.minVersionUpgrade = minVersionUpgrade
+public extension Collection {
+    var nilIfEmpty: Self? {
+        isEmpty ? nil : self
     }
 }

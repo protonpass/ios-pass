@@ -144,6 +144,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "vaultLimit", on: sut, hasType: .integer64)
         verifyAttribute(named: "pendingInvites", on: sut, hasType: .integer64)
         verifyAttribute(named: "waitingNewUserInvites", on: sut, hasType: .integer64)
+        verifyAttribute(named: "minVersionUpgrade", on: sut, hasType: .string)
     }
 
     func testSpotlightVaultEntity() {
