@@ -79,7 +79,17 @@ struct ItemsTabView: View {
                                onRestore: { viewModel.restoreSelectedItems() },
                                onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() })
 
-                if !viewModel.banners.isEmpty, !viewModel.isEditMode {
+                if viewModel.showingUpgradeAppBanner {
+                    Button(action: { viewModel.openAppOnAppStore() },
+                           label: {
+                               TextBanner("The app version is not supported anymore, please update your app.")
+                                   .padding()
+                           })
+                }
+
+                if !viewModel.showingUpgradeAppBanner,
+                   !viewModel.banners.isEmpty,
+                   !viewModel.isEditMode {
                     InfoBannerViewStack(banners: viewModel.banners,
                                         dismiss: { viewModel.dismiss(banner: $0) },
                                         action: { viewModel.handleAction(banner: $0) })
@@ -120,6 +130,7 @@ struct ItemsTabView: View {
             .animation(.default, value: viewModel.banners.count)
             .animation(.default, value: viewModel.pinnedItems)
             .animation(.default, value: viewModel.isEditMode)
+            .animation(.default, value: viewModel.showingUpgradeAppBanner)
             .task {
                 await viewModel.loadPinnedItems()
             }
