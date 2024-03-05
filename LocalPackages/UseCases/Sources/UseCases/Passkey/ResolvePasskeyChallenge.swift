@@ -53,6 +53,6 @@ public final class ResolvePasskeyChallenge: ResolvePasskeyChallengeUseCase {
         let resolveRequest = AuthenticateWithPasskeyIosRequest(serviceIdentifier: serviceIdentifier,
                                                                passkey: passkey,
                                                                clientDataHash: clientDataHash)
-        return try managerProvider.providePasskeyManager().resolveChallengeForIos(request: resolveRequest)
+        return try managerProvider.manager.resolveChallengeForIos(request: resolveRequest)
     }
 }

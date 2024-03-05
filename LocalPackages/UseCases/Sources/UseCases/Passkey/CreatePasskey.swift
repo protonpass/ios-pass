@@ -48,8 +48,7 @@ public final class CreatePasskey: CreatePasskeyUseCase {
                                                     userHandle: request.userHandle,
                                                     clientDataHash: request.clientDataHash,
                                                     supportedAlgorithms: supportedAlgorithms)
-        let manager = try managerProvider.providePasskeyManager()
-        let response = try manager.generateIosPasskey(request: createRequest)
+        let response = try managerProvider.manager.generateIosPasskey(request: createRequest)
         return .from(response)
     }
 }
