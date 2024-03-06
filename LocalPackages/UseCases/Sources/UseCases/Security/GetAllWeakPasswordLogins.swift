@@ -21,7 +21,7 @@
 //
 
 import Client
-import Combine
+@preconcurrency import Combine
 import Entities
 
 public protocol GetAllWeakPasswordLoginsUseCase: Sendable {
@@ -68,4 +68,64 @@ private extension GetAllWeakPasswordLogins {
 
         return results
     }
+}
+
+
+public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
+    func execute(for type: SecurityWeakness) -> AnyPublisher<[PasswordStrength: [ItemUiModel]], Never>
+}
+
+public extension GetAllSecurityAffectedLoginsUseCase {
+    func callAsFunction(for type: SecurityWeakness) -> AnyPublisher<[PasswordStrength: [ItemUiModel]], Never> {
+        execute(for: type)
+    }
+}
+
+public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase {
+    private let securityCenterRepository: any SecurityCenterRepositoryProtocol
+    private let getPasswordStrength: any GetPasswordStrengthUseCase
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+//    private let stream: AnyCancellable<>
+    
+    public init(securityCenterRepository: any SecurityCenterRepositoryProtocol,
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                getPasswordStrength: any GetPasswordStrengthUseCase) {
+        self.securityCenterRepository = securityCenterRepository
+        self.getPasswordStrength = getPasswordStrength
+        self.symmetricKeyProvider = symmetricKeyProvider
+//        stream = securityCenterRepository.itemsWithSecurityIssues.eraseToAnyPublisher()
+    }
+
+    public  func execute(for type: SecurityWeakness) -> AnyPublisher<[PasswordStrength: [ItemUiModel]], Never> {
+       return securityCenterRepository.itemsWithSecurityIssues.map { items in
+           [:]
+        }.eraseToAnyPublisher()
+        
+//
+//        let logins = try await itemRepository.getAllItemContents().filter { $0.contentData.type == .login }
+//        return parseWeakPasswords(logins: logins)
+    }
+}
+
+private extension GetAllSecurityAffectedLogins {
+    func filterWeakPasswords(items:[SecurityAffectedItem], type: SecurityWeakness)/* -> [PasswordStrength: [ItemUiModel]]*/ {
+        let filteredItems = items.filter({ $0.weaknesses.contains(type) })
+    }
+//    func parseWeakPasswords(logins: [ItemContent]) -> [PasswordStrength: [ItemContent]] {
+//        var results: [PasswordStrength: [ItemContent]] = [:]
+//
+//        for login in logins {
+//            if let password = login.loginItem?.password,
+//               let strength = getPasswordStrength(password: password),
+//               strength != .strong {
+//                if results[strength] != nil {
+//                    results[strength]?.append(login)
+//                } else {
+//                    results[strength] = [login]
+//                }
+//            }
+//        }
+//
+//        return results
+//    }
 }

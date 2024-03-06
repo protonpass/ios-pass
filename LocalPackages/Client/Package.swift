@@ -46,6 +46,7 @@ let package = Package(name: "Client",
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro"),
+                          .package(name: "PassRustCore", path: "../PassRustCore"),
                           .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "19.0.0")
                       ],
                       targets: [
@@ -66,6 +67,7 @@ let package = Package(name: "Client",
                                       .product(name: "ProtonCoreServices", package: "protoncore"),
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "Entities", package: "Entities"),
+                                      .product(name: "PassRustCore", package: "PassRustCore"),
                                       .product(name: "Macro", package: "Macro")
                                   ],
                                   resources: [.process("Resources")],

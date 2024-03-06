@@ -176,25 +176,32 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         super.viewDidLoad()
         delegate = self
 
+        var controllers = [UIViewController]()
         let itemsTabViewController = UIHostingController(rootView: itemsTabView)
         itemsTabViewController.tabBarItem.image = HomepageTab.items.image
         itemsTabViewController.tabBarItem.accessibilityHint = HomepageTab.items.hint
 
+        controllers.append(itemsTabViewController)
+
         let dummyViewController = UIViewController()
         dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
         dummyViewController.tabBarItem.accessibilityHint = HomepageTab.itemCreation.hint
+        controllers.append(dummyViewController)
 
         let secureCenter = UIHostingController(rootView: mainSecurityCenterView)
         secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
         secureCenter.tabBarItem.accessibilityHint = HomepageTab.securityCenter.hint
+        controllers.append(secureCenter)
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = HomepageTab.profile.image
         profileTabViewController.tabBarItem.accessibilityHint = HomepageTab.profile.hint
         profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.identifier
         self.profileTabViewController = profileTabViewController
+        controllers.append(profileTabViewController)
 
-        viewControllers = [itemsTabViewController, dummyViewController, secureCenter, profileTabViewController]
+        viewControllers =
+            controllers // [itemsTabViewController, dummyViewController, secureCenter, profileTabViewController]
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
@@ -276,7 +283,7 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
         guard let viewControllers = tabBarController.viewControllers else { return false }
-        assert(viewControllers.count == 4)
+//        assert(viewControllers.count == 4)
 
         if viewController == viewControllers[HomepageTab.items.index] {
             homepageTabBarControllerDelegate?.selected(tab: HomepageTab.items)
