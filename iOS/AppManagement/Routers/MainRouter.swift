@@ -89,6 +89,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case editSpotlightSearchableVaults
     case editSpotlightVaults
     case passkeyDetail(Passkey)
+    case securityDetail(SecurityWeakness)
 }
 
 enum UIElementDisplay: Sendable {
