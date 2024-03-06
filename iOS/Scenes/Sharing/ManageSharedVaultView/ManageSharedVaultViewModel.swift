@@ -38,7 +38,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
     @Published private(set) var isBusinessUser = false
-    @Published var showContactSupportAlert = false
     @Published var newOwner: NewOwner?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
@@ -101,10 +100,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func shareWithMorePeople() {
-        if reachedLimit, isBusinessUser {
-            showContactSupportAlert = true
-            return
-        }
         setShareInviteVault(with: .existing(vault))
         router.present(for: .sharingFlow(.none))
     }
