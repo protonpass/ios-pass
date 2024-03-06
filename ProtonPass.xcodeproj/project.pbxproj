@@ -553,6 +553,8 @@
 		5BECDE442B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE432B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift */; };
 		5BECDE492B90EC900040FCA7 /* SecurityCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE472B90EC900040FCA7 /* SecurityCenterView.swift */; };
 		5BECDE4A2B90EC900040FCA7 /* SecurityCenterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE482B90EC900040FCA7 /* SecurityCenterViewModel.swift */; };
+		5BECDE4E2B97789A0040FCA7 /* DetailSecurityCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4C2B97789A0040FCA7 /* DetailSecurityCenterView.swift */; };
+		5BECDE4F2B97789A0040FCA7 /* DetailSecurityCenterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4D2B97789A0040FCA7 /* DetailSecurityCenterViewModel.swift */; };
 		5BF35D6A2B21F82900D3E297 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
 		5BF35D6C2B21FA4200D3E297 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
 		5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
@@ -989,6 +991,8 @@
 		5BECDE432B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+TabBar.swift"; sourceTree = "<group>"; };
 		5BECDE472B90EC900040FCA7 /* SecurityCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCenterView.swift; sourceTree = "<group>"; };
 		5BECDE482B90EC900040FCA7 /* SecurityCenterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCenterViewModel.swift; sourceTree = "<group>"; };
+		5BECDE4C2B97789A0040FCA7 /* DetailSecurityCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSecurityCenterView.swift; sourceTree = "<group>"; };
+		5BECDE4D2B97789A0040FCA7 /* DetailSecurityCenterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSecurityCenterViewModel.swift; sourceTree = "<group>"; };
 		5BF35D692B21F82900D3E297 /* Item+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+Extensions.swift"; sourceTree = "<group>"; };
 		5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pinnable+Extensions.swift"; sourceTree = "<group>"; };
 		5BFD5D052AE145E70025185B /* Screens */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Screens; path = LocalPackages/Screens; sourceTree = "<group>"; };
@@ -2171,6 +2175,7 @@
 		5BECDE452B90EC230040FCA7 /* SecurityCenter */ = {
 			isa = PBXGroup;
 			children = (
+				5BECDE4B2B9778610040FCA7 /* DetailSecurityCenterView */,
 				5BECDE462B90EC640040FCA7 /* SecurityCenterView */,
 			);
 			path = SecurityCenter;
@@ -2183,6 +2188,15 @@
 				5BECDE482B90EC900040FCA7 /* SecurityCenterViewModel.swift */,
 			);
 			path = SecurityCenterView;
+			sourceTree = "<group>";
+		};
+		5BECDE4B2B9778610040FCA7 /* DetailSecurityCenterView */ = {
+			isa = PBXGroup;
+			children = (
+				5BECDE4C2B97789A0040FCA7 /* DetailSecurityCenterView.swift */,
+				5BECDE4D2B97789A0040FCA7 /* DetailSecurityCenterViewModel.swift */,
+			);
+			path = DetailSecurityCenterView;
 			sourceTree = "<group>";
 		};
 		5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */ = {
@@ -3271,6 +3285,7 @@
 				354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
+				5BECDE4F2B97789A0040FCA7 /* DetailSecurityCenterViewModel.swift in Sources */,
 				35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */,
 				5B1092D72B56D5B4002621A4 /* CustomField+Extensions.swift in Sources */,
 				5B5DBF1B2B6961EE00F72F6C /* ItemContent+Extensions.swift in Sources */,
@@ -3295,6 +3310,7 @@
 				5BECDE4A2B90EC900040FCA7 /* SecurityCenterViewModel.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
+				5BECDE4E2B97789A0040FCA7 /* DetailSecurityCenterView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+Extensions.swift in Sources */,
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
