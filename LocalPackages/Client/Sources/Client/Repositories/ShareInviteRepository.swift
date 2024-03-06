@@ -77,6 +77,8 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
 
     func getInviteRecommendations(shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations
+
+    func checkAddresses(shareId: String, emails: [String]) async throws -> [String]
 }
 
 public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
@@ -193,6 +195,24 @@ public extension ShareInviteRepository {
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations {
         logger.trace("Getting invite recommendations for share \(shareId)")
         return try await remoteDataSource.getInviteRecommendations(shareId: shareId, query: query)
+    }
+
+    func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
+        // The endpoint accepts 10 addresses at max so we check in batch
+        try await withThrowingTaskGroup(of: [String].self, returning: [String].self) { [weak self] group in
+            guard let self else { return [] }
+            for batch in emails.chunked(into: 10) {
+                group.addTask {
+                    try await self.remoteDataSource.checkAddresses(shareId: shareId, emails: batch)
+                }
+            }
+
+            var acceptedAddress = [String]()
+            for try await batch in group {
+                acceptedAddress.append(contentsOf: batch)
+            }
+            return acceptedAddress
+        }
     }
 }
 
