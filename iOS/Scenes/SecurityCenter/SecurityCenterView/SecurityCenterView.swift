@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import DesignSystem
 import Entities
 import SwiftUI
@@ -102,18 +103,6 @@ enum SecureRowType {
             PassColor.backgroundMedium.toColor
         }
     }
-
-//    var icon: String? {
-//        switch self {
-//        case .danger:
-//        case .info:
-//        case .warning:
-//        case .success:
-//
-//        default:
-//            return nil
-//        }
-//    }
 }
 
 struct SecurityCenterView: View {
@@ -130,52 +119,29 @@ struct SecurityCenterView: View {
     }
 
     var body: some View {
-//            ScrollView {
-
         mainContent
-            .animation(.default, value: viewModel.weakPasswordsLogins)
+            .animation(.default, value: viewModel.weaknessAccounts)
             .navigationTitle("Security Center")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .showSpinner(viewModel.loading)
             .navigationStackEmbeded()
-//            }
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .navigationTitle("Security Center")
-//            .navigationBarTitleDisplayMode(.large)
-//            .background(PassColor.backgroundNorm.toColor)
     }
 }
-
-//    .animation(.default, value: viewModel.history)
-//    .padding(.horizontal, DesignConstant.sectionPadding)
-//    .navigationTitle("History")
-//    .toolbar { toolbarContent }
-//    .scrollViewEmbeded(maxWidth: .infinity)
-//    .background(PassColor.backgroundNorm.toColor)
-//    .showSpinner(viewModel.loading)
-//    .routingProvided
-//    .navigationStackEmbeded($path)
 
 private extension SecurityCenterView {
     var mainContent: some View {
         LazyVStack {
-            if let breachedEmails = viewModel.breachedEmails {
-//                weakPasswordsRow(weakPasswords)
+            if let weaknessAccounts = viewModel.weaknessAccounts {
+                breachedDataRows(weaknessAccounts: weaknessAccounts)
+                weakPasswordsRow(weaknessAccounts.weakPasswords)
+                reusedPasswordsRow(weaknessAccounts.reusedPasswords)
+                missing2FARow(weaknessAccounts.missing2FA)
+                excludedItemsRow(weaknessAccounts.excludedItems)
+                Spacer(minLength: 24)
+                lastUdpateInfo()
             }
-            if let breachedPasswords = viewModel.breachedPasswords {
-//                weakPasswordsRow(weakPasswords)
-            }
-            if let weakPasswords = viewModel.weakPasswordsLogins {
-                weakPasswordsRow(weakPasswords)
-            }
-            if let reusedPasswords = viewModel.reusedPasswordsLogins {
-                reusedPasswordsRow(reusedPasswords)
-            }
-            missing2FARow(viewModel.missing2FA)
-            excludedItemsRow(viewModel.excludedItemsForMonitoring)
-            Spacer()
         }
         .padding(DesignConstant.sectionPadding)
     }
@@ -183,81 +149,164 @@ private extension SecurityCenterView {
 
 private extension SecurityCenterView {
     @ViewBuilder
-    func weakPasswordsRow(_ weakPasswords: [PasswordStrength: [ItemContent]]) -> some View {
-        securityCenterRow(rowType: weakPasswords.totalElementsCount > 0 ? .warning : .success,
-                          title: "Weak Passwords",
-                          subTitle: weakPasswords
-                              .totalElementsCount > 0 ? "Create strong passwords" :
-                              "you don't have any weak passwords",
-                          info: "\(weakPasswords.totalElementsCount)")
+    func breachedDataRows(weaknessAccounts: WeaknessAccounts) -> some View {
+        VStack {
+            if viewModel.isFreeUser {
+                upsellRow(weaknessAccounts: weaknessAccounts)
+            } else {
+                breachedEmailsRow(weaknessAccounts.exposedPasswords, showAdvice: true)
+                breachedPasswordsRow(weaknessAccounts.exposedPasswords, showAdvice: true)
+            }
+        }
+    }
+
+    func upsellRow(weaknessAccounts: WeaknessAccounts) -> some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            Text("Data Breach Protection")
+                .font(.title)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .padding(.top, DesignConstant.sectionPadding)
+
+            VStack(spacing: DesignConstant.sectionPadding / 2) {
+                breachedEmailsRow(weaknessAccounts.exposedPasswords, showAdvice: false)
+                breachedPasswordsRow(weaknessAccounts.exposedPasswords, showAdvice: false)
+            }
+
+            Text("Your data appears in 10 data breaches, upgrade to see which ones.")
+                .font(.body)
+                .foregroundStyle(PassColor.textNorm.toColor)
+
+            CapsuleTextButton(title: "Enable data breach protection",
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNormMajor2,
+                              action: {})
+                .padding(.bottom, DesignConstant.sectionPadding)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+
+        .roundedDetailSection(backgroundColor: SecureRowType.danger.background,
+                              borderColor: SecureRowType.danger.border)
+    }
+
+    @ViewBuilder
+    func breachedPasswordsRow(_ breachedPasswords: Int, showAdvice: Bool) -> some View {
+        securityCenterRow(rowType: breachedPasswords > 0 ? .warning : .success,
+                          title: "Exposed passwords",
+                          subTitle: showAdvice ? "Requires immediate action" : nil,
+                          info: "\(breachedPasswords)",
+                          action: { viewModel.showSecurityWeakness(type: .exposedPassword) })
+    }
+
+    @ViewBuilder
+    func breachedEmailsRow(_ breachedEmails: Int, showAdvice: Bool) -> some View {
+        securityCenterRow(rowType: breachedEmails > 0 ? .warning : .success,
+                          title: "Exposed emails",
+                          subTitle: showAdvice ? "Requires immediate action" : nil,
+                          info: "\(breachedEmails)",
+                          action: { viewModel.showSecurityWeakness(type: .exposedEmail) })
     }
 }
 
 private extension SecurityCenterView {
     @ViewBuilder
-    func reusedPasswordsRow(_ reusedPasswords: [Int: [ItemContent]]) -> some View {
-        securityCenterRow(rowType: reusedPasswords.totalElementsCount > 0 ? .warning : .success,
+    func weakPasswordsRow(_ weakPasswords: Int) -> some View {
+        securityCenterRow(rowType: weakPasswords > 0 ? .warning : .success,
+                          title: "Weak Passwords",
+                          subTitle: weakPasswords > 0 ? "Create strong passwords" :
+                              "you don't have any weak passwords",
+                          info: "\(weakPasswords)",
+                          action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
+    }
+}
+
+private extension SecurityCenterView {
+    @ViewBuilder
+    func reusedPasswordsRow(_ reusedPasswords: Int) -> some View {
+        securityCenterRow(rowType: reusedPasswords > 0 ? .warning : .success,
                           title: "Reused passwords",
                           subTitle: "Create unique passwords",
-                          info: "\(reusedPasswords.totalElementsCount)")
+                          info: "\(reusedPasswords)",
+                          action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
     }
 }
 
 private extension SecurityCenterView {
     @ViewBuilder
-    func missing2FARow(_ missing2FA: [ItemContent]) -> some View {
-        securityCenterRow(rowType: !missing2FA.isEmpty ? .warning : .success,
+    func missing2FARow(_ missing2FA: Int) -> some View {
+        securityCenterRow(rowType: missing2FA > 0 ? .warning : .success,
                           title: "Missing two-factor authentication",
-                          subTitle: !missing2FA
-                              .isEmpty ? "Increase your security" : "You're security is on point",
-                          info: "\(missing2FA.count)")
+                          subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
+                          info: "\(missing2FA)",
+                          action: { viewModel.showSecurityWeakness(type: .missing2FA) })
     }
 }
 
 private extension SecurityCenterView {
     @ViewBuilder
-    func excludedItemsRow(_ excludedItems: [ItemContent]) -> some View {
-        securityCenterRow(rowType: .info, title: "Excluded items",
+    func excludedItemsRow(_ excludedItems: Int) -> some View {
+        securityCenterRow(rowType: .info,
+                          title: "Excluded items",
                           subTitle: "These items remain at risk",
-                          info: "\(excludedItems.count)")
+                          info: "\(excludedItems)",
+                          action: { viewModel.showSecurityWeakness(type: .excludedItems) })
+    }
+}
+
+private extension SecurityCenterView {
+    @ViewBuilder
+    func lastUdpateInfo(date: String = "Feb 14 2024, 09:41") -> some View {
+        VStack {
+            Text("Last Data Breach Protection Sync:")
+            Text(date)
+        }.font(.caption)
+            .foregroundStyle(PassColor.textWeak.toColor)
     }
 }
 
 // MARK: - Rows
 
 private extension SecurityCenterView {
-    func securityCenterRow(rowType: SecureRowType, title: String, subTitle: String, info: String) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            if let iconName = rowType.icon {
-                Image(systemName: iconName)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .foregroundColor(rowType.iconColor)
-                    .frame(width: 20)
-            }
+    func securityCenterRow(rowType: SecureRowType,
+                           title: String,
+                           subTitle: String?,
+                           info: String,
+                           action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                if let iconName = rowType.icon {
+                    Image(systemName: iconName)
+                        .resizable()
+                        .renderingMode(.template)
+                        .scaledToFit()
+                        .foregroundColor(rowType.iconColor)
+                        .frame(width: 20)
+                }
 
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(title)
-                    .font(.body)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text(subTitle)
-                    .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
-            }
-            .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
-            .contentShape(Rectangle())
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text(title)
+                        .font(.body)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    if let subTitle {
+                        Text(subTitle)
+                            .font(.footnote)
+                            .foregroundColor(PassColor.textWeak.toColor)
+                    }
+                }
+                .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
+                .contentShape(Rectangle())
 
-            Text(info)
-                .padding(.vertical, 4)
-                .padding(.horizontal, 11)
-                .foregroundColor(rowType.infoForeground)
-                .background(rowType.infoBackground)
-                .clipShape(Capsule())
+                Text(info)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 11)
+                    .foregroundColor(rowType.infoForeground)
+                    .background(rowType.infoBackground)
+                    .clipShape(Capsule())
+            }
+            .padding(.horizontal, DesignConstant.sectionPadding)
+            .roundedDetailSection(backgroundColor: rowType.background,
+                                  borderColor: rowType.border)
         }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: rowType.background,
-                              borderColor: rowType.border)
+        .buttonStyle(.plain)
     }
 }
 

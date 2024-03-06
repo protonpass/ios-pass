@@ -20,6 +20,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
+import Combine
 import Entities
 import Factory
 import Foundation
@@ -32,39 +34,61 @@ extension Dictionary where Value: Collection {
 
 @MainActor
 final class SecurityCenterViewModel: ObservableObject, Sendable {
-    @Published private(set) var weakPasswordsLogins: [PasswordStrength: [ItemContent]]?
-    @Published private(set) var reusedPasswordsLogins: [Int: [ItemContent]]?
-    @Published private(set) var breachedPasswords: [Int: [ItemContent]]?
-    @Published private(set) var breachedEmails: [Int: [ItemContent]]?
-    @Published private(set) var missing2FA: [ItemContent] = []
-    @Published private(set) var excludedItemsForMonitoring: [ItemContent] = []
+    @Published private(set) var weaknessAccounts: WeaknessAccounts?
+    @Published private(set) var isFreeUser = false
 
     @Published private(set) var loading = false
 
     private let getWeakPasswordLogins = resolve(\UseCasesContainer.getAllWeakPasswordLogins)
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    private let securityCenterRepository = resolve(\RepositoryContainer.securityCenterRepository)
+    private var cancellables = Set<AnyCancellable>()
 
     init() {
         setUp()
     }
 
-    func loadContent() async {
-        loading = true
-        defer { loading = false }
-        do {
-            async let weakPasswords = getWeakPasswordLogins()
-            let results = try await [weakPasswords]
-            weakPasswordsLogins = results.first
-        } catch {}
+//    func loadContent() async {
+//        loading = true
+//        defer { loading = false }
+//        do {
+//            async let weakPasswords = getWeakPasswordLogins()
+//            let results = try await [weakPasswords]
+//            weakPasswordsLogins = results.first
+//        } catch {
+//            router.display(element: .displayErrorBanner(error))
+//        }
+//    }
+
+    func showSecurityWeakness(type: SecurityWeakness) {
+        router.present(for: .securityDetail(type))
     }
 }
 
 private extension SecurityCenterViewModel {
     func setUp() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            await loadContent()
-        }
+        securityCenterRepository.weaknessAccounts
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newWeaknessState in
+                guard let self else {
+                    return
+                }
+                weaknessAccounts = newWeaknessState
+            }.store(in: &cancellables)
+//        Task { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            do {
+//                async let userStatus = upgradeChecker.isFreeUser()
+//
+//                _ = await loadContent()
+//                isFreeUser = try await userStatus
+//            } catch {
+//                router.display(element: .displayErrorBanner(error))
+//            }
+//        }
     }
 }

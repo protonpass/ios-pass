@@ -415,6 +415,8 @@ extension HomepageCoordinator {
                     presentEditSpotlightVaultsView()
                 case let .passkeyDetail(passkey):
                     presentPasskeyDetailView(for: passkey)
+                case let .securityDetail(securityWeakness):
+                    presentSecurity(securityWeakness)
                 }
             }
             .store(in: &cancellables)
@@ -783,6 +785,15 @@ extension HomepageCoordinator {
                 userInterfaceStyle: preferences.theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible)
+    }
+}
+
+// MARK: - Security Center
+
+extension HomepageCoordinator {
+    func presentSecurity(_ securityWeakness: SecurityWeakness) {
+        let view = DetailSecurityCenterView(viewModel: .init(type: securityWeakness))
+        present(view)
     }
 }
 
