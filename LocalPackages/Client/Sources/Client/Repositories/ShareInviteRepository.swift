@@ -207,11 +207,11 @@ public extension ShareInviteRepository {
                 }
             }
 
-            var acceptedAddress = [String]()
+            var acceptedAddresses = [String]()
             for try await batch in group {
-                acceptedAddress.append(contentsOf: batch)
+                acceptedAddresses.append(contentsOf: batch)
             }
-            return acceptedAddress
+            return acceptedAddresses
         }
     }
 }
