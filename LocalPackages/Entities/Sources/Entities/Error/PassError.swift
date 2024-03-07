@@ -49,6 +49,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case biometricChange
     case failedToConvertBase64StringToData(String)
     case passkey(PasskeyFailureReason)
+    case organizationNotFound
 
     public var debugDescription: String {
         switch self {
@@ -104,6 +105,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             "Failed to convert base 64 string to data \"\(string)\""
         case let .passkey(reason):
             reason.debugDescription
+        case .organizationNotFound:
+            "Organization not found"
         }
     }
 }

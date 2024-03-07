@@ -47,6 +47,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published var selectedEmails: [String] = []
     @Published var highlightedEmail: String?
+    @Published private(set) var invalidEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vault: SharingVaultData?
@@ -56,6 +57,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
 
     private var cancellables = Set<AnyCancellable>()
     private let shareInviteRepository = resolve(\SharedRepositoryContainer.shareInviteRepository)
+    private let checkAddressesForInvite = resolve(\UseCasesContainer.checkAddressesForInvite)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInvitesUserEmailsAndKeys = resolve(\UseCasesContainer.setShareInvitesUserEmailsAndKeys)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -108,6 +110,18 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             do {
                 isChecking = true
                 guard appendCurrentEmail() else { return }
+
+                if let shareId = vault?.shareId {
+                    let result = try await checkAddressesForInvite(shareId: shareId,
+                                                                   emails: selectedEmails)
+                    if case let .invalid(invalidEmails) = result {
+                        self.invalidEmails = invalidEmails
+                        let message = #localized("Some addresses cannot be invited")
+                        router.display(element: .errorMessage(message))
+                        return
+                    }
+                }
+
                 try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
                 highlightedEmail = nil
                 goToNextStep = true
