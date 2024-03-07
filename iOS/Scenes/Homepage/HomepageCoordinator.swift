@@ -405,8 +405,9 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
-                case let .itemDetail(content):
-                    presentItemDetailView(for: content, asSheet: shouldShowAsSheet())
+                case let .itemDetail(content, showSecurityIssues: showSecurityIssues):
+                    presentItemDetailView(for: content, asSheet: shouldShowAsSheet(),
+                                          showSecurityIssues: showSecurityIssues)
                 case .editSpotlightSearchableContent:
                     presentEditSpotlightSearchableContentView()
                 case .editSpotlightSearchableVaults:
@@ -539,10 +540,10 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
+    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
         coordinator.delegate = self
-        coordinator.showDetail(for: itemContent, asSheet: asSheet)
+        coordinator.showDetail(for: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }

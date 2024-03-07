@@ -43,7 +43,7 @@ final class SecurityCenterViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private let securityCenterRepository = resolve(\RepositoryContainer.securityCenterRepository)
+    private let securityCenterRepository = resolve(\SharedRepositoryContainer.securityCenterRepository)
     private var cancellables = Set<AnyCancellable>()
 
     init() {

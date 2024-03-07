@@ -316,3 +316,15 @@ extension SharedUseCasesContainer {
         self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
     }
 }
+
+// MARK: - Security center
+
+extension SharedUseCasesContainer {
+    var getLoginSecurityIssues: Factory<GetLoginSecurityIssuesUseCase> {
+        self {
+            GetLoginSecurityIssues(securityCenterRepository: SharedRepositoryContainer.shared
+                .securityCenterRepository(),
+                symmetricKeyProvider: self.symmetricKeyProvider)
+        }
+    }
+}

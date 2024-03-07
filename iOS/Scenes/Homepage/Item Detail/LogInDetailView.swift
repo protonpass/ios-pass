@@ -54,6 +54,11 @@ private extension LogInDetailView {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
+                        if viewModel.showSecurityIssues {
+                            securityIssuesView()
+                                .padding(.vertical)
+                        }
+
                         ItemDetailTitleView(itemContent: viewModel.itemContent,
                                             vault: viewModel.vault?.vault,
                                             shouldShowVault: viewModel.shouldShowVault)
@@ -336,3 +341,96 @@ private extension LogInDetailView {
         viewModel.copyToClipboard(text: text, message: #localized("Hidden text copied"))
     }
 }
+
+extension LogInDetailView {
+    func securityIssuesView() -> some View {
+        VStack {
+            if let issues = viewModel.securityIssues {
+                ForEach(issues, id: \.self) { issue in
+                    securityCenterRow(rowType: issue.secureRowType,
+                                      title: issue.title,
+                                      subTitle: issue.info,
+                                      info: "",
+                                      action: {})
+                }
+            }
+        }
+    }
+
+    func securityCenterRow(rowType: SecureRowType,
+                           title: String,
+                           subTitle: String?,
+                           info: String,
+                           action: @escaping () -> Void) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            if let iconName = rowType.icon {
+                Image(systemName: iconName)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .foregroundColor(rowType.iconColor)
+                    .frame(width: 20)
+            }
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(title)
+                    .font(.body)
+                    .foregroundStyle(rowType.iconColor)
+                if let subTitle {
+                    Text(subTitle)
+                        .font(.footnote)
+                        .foregroundColor(rowType.iconColor)
+                }
+            }
+            .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
+            .contentShape(Rectangle())
+
+            // TODO: remove item from security monitoring
+            Menu(content: {
+                Button { action() }
+                    label: {
+                        Label(title: { Text("Exclude from monitoring") },
+                              icon: { Image(uiImage: IconProvider.eyeSlash) })
+                    }
+            }, label: {
+                Image(uiImage: IconProvider.threeDotsVertical)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .foregroundColor(rowType.iconColor)
+                    .frame(width: DesignConstant.Icons.defaultIconSize,
+                           height: DesignConstant.Icons.defaultIconSize)
+            })
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection(backgroundColor: rowType.background,
+                              borderColor: rowType.border)
+    }
+}
+
+// SecureRowType
+//
+//
+// public struct WeaknessAccounts: Equatable {
+//    public let weakPasswords: Int
+//    public let reusedPasswords: Int
+//    public let missing2FA: Int
+//    public let excludedItems: Int
+//    public let exposedPasswords: Int
+//
+//    public static var `default`: WeaknessAccounts {
+//        WeaknessAccounts(weakPasswords: 0,
+//                         reusedPasswords: 0,
+//                         missing2FA: 0,
+//                         excludedItems: 0,
+//                         exposedPasswords: 0)
+//    }
+// }
+
+// public enum SecurityWeakness: Equatable, Sendable {
+//    case weakPasswords
+//    case reusedPasswords
+//    case exposedEmail
+//    case exposedPassword
+//    case missing2FA
+//    case excludedItems
