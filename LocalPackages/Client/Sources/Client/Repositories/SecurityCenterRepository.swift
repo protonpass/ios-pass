@@ -69,7 +69,7 @@ public enum SecurityWeakness: Equatable, Sendable {
         }
     }
 
-    public var info: String {
+    public var subtitleInfo: String {
         switch self {
         case .excludedItems:
             "The following items are excluded from "
@@ -83,6 +83,23 @@ public enum SecurityWeakness: Equatable, Sendable {
             "These password appear in data breaches. Update your credentials immediately."
         case .missing2FA:
             "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+        }
+    }
+
+    public var infos: String {
+        switch self {
+        case .excludedItems:
+            ""
+        case .weakPasswords:
+            "This account is vulnerable, visit the service and change your password."
+        case .reusedPasswords:
+            ""
+        case .exposedEmail:
+            ""
+        case .exposedPassword:
+            ""
+        case .missing2FA:
+            ""
         }
     }
 }

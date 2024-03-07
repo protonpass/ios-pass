@@ -45,7 +45,7 @@ final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
     init(type: SecurityWeakness) {
         self.type = type
         title = type.title
-        info = type.info
+        info = type.subtitleInfo
         setUp()
     }
 
