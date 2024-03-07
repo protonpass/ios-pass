@@ -21,15 +21,16 @@
 //
 
 import Client
+import Combine
 import Entities
 import Factory
 import Foundation
 
 @MainActor
 final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
-    @Published private(set) var sectionedData: [SecuritySectionHeaderKey: [ItemContent]]?
-    @Published private(set) var nonSectionedData: [ItemContent]?
-    @Published private(set) var loading = false
+    @Published private(set) var sectionedData = [SecuritySectionHeaderKey: [ItemContent]]()
+    @Published private(set) var showSections = true
+    @Published private(set) var loading = true
 
     let title: String
     let info: String
@@ -38,6 +39,8 @@ final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
     private let getWeakPasswordLogins = resolve(\UseCasesContainer.getAllWeakPasswordLogins)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
+    private var cancellables = Set<AnyCancellable>()
 
     init(type: SecurityWeakness) {
         self.type = type
@@ -45,51 +48,72 @@ final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
         info = type.info
         setUp()
     }
+
+    func showDetail(item: ItemContent) {
+        router.present(for: .itemDetail(item, showSecurityIssues: true))
+    }
 }
 
 private extension DetailSecurityCenterViewModel {
     func setUp() {
-        Task { [weak self] in
-            guard let self else {
-                return
+        getAllSecurityAffectedLogins(for: type)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] logins in
+                guard let self else {
+                    return
+                }
+                var data = [SecuritySectionHeaderKey: [ItemContent]]()
+
+                for (key, value) in logins {
+                    data[key.toSecuritySectionHeaderKey] = value
+                }
+                sectionedData = data
+                loading = false
             }
-            await loadTypeContent()
-        }
+            .store(in: &cancellables)
+
+//        Task { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            await loadTypeContent()
+//        }
     }
 
-    func loadTypeContent() async {
-        loading = true
-        defer { loading = false }
-
-        switch type {
-        case .weakPasswords:
-            await loadWeakPasswords()
-        case .reusedPasswords:
-            return
-        case .exposedEmail:
-            return
-        case .exposedPassword:
-            return
-        case .missing2FA:
-            return
-        case .excludedItems:
-            return
-        }
-    }
-
-    func loadWeakPasswords() async {
-        do {
-            var data = [SecuritySectionHeaderKey: [ItemContent]]()
-            let symmetricKey = try? symmetricKeyProvider.getSymmetricKey()
-            let weakPasswords = try await getWeakPasswordLogins()
-            for (key, value) in weakPasswords {
-                data[key.toSecuritySectionHeaderKey] = value
-            }
-            sectionedData = data
-        } catch {
-            router.display(element: .displayErrorBanner(error))
-        }
-    }
+//    func loadTypeContent() async {
+//        loading = true
+//        defer { loading = false }
+//
+//        switch type {
+//        case .weakPasswords:
+//            await loadWeakPasswords()
+//        case .reusedPasswords:
+//            return
+//        case .exposedEmail:
+//            return
+//        case .exposedPassword:
+//            return
+//        case .missing2FA:
+//            return
+//        case .excludedItems:
+//            return
+//        }
+//    }
+//
+//    func loadWeakPasswords() async {
+//        do {
+//            var data = [SecuritySectionHeaderKey: [ItemContent]]()
+//            let symmetricKey = try? symmetricKeyProvider.getSymmetricKey()
+//            let weakPasswords = try await getWeakPasswordLogins()
+//            for (key, value) in weakPasswords {
+//                data[key.toSecuritySectionHeaderKey] = value
+//            }
+//            sectionedData = data
+//        } catch {
+//            router.display(element: .displayErrorBanner(error))
+//        }
+//    }
 }
 
 extension PasswordStrength {

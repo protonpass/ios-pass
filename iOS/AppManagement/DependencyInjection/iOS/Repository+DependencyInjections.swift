@@ -68,12 +68,3 @@ extension RepositoryContainer {
                                 logManager: self.logManager) }
     }
 }
-
-extension RepositoryContainer {
-    var securityCenterRepository: Factory<SecurityCenterRepositoryProtocol> {
-        self {
-            SecurityCenterRepository(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
-                                     symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider())
-        }
-    }
-}

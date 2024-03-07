@@ -35,11 +35,6 @@ struct SecuritySectionHeaderKey: Hashable, Comparable {
     let iconName: String?
 }
 
-// protocol SecuritySectionHeaderKeys: Hashable {
-////    var color: Color { get }
-//    var title: String { get }
-// }
-
 struct DetailSecurityCenterView: View {
     @StateObject var viewModel: DetailSecurityCenterViewModel
     @Environment(\.dismiss) private var dismiss
@@ -52,30 +47,28 @@ struct DetailSecurityCenterView: View {
             .toolbar { toolbarContent }
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
-//            .showSpinner(viewModel.loading)
-//            .routingProvided
+            //            .showSpinner(viewModel.loading)
             .navigationStackEmbeded()
     }
 }
 
-// struct DetailSecurityCenterView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DetailSecurityCenterView()
-//    }
-// }
-
 private extension DetailSecurityCenterView {
     var mainContainer: some View {
-        LazyVStack {
+        VStack {
             Text(viewModel.info)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .font(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
 
-            if let splitData = viewModel.sectionedData {
-                itemsSections(sections: splitData)
-            } else if let data = viewModel.nonSectionedData {}
+            LazyVStack(spacing: 0) {
+                if viewModel.showSections {
+                    itemsSections(sections: viewModel.sectionedData)
+                } else {
+                    itemsList(items: viewModel.sectionedData.flatMap(\.value))
+                }
+                Spacer()
+            }
         }
     }
 }
@@ -86,13 +79,7 @@ private extension DetailSecurityCenterView {
     func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
         ForEach(sections.keys.sorted(), id: \.self) { key in
             Section(content: {
-//                ForEach(items) { item in
-//                    ResultItemRow(item: item, selectItem: { viewModel.updateLogin(item: $0) })
-//                        .plainListRow()
-//                        .padding(.horizontal)
-//                        .padding(.vertical, 5)
-//                }
-                Text("test")
+                itemsList(items: sections[key] ?? [])
             }, header: {
                 Group {
                     if let iconName = key.iconName {
@@ -109,16 +96,20 @@ private extension DetailSecurityCenterView {
 
     func itemsList(items: [ItemContent]) -> some View {
         ForEach(items) { item in
-            Text(item.title)
-//            GenericCredentialItemRow(item: item, selectItem: {})
-            // func itemRow(for uiModel: ItemUiModel) -> some View {
-            //
-            // }
-//                            ResultItemRow(item: item, selectItem: { viewModel.updateLogin(item: $0) })
-//                                .plainListRow()
-//                                .padding(.horizontal)
-//                                .padding(.vertical, 5)
+            itemRow(for: item)
         }
+    }
+
+    func itemRow(for item: ItemContent) -> some View {
+        Button {
+            viewModel.showDetail(item: item)
+        } label: {
+            GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
+                           title: item.title,
+                           description: item.toItemUiModel.description)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -134,6 +125,22 @@ private extension DetailSecurityCenterView {
         }
     }
 }
+
+// struct DetailSecurityCenterView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailSecurityCenterView()
+//    }
+// }
+
+// import Client
+// import Entities
+//
+// struct GenericCredentialItemRowTest: View {
+//    let item: ItemContent
+//    let selectItem: (ItemContent) -> Void
+//
+//    var body: some View {}
+// }
 
 //
 // VStack(alignment: .leading) {

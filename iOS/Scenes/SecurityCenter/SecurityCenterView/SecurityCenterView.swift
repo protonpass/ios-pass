@@ -309,9 +309,3 @@ private extension SecurityCenterView {
         .buttonStyle(.plain)
     }
 }
-
-// struct MainSecurityCenterView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainSecurityCenterView()
-//    }
-// }
