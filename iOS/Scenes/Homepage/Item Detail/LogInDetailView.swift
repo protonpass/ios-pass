@@ -349,7 +349,7 @@ extension LogInDetailView {
                 ForEach(issues, id: \.self) { issue in
                     securityCenterRow(rowType: issue.secureRowType,
                                       title: issue.title,
-                                      subTitle: issue.info,
+                                      subTitle: issue.infos,
                                       info: "",
                                       action: {})
                 }
