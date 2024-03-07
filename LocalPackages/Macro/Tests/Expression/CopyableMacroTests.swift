@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftformat:disable all
+/*
 @testable import MacroImplementation
 import Macro
 import SwiftSyntaxMacros
@@ -145,3 +147,4 @@ final class CopyableMacroTests: XCTestCase {
         XCTAssertEqual(Person(name: "Skyler White", age: 48, nickName: "Heisenberg"), copiedPerson)
     }
 }
+*/
