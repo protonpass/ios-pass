@@ -63,7 +63,7 @@ private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepository
 
 private final class MockedFreePlanRepository: AccessRepositoryProtocol {
     let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
-    
+
     let access = Access(plan: .init(type: "free",
                                     internalName: .random(),
                                     displayName: .random(),
@@ -73,7 +73,8 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
                                     aliasLimit: .random(in: 1...100),
                                     totpLimit: .random(in: 1...100)),
                         pendingInvites: 1,
-                        waitingNewUserInvites: 1)
+                        waitingNewUserInvites: 1,
+                        minVersionUpgrade: nil)
 
     func getAccess() async throws -> Access { access }
     func getPlan() async throws -> Plan { access.plan }

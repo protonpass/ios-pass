@@ -157,6 +157,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let userDefaults: UserDefaults = .standard
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
@@ -188,10 +189,12 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         dummyViewController.tabBarItem.accessibilityHint = HomepageTab.itemCreation.hint
         controllers.append(dummyViewController)
 
-        let secureCenter = UIHostingController(rootView: mainSecurityCenterView)
-        secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
-        secureCenter.tabBarItem.accessibilityHint = HomepageTab.securityCenter.hint
-        controllers.append(secureCenter)
+        if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
+            let secureCenter = UIHostingController(rootView: mainSecurityCenterView)
+            secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
+            secureCenter.tabBarItem.accessibilityHint = HomepageTab.securityCenter.hint
+            controllers.append(secureCenter)
+        }
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = HomepageTab.profile.image
@@ -308,3 +311,27 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         return false
     }
 }
+
+//
+//
+// public final class ShouldDisplayUpgradeAppBanner: ShouldDisplayUpgradeAppBannerUseCase {
+//    private let accessRepository: any AccessRepositoryProtocol
+//    private let bundle: Bundle
+//    private let userDefaults: UserDefaults
+//
+//    public init(accessRepository: any AccessRepositoryProtocol,
+//                bundle: Bundle,
+//                userDefaults: UserDefaults) {
+//        self.accessRepository = accessRepository
+//        self.bundle = bundle
+//        self.userDefaults = userDefaults
+//    }
+//
+//    public func execute() async throws -> Bool {
+//        let access = try await accessRepository.refreshAccess()
+//        if bundle.isQaBuild, {
+//            return true
+//        }
+//        return access.minVersionUpgrade != nil
+//    }
+// }

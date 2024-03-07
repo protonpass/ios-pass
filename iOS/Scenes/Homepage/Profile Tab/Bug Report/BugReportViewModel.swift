@@ -106,7 +106,7 @@ final class BugReportViewModel: ObservableObject {
                 if try await sendUserBugReport(with: title,
                                                and: description,
                                                shouldSendLogs: shouldSendLogs,
-                                               otherLogContent: currentFiles.isEmpty ? nil : currentFiles) {
+                                               otherLogContent: currentFiles.nilIfEmpty) {
                     hasSent = true
                 } else {
                     error = SendError.failedToSendReport

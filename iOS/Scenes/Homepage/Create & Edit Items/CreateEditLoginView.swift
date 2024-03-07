@@ -32,6 +32,7 @@ struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
+    @State private var lastFocusedField: Field?
     @State private var isShowingDiscardAlert = false
     @Namespace private var usernameID
     @Namespace private var passwordID
@@ -189,13 +190,9 @@ private extension CreateEditLoginView {
     var usernameTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
-                Button { viewModel.generateAlias() } label: {
-                    HStack {
-                        toolbarIcon(uiImage: IconProvider.alias)
-                        Text("Hide my email")
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
+                toolbarButton("Hide my email",
+                              image: IconProvider.alias,
+                              action: { viewModel.generateAlias() })
 
                 PassDivider()
                     .padding(.horizontal)
@@ -218,58 +215,51 @@ private extension CreateEditLoginView {
     }
 
     var totpTextFieldToolbar: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                Button { viewModel.pasteTotpUriFromClipboard() } label: {
-                    HStack {
-                        toolbarIcon(uiImage: IconProvider.squares)
-                        Text("Paste from clipboard")
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
+        HStack {
+            toolbarButton("Open camera",
+                          image: IconProvider.camera,
+                          action: {
+                              lastFocusedField = focusedField
+                              viewModel.openCodeScanner()
+                          })
 
-                PassDivider()
+            PassDivider()
 
-                Button { viewModel.openCodeScanner() } label: {
-                    HStack {
-                        toolbarIcon(uiImage: IconProvider.camera)
-                        Text("Open camera")
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-            }
-            .animationsDisabled() // Disable animation when switching between toolbars
+            toolbarButton("Paste",
+                          image: IconProvider.squares,
+                          action: { viewModel.pasteTotpUriFromClipboard() })
         }
+        .animationsDisabled() // Disable animation when switching between toolbars
     }
 
     var passwordTextFieldToolbar: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                Button { viewModel.pastePasswordFromClipboard() } label: {
-                    HStack {
-                        toolbarIcon(uiImage: IconProvider.squares)
-                        Text("Paste from clipboard")
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
+        HStack {
+            toolbarButton("Generate password",
+                          image: IconProvider.arrowsRotate,
+                          action: { viewModel.generatePassword() })
 
-                PassDivider()
+            PassDivider()
 
-                Button { viewModel.generatePassword() } label: {
-                    HStack {
-                        toolbarIcon(uiImage: IconProvider.arrowsRotate)
-                        Text("Generate password")
-                    }
-                }
-            }
+            toolbarButton("Paste",
+                          image: IconProvider.squares,
+                          action: { viewModel.pastePasswordFromClipboard() })
         }
         .animationsDisabled()
     }
 
-    func toolbarIcon(uiImage: UIImage) -> some View {
-        Image(uiImage: uiImage)
-            .resizable()
-            .frame(width: 18, height: 18)
+    func toolbarButton(_ title: LocalizedStringKey,
+                       image: UIImage,
+                       action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            // Use HStack instead of Label because Label's text is not rendered in toolbar
+            HStack {
+                Image(uiImage: image)
+                    .resizable()
+                    .frame(width: 18, height: 18)
+                Text(title)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
@@ -518,7 +508,7 @@ private extension CreateEditLoginView {
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView { result in
-                switch focusedField {
+                switch lastFocusedField {
                 case .totp:
                     viewModel.handleScanResult(result)
                 case let .custom(model) where model?.customField.type == .totp:
