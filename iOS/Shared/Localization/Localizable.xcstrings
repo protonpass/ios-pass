@@ -21708,6 +21708,9 @@
         }
       }
     },
+    "Data Breach Protection" : {
+
+    },
     "Default browser" : {
       "comment" : "Settings page",
       "localizations" : {
@@ -26162,6 +26165,9 @@
           }
         }
       }
+    },
+    "Exclude from monitoring" : {
+
     },
     "Expiration date" : {
       "localizations" : {
@@ -33237,6 +33243,9 @@
           }
         }
       }
+    },
+    "Last Data Breach Protection Sync:" : {
+
     },
     "Last modified" : {
       "extractionState" : "manual",
@@ -69865,6 +69874,9 @@
           }
         }
       }
+    },
+    "Your data appears in 10 data breaches, upgrade to see which ones." : {
+
     },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
