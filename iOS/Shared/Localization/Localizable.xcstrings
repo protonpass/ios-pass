@@ -54372,6 +54372,16 @@
         }
       }
     },
+    "Some addresses cannot be invited" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some addresses cannot be invited"
+          }
+        }
+      }
+    },
     "Sort By" : {
       "comment" : "Items filtering",
       "extractionState" : "manual",
