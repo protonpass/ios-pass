@@ -50,7 +50,7 @@ final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
     }
 
     func showDetail(item: ItemContent) {
-        router.present(for: .itemDetail(item, showSecurityIssues: true))
+        router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
     }
 }
 

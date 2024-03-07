@@ -405,8 +405,10 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
-                case let .itemDetail(content, showSecurityIssues: showSecurityIssues):
-                    presentItemDetailView(for: content, asSheet: shouldShowAsSheet(),
+                case let .itemDetail(content, automaticDisplay: automaticDisplay,
+                                     showSecurityIssues: showSecurityIssues):
+                    presentItemDetailView(for: content,
+                                          asSheet: automaticDisplay ? shouldShowAsSheet() : true,
                                           showSecurityIssues: showSecurityIssues)
                 case .editSpotlightSearchableContent:
                     presentEditSpotlightSearchableContentView()
@@ -794,7 +796,11 @@ extension HomepageCoordinator {
 extension HomepageCoordinator {
     func presentSecurity(_ securityWeakness: SecurityWeakness) {
         let view = DetailSecurityCenterView(viewModel: .init(type: securityWeakness))
-        present(view)
+        if shouldShowAsSheet() {
+            present(view)
+        } else {
+            push(view)
+        }
     }
 }
 
