@@ -67,10 +67,6 @@ struct ManageSharedVaultView: View {
                        .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
                        "Vaults can’t contain more than 10 users.")
                })
-        .alert("Error occured",
-               isPresented: $viewModel.showContactSupportAlert,
-               actions: { Button(role: .cancel, label: { Text("OK") }) },
-               message: { Text("Please contact us to investigate the issue") })
         .navigationStackEmbeded()
     }
 

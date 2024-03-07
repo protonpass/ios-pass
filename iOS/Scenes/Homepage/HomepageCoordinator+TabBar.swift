@@ -61,9 +61,14 @@ private extension HomepageCoordinator {
         guard !isCollapsed() else {
             return
         }
-        let asSheet = shouldShowAsSheet()
-        let view = SecurityCenterView(viewModel: SecurityCenterViewModel())
-        showView(view: view, asSheet: asSheet)
+        let placeholderView = ItemDetailPlaceholderView { [weak self] in
+            guard let self else { return }
+            popTopViewController(animated: true)
+        }
+        push(placeholderView)
+//        let asSheet = shouldShowAsSheet()
+//        let view = SecurityCenterView(viewModel: SecurityCenterViewModel())
+//        showView(view: view, asSheet: asSheet)
     }
 
     func profileTab() {
