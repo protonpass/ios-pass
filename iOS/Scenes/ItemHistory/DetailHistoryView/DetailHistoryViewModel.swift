@@ -24,6 +24,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 
 enum SelectedRevision {
     case current, past
@@ -39,6 +40,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private var cancellables = Set<AnyCancellable>()
 
+    let totpManager = resolve(\ServiceContainer.totpManager)
     let currentRevision: ItemContent
     let pastRevision: ItemContent
 
@@ -90,6 +92,10 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
             }
         }
     }
+
+    func copyTotpToken(_ token: String) {
+        router.action(.copyToClipboard(text: token, message: #localized("TOTP copied")))
+    }
 }
 
 private extension DetailHistoryViewModel {
@@ -101,6 +107,10 @@ private extension DetailHistoryViewModel {
                     return
                 }
                 selectedRevision = index == 0 ? .past : .current
+
+                if let totpUri = selectedRevisionContent.loginItem?.totpUri {
+                    totpManager.bind(uri: totpUri)
+                }
             }
             .store(in: &cancellables)
     }
