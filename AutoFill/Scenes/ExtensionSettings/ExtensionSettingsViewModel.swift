@@ -24,12 +24,6 @@ import Factory
 import UserNotifications
 
 @MainActor
-protocol ExtensionSettingsViewModelDelegate: AnyObject {
-    func extensionSettingsViewModelWantsToDismiss()
-    func extensionSettingsViewModelWantsToLogOut()
-}
-
-@MainActor
 final class ExtensionSettingsViewModel: ObservableObject {
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {
@@ -47,7 +41,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    weak var delegate: ExtensionSettingsViewModelDelegate?
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -57,18 +50,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
         isLocked = preferences.localAuthenticationMethod != .none
-    }
-}
-
-// MARK: - Public APIs
-
-extension ExtensionSettingsViewModel {
-    func dismiss() {
-        delegate?.extensionSettingsViewModelWantsToDismiss()
-    }
-
-    func logOut() {
-        delegate?.extensionSettingsViewModelWantsToLogOut()
     }
 }
 

@@ -24,8 +24,17 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ExtensionSettingsView: View {
-    @StateObject var viewModel: ExtensionSettingsViewModel
+    @StateObject private var viewModel = ExtensionSettingsViewModel()
     private let theme = resolve(\SharedToolingContainer.theme)
+
+    private let onDismiss: () -> Void
+    private let onLogOut: () -> Void
+
+    init(onDismiss: @escaping () -> Void,
+         onLogOut: @escaping () -> Void) {
+        self.onDismiss = onDismiss
+        self.onLogOut = onLogOut
+    }
 
     var body: some View {
         NavigationView {
@@ -66,7 +75,7 @@ struct ExtensionSettingsView: View {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 action: { viewModel.dismiss() })
+                                 action: onDismiss)
                 }
             }
         }
@@ -75,6 +84,6 @@ struct ExtensionSettingsView: View {
         .localAuthentication(delayed: false,
                              onAuth: {},
                              onSuccess: {},
-                             onFailure: viewModel.logOut)
+                             onFailure: onLogOut)
     }
 }

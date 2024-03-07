@@ -19,14 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-#if canImport(AuthenticationServices)
 import AuthenticationServices
 import Client
 import Core
 import Entities
 import Foundation
 
-public protocol UpdateLastUseTimeAndReindexUseCase {
+public protocol UpdateLastUseTimeAndReindexUseCase: Sendable {
     func execute(item: ItemContent,
                  date: Date,
                  identifiers: [ASCredentialServiceIdentifier]) async throws
@@ -57,5 +56,3 @@ public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCa
         try await reindexLoginItem(item: item, identifiers: identifiers, lastUseTime: date)
     }
 }
-
-#endif
