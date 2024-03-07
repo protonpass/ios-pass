@@ -307,3 +307,14 @@ extension SharedRepositoryContainer {
                                       remoteDatasource: self.remoteUserSettingsDatasource()) }
     }
 }
+
+// MARK: - Security
+
+extension SharedRepositoryContainer {
+    var securityCenterRepository: Factory<SecurityCenterRepositoryProtocol> {
+        self {
+            SecurityCenterRepository(itemRepository: self.itemRepository(),
+                                     symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider())
+        }
+    }
+}

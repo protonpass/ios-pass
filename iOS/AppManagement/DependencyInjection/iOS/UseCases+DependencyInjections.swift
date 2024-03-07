@@ -370,4 +370,13 @@ extension UseCasesContainer {
                                         getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
         }
     }
+
+    var getAllSecurityAffectedLogins: Factory<GetAllSecurityAffectedLoginsUseCase> {
+        self {
+            GetAllSecurityAffectedLogins(securityCenterRepository: SharedRepositoryContainer.shared
+                .securityCenterRepository(),
+                symmetricKeyProvider: self.symmetricKeyProvider,
+                getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
+        }
+    }
 }

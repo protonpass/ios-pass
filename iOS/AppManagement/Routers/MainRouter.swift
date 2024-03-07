@@ -84,7 +84,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
                     type: ItemContentType,
                     createPasskeyResponse: CreatePasskeyResponse?)
     case updateItem(type: ItemContentType, updated: Bool)
-    case itemDetail(ItemContent)
+    case itemDetail(ItemContent, showSecurityIssues: Bool = false)
     case editSpotlightSearchableContent
     case editSpotlightSearchableVaults
     case editSpotlightVaults
