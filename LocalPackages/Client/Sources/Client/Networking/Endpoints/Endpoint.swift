@@ -67,7 +67,7 @@ public extension Endpoint {
             finalParams.merge(bodyParams) { _, new in new }
         }
 
-        return finalParams.isEmpty ? nil : finalParams
+        return finalParams.nilIfEmpty
     }
 }
 

@@ -29,11 +29,15 @@ import Foundation
 final class SharingSummaryViewModel: ObservableObject, Sendable {
     @Published private(set) var infos = [SharingInfos]()
     @Published private(set) var sendingInvite = false
+    @Published var showContactSupportAlert = false
+
+    private var plan: Plan?
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var lastTask: Task<Void, Never>?
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let sendShareInvite = resolve(\UseCasesContainer.sendVaultShareInvite)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
 
     init() {
         setUp()
@@ -60,7 +64,12 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 if Task.isCancelled {
                     return
                 }
-                let sharedVault = try await sendShareInvite(with: infos)
+                async let getPlan = accessRepository.getPlan()
+                async let sendShareInvite = sendShareInvite(with: infos)
+
+                plan = try await getPlan
+                let sharedVault = try await sendShareInvite
+
                 if let baseInfo = infos.first {
                     switch baseInfo.vault {
                     case .existing:
@@ -75,7 +84,13 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                     }
                 }
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                if plan?.isBusinessUser == true,
+                   let apiError = error.asPassApiError,
+                   case .resourceLimitExceeded = apiError {
+                    showContactSupportAlert = true
+                } else {
+                    router.display(element: .displayErrorBanner(error))
+                }
             }
         }
     }

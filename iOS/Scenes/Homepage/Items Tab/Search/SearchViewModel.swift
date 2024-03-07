@@ -243,8 +243,7 @@ extension SearchViewModel {
                                                                              itemId: item.itemId) {
                     try await searchEntryDatasource.upsert(item: item, date: .now)
                     try await refreshSearchHistory()
-                    router.present(for: .itemDetail(itemContent))
-//                    delegate?.searchViewModelWantsToViewDetail(of: itemContent)
+                    router.present(for: .itemDetail(itemContent, automaticDisplay: false))
                 }
             } catch {
                 router.display(element: .displayErrorBanner(error))
