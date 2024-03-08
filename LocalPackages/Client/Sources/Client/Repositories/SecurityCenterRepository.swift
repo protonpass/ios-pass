@@ -24,7 +24,7 @@ import Foundation
 import PassRustCore
 
 public protocol SecurityCenterRepositoryProtocol: Sendable {
-    var weaknessAccounts: CurrentValueSubject<WeaknessStats, Never> { get }
+    var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
     var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
 
@@ -36,7 +36,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let passwordScorer: any PasswordScorerProtocol
 
-    public let weaknessAccounts: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
+    public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
     public let hasBreachedItems: CurrentValueSubject<Bool, Never> = .init(false)
 
@@ -91,11 +91,11 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                 securityAffectedItems.append(SecurityAffectedItem(item: encryptedItem, weaknesses: weaknesses))
             }
         }
-        weaknessAccounts.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
-                                            reusedPasswords: numberOfReusedPassword,
-                                            missing2FA: 0,
-                                            excludedItems: 0,
-                                            exposedPasswords: 0))
+        weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
+                                         reusedPasswords: numberOfReusedPassword,
+                                         missing2FA: 0,
+                                         excludedItems: 0,
+                                         exposedPasswords: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
     }
 }
