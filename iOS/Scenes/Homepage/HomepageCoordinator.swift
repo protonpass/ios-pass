@@ -94,7 +94,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var authenticated = false
 
     weak var delegate: HomepageCoordinatorDelegate?
-    weak var homepageTabDelegete: HomepageTabDelegete?
+    weak var homepageTabDelegate: HomepageTabDelegate?
 
     override init() {
         super.init()
@@ -130,7 +130,7 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.trace("Found new plan, refreshing credential database")
-                homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
+                homepageTabDelegate?.refreshTabIcons()
             }
             .store(in: &cancellables)
 
@@ -171,7 +171,7 @@ private extension HomepageCoordinator {
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
                 }
-                homepageTabDelegete?.homepageTabShouldDisableCreateButton(createButtonDisabled)
+                homepageTabDelegate?.disableCreateButton(createButtonDisabled)
             }
             .store(in: &cancellables)
 
@@ -207,7 +207,7 @@ private extension HomepageCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isEditMode in
                 guard let self else { return }
-                homepageTabDelegete?.homepageTabShouldHideTabbar(isEditMode)
+                homepageTabDelegate?.hideTabbar(isEditMode)
             }
             .store(in: &cancellables)
 
@@ -224,6 +224,7 @@ private extension HomepageCoordinator {
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
+                                          mainSecurityCenterViewModel: SecurityCenterViewModel(),
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
@@ -403,8 +404,12 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
-                case let .itemDetail(content):
-                    presentItemDetailView(for: content, asSheet: shouldShowAsSheet())
+                case let .itemDetail(content,
+                                     automaticDisplay,
+                                     showSecurityIssues):
+                    presentItemDetailView(for: content,
+                                          asSheet: automaticDisplay ? shouldShowAsSheet() : true,
+                                          showSecurityIssues: showSecurityIssues)
                 case .editSpotlightSearchableContent:
                     presentEditSpotlightSearchableContentView()
                 case .editSpotlightSearchableVaults:
@@ -413,6 +418,8 @@ extension HomepageCoordinator {
                     presentEditSpotlightVaultsView()
                 case let .passkeyDetail(passkey):
                     presentPasskeyDetailView(for: passkey)
+                case let .securityDetail(securityWeakness):
+                    presentSecurity(securityWeakness)
                 }
             }
             .store(in: &cancellables)
@@ -460,6 +467,8 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .copyToClipboard(text, message):
                     clipboardManager.copy(text: text, bannerMessage: message)
+                case let .back(isShownAsSheet):
+                    itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
                 }
             }
             .store(in: &cancellables)
@@ -535,10 +544,10 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
+    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
         coordinator.delegate = self
-        coordinator.showDetail(for: itemContent, asSheet: asSheet)
+        coordinator.showDetail(for: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }
@@ -551,15 +560,6 @@ extension HomepageCoordinator {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
         }
-    }
-
-    func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel()
-        viewModel.delegate = self
-        let view = ItemTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.medium, parentViewController: rootViewController)
-        present(viewController)
     }
 
     func presentCreateItemView(for itemType: ItemType) {
@@ -793,6 +793,20 @@ extension HomepageCoordinator {
     }
 }
 
+// MARK: - Security Center
+
+extension HomepageCoordinator {
+    func presentSecurity(_ securityWeakness: SecurityWeakness) {
+        let isSheet = shouldShowAsSheet()
+        let view = SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness), isSheet: isSheet)
+        if isSheet {
+            present(view)
+        } else {
+            push(view)
+        }
+    }
+}
+
 // MARK: - Item history
 
 extension HomepageCoordinator {
@@ -908,30 +922,6 @@ private extension HomepageCoordinator {
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
-    }
-}
-
-// MARK: - HomepageTabBarControllerDelegate
-
-extension HomepageCoordinator: HomepageTabBarControllerDelegate {
-    func homepageTabBarControllerDidSelectItemsTab() {
-        if !isCollapsed() {
-            let placeholderView = ItemDetailPlaceholderView { [weak self] in
-                guard let self else { return }
-                popTopViewController(animated: true)
-            }
-            push(placeholderView)
-        }
-    }
-
-    func homepageTabBarControllerWantToCreateNewItem() {
-        presentItemTypeListView()
-    }
-
-    func homepageTabBarControllerDidSelectProfileTab() {
-        if !isCollapsed() {
-            profileTabViewModelWantsToShowAccountMenu()
-        }
     }
 }
 
@@ -1319,7 +1309,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
             }
         }
         vaultsManager.refresh()
-        homepageTabDelegete?.homepageTabShouldChange(tab: .items)
+        homepageTabDelegate?.change(tab: .items)
         increaseCreatedItemsCountAndAskForReviewIfNecessary()
     }
 
@@ -1435,11 +1425,6 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 // MARK: - SearchViewModelDelegate
 
 extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToViewDetail(of itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent, asSheet: true)
-        addNewEvent(type: .searchClick)
-    }
-
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                    delegate: SortTypeListViewModelDelegate) {
         presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
