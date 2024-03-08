@@ -41,7 +41,7 @@ let package = Package(name: "Core",
                                    targets: ["CoreMocks"])
                       ],
                       dependencies: [
-                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "19.0.0"),
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "20.0.0"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "DesignSystem", path: "../DesignSystem"),
                           .package(name: "Macro", path: "../Macro")
@@ -53,13 +53,13 @@ let package = Package(name: "Core",
                           // package depends on.
                           .target(name: "Core",
                                   dependencies: [
-                                      .product(name: "ProtonCoreDataModel", package: "protoncore"),
-                                      .product(name: "ProtonCoreDoh", package: "protoncore"),
-                                      .product(name: "ProtonCoreKeymaker", package: "protoncore"),
-                                      .product(name: "ProtonCoreLogin", package: "protoncore"),
-                                      .product(name: "ProtonCoreLoginUI", package: "protoncore"),
-                                      .product(name: "ProtonCoreNetworking", package: "protoncore"),
-                                      .product(name: "ProtonCoreSettings", package: "protoncore"),
+                                      .product(name: "ProtonCoreDataModel", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreDoh", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreKeymaker", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreLogin", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreNetworking", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreSettings", package: "protoncore_ios"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "DesignSystem", package: "DesignSystem"),
                                       .product(name: "Macro", package: "Macro")
@@ -77,7 +77,7 @@ let package = Package(name: "Core",
                                           "Core",
                                           "CoreMocks",
                                           .product(name: "ProtonCoreTestingToolkitUnitTestsCore",
-                                                   package: "protoncore")
+                                                   package: "protoncore_ios")
 
                                       ])
                       ])
