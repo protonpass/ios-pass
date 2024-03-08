@@ -24,7 +24,7 @@ import SwiftUI
 struct TOTPText: View {
     private let texts: [Text]
 
-    public init(code: String) {
+    public init(code: String, textColor: UIColor = PassColor.textNorm) {
         let segments = Array(code).chunked(into: 3).map { String($0) }
         var texts = [Text]()
 
@@ -32,11 +32,11 @@ struct TOTPText: View {
             texts.append(Text(segment)
                 .font(.callout)
                 .fontWeight(.medium)
-                .foregroundColor(Color(uiColor: PassColor.textNorm)))
+                .foregroundColor(textColor.toColor))
             if index != segments.count - 1 {
                 texts.append(Text(verbatim: " • ")
                     .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textHint)))
+                    .foregroundColor(PassColor.textHint.toColor))
             }
         }
         self.texts = texts
