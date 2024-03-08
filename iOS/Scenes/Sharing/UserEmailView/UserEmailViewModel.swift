@@ -111,15 +111,18 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 isChecking = true
                 guard appendCurrentEmail() else { return }
 
-                if let shareId = vault?.shareId {
-                    let result = try await checkAddressesForInvite(shareId: shareId,
-                                                                   emails: selectedEmails)
-                    if case let .invalid(invalidEmails) = result {
-                        self.invalidEmails = invalidEmails
-                        let message = #localized("Some addresses cannot be invited")
-                        router.display(element: .errorMessage(message))
-                        return
-                    }
+                guard let vault else {
+                    throw PassError.sharing(.incompleteInformation)
+                }
+
+                let result = try await checkAddressesForInvite(shareId: vault.shareId,
+                                                               emails: selectedEmails)
+                if case let .invalid(invalidEmails) = result {
+                    self.invalidEmails = invalidEmails
+                    let message =
+                        #localized("You can't invite people outside of your organization, contact admin for more info.")
+                    router.display(element: .errorMessage(message))
+                    return
                 }
 
                 try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)

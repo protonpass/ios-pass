@@ -54372,16 +54372,6 @@
         }
       }
     },
-    "Some addresses cannot be invited" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Some addresses cannot be invited"
-          }
-        }
-      }
-    },
     "Sort By" : {
       "comment" : "Items filtering",
       "extractionState" : "manual",
@@ -68993,6 +68983,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn sẽ xóa nội dung này mà không thể quay lại được, bạn chắc chứ?"
+          }
+        }
+      }
+    },
+    "You can't invite people outside of your organization, contact admin for more info." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can't invite people outside of your organization, contact admin for more info."
           }
         }
       }
