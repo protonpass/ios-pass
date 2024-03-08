@@ -64,7 +64,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
     private var cancellable = Set<AnyCancellable>()
 
@@ -85,10 +84,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var itemHistoryEnabled: Bool {
-        guard getFeatureFlagStatus(with: FeatureFlagType.passItemHistoryV1), let plan, !plan.isFreeUser else {
-            return false
-        }
-        return true
+        plan?.isFreeUser == false
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
@@ -278,7 +274,11 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func showItemHistory() {
-        router.present(for: .history(itemContent))
+        if itemHistoryEnabled {
+            router.present(for: .history(itemContent))
+        } else {
+            router.present(for: .upselling)
+        }
     }
 }
 

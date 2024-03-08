@@ -69,8 +69,13 @@ private extension DetailHistoryView {
             usernameRow(logItem: logItem)
             PassSectionDivider()
             passwordRow(logItem: logItem)
-            PassSectionDivider()
-            totpRow(logItem: logItem)
+            if !logItem.totpUri.isEmpty {
+                PassSectionDivider()
+                TOTPRow(totpManager: viewModel.totpManager,
+                        textColor: textColor(for: \.loginItem?.totpUri),
+                        tintColor: PassColor.loginInteractionNorm,
+                        onCopyTotpToken: { viewModel.copyTotpToken($0) })
+            }
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
@@ -119,36 +124,6 @@ private extension DetailHistoryView {
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
                          action: { isShowingPassword.toggle() })
-                .fixedSize(horizontal: true, vertical: true)
-        }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-    }
-
-    func totpRow(logItem: LogInItemData) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.lock, color: viewModel.currentRevision.type.normColor)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("2FA secret key (TOTP)")
-                    .sectionTitleText()
-
-                if isShowingTotp {
-                    Text(logItem.totpUri)
-                        .foregroundStyle(textColor(for: \.loginItem?.totpUri).toColor)
-                } else {
-                    Text(String(repeating: "•", count: 12))
-                        .foregroundStyle(textColor(for: \.loginItem?.totpUri).toColor)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-
-            Spacer()
-
-            CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                         iconColor: viewModel.currentRevision.type.normMajor2Color,
-                         backgroundColor: viewModel.currentRevision.type.normMinor2Color,
-                         action: { isShowingTotp.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
