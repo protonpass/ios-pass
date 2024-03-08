@@ -39,14 +39,14 @@ enum SecureRowType {
         }
     }
 
-    var iconColor: Color {
+    var iconColor: UIColor {
         switch self {
         case .danger:
-            PassColor.passwordInteractionNormMajor1.toColor
+            PassColor.passwordInteractionNormMajor1
         case .warning:
-            PassColor.noteInteractionNormMajor1.toColor
+            PassColor.noteInteractionNormMajor1
         case .success:
-            PassColor.cardInteractionNormMajor1.toColor
+            PassColor.cardInteractionNormMajor1
         default:
             .clear
         }
@@ -78,29 +78,29 @@ enum SecureRowType {
         }
     }
 
-    var infoForeground: Color {
+    var infoForeground: UIColor {
         switch self {
         case .danger:
-            PassColor.passwordInteractionNormMajor2.toColor
+            PassColor.passwordInteractionNormMajor2
         case .warning:
-            PassColor.noteInteractionNormMajor2.toColor
+            PassColor.noteInteractionNormMajor2
         case .success:
-            PassColor.cardInteractionNormMajor2.toColor
+            PassColor.cardInteractionNormMajor2
         case .info:
-            PassColor.textNorm.toColor
+            PassColor.textNorm
         }
     }
 
-    var infoBackground: Color {
+    var infoBackground: UIColor {
         switch self {
         case .danger:
-            PassColor.passwordInteractionNormMinor1.toColor
+            PassColor.passwordInteractionNormMinor1
         case .warning:
-            PassColor.noteInteractionNormMinor1.toColor
+            PassColor.noteInteractionNormMinor1
         case .success:
-            PassColor.cardInteractionNormMinor1.toColor
+            PassColor.cardInteractionNormMinor1
         case .info:
-            PassColor.backgroundMedium.toColor
+            PassColor.backgroundMedium
         }
     }
 }
@@ -145,7 +145,6 @@ private extension SecurityCenterView {
 }
 
 private extension SecurityCenterView {
-    @ViewBuilder
     func breachedDataRows(weaknessStats: WeaknessStats) -> some View {
         VStack {
             if viewModel.isFreeUser {
@@ -180,12 +179,10 @@ private extension SecurityCenterView {
                 .padding(.bottom, DesignConstant.sectionPadding)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-
         .roundedDetailSection(backgroundColor: SecureRowType.danger.background,
                               borderColor: SecureRowType.danger.border)
     }
 
-    @ViewBuilder
     func breachedPasswordsRow(_ breachedPasswords: Int, showAdvice: Bool) -> some View {
         securityCenterRow(rowType: breachedPasswords > 0 ? .warning : .success,
                           title: "Exposed passwords",
@@ -194,7 +191,6 @@ private extension SecurityCenterView {
                           action: { viewModel.showSecurityWeakness(type: .exposedPassword) })
     }
 
-    @ViewBuilder
     func breachedEmailsRow(_ breachedEmails: Int, showAdvice: Bool) -> some View {
         securityCenterRow(rowType: breachedEmails > 0 ? .warning : .success,
                           title: "Exposed emails",
@@ -205,7 +201,6 @@ private extension SecurityCenterView {
 }
 
 private extension SecurityCenterView {
-    @ViewBuilder
     func weakPasswordsRow(_ weakPasswords: Int) -> some View {
         securityCenterRow(rowType: weakPasswords > 0 ? .warning : .success,
                           title: "Weak Passwords",
@@ -217,7 +212,6 @@ private extension SecurityCenterView {
 }
 
 private extension SecurityCenterView {
-    @ViewBuilder
     func reusedPasswordsRow(_ reusedPasswords: Int) -> some View {
         securityCenterRow(rowType: reusedPasswords > 0 ? .warning : .success,
                           title: "Reused passwords",
@@ -228,7 +222,6 @@ private extension SecurityCenterView {
 }
 
 private extension SecurityCenterView {
-    @ViewBuilder
     func missing2FARow(_ missing2FA: Int) -> some View {
         securityCenterRow(rowType: missing2FA > 0 ? .warning : .success,
                           title: "Missing two-factor authentication",
@@ -239,7 +232,6 @@ private extension SecurityCenterView {
 }
 
 private extension SecurityCenterView {
-    @ViewBuilder
     func excludedItemsRow(_ excludedItems: Int) -> some View {
         securityCenterRow(rowType: .info,
                           title: "Excluded items",
@@ -250,7 +242,6 @@ private extension SecurityCenterView {
 }
 
 private extension SecurityCenterView {
-    @ViewBuilder
     func lastUpdateInfo(date: String?) -> some View {
         VStack {
             if let date {
@@ -277,7 +268,7 @@ private extension SecurityCenterView {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .foregroundColor(rowType.iconColor)
+                        .foregroundColor(rowType.iconColor.toColor)
                         .frame(width: 20)
                 }
 
@@ -297,8 +288,8 @@ private extension SecurityCenterView {
                 Text(info)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 11)
-                    .foregroundColor(rowType.infoForeground)
-                    .background(rowType.infoBackground)
+                    .foregroundColor(rowType.infoForeground.toColor)
+                    .background(rowType.infoBackground.toColor)
                     .clipShape(Capsule())
             }
             .padding(.horizontal, DesignConstant.sectionPadding)

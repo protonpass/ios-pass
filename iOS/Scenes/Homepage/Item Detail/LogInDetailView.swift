@@ -54,8 +54,8 @@ private extension LogInDetailView {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
-                        if viewModel.showSecurityIssues {
-                            securityIssuesView()
+                        if viewModel.showSecurityIssues, let issues = viewModel.securityIssues {
+                            securityIssuesView(issues: issues)
                                 .padding(.vertical)
                         }
 
@@ -342,43 +342,36 @@ private extension LogInDetailView {
     }
 }
 
-extension LogInDetailView {
-    func securityIssuesView() -> some View {
+private extension LogInDetailView {
+    func securityIssuesView(issues: [SecurityWeakness]) -> some View {
         VStack {
-            if let issues = viewModel.securityIssues {
-                ForEach(issues, id: \.self) { issue in
-                    securityCenterRow(rowType: issue.secureRowType,
-                                      title: issue.title,
-                                      subTitle: issue.infos,
-                                      action: {})
-                }
+            ForEach(issues, id: \.self) { issue in
+                securityWeaknessRow(weakness: issue,
+                                    action: {})
             }
         }
     }
 
-    func securityCenterRow(rowType: SecureRowType,
-                           title: String,
-                           subTitle: String?,
-                           action: @escaping () -> Void) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
+    func securityWeaknessRow(weakness: SecurityWeakness,
+                             action: @escaping () -> Void) -> some View {
+        let rowType = weakness.secureRowType
+        return HStack(spacing: DesignConstant.sectionPadding) {
             if let iconName = rowType.icon {
                 Image(systemName: iconName)
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundColor(rowType.iconColor)
+                    .foregroundColor(rowType.iconColor.toColor)
                     .frame(width: 20)
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(title)
+                Text(weakness.title)
                     .font(.body)
-                    .foregroundStyle(rowType.iconColor)
-                if let subTitle {
-                    Text(subTitle)
-                        .font(.footnote)
-                        .foregroundColor(rowType.iconColor)
-                }
+                    .foregroundStyle(rowType.iconColor.toColor)
+                Text(weakness.infos)
+                    .font(.footnote)
+                    .foregroundColor(rowType.iconColor.toColor)
             }
             .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
             .contentShape(Rectangle())
@@ -396,7 +389,7 @@ extension LogInDetailView {
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundColor(rowType.iconColor)
+                    .foregroundColor(rowType.iconColor.toColor)
                     .frame(width: DesignConstant.Icons.defaultIconSize,
                            height: DesignConstant.Icons.defaultIconSize)
             })

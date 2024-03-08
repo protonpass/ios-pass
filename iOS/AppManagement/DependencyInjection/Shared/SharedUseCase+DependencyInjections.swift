@@ -64,10 +64,6 @@ private extension SharedUseCasesContainer {
     var symmetricKeyProvider: any SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
-
-    var securityCenterRepository: any SecurityCenterRepositoryProtocol {
-        SharedRepositoryContainer.shared.securityCenterRepository()
-    }
 }
 
 // MARK: Permission
@@ -318,15 +314,5 @@ extension SharedUseCasesContainer {
 
     var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
         self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
-    }
-}
-
-// MARK: - Security center
-
-extension SharedUseCasesContainer {
-    var getLoginSecurityIssues: Factory<GetLoginSecurityIssuesUseCase> {
-        self {
-            GetLoginSecurityIssues(securityCenterRepository: self.securityCenterRepository)
-        }
     }
 }
