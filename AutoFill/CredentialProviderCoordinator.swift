@@ -52,12 +52,12 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
-    private let context = resolve(\AutoFillDataContainer.context)
     private let theme = resolve(\SharedToolingContainer.theme)
     private weak var rootViewController: UIViewController?
     private var cancellables = Set<AnyCancellable>()
 
     // Use cases
+    private let completeConfiguration = resolve(\AutoFillUseCaseContainer.completeConfiguration)
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
@@ -207,19 +207,21 @@ private extension CredentialProviderCoordinator {
 private extension CredentialProviderCoordinator {
     func configureExtension() {
         guard credentialProvider.isAuthenticated else {
-            let notLoggedInView = NotLoggedInView(variant: .autoFillExtension) { [weak self] in
-                guard let self else { return }
-                context.completeExtensionConfigurationRequest()
-            }
-            .theme(theme)
-            showView(notLoggedInView)
+            showNotLoggedInView()
             return
         }
 
-        let viewModel = ExtensionSettingsViewModel()
-        viewModel.delegate = self
-        let settingsView = ExtensionSettingsView(viewModel: viewModel)
-        showView(settingsView)
+        let view = ExtensionSettingsView(onDismiss: { [weak self] in
+            guard let self else { return }
+            completeConfiguration()
+        }, onLogOut: { [weak self] in
+            guard let self else { return }
+            logOut { [weak self] in
+                guard let self else { return }
+                completeConfiguration()
+            }
+        })
+        showView(view)
     }
 }
 
@@ -574,21 +576,6 @@ extension CredentialProviderCoordinator {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
-    }
-}
-
-// MARK: ExtensionSettingsViewModelDelegate
-
-extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
-    func extensionSettingsViewModelWantsToDismiss() {
-        context.completeExtensionConfigurationRequest()
-    }
-
-    func extensionSettingsViewModelWantsToLogOut() {
-        logOut { [weak self] in
-            guard let self else { return }
-            context.completeExtensionConfigurationRequest()
-        }
     }
 }
 

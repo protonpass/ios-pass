@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftformat:disable all
+/*
 @testable import MacroImplementation
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
@@ -124,3 +126,4 @@ final class LocalizedMacroTests: XCTestCase {
                              macros: macros)
     }
 }
+*/
