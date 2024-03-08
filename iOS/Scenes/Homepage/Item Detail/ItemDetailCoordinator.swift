@@ -44,12 +44,12 @@ final class ItemDetailCoordinator: DeinitPrintable {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
     }
 
-    func showDetail(for itemContent: ItemContent, asSheet: Bool) {
+    func showDetail(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
         assert(delegate != nil, "delegate is not set")
 
         let itemDetailPage: ItemDetailPage = switch itemContent.contentData {
         case .login:
-            makeLoginItemDetailPage(from: itemContent, asSheet: asSheet)
+            makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
         case .note:
             makeNoteDetailPage(from: itemContent, asSheet: asSheet)
         case .alias:
@@ -76,10 +76,13 @@ private extension ItemDetailCoordinator {
         let view: any View
     }
 
-    func makeLoginItemDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
+    func makeLoginItemDetailPage(from itemContent: ItemContent,
+                                 asSheet: Bool,
+                                 showSecurityIssues: Bool = false) -> ItemDetailPage {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
-                                             upgradeChecker: upgradeChecker)
+                                             upgradeChecker: upgradeChecker,
+                                             showSecurityIssues: showSecurityIssues)
         viewModel.logInDetailViewModelDelegate = self
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
     }

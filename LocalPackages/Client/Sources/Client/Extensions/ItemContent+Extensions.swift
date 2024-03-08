@@ -1,7 +1,7 @@
 //
-// SymmetricallyEncryptedItem+Extensions.swift
-// Proton Pass - Created on 04/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ItemContent+Extensions.swift
+// Proton Pass - Created on 07/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,20 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import CryptoKit
 import Entities
 
-extension SymmetricallyEncryptedItem {
-    func toItemUiModel(_ symmetricKey: SymmetricKey) throws -> ItemUiModel {
-        let itemContent = try getItemContent(symmetricKey: symmetricKey)
+// MARK: - Adapters
 
+public extension ItemContent {
+    var toItemUiModel: ItemUiModel {
         let note: String
         var url: String?
         var isAlias = false
         var hasTotpUri = false
 
-        switch itemContent.contentData {
+        switch contentData {
         case let .login(data):
             note = data.username
             url = data.urls.first
@@ -45,14 +43,14 @@ extension SymmetricallyEncryptedItem {
             note = data.number.toMaskedCreditCardNumber()
 
         case .note:
-            note = String(itemContent.note.prefix(50))
+            note = String(self.note.prefix(50))
         }
 
         return .init(itemId: item.itemID,
                      shareId: shareId,
-                     type: itemContent.contentData.type,
+                     type: contentData.type,
                      aliasEmail: item.aliasEmail,
-                     title: itemContent.name,
+                     title: name,
                      description: note,
                      url: url,
                      isAlias: isAlias,

@@ -52,12 +52,16 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var passwordStrength: PasswordStrength?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
+    @Published private(set) var securityIssues: [SecurityWeakness]?
 
     var isAlias: Bool { aliasItem != nil }
+    let showSecurityIssues: Bool
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
+    private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
 
     let totpManager = resolve(\ServiceContainer.totpManager)
+    private var cancellable: AnyCancellable?
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
@@ -65,12 +69,25 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         PasswordUtils.generateColoredPassword(password)
     }
 
-    override init(isShownAsSheet: Bool,
-                  itemContent: ItemContent,
-                  upgradeChecker: UpgradeCheckerProtocol) {
+    init(isShownAsSheet: Bool,
+         itemContent: ItemContent,
+         upgradeChecker: UpgradeCheckerProtocol,
+         showSecurityIssues: Bool) {
+        self.showSecurityIssues = showSecurityIssues
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
+        if showSecurityIssues {
+            cancellable = getLoginSecurityIssues(itemId: itemContent.itemId)
+                .subscribe(on: DispatchQueue.global())
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] securityIssues in
+                    guard let self else {
+                        return
+                    }
+                    self.securityIssues = securityIssues
+                }
+        }
     }
 
     override func bindValues() {
@@ -165,5 +182,18 @@ extension LogInDetailViewModel {
 
     func openUrl(_ urlString: String) {
         router.navigate(to: .urlPage(urlString: urlString))
+    }
+}
+
+extension SecurityWeakness {
+    var secureRowType: SecureRowType {
+        switch self {
+        case .missing2FA, .reusedPasswords, .weakPasswords:
+            .warning
+        case .exposedEmail, .exposedPassword:
+            .danger
+        default:
+            .info
+        }
     }
 }

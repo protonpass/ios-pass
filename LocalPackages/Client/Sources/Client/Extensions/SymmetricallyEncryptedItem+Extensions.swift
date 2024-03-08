@@ -56,3 +56,11 @@ public extension SymmetricallyEncryptedItem {
                      description: note?.isEmpty == true ? nil : note)
     }
 }
+
+public extension SymmetricallyEncryptedItem {
+    func toItemUiModel(_ symmetricKey: SymmetricKey) throws -> ItemUiModel {
+        let itemContent = try getItemContent(symmetricKey: symmetricKey)
+
+        return itemContent.toItemUiModel
+    }
+}
