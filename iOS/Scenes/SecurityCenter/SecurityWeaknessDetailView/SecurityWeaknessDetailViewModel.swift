@@ -1,6 +1,6 @@
 //
 //
-// DetailSecurityCenterViewModel.swift
+// SecurityWeaknessDetailViewModel.swift
 // Proton Pass - Created on 05/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -28,7 +28,7 @@ import Foundation
 import UseCases
 
 @MainActor
-final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
+final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     @Published private(set) var sectionedData = [SecuritySectionHeaderKey: [ItemContent]]()
     @Published private(set) var showSections = true
     @Published private(set) var loading = true
@@ -53,7 +53,7 @@ final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
     }
 }
 
-private extension DetailSecurityCenterViewModel {
+private extension SecurityWeaknessDetailViewModel {
     func setUp() {
         getAllSecurityAffectedLogins(for: type)
             .subscribe(on: DispatchQueue.global())

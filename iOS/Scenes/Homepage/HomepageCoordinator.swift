@@ -796,7 +796,7 @@ extension HomepageCoordinator {
 extension HomepageCoordinator {
     func presentSecurity(_ securityWeakness: SecurityWeakness) {
         let isSheet = shouldShowAsSheet()
-        let view = DetailSecurityCenterView(viewModel: .init(type: securityWeakness), isSheet: isSheet)
+        let view = SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness), isSheet: isSheet)
         if isSheet {
             present(view)
         } else {
