@@ -26184,7 +26184,14 @@
       }
     },
     "Excluded Items" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded Items"
+          }
+        }
+      }
     },
     "Expiration date" : {
       "localizations" : {
