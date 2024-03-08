@@ -168,4 +168,24 @@ public final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, Share
         closureGetInviteRecommendations()
         return stubbedGetInviteRecommendationsResult
     }
+    // MARK: - checkAddresses
+    public var checkAddressesShareIdEmailsThrowableError8: Error?
+    public var closureCheckAddresses: () -> () = {}
+    public var invokedCheckAddressesfunction = false
+    public var invokedCheckAddressesCount = 0
+    public var invokedCheckAddressesParameters: (shareId: String, emails: [String])?
+    public var invokedCheckAddressesParametersList = [(shareId: String, emails: [String])]()
+    public var stubbedCheckAddressesResult: [String]!
+
+    public func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
+        invokedCheckAddressesfunction = true
+        invokedCheckAddressesCount += 1
+        invokedCheckAddressesParameters = (shareId, emails)
+        invokedCheckAddressesParametersList.append((shareId, emails))
+        if let error = checkAddressesShareIdEmailsThrowableError8 {
+            throw error
+        }
+        closureCheckAddresses()
+        return stubbedCheckAddressesResult
+    }
 }

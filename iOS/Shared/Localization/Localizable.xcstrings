@@ -68987,6 +68987,16 @@
         }
       }
     },
+    "You can't invite people outside of your organization, contact admin for more info." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can't invite people outside of your organization, contact admin for more info."
+          }
+        }
+      }
+    },
     "You currently have no login items" : {
       "localizations" : {
         "be" : {
