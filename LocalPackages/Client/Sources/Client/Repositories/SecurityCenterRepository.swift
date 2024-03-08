@@ -55,6 +55,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
     }
 
     public func refreshAllSecurityCenterData() async {
+        // swiftlint:disable:next todo
         // TODO: remove excluded items
         guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
               let encryptedItems = try? await itemRepository.getActiveLogInItems() else {
@@ -83,6 +84,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                 weaknesses.append(.weakPasswords)
                 numberOfWeakPassword += 1
             }
+            // swiftlint:disable:next todo
             // TODO: check for missing 2FA and breached passwords /emails
 
             if !weaknesses.isEmpty {

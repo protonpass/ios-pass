@@ -37,7 +37,7 @@ struct DetailSecurityCenterView: View {
             .toolbar { toolbarContent }
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
-            //            .showSpinner(viewModel.loading)
+            .showSpinner(viewModel.loading)
             .navigationStackEmbeded()
     }
 }

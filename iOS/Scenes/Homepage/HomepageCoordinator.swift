@@ -405,7 +405,8 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
-                case let .itemDetail(content, automaticDisplay: automaticDisplay,
+                case let .itemDetail(content,
+                                     automaticDisplay: automaticDisplay,
                                      showSecurityIssues: showSecurityIssues):
                     presentItemDetailView(for: content,
                                           asSheet: automaticDisplay ? shouldShowAsSheet() : true,
