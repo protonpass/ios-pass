@@ -83,6 +83,10 @@ private extension UseCasesContainer {
     var vaultsManager: any VaultsManagerProtocol {
         SharedServiceContainer.shared.vaultsManager()
     }
+
+    var securityCenterRepository: any SecurityCenterRepositoryProtocol {
+        SharedRepositoryContainer.shared.securityCenterRepository()
+    }
 }
 
 // MARK: User report
@@ -393,10 +397,15 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var getAllSecurityAffectedLogins: Factory<GetAllSecurityAffectedLoginsUseCase> {
         self {
-            GetAllSecurityAffectedLogins(securityCenterRepository: SharedRepositoryContainer.shared
-                .securityCenterRepository(),
-                symmetricKeyProvider: self.symmetricKeyProvider,
-                getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
+            GetAllSecurityAffectedLogins(securityCenterRepository: self.securityCenterRepository,
+                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
+        }
+    }
+
+    var getLoginSecurityIssues: Factory<GetLoginSecurityIssuesUseCase> {
+        self {
+            GetLoginSecurityIssues(securityCenterRepository: self.securityCenterRepository)
         }
     }
 }

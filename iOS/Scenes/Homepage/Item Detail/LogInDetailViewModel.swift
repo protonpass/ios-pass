@@ -52,13 +52,13 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var passwordStrength: PasswordStrength?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
-    @Published private(set) var showSecurityIssues = false
     @Published private(set) var securityIssues: [SecurityWeakness]?
 
     var isAlias: Bool { aliasItem != nil }
+    let showSecurityIssues: Bool
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let getLoginSecurityIssues = resolve(\SharedUseCasesContainer.getLoginSecurityIssues)
+    private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
 
     let totpManager = resolve(\ServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
@@ -85,7 +85,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     guard let self else {
                         return
                     }
-                    self.showSecurityIssues = securityIssues != nil
                     self.securityIssues = securityIssues
                 }
         }
