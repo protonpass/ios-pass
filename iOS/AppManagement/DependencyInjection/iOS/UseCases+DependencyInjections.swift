@@ -76,6 +76,10 @@ private extension UseCasesContainer {
         RepositoryContainer.shared.inviteRepository()
     }
 
+    var publicKeyRepository: any PublicKeyRepositoryProtocol {
+        SharedRepositoryContainer.shared.publicKeyRepository()
+    }
+
     var vaultsManager: any VaultsManagerProtocol {
         SharedServiceContainer.shared.vaultsManager()
     }
@@ -149,14 +153,14 @@ extension UseCasesContainer {
     }
 
     var promoteNewUserInvite: Factory<PromoteNewUserInviteUseCase> {
-        self { PromoteNewUserInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
+        self { PromoteNewUserInvite(publicKeyRepository: self.publicKeyRepository,
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: self.shareInviteRepository,
                                     userDataProvider: self.userDataProvider) }
     }
 
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
-        self { GetEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
+        self { GetEmailPublicKey(publicKeyRepository: self.publicKeyRepository) }
     }
 
     var leaveShare: Factory<LeaveShareUseCase> {
@@ -168,8 +172,7 @@ extension UseCasesContainer {
     }
 
     var getPendingInvitationsForShare: Factory<GetPendingInvitationsForShareUseCase> {
-        self { GetPendingInvitationsForShare(repository: self.shareInviteRepository)
-        }
+        self { GetPendingInvitationsForShare(repository: self.shareInviteRepository) }
     }
 
     var updateUserShareRole: Factory<UpdateUserShareRoleUseCase> {

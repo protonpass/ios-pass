@@ -25,7 +25,6 @@ import ProtonCoreFeatureFlags
 /// Example:
 ///    case passSharingV1 = "PassSharingV1"
 public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-    case passItemHistoryV1 = "PassItemHistoryV1"
     case passSentinelV1 = "PassSentinelV1"
     case passSpotlight = "PassSpotlight"
 }

@@ -30,7 +30,6 @@ import Factory
 import Macro
 import MBProgressHUD
 import ProtonCoreAccountDeletion
-import ProtonCoreFeatureSwitch
 import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUIFoundations

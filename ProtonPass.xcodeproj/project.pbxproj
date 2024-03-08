@@ -5496,10 +5496,10 @@
 		};
 		57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://gitlab.protontech.ch/apple/shared/protoncore.git";
+			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
 			requirement = {
 				kind = exactVersion;
-				version = 19.0.0;
+				version = 20.0.0;
 			};
 		};
 		575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */ = {

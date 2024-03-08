@@ -32,7 +32,6 @@ struct DetailHistoryView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showAlert = false
     @State var isShowingPassword = false
-    @State var isShowingTotp = false
     @State var isShowingCardNumber = false
     @State var isShowingVerificationNumber = false
     @State var isShowingPIN = false
