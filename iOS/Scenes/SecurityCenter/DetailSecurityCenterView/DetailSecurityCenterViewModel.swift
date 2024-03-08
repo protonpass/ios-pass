@@ -58,7 +58,17 @@ private extension DetailSecurityCenterViewModel {
         getAllSecurityAffectedLogins(for: type)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] logins in
+            .sink { [weak self] completion in
+                guard let self else {
+                    return
+                }
+                switch completion {
+                case .finished:
+                    return
+                case let .failure(error):
+                    router.display(element: .displayErrorBanner(error))
+                }
+            } receiveValue: { [weak self] logins in
                 guard let self else {
                     return
                 }
