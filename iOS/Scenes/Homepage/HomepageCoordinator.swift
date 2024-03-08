@@ -406,8 +406,8 @@ extension HomepageCoordinator {
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
                 case let .itemDetail(content,
-                                     automaticDisplay: automaticDisplay,
-                                     showSecurityIssues: showSecurityIssues):
+                                     automaticDisplay,
+                                     showSecurityIssues):
                     presentItemDetailView(for: content,
                                           asSheet: automaticDisplay ? shouldShowAsSheet() : true,
                                           showSecurityIssues: showSecurityIssues)
@@ -1423,11 +1423,6 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 // MARK: - SearchViewModelDelegate
 
 extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToViewDetail(of itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent, asSheet: true)
-        addNewEvent(type: .searchClick)
-    }
-
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                    delegate: SortTypeListViewModelDelegate) {
         presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)

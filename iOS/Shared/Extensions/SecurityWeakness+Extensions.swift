@@ -19,39 +19,40 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Macro
 
 public extension SecurityWeakness {
     var title: String {
         switch self {
         case .excludedItems:
-            "Excluded Items"
+            #localized("Excluded Items")
         case .weakPasswords:
-            "Weak passwords"
+            #localized("Weak passwords")
         case .reusedPasswords:
-            "Reused passwords"
+            #localized("Reused passwords")
         case .exposedEmail:
-            "Exposed emails"
+            #localized("Exposed emails")
         case .exposedPassword:
-            "Exposed passwords"
+            #localized("Exposed passwords")
         case .missing2FA:
-            "Missing two-factor authentication"
+            #localized("Missing two-factor authentication")
         }
     }
 
     var subtitleInfo: String {
         switch self {
         case .excludedItems:
-            "The following items are excluded from "
+            #localized("The following items are excluded from")
         case .weakPasswords:
-            "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
         case .reusedPasswords:
-            "Generate unique passwords to increase your security."
+            #localized("Generate unique passwords to increase your security.")
         case .exposedEmail:
-            "These accounts appear in data breaches. Update your credentials immediately."
+            #localized("These accounts appear in data breaches. Update your credentials immediately.")
         case .exposedPassword:
-            "These password appear in data breaches. Update your credentials immediately."
+            #localized("These password appear in data breaches. Update your credentials immediately.")
         case .missing2FA:
-            "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            #localized("Logins with sites that have two-factor authentication available but you haven’t set it up yet.")
         }
     }
 
@@ -60,7 +61,7 @@ public extension SecurityWeakness {
         case .excludedItems:
             ""
         case .weakPasswords:
-            "This account is vulnerable, visit the service and change your password."
+            #localized("This account is vulnerable, visit the service and change your password.")
         case .reusedPasswords:
             ""
         case .exposedEmail:
