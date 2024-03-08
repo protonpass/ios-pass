@@ -110,10 +110,10 @@ private extension SecurityWeaknessDetailView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.chevronDown,
+            CircleButton(icon: isSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.loginInteractionNormMajor2,
                          backgroundColor: PassColor.loginInteractionNormMinor1) {
-                dismiss()
+                viewModel.dismiss(isSheet: isSheet)
             }
         }
     }
