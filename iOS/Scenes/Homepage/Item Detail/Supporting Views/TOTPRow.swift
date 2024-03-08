@@ -25,13 +25,16 @@ import SwiftUI
 
 struct TOTPRow: View {
     @ObservedObject private var totpManager: TOTPManager
+    let textColor: UIColor
     let tintColor: UIColor
     let onCopyTotpToken: (String) -> Void
 
     init(totpManager: TOTPManager,
+         textColor: UIColor = PassColor.textNorm,
          tintColor: UIColor,
          onCopyTotpToken: @escaping (String) -> Void) {
         _totpManager = .init(initialValue: totpManager)
+        self.textColor = textColor
         self.tintColor = tintColor
         self.onCopyTotpToken = onCopyTotpToken
     }
@@ -50,7 +53,7 @@ struct TOTPRow: View {
                 case .loading:
                     ProgressView()
                 case let .valid(data):
-                    TOTPText(code: data.code)
+                    TOTPText(code: data.code, textColor: textColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 case .invalid:
                     Text("Invalid TOTP URI")
