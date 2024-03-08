@@ -21,88 +21,7 @@
 @preconcurrency import Combine
 import Entities
 import Foundation
-@preconcurrency import PassRustCore
-
-public struct WeaknessAccounts: Equatable {
-    public let weakPasswords: Int
-    public let reusedPasswords: Int
-    public let missing2FA: Int
-    public let excludedItems: Int
-    public let exposedPasswords: Int
-
-    public static var `default`: WeaknessAccounts {
-        WeaknessAccounts(weakPasswords: 0,
-                         reusedPasswords: 0,
-                         missing2FA: 0,
-                         excludedItems: 0,
-                         exposedPasswords: 0)
-    }
-}
-
-public struct SecurityAffectedItem {
-    public let item: SymmetricallyEncryptedItem
-    public let weaknesses: [SecurityWeakness]
-}
-
-public enum SecurityWeakness: Equatable, Sendable {
-    case weakPasswords
-    case reusedPasswords
-    case exposedEmail
-    case exposedPassword
-    case missing2FA
-    case excludedItems
-
-    public var title: String {
-        switch self {
-        case .excludedItems:
-            "Excluded Items"
-        case .weakPasswords:
-            "Weak passwords"
-        case .reusedPasswords:
-            "Reused passwords"
-        case .exposedEmail:
-            "Exposed emails"
-        case .exposedPassword:
-            "Exposed passwords"
-        case .missing2FA:
-            "Missing two-factor authentication"
-        }
-    }
-
-    public var subtitleInfo: String {
-        switch self {
-        case .excludedItems:
-            "The following items are excluded from "
-        case .weakPasswords:
-            "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
-        case .reusedPasswords:
-            "Generate unique passwords to increase your security."
-        case .exposedEmail:
-            "These accounts appear in data breaches. Update your credentials immediately."
-        case .exposedPassword:
-            "These password appear in data breaches. Update your credentials immediately."
-        case .missing2FA:
-            "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
-        }
-    }
-
-    public var infos: String {
-        switch self {
-        case .excludedItems:
-            ""
-        case .weakPasswords:
-            "This account is vulnerable, visit the service and change your password."
-        case .reusedPasswords:
-            ""
-        case .exposedEmail:
-            ""
-        case .exposedPassword:
-            ""
-        case .missing2FA:
-            ""
-        }
-    }
-}
+import PassRustCore
 
 public protocol SecurityCenterRepositoryProtocol: Sendable {
     var weaknessAccounts: CurrentValueSubject<WeaknessAccounts, Never> { get }
@@ -136,83 +55,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
     }
 
     public func refreshAllSecurityCenterData() async {
-//        Task { [weak self] in
-//            guard let self,
-//                  let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
-//                  let encryptedItems = try? await itemRepository.getActiveLogInItems() else {
-//                return
-//            }
-//
-//            // TODO: optimization ne pas pasr 2 fois le full array pour les passwords
-//            let activeLoginItems = encryptedItems
-//                .compactMap { try? $0.getItemContent(symmetricKey: symmetricKey) }
-//            // TODO: remove excluded items
-//            let listOfReusedPasswords = await reusedPasswords(items: activeLoginItems)
-//
-//            var numberOfWeakPassword = 0
-//            var numberOfReusedPassword = 0
-//            var securityAffectedItems = [SecurityAffectedItem]()
-//
-//            for item in activeLoginItems {
-//                guard let loginItem = item.loginItem else {
-//                    continue
-//                }
-//                var weaknesses = [SecurityWeakness]()
-//                if listOfReusedPasswords.contains(loginItem.password) {
-//                    weaknesses.append(.reusedPasswords)
-//                    numberOfReusedPassword += 1
-//                }
-//
-//                if await weakPassword(password: loginItem.password) {
-//                    weaknesses.append(.weakPasswords)
-//                    numberOfWeakPassword += 1
-//                }
-//                // TODO: check for missing 2FA and breached passwords /emails
-//
-//                if !weaknesses.isEmpty, let item = encryptedItems.first(where: { $0.itemId == item.itemId }) {
-//                    securityAffectedItems.append(SecurityAffectedItem(item: item, weaknesses: weaknesses))
-//                }
-//            }
-//
-        ////            let securityAffectedItem = activeLoginItems.compactMap { [passwordScorer] item ->
-        ////            SecurityAffectedItem? in
-        ////                guard let loginItem = item.loginItem else {
-        ////                    return nil
-        ////                }
-        ////                var weaknesses = [SecurityWeakness]()
-//            //                if listOfReusedPasswords.contains(loginItem.password) {
-//            //                    weaknesses.append(.reusedPasswords)
-//            //                }
-//            //
-//            //                if passwordScorer.checkScore(password: loginItem.password) != .strong
-//            //                /*weakPassword(password: loginItem.password)*/ {
-//            //                    weaknesses.append(.weakPasswords)
-//            //                }
-//            //
-//            //                //TODO: check for missing 2FA and breached passwords /emails
-        ////
-        ////                if !weaknesses.isEmpty, let item = encryptedItems.first(where: { $0.itemId ==
-        /// item.itemId }) {
-        ////                    return SecurityAffectedItem(item: item, weakness: weaknesses)
-        ////                }
-        ////                return nil
-        ////            }
-//            weaknessAccounts.send(WeaknessAccounts(weakPasswords: numberOfWeakPassword,
-//                                                   reusedPasswords: numberOfReusedPassword,
-//                                                   missing2FA: 0,
-//                                                   excludedItems: 0,
-//                                                   exposedPasswords: 0))
-//            itemsWithSecurityIssues.send(securityAffectedItems)
-//        }
-//
-
-//        Task { [weak self] in
-//            guard let self,
-//                  let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
-//                  let encryptedItems = try? await itemRepository.getActiveLogInItems() else {
-//                return
-//            }
-
+        // TODO: remove excluded items
         guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
               let encryptedItems = try? await itemRepository.getActiveLogInItems() else {
             return
@@ -236,9 +79,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                 passwords.insert(loginItem.password)
             }
 
-            if passwordScorer
-                .checkScore(password: loginItem.password) !=
-                .strong /* await weakPassword(password: loginItem.password) */ {
+            if passwordScorer.checkScore(password: loginItem.password) != .strong {
                 weaknesses.append(.weakPasswords)
                 numberOfWeakPassword += 1
             }
@@ -254,48 +95,5 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                                                excludedItems: 0,
                                                exposedPasswords: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
-//        }
     }
-
-//    // TODO: maybe return id of items
-//    private func reusedPasswords(items: [ItemContent]) -> [String] /* [(password: String, count: Int)] */ {
-//        var passwordCounts = [String: Int]()
-//
-//        // Count occurrences of each password
-//        for item in items {
-//            guard let loginItem = item.loginItem else { continue }
-//
-//            passwordCounts[loginItem.password, default: 0] += 1
-//        }
-//
-//        // Filter out unique passwords and prepare the result
-//        let reusedPasswords = passwordCounts.filter { $0.value > 1 }
-//            .map(\.key)
-    ////                                                 .sorted(by: { $0.count > $1.count }) // Optional sorting
-//
-//        return reusedPasswords
-//    }
-//
-//    func weakPassword(password: String) -> Bool {
-//        passwordScorer.checkScore(password: password) != .strong
-//    }
 }
-
-//
-//
-// public init() {
-// }
-//
-// public func execute(password: String) -> PasswordStrength? {
-//    guard !password.isEmpty else {
-//        return nil
-//    }
-//    return switch passwordScorer.checkScore(password: password) {
-//    case .vulnerable:
-//        .vulnerable
-//    case .weak:
-//        .weak
-//    case .strong:
-//        .strong
-//    }
-// }
