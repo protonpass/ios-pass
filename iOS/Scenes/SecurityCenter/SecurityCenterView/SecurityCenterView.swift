@@ -146,7 +146,7 @@ private extension SecurityCenterView {
 
 private extension SecurityCenterView {
     @ViewBuilder
-    func breachedDataRows(weaknessAccounts: WeaknessAccounts) -> some View {
+    func breachedDataRows(weaknessAccounts: WeaknessStats) -> some View {
         VStack {
             if viewModel.isFreeUser {
                 upsellRow(weaknessAccounts: weaknessAccounts)
@@ -157,7 +157,7 @@ private extension SecurityCenterView {
         }
     }
 
-    func upsellRow(weaknessAccounts: WeaknessAccounts) -> some View {
+    func upsellRow(weaknessAccounts: WeaknessStats) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             Text("Data Breach Protection")
                 .font(.title)
@@ -169,7 +169,7 @@ private extension SecurityCenterView {
                 breachedPasswordsRow(weaknessAccounts.exposedPasswords, showAdvice: false)
             }
 
-            Text("Your data appears in 10 data breaches, upgrade to see which ones.")
+            Text("Your data appears in data breaches, upgrade to see which ones.")
                 .font(.body)
                 .foregroundStyle(PassColor.textNorm.toColor)
 

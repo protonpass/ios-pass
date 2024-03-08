@@ -1,5 +1,5 @@
 //
-// WeaknessAccounts.swift
+// WeaknessStats.swift
 // Proton Pass - Created on 08/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct WeaknessAccounts: Equatable, Sendable {
+public struct WeaknessStats: Equatable, Sendable {
     public let weakPasswords: Int
     public let reusedPasswords: Int
     public let missing2FA: Int
@@ -39,11 +39,11 @@ public struct WeaknessAccounts: Equatable, Sendable {
         self.exposedPasswords = exposedPasswords
     }
 
-    public static var `default`: WeaknessAccounts {
-        WeaknessAccounts(weakPasswords: 0,
-                         reusedPasswords: 0,
-                         missing2FA: 0,
-                         excludedItems: 0,
-                         exposedPasswords: 0)
+    public static var `default`: WeaknessStats {
+        WeaknessStats(weakPasswords: 0,
+                      reusedPasswords: 0,
+                      missing2FA: 0,
+                      excludedItems: 0,
+                      exposedPasswords: 0)
     }
 }

@@ -22,7 +22,6 @@
 
 import Client
 import Combine
-import CryptoKit
 import Entities
 
 public protocol GetLoginSecurityIssuesUseCase: Sendable {
@@ -37,21 +36,15 @@ public extension GetLoginSecurityIssuesUseCase {
 
 public final class GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
     private let securityCenterRepository: any SecurityCenterRepositoryProtocol
-    private let symmetricKeyProvider: any SymmetricKeyProvider
 
-    public init(securityCenterRepository: any SecurityCenterRepositoryProtocol,
-                symmetricKeyProvider: any SymmetricKeyProvider) {
+    public init(securityCenterRepository: any SecurityCenterRepositoryProtocol) {
         self.securityCenterRepository = securityCenterRepository
-        self.symmetricKeyProvider = symmetricKeyProvider
     }
 
     public func execute(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never> {
         securityCenterRepository.itemsWithSecurityIssues
-            .map { [weak self] items -> [SecurityWeakness]? in
-                guard let self else {
-                    return nil
-                }
-                return items.first { $0.item.itemId == itemId }?.weaknesses
+            .map { items -> [SecurityWeakness]? in
+                items.first { $0.item.itemId == itemId }?.weaknesses
             }.eraseToAnyPublisher()
     }
 }
