@@ -1,7 +1,7 @@
 //
-// DesignConstant.swift
-// Proton Pass - Created on 09/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// SecurityWeakness.swift
+// Proton Pass - Created on 08/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,12 +20,11 @@
 
 import Foundation
 
-public enum DesignConstant {
-    public static let sectionPadding: CGFloat = 16
-    public static let defaultPickerHeight: CGFloat = 50
-    public static let searchBarHeight: CGFloat = 48
-
-    public enum Icons {
-        public static let defaultIconSize: CGFloat = 20
-    }
+public enum SecurityWeakness: Equatable, Sendable {
+    case weakPasswords
+    case reusedPasswords
+    case exposedEmail
+    case exposedPassword
+    case missing2FA
+    case excludedItems
 }

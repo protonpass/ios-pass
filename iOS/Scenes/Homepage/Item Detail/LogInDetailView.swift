@@ -54,6 +54,11 @@ private extension LogInDetailView {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
+                        if viewModel.showSecurityIssues, let issues = viewModel.securityIssues {
+                            securityIssuesView(issues: issues)
+                                .padding(.vertical)
+                        }
+
                         ItemDetailTitleView(itemContent: viewModel.itemContent,
                                             vault: viewModel.vault?.vault,
                                             shouldShowVault: viewModel.shouldShowVault)
@@ -334,5 +339,64 @@ private extension LogInDetailView {
 
     func copyHiddenText(_ text: String) {
         viewModel.copyToClipboard(text: text, message: #localized("Hidden text copied"))
+    }
+}
+
+private extension LogInDetailView {
+    func securityIssuesView(issues: [SecurityWeakness]) -> some View {
+        VStack {
+            ForEach(issues, id: \.self) { issue in
+                securityWeaknessRow(weakness: issue,
+                                    action: {})
+            }
+        }
+    }
+
+    @ViewBuilder
+    func securityWeaknessRow(weakness: SecurityWeakness,
+                             action: @escaping () -> Void) -> some View {
+        let rowType = weakness.secureRowType
+        HStack(spacing: DesignConstant.sectionPadding) {
+            if let iconName = rowType.icon {
+                Image(systemName: iconName)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .foregroundColor(rowType.iconColor.toColor)
+                    .frame(width: 20)
+            }
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(weakness.title)
+                    .font(.body)
+                    .foregroundStyle(rowType.iconColor.toColor)
+                Text(weakness.infos)
+                    .font(.footnote)
+                    .foregroundColor(rowType.iconColor.toColor)
+            }
+            .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
+            .contentShape(Rectangle())
+
+            // swiftlint:disable:next todo
+            // TODO: remove item from security monitoring
+            Menu(content: {
+                Button { action() }
+                    label: {
+                        Label(title: { Text("Exclude from monitoring") },
+                              icon: { Image(uiImage: IconProvider.eyeSlash) })
+                    }
+            }, label: {
+                Image(uiImage: IconProvider.threeDotsVertical)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .foregroundColor(rowType.iconColor.toColor)
+                    .frame(width: DesignConstant.Icons.defaultIconSize,
+                           height: DesignConstant.Icons.defaultIconSize)
+            })
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection(backgroundColor: rowType.background,
+                              borderColor: rowType.border)
     }
 }

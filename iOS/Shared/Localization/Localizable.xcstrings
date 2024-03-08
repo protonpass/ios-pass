@@ -21708,6 +21708,16 @@
         }
       }
     },
+    "Data Breach Protection" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Breach Protection"
+          }
+        }
+      }
+    },
     "Default browser" : {
       "comment" : "Settings page",
       "localizations" : {
@@ -26163,6 +26173,26 @@
         }
       }
     },
+    "Exclude from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exclude from monitoring"
+          }
+        }
+      }
+    },
+    "Excluded Items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded Items"
+          }
+        }
+      }
+    },
     "Expiration date" : {
       "localizations" : {
         "be" : {
@@ -26289,6 +26319,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hết hạn vào"
+          }
+        }
+      }
+    },
+    "Exposed emails" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exposed emails"
+          }
+        }
+      }
+    },
+    "Exposed passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exposed passwords"
           }
         }
       }
@@ -27989,6 +28039,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo mật khẩu"
+          }
+        }
+      }
+    },
+    "Generate unique passwords to increase your security." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate unique passwords to increase your security."
           }
         }
       }
@@ -33238,6 +33298,16 @@
         }
       }
     },
+    "Last Data Breach Protection Sync:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Data Breach Protection Sync:"
+          }
+        }
+      }
+    },
     "Last modified" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -35466,6 +35536,16 @@
         }
       }
     },
+    "Logins with sites that have two-factor authentication available but you haven’t set it up yet." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+          }
+        }
+      }
+    },
     "Logs" : {
       "localizations" : {
         "be" : {
@@ -36508,6 +36588,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mật khẩu dễ nhớ"
+          }
+        }
+      }
+    },
+    "Missing two-factor authentication" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing two-factor authentication"
           }
         }
       }
@@ -48620,6 +48710,16 @@
         }
       }
     },
+    "Reused passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reused passwords"
+          }
+        }
+      }
+    },
     "Reveal" : {
       "localizations" : {
         "be" : {
@@ -50321,6 +50421,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bảo mật"
+          }
+        }
+      }
+    },
+    "Security Center" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security Center"
           }
         }
       }
@@ -57144,6 +57254,16 @@
         }
       }
     },
+    "The following items are excluded from" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The following items are excluded from"
+          }
+        }
+      }
+    },
     "The item will be moved to the new vault" : {
       "comment" : "Used in share from item detail page flow. The users are offered the option to create a new vault on the fly and share that new vault. This message makes it clear that once the new vault is created, the current item will be migrated to that new vault.",
       "extractionState" : "manual",
@@ -57402,6 +57522,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chủ đề"
+          }
+        }
+      }
+    },
+    "These accounts appear in data breaches. Update your credentials immediately." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+          }
+        }
+      }
+    },
+    "These password appear in data breaches. Update your credentials immediately." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These password appear in data breaches. Update your credentials immediately."
+          }
+        }
+      }
+    },
+    "This account is vulnerable, visit the service and change your password." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account is vulnerable, visit the service and change your password."
           }
         }
       }
@@ -66820,6 +66970,26 @@
         }
       }
     },
+    "Weak passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak passwords"
+          }
+        }
+      }
+    },
+    "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+          }
+        }
+      }
+    },
     "Website" : {
       "localizations" : {
         "be" : {
@@ -69869,6 +70039,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your current version of the app is no longer supported. Please update to the latest version."
+          }
+        }
+      }
+    },
+    "Your data appears in data breaches, upgrade to see which ones." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your data appears in data breaches, upgrade to see which ones."
           }
         }
       }
