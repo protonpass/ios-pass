@@ -167,6 +167,13 @@ extension UseCasesContainer {
         self { GetEmailPublicKey(publicKeyRepository: self.publicKeyRepository) }
     }
 
+    var checkAddressesForInvite: Factory<CheckAddressesForInviteUseCase> {
+        self { CheckAddressesForInvite(accessRepository: self.accessRepository,
+                                       remoteOrganizationDatasource: SharedRepositoryContainer.shared
+                                           .remoteOrganizationDatasource(),
+                                       shareInviteRepository: self.shareInviteRepository) }
+    }
+
     var leaveShare: Factory<LeaveShareUseCase> {
         self { LeaveShare(vaultManager: self.vaultsManager) }
     }
