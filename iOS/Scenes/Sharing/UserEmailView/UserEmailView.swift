@@ -133,14 +133,25 @@ private extension UserEmailView {
         let highlighted = viewModel.highlightedEmail == email
         let invalid = viewModel.invalidEmails.contains(email)
 
+        let textColor: () -> UIColor = {
+            switch (highlighted, invalid) {
+            case (false, true):
+                PassColor.passwordInteractionNormMajor1
+            case (true, _):
+                PassColor.textInvert
+            default:
+                PassColor.textNorm
+            }
+        }
+
         let backgroundColor: () -> UIColor = {
             switch (highlighted, invalid) {
             case (true, true):
-                PassColor.signalDanger
+                PassColor.passwordInteractionNormMajor1
             case (true, false):
                 PassColor.interactionNormMajor2
             case (false, true):
-                PassColor.vaultChestnutRose
+                PassColor.passwordInteractionNormMinor1
             default:
                 PassColor.interactionNormMinor1
             }
@@ -159,7 +170,7 @@ private extension UserEmailView {
                 .lineLimit(1)
         }
         .font(.callout)
-        .foregroundColor((highlighted || invalid ? PassColor.textInvert : PassColor.textNorm).toColor)
+        .foregroundColor(textColor().toColor)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .background(backgroundColor().toColor)
