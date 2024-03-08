@@ -47,7 +47,11 @@ final class SecurityCenterViewModel: ObservableObject, Sendable {
     }
 
     func refresh() async {
-        await securityCenterRepository.refreshSecurityChecks()
+        do {
+            try await securityCenterRepository.refreshSecurityChecks()
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+        }
     }
 }
 

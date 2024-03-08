@@ -24,16 +24,14 @@ import Client
 import Combine
 import Entities
 
-public enum SecuritySection: Hashable {
-    case weakPasswords(PasswordStrength)
-}
+public typealias SecurityIssuesContent = [SecuritySection: [ItemContent]]
 
 public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
-    func execute(for type: SecurityWeakness) -> AnyPublisher<[SecuritySection: [ItemContent]], Never>
+    func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, Never>
 }
 
 public extension GetAllSecurityAffectedLoginsUseCase {
-    func callAsFunction(for type: SecurityWeakness) -> AnyPublisher<[SecuritySection: [ItemContent]], Never> {
+    func callAsFunction(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, Never> {
         execute(for: type)
     }
 }
@@ -51,7 +49,7 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
-    public func execute(for type: SecurityWeakness) -> AnyPublisher<[SecuritySection: [ItemContent]], Never> {
+    public func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, Never> {
         securityCenterRepository.itemsWithSecurityIssues.map { [weak self] items in
             guard let self else {
                 return [:]
@@ -68,7 +66,7 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
 
 private extension GetAllSecurityAffectedLogins {
     func filterWeakPasswords(items: [SecurityAffectedItem],
-                             type: SecurityWeakness) -> [SecuritySection: [ItemContent]] {
+                             type: SecurityWeakness) -> SecurityIssuesContent {
         var results: [SecuritySection: [ItemContent]] = [:]
         guard let key = try? symmetricKeyProvider.getSymmetricKey() else {
             return results

@@ -28,6 +28,7 @@ import SwiftUI
 struct DetailSecurityCenterView: View {
     @StateObject var viewModel: DetailSecurityCenterViewModel
     @Environment(\.dismiss) private var dismiss
+    let isSheet: Bool
 
     var body: some View {
         mainContainer
@@ -38,6 +39,7 @@ struct DetailSecurityCenterView: View {
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .showSpinner(viewModel.loading)
+            .navigationBarHidden(!isSheet)
             .navigationStackEmbeded()
     }
 }
