@@ -21709,7 +21709,14 @@
       }
     },
     "Data Breach Protection" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Breach Protection"
+          }
+        }
+      }
     },
     "Default browser" : {
       "comment" : "Settings page",
@@ -26167,6 +26174,16 @@
       }
     },
     "Exclude from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exclude from monitoring"
+          }
+        }
+      }
+    },
+    "Excluded Items" : {
 
     },
     "Expiration date" : {
@@ -26298,6 +26315,12 @@
           }
         }
       }
+    },
+    "Exposed emails" : {
+
+    },
+    "Exposed passwords" : {
+
     },
     "Face ID" : {
       "extractionState" : "manual",
@@ -27998,6 +28021,9 @@
           }
         }
       }
+    },
+    "Generate unique passwords to increase your security." : {
+
     },
     "Get an email alias to use on new apps" : {
       "extractionState" : "manual",
@@ -33245,7 +33271,14 @@
       }
     },
     "Last Data Breach Protection Sync:" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Data Breach Protection Sync:"
+          }
+        }
+      }
     },
     "Last modified" : {
       "extractionState" : "manual",
@@ -35475,6 +35508,9 @@
         }
       }
     },
+    "Logins with sites that have two-factor authentication available but you haven’t set it up yet." : {
+
+    },
     "Logs" : {
       "localizations" : {
         "be" : {
@@ -36520,6 +36556,9 @@
           }
         }
       }
+    },
+    "Missing two-factor authentication" : {
+
     },
     "MM / YY" : {
       "extractionState" : "manual",
@@ -48629,6 +48668,9 @@
         }
       }
     },
+    "Reused passwords" : {
+
+    },
     "Reveal" : {
       "localizations" : {
         "be" : {
@@ -50335,7 +50377,14 @@
       }
     },
     "Security Center" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security Center"
+          }
+        }
+      }
     },
     "Security code" : {
       "localizations" : {
@@ -57156,6 +57205,9 @@
         }
       }
     },
+    "The following items are excluded from" : {
+
+    },
     "The item will be moved to the new vault" : {
       "comment" : "Used in share from item detail page flow. The users are offered the option to create a new vault on the fly and share that new vault. This message makes it clear that once the new vault is created, the current item will be migrated to that new vault.",
       "extractionState" : "manual",
@@ -57417,6 +57469,15 @@
           }
         }
       }
+    },
+    "These accounts appear in data breaches. Update your credentials immediately." : {
+
+    },
+    "These password appear in data breaches. Update your credentials immediately." : {
+
+    },
+    "This account is vulnerable, visit the service and change your password." : {
+
     },
     "This is your last attempt. You will be logged out after failing to authenticate again." : {
       "comment" : "Local authentication",
@@ -66832,6 +66893,12 @@
         }
       }
     },
+    "Weak passwords" : {
+
+    },
+    "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe." : {
+
+    },
     "Website" : {
       "localizations" : {
         "be" : {
@@ -69885,7 +69952,7 @@
         }
       }
     },
-    "Your data appears in 10 data breaches, upgrade to see which ones." : {
+    "Your data appears in data breaches, upgrade to see which ones." : {
 
     },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {

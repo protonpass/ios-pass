@@ -28,7 +28,7 @@ import Foundation
 
 @MainActor
 final class SecurityCenterViewModel: ObservableObject, Sendable {
-    @Published private(set) var weaknessAccounts: WeaknessAccounts?
+    @Published private(set) var weaknessAccounts: WeaknessStats?
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
     @Published private(set) var lastUpdate: String?
@@ -47,12 +47,25 @@ final class SecurityCenterViewModel: ObservableObject, Sendable {
     }
 
     func refresh() async {
-        await securityCenterRepository.refreshAllSecurityCenterData()
+        await securityCenterRepository.refreshSecurityChecks()
     }
 }
 
 private extension SecurityCenterViewModel {
     func setUp() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                async let userStatus = upgradeChecker.isFreeUser()
+
+                isFreeUser = try await userStatus
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+
         securityCenterRepository.weaknessAccounts
             .removeDuplicates()
             .receive(on: DispatchQueue.main)

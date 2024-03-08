@@ -38,7 +38,6 @@ final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
 
     private let type: SecurityWeakness
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
     private var cancellables = Set<AnyCancellable>()
 
