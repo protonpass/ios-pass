@@ -203,8 +203,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         self.profileTabViewController = profileTabViewController
         controllers.append(profileTabViewController)
 
-        viewControllers =
-            controllers // [itemsTabViewController, dummyViewController, secureCenter, profileTabViewController]
+        viewControllers = controllers
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
@@ -286,7 +285,6 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
         guard let viewControllers = tabBarController.viewControllers else { return false }
-//        assert(viewControllers.count == 4)
 
         if viewController == viewControllers[HomepageTab.items.index] {
             homepageTabBarControllerDelegate?.selected(tab: HomepageTab.items)
@@ -311,27 +309,3 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         return false
     }
 }
-
-//
-//
-// public final class ShouldDisplayUpgradeAppBanner: ShouldDisplayUpgradeAppBannerUseCase {
-//    private let accessRepository: any AccessRepositoryProtocol
-//    private let bundle: Bundle
-//    private let userDefaults: UserDefaults
-//
-//    public init(accessRepository: any AccessRepositoryProtocol,
-//                bundle: Bundle,
-//                userDefaults: UserDefaults) {
-//        self.accessRepository = accessRepository
-//        self.bundle = bundle
-//        self.userDefaults = userDefaults
-//    }
-//
-//    public func execute() async throws -> Bool {
-//        let access = try await accessRepository.refreshAccess()
-//        if bundle.isQaBuild, {
-//            return true
-//        }
-//        return access.minVersionUpgrade != nil
-//    }
-// }

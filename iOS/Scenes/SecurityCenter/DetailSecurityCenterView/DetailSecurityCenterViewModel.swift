@@ -63,13 +63,14 @@ private extension DetailSecurityCenterViewModel {
                 guard let self else {
                     return
                 }
+                loading = false
+
                 var data = [SecuritySectionHeaderKey: [ItemContent]]()
 
                 for (key, value) in logins {
                     data[key.toSecuritySectionHeaderKey] = value
                 }
                 sectionedData = data
-                loading = false
             }
             .store(in: &cancellables)
     }
