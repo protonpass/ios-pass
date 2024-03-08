@@ -1,6 +1,6 @@
 //
 //
-// DetailSecurityCenterView.swift
+// SecurityWeaknessDetailView.swift
 // Proton Pass - Created on 05/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -25,8 +25,8 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct DetailSecurityCenterView: View {
-    @StateObject var viewModel: DetailSecurityCenterViewModel
+struct SecurityWeaknessDetailView: View {
+    @StateObject var viewModel: SecurityWeaknessDetailViewModel
     @Environment(\.dismiss) private var dismiss
     let isSheet: Bool
 
@@ -39,7 +39,7 @@ struct DetailSecurityCenterView: View {
     }
 }
 
-private extension DetailSecurityCenterView {
+private extension SecurityWeaknessDetailView {
     var mainContainer: some View {
         VStack {
             Text(viewModel.info)
@@ -68,7 +68,7 @@ private extension DetailSecurityCenterView {
 
 // MARK: - List of Items
 
-private extension DetailSecurityCenterView {
+private extension SecurityWeaknessDetailView {
     func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
         ForEach(sections.keys.sorted(), id: \.self) { key in
             Section(content: {
@@ -106,7 +106,7 @@ private extension DetailSecurityCenterView {
     }
 }
 
-private extension DetailSecurityCenterView {
+private extension SecurityWeaknessDetailView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {

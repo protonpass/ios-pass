@@ -269,7 +269,7 @@ private extension SecurityCenterView {
                         .renderingMode(.template)
                         .scaledToFit()
                         .foregroundColor(rowType.iconColor.toColor)
-                        .frame(width: 20)
+                        .frame(width: DesignConstant.Icons.defaultIconSize)
                 }
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
