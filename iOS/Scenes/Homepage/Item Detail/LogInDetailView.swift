@@ -350,7 +350,6 @@ extension LogInDetailView {
                     securityCenterRow(rowType: issue.secureRowType,
                                       title: issue.title,
                                       subTitle: issue.infos,
-                                      info: "",
                                       action: {})
                 }
             }
@@ -360,7 +359,6 @@ extension LogInDetailView {
     func securityCenterRow(rowType: SecureRowType,
                            title: String,
                            subTitle: String?,
-                           info: String,
                            action: @escaping () -> Void) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             if let iconName = rowType.icon {
@@ -385,6 +383,7 @@ extension LogInDetailView {
             .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
             .contentShape(Rectangle())
 
+            // swiftlint:disable:next todo
             // TODO: remove item from security monitoring
             Menu(content: {
                 Button { action() }
@@ -407,30 +406,3 @@ extension LogInDetailView {
                               borderColor: rowType.border)
     }
 }
-
-// SecureRowType
-//
-//
-// public struct WeaknessAccounts: Equatable {
-//    public let weakPasswords: Int
-//    public let reusedPasswords: Int
-//    public let missing2FA: Int
-//    public let excludedItems: Int
-//    public let exposedPasswords: Int
-//
-//    public static var `default`: WeaknessAccounts {
-//        WeaknessAccounts(weakPasswords: 0,
-//                         reusedPasswords: 0,
-//                         missing2FA: 0,
-//                         excludedItems: 0,
-//                         exposedPasswords: 0)
-//    }
-// }
-
-// public enum SecurityWeakness: Equatable, Sendable {
-//    case weakPasswords
-//    case reusedPasswords
-//    case exposedEmail
-//    case exposedPassword
-//    case missing2FA
-//    case excludedItems
