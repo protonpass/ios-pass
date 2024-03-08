@@ -83,6 +83,10 @@ private extension UseCasesContainer {
     var vaultsManager: any VaultsManagerProtocol {
         SharedServiceContainer.shared.vaultsManager()
     }
+
+    var securityCenterRepository: any SecurityCenterRepositoryProtocol {
+        SharedRepositoryContainer.shared.securityCenterRepository()
+    }
 }
 
 // MARK: User report
@@ -385,5 +389,23 @@ extension UseCasesContainer {
         self { ShouldDisplayUpgradeAppBanner(accessRepository: self.accessRepository,
                                              bundle: .main,
                                              userDefaults: .standard) }
+    }
+}
+
+// MARK: - Security
+
+extension UseCasesContainer {
+    var getAllSecurityAffectedLogins: Factory<GetAllSecurityAffectedLoginsUseCase> {
+        self {
+            GetAllSecurityAffectedLogins(securityCenterRepository: self.securityCenterRepository,
+                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
+        }
+    }
+
+    var getLoginSecurityIssues: Factory<GetLoginSecurityIssuesUseCase> {
+        self {
+            GetLoginSecurityIssues(securityCenterRepository: self.securityCenterRepository)
+        }
     }
 }

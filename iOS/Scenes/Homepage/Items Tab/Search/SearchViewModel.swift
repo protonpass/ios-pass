@@ -45,7 +45,6 @@ enum SearchViewState {
 
 @MainActor
 protocol SearchViewModelDelegate: AnyObject {
-    func searchViewModelWantsToViewDetail(of itemContent: ItemContent)
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                    delegate: SortTypeListViewModelDelegate)
 }
@@ -67,6 +66,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     private(set) var searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -243,7 +243,8 @@ extension SearchViewModel {
                                                                              itemId: item.itemId) {
                     try await searchEntryDatasource.upsert(item: item, date: .now)
                     try await refreshSearchHistory()
-                    delegate?.searchViewModelWantsToViewDetail(of: itemContent)
+                    addTelemetryEvent(with: .searchClick)
+                    router.present(for: .itemDetail(itemContent, automaticDisplay: false))
                 }
             } catch {
                 router.display(element: .displayErrorBanner(error))

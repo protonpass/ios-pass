@@ -29,6 +29,9 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.forceDisplayUpgradeAppBanner)
     private var displayUpgradeAppBanner = false
 
+    @AppStorage(Constants.QA.displaySecurityCenter)
+    private var displaySecurityCenter = false
+
     var body: some View {
         let tintColor = Color(uiColor: PassColor.interactionNorm)
         NavigationView {
@@ -42,6 +45,9 @@ struct QAFeaturesView: View {
                     BannersSection()
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
+                    }
+                    Toggle(isOn: $displaySecurityCenter) {
+                        Text(verbatim: "Display the security center")
                     }
                 }
             }

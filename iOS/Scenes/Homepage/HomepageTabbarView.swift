@@ -27,30 +27,92 @@ import ProtonCoreUIFoundations
 import SwiftUI
 import UIKit
 
-enum HomepageTab {
-    case items, profile
+enum HomepageTab: CaseIterable {
+    case items, itemCreation, securityCenter, profile
+
+    var index: Int {
+        switch self {
+        case .items:
+            0
+        case .itemCreation:
+            1
+        case .securityCenter:
+            2
+        case .profile:
+            3
+        }
+    }
+
+    var image: UIImage {
+        switch self {
+        case .items:
+            IconProvider.listBullets
+        case .itemCreation:
+            IconProvider.plus
+        case .securityCenter:
+            IconProvider.shield
+        case .profile:
+            IconProvider.user
+        }
+    }
+
+    var hint: String {
+        switch self {
+        case .items:
+            "Homepage tab"
+        case .itemCreation:
+            "Create new item button"
+        case .securityCenter:
+            "Security centre tab"
+        case .profile:
+            "Profile tab"
+        }
+    }
+
+    var identifier: String? {
+        switch self {
+        case .profile:
+            "HomepageTabBarController_profileTabView"
+        default:
+            nil
+        }
+    }
 }
 
 @MainActor
-protocol HomepageTabDelegete: AnyObject {
-    func homepageTabShouldChange(tab: HomepageTab)
-    func homepageTabShouldRefreshTabIcons()
-    func homepageTabShouldHideTabbar(_ isHidden: Bool)
-    func homepageTabShouldDisableCreateButton(_ isDisabled: Bool)
+protocol HomepageTabDelegate: AnyObject {
+    func change(tab: HomepageTab)
+    func refreshTabIcons()
+    func hideTabbar(_ isHidden: Bool)
+    func disableCreateButton(_ isDisabled: Bool)
 }
 
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
+    let mainSecurityCenterViewModel: SecurityCenterViewModel
     weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
+    init(itemsTabViewModel: ItemsTabViewModel,
+         profileTabViewModel: ProfileTabViewModel,
+         mainSecurityCenterViewModel: SecurityCenterViewModel,
+         homepageCoordinator: HomepageCoordinator? = nil,
+         delegate: HomepageTabBarControllerDelegate? = nil) {
+        self.itemsTabViewModel = itemsTabViewModel
+        self.profileTabViewModel = profileTabViewModel
+        self.homepageCoordinator = homepageCoordinator
+        self.mainSecurityCenterViewModel = mainSecurityCenterViewModel
+        self.delegate = delegate
+    }
+
     func makeUIViewController(context: Context) -> HomepageTabBarController {
         let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
-                                                  profileTabView: .init(viewModel: profileTabViewModel))
+                                                  profileTabView: .init(viewModel: profileTabViewModel),
+                                                  securityCenter: .init(viewModel: mainSecurityCenterViewModel))
         controller.homepageTabBarControllerDelegate = delegate
         context.coordinator.homepageTabBarController = controller
-        homepageCoordinator?.homepageTabDelegete = context.coordinator
+        homepageCoordinator?.homepageTabDelegate = context.coordinator
         return controller
     }
 
@@ -59,22 +121,22 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     func makeCoordinator() -> Coordinator { .init() }
 
     @MainActor
-    final class Coordinator: NSObject, HomepageTabDelegete {
+    final class Coordinator: NSObject, HomepageTabDelegate {
         var homepageTabBarController: HomepageTabBarController?
 
-        func homepageTabShouldChange(tab: HomepageTab) {
+        func change(tab: HomepageTab) {
             homepageTabBarController?.select(tab: tab)
         }
 
-        func homepageTabShouldRefreshTabIcons() {
+        func refreshTabIcons() {
             homepageTabBarController?.refreshTabBarIcons()
         }
 
-        func homepageTabShouldHideTabbar(_ isHidden: Bool) {
+        func hideTabbar(_ isHidden: Bool) {
             homepageTabBarController?.hideTabBar(isHidden)
         }
 
-        func homepageTabShouldDisableCreateButton(_ isDisabled: Bool) {
+        func disableCreateButton(_ isDisabled: Bool) {
             homepageTabBarController?.disableCreateButton(isDisabled)
         }
     }
@@ -82,9 +144,7 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
 
 @MainActor
 protocol HomepageTabBarControllerDelegate: AnyObject {
-    func homepageTabBarControllerDidSelectItemsTab()
-    func homepageTabBarControllerWantToCreateNewItem()
-    func homepageTabBarControllerDidSelectProfileTab()
+    func selected(tab: HomepageTab)
 }
 
 final class HomepageTabBarController: UITabBarController, DeinitPrintable {
@@ -92,16 +152,19 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
+    private let securityCenterView: SecurityCenterView
     private var profileTabViewController: UIViewController?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let userDefaults: UserDefaults = .standard
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
-    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView) {
+    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView, securityCenter: SecurityCenterView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
+        securityCenterView = securityCenter
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -113,21 +176,34 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
+
+        var controllers = [UIViewController]()
         let itemsTabViewController = UIHostingController(rootView: itemsTabView)
-        itemsTabViewController.tabBarItem.image = IconProvider.listBullets
-        itemsTabViewController.tabBarItem.accessibilityHint = "Homepage tab"
+        itemsTabViewController.tabBarItem.image = HomepageTab.items.image
+        itemsTabViewController.tabBarItem.accessibilityHint = HomepageTab.items.hint
+
+        controllers.append(itemsTabViewController)
 
         let dummyViewController = UIViewController()
-        dummyViewController.tabBarItem.image = IconProvider.plus
-        dummyViewController.tabBarItem.accessibilityHint = "Create new item button"
+        dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
+        dummyViewController.tabBarItem.accessibilityHint = HomepageTab.itemCreation.hint
+        controllers.append(dummyViewController)
+
+        if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
+            let secureCenter = UIHostingController(rootView: securityCenterView)
+            secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
+            secureCenter.tabBarItem.accessibilityHint = HomepageTab.securityCenter.hint
+            controllers.append(secureCenter)
+        }
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
-        profileTabViewController.tabBarItem.image = IconProvider.user
-        profileTabViewController.tabBarItem.accessibilityHint = "Profile tab"
-        profileTabViewController.tabBarItem.accessibilityIdentifier = "HomepageTabBarController_profileTabView"
+        profileTabViewController.tabBarItem.image = HomepageTab.profile.image
+        profileTabViewController.tabBarItem.accessibilityHint = HomepageTab.profile.hint
+        profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.identifier
         self.profileTabViewController = profileTabViewController
+        controllers.append(profileTabViewController)
 
-        viewControllers = [itemsTabViewController, dummyViewController, profileTabViewController]
+        viewControllers = controllers
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
@@ -138,8 +214,8 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().standardAppearance = tabBarAppearance
 
-        if let taBarItems = tabBar.items {
-            for item in taBarItems {
+        if let tabBarItems = tabBar.items {
+            for item in tabBarItems {
                 item.title = nil
                 item.imageInsets = .init(top: 8, left: 0, bottom: -8, right: 0)
             }
@@ -153,12 +229,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
 extension HomepageTabBarController {
     func select(tab: HomepageTab) {
-        switch tab {
-        case .items:
-            selectedViewController = viewControllers?.first
-        case .profile:
-            selectedViewController = viewControllers?.last
-        }
+        selectedViewController = viewControllers?[tab.index]
     }
 
     func refreshTabBarIcons() {
@@ -176,10 +247,10 @@ extension HomepageTabBarController {
                     (PassIcon.tabProfileTrialUnselected, PassIcon.tabProfileTrialSelected)
                 }
 
-                self.profileTabViewController?.tabBarItem.image = image
-                self.profileTabViewController?.tabBarItem.selectedImage = selectedImage
+                profileTabViewController?.tabBarItem.image = image
+                profileTabViewController?.tabBarItem.selectedImage = selectedImage
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }
@@ -203,7 +274,7 @@ extension HomepageTabBarController {
     func disableCreateButton(_ isDisabled: Bool) {
         UIView.animate(withDuration: 0.5) { [weak self] in
             guard let self else { return }
-            viewControllers?[1].tabBarItem.isEnabled = !isDisabled
+            viewControllers?[HomepageTab.itemCreation.index].tabBarItem.isEnabled = !isDisabled
         }
     }
 }
@@ -214,20 +285,24 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
         guard let viewControllers = tabBarController.viewControllers else { return false }
-        assert(viewControllers.count == 3)
 
-        if viewController == viewControllers[0] {
-            homepageTabBarControllerDelegate?.homepageTabBarControllerDidSelectItemsTab()
+        if viewController == viewControllers[HomepageTab.items.index] {
+            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.items)
             return true
         }
 
-        if viewController == viewControllers[1] {
-            homepageTabBarControllerDelegate?.homepageTabBarControllerWantToCreateNewItem()
+        if viewController == viewControllers[HomepageTab.itemCreation.index] {
+            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.itemCreation)
             return false
         }
 
-        if viewController == viewControllers[2] {
-            homepageTabBarControllerDelegate?.homepageTabBarControllerDidSelectProfileTab()
+        if viewController == viewControllers[HomepageTab.securityCenter.index] {
+            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.securityCenter)
+            return true
+        }
+
+        if viewController == viewControllers[HomepageTab.profile.index] {
+            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.profile)
             return true
         }
 
