@@ -22,7 +22,6 @@ import Combine
 import Core
 import Entities
 import Factory
-import ProtonCoreFeatureSwitch
 
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
