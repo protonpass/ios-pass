@@ -26317,10 +26317,24 @@
       }
     },
     "Exposed emails" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exposed emails"
+          }
+        }
+      }
     },
     "Exposed passwords" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exposed passwords"
+          }
+        }
+      }
     },
     "Face ID" : {
       "extractionState" : "manual",
@@ -28023,7 +28037,14 @@
       }
     },
     "Generate unique passwords to increase your security." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate unique passwords to increase your security."
+          }
+        }
+      }
     },
     "Get an email alias to use on new apps" : {
       "extractionState" : "manual",
@@ -35509,7 +35530,14 @@
       }
     },
     "Logins with sites that have two-factor authentication available but you haven’t set it up yet." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+          }
+        }
+      }
     },
     "Logs" : {
       "localizations" : {
@@ -36558,7 +36586,14 @@
       }
     },
     "Missing two-factor authentication" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing two-factor authentication"
+          }
+        }
+      }
     },
     "MM / YY" : {
       "extractionState" : "manual",
@@ -48669,7 +48704,14 @@
       }
     },
     "Reused passwords" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reused passwords"
+          }
+        }
+      }
     },
     "Reveal" : {
       "localizations" : {
@@ -57206,7 +57248,14 @@
       }
     },
     "The following items are excluded from" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The following items are excluded from"
+          }
+        }
+      }
     },
     "The item will be moved to the new vault" : {
       "comment" : "Used in share from item detail page flow. The users are offered the option to create a new vault on the fly and share that new vault. This message makes it clear that once the new vault is created, the current item will be migrated to that new vault.",
@@ -57471,13 +57520,34 @@
       }
     },
     "These accounts appear in data breaches. Update your credentials immediately." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+          }
+        }
+      }
     },
     "These password appear in data breaches. Update your credentials immediately." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These password appear in data breaches. Update your credentials immediately."
+          }
+        }
+      }
     },
     "This account is vulnerable, visit the service and change your password." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account is vulnerable, visit the service and change your password."
+          }
+        }
+      }
     },
     "This is your last attempt. You will be logged out after failing to authenticate again." : {
       "comment" : "Local authentication",
@@ -66894,10 +66964,24 @@
       }
     },
     "Weak passwords" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak passwords"
+          }
+        }
+      }
     },
     "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+          }
+        }
+      }
     },
     "Website" : {
       "localizations" : {
@@ -69953,7 +70037,14 @@
       }
     },
     "Your data appears in data breaches, upgrade to see which ones." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your data appears in data breaches, upgrade to see which ones."
+          }
+        }
+      }
     },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
