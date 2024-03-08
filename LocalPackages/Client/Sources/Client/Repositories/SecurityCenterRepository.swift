@@ -24,11 +24,11 @@ import Foundation
 import PassRustCore
 
 public protocol SecurityCenterRepositoryProtocol: Sendable {
-    var weaknessAccounts: CurrentValueSubject<WeaknessAccounts, Never> { get }
+    var weaknessAccounts: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
     var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
 
-    func refreshAllSecurityCenterData() async
+    func refreshSecurityChecks() async
 }
 
 public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
@@ -36,7 +36,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let passwordScorer: any PasswordScorerProtocol
 
-    public let weaknessAccounts: CurrentValueSubject<WeaknessAccounts, Never> = .init(.default)
+    public let weaknessAccounts: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
     public let hasBreachedItems: CurrentValueSubject<Bool, Never> = .init(false)
 
@@ -50,11 +50,11 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
             guard let self else {
                 return
             }
-            await refreshAllSecurityCenterData()
+            await refreshSecurityChecks()
         }
     }
 
-    public func refreshAllSecurityCenterData() async {
+    public func refreshSecurityChecks() async {
         // swiftlint:disable:next todo
         // TODO: remove excluded items
         guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
@@ -91,11 +91,11 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                 securityAffectedItems.append(SecurityAffectedItem(item: encryptedItem, weaknesses: weaknesses))
             }
         }
-        weaknessAccounts.send(WeaknessAccounts(weakPasswords: numberOfWeakPassword,
-                                               reusedPasswords: numberOfReusedPassword,
-                                               missing2FA: 0,
-                                               excludedItems: 0,
-                                               exposedPasswords: 0))
+        weaknessAccounts.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
+                                            reusedPasswords: numberOfReusedPassword,
+                                            missing2FA: 0,
+                                            excludedItems: 0,
+                                            exposedPasswords: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
     }
 }

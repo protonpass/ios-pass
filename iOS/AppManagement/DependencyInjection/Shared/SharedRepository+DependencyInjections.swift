@@ -314,7 +314,7 @@ extension SharedRepositoryContainer {
     var securityCenterRepository: Factory<SecurityCenterRepositoryProtocol> {
         self {
             SecurityCenterRepository(itemRepository: self.itemRepository(),
-                                     symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider())
+                                     symmetricKeyProvider: self.symmetricKeyProvider)
         }
     }
 }
