@@ -157,6 +157,11 @@ extension AutoFillUseCaseContainer {
                                 resetFactory: self.resetFactory()) }
     }
 
+    var completeConfiguration: Factory<CompleteConfigurationUseCase> {
+        self { CompleteConfiguration(context: self.context,
+                                     resetFactory: self.resetFactory()) }
+    }
+
     var resetFactory: Factory<ResetFactoryUseCase> {
         self { ResetFactory() }
     }
