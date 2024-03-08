@@ -352,10 +352,11 @@ private extension LogInDetailView {
         }
     }
 
+    @ViewBuilder
     func securityWeaknessRow(weakness: SecurityWeakness,
                              action: @escaping () -> Void) -> some View {
         let rowType = weakness.secureRowType
-        return HStack(spacing: DesignConstant.sectionPadding) {
+        HStack(spacing: DesignConstant.sectionPadding) {
             if let iconName = rowType.icon {
                 Image(systemName: iconName)
                     .resizable()

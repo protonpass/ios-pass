@@ -110,6 +110,7 @@ enum AlertDestination: Sendable {
 
 enum ActionDestination: Sendable {
     case copyToClipboard(text: String, message: String)
+    case back(isShownAsSheet: Bool)
 }
 
 enum DeeplinkDestination: Sendable {

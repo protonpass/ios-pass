@@ -152,7 +152,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
-    private let mainSecurityCenterView: SecurityCenterView
+    private let securityCenterView: SecurityCenterView
     private var profileTabViewController: UIViewController?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -164,7 +164,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView, securityCenter: SecurityCenterView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
-        mainSecurityCenterView = securityCenter
+        securityCenterView = securityCenter
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -190,7 +190,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         controllers.append(dummyViewController)
 
         if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
-            let secureCenter = UIHostingController(rootView: mainSecurityCenterView)
+            let secureCenter = UIHostingController(rootView: securityCenterView)
             secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
             secureCenter.tabBarItem.accessibilityHint = HomepageTab.securityCenter.hint
             controllers.append(secureCenter)

@@ -467,6 +467,8 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .copyToClipboard(text, message):
                     clipboardManager.copy(text: text, bannerMessage: message)
+                case let .back(isShownAsSheet):
+                    itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
                 }
             }
             .store(in: &cancellables)
