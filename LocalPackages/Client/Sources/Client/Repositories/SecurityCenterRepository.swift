@@ -23,12 +23,13 @@ import Entities
 import Foundation
 import PassRustCore
 
+// sourcery: AutoMockable
 public protocol SecurityCenterRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
     var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
 
-    func refreshSecurityChecks() async
+    func refreshSecurityChecks() async throws
 }
 
 public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
@@ -50,17 +51,16 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
             guard let self else {
                 return
             }
-            await refreshSecurityChecks()
+            try? await refreshSecurityChecks()
         }
     }
 
-    public func refreshSecurityChecks() async {
+    public func refreshSecurityChecks() async throws {
         // swiftlint:disable:next todo
         // TODO: remove excluded items
-        guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
-              let encryptedItems = try? await itemRepository.getActiveLogInItems() else {
-            return
-        }
+        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let encryptedItems = try await itemRepository.getActiveLogInItems()
+
         var numberOfWeakPassword = 0
         var numberOfReusedPassword = 0
         var securityAffectedItems = [SecurityAffectedItem]()
