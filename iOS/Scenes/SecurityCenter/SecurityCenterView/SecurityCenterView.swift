@@ -114,7 +114,7 @@ struct SecurityCenterView: View {
 
     var body: some View {
         mainContent
-            .animation(.default, value: viewModel.weaknessAccounts)
+            .animation(.default, value: viewModel.weaknessStats)
             .navigationTitle("Security Center")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
@@ -130,12 +130,12 @@ struct SecurityCenterView: View {
 private extension SecurityCenterView {
     var mainContent: some View {
         LazyVStack {
-            if let weaknessAccounts = viewModel.weaknessAccounts {
-                breachedDataRows(weaknessAccounts: weaknessAccounts)
-                weakPasswordsRow(weaknessAccounts.weakPasswords)
-                reusedPasswordsRow(weaknessAccounts.reusedPasswords)
-                missing2FARow(weaknessAccounts.missing2FA)
-                excludedItemsRow(weaknessAccounts.excludedItems)
+            if let weaknessStats = viewModel.weaknessStats {
+                breachedDataRows(weaknessStats: weaknessStats)
+                weakPasswordsRow(weaknessStats.weakPasswords)
+                reusedPasswordsRow(weaknessStats.reusedPasswords)
+                missing2FARow(weaknessStats.missing2FA)
+                excludedItemsRow(weaknessStats.excludedItems)
                 Spacer(minLength: 24)
                 lastUpdateInfo(date: viewModel.lastUpdate)
             }
@@ -146,18 +146,18 @@ private extension SecurityCenterView {
 
 private extension SecurityCenterView {
     @ViewBuilder
-    func breachedDataRows(weaknessAccounts: WeaknessStats) -> some View {
+    func breachedDataRows(weaknessStats: WeaknessStats) -> some View {
         VStack {
             if viewModel.isFreeUser {
-                upsellRow(weaknessAccounts: weaknessAccounts)
+                upsellRow(weaknessStats: weaknessStats)
             } else {
-                breachedEmailsRow(weaknessAccounts.exposedPasswords, showAdvice: true)
-                breachedPasswordsRow(weaknessAccounts.exposedPasswords, showAdvice: true)
+                breachedEmailsRow(weaknessStats.exposedPasswords, showAdvice: true)
+                breachedPasswordsRow(weaknessStats.exposedPasswords, showAdvice: true)
             }
         }
     }
 
-    func upsellRow(weaknessAccounts: WeaknessStats) -> some View {
+    func upsellRow(weaknessStats: WeaknessStats) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             Text("Data Breach Protection")
                 .font(.title)
@@ -165,8 +165,8 @@ private extension SecurityCenterView {
                 .padding(.top, DesignConstant.sectionPadding)
 
             VStack(spacing: DesignConstant.sectionPadding / 2) {
-                breachedEmailsRow(weaknessAccounts.exposedPasswords, showAdvice: false)
-                breachedPasswordsRow(weaknessAccounts.exposedPasswords, showAdvice: false)
+                breachedEmailsRow(weaknessStats.exposedPasswords, showAdvice: false)
+                breachedPasswordsRow(weaknessStats.exposedPasswords, showAdvice: false)
             }
 
             Text("Your data appears in data breaches, upgrade to see which ones.")
