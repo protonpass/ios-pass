@@ -27,11 +27,11 @@ import Entities
 public typealias SecurityIssuesContent = [SecuritySection: [ItemContent]]
 
 public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
-    func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, Never>
+    func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, any Error>
 }
 
 public extension GetAllSecurityAffectedLoginsUseCase {
-    func callAsFunction(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, Never> {
+    func callAsFunction(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, any Error> {
         execute(for: type)
     }
 }
@@ -49,14 +49,14 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
-    public func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, Never> {
-        securityCenterRepository.itemsWithSecurityIssues.map { [weak self] items in
+    public func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, any Error> {
+        securityCenterRepository.itemsWithSecurityIssues.tryMap { [weak self] items in
             guard let self else {
                 return [:]
             }
             switch type {
             case .weakPasswords:
-                return filterWeakPasswords(items: items, type: type)
+                return try filterWeakPasswords(items: items, type: type)
             default:
                 return [:]
             }
@@ -66,18 +66,17 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
 
 private extension GetAllSecurityAffectedLogins {
     func filterWeakPasswords(items: [SecurityAffectedItem],
-                             type: SecurityWeakness) -> SecurityIssuesContent {
+                             type: SecurityWeakness) throws -> SecurityIssuesContent {
         var results: [SecuritySection: [ItemContent]] = [:]
-        guard let key = try? symmetricKeyProvider.getSymmetricKey() else {
-            return results
-        }
+        let key = try symmetricKeyProvider.getSymmetricKey()
 
         for item in items {
-            guard item.weaknesses.contains(type),
-                  let itemContent = try? item.item.getItemContent(symmetricKey: key),
-                  let password = itemContent.loginItem?.password,
-                  let strength = getPasswordStrength(password: password)
-            else {
+            guard item.weaknesses.contains(type) else {
+                continue
+            }
+            let itemContent = try item.item.getItemContent(symmetricKey: key)
+            guard let password = itemContent.loginItem?.password,
+                  let strength = getPasswordStrength(password: password) else {
                 continue
             }
             let section = SecuritySection.weakPasswords(strength)
