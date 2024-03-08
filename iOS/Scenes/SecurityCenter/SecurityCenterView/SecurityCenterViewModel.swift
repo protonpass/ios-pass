@@ -28,7 +28,7 @@ import Foundation
 
 @MainActor
 final class SecurityCenterViewModel: ObservableObject, Sendable {
-    @Published private(set) var weaknessAccounts: WeaknessStats?
+    @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
     @Published private(set) var lastUpdate: String?
@@ -58,22 +58,20 @@ private extension SecurityCenterViewModel {
                 return
             }
             do {
-                async let userStatus = upgradeChecker.isFreeUser()
-
-                isFreeUser = try await userStatus
+                isFreeUser = try await upgradeChecker.isFreeUser()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
         }
 
-        securityCenterRepository.weaknessAccounts
+        securityCenterRepository.weaknessStats
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] newWeaknessState in
+            .sink { [weak self] newWeaknessStats in
                 guard let self else {
                     return
                 }
-                weaknessAccounts = newWeaknessState
+                weaknessStats = newWeaknessStats
             }.store(in: &cancellables)
     }
 }
