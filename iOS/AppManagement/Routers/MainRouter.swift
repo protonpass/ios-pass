@@ -84,6 +84,10 @@ enum SheetDestination: Equatable, Hashable, Sendable {
                     type: ItemContentType,
                     createPasskeyResponse: CreatePasskeyResponse?)
     case updateItem(type: ItemContentType, updated: Bool)
+    /// automaticDisplay is needed as items details presentation can start from different points and should not
+    /// have the same display.
+    /// Search and security centre act the same when it comes to display whereas the main list tab has a different
+    /// flow.
     case itemDetail(ItemContent, automaticDisplay: Bool = true, showSecurityIssues: Bool = false)
     case editSpotlightSearchableContent
     case editSpotlightSearchableVaults

@@ -109,13 +109,7 @@ struct SecurityCenterView: View {
     @StateObject var viewModel: SecurityCenterViewModel
 
     private enum ElementSizes {
-        static let circleSize: CGFloat = 15
-        static let line: CGFloat = 1
         static let cellHeight: CGFloat = 75
-
-        static var minSpacerSize: CGFloat {
-            (ElementSizes.cellHeight - ElementSizes.circleSize / 2) / 2
-        }
     }
 
     var body: some View {

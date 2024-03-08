@@ -27,7 +27,10 @@ public struct WeaknessAccounts: Equatable, Sendable {
     public let excludedItems: Int
     public let exposedPasswords: Int
 
-    public init(weakPasswords: Int, reusedPasswords: Int, missing2FA: Int, excludedItems: Int,
+    public init(weakPasswords: Int,
+                reusedPasswords: Int,
+                missing2FA: Int,
+                excludedItems: Int,
                 exposedPasswords: Int) {
         self.weakPasswords = weakPasswords
         self.reusedPasswords = reusedPasswords
