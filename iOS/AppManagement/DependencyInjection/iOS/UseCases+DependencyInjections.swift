@@ -388,12 +388,6 @@ extension UseCasesContainer {
 // MARK: - Security
 
 extension UseCasesContainer {
-    var getAllWeakPasswordLogins: Factory<GetAllWeakPasswordLoginsUseCase> {
-        self { GetAllWeakPasswordLogins(itemRepository: self.itemRepository,
-                                        getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
-        }
-    }
-
     var getAllSecurityAffectedLogins: Factory<GetAllSecurityAffectedLoginsUseCase> {
         self {
             GetAllSecurityAffectedLogins(securityCenterRepository: SharedRepositoryContainer.shared

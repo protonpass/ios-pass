@@ -25,12 +25,16 @@ import Combine
 import CryptoKit
 import Entities
 
+public enum SecuritySection: Hashable {
+    case weakPasswords(PasswordStrength)
+}
+
 public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
-    func execute(for type: SecurityWeakness) -> AnyPublisher<[PasswordStrength: [ItemContent]], Never>
+    func execute(for type: SecurityWeakness) -> AnyPublisher<[SecuritySection: [ItemContent]], Never>
 }
 
 public extension GetAllSecurityAffectedLoginsUseCase {
-    func callAsFunction(for type: SecurityWeakness) -> AnyPublisher<[PasswordStrength: [ItemContent]], Never> {
+    func callAsFunction(for type: SecurityWeakness) -> AnyPublisher<[SecuritySection: [ItemContent]], Never> {
         execute(for: type)
     }
 }
@@ -48,7 +52,7 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
-    public func execute(for type: SecurityWeakness) -> AnyPublisher<[PasswordStrength: [ItemContent]], Never> {
+    public func execute(for type: SecurityWeakness) -> AnyPublisher<[SecuritySection: [ItemContent]], Never> {
         securityCenterRepository.itemsWithSecurityIssues.map { [weak self] items in
             guard let self else {
                 return [:]
@@ -65,8 +69,8 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
 
 private extension GetAllSecurityAffectedLogins {
     func filterWeakPasswords(items: [SecurityAffectedItem],
-                             type: SecurityWeakness) -> [PasswordStrength: [ItemContent]] {
-        var results: [PasswordStrength: [ItemContent]] = [:]
+                             type: SecurityWeakness) -> [SecuritySection: [ItemContent]] {
+        var results: [SecuritySection: [ItemContent]] = [:]
         guard let key = try? symmetricKeyProvider.getSymmetricKey() else {
             return results
         }
@@ -79,36 +83,13 @@ private extension GetAllSecurityAffectedLogins {
             else {
                 continue
             }
-
-            if results[strength] != nil {
-                results[strength]?.append(itemContent)
+            let section = SecuritySection.weakPasswords(strength)
+            if results[section] != nil {
+                results[section]?.append(itemContent)
             } else {
-                results[strength] = [itemContent]
+                results[section] = [itemContent]
             }
         }
         return results
-//
-//        let filteredItems = items
-//            .filter { $0.weaknesses.contains(type) }.compactMap { try? $0.item.getItemContent(symmetricKey: key)
-//            }
-//        return parseWeakPasswords(logins: filteredItems)
     }
-
-//    func parseWeakPasswords(logins: [ItemContent]) -> [PasswordStrength: [ItemUiModel]] {
-//        var results: [PasswordStrength: [ItemUiModel]] = [:]
-//
-//        for login in logins {
-//            if let password = login.loginItem?.password,
-//               let strength = getPasswordStrength(password: password),
-//               strength != .strong {
-//                if results[strength] != nil {
-//                    results[strength]?.append(login.toItemUiModel)
-//                } else {
-//                    results[strength] = [login.toItemUiModel]
-//                }
-//            }
-//        }
-//
-//        return results
-//    }
 }
