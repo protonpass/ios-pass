@@ -31,16 +31,11 @@ struct DetailSecurityCenterView: View {
     let isSheet: Bool
 
     var body: some View {
-        mainContainer
-            .padding(.horizontal, DesignConstant.sectionPadding)
-            .navigationTitle(viewModel.title)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .toolbar { toolbarContent }
-            .scrollViewEmbeded(maxWidth: .infinity)
-            .background(PassColor.backgroundNorm.toColor)
-            .showSpinner(viewModel.loading)
-            .navigationBarHidden(!isSheet)
-            .navigationStackEmbeded()
+        mainContainer.if(isSheet) { view in
+            NavigationStack {
+                view
+            }
+        }
     }
 }
 
@@ -61,7 +56,13 @@ private extension DetailSecurityCenterView {
                 }
                 Spacer()
             }
-        }
+        }.padding(.horizontal, DesignConstant.sectionPadding)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .toolbar { toolbarContent }
+            .scrollViewEmbeded(maxWidth: .infinity)
+            .background(PassColor.backgroundNorm.toColor)
+            .showSpinner(viewModel.loading)
+            .navigationTitle(viewModel.title)
     }
 }
 
