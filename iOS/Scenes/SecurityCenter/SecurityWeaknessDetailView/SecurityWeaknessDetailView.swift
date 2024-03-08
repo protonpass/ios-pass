@@ -27,7 +27,6 @@ import SwiftUI
 
 struct SecurityWeaknessDetailView: View {
     @StateObject var viewModel: SecurityWeaknessDetailViewModel
-    @Environment(\.dismiss) private var dismiss
     let isSheet: Bool
 
     var body: some View {
