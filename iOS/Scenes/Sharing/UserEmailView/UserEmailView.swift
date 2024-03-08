@@ -131,6 +131,32 @@ private extension UserEmailView {
     @ViewBuilder
     func emailCell(for email: String) -> some View {
         let highlighted = viewModel.highlightedEmail == email
+        let invalid = viewModel.invalidEmails.contains(email)
+
+        let textColor: () -> UIColor = {
+            switch (highlighted, invalid) {
+            case (false, true):
+                PassColor.passwordInteractionNormMajor1
+            case (true, _):
+                PassColor.textInvert
+            default:
+                PassColor.textNorm
+            }
+        }
+
+        let backgroundColor: () -> UIColor = {
+            switch (highlighted, invalid) {
+            case (true, true):
+                PassColor.passwordInteractionNormMajor1
+            case (true, false):
+                PassColor.interactionNormMajor2
+            case (false, true):
+                PassColor.passwordInteractionNormMinor1
+            default:
+                PassColor.interactionNormMinor1
+            }
+        }
+
         let focused: Binding<Bool> = .init(get: {
             highlighted
         }, set: { newValue in
@@ -144,13 +170,13 @@ private extension UserEmailView {
                 .lineLimit(1)
         }
         .font(.callout)
-        .foregroundColor(highlighted ? PassColor.textInvert.toColor : PassColor.textNorm.toColor)
+        .foregroundColor(textColor().toColor)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
-        .background(highlighted ?
-            PassColor.interactionNormMajor2.toColor : PassColor.interactionNormMinor1.toColor)
+        .background(backgroundColor().toColor)
         .cornerRadius(9)
         .animation(.default, value: highlighted)
+        .animation(.default, value: invalid)
         .contentShape(Rectangle())
         .onTapGesture { viewModel.toggleHighlight(email) }
         .overlay {

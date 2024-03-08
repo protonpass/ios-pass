@@ -185,6 +185,11 @@ extension SharedRepositoryContainer {
     var localSpotlightVaultDatasource: Factory<LocalSpotlightVaultDatasourceProtocol> {
         self { LocalSpotlightVaultDatasource(databaseService: self.databaseService) }
     }
+
+    var remoteOrganizationDatasource: Factory<RemoteOrganizationDatasourceProtocol> {
+        self { RemoteOrganizationDatasource(apiService: self.apiService,
+                                            eventStream: self.corruptedSessionEventStream) }
+    }
 }
 
 // MARK: Repositories
