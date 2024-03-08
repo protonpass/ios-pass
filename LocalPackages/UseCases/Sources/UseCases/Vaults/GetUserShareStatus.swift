@@ -41,54 +41,26 @@ public enum UserShareStatus {
 
 public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUseCase {
     private let accessRepository: any AccessRepositoryProtocol
-    private var isFreeUser = true
+    private var plan: Plan?
 
     public init(accessRepository: any AccessRepositoryProtocol) {
         self.accessRepository = accessRepository
-        setUp()
-    }
-
-    public func execute(for vault: Vault) -> UserShareStatus {
-        guard vault.isAdmin || vault.isOwner else {
-            return .cantShare
-        }
-
-        if isFreeUser {
-            return isFreeUserAllowedToShare(for: vault)
-        } else {
-            return isPaidUserAllowedToShare(for: vault)
-        }
-    }
-}
-
-private extension GetUserShareStatus {
-    func setUp() {
         Task { [weak self] in
             guard let self else {
                 return
             }
-
-            async let isFreeUserCheck = try? await accessRepository.getPlan().isFreeUser
-            isFreeUser = await isFreeUserCheck ?? true
+            plan = try? await accessRepository.getPlan()
         }
     }
 
-    func isFreeUserAllowedToShare(for vault: Vault) -> UserShareStatus {
-        guard vault.totalOverallMembers < 3 else {
-            return .upsell
-        }
-
-        return finalCheck(for: vault) ? .canShare : .upsell
-    }
-
-    func isPaidUserAllowedToShare(for vault: Vault) -> UserShareStatus {
-        guard vault.totalOverallMembers < 10 else {
+    public func execute(for vault: Vault) -> UserShareStatus {
+        guard let plan, vault.isAdmin || vault.isOwner else {
             return .cantShare
         }
-        return finalCheck(for: vault) ? .canShare : .cantShare
-    }
 
-    func finalCheck(for vault: Vault) -> Bool {
-        vault.canShareVaultWithMorePeople
+        if plan.isFreeUser {
+            return vault.totalOverallMembers >= 3 ? .upsell : .canShare
+        }
+        return vault.canShareVaultWithMorePeople ? .canShare : .cantShare
     }
 }
