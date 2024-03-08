@@ -127,6 +127,9 @@ struct SecurityCenterView: View {
             .background(PassColor.backgroundNorm.toColor)
             .showSpinner(viewModel.loading)
             .navigationStackEmbeded()
+            .task {
+                await viewModel.refresh()
+            }
     }
 }
 
@@ -140,7 +143,7 @@ private extension SecurityCenterView {
                 missing2FARow(weaknessAccounts.missing2FA)
                 excludedItemsRow(weaknessAccounts.excludedItems)
                 Spacer(minLength: 24)
-                lastUdpateInfo()
+                lastUpdateInfo(date: viewModel.lastUpdate)
             }
         }
         .padding(DesignConstant.sectionPadding)
@@ -254,10 +257,12 @@ private extension SecurityCenterView {
 
 private extension SecurityCenterView {
     @ViewBuilder
-    func lastUdpateInfo(date: String = "Feb 14 2024, 09:41") -> some View {
+    func lastUpdateInfo(date: String?) -> some View {
         VStack {
-            Text("Last Data Breach Protection Sync:")
-            Text(date)
+            if let date {
+                Text("Last Data Breach Protection Sync:")
+                Text(date)
+            }
         }.font(.caption)
             .foregroundStyle(PassColor.textWeak.toColor)
     }

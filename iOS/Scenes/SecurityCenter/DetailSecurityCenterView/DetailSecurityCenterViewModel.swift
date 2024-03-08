@@ -25,6 +25,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import UseCases
 
 @MainActor
 final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
@@ -36,7 +37,6 @@ final class DetailSecurityCenterViewModel: ObservableObject, Sendable {
     let info: String
 
     private let type: SecurityWeakness
-    private let getWeakPasswordLogins = resolve(\UseCasesContainer.getAllWeakPasswordLogins)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
@@ -72,52 +72,22 @@ private extension DetailSecurityCenterViewModel {
                 loading = false
             }
             .store(in: &cancellables)
-
-//        Task { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            await loadTypeContent()
-//        }
     }
-
-//    func loadTypeContent() async {
-//        loading = true
-//        defer { loading = false }
-//
-//        switch type {
-//        case .weakPasswords:
-//            await loadWeakPasswords()
-//        case .reusedPasswords:
-//            return
-//        case .exposedEmail:
-//            return
-//        case .exposedPassword:
-//            return
-//        case .missing2FA:
-//            return
-//        case .excludedItems:
-//            return
-//        }
-//    }
-//
-//    func loadWeakPasswords() async {
-//        do {
-//            var data = [SecuritySectionHeaderKey: [ItemContent]]()
-//            let symmetricKey = try? symmetricKeyProvider.getSymmetricKey()
-//            let weakPasswords = try await getWeakPasswordLogins()
-//            for (key, value) in weakPasswords {
-//                data[key.toSecuritySectionHeaderKey] = value
-//            }
-//            sectionedData = data
-//        } catch {
-//            router.display(element: .displayErrorBanner(error))
-//        }
-//    }
 }
 
 extension PasswordStrength {
     var toSecuritySectionHeaderKey: SecuritySectionHeaderKey {
-        SecuritySectionHeaderKey(color: color, title: title, iconName: iconName)
+        SecuritySectionHeaderKey(color: color,
+                                 title: title,
+                                 iconName: iconName)
+    }
+}
+
+extension SecuritySection {
+    var toSecuritySectionHeaderKey: SecuritySectionHeaderKey {
+        switch self {
+        case let .weakPasswords(passwordStrength):
+            passwordStrength.toSecuritySectionHeaderKey
+        }
     }
 }
