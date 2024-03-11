@@ -118,10 +118,21 @@ private extension SecurityWeaknessDetailView {
     }
 }
 
-struct SecuritySectionHeaderKey: Hashable, Comparable {
+struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
+    let id: String
     let color: Color
     let title: String
     let iconName: String?
+
+    init(id: String = UUID().uuidString,
+         color: Color = PassColor.textWeak.toColor,
+         title: String,
+         iconName: String? = nil) {
+        self.color = color
+        self.title = title
+        self.iconName = iconName
+        self.id = id
+    }
 
     static func < (lhs: SecuritySectionHeaderKey, rhs: SecuritySectionHeaderKey) -> Bool {
         lhs.title < rhs.title

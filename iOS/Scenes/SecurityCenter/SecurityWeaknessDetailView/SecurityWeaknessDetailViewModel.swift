@@ -25,6 +25,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 import UseCases
 
 @MainActor
@@ -102,6 +103,8 @@ extension SecuritySection {
         switch self {
         case let .weakPasswords(passwordStrength):
             passwordStrength.toSecuritySectionHeaderKey
+        case let .reusedPasswords(numberOfTime):
+            SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime))
         }
     }
 }

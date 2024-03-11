@@ -57,6 +57,8 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
             switch type {
             case .weakPasswords:
                 return try filterWeakPasswords(items: items, type: type)
+            case .reusedPasswords:
+                return try filterReusedPasswords(items: items, type: type)
             default:
                 return [:]
             }
@@ -87,5 +89,39 @@ private extension GetAllSecurityAffectedLogins {
             }
         }
         return results
+    }
+
+    func filterReusedPasswords(items: [SecurityAffectedItem],
+                               type: SecurityWeakness) throws -> SecurityIssuesContent {
+        var reusedPasswords: [SecuritySection: [ItemContent]] = [:]
+        let key = try symmetricKeyProvider.getSymmetricKey()
+
+        var intermediatePasswords: [String: Set<ItemContent>] = [:]
+
+        for item in items {
+            guard item.weaknesses.contains(type) else {
+                continue
+            }
+            let itemContent = try item.item.getItemContent(symmetricKey: key)
+            guard let password = itemContent.loginItem?.password else {
+                continue
+            }
+            if intermediatePasswords[password] != nil {
+                intermediatePasswords[password]?.insert(itemContent)
+            } else {
+                intermediatePasswords[password] = [itemContent]
+            }
+        }
+        // Filter to keep only reused passwords
+        intermediatePasswords.filter { $0.value.count > 1 }
+            .forEach {
+                if reusedPasswords[SecuritySection.reusedPasswords($0.value.count)] != nil {
+                    reusedPasswords[SecuritySection.reusedPasswords($0.value.count)]?
+                        .append(contentsOf: $0.value)
+                } else {
+                    reusedPasswords[SecuritySection.reusedPasswords($0.value.count)] = Array($0.value)
+                }
+            }
+        return reusedPasswords
     }
 }
