@@ -77,7 +77,7 @@ extension PasskeyCredentialsViewModel {
             if case .error = state {
                 state = .loading
             }
-            let result = try await getItemsForPasskeyCreation()
+            let result = try await getItemsForPasskeyCreation(request)
             state = .loaded(result.0, result.1)
             logger.trace("Loaded \(result.0.count) credentials")
         } catch {
