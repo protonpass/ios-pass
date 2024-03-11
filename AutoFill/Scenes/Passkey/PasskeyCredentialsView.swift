@@ -53,6 +53,7 @@ struct PasskeyCredentialsView: View {
                                mode: .passkeyCreation,
                                itemRow: { itemRow(for: $0) },
                                searchResultRow: { searchResultRow(for: $0) },
+                               onRefresh: { await viewModel.sync(ignoreError: false) },
                                onCreate: onCreate,
                                onCancel: onCancel)
             case let .error(error):
@@ -75,7 +76,11 @@ struct PasskeyCredentialsView: View {
                message: {
                    Text("A passkey will be created for the \"\(viewModel.selectedItem?.itemTitle ?? "")\" login.")
                })
-        .task { await viewModel.loadCredentials() }
+        .task {
+            await viewModel.loadCredentials()
+            // Ignore errors here otherwise users will always end up with errors when being offline
+            await viewModel.sync(ignoreError: true)
+        }
     }
 }
 
