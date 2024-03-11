@@ -56,6 +56,7 @@ extension SharedToolingContainer {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
             .onArg(PassModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
+            .onArg(PassModule.shareExtension) { LogManager(module: .shareExtension) }
     }
 
     var logFormatter: Factory<LogFormatterProtocol> {
@@ -82,12 +83,16 @@ extension SharedToolingContainer {
         self { .hostApp }
             .onArg(PassModule.autoFillExtension) { .autoFillExtension }
             .onArg(PassModule.keyboardExtension) { .keyboardExtension }
+            .onArg(PassModule.shareExtension) { .shareExtension }
     }
 
     var appVersion: Factory<String> {
         self { "ios-pass@\(Bundle.main.fullAppVersionName)" }
             .onArg(PassModule.autoFillExtension) {
-                "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
+                "ios-pass-autofill@\(Bundle.main.fullAppVersionName)"
+            }
+            .onArg(PassModule.shareExtension) {
+                "ios-pass-share@\(Bundle.main.fullAppVersionName)"
             }
     }
 
