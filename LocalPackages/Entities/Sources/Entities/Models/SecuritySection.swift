@@ -22,4 +22,5 @@ import Foundation
 
 public enum SecuritySection: Hashable, Sendable {
     case weakPasswords(PasswordStrength)
+    case reusedPasswords(Int)
 }

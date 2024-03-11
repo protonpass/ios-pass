@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import Combine
+import CryptoKit
 import Entities
 import Foundation
 import PassRustCore
@@ -64,7 +65,9 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
         var numberOfWeakPassword = 0
         var numberOfReusedPassword = 0
         var securityAffectedItems = [SecurityAffectedItem]()
-        var passwords: Set<String> = []
+
+        // Filter out unique passwords and prepare the result
+        let reusedPasswords = getPasswords(encryptedItems: encryptedItems, symmetricKey: symmetricKey)
 
         for encryptedItem in encryptedItems {
             guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
@@ -73,11 +76,9 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
             }
             var weaknesses = [SecurityWeakness]()
 
-            if passwords.contains(loginItem.password) {
+            if reusedPasswords[loginItem.password] != nil {
                 weaknesses.append(.reusedPasswords)
                 numberOfReusedPassword += 1
-            } else {
-                passwords.insert(loginItem.password)
             }
 
             if passwordScorer.checkScore(password: loginItem.password) != .strong {
@@ -97,5 +98,23 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                                          excludedItems: 0,
                                          exposedPasswords: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
+    }
+}
+
+private extension SecurityCenterRepository {
+    func getPasswords(encryptedItems: [SymmetricallyEncryptedItem], symmetricKey: SymmetricKey) -> [String: Int] {
+        var passwordCounts = [String: Int]()
+
+        // Count occurrences of each password
+        for encryptedItem in encryptedItems {
+            guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+                  let loginItem = item.loginItem else {
+                continue
+            }
+            passwordCounts[loginItem.password, default: 0] += 1
+        }
+
+        // Filter out unique passwords and prepare the result
+        return passwordCounts.filter { $0.value > 1 }
     }
 }
