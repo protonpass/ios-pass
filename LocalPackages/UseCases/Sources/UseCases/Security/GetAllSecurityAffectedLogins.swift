@@ -22,6 +22,7 @@
 
 import Client
 import Combine
+import CryptoKit
 import Entities
 
 public typealias SecurityIssuesContent = [SecuritySection: [ItemContent]]
@@ -54,9 +55,12 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
             guard let self else {
                 return [:]
             }
+            let key = try symmetricKeyProvider.getSymmetricKey()
             switch type {
             case .weakPasswords:
-                return try filterWeakPasswords(items: items, type: type)
+                return try filterWeakPasswords(items: items, type: type, key: key)
+            case .reusedPasswords:
+                return try filterReusedPasswords(items: items, type: type, key: key)
             default:
                 return [:]
             }
@@ -66,26 +70,55 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
 
 private extension GetAllSecurityAffectedLogins {
     func filterWeakPasswords(items: [SecurityAffectedItem],
-                             type: SecurityWeakness) throws -> SecurityIssuesContent {
-        var results: [SecuritySection: [ItemContent]] = [:]
-        let key = try symmetricKeyProvider.getSymmetricKey()
+                             type: SecurityWeakness,
+                             key: SymmetricKey) throws -> SecurityIssuesContent {
+        var weakPasswords: [SecuritySection: [ItemContent]] = [:]
 
-        for item in items {
-            guard item.weaknesses.contains(type) else {
-                continue
-            }
+        for item in items where item.weaknesses.contains(type) {
             let itemContent = try item.item.getItemContent(symmetricKey: key)
             guard let password = itemContent.loginItem?.password,
                   let strength = getPasswordStrength(password: password) else {
                 continue
             }
             let section = SecuritySection.weakPasswords(strength)
-            if results[section] != nil {
-                results[section]?.append(itemContent)
+            if weakPasswords[section] != nil {
+                weakPasswords[section]?.append(itemContent)
             } else {
-                results[section] = [itemContent]
+                weakPasswords[section] = [itemContent]
             }
         }
-        return results
+        return weakPasswords
+    }
+
+    func filterReusedPasswords(items: [SecurityAffectedItem],
+                               type: SecurityWeakness,
+                               key: SymmetricKey) throws -> SecurityIssuesContent {
+        var reusedPasswords: [SecuritySection: [ItemContent]] = [:]
+
+        var intermediatePasswords: [String: Set<ItemContent>] = [:]
+
+        for item in items where item.weaknesses.contains(type) {
+            let itemContent = try item.item.getItemContent(symmetricKey: key)
+            guard let password = itemContent.loginItem?.password else {
+                continue
+            }
+            if intermediatePasswords[password] != nil {
+                intermediatePasswords[password]?.insert(itemContent)
+            } else {
+                intermediatePasswords[password] = [itemContent]
+            }
+        }
+
+        // Filter to keep only reused passwords
+        intermediatePasswords.filter { $0.value.count > 1 }
+            .forEach {
+                if reusedPasswords[SecuritySection.reusedPasswords($0.value.count)] != nil {
+                    reusedPasswords[SecuritySection.reusedPasswords($0.value.count)]?
+                        .append(contentsOf: $0.value)
+                } else {
+                    reusedPasswords[SecuritySection.reusedPasswords($0.value.count)] = Array($0.value)
+                }
+            }
+        return reusedPasswords
     }
 }
