@@ -23,12 +23,12 @@ import Entities
 import Foundation
 
 protocol GetItemsForPasskeyCreationUseCase: Sendable {
-    func execute() async throws -> ([SearchableItem], [ItemUiModel])
+    func execute(_ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel])
 }
 
 extension GetItemsForPasskeyCreationUseCase {
-    func callAsFunction() async throws -> ([SearchableItem], [ItemUiModel]) {
-        try await execute()
+    func callAsFunction(_ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
+        try await execute(request)
     }
 }
 
@@ -48,7 +48,7 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
         self.accessRepository = accessRepository
     }
 
-    func execute() async throws -> ([SearchableItem], [ItemUiModel]) {
+    func execute(_ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let getVaults = shareRepository.getVaults()
         async let getActiveLogInItems = itemRepositiry.getActiveLogInItems()
@@ -73,7 +73,45 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
                                              allVaults: vaults))
         }
 
-        let uiModels = try await includedItems.parallelMap { try $0.toItemUiModel(symmetricKey) }
+        let uiModels = try await includedItems
+            .parallelMap { try $0.getItemContent(symmetricKey: symmetricKey) }
+            .sorted { lhs, rhs in
+                let lhsMatched = lhs
+                    .loginIdentifiableFields
+                    .contains(where: {
+                        $0.contains(request.userName) ||
+                            $0.contains(request.serviceIdentifier.identifier) ||
+                            $0.contains(request.relyingPartyIdentifier)
+                    })
+                let rhsMatched = rhs
+                    .loginIdentifiableFields
+                    .contains(where: {
+                        $0.contains(request.userName) ||
+                            $0.contains(request.serviceIdentifier.identifier) ||
+                            $0.contains(request.relyingPartyIdentifier)
+                    })
+                switch (lhsMatched, rhsMatched) {
+                case (true, false):
+                    // Left matched, right NOT matched
+                    // => Left is above right
+                    return true
+                case (false, true):
+                    // Left NOT matched, right matched
+                    // => Left is below right
+                    return false
+                case (true, true):
+                    // Both are matched
+                    // => Base on lastUseTime if any and default to modifyTime
+                    let lhsTime = lhs.item.lastUseTime ?? lhs.item.modifyTime
+                    let rhsTime = rhs.item.lastUseTime ?? rhs.item.modifyTime
+                    return lhsTime > rhsTime
+                case (false, false):
+                    // Nothing matched
+                    // => Base on modifyTime
+                    return lhs.item.modifyTime > rhs.item.modifyTime
+                }
+            }
+            .map(\.toItemUiModel)
         assert(searchableItems.count == includedItems.count, "Should have the same amount of items")
         return (searchableItems, uiModels)
     }
