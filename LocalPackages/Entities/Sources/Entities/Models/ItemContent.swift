@@ -232,6 +232,22 @@ public extension ItemContent {
                      domainIdentifier: spotlightDomainId,
                      attributeSet: attributeSet)
     }
+
+    /// Parse the item as a login and extract all the fields that can help identify it
+    var loginIdentifiableFields: [String] {
+        var fields = [String]()
+        fields.append(title)
+        fields.append(note)
+        if let data = loginItem {
+            fields.append(data.username)
+            fields.append(contentsOf: data.urls)
+            fields.append(contentsOf: data.passkeys.map(\.domain))
+            fields.append(contentsOf: data.passkeys.map(\.rpName))
+            fields.append(contentsOf: data.passkeys.map(\.userName))
+            fields.append(contentsOf: data.passkeys.map(\.userDisplayName))
+        }
+        return fields
+    }
 }
 
 extension ItemContentProtobuf: ProtobufableItemContentProtocol {
