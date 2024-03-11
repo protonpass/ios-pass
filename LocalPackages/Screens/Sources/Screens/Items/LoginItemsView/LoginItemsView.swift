@@ -31,6 +31,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     private let mode: Mode
     private let itemRow: (ItemUiModel) -> ItemRow
     private let searchResultRow: (ItemSearchResult) -> SearchResultRow
+    private let onRefresh: () async -> Void
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
@@ -39,6 +40,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
                 mode: Mode,
                 itemRow: @escaping (ItemUiModel) -> ItemRow,
                 searchResultRow: @escaping (ItemSearchResult) -> SearchResultRow,
+                onRefresh: @escaping () async -> Void,
                 onCreate: @escaping () -> Void,
                 onCancel: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(searchableItems: searchableItems,
@@ -46,6 +48,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
         self.mode = mode
         self.itemRow = itemRow
         self.searchResultRow = searchResultRow
+        self.onRefresh = onRefresh
         self.onCreate = onCreate
         self.onCancel = onCancel
     }
@@ -103,6 +106,7 @@ private extension LoginItemsView {
                     .plainListRow()
             }
         }
+        .refreshable { await onRefresh() }
         .listStyle(.plain)
         .padding(.horizontal)
     }
