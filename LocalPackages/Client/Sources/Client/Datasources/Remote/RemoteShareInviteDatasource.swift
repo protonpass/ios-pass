@@ -109,6 +109,6 @@ public extension RemoteShareInviteDatasource {
     func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
         let endpoint = CheckAddressEndpoint(shareId: shareId, emails: emails)
         let response = try await exec(endpoint: endpoint)
-        return response.emails
+        return response.emails ?? []
     }
 }
