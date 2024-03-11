@@ -117,7 +117,6 @@ private extension HomepageCoordinator {
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
     func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity
         eventLoop.delegate = self
-        itemContextMenuHandler.delegate = self
         urlOpener.rootViewController = rootViewController
 
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
@@ -402,6 +401,8 @@ extension HomepageCoordinator {
                     presentCreateEditLoginView(mode: item)
                 case let .createItem(_, type, _):
                     createEditItemViewModelDidCreateItem(type: type)
+                case let .editItem(itemContent):
+                    presentEditItemView(for: itemContent)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
                 case let .itemDetail(content,
@@ -1411,14 +1412,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                                                    onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
-    }
-}
-
-// MARK: - ItemContextMenuHandlerDelegate
-
-extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
-    func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent) {
-        presentEditItemView(for: itemContent)
     }
 }
 
