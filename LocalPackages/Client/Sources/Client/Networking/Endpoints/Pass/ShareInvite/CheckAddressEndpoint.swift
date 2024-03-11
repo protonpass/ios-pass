@@ -40,7 +40,7 @@ public struct CheckAddressEndpoint: Endpoint {
     }
 }
 
-public struct CheckAddressRequest: Sendable, Codable {
+public struct CheckAddressRequest: Sendable, Encodable {
     public let emails: [String]
 
     enum CodingKeys: String, CodingKey {
@@ -48,4 +48,12 @@ public struct CheckAddressRequest: Sendable, Codable {
     }
 }
 
-public typealias CheckAddressResponse = CheckAddressRequest
+public struct CheckAddressResponse: Sendable, Decodable {
+    // Optional array because otherwise decode process would fail
+    // when receiving an empty array instead of null
+    public let emails: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case emails = "Emails"
+    }
+}
