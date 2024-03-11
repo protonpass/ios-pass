@@ -130,6 +130,42 @@ extension ItemContextMenuHandler {
         }
     }
 
+    func copyCardholderName(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self, let data = itemContent.creditCardItem else { return }
+            clipboardManager.copy(text: data.cardholderName,
+                                  bannerMessage: #localized("Cardholder name copied"))
+            logger.info("Copied cardholder name \(item.debugDescription)")
+        }
+    }
+
+    func copyCardNumber(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self, let data = itemContent.creditCardItem else { return }
+            clipboardManager.copy(text: data.number,
+                                  bannerMessage: #localized("Card number copied"))
+            logger.info("Copied card number \(item.debugDescription)")
+        }
+    }
+
+    func copyExpirationDate(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self, let data = itemContent.creditCardItem else { return }
+            clipboardManager.copy(text: data.expirationDate,
+                                  bannerMessage: #localized("Expiration date copied"))
+            logger.info("Copied expiration date \(item.debugDescription)")
+        }
+    }
+
+    func copySecurityCode(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self, let data = itemContent.creditCardItem else { return }
+            clipboardManager.copy(text: data.verificationNumber,
+                                  bannerMessage: #localized("Security code copied"))
+            logger.info("Copied security code \(item.debugDescription)")
+        }
+    }
+
     func toggleItemPinning(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: true) { [weak self] itemContent in
             guard let self else { return }
