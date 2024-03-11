@@ -43,6 +43,9 @@ final class PasskeyCredentialsViewModel: ObservableObject {
         }
     }
 
+    private let logger = resolve(\SharedToolingContainer.logger)
+
+    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
     @LazyInjected(\AutoFillUseCaseContainer.getItemsForPasskeyCreation) private var getItemsForPasskeyCreation
     @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
 
@@ -54,13 +57,29 @@ final class PasskeyCredentialsViewModel: ObservableObject {
 }
 
 extension PasskeyCredentialsViewModel {
+    func sync(ignoreError: Bool) async {
+        do {
+            let hasNewEvents = try await eventSynchronizer.sync()
+            if hasNewEvents {
+                await loadCredentials()
+            }
+        } catch {
+            logger.error(error)
+            if !ignoreError {
+                state = .error(error)
+            }
+        }
+    }
+
     func loadCredentials() async {
         do {
+            logger.trace("Loading credentials")
             if case .error = state {
                 state = .loading
             }
-            let result = try await getItemsForPasskeyCreation()
+            let result = try await getItemsForPasskeyCreation(request)
             state = .loaded(result.0, result.1)
+            logger.trace("Loaded \(result.0.count) credentials")
         } catch {
             state = .error(error)
         }
