@@ -18279,6 +18279,36 @@
         }
       }
     },
+    "Copy card number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy card number"
+          }
+        }
+      }
+    },
+    "Copy cardholder name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy cardholder name"
+          }
+        }
+      }
+    },
+    "Copy expiration date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy expiration date"
+          }
+        }
+      }
+    },
     "Copy note content" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -18537,6 +18567,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sao chép mật khẩu"
+          }
+        }
+      }
+    },
+    "Copy security code" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy security code"
           }
         }
       }
@@ -27039,6 +27079,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hết hạn vào"
+          }
+        }
+      }
+    },
+    "Expiration date copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expiration date copied"
           }
         }
       }

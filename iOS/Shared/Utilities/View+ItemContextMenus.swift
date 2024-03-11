@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
@@ -43,6 +44,10 @@ enum ItemContextMenu {
 
     case creditCard(item: any PinnableItemTypeIdentifiable,
                     isEditable: Bool,
+                    onCopyCardholderName: () -> Void,
+                    onCopyCardNumber: () -> Void,
+                    onCopyExpirationDate: () -> Void,
+                    onCopySecurityCode: () -> Void,
                     onEdit: () -> Void,
                     onPinToggle: () -> Void,
                     onTrash: () -> Void)
@@ -101,12 +106,38 @@ enum ItemContextMenu {
 
             return sections
 
-        case let .creditCard(item, isEditable, onEdit, onPinToggle, onTrash):
-            return Self.commonLastSections(item: item,
-                                           isEditable: isEditable,
-                                           onEdit: onEdit,
-                                           onPinToggle: onPinToggle,
-                                           onTrash: onTrash)
+        case let .creditCard(item,
+                             isEditable,
+                             onCopyCardholderName,
+                             onCopyCardNumber,
+                             onCopyExpirationDate,
+                             onCopySecurityCode,
+                             onEdit,
+                             onPinToggle,
+                             onTrash):
+            var sections: [ItemContextMenuOptionSection] = []
+
+            sections.append(.init(options: [
+                .init(title: #localized("Copy cardholder name"),
+                      icon: IconProvider.user,
+                      action: onCopyCardholderName),
+                .init(title: #localized("Copy card number"),
+                      icon: IconProvider.creditCard,
+                      action: onCopyCardNumber),
+                .init(title: #localized("Copy expiration date"),
+                      icon: IconProvider.calendarDay,
+                      action: onCopyExpirationDate),
+                .init(title: #localized("Copy security code"),
+                      icon: Image(uiImage: PassIcon.shieldCheck),
+                      action: onCopySecurityCode)
+            ]))
+
+            sections += Self.commonLastSections(item: item,
+                                                isEditable: isEditable,
+                                                onEdit: onEdit,
+                                                onPinToggle: onPinToggle,
+                                                onTrash: onTrash)
+            return sections
 
         case let .note(item, isEditable, onCopyContent, onEdit, onPinToggle, onTrash):
             var sections: [ItemContextMenuOptionSection] = []
@@ -262,6 +293,10 @@ extension View {
             case .creditCard:
                 itemContextMenu(.creditCard(item: item,
                                             isEditable: isEditable,
+                                            onCopyCardholderName: { handler.copyCardholderName(item) },
+                                            onCopyCardNumber: { handler.copyCardNumber(item) },
+                                            onCopyExpirationDate: { handler.copyExpirationDate(item) },
+                                            onCopySecurityCode: { handler.copySecurityCode(item) },
                                             onEdit: { handler.edit(item) },
                                             onPinToggle: { handler.toggleItemPinning(item) },
                                             onTrash: { handler.trash(item) }))
