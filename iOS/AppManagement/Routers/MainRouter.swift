@@ -83,6 +83,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case createItem(item: SymmetricallyEncryptedItem,
                     type: ItemContentType,
                     createPasskeyResponse: CreatePasskeyResponse?)
+    case editItem(ItemContent)
     case updateItem(type: ItemContentType, updated: Bool)
     /// automaticDisplay is needed as items details presentation can start from different points and should not
     /// have the same display.
