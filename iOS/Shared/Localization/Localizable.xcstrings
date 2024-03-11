@@ -50440,6 +50440,29 @@
         }
       }
     },
+    "Reused %lld times" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Reused %lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Reused passwords" : {
       "localizations" : {
         "be" : {
