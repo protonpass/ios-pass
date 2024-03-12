@@ -403,6 +403,8 @@ extension HomepageCoordinator {
                     createEditItemViewModelDidCreateItem(type: type)
                 case let .editItem(itemContent):
                     presentEditItemView(for: itemContent)
+                case let .cloneItem(itemContent):
+                    presentCloneItemView(for: itemContent)
                 case let .updateItem(type: type, updated: upgrade):
                     createEditItemViewModelDidUpdateItem(type, updated: upgrade)
                 case let .itemDetail(content,
@@ -560,6 +562,19 @@ extension HomepageCoordinator {
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
+        }
+    }
+
+    func presentCloneItemView(for itemContent: ItemContent) {
+        dismissAllViewControllers { [weak self] in
+            guard let self else { return }
+            do {
+                let coordinator = makeCreateEditItemCoordinator()
+                try coordinator.presentCloneItemView(for: itemContent)
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 

@@ -207,7 +207,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func clone() {
-        print(#function)
+        router.present(for: .cloneItem(itemContent))
     }
 
     func moveToTrash() {
