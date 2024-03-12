@@ -25,7 +25,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-// swiftlint:disable enum_case_associated_values_count
+// swiftlint:disable enum_case_associated_values_count function_parameter_count
 enum ItemContextMenu {
     case login(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
@@ -33,6 +33,7 @@ enum ItemContextMenu {
                onCopyPassword: () -> Void,
                onEdit: () -> Void,
                onPinToggle: () -> Void,
+               onViewHistory: () -> Void,
                onTrash: () -> Void)
 
     case alias(item: any PinnableItemTypeIdentifiable,
@@ -40,6 +41,7 @@ enum ItemContextMenu {
                onCopyAlias: () -> Void,
                onEdit: () -> Void,
                onPinToggle: () -> Void,
+               onViewHistory: () -> Void,
                onTrash: () -> Void)
 
     case creditCard(item: any PinnableItemTypeIdentifiable,
@@ -50,6 +52,7 @@ enum ItemContextMenu {
                     onCopySecurityCode: () -> Void,
                     onEdit: () -> Void,
                     onPinToggle: () -> Void,
+                    onViewHistory: () -> Void,
                     onTrash: () -> Void)
 
     case note(item: any PinnableItemTypeIdentifiable,
@@ -57,9 +60,11 @@ enum ItemContextMenu {
               onCopyContent: () -> Void,
               onEdit: () -> Void,
               onPinToggle: () -> Void,
+              onViewHistory: () -> Void,
               onTrash: () -> Void)
 
     case trashedItem(isEditable: Bool,
+                     onViewHistory: () -> Void,
                      onRestore: () -> Void,
                      onPermanentlyDelete: () -> Void)
 
@@ -71,6 +76,7 @@ enum ItemContextMenu {
                         onCopyPassword,
                         onEdit,
                         onPinToggle,
+                        onViewHistory,
                         onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
@@ -87,11 +93,18 @@ enum ItemContextMenu {
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
+                                                onViewHistory: onViewHistory,
                                                 onTrash: onTrash)
 
             return sections
 
-        case let .alias(item, isEditable, onCopyAlias, onEdit, onPinToggle, onTrash):
+        case let .alias(item,
+                        isEditable,
+                        onCopyAlias,
+                        onEdit,
+                        onPinToggle,
+                        onViewHistory,
+                        onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
             sections.append(.init(options: [.init(title: #localized("Copy alias address"),
@@ -102,6 +115,7 @@ enum ItemContextMenu {
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
+                                                onViewHistory: onViewHistory,
                                                 onTrash: onTrash)
 
             return sections
@@ -114,6 +128,7 @@ enum ItemContextMenu {
                              onCopySecurityCode,
                              onEdit,
                              onPinToggle,
+                             onViewHistory,
                              onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
@@ -136,10 +151,17 @@ enum ItemContextMenu {
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
+                                                onViewHistory: onViewHistory,
                                                 onTrash: onTrash)
             return sections
 
-        case let .note(item, isEditable, onCopyContent, onEdit, onPinToggle, onTrash):
+        case let .note(item,
+                       isEditable,
+                       onCopyContent,
+                       onEdit,
+                       onPinToggle,
+                       onViewHistory,
+                       onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
             sections.append(.init(options: [.init(title: #localized("Copy note content"),
@@ -150,11 +172,15 @@ enum ItemContextMenu {
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
+                                                onViewHistory: onViewHistory,
                                                 onTrash: onTrash)
 
             return sections
 
-        case let .trashedItem(isEditable, onRestore, onPermanentlyDelete):
+        case let .trashedItem(isEditable,
+                              onViewHistory,
+                              onRestore,
+                              onPermanentlyDelete):
             if isEditable {
                 return [
                     .init(options: [.init(title: #localized("Restore"),
@@ -177,6 +203,7 @@ private extension ItemContextMenu {
                                    isEditable: Bool,
                                    onEdit: @escaping () -> Void,
                                    onPinToggle: @escaping () -> Void,
+                                   onViewHistory: @escaping () -> Void,
                                    onTrash: @escaping () -> Void) -> [ItemContextMenuOptionSection] {
         var sections: [ItemContextMenuOptionSection] = []
 
@@ -185,6 +212,8 @@ private extension ItemContextMenu {
         }
 
         sections.append(.init(options: [.pinToggleOption(item: item, action: onPinToggle)]))
+
+        sections.append(.init(options: [.viewHistoryOption(action: onViewHistory)]))
 
         if isEditable {
             sections.append(.init(options: [.trashOption(action: onTrash)]))
@@ -208,6 +237,10 @@ struct ItemContextMenuOption: Identifiable {
     static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
                                 action: @escaping () -> Void) -> ItemContextMenuOption {
         .init(title: item.pinTitle, icon: Image(uiImage: item.pinIcon), action: action)
+    }
+
+    static func viewHistoryOption(action: @escaping () -> Void) -> ItemContextMenuOption {
+        .init(title: #localized("View history"), icon: IconProvider.clock, action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
@@ -270,6 +303,7 @@ extension View {
                          handler: ItemContextMenuHandler) -> some View {
         if isTrashed {
             itemContextMenu(.trashedItem(isEditable: isEditable,
+                                         onViewHistory: { handler.viewHistory(item) },
                                          onRestore: { handler.restore(item) },
                                          onPermanentlyDelete: onPermanentlyDelete))
         } else {
@@ -281,6 +315,7 @@ extension View {
                                        onCopyPassword: { handler.copyPassword(item) },
                                        onEdit: { handler.edit(item) },
                                        onPinToggle: { handler.toggleItemPinning(item) },
+                                       onViewHistory: { handler.viewHistory(item) },
                                        onTrash: { handler.trash(item) }))
             case .alias:
                 itemContextMenu(.alias(item: item,
@@ -288,6 +323,7 @@ extension View {
                                        onCopyAlias: { handler.copyAlias(item) },
                                        onEdit: { handler.edit(item) },
                                        onPinToggle: { handler.toggleItemPinning(item) },
+                                       onViewHistory: { handler.viewHistory(item) },
                                        onTrash: { handler.trash(item) }))
 
             case .creditCard:
@@ -299,6 +335,7 @@ extension View {
                                             onCopySecurityCode: { handler.copySecurityCode(item) },
                                             onEdit: { handler.edit(item) },
                                             onPinToggle: { handler.toggleItemPinning(item) },
+                                            onViewHistory: { handler.viewHistory(item) },
                                             onTrash: { handler.trash(item) }))
 
             case .note:
@@ -307,10 +344,11 @@ extension View {
                                       onCopyContent: { handler.copyNoteContent(item) },
                                       onEdit: { handler.edit(item) },
                                       onPinToggle: { handler.toggleItemPinning(item) },
+                                      onViewHistory: { handler.viewHistory(item) },
                                       onTrash: { handler.trash(item) }))
             }
         }
     }
 }
 
-// swiftlint:enable enum_case_associated_values_count
+// swiftlint:enable enum_case_associated_values_count function_parameter_count
