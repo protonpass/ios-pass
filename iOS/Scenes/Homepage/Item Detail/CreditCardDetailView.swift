@@ -306,7 +306,18 @@ private extension CreditCardDetailView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyExpirationDate() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+        .contextMenu {
+            if !viewModel.isFreeUser {
+                Button(action: {
+                    viewModel.copyExpirationDate()
+                }, label: {
+                    Text("Copy")
+                })
+            }
+        }
     }
 }
