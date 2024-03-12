@@ -153,6 +153,8 @@ private extension TelemetryEventType {
         case .twoFaCreation, .twoFaUpdate:
             // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "2.circle")!
+        case .passkeyAuth, .passkeyCreate, .passkeyDisplay:
+            PassIcon.passkey
         }
     }
 
@@ -166,7 +168,12 @@ private extension TelemetryEventType {
             type.normMajor1Color
         case let .delete(type):
             type.normMajor1Color
-        case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+        case .autofillDisplay,
+             .autofillTriggeredFromApp,
+             .autofillTriggeredFromSource,
+             .passkeyAuth,
+             .passkeyCreate,
+             .passkeyDisplay:
             PassColor.signalInfo
         case .searchClick, .searchTriggered:
             PassColor.signalDanger
@@ -185,7 +192,12 @@ private extension TelemetryEventType {
             type.normMinor1Color
         case let .delete(type):
             type.normMinor1Color
-        case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+        case .autofillDisplay,
+             .autofillTriggeredFromApp,
+             .autofillTriggeredFromSource,
+             .passkeyAuth,
+             .passkeyCreate,
+             .passkeyDisplay:
             PassColor.signalInfo.withAlphaComponent(0.16)
         case .searchClick, .searchTriggered:
             PassColor.signalDanger.withAlphaComponent(0.16)
@@ -218,6 +230,12 @@ private extension TelemetryEventType {
             "Create 2FA"
         case .twoFaUpdate:
             "Update 2FA"
+        case .passkeyCreate:
+            "Create passkey"
+        case .passkeyAuth:
+            "Authenticate with passkey"
+        case .passkeyDisplay:
+            "Display passkeys"
         }
     }
 }

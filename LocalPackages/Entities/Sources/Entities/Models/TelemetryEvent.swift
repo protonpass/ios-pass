@@ -44,6 +44,9 @@ public enum TelemetryEventType: Sendable {
     case searchClick
     case twoFaCreation
     case twoFaUpdate
+    case passkeyCreate
+    case passkeyAuth
+    case passkeyDisplay
 
     public var rawValue: String {
         switch self {
@@ -69,9 +72,16 @@ public enum TelemetryEventType: Sendable {
             "2fa.creation"
         case .twoFaUpdate:
             "2fa.update"
+        case .passkeyCreate:
+            "passkey.create"
+        case .passkeyAuth:
+            "passkey.auth"
+        case .passkeyDisplay:
+            "passkey.display"
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     public init?(rawValue: String) {
         switch rawValue {
         case "autofill.display":
@@ -88,6 +98,12 @@ public enum TelemetryEventType: Sendable {
             self = .twoFaCreation
         case "2fa.update":
             self = .twoFaUpdate
+        case "passkey.create":
+            self = .passkeyCreate
+        case "passkey.auth":
+            self = .passkeyAuth
+        case "passkey.display":
+            self = .passkeyDisplay
         default:
             if let crudEvent = Self.crudEvent(rawValue: rawValue) {
                 self = crudEvent
@@ -133,6 +149,9 @@ extension TelemetryEventType: Equatable {
         case (.autofillDisplay, .autofillDisplay),
              (.autofillTriggeredFromApp, .autofillTriggeredFromApp),
              (.autofillTriggeredFromSource, .autofillTriggeredFromSource),
+             (.passkeyAuth, .passkeyAuth),
+             (.passkeyCreate, .passkeyCreate),
+             (.passkeyDisplay, .passkeyDisplay),
              (.searchClick, .searchClick),
              (.searchTriggered, .searchTriggered),
              (.twoFaCreation, .twoFaCreation),
