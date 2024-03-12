@@ -21,6 +21,7 @@
 @preconcurrency import AuthenticationServices
 import Entities
 import Foundation
+import UseCases
 
 protocol CompletePasskeyRegistrationUseCase: Sendable {
     func execute(_ response: CreatePasskeyResponse)
@@ -34,11 +35,14 @@ extension CompletePasskeyRegistrationUseCase {
 
 final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
     private let context: ASCredentialProviderExtensionContext
+    private let addTelemetryEvent: any AddTelemetryEventUseCase
     private let resetFactory: any ResetFactoryUseCase
 
     init(context: ASCredentialProviderExtensionContext,
+         addTelemetryEvent: any AddTelemetryEventUseCase,
          resetFactory: any ResetFactoryUseCase) {
         self.context = context
+        self.addTelemetryEvent = addTelemetryEvent
         self.resetFactory = resetFactory
     }
 
@@ -47,6 +51,9 @@ final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
             assertionFailure("Should be called on iOS 17 and above")
             return
         }
+        // Add telemetry event before completing on purpose
+        // because after completing the extension is dismissed
+        addTelemetryEvent(with: .passkeyCreate)
         let credential = ASPasskeyRegistrationCredential(relyingParty: response.rpName,
                                                          clientDataHash: response.clientDataHash,
                                                          credentialID: response.credentialId,
