@@ -115,6 +115,7 @@ extension AutoFillUseCaseContainer {
 
     var completePasskeyRegistration: Factory<CompletePasskeyRegistrationUseCase> {
         self { CompletePasskeyRegistration(context: self.context,
+                                           addTelemetryEvent: SharedUseCasesContainer.shared.addTelemetryEvent(),
                                            resetFactory: self.resetFactory()) }
     }
 
