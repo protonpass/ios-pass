@@ -112,8 +112,9 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     }
 
     override func bindValues() {
-        let bindItemContent: (ItemContent) -> Void = { [weak self] itemContent in
-            guard let self, case let .creditCard(data) = itemContent.contentData else { return }
+        switch mode {
+        case let .clone(itemContent), let .edit(itemContent):
+            guard case let .creditCard(data) = itemContent.contentData else { return }
             title = itemContent.name
             cardholderName = data.cardholderName
             cardNumber = data.number.toCreditCardNumber()
@@ -125,12 +126,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             year = Int(monthYear.first ?? "")
 
             note = itemContent.note
-        }
-        switch mode {
-        case let .edit(itemContent):
-            bindItemContent(itemContent)
-        case let .clone(itemContent):
-            bindItemContent(itemContent)
+
         case .create:
             break
         }

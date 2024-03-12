@@ -129,10 +129,7 @@ class BaseCreateEditItemViewModel {
         switch mode {
         case let .create(shareId, _):
             vaultShareId = shareId
-        case let .edit(itemContent):
-            vaultShareId = itemContent.shareId
-            customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
-        case let .clone(itemContent):
+        case let .clone(itemContent), let .edit(itemContent):
             vaultShareId = itemContent.shareId
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }

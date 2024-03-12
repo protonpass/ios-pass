@@ -70,11 +70,11 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 self.note = note
             }
 
-        case let .edit(itemContent):
-            bindItemContent(itemContent)
-
-        case let .clone(itemContent):
-            bindItemContent(itemContent)
+        case let .clone(itemContent), let .edit(itemContent):
+            if case .note = itemContent.contentData {
+                title = itemContent.name
+                note = itemContent.note
+            }
         }
     }
 
