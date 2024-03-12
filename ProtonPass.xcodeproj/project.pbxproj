@@ -405,6 +405,7 @@
 		35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35C0D1C72B20B567005D48A6 /* TOTPRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C0D1C62B20B567005D48A6 /* TOTPRow.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
+		35C2ED8F2BA0507200E94BAA /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 35C2ED8E2BA0507200E94BAA /* InfoPlist.xcstrings */; };
 		35C9B8172B5E8AA90062D787 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C9B8162B5E8AA90062D787 /* ShareViewController.swift */; };
 		35C9B81A2B5E8AA90062D787 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35C9B8182B5E8AA90062D787 /* MainInterface.storyboard */; };
 		35C9B81E2B5E8AA90062D787 /* Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 35C9B8142B5E8AA90062D787 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -882,6 +883,7 @@
 		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162829EA911E001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		35C2ED8E2BA0507200E94BAA /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		35C9B8142B5E8AA90062D787 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		35C9B8162B5E8AA90062D787 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		35C9B8192B5E8AA90062D787 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -1205,6 +1207,7 @@
 			isa = PBXGroup;
 			children = (
 				5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */,
+				35C2ED8E2BA0507200E94BAA /* InfoPlist.xcstrings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -2671,6 +2674,7 @@
 				3569AE422A6983440026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				FAD3ABA52A862A880004053E /* Proton Pass - Password Manager.storekit in Resources */,
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
+				35C2ED8F2BA0507200E94BAA /* InfoPlist.xcstrings in Resources */,
 				5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3803,7 +3807,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card and hand-written note";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -4398,7 +4402,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card and hand-written note";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -5044,7 +5048,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card and hand-written note";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -5181,7 +5185,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card and hand-written note";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
