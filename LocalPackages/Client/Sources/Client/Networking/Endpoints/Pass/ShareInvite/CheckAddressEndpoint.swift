@@ -52,8 +52,4 @@ public struct CheckAddressResponse: Sendable, Decodable {
     // Optional array because otherwise decode process would fail
     // when receiving an empty array instead of null
     public let emails: [String]?
-
-    enum CodingKeys: String, CodingKey {
-        case emails = "Emails"
-    }
 }
