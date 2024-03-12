@@ -178,6 +178,13 @@ extension ItemContextMenuHandler {
             logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
         }
     }
+
+    func viewHistory(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            router.present(for: .history(itemContent))
+        }
+    }
 }
 
 // MARK: - Private APIs
