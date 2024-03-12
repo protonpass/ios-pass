@@ -95,8 +95,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func bindValues() {
-        let bindItemContent: (ItemContent) -> Void = { [weak self] itemContent in
-            guard let self else { return }
+        switch mode {
+        case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
                 username = data.username
@@ -110,11 +110,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 }
                 note = itemContent.note
             }
-        }
-
-        switch mode {
-        case let .edit(itemContent):
-            bindItemContent(itemContent)
 
         case let .create(_, type):
             if case let .login(title, url, note, totpUri, _, request) = type {
@@ -139,9 +134,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     router.display(element: .displayErrorBanner(error))
                 }
             }
-
-        case let .clone(itemContent):
-            bindItemContent(itemContent)
         }
     }
 
