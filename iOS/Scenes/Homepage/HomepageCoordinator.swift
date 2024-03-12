@@ -812,8 +812,21 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func presentItemHistory(_ item: ItemContent) {
-        let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
-        present(view)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let plan = try await accessRepository.getPlan()
+                if plan.isFreeUser {
+                    startUpsellingFlow()
+                } else {
+                    let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
+                    present(view)
+                }
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
     }
 
     func updateAfterRestoration() {
