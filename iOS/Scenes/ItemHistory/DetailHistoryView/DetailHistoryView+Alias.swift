@@ -62,6 +62,7 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyAlias() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
