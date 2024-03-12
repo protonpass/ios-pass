@@ -37,6 +37,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
 
 enum ItemMode: Equatable, Hashable {
     case create(shareId: String, type: ItemCreationType)
+    case clone(ItemContent)
     case edit(ItemContent)
 
     var isEditMode: Bool {
@@ -59,7 +60,20 @@ enum ItemCreationType: Equatable, Hashable {
                totpUri: String? = nil,
                autofill: Bool,
                passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
-    case other
+    case creditCard
+
+    var itemContentType: ItemContentType {
+        switch self {
+        case .note:
+            .note
+        case .alias:
+            .alias
+        case .login:
+            .login
+        case .creditCard:
+            .creditCard
+        }
+    }
 }
 
 @MainActor
@@ -95,7 +109,7 @@ class BaseCreateEditItemViewModel {
 
     var didEditSomething: Bool {
         switch mode {
-        case .create:
+        case .clone, .create:
             return true
         case let .edit(oldItemContent):
             if let newItemContent = generateItemContent() {
@@ -116,6 +130,9 @@ class BaseCreateEditItemViewModel {
         case let .create(shareId, _):
             vaultShareId = shareId
         case let .edit(itemContent):
+            vaultShareId = itemContent.shareId
+            customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+        case let .clone(itemContent):
             vaultShareId = itemContent.shareId
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
@@ -156,7 +173,7 @@ class BaseCreateEditItemViewModel {
 
     func saveButtonTitle() -> String {
         switch mode {
-        case .create:
+        case .clone, .create:
             #localized("Create")
         case .edit:
             #localized("Save")
@@ -205,7 +222,7 @@ private extension BaseCreateEditItemViewModel {
             .store(in: &cancellables)
     }
 
-    func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
+    func createItem(for type: ItemContentType) async throws -> SymmetricallyEncryptedItem? {
         let shareId = selectedVault.shareId
         guard let itemContent = generateItemContent() else {
             logger.warning("No item content")
@@ -293,8 +310,8 @@ extension BaseCreateEditItemViewModel {
             isSaving = true
 
             do {
-                switch mode {
-                case let .create(_, type):
+                let handleCreation: (ItemContentType) async throws -> Void = { [weak self] type in
+                    guard let self else { return }
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
@@ -302,6 +319,14 @@ extension BaseCreateEditItemViewModel {
                                                             type: itemContentType(),
                                                             createPasskeyResponse: newPasskey()))
                     }
+                }
+
+                switch mode {
+                case let .create(_, type):
+                    try await handleCreation(type.itemContentType)
+
+                case let .clone(itemContent):
+                    try await handleCreation(itemContent.type)
 
                 case let .edit(oldItemContent):
                     logger.trace("Editing \(oldItemContent.debugDescription)")
