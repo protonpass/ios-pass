@@ -89,6 +89,12 @@ private extension TelemetryEvent {
             "2fa.creation"
         case .twoFaUpdate:
             "2fa.update"
+        case .passkeyCreate:
+            "passkey.create_done"
+        case .passkeyAuth:
+            "passkey.auth_done"
+        case .passkeyDisplay:
+            "passkey.display_all_passkeys"
         }
     }
 
