@@ -74,8 +74,10 @@ extension DetailHistoryView {
                     .placeholderText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                Text(item.note)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                TextView(.constant(item.note))
+                    .autoDetectDataTypes(.all)
+                    .foregroundColor(PassColor.textNorm)
+                    .isEditable(false)
             }
         }
     }
