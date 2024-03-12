@@ -150,6 +150,9 @@ private extension CredentialProviderCoordinator {
         showView(CredentialsView(viewModel: viewModel))
 
         addNewEvent(type: .autofillDisplay)
+        if passkeyRequestParams != nil {
+            addNewEvent(type: .passkeyDisplay)
+        }
     }
 
     func handleCheckAndAutoFill(_ request: AutoFillRequest) {
