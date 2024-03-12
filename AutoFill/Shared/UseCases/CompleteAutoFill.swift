@@ -107,6 +107,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                                         completionHandler: completion)
             } else if #available(iOS 17, *),
                       let passkeyCredential = credential as? ASPasskeyAssertionCredential {
+                try await telemetryRepository.addNewEvent(type: .passkeyAuth)
                 context.completeAssertionRequest(using: passkeyCredential,
                                                  completionHandler: completion)
             } else {
