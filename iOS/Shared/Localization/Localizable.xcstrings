@@ -68646,6 +68646,16 @@
         }
       }
     },
+    "View history" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View history"
+          }
+        }
+      }
+    },
     "View members" : {
       "localizations" : {
         "be" : {
