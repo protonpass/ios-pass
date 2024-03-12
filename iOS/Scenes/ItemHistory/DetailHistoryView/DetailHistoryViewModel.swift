@@ -93,6 +93,21 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
         }
     }
 
+    func copyAlias() {
+        guard let alias = selectedRevisionContent.aliasEmail else { return }
+        router.action(.copyToClipboard(text: alias, message: #localized("Alias copied")))
+    }
+
+    func copyUsername() {
+        guard let data = selectedRevisionContent.loginItem, !data.username.isEmpty else { return }
+        router.action(.copyToClipboard(text: data.username, message: #localized("Username copied")))
+    }
+
+    func copyPassword() {
+        guard let data = selectedRevisionContent.loginItem, !data.password.isEmpty else { return }
+        router.action(.copyToClipboard(text: data.password, message: #localized("Password copied")))
+    }
+
     func copyTotpToken(_ token: String) {
         router.action(.copyToClipboard(text: token, message: #localized("TOTP copied")))
     }

@@ -33,5 +33,6 @@ struct ItemDetailSectionIcon: View {
             .scaledToFit()
             .foregroundColor(color.toColor)
             .frame(width: width)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
