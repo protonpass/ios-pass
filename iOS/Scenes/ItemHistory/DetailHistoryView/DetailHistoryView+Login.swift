@@ -95,6 +95,7 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyUsername() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -117,6 +118,7 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyPassword() }
 
             Spacer()
 
