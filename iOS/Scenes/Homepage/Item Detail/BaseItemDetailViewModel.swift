@@ -274,11 +274,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func showItemHistory() {
-        if itemHistoryEnabled {
-            router.present(for: .history(itemContent))
-        } else {
-            router.present(for: .upselling)
-        }
+        router.present(for: .history(itemContent))
     }
 }
 
