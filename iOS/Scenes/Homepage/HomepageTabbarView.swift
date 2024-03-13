@@ -236,7 +236,7 @@ extension HomepageTabBarController {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let plan = try await self.accessRepository.getPlan()
+                let plan = try await accessRepository.getPlan()
 
                 let (image, selectedImage): (UIImage, UIImage) = switch plan.planType {
                 case .free:

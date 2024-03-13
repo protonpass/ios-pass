@@ -67,7 +67,6 @@ struct ProfileTabView: View {
 
                     Text("Version \(Bundle.main.displayedAppVersion)")
                         .sectionTitleText()
-
                         .frame(maxWidth: .infinity, alignment: .center)
                     Spacer()
                 }
