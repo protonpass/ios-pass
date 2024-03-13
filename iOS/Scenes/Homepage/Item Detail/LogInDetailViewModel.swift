@@ -121,10 +121,10 @@ private extension LogInDetailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
+                aliasItem = try await itemRepository.getAliasItem(email: username)
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -133,14 +133,14 @@ private extension LogInDetailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                if try await self.upgradeChecker.canShowTOTPToken(creationDate: self.itemContent.item.createTime) {
-                    self.totpTokenState = .allowed
+                if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
+                    totpTokenState = .allowed
                 } else {
-                    self.totpTokenState = .notAllowed
+                    totpTokenState = .notAllowed
                 }
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
