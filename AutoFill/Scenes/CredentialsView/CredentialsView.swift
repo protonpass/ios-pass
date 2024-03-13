@@ -80,8 +80,9 @@ struct CredentialsView: View {
                    }
                })
         .sheet(isPresented: selectPasskeySheetBinding) {
-            if let info = viewModel.selectPasskeySheetInformation {
-                SelectPasskeyView(info: info)
+            if let info = viewModel.selectPasskeySheetInformation,
+               let context = viewModel.context {
+                SelectPasskeyView(info: info, context: context)
                     .theme(preferences.theme)
                     .presentationDetents([.height(CGFloat(info.passkeys.count * 60) + 80)])
             }

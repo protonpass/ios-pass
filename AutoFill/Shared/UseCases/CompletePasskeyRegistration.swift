@@ -24,29 +24,29 @@ import Foundation
 import UseCases
 
 protocol CompletePasskeyRegistrationUseCase: Sendable {
-    func execute(_ response: CreatePasskeyResponse)
+    func execute(_ response: CreatePasskeyResponse,
+                 context: ASCredentialProviderExtensionContext)
 }
 
 extension CompletePasskeyRegistrationUseCase {
-    func callAsFunction(_ response: CreatePasskeyResponse) {
-        execute(response)
+    func callAsFunction(_ response: CreatePasskeyResponse,
+                        context: ASCredentialProviderExtensionContext) {
+        execute(response, context: context)
     }
 }
 
 final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
-    private let context: ASCredentialProviderExtensionContext
     private let addTelemetryEvent: any AddTelemetryEventUseCase
     private let resetFactory: any ResetFactoryUseCase
 
-    init(context: ASCredentialProviderExtensionContext,
-         addTelemetryEvent: any AddTelemetryEventUseCase,
+    init(addTelemetryEvent: any AddTelemetryEventUseCase,
          resetFactory: any ResetFactoryUseCase) {
-        self.context = context
         self.addTelemetryEvent = addTelemetryEvent
         self.resetFactory = resetFactory
     }
 
-    func execute(_ response: CreatePasskeyResponse) {
+    func execute(_ response: CreatePasskeyResponse,
+                 context: ASCredentialProviderExtensionContext) {
         guard #available(iOS 17, *) else {
             assertionFailure("Should be called on iOS 17 and above")
             return

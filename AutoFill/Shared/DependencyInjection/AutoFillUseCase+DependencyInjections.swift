@@ -43,10 +43,6 @@ private extension AutoFillUseCaseContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var context: ASCredentialProviderExtensionContext {
-        AutoFillDataContainer.shared.context()
-    }
-
     var symmetricKeyProvider: any SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
@@ -114,8 +110,7 @@ extension AutoFillUseCaseContainer {
     }
 
     var completePasskeyRegistration: Factory<CompletePasskeyRegistrationUseCase> {
-        self { CompletePasskeyRegistration(context: self.context,
-                                           addTelemetryEvent: SharedUseCasesContainer.shared.addTelemetryEvent(),
+        self { CompletePasskeyRegistration(addTelemetryEvent: SharedUseCasesContainer.shared.addTelemetryEvent(),
                                            resetFactory: self.resetFactory()) }
     }
 
@@ -143,14 +138,12 @@ extension AutoFillUseCaseContainer {
     }
 
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
-        self { CancelAutoFill(context: self.context,
-                              saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs(),
+        self { CancelAutoFill(saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs(),
                               resetFactory: self.resetFactory()) }
     }
 
     var completeAutoFill: Factory<CompleteAutoFillUseCase> {
-        self { CompleteAutoFill(context: self.context,
-                                logManager: self.logManager,
+        self { CompleteAutoFill(logManager: self.logManager,
                                 telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
@@ -159,8 +152,7 @@ extension AutoFillUseCaseContainer {
     }
 
     var completeConfiguration: Factory<CompleteConfigurationUseCase> {
-        self { CompleteConfiguration(context: self.context,
-                                     resetFactory: self.resetFactory()) }
+        self { CompleteConfiguration(resetFactory: self.resetFactory()) }
     }
 
     var resetFactory: Factory<ResetFactoryUseCase> {

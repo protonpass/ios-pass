@@ -54,6 +54,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     private let theme = resolve(\SharedToolingContainer.theme)
     private weak var rootViewController: UIViewController?
+    private weak var context: ASCredentialProviderExtensionContext?
     private var cancellables = Set<AnyCancellable>()
 
     // Use cases
@@ -85,9 +86,10 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         rootViewController?.topMostViewController
     }
 
-    init(rootViewController: UIViewController) {
+    init(rootViewController: UIViewController, context: ASCredentialProviderExtensionContext) {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
+        self.context = context
 
         // Post init
         rootViewController.view.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
@@ -138,13 +140,16 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 private extension CredentialProviderCoordinator {
     func handleShowAllLoginsMode(identifiers: [ASCredentialServiceIdentifier],
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
+        guard let context else { return }
+
         guard credentialProvider.isAuthenticated else {
             showNotLoggedInView()
             return
         }
 
         let viewModel = CredentialsViewModel(serviceIdentifiers: identifiers,
-                                             passkeyRequestParams: passkeyRequestParams)
+                                             passkeyRequestParams: passkeyRequestParams,
+                                             context: context)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel))
@@ -157,19 +162,19 @@ private extension CredentialProviderCoordinator {
 
     func handleCheckAndAutoFill(_ request: AutoFillRequest) {
         Task { [weak self] in
-            guard let self else { return }
+            guard let self, let context else { return }
             do {
-                try await checkAndAutoFill(request)
+                try await checkAndAutoFill(request, context: context)
             } catch {
                 logger.error(error)
-                cancelAutoFill(reason: .failed)
+                cancelAutoFill(reason: .failed, context: context)
             }
         }
     }
 
     func handleAuthenticateAndAutofill(_ request: AutoFillRequest) {
         let viewModel = LockedCredentialViewModel(request: request) { [weak self] result in
-            guard let self else { return }
+            guard let self, let context else { return }
             switch result {
             case let .success((credential, itemContent)):
                 Task { [weak self] in
@@ -177,7 +182,8 @@ private extension CredentialProviderCoordinator {
                     try? await completeAutoFill(quickTypeBar: false,
                                                 identifiers: request.serviceIdentifiers,
                                                 credential: credential,
-                                                itemContent: itemContent)
+                                                itemContent: itemContent,
+                                                context: context)
                 }
             case let .failure(error):
                 handle(error: error)
@@ -187,14 +193,17 @@ private extension CredentialProviderCoordinator {
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
+        guard let context else { return }
         let view = PasskeyCredentialsView(request: request,
+                                          context: context,
                                           onCreate: { [weak self] in
                                               guard let self else { return }
                                               createNewLoginWithPasskey(request)
                                           },
                                           onCancel: { [weak self] in
                                               guard let self else { return }
-                                              cancelAutoFill(reason: .userCanceled)
+                                              cancelAutoFill(reason: .userCanceled,
+                                                             context: context)
                                           })
         showView(view)
     }
@@ -209,6 +218,7 @@ private extension CredentialProviderCoordinator {
 
 private extension CredentialProviderCoordinator {
     func configureExtension() {
+        guard let context else { return }
         guard credentialProvider.isAuthenticated else {
             showNotLoggedInView()
             return
@@ -216,12 +226,12 @@ private extension CredentialProviderCoordinator {
 
         let view = ExtensionSettingsView(onDismiss: { [weak self] in
             guard let self else { return }
-            completeConfiguration()
+            completeConfiguration(context: context)
         }, onLogOut: { [weak self] in
             guard let self else { return }
             logOut { [weak self] in
                 guard let self else { return }
-                completeConfiguration()
+                completeConfiguration(context: context)
             }
         })
         showView(view)
@@ -291,12 +301,13 @@ private extension CredentialProviderCoordinator {
     }
 
     func handle(error: Error) {
+        guard let context else { return }
         let defaultHandler: (Error) -> Void = { [weak self] error in
             guard let self else { return }
             logger.error(error)
             alert(error: error) { [weak self] in
                 guard let self else { return }
-                cancelAutoFill(reason: .failed)
+                cancelAutoFill(reason: .failed, context: context)
             }
         }
 
@@ -308,12 +319,12 @@ private extension CredentialProviderCoordinator {
 
         switch reason {
         case .userCancelled:
-            cancelAutoFill(reason: .userCanceled)
+            cancelAutoFill(reason: .userCanceled, context: context)
             return
         case .failedToAuthenticate:
             logOut { [weak self] in
                 guard let self else { return }
-                cancelAutoFill(reason: .failed)
+                cancelAutoFill(reason: .failed, context: context)
             }
 
         default:
@@ -345,9 +356,10 @@ private extension CredentialProviderCoordinator {
 
 private extension CredentialProviderCoordinator {
     func showNotLoggedInView() {
+        guard let context else { return }
         let view = NotLoggedInView(variant: .autoFillExtension) { [weak self] in
             guard let self else { return }
-            cancelAutoFill(reason: .userCanceled)
+            cancelAutoFill(reason: .userCanceled, context: context)
         }
         .theme(theme)
         showView(view)
@@ -432,7 +444,8 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
 
 extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     func credentialsViewModelWantsToCancel() {
-        cancelAutoFill(reason: .userCanceled)
+        guard let context else { return }
+        cancelAutoFill(reason: .userCanceled, context: context)
     }
 
     func credentialsViewModelWantsToLogOut() {
@@ -509,11 +522,11 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         switch type {
         case .login:
             Task { [weak self] in
-                guard let self else { return }
+                guard let self, let context else { return }
                 do {
                     try await indexAllLoginItems(ignorePreferences: false)
                     if let response {
-                        completePasskeyRegistration(response)
+                        completePasskeyRegistration(response, context: context)
                     } else {
                         credentialsViewModel?.select(item: item)
                     }
