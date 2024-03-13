@@ -84,6 +84,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
                     type: ItemContentType,
                     createPasskeyResponse: CreatePasskeyResponse?)
     case editItem(ItemContent)
+    case cloneItem(ItemContent)
     case updateItem(type: ItemContentType, updated: Bool)
     /// automaticDisplay is needed as items details presentation can start from different points and should not
     /// have the same display.

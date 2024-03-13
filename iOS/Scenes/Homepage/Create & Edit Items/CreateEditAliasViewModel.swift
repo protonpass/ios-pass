@@ -123,7 +123,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     var isSaveable: Bool {
         switch mode {
-        case .create:
+        case .clone, .create:
             !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
         case .edit:
             !title.isEmpty && !mailboxes.isEmpty

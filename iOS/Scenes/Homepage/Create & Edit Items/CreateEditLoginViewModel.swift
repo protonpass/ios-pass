@@ -96,7 +96,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func bindValues() {
         switch mode {
-        case let .edit(itemContent):
+        case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
                 username = data.username
