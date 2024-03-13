@@ -25,29 +25,25 @@ import UseCases
 /// Cancel the autofill process with a given reason
 /// e.g: users explicitly cancel, authentication required, authentication failed...
 public protocol CancelAutoFillUseCase: Sendable {
-    func execute(reason: ASExtensionError.Code)
+    func execute(reason: ASExtensionError.Code, context: ASCredentialProviderExtensionContext)
 }
 
 public extension CancelAutoFillUseCase {
-    func callAsFunction(reason: ASExtensionError.Code) {
-        execute(reason: reason)
+    func callAsFunction(reason: ASExtensionError.Code, context: ASCredentialProviderExtensionContext) {
+        execute(reason: reason, context: context)
     }
 }
 
 public final class CancelAutoFill: @unchecked Sendable, CancelAutoFillUseCase {
-    private let context: ASCredentialProviderExtensionContext
     private let saveAllLogs: SaveAllLogsUseCase
     private let resetFactory: ResetFactoryUseCase
 
-    public init(context: ASCredentialProviderExtensionContext,
-                saveAllLogs: SaveAllLogsUseCase,
-                resetFactory: ResetFactoryUseCase) {
-        self.context = context
+    public init(saveAllLogs: SaveAllLogsUseCase, resetFactory: ResetFactoryUseCase) {
         self.saveAllLogs = saveAllLogs
         self.resetFactory = resetFactory
     }
 
-    public func execute(reason: ASExtensionError.Code) {
+    public func execute(reason: ASExtensionError.Code, context: ASCredentialProviderExtensionContext) {
         let error = NSError(domain: ASExtensionErrorDomain, code: reason.rawValue)
         context.cancelRequest(withError: error)
         saveAllLogs()

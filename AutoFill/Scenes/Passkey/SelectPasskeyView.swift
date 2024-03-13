@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AuthenticationServices
 import DesignSystem
 import Entities
 import SwiftUI
@@ -25,8 +26,9 @@ import SwiftUI
 struct SelectPasskeyView: View {
     @StateObject private var viewModel: SelectPasskeyViewModel
 
-    init(info: SelectPasskeySheetInformation) {
-        _viewModel = .init(wrappedValue: .init(info: info))
+    init(info: SelectPasskeySheetInformation,
+         context: ASCredentialProviderExtensionContext) {
+        _viewModel = .init(wrappedValue: .init(info: info, context: context))
     }
 
     var body: some View {

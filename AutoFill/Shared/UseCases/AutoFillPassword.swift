@@ -25,13 +25,15 @@ import Foundation
 
 protocol AutoFillPasswordUseCase: Sendable {
     func execute(_ item: any ItemIdentifiable,
-                 serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws
+                 serviceIdentifiers: [ASCredentialServiceIdentifier],
+                 context: ASCredentialProviderExtensionContext) async throws
 }
 
 extension AutoFillPasswordUseCase {
     func callAsFunction(_ item: any ItemIdentifiable,
-                        serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
-        try await execute(item, serviceIdentifiers: serviceIdentifiers)
+                        serviceIdentifiers: [ASCredentialServiceIdentifier],
+                        context: ASCredentialProviderExtensionContext) async throws {
+        try await execute(item, serviceIdentifiers: serviceIdentifiers, context: context)
     }
 }
 
@@ -46,7 +48,8 @@ final class AutoFillPassword: AutoFillPasswordUseCase {
     }
 
     func execute(_ item: any ItemIdentifiable,
-                 serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
+                 serviceIdentifiers: [ASCredentialServiceIdentifier],
+                 context: ASCredentialProviderExtensionContext) async throws {
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
             let loginData = itemContent.loginItem else {
@@ -58,6 +61,7 @@ final class AutoFillPassword: AutoFillPasswordUseCase {
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
                                    credential: credential,
-                                   itemContent: itemContent)
+                                   itemContent: itemContent,
+                                   context: context)
     }
 }
