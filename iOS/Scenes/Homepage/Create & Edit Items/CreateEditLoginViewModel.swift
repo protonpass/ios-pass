@@ -231,9 +231,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 guard let self else { return }
                 defer { self.loading = false }
                 do {
-                    self.loading = true
-                    let aliasOptions = try await self.aliasRepository
-                        .getAliasOptions(shareId: self.selectedVault.shareId)
+                    loading = true
+                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
                     if let firstSuffix = aliasOptions.suffixes.first,
                        let firstMailbox = aliasOptions.mailboxes.first {
                         var prefix = PrefixUtils.generatePrefix(fromTitle: title)
@@ -242,13 +241,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         }
 
                         self.aliasOptions = aliasOptions
-                        self.aliasCreationLiteInfo = .init(prefix: prefix,
-                                                           suffix: firstSuffix,
-                                                           mailboxes: [firstMailbox])
-                        self.generateAlias()
+                        aliasCreationLiteInfo = .init(prefix: prefix,
+                                                      suffix: firstSuffix,
+                                                      mailboxes: [firstMailbox])
+                        generateAlias()
                     }
                 } catch {
-                    self.router.display(element: .displayErrorBanner(error))
+                    router.display(element: .displayErrorBanner(error))
                 }
             }
         }

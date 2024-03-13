@@ -43,8 +43,8 @@ final class CachedFavIconsViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.error = nil
-                self.icons = try await favIconRepository.getAllCachedIcons()
+                error = nil
+                icons = try await favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }
@@ -55,9 +55,9 @@ final class CachedFavIconsViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.error = nil
+                error = nil
                 try await favIconRepository.emptyCache()
-                self.icons = try await favIconRepository.getAllCachedIcons()
+                icons = try await favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }

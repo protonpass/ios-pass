@@ -59,13 +59,13 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             }
 
             do {
-                self.executingAction = true
-                try await self.rejectInvitation(for: self.userInvite.inviteToken)
-                await self.updateCachedInvitations(for: self.userInvite.inviteToken)
-                self.shouldCloseSheet = true
+                executingAction = true
+                try await rejectInvitation(for: userInvite.inviteToken)
+                await updateCachedInvitations(for: userInvite.inviteToken)
+                shouldCloseSheet = true
             } catch {
-                self.logger.error(message: "Could not reject invitation \(userInvite)", error: error)
-                self.display(error: error)
+                logger.error(message: "Could not reject invitation \(userInvite)", error: error)
+                display(error: error)
             }
         }
     }
@@ -77,14 +77,14 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             }
 
             do {
-                self.executingAction = true
-                _ = try await self.acceptInvitation(with: self.userInvite)
-                await self.updateCachedInvitations(for: self.userInvite.inviteToken)
-                self.syncEventLoop.forceSync()
+                executingAction = true
+                _ = try await acceptInvitation(with: userInvite)
+                await updateCachedInvitations(for: userInvite.inviteToken)
+                syncEventLoop.forceSync()
             } catch {
-                self.logger.error(message: "Could not accept invitation \(userInvite)", error: error)
-                self.display(error: error)
-                self.executingAction = false
+                logger.error(message: "Could not accept invitation \(userInvite)", error: error)
+                display(error: error)
+                executingAction = false
             }
         }
     }
@@ -111,10 +111,10 @@ private extension AcceptRejectInviteViewModel {
                 return
             }
             do {
-                self.vaultInfos = try await self.decodeShareVaultInformation(with: self.userInvite)
+                vaultInfos = try await decodeShareVaultInformation(with: userInvite)
             } catch {
-                self.logger.error(message: "Could not decode vault content from invitation", error: error)
-                self.display(error: error)
+                logger.error(message: "Could not decode vault content from invitation", error: error)
+                display(error: error)
             }
         }
     }
