@@ -28,6 +28,8 @@ public extension LABiometryType {
             return #localized("Use system passcode when Face ID fails")
         case .touchID:
             return #localized("Use system passcode when Touch ID fails")
+        case .opticID:
+            return #localized("Use system passcode when Optic ID fails")
         default:
             assertionFailure("Not applicable")
             return ""

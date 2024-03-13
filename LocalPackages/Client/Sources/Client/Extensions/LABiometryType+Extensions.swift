@@ -22,10 +22,9 @@ import LocalAuthentication
 import Macro
 
 public extension LABiometryType {
-    // We only use Face ID or Touch ID
     var usable: Bool {
         switch self {
-        case .faceID, .touchID:
+        case .faceID, .opticID, .touchID:
             true
         default:
             false
