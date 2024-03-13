@@ -305,18 +305,18 @@ private extension ProfileTabViewModel {
             guard let self else { return }
             defer { self.loading = false }
             do {
-                self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
-                self.loading = true
-                if self.quickTypeBar {
-                    try await self.indexAllLoginItems(ignorePreferences: true)
+                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
+                loading = true
+                if quickTypeBar {
+                    try await indexAllLoginItems(ignorePreferences: true)
                 } else {
-                    try await self.unindexAllLoginItems()
+                    try await unindexAllLoginItems()
                 }
-                self.preferences.quickTypeBar = self.quickTypeBar
+                preferences.quickTypeBar = quickTypeBar
             } catch {
-                self.logger.error(error)
-                self.quickTypeBar.toggle() // rollback to previous value
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                quickTypeBar.toggle() // rollback to previous value
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
