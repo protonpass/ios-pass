@@ -55,14 +55,6 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     }
 
     override func bindValues() {
-        let bindItemContent: (ItemContent) -> Void = { [weak self] itemContent in
-            guard let self else { return }
-            if case .note = itemContent.contentData {
-                title = itemContent.name
-                note = itemContent.note
-            }
-        }
-
         switch mode {
         case let .create(_, type):
             if case let .note(title, note) = type {
