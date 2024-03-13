@@ -370,12 +370,12 @@ extension ItemsTabViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                if let itemContent = try await self.itemRepository.getItemContent(shareId: item.shareId,
-                                                                                  itemId: item.itemId) {
-                    self.delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
+                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                             itemId: item.itemId) {
+                    delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                self.router.display(element: .displayErrorBanner(error))
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

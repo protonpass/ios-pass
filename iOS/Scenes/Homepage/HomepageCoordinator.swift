@@ -1070,22 +1070,22 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
             guard let self else { return }
             defer { self.hideLoadingHud() }
             do {
-                self.showLoadingHud()
+                showLoadingHud()
 
-                let plan = try await self.accessRepository.getPlan()
+                let plan = try await accessRepository.getPlan()
                 guard let trialEnd = plan.trialEnd else { return }
                 let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
                 let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)
 
-                self.hideLoadingHud()
+                hideLoadingHud()
 
                 let view = TrialDetailView(daysLeft: abs(daysLeft),
                                            onUpgrade: { self.startUpgradeFlow() },
                                            onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
-                self.present(view)
+                present(view)
             } catch {
-                self.logger.error(error)
-                self.bannerManager.displayTopErrorMessage(error)
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
             }
         }
     }

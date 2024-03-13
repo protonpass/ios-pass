@@ -81,7 +81,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let authenticated = try await authenticate(policy: self.preferences.localAuthenticationPolicy)
+                let authenticated = try await authenticate(policy: preferences.localAuthenticationPolicy)
                 if authenticated {
                     recordSuccess()
                 } else {
