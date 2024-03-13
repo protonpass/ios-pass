@@ -70,7 +70,6 @@
 		354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354AD95F28CB5934000E645B /* EmptyTrashView.swift */; };
 		354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */; };
 		354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */; };
-		354B247B2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */; };
 		354B247F2A77F2280060EDF7 /* CompleteAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */; };
 		354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		354B24822A781E370060EDF7 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
@@ -697,7 +696,6 @@
 		354AD95F28CB5934000E645B /* EmptyTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTrashView.swift; sourceTree = "<group>"; };
 		354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillUseCase+DependencyInjections.swift"; sourceTree = "<group>"; };
 		354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyTotpTokenAndNotify.swift; sourceTree = "<group>"; };
-		354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillData+DependencyInjections.swift"; sourceTree = "<group>"; };
 		354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteAutoFill.swift; sourceTree = "<group>"; };
 		354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilter.swift; sourceTree = "<group>"; };
 		354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailView.swift; sourceTree = "<group>"; };
@@ -1248,7 +1246,6 @@
 		354B24792A77E8010060EDF7 /* DependencyInjection */ = {
 			isa = PBXGroup;
 			children = (
-				354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */,
 				354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */,
 			);
 			path = DependencyInjection;
@@ -2905,7 +2902,6 @@
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				357E62712B0E671300F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */,
-				354B247B2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift in Sources */,
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,

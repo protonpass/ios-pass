@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import AuthenticationServices
 import Client
 import Entities
 import Factory
@@ -50,9 +51,12 @@ final class PasskeyCredentialsViewModel: ObservableObject {
     @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
 
     private let request: PasskeyCredentialRequest
+    private weak var context: ASCredentialProviderExtensionContext?
 
-    init(request: PasskeyCredentialRequest) {
+    init(request: PasskeyCredentialRequest,
+         context: ASCredentialProviderExtensionContext?) {
         self.request = request
+        self.context = context
     }
 }
 
@@ -86,6 +90,7 @@ extension PasskeyCredentialsViewModel {
     }
 
     func createAndAssociatePasskey() async {
+        guard let context else { return }
         guard let selectedItem else {
             assertionFailure("Item shall not be nil")
             return
@@ -95,7 +100,9 @@ extension PasskeyCredentialsViewModel {
 
         do {
             isCreatingPasskey = true
-            try await createAndAssociatePasskey(item: selectedItem, request: request)
+            try await createAndAssociatePasskey(item: selectedItem,
+                                                request: request,
+                                                context: context)
         } catch {
             state = .error(error)
         }
