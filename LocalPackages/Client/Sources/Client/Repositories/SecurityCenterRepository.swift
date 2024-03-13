@@ -137,20 +137,8 @@ private extension SecurityCenterRepository {
     }
 
     func contains2faDomains(urls: [String]) -> Bool {
-        guard let domainParser, !urls.isEmpty else {
-            return false
-        }
-
-        for url in urls {
-            guard let parsedHost = domainParser.parse(host: url),
-                  let domain = parsedHost.domain,
-                  twofaDomainChecker.twofaDomainEligible(domain: domain)
-            else {
-                continue
-            }
-            return true
-        }
-
-        return false
+        urls
+            .compactMap { domainParser?.parse(host: $0)?.domain }
+            .contains { twofaDomainChecker.twofaDomainEligible(domain: $0) }
     }
 }
