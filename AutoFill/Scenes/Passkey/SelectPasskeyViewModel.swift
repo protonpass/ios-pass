@@ -18,31 +18,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import AuthenticationServices
 import Entities
 import Factory
 import Foundation
 
 @MainActor
 final class SelectPasskeyViewModel: ObservableObject {
+    private weak var context: ASCredentialProviderExtensionContext?
     let info: SelectPasskeySheetInformation
 
     private let autoFillPasskey = resolve(\AutoFillUseCaseContainer.autoFillPasskey)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
 
-    init(info: SelectPasskeySheetInformation) {
+    init(info: SelectPasskeySheetInformation,
+         context: ASCredentialProviderExtensionContext) {
         self.info = info
+        self.context = context
     }
 
     func autoFill(with passkey: Passkey) {
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self, let context else { return }
             do {
                 logger.debug("Autofilling with selected passkey \(passkey.keyID)")
                 try await autoFillPasskey(passkey,
                                           itemContent: info.itemContent,
                                           identifiers: info.identifiers,
-                                          params: info.params)
+                                          params: info.params,
+                                          context: context)
                 logger.info("Autofilled with selected passkey \(passkey.keyID)")
             } catch {
                 logger.error(error)

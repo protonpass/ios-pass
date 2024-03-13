@@ -18,18 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AuthenticationServices
 import Client
 import Entities
 import Foundation
 import UseCases
 
 protocol CreateAndAssociatePasskeyUseCase: Sendable {
-    func execute(item: any ItemIdentifiable, request: PasskeyCredentialRequest) async throws
+    func execute(item: any ItemIdentifiable,
+                 request: PasskeyCredentialRequest,
+                 context: ASCredentialProviderExtensionContext) async throws
 }
 
 extension CreateAndAssociatePasskeyUseCase {
-    func callAsFunction(item: any ItemIdentifiable, request: PasskeyCredentialRequest) async throws {
-        try await execute(item: item, request: request)
+    func callAsFunction(item: any ItemIdentifiable,
+                        request: PasskeyCredentialRequest,
+                        context: ASCredentialProviderExtensionContext) async throws {
+        try await execute(item: item, request: request, context: context)
     }
 }
 
@@ -49,7 +54,9 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
         self.completePasskeyRegistration = completePasskeyRegistration
     }
 
-    func execute(item: any ItemIdentifiable, request: PasskeyCredentialRequest) async throws {
+    func execute(item: any ItemIdentifiable,
+                 request: PasskeyCredentialRequest,
+                 context: ASCredentialProviderExtensionContext) async throws {
         guard let oldItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                            itemId: item.itemId),
             let oldLoginData = oldItemContent.loginItem else {
@@ -81,6 +88,6 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                                                   identifiers: [request.serviceIdentifier])
         }
 
-        completePasskeyRegistration(passkeyResponse)
+        completePasskeyRegistration(passkeyResponse, context: context)
     }
 }
