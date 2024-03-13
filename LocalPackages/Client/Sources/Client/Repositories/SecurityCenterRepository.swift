@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import Combine
+import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -37,6 +38,8 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
     private let itemRepository: any ItemRepositoryProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let passwordScorer: any PasswordScorerProtocol
+    private let twofaDomainChecker: any TwofaDomainCheckerProtocol
+    private let domainParser: (any DomainParsingProtocol)?
 
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
@@ -44,10 +47,15 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
-                passwordScorer: any PasswordScorerProtocol = PasswordScorer()) {
+                passwordScorer: any PasswordScorerProtocol = PasswordScorer(),
+                twofaDomainChecker: any TwofaDomainCheckerProtocol = TwofaDomainChecker(),
+                domainParser: (any DomainParsingProtocol)? = try? DomainParser()) {
         self.itemRepository = itemRepository
         self.symmetricKeyProvider = symmetricKeyProvider
         self.passwordScorer = passwordScorer
+        self.twofaDomainChecker = twofaDomainChecker
+        self.domainParser = domainParser
+
         Task { [weak self] in
             guard let self else {
                 return
@@ -64,6 +72,8 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
 
         var numberOfWeakPassword = 0
         var numberOfReusedPassword = 0
+        var numberOfMissing2fa = 0
+
         var securityAffectedItems = [SecurityAffectedItem]()
 
         // Filter out unique passwords and prepare the result
@@ -81,12 +91,19 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                 numberOfReusedPassword += 1
             }
 
-            if passwordScorer.checkScore(password: loginItem.password) != .strong {
+            if !loginItem.password.isEmpty,
+               passwordScorer.checkScore(password: loginItem.password) != .strong {
                 weaknesses.append(.weakPasswords)
                 numberOfWeakPassword += 1
             }
+
+            if loginItem.totpUri.isEmpty, contains2faDomains(urls: loginItem.urls) {
+                weaknesses.append(.missing2FA)
+                numberOfMissing2fa += 1
+            }
+
             // swiftlint:disable:next todo
-            // TODO: check for missing 2FA and breached passwords /emails
+            // TODO: check breached passwords /emails
 
             if !weaknesses.isEmpty {
                 securityAffectedItems.append(SecurityAffectedItem(item: encryptedItem, weaknesses: weaknesses))
@@ -94,7 +111,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
         }
         weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
                                          reusedPasswords: numberOfReusedPassword,
-                                         missing2FA: 0,
+                                         missing2FA: numberOfMissing2fa,
                                          excludedItems: 0,
                                          exposedPasswords: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
@@ -108,7 +125,8 @@ private extension SecurityCenterRepository {
         // Count occurrences of each password
         for encryptedItem in encryptedItems {
             guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  let loginItem = item.loginItem else {
+                  let loginItem = item.loginItem,
+                  !loginItem.password.isEmpty else {
                 continue
             }
             passwordCounts[loginItem.password, default: 0] += 1
@@ -116,5 +134,11 @@ private extension SecurityCenterRepository {
 
         // Filter out unique passwords and prepare the result
         return passwordCounts.filter { $0.value > 1 }
+    }
+
+    func contains2faDomains(urls: [String]) -> Bool {
+        urls
+            .compactMap { domainParser?.parse(host: $0)?.domain }
+            .contains { twofaDomainChecker.twofaDomainEligible(domain: $0) }
     }
 }

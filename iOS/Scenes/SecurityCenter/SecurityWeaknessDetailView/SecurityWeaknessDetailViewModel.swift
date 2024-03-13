@@ -46,6 +46,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
         self.type = type
         title = type.title
         info = type.subtitleInfo
+        showSections = type != .missing2FA
         setUp()
     }
 
@@ -105,6 +106,8 @@ extension SecuritySection {
             passwordStrength.toSecuritySectionHeaderKey
         case let .reusedPasswords(numberOfTime):
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime))
+        case .missing2fa:
+            SecuritySectionHeaderKey(title: "")
         }
     }
 }
