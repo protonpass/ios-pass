@@ -40,7 +40,6 @@ final class ResetFactory: ResetFactoryUseCase {
         SharedRepositoryContainer.shared.reset()
         SharedToolingContainer.shared.reset()
         SharedDataContainer.shared.reset()
-        AutoFillDataContainer.shared.reset()
         AutoFillUseCaseContainer.shared.reset()
     }
 }

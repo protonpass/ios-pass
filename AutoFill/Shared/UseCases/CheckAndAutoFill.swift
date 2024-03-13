@@ -25,12 +25,14 @@ import Foundation
 import UseCases
 
 protocol CheckAndAutoFillUseCase: Sendable {
-    func execute(_ request: AutoFillRequest) async throws
+    func execute(_ request: AutoFillRequest,
+                 context: ASCredentialProviderExtensionContext) async throws
 }
 
 extension CheckAndAutoFillUseCase {
-    func callAsFunction(_ request: AutoFillRequest) async throws {
-        try await execute(request)
+    func callAsFunction(_ request: AutoFillRequest,
+                        context: ASCredentialProviderExtensionContext) async throws {
+        try await execute(request, context: context)
     }
 }
 
@@ -53,16 +55,18 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
         self.localAuthenticationMethodProvider = localAuthenticationMethodProvider
     }
 
-    func execute(_ request: AutoFillRequest) async throws {
+    func execute(_ request: AutoFillRequest,
+                 context: ASCredentialProviderExtensionContext) async throws {
         guard credentialProvider.isAuthenticated,
               localAuthenticationMethodProvider.localAuthenticationMethod == .none else {
-            cancelAutoFill(reason: .userInteractionRequired)
+            cancelAutoFill(reason: .userInteractionRequired, context: context)
             return
         }
         let (itemContent, credential) = try await generateAuthorizationCredential(request)
         try await completeAutoFill(quickTypeBar: true,
                                    identifiers: request.serviceIdentifiers,
                                    credential: credential,
-                                   itemContent: itemContent)
+                                   itemContent: itemContent,
+                                   context: context)
     }
 }

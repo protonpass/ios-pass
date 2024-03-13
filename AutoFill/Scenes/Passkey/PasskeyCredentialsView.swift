@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AuthenticationServices
 import Client
 import DesignSystem
 import Entities
@@ -32,9 +33,10 @@ struct PasskeyCredentialsView: View {
     private let onCancel: () -> Void
 
     init(request: PasskeyCredentialRequest,
+         context: ASCredentialProviderExtensionContext,
          onCreate: @escaping () -> Void,
          onCancel: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(request: request))
+        _viewModel = .init(wrappedValue: .init(request: request, context: context))
         self.onCreate = onCreate
         self.onCancel = onCancel
     }
