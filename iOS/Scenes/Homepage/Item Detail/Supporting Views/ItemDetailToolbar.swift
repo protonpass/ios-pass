@@ -83,6 +83,15 @@ struct ItemDetailToolbar: ToolbarContent {
                             Divider()
                         }
 
+                        if viewModel.itemContent.type != .alias {
+                            Button(action: { viewModel.clone() }, label: {
+                                Label(title: { Text("Clone") },
+                                      icon: { Image(uiImage: IconProvider.squares) })
+                            })
+
+                            Divider()
+                        }
+
                         Button(role: .destructive,
                                action: { viewModel.moveToTrash() },
                                label: { Label(title: { Text("Move to trash") },
