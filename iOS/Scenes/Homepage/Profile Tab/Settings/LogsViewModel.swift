@@ -74,8 +74,8 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
             guard let self else { return }
             defer { self.isLoading = false }
             do {
-                self.isLoading = true
-                self.entries = try await self.getLogEntries(for: self.module)
+                isLoading = true
+                entries = try await getLogEntries(for: module)
             } catch {
                 self.error = error
             }
@@ -87,14 +87,14 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
             guard let self else { return }
             defer { self.sharingLogs = false }
             do {
-                self.sharingLogs = true
-                self.fileToDelete = try await self.extractLogsToFile(for: self.entries,
-                                                                     in: self.module.exportLogFileName)
+                sharingLogs = true
+                fileToDelete = try await extractLogsToFile(for: entries,
+                                                           in: module.exportLogFileName)
                 if let fileToDelete {
-                    self.delegate?.logsViewModelWantsToShareLogs(fileToDelete)
+                    delegate?.logsViewModelWantsToShareLogs(fileToDelete)
                 }
             } catch {
-                self.router.display(element: .displayErrorBanner(error))
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

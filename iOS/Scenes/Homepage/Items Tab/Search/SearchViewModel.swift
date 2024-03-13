@@ -177,7 +177,7 @@ private extension SearchViewModel {
                 return
             }
             filterAndSortResults()
-            logger.trace("Get \(self.results.count) result(s) for \"\(hashedQuery)\"")
+            logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
         }
     }
 
@@ -204,7 +204,7 @@ private extension SearchViewModel {
             if Task.isCancelled {
                 return
             }
-            state = SearchViewState.results(ItemCount(items: self.results), filteredAndSortedResults)
+            state = SearchViewState.results(ItemCount(items: results), filteredAndSortedResults)
         }
     }
 
