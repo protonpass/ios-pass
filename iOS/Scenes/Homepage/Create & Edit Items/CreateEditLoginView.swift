@@ -103,6 +103,7 @@ struct CreateEditLoginView: View {
                     .animation(.default, value: viewModel.passkeys.count)
                     .showSpinner(viewModel.loading)
                 }
+                // swiftformat:disable all
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?
                     switch focusedField {
@@ -119,6 +120,7 @@ struct CreateEditLoginView: View {
                         withAnimation { proxy.scrollTo(id, anchor: .bottom) }
                     }
                 }
+                // swiftformat:enable all
                 .onChange(of: viewModel.recentlyAddedOrEditedField) { _ in
                     withAnimation {
                         proxy.scrollTo(bottomID, anchor: .bottom)

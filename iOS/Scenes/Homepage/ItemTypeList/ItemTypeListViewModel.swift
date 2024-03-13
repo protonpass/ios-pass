@@ -64,10 +64,10 @@ final class ItemTypeListViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.limitation = try await self.upgradeChecker.aliasLimitation()
+                limitation = try await upgradeChecker.aliasLimitation()
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
