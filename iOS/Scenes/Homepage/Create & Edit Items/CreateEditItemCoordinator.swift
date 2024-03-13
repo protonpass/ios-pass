@@ -79,6 +79,20 @@ extension CreateEditItemCoordinator {
         }
     }
 
+    func presentCloneItemView(for itemContent: ItemContent) throws {
+        let mode = ItemMode.clone(itemContent)
+        switch itemContent.contentData.type {
+        case .login:
+            try presentCreateEditLoginView(mode: mode)
+        case .note:
+            try presentCreateEditNoteView(mode: mode)
+        case .creditCard:
+            try presentCreateEditCreditCardView(mode: mode)
+        case .alias:
+            try presentCreateEditAliasView(mode: mode)
+        }
+    }
+
     @MainActor
     func presentCreateItemView(for itemType: ItemType) async throws {
         guard let shareId = await getCurrentSelectedShareId() else { return }
@@ -89,9 +103,9 @@ extension CreateEditItemCoordinator {
         case .alias:
             try presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
         case .creditCard:
-            try presentCreateEditCreditCardView(mode: .create(shareId: shareId, type: .other))
+            try presentCreateEditCreditCardView(mode: .create(shareId: shareId, type: .creditCard))
         case .note:
-            try presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
+            try presentCreateEditNoteView(mode: .create(shareId: shareId, type: .note(title: "", note: "")))
         case .password:
             presentGeneratePasswordView(mode: .random,
                                         generatePasswordViewModelDelegate: createEditItemDelegates)

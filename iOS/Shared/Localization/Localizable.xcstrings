@@ -16578,6 +16578,18 @@
         }
       }
     },
+    "Clone" : {
+      "comment" : "Title of the button that clones the content of an item to make a new one",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clone"
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "be" : {

@@ -112,19 +112,24 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     }
 
     override func bindValues() {
-        guard case let .edit(itemContent) = mode,
-              case let .creditCard(data) = itemContent.contentData else { return }
-        title = itemContent.name
-        cardholderName = data.cardholderName
-        cardNumber = data.number.toCreditCardNumber()
-        verificationNumber = data.verificationNumber
-        pin = data.pin
+        switch mode {
+        case let .clone(itemContent), let .edit(itemContent):
+            guard case let .creditCard(data) = itemContent.contentData else { return }
+            title = itemContent.name
+            cardholderName = data.cardholderName
+            cardNumber = data.number.toCreditCardNumber()
+            verificationNumber = data.verificationNumber
+            pin = data.pin
 
-        let monthYear = data.expirationDate.components(separatedBy: "-")
-        month = Int(monthYear.last ?? "")
-        year = Int(monthYear.first ?? "")
+            let monthYear = data.expirationDate.components(separatedBy: "-")
+            month = Int(monthYear.last ?? "")
+            year = Int(monthYear.first ?? "")
 
-        note = itemContent.note
+            note = itemContent.note
+
+        case .create:
+            break
+        }
     }
 }
 

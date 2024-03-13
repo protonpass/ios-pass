@@ -206,6 +206,10 @@ class BaseItemDetailViewModel: ObservableObject {
                               bannerMessage: #localized("Note content copied"))
     }
 
+    func clone() {
+        router.present(for: .cloneItem(itemContent))
+    }
+
     func moveToTrash() {
         Task { @MainActor [weak self] in
             guard let self else { return }
