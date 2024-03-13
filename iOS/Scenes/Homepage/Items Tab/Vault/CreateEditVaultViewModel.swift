@@ -132,15 +132,15 @@ private extension CreateEditVaultViewModel {
             guard let self else { return }
             defer { self.loading = false }
             do {
-                self.logger.trace("Editing vault \(oldVault.id)")
-                self.loading = true
-                try await self.shareRepository.edit(oldVault: oldVault,
-                                                    newVault: self.generateVaultProtobuf())
-                self.delegate?.createEditVaultViewModelDidEditVault()
-                self.logger.info("Edited vault \(oldVault.id)")
+                logger.trace("Editing vault \(oldVault.id)")
+                loading = true
+                try await shareRepository.edit(oldVault: oldVault,
+                                               newVault: generateVaultProtobuf())
+                delegate?.createEditVaultViewModelDidEditVault()
+                logger.info("Edited vault \(oldVault.id)")
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -150,15 +150,15 @@ private extension CreateEditVaultViewModel {
             guard let self else { return }
             defer { self.loading = false }
             do {
-                self.logger.trace("Creating vault")
-                self.loading = true
-                try await self.createVaultUseCase(with: self.generateVaultProtobuf())
-                self.router.display(element: .successMessage(#localized("Vault created"),
-                                                             config: .dismissAndRefresh))
-                self.logger.info("Created vault")
+                logger.trace("Creating vault")
+                loading = true
+                try await createVaultUseCase(with: generateVaultProtobuf())
+                router.display(element: .successMessage(#localized("Vault created"),
+                                                        config: .dismissAndRefresh))
+                logger.info("Created vault")
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

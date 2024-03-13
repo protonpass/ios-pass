@@ -143,18 +143,18 @@ private final class TrashItemsViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.state = .loading
-                let items = try await self.itemRepository.getAllItems()
-                let vaults = try await self.shareRepository.getVaults()
+                state = .loading
+                let items = try await itemRepository.getAllItems()
+                let vaults = try await shareRepository.getVaults()
 
                 let vaultListUiModels: [VaultListUiModel] = vaults.map { vault in
                     let activeItems =
                         items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
                     return .init(vault: vault, itemCount: activeItems.count)
                 }
-                self.state = .loaded(vaultListUiModels)
+                state = .loaded(vaultListUiModels)
             } catch {
-                self.state = .error(error)
+                state = .error(error)
             }
         }
     }
@@ -163,14 +163,14 @@ private final class TrashItemsViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.bannerManager.displayBottomInfoMessage("Trashing all items of \"\(vault.name)\"")
-                let items = try await self.itemRepository.getItems(shareId: vault.shareId,
-                                                                   state: .active)
-                try await self.itemRepository.trashItems(items)
-                self.loadVaults()
-                self.bannerManager.displayBottomSuccessMessage("Trashed all items of \"\(vault.name)\"")
+                bannerManager.displayBottomInfoMessage("Trashing all items of \"\(vault.name)\"")
+                let items = try await itemRepository.getItems(shareId: vault.shareId,
+                                                              state: .active)
+                try await itemRepository.trashItems(items)
+                loadVaults()
+                bannerManager.displayBottomSuccessMessage("Trashed all items of \"\(vault.name)\"")
             } catch {
-                self.bannerManager.displayTopErrorMessage(error)
+                bannerManager.displayTopErrorMessage(error)
             }
         }
     }
