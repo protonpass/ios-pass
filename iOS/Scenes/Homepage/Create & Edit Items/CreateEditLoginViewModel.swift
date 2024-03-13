@@ -232,8 +232,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 defer { self.loading = false }
                 do {
                     loading = true
-                    let aliasOptions = try await aliasRepository
-                        .getAliasOptions(shareId: selectedVault.shareId)
+                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
                     if let firstSuffix = aliasOptions.suffixes.first,
                        let firstMailbox = aliasOptions.mailboxes.first {
                         var prefix = PrefixUtils.generatePrefix(fromTitle: title)
