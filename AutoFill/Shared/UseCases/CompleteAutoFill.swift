@@ -28,23 +28,25 @@ protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: any ASAuthorizationCredential,
-                 itemContent: ItemContent) async throws
+                 itemContent: ItemContent,
+                 context: ASCredentialProviderExtensionContext) async throws
 }
 
 extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
                         identifiers: [ASCredentialServiceIdentifier],
                         credential: any ASAuthorizationCredential,
-                        itemContent: ItemContent) async throws {
+                        itemContent: ItemContent,
+                        context: ASCredentialProviderExtensionContext) async throws {
         try await execute(quickTypeBar: quickTypeBar,
                           identifiers: identifiers,
                           credential: credential,
-                          itemContent: itemContent)
+                          itemContent: itemContent,
+                          context: context)
     }
 }
 
 final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
-    private let context: ASCredentialProviderExtensionContext
     private let logger: Logger
     private let logManager: LogManagerProtocol
     private let telemetryRepository: TelemetryEventRepositoryProtocol
@@ -53,14 +55,12 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase
     private let resetFactory: ResetFactoryUseCase
 
-    init(context: ASCredentialProviderExtensionContext,
-         logManager: LogManagerProtocol,
+    init(logManager: LogManagerProtocol,
          telemetryRepository: TelemetryEventRepositoryProtocol,
          clipboardManager: ClipboardManagerProtocol,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
          updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase,
          resetFactory: ResetFactoryUseCase) {
-        self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager
         self.telemetryRepository = telemetryRepository
@@ -79,7 +79,8 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: any ASAuthorizationCredential,
-                 itemContent: ItemContent) async throws {
+                 itemContent: ItemContent,
+                 context: ASCredentialProviderExtensionContext) async throws {
         defer {
             resetFactory()
         }

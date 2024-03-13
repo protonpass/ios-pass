@@ -113,6 +113,7 @@ final class CredentialsViewModel: ObservableObject {
     private var vaults = [Vault]()
 
     weak var delegate: CredentialsViewModelDelegate?
+    private(set) weak var context: ASCredentialProviderExtensionContext?
 
     var domain: String {
         if let passkeyRequestParams {
@@ -123,9 +124,11 @@ final class CredentialsViewModel: ObservableObject {
     }
 
     init(serviceIdentifiers: [ASCredentialServiceIdentifier],
-         passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
+         passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
+         context: ASCredentialProviderExtensionContext) {
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
+        self.context = context
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         setup()
     }
@@ -183,7 +186,7 @@ extension CredentialsViewModel {
 
     func associateAndAutofill(item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
-            guard let self else {
+            guard let self, let context else {
                 return
             }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
@@ -192,7 +195,8 @@ extension CredentialsViewModel {
                 logger.trace("Associate and autofilling \(item.debugDescription)")
                 try await associateUrlAndAutoFillPassword(item: item,
                                                           urls: urls,
-                                                          serviceIdentifiers: serviceIdentifiers)
+                                                          serviceIdentifiers: serviceIdentifiers,
+                                                          context: context)
                 logger.info("Associate and autofill successfully \(item.debugDescription)")
             } catch {
                 logger.error(error)
@@ -232,7 +236,6 @@ extension CredentialsViewModel {
     }
 
     func createLoginItem() {
-        guard case .idle = state else { return }
         delegate?.credentialsViewModelWantsToCreateLoginItem(url: urls.first)
     }
 
@@ -244,6 +247,7 @@ extension CredentialsViewModel {
 private extension CredentialsViewModel {
     func handlePasswordSelection(for item: any ItemIdentifiable,
                                  with results: CredentialsFetchResult) async throws {
+        guard let context else { return }
         // Check if given URL is valid and user has edit right before proposing "associate & autofill"
         if notMatchedItemInformation == nil,
            canEditItem(vaults: vaults, item: item),
@@ -257,11 +261,12 @@ private extension CredentialsViewModel {
         }
 
         // Given URL is not valid or item is matched, in either case just autofill normally
-        try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers)
+        try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers, context: context)
     }
 
     func handlePasskeySelection(for item: any ItemIdentifiable,
                                 params: PasskeyRequestParametersProtocol) async throws {
+        guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
             let loginData = itemContent.loginItem else {
@@ -278,7 +283,8 @@ private extension CredentialsViewModel {
             try await autoFillPasskey(passkey,
                                       itemContent: itemContent,
                                       identifiers: serviceIdentifiers,
-                                      params: params)
+                                      params: params,
+                                      context: context)
         } else {
             // Item has more than 1 passkey => ask user to choose
             selectPasskeySheetInformation = .init(itemContent: itemContent,

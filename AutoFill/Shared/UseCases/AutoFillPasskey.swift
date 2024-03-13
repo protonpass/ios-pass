@@ -27,18 +27,21 @@ protocol AutoFillPasskeyUseCase: Sendable {
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: any PasskeyRequestParametersProtocol) async throws
+                 params: any PasskeyRequestParametersProtocol,
+                 context: ASCredentialProviderExtensionContext) async throws
 }
 
 extension AutoFillPasskeyUseCase {
     func callAsFunction(_ passkey: Passkey,
                         itemContent: ItemContent,
                         identifiers: [ASCredentialServiceIdentifier],
-                        params: any PasskeyRequestParametersProtocol) async throws {
+                        params: any PasskeyRequestParametersProtocol,
+                        context: ASCredentialProviderExtensionContext) async throws {
         try await execute(passkey,
                           itemContent: itemContent,
                           identifiers: identifiers,
-                          params: params)
+                          params: params,
+                          context: context)
     }
 }
 
@@ -55,7 +58,8 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
                  identifiers: [ASCredentialServiceIdentifier],
-                 params: any PasskeyRequestParametersProtocol) async throws {
+                 params: any PasskeyRequestParametersProtocol,
+                 context: ASCredentialProviderExtensionContext) async throws {
         guard #available(iOS 17, *) else {
             assertionFailure("Should be called on iOS 17 and above")
             return
@@ -73,6 +77,7 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: identifiers,
                                    credential: credential,
-                                   itemContent: itemContent)
+                                   itemContent: itemContent,
+                                   context: context)
     }
 }
