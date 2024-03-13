@@ -22,26 +22,23 @@
 import Foundation
 
 protocol CompleteConfigurationUseCase: Sendable {
-    func execute()
+    func execute(context: ASCredentialProviderExtensionContext)
 }
 
 extension CompleteConfigurationUseCase {
-    func callAsFunction() {
-        execute()
+    func callAsFunction(context: ASCredentialProviderExtensionContext) {
+        execute(context: context)
     }
 }
 
 final class CompleteConfiguration: CompleteConfigurationUseCase {
-    private let context: ASCredentialProviderExtensionContext
     private let resetFactory: ResetFactoryUseCase
 
-    init(context: ASCredentialProviderExtensionContext,
-         resetFactory: ResetFactoryUseCase) {
-        self.context = context
+    init(resetFactory: ResetFactoryUseCase) {
         self.resetFactory = resetFactory
     }
 
-    func execute() {
+    func execute(context: ASCredentialProviderExtensionContext) {
         context.completeExtensionConfigurationRequest()
         resetFactory()
     }

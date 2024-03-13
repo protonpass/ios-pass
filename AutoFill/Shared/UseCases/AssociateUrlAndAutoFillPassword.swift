@@ -26,14 +26,19 @@ import Foundation
 protocol AssociateUrlAndAutoFillPasswordUseCase: Sendable {
     func execute(item: any ItemIdentifiable,
                  urls: [URL],
-                 serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws
+                 serviceIdentifiers: [ASCredentialServiceIdentifier],
+                 context: ASCredentialProviderExtensionContext) async throws
 }
 
 extension AssociateUrlAndAutoFillPasswordUseCase {
     func callAsFunction(item: any ItemIdentifiable,
                         urls: [URL],
-                        serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
-        try await execute(item: item, urls: urls, serviceIdentifiers: serviceIdentifiers)
+                        serviceIdentifiers: [ASCredentialServiceIdentifier],
+                        context: ASCredentialProviderExtensionContext) async throws {
+        try await execute(item: item,
+                          urls: urls,
+                          serviceIdentifiers: serviceIdentifiers,
+                          context: context)
     }
 }
 
@@ -49,7 +54,8 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
 
     func execute(item: any ItemIdentifiable,
                  urls: [URL],
-                 serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
+                 serviceIdentifiers: [ASCredentialServiceIdentifier],
+                 context: ASCredentialProviderExtensionContext) async throws {
         guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
             throw PassError.credentialProvider(.invalidURL(urls.first))
         }
@@ -79,6 +85,7 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
                                    credential: credential,
-                                   itemContent: oldContent)
+                                   itemContent: oldContent,
+                                   context: context)
     }
 }
