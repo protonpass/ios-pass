@@ -11,8 +11,12 @@ enum DomainParserError: Error {
     case parsingError(details: (any Error)?)
 }
 
+public protocol DomainParsingProtocol {
+    func parse(host: String) -> ParsedHost?
+}
+
 /// Uses the public suffix list
-public struct DomainParser {
+public struct DomainParser: DomainParsingProtocol {
     let parsedRules: ParsedRules
     let onlyBasicRules: Bool
     let basicRulesParser: BasicRulesParser
