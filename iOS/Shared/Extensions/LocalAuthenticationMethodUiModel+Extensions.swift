@@ -33,6 +33,8 @@ extension LocalAuthenticationMethodUiModel {
                 return #localized("Face ID")
             case .touchID:
                 return #localized("Touch ID")
+            case .opticID:
+                return #localized("Optic ID")
             default:
                 assertionFailure("Not usable biometric type")
                 return ""
