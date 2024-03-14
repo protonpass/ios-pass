@@ -73,6 +73,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
         var numberOfWeakPassword = 0
         var numberOfReusedPassword = 0
         var numberOfMissing2fa = 0
+        var numberOfExcludedItems = 0
 
         var securityAffectedItems = [SecurityAffectedItem]()
 
@@ -84,24 +85,30 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
                   let loginItem = item.loginItem else {
                 continue
             }
+            
             var weaknesses = [SecurityWeakness]()
+           
+            if loginItem.excluded {
+                weaknesses.append(.excludedItems)
+                numberOfExcludedItems += 1
+            } else {
+                if reusedPasswords[loginItem.password] != nil {
+                    weaknesses.append(.reusedPasswords)
+                    numberOfReusedPassword += 1
+                }
 
-            if reusedPasswords[loginItem.password] != nil {
-                weaknesses.append(.reusedPasswords)
-                numberOfReusedPassword += 1
+                if !loginItem.password.isEmpty,
+                   passwordScorer.checkScore(password: loginItem.password) != .strong {
+                    weaknesses.append(.weakPasswords)
+                    numberOfWeakPassword += 1
+                }
+
+                if loginItem.totpUri.isEmpty, contains2faDomains(urls: loginItem.urls) {
+                    weaknesses.append(.missing2FA)
+                    numberOfMissing2fa += 1
+                }
             }
-
-            if !loginItem.password.isEmpty,
-               passwordScorer.checkScore(password: loginItem.password) != .strong {
-                weaknesses.append(.weakPasswords)
-                numberOfWeakPassword += 1
-            }
-
-            if loginItem.totpUri.isEmpty, contains2faDomains(urls: loginItem.urls) {
-                weaknesses.append(.missing2FA)
-                numberOfMissing2fa += 1
-            }
-
+            
             // swiftlint:disable:next todo
             // TODO: check breached passwords /emails
 
@@ -112,7 +119,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
         weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
                                          reusedPasswords: numberOfReusedPassword,
                                          missing2FA: numberOfMissing2fa,
-                                         excludedItems: 0,
+                                         excludedItems: numberOfExcludedItems,
                                          exposedPasswords: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
     }

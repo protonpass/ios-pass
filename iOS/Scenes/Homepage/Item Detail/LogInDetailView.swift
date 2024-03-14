@@ -347,7 +347,7 @@ private extension LogInDetailView {
         VStack {
             ForEach(issues, id: \.self) { issue in
                 securityWeaknessRow(weakness: issue,
-                                    action: {})
+                                    action: { viewModel.removeItemFromSecurityMonitoring() })
             }
         }
     }

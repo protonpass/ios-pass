@@ -31,7 +31,6 @@ import UseCases
 @MainActor
 final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     @Published private(set) var sectionedData = [SecuritySectionHeaderKey: [ItemContent]]()
-    @Published private(set) var showSections = true
     @Published private(set) var loading = true
 
     let title: String
@@ -41,12 +40,20 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
     private var cancellables = Set<AnyCancellable>()
+    
+    var showSections: Bool {
+        switch type {
+        case .excludedItems, .missing2FA:
+            false
+        default:
+            true
+        }
+    }
 
     init(type: SecurityWeakness) {
         self.type = type
         title = type.title
         info = type.subtitleInfo
-        showSections = type != .missing2FA
         setUp()
     }
 
@@ -54,6 +61,15 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
         router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
     }
 
+    
+    func itemAction(item: ItemContent) {
+        if type != .excludedItems {
+            router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
+        } else {
+            // TODO: action to execute with excluded item
+        }
+    }
+    
     func dismiss(isSheet: Bool) {
         router.action(.back(isShownAsSheet: isSheet))
     }
@@ -106,7 +122,7 @@ extension SecuritySection {
             passwordStrength.toSecuritySectionHeaderKey
         case let .reusedPasswords(numberOfTime):
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime))
-        case .missing2fa:
+        case .missing2fa, .excludedItems:
             SecuritySectionHeaderKey(title: "")
         }
     }
