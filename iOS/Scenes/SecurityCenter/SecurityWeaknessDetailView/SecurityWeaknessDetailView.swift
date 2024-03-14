@@ -94,7 +94,8 @@ private extension SecurityWeaknessDetailView {
 
     func itemRow(for item: ItemContent) -> some View {
         Button {
-            viewModel.showDetail(item: item)
+            viewModel.itemAction(item: item)
+//            viewModel.showDetail(item: item)
         } label: {
             GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                            title: item.title,

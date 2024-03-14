@@ -415,4 +415,10 @@ extension UseCasesContainer {
             GetLoginSecurityIssues(securityCenterRepository: self.securityCenterRepository)
         }
     }
+    
+    var removeItemMonitoring: Factory<RemoveItemMonitoringUseCase> {
+        self {
+            RemoveItemMonitoring(securityCenterRepository: self.securityCenterRepository)
+        }
+    }
 }
