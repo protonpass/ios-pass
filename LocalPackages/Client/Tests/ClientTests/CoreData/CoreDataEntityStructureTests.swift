@@ -152,4 +152,12 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
+
+    func testOrganizationEntity() {
+        let sut = entity(byName: "OrganizationEntity")
+        verifyAttribute(named: "canUpdate", on: sut, hasType: .boolean)
+        verifyAttribute(named: "exportMode", on: sut, hasType: .integer64)
+        verifyAttribute(named: "forceLockSeconds", on: sut, hasType: .integer64)
+        verifyAttribute(named: "shareMode", on: sut, hasType: .integer64)
+    }
 }
