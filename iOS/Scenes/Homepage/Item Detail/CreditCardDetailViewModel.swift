@@ -35,7 +35,7 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
     @Published private(set) var note = ""
 
     var expirationDate: String {
-        CreditCardData.generateDisplayedExpirationDate(month: month, year: year)
+        CreditCardData.expirationDate(month: month, year: year)
     }
 
     override func bindValues() {
