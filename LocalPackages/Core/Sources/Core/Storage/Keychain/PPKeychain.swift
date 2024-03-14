@@ -23,34 +23,32 @@ import ProtonCoreKeymaker
 
 public protocol KeychainProtocol: AnyObject, Sendable {
     // Getters
-    func data(forKey key: String, attributes: [CFString: Any]?) -> Data?
-    func string(forKey key: String, attributes: [CFString: Any]?) -> String?
+    func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data?
+    func stringOrError(forKey key: String, attributes: [CFString: Any]?) throws -> String?
 
     // Setters
-    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?)
-    func set(_ string: String, forKey key: String, attributes: [CFString: Any]?)
+    func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws
+    func setOrError(_ string: String, forKey key: String, attributes: [CFString: Any]?) throws
 
     // Cleaner
-    func remove(forKey key: String)
+    func removeOrError(forKey key: String) throws
 }
 
-extension KeychainProtocol {
-    // Getters
-    func data(forKey key: String, attributes: [CFString: Any]? = nil) -> Data? {
-        data(forKey: key, attributes: attributes)
+public extension KeychainProtocol {
+    func dataOrError(forKey key: String) throws -> Data? {
+        try dataOrError(forKey: key, attributes: nil)
     }
 
-    func string(forKey key: String, attributes: [CFString: Any]? = nil) -> String? {
-        string(forKey: key, attributes: attributes)
+    func stringOrError(forKey key: String) throws -> String? {
+        try stringOrError(forKey: key, attributes: nil)
     }
 
-    // Setters
-    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]? = nil) {
-        set(data, forKey: key, attributes: attributes)
+    func setOrError(_ data: Data, forKey key: String) throws {
+        try setOrError(data, forKey: key, attributes: nil)
     }
 
-    func set(_ string: String, forKey key: String, attributes: [CFString: Any]? = nil) {
-        set(string, forKey: key, attributes: attributes)
+    func setOrError(_ string: String, forKey key: String) throws {
+        try setOrError(string, forKey: key, attributes: nil)
     }
 }
 

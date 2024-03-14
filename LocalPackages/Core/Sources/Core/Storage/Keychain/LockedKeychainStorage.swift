@@ -44,47 +44,67 @@ public struct LockedKeychainStorage<Value: Codable> {
 
     public var wrappedValue: Value {
         get {
-            guard let cypherdata = keychain.data(forKey: key) else {
-                logger.warning("cypherdata does not exist for key \(key). Fall back to defaultValue.")
-                return defaultValue
-            }
-
-            guard let mainKey = mainKeyProvider.mainKey else {
-                logger.warning("mainKey is null for key \(key). Fall back to defaultValue.")
-                return defaultValue
-            }
-
             do {
-                let lockedData = Locked<Data>(encryptedValue: cypherdata)
-                let unlockedData = try lockedData.unlock(with: mainKey)
-                return try JSONDecoder().decode(Value.self, from: unlockedData)
+                return try getValue(for: key)
             } catch {
-                // Consider that the cypherdata is lost => remove it
-                logger.error("Corrupted data for key \(key). Fall back to defaultValue")
+                logger.debug("Error retrieving data for key \(key). Fallback to default value.")
                 logger.error(error)
-                keychain.remove(forKey: key)
                 return defaultValue
             }
         }
 
         set {
-            guard let mainKey = mainKeyProvider.mainKey else {
-                logger.warning("mainKey is null for key \(key). Early exit")
-                return
+            do {
+                try setValue(newValue, for: key)
+            } catch {
+                logger.error("Error setting data for key \(key) \(error.localizedDescription)")
             }
+        }
+    }
+}
 
-            if let optional = newValue as? (any AnyOptional), optional.isNil {
-                // Set to nil => remove from keychain
-                keychain.remove(forKey: key)
-            } else {
-                do {
-                    let data = try JSONEncoder().encode(newValue)
-                    let lockedData = try Locked<Data>(clearValue: data, with: mainKey)
-                    let cypherdata = lockedData.encryptedValue
-                    keychain.set(cypherdata, forKey: key)
-                } catch {
-                    logger.error("Failed to serialize data for key \(key) \(error.localizedDescription)")
-                }
+private extension LockedKeychainStorage {
+    func getValue(for key: String) throws -> Value {
+        guard let cypherdata = try keychain.dataOrError(forKey: key) else {
+            logger.warning("cypherdata does not exist for key \(key). Fall back to defaultValue.")
+            return defaultValue
+        }
+
+        guard let mainKey = mainKeyProvider.mainKey else {
+            logger.warning("mainKey is null for key \(key). Fall back to defaultValue.")
+            return defaultValue
+        }
+
+        do {
+            let lockedData = Locked<Data>(encryptedValue: cypherdata)
+            let unlockedData = try lockedData.unlock(with: mainKey)
+            return try JSONDecoder().decode(Value.self, from: unlockedData)
+        } catch {
+            // Consider that the cypherdata is lost => remove it
+            logger.error("Corrupted data for key \(key). Fall back to defaultValue.")
+            logger.error(error)
+            try keychain.removeOrError(forKey: key)
+            return defaultValue
+        }
+    }
+
+    func setValue(_ value: Value, for key: String) throws {
+        guard let mainKey = mainKeyProvider.mainKey else {
+            logger.warning("mainKey is null for key \(key). Early exit")
+            return
+        }
+
+        if let optional = value as? (any AnyOptional), optional.isNil {
+            // Set to nil => remove from keychain
+            try keychain.removeOrError(forKey: key)
+        } else {
+            do {
+                let data = try JSONEncoder().encode(value)
+                let lockedData = try Locked<Data>(clearValue: data, with: mainKey)
+                let cypherdata = lockedData.encryptedValue
+                try keychain.setOrError(cypherdata, forKey: key)
+            } catch {
+                logger.error("Failed to serialize data for key \(key) \(error.localizedDescription)")
             }
         }
     }
