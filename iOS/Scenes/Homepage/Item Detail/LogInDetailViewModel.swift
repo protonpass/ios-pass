@@ -59,6 +59,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
+    private let removeItemMonitoring = resolve(\UseCasesContainer.removeItemMonitoring)
 
     let totpManager = resolve(\ServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
@@ -182,6 +183,19 @@ extension LogInDetailViewModel {
 
     func openUrl(_ urlString: String) {
         router.navigate(to: .urlPage(urlString: urlString))
+    }
+    
+    func removeItemFromSecurityMonitoring() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+               try await removeItemMonitoring(item: itemContent)
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 

@@ -24,4 +24,5 @@ public enum SecuritySection: Hashable, Sendable {
     case weakPasswords(PasswordStrength)
     case reusedPasswords(Int)
     case missing2fa
+    case excludedItems
 }
