@@ -43059,6 +43059,16 @@
         }
       }
     },
+    "Optic ID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optic ID"
+          }
+        }
+      }
+    },
     "Other" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -66039,6 +66049,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sử dụng mật khẩu thiết bị khi Face ID thất bại"
+          }
+        }
+      }
+    },
+    "Use system passcode when Optic ID fails" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use system passcode when Optic ID fails"
           }
         }
       }
