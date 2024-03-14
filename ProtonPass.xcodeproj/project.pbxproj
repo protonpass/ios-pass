@@ -2587,7 +2587,6 @@
 				ja,
 				ko,
 				pl,
-				pt,
 				"pt-BR",
 				ro,
 				sk,
@@ -2596,6 +2595,10 @@
 				uk,
 				vi,
 				nb,
+				da,
+				nl,
+				id,
+				sl,
 			);
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
