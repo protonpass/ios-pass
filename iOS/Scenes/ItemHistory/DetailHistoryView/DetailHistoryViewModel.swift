@@ -53,13 +53,16 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
         }
     }
 
-    init(currentRevision: ItemContent,
-         pastRevision: ItemContent) {
+    init(currentRevision: ItemContent, pastRevision: ItemContent) {
         self.currentRevision = currentRevision
         self.pastRevision = pastRevision
         setUp()
     }
+}
 
+// MARK: Common operations
+
+extension DetailHistoryViewModel {
     func isDifferent(for element: KeyPath<ItemContent, some Hashable>) -> Bool {
         currentRevision[keyPath: element] != pastRevision[keyPath: element]
     }
@@ -92,26 +95,45 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
             }
         }
     }
+}
 
+// MARK: Copy functions
+
+extension DetailHistoryViewModel {
     func copyAlias() {
-        guard let alias = selectedRevisionContent.aliasEmail else { return }
-        router.action(.copyToClipboard(text: alias, message: #localized("Alias copied")))
+        copy(\.aliasEmail, message: #localized("Alias copied"))
     }
 
     func copyUsername() {
-        guard let data = selectedRevisionContent.loginItem, !data.username.isEmpty else { return }
-        router.action(.copyToClipboard(text: data.username, message: #localized("Username copied")))
+        copy(\.loginItem?.username, message: #localized("Username copied"))
     }
 
     func copyPassword() {
-        guard let data = selectedRevisionContent.loginItem, !data.password.isEmpty else { return }
-        router.action(.copyToClipboard(text: data.password, message: #localized("Password copied")))
+        copy(\.loginItem?.password, message: #localized("Password copied"))
     }
 
     func copyTotpToken(_ token: String) {
-        router.action(.copyToClipboard(text: token, message: #localized("TOTP copied")))
+        copy(token, message: #localized("TOTP copied"))
+    }
+
+    func copyCardholderName() {
+        copy(\.creditCardItem?.cardholderName, message: #localized("Cardholder name copied"))
+    }
+
+    func copyCardNumber() {
+        copy(\.creditCardItem?.number, message: #localized("Card number copied"))
+    }
+
+    func copyExpirationDate() {
+        copy(\.creditCardItem?.expirationDate, message: #localized("Expiration date copied"))
+    }
+
+    func copySecurityCode() {
+        copy(\.creditCardItem?.verificationNumber, message: #localized("Security code copied"))
     }
 }
+
+// MARK: Private APIs
 
 private extension DetailHistoryViewModel {
     func setUp() {
@@ -128,5 +150,16 @@ private extension DetailHistoryViewModel {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    /// Copy the text to clipboard if it's not empty and show a toast message
+    func copy(_ text: String?, message: String) {
+        if let text, !text.isEmpty {
+            router.action(.copyToClipboard(text: text, message: message))
+        }
+    }
+
+    func copy(_ keypath: KeyPath<ItemContent, String?>, message: String) {
+        copy(selectedRevisionContent[keyPath: keypath], message: message)
     }
 }

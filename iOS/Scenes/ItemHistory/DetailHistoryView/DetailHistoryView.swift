@@ -42,6 +42,7 @@ struct DetailHistoryView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(DesignConstant.sectionPadding)
             .navigationBarTitleDisplayMode(.inline)
+            .tint(viewModel.currentRevision.type.normMajor2Color.toColor)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
             .alert(isPresented: $showAlert) {
