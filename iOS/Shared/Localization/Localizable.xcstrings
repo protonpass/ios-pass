@@ -6210,7 +6210,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se creará una clave de acceso para el inicio de sesión de «%@»."
+            "value" : "Se creará una clave de paso para el inicio de sesión de «%@»."
           }
         },
         "fi" : {
@@ -16582,9 +16582,129 @@
       "comment" : "Title of the button that clones the content of an item to make a new one",
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кланіраваць"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Clone"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dupliquer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clona"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clonar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klona"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klonla"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Clone"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Clone"
           }
         }
@@ -18293,9 +18413,129 @@
     },
     "Copy card number" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скапіяваць нумар карткі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy card number"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kartennummer kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή αριθμού κάρτας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Copy card number"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar el número de la tarjeta"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar número de tarjeta"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi kortin numero"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier le numéro de la carte"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia il numero della carta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy card number"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy card number"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카드 번호 복사하기"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj numer karty"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar número do cartão"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere număr card"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy card number"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera kortnummer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kart numarasını kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy card number"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Copy card number"
           }
         }
@@ -18303,9 +18543,129 @@
     },
     "Copy cardholder name" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скапіяваць імя трымальніка карткі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy cardholder name"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karteninhaber kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή ονόματος κατόχου κάρτας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Copy cardholder name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar el nombre del titular de la tarjeta"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar nombre del titular de la tarjeta"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi kortinhaltijan nimi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier le nom du titulaire de la carte"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia il nome del titolare della carta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy cardholder name"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy cardholder name"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카드 소유자 이름 복사하기"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj właściciela karty"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar nome do titular do cartão"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere nume titular card"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy cardholder name"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera kortinnehavarens namn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kart sahibinin adını kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy cardholder name"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Copy cardholder name"
           }
         }
@@ -18313,9 +18673,129 @@
     },
     "Copy expiration date" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скапіяваць тэрмін дзеяння"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy expiration date"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ablaufdatum kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή ημερομηνίας λήξης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Copy expiration date"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar la fecha de expiración"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar fecha de expiración"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi voimassaoloaika"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier la date d'expiration"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia la data di scadenza"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy expiration date"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy expiration date"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "유효기간 복사하기"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj datę wygasnięcia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar data de expiração"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere dată de expirare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy expiration date"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera utgångsdatum"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son kullanma tarihini kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy expiration date"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Copy expiration date"
           }
         }
@@ -18585,10 +19065,130 @@
     },
     "Copy security code" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скапіяваць код бяспекі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovat bezpečnostní kód"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sicherheitscode kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή κωδικού ασφαλείας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy security code"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar el código de seguridad"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar código de seguridad"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi turvakoodi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier le code de sécurité"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Codice di sicurezza copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュリティコードをコピー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "უსაფრთხოების კოდის კოპირება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보안 코드 복사하기"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj kod zabezpieczający"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar código de segurança"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere cod de securitate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovať bezpečnostný kód"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera säkerhetskod"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Güvenlik kodunu kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копіювати код безпеки"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sao chép mã bảo mật"
           }
         }
       }
@@ -20209,7 +20809,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crear una clave de acceso"
+            "value" : "Crear una clave de paso"
           }
         },
         "fi" : {
@@ -22004,8 +22604,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Абарона ад уцечкі даных"
           }
         },
         "cs" : {
@@ -22022,8 +22622,8 @@
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Προστασία από Παραβίαση Δεδομένων"
           }
         },
         "en" : {
@@ -22034,8 +22634,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Protección contra vulneración de datos"
           }
         },
         "es-419" : {
@@ -22046,14 +22646,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Tietomurtosuojaus"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protection contre les brèches de données"
+            "value" : "Protection contre les fuites de données"
           }
         },
         "it" : {
@@ -22082,20 +22682,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Ochrona przed wyciekiem danych"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Proteção de vulnerabilidade de dados"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Protecție împotriva divulgării datelor"
           }
         },
         "sk" : {
@@ -22112,8 +22712,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Veri sızıntısı koruması"
           }
         },
         "uk" : {
@@ -26709,8 +27309,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Выключыць з назірання"
           }
         },
         "cs" : {
@@ -26721,14 +27321,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Vom Monitoring ausschließen"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Εξαίρεση από την παρακολούθηση"
           }
         },
         "en" : {
@@ -26739,8 +27339,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Excluir del monitoreo"
           }
         },
         "es-419" : {
@@ -26751,8 +27351,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Poissuljettu seurannasta"
           }
         },
         "fr" : {
@@ -26787,20 +27387,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Wyklucz z monitoringu"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Excluir do monitoramento"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Excludere de la monitorizare"
           }
         },
         "sk" : {
@@ -26817,8 +27417,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "İzlemeye katmama"
           }
         },
         "uk" : {
@@ -26839,8 +27439,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Выключаныя элементы"
           }
         },
         "cs" : {
@@ -26851,14 +27451,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Ausgeschlossene Einträge"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Εξαιρούμενα Στοιχεία"
           }
         },
         "en" : {
@@ -26869,8 +27469,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Elementos excluidos"
           }
         },
         "es-419" : {
@@ -26881,8 +27481,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Poissuljetut kohteet"
           }
         },
         "fr" : {
@@ -26905,8 +27505,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "ამოღებული ელემენტები"
           }
         },
         "ko" : {
@@ -26917,20 +27517,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Wykluczone elementy"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Itens excluídos"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Articole excluse"
           }
         },
         "sk" : {
@@ -26948,7 +27548,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hariç Tutulan Öğeler"
+            "value" : "Katılmayacak ögeler"
           }
         },
         "uk" : {
@@ -27097,9 +27697,129 @@
     },
     "Expiration date copied" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тэрмін дзеяння скапіяваны"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Expiration date copied"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ablaufdatum kopiert"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγράφηκε η ημερομηνία λήξης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Expiration date copied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La fecha de expiración ha sido copiada."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de expiración copiada"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voimassaoloaika kopioitiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La date d'expiration a été copiée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data di scadenza copiata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Expiration date copied"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Expiration date copied"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "유효기간 복사함"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data wygaśnięcia została skopiowana"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data de expiração copiada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data expirării a fost copiată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Expiration date copied"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgångsdatum kopierat"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son kullanma tarihi kopyalandı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Expiration date copied"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Expiration date copied"
           }
         }
@@ -27109,8 +27829,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Скампраметаваныя лісты"
           }
         },
         "cs" : {
@@ -27121,14 +27841,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Kompromittierte E-Mails"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Εκτεθειμένα μηνύματα ηλεκτρονικού ταχυδρομείου"
           }
         },
         "en" : {
@@ -27139,8 +27859,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Correos electrónicos expuestos"
           }
         },
         "es-419" : {
@@ -27151,14 +27871,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Paljastuneet sähköpostiosoitteet"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Courriels exposés"
+            "value" : "E-mails exposés"
           }
         },
         "it" : {
@@ -27187,20 +27907,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Wykluczone adresy"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "E-mails expostos"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Adrese de e-mail expuse"
           }
         },
         "sk" : {
@@ -27217,8 +27937,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Açığa çıkmış e-postalar"
           }
         },
         "uk" : {
@@ -27239,8 +27959,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Скампраметаваныя паролі"
           }
         },
         "cs" : {
@@ -27251,14 +27971,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Kompromittierte Passwörter"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Εκτεθειμένοι κωδικοί πρόσβασης"
           }
         },
         "en" : {
@@ -27269,8 +27989,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Contraseñas expuestas"
           }
         },
         "es-419" : {
@@ -27281,8 +28001,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Paljastuneet salasanat"
           }
         },
         "fr" : {
@@ -27317,20 +28037,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Ujawnione hasła"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Senhas expostas"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Parole expuse"
           }
         },
         "sk" : {
@@ -27347,8 +28067,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Açığa çıkmış parolalar"
           }
         },
         "uk" : {
@@ -29069,8 +29789,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Генерыраваць унікальныя паролі для павелічэння вашай бяспекі."
           }
         },
         "cs" : {
@@ -29081,14 +29801,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Generiere eindeutige Passwörter, um deine Sicherheit zu erhöhen."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Δημιουργήστε μοναδικούς κωδικούς πρόσβασης για να αυξήσετε την ασφάλειά σας."
           }
         },
         "en" : {
@@ -29099,8 +29819,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Genera contraseñas únicas para aumentar tu seguridad."
           }
         },
         "es-419" : {
@@ -29111,14 +29831,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Luo ainutlaatuisia salasanoja turvallisuuden lisäämiseksi."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Générer un mot de passe unique afin d'augmenter votre sécurité."
+            "value" : "Générez un mot de passe unique pour améliorer votre sécurité."
           }
         },
         "it" : {
@@ -29147,20 +29867,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Wygeneruj unikalne hasła, aby zwiększyć swoje bezpieczeństwo."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Gere senhas únicas para aumentar sua segurança."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Generați parole unice pentru a vă spori securitatea."
           }
         },
         "sk" : {
@@ -29177,8 +29897,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Güvenliğinizi artırmak için benzersiz parolalar oluşturun."
           }
         },
         "uk" : {
@@ -34564,8 +35284,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Апошняя сінхранізацыя абароны ад уцечкі даных:"
           }
         },
         "cs" : {
@@ -34582,8 +35302,8 @@
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Τελευταίος Συγχρονισμός Προστασίας από Παραβίαση Δεδομένων:"
           }
         },
         "en" : {
@@ -34594,8 +35314,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Última sincronización de vulneración de datos:"
           }
         },
         "es-419" : {
@@ -34606,14 +35326,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Viimeisin Tietomurtosuojauksen synkronointi:"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dernière synchronisation de la protection contre les brèches d'informations :"
+            "value" : "Dernière synchronisation pour la protection contre les fuites de données :"
           }
         },
         "it" : {
@@ -34642,20 +35362,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Ostatnia synchronizacja ochrony przed wyciekiem danych:"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Última sincronização da proteção de vulnerabilidade de dados:"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Ultima sincronizare a protecției împotriva divulgării datelor:"
           }
         },
         "sk" : {
@@ -34672,8 +35392,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Son veri sızıntısından koruma eşitlemesi:"
           }
         },
         "uk" : {
@@ -36922,8 +37642,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Запісы ўваходу з сайтаў, якія маюць двухфактарную аўтэнтыфікацыю даступны, але вы іх пакуль не наладзілі."
           }
         },
         "cs" : {
@@ -36934,14 +37654,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Anmeldungen bei Websites, die über eine Zwei-Faktor-Authentifizierung verfügen, die du aber noch nicht eingerichtet hast."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Συνδέσεις με ιστότοπους που διαθέτουν έλεγχο ταυτότητας δύο παραγόντων, αλλά δεν τον έχετε ρυθμίσει ακόμα."
           }
         },
         "en" : {
@@ -36952,26 +37672,26 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Los inicios de sesión en sitios que disponen de autenticación de dos factores pero que aún no has configurado."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sesiones iniciadas en sitios que brindan autenticación de dos factores, pero que aún no lo ha activado."
+            "value" : "Los inicios de sesión en sitios que disponen de autenticación de dos factores pero que aún no ha configurado."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Kirjautumistiedot sivustoille, joilla kaksivaiheinen tunnistautuminen on käytettävissä, mutta et ole vielä ottanut sitä käyttöön."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connexions disponibles à des sites qui ont l'authentification à deux facteurs mais que vous n'avez pas configuré."
+            "value" : "Il s'agit de connexions disponibles à des sites disposant de l'authentification à deux facteurs (A2F) mais que vous n'avez pas configuré."
           }
         },
         "it" : {
@@ -37006,14 +37726,14 @@
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Logins em sites que possuem autenticação em duas etapas disponível, mas você ainda não configurou."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Autentificări cu site-uri care au disponibilă autentificarea cu doi factori, dar încă nu ați configurat-o."
           }
         },
         "sk" : {
@@ -37024,14 +37744,14 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Inloggningar med webbplatser som har tvåfaktorsautentisering tillgänglig men som du inte har ställt in än."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "İki adımlı kimlik doğrulaması bulunan ancak henüz ayarlamadığınız sitelerdeki oturumlar."
           }
         },
         "uk" : {
@@ -38098,8 +38818,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Адсутнічае двухфактарная аўтэнтыфікацыя"
           }
         },
         "cs" : {
@@ -38110,14 +38830,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Fehlende Zwei-Faktor-Authentifizierung"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Λείπει ο έλεγχος ταυτότητας δύο παραγόντων"
           }
         },
         "en" : {
@@ -38128,8 +38848,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Autenticación de dos factores faltante"
           }
         },
         "es-419" : {
@@ -38140,14 +38860,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Kaksivaiheinen tunnistautuminen puuttuu"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Authentification à deux facteurs inexistante"
+            "value" : "L'authentification à deux facteurs n'existe pas."
           }
         },
         "it" : {
@@ -38176,20 +38896,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Brak uwierzytelniania dwustopniowego"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Autenticação em duas etapas faltando"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Autentificarea cu doi factori lipsește"
           }
         },
         "sk" : {
@@ -38206,8 +38926,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "İki adımlı kimlik doğrulama eksik"
           }
         },
         "uk" : {
@@ -43633,7 +44353,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clave de acceso"
+            "value" : "Clave de paso"
           }
         },
         "fi" : {
@@ -50465,6 +51185,102 @@
     "Reused %lld times" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Паўторна выкарыстаны %lld разы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Паўторна выкарыстаны %lld разоў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Паўторна выкарыстаны %lld раз"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Паўторна выкарыстаны %lld разоў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Mal wiederverwendet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Mal wiederverwendet"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Επαναχρησιμοποιημένη %lld φορά"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Επαναχρησιμοποιημένες %lld φορές"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -50482,6 +51298,318 @@
               }
             }
           }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Reusada %lld vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Reusada %lld veces"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Reusada %lld vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Reusada %lld veces"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uudelleenkäytetty %lld kerran"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uudelleenkäytetty %lld kertaa"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Réutilisé %lld fois"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Réutilisé %lld fois"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Riutilizzato %lld volta"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Riutilizzati %lld volte"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "재사용한 횟수 %lld회"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponownie użyty %lld razy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponownie użyty %lld razy"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponownie użyty %lld raz"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ponownie użyty %lld razy"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Reutilizado %lld vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Reutilizado %lld vezes"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Refolosită de %lld ori"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Refolosită %lld dată"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Refolosită de %lld de ori"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Återanvänt %lld gång"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Återanvänt %lld gånger"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kez yeniden kullanıldı"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kez yeniden kullanıldı"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Reused %lld times"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -50489,8 +51617,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Паўторна выкарыстаныя паролі"
           }
         },
         "cs" : {
@@ -50501,14 +51629,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Wiederverwendete Passwörter"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Επαναχρησιμοποιημένοι κωδικοί πρόσβασης"
           }
         },
         "en" : {
@@ -50519,8 +51647,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Contraseñas reusadas"
           }
         },
         "es-419" : {
@@ -50531,8 +51659,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Uudelleenkäytetyt salasanat"
           }
         },
         "fr" : {
@@ -50567,20 +51695,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Identyczne hasła"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Senhas reutilizadas"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Parole refolosite"
           }
         },
         "sk" : {
@@ -50597,8 +51725,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Yeniden kullanılan parolalar"
           }
         },
         "uk" : {
@@ -52324,26 +53452,26 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Цэнтр бяспекі"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Bezpečnostní centrum"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Sicherheitszentrum"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Κέντρο Ασφαλείας"
           }
         },
         "en" : {
@@ -52354,8 +53482,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Centro de seguridad"
           }
         },
         "es-419" : {
@@ -52366,14 +53494,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Turvakeskus"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Centre de Sécurité"
+            "value" : "Centre de sécurité"
           }
         },
         "it" : {
@@ -52384,14 +53512,14 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "セキュリティセンター"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "უსაფრთხოების ცენტრი"
           }
         },
         "ko" : {
@@ -52402,20 +53530,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Centrum zabezpieczeń"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Central de segurança"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Centru de securitate"
           }
         },
         "sk" : {
@@ -52438,8 +53566,8 @@
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Центр безпеки"
           }
         },
         "vi" : {
@@ -53540,7 +54668,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seleccionar la clave de acceso"
+            "value" : "Seleccionar clave de paso"
           }
         },
         "fi" : {
@@ -59393,8 +60521,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Наступныя элементы выключаны з"
           }
         },
         "cs" : {
@@ -59405,14 +60533,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Die folgenden Einträge sind ausgeschlossen von"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Τα ακόλουθα στοιχεία εξαιρούνται από"
           }
         },
         "en" : {
@@ -59423,8 +60551,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Los siguientes elementos están excluidos de"
           }
         },
         "es-419" : {
@@ -59435,8 +60563,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Seuraavat kohteet on poissuljettu"
           }
         },
         "fr" : {
@@ -59471,20 +60599,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Następujące elementy zostaną wykluczone"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Os seguintes itens estão excluídos de"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Articolele următoare sunt excluse din"
           }
         },
         "sk" : {
@@ -59501,8 +60629,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Aşağıdaki ögeler şuna katılmayacak"
           }
         },
         "uk" : {
@@ -59785,8 +60913,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Гэтыя ўліковыя запісы з'явяцца ва ўцечцы даных. Неадкладна абнавіце свае ўліковыя даныя."
           }
         },
         "cs" : {
@@ -59803,8 +60931,8 @@
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Αυτοί οι λογαριασμοί εμφανίζονται σε παραβιάσεις δεδομένων. Ενημερώστε αμέσως τα διαπιστευτήριά σας."
           }
         },
         "en" : {
@@ -59815,8 +60943,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Estas cuentas aparecen en vulneraciones de datos. Actualiza tus credenciales de inmediato."
           }
         },
         "es-419" : {
@@ -59827,14 +60955,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Nämä tilit ovat paljastuneet tietomurroissa. Päivitä kirjautumistietosi välittömästi."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ces comptes apparaissent dans une brèche d'information. Mettez vos informations jour immédiatement."
+            "value" : "Ces comptes apparaissent dans une fuite de données. Mettez immédiatement à jour vos identifiants."
           }
         },
         "it" : {
@@ -59863,20 +60991,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Te konta pojawiają się w wyciekach danych. Zaktualizuj natychmiast te dane logowania."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Essas contas foram comprometidas em vazamentos de dados. Atualize suas credenciais imediatamente."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Aceste conturi apar în divulgări ale datelor. Actualizați-vă imediat acreditările."
           }
         },
         "sk" : {
@@ -59893,8 +61021,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Bu hesaplar veri sızıntılarında açığa çıkmış. Kimlik doğrulama bilgilerinizi hemen güncelleyin."
           }
         },
         "uk" : {
@@ -59915,8 +61043,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Гэтыя паролі з'явяцца ва ўцечцы даных. Неадкладна абнавіце свае ўліковыя даныя."
           }
         },
         "cs" : {
@@ -59933,8 +61061,8 @@
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Αυτοί οι κωδικοί πρόσβασης εμφανίζονται σε παραβιάσεις δεδομένων. Ενημερώστε αμέσως τα διαπιστευτήριά σας."
           }
         },
         "en" : {
@@ -59945,8 +61073,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Estas contraseñas aparecen en vulneraciones de datos. Actualiza tus credenciales de inmediato."
           }
         },
         "es-419" : {
@@ -59957,14 +61085,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Nämä salasanat ovat paljastuneet tietomurroissa. Päivitä kirjautumistietosi välittömästi."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ces mots de passe apparaissent dans une brèche de données. Mettez vos informations à jour immédiatement."
+            "value" : "Ces mots de passe apparaissent dans une fuite de données. Mettez immédiatement à jour vos identifiants."
           }
         },
         "it" : {
@@ -59993,20 +61121,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Te hasła pojawiają się w wyciekach danych. Zaktualizuj natychmiast te dane logowania."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Essas senhas foram comprometidas em vazamentos de dados. Atualize suas credenciais imediatamente."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Aceste parole apar în divulgări ale datelor. Actualizați-vă imediat acreditările."
           }
         },
         "sk" : {
@@ -60023,8 +61151,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Bu parolalar veri sızıntılarında açığa çıkmıış. Kimlik doğrulama bilgilerinizi hemen güncelleyin."
           }
         },
         "uk" : {
@@ -60045,8 +61173,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Гэты ўліковы запіс з'яўляецца ўразлівым. Наведайце сэрвіс і змяніце пароль."
           }
         },
         "cs" : {
@@ -60057,14 +61185,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Dieses Konto ist angreifbar, besuche den Dienst und ändere dein Passwort."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Αυτός ο λογαριασμός είναι ευάλωτος, επισκεφθείτε την υπηρεσία και αλλάξτε τον κωδικό πρόσβασής σας."
           }
         },
         "en" : {
@@ -60075,8 +61203,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Esta cuenta es vulnerable. Visita el servicio y cambia tu contraseña."
           }
         },
         "es-419" : {
@@ -60087,14 +61215,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Tämä tili on vaarassa, käy palvelussa ja vaihda salasanasi."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ce compte est vulnérable, visitez le service et changez votre mot de passe."
+            "value" : "Ce compte est vulnérable. Visitez le service et changez votre mot de passe."
           }
         },
         "it" : {
@@ -60129,14 +61257,14 @@
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Esta conta está vulnerável, visite o serviço e altere sua senha."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Acest cont este vulnerabil, accesați serviciul și schimbați-vă parola."
           }
         },
         "sk" : {
@@ -60153,8 +61281,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Bu hesapta güvenlik açığı var. Hizmeti ziyaret edin ve parolanızı değiştirin."
           }
         },
         "uk" : {
@@ -68680,9 +69808,129 @@
     },
     "View history" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паглядзець гісторыю"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "View history"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "View history"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προβολή ιστορικού"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "View history"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar el historial"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver historial"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä historia"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher l'historique"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la cronologia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "View history"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისტორიის ნახვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 보기"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż historię"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizar histórico"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "View history"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "View history"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa historik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmişi görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "View history"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "View history"
           }
         }
@@ -69609,8 +70857,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Ненадзейны пароль"
           }
         },
         "cs" : {
@@ -69621,14 +70869,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Schwache Passwörter"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Αδύναμοι κωδικοί πρόσβασης"
           }
         },
         "en" : {
@@ -69639,8 +70887,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Contraseñas débiles"
           }
         },
         "es-419" : {
@@ -69651,8 +70899,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Heikot salasanat"
           }
         },
         "fr" : {
@@ -69687,20 +70935,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Słabe hasła"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Senhas fracas"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Parole slabe"
           }
         },
         "sk" : {
@@ -69739,8 +70987,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Ненадзейныя паролі лёгка падабраць. Згенерыруйце надзейны пароль, каб абараніць свой уліковы запіс."
           }
         },
         "cs" : {
@@ -69751,14 +70999,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Schwache Passwörter sind leichter zu erraten. Erstelle sichere Passwörter, um deine Konten zu schützen."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Οι αδύναμοι κωδικοί πρόσβασης είναι πιο εύκολο να μαντέψουν. Δημιουργήστε ισχυρούς κωδικούς πρόσβασης για να διατηρήσετε τους λογαριασμούς σας ασφαλείς."
           }
         },
         "en" : {
@@ -69769,8 +71017,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Las contraseñas débiles son fáciles de adivinar. Genera contraseñas seguras para mantener tus cuentas seguras."
           }
         },
         "es-419" : {
@@ -69781,14 +71029,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Heikot salasanat ovat helpommin arvattavissa. Luo vahvoja salasanoja, jotta tilisi pysyvät turvassa."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les mots de passe faibles sont plus facile à deviner. Générez un mot de passe complexe afin de mieux sécurisé vos comptes."
+            "value" : "Les mots de passe faibles sont plus facile à deviner. Générez un mot de passe complexe afin de mieux sécuriser vos comptes."
           }
         },
         "it" : {
@@ -69817,20 +71065,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Słabe hasła są łatwiejsze do odgadnięcia. Generuj silne hasła, aby zapewnić bezpieczeństwo swoim kontom."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Senhas fracas são mais fáceis de adivinhar. Gere senhas fortes para manter suas contas seguras."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Parolele slabe sunt ușor de ghicit. Generați parole puternice pentru a vă păstra conturile în siguranță."
           }
         },
         "sk" : {
@@ -69847,8 +71095,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Zayıf parolaların öngörülmesi daha kolaydır. Hesaplarınızı güvende tutmak için güçlü parolalar oluşturun."
           }
         },
         "uk" : {
@@ -71866,8 +73114,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "У вас няма магчымасці запрашаць людзей па-за межамі вашай арганізацыі. Звяжыцеся з адміністратарам, каб атрымаць дадатковыя звесткі."
           }
         },
         "cs" : {
@@ -71878,14 +73126,14 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "Du kannst keine Personen außerhalb deiner Organisation einladen, kontaktiere den Administrator für weitere Informationen."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "Δεν μπορείτε να προσκαλέσετε άτομα εκτός του οργανισμού σας, επικοινωνήστε με το διαχειριστή για περισσότερες πληροφορίες."
           }
         },
         "en" : {
@@ -71896,8 +73144,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "No puedes invitar personas fuera de tu organización. Contacta con el administrador para más información."
           }
         },
         "es-419" : {
@@ -71908,14 +73156,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "Et voi kutsua organisaatiosi ulkopuolisia henkilöitä, ota yhteyttä ylläpitäjään saadaksesi lisätietoja."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous ne pouvez pas inviter de personnes en dehors de votre organisation, contactez votre administrateur pour plus d'information."
+            "value" : "Vous ne pouvez pas inviter des personnes extérieures à votre organisation. Contactez l'administrateur pour plus d'informations."
           }
         },
         "it" : {
@@ -71939,7 +73187,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "귀하는 조직으로 사람을 초대할 수 없습니다. 더 자세한 내용은 관리자에게 문의하십시오."
+            "value" : "조직으로 사용자를 더 초대할 수 없습니다. 더 자세한 내용은 관리자에게 문의하십시오."
           }
         },
         "pl" : {
@@ -71950,14 +73198,14 @@
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "Você não pode convidar pessoas fora da sua organização, entre em contato com o administrador para mais informações."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "Nu puteți invita persoane din afara organizației proprii. Contactați administratorul pentru mai multe informații."
           }
         },
         "sk" : {
@@ -71975,7 +73223,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kuruluşunuz dışındaki kişileri davet edemezsiniz, daha fazla bilgi için yönetici ile iletişime geçin."
+            "value" : "Kuruluşunuz dışındaki kişileri davet edemezsiniz. Ayrıntılı bilgi almak için yönetici ile görüşün."
           }
         },
         "uk" : {
@@ -73172,8 +74420,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Вашы даныя з'явяцца ва ўцечцы даных. Палепшыце свой уліковы запіс, каб убачыць якія іменна."
           }
         },
         "cs" : {
@@ -73190,8 +74438,8 @@
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Τα δεδομένα σας εμφανίζονται σε παραβιάσεις δεδομένων, αναβαθμίστε για να δείτε ποιες."
           }
         },
         "en" : {
@@ -73202,8 +74450,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Tu información aparece en vulneraciones de datos. Mejora para ver en cuáles."
           }
         },
         "es-419" : {
@@ -73214,14 +74462,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Tietosi löytyivät tietomurroista, päivitä tilauksesi nähdäksesi ne."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vos informations apparaissent dans des brèches de données, mettez votre compte à niveau pour voir lesquelles."
+            "value" : "Vos données apparaissent dans des fuites de données. Passez à un abonnement supérieur pour savoir lesquelles."
           }
         },
         "it" : {
@@ -73250,20 +74498,20 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Twoje dane pojawiają się w wyciekach danych. Ulepsz plan, aby zobaczyć te dane logowania."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Seus dados estão envolvidos em vazamentos de dados, faça upgrade para ver quais são."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Datele dvs. apar în divulgări ale datelor. Treceți la un plan cu plată pentru a vedea care sunt acestea."
           }
         },
         "sk" : {
@@ -73280,8 +74528,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Verileriniz veri sızıntılarında görünüyor. Hangileri olduğunu görmek için tarifenizi yükseltin."
           }
         },
         "uk" : {
