@@ -125,7 +125,7 @@ extension DetailHistoryViewModel {
     }
 
     func copyExpirationDate() {
-        copy(\.creditCardItem?.expirationDate, message: #localized("Expiration date copied"))
+        copy(\.creditCardItem?.displayedExpirationDate, message: #localized("Expiration date copied"))
     }
 
     func copySecurityCode() {
