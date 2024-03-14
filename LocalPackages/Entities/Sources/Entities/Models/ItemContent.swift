@@ -81,7 +81,7 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
     }
 
     public var displayedExpirationDate: String {
-        Self.generateDisplayedExpirationDate(month: month, year: year)
+        Self.expirationDate(month: month, year: year)
     }
 
     public init(cardholderName: String,
@@ -100,7 +100,7 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
 }
 
 public extension CreditCardData {
-    static func generateDisplayedExpirationDate(month: Int, year: Int) -> String {
+    static func expirationDate(month: Int, year: Int) -> String {
         String(format: "%02d / %02d", month, year % 100)
     }
 }
