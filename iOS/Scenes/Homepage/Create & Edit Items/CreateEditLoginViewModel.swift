@@ -116,6 +116,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 passkeyRequest = request
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
+                username = request?.userName ?? ""
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
                 }
