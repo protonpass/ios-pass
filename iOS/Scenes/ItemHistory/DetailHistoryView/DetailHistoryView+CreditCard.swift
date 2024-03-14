@@ -171,7 +171,7 @@ private extension DetailHistoryView {
                 Text("Expiration date")
                     .sectionTitleText()
 
-                Text(creditCardItem.expirationDate)
+                Text(creditCardItem.displayedExpirationDate)
                     .foregroundStyle(textColor(for: \.creditCardItem?.expirationDate).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

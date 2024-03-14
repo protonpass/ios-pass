@@ -151,7 +151,7 @@ extension ItemContextMenuHandler {
     func copyExpirationDate(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self, let data = itemContent.creditCardItem else { return }
-            clipboardManager.copy(text: data.expirationDate,
+            clipboardManager.copy(text: data.displayedExpirationDate,
                                   bannerMessage: #localized("Expiration date copied"))
             logger.info("Copied expiration date \(item.debugDescription)")
         }
