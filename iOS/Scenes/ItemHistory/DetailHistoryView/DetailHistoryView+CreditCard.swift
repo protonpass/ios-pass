@@ -73,6 +73,7 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyCardholderName() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -92,6 +93,7 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyCardNumber() }
 
             Spacer()
 
@@ -120,6 +122,7 @@ private extension DetailHistoryView {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
             .animation(.default, value: isShowingVerificationNumber)
+            .onTapGesture { viewModel.copySecurityCode() }
 
             Spacer()
 
@@ -172,6 +175,8 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.creditCardItem?.expirationDate).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyExpirationDate() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
