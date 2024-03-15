@@ -132,8 +132,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Application logs"
+            "state" : "translated",
+            "value" : "Dnevniki aplikacij"
           }
         },
         "sv" : {
@@ -293,8 +293,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "AutoFill extension logs"
+            "state" : "translated",
+            "value" : "Dnevniki razširitve AutoFill"
           }
         },
         "sv" : {
@@ -454,8 +454,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Most recent"
+            "state" : "translated",
+            "value" : "Najnovejši"
           }
         },
         "sv" : {
@@ -615,8 +615,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Newest to oldest"
+            "state" : "translated",
+            "value" : "Od najnovejšega do najstarejšega"
           }
         },
         "sv" : {
@@ -775,8 +775,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "OK"
+            "state" : "translated",
+            "value" : "V REDU"
           }
         },
         "sv" : {
@@ -936,8 +936,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Oldest to newest"
+            "state" : "translated",
+            "value" : "Od starejšega do najnovejšega"
           }
         },
         "sv" : {
@@ -1097,8 +1097,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in %@..."
+            "state" : "translated",
+            "value" : "Iskanje v %@..."
           }
         },
         "sv" : {
@@ -1258,8 +1258,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in all vaults..."
+            "state" : "translated",
+            "value" : "Iskanje v vseh trezorjih..."
           }
         },
         "sv" : {
@@ -1419,8 +1419,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in Trash..."
+            "state" : "translated",
+            "value" : "Iskanje v smetnjaku…"
           }
         },
         "sv" : {
@@ -1581,8 +1581,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
+            "state" : "translated",
+            "value" : "Iskanje pripetih predmetov"
           }
         },
         "sv" : {
@@ -1741,8 +1741,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Share extension logs"
+            "state" : "translated",
+            "value" : "Skupna raba dnevnikov za razširitev"
           }
         },
         "sv" : {
@@ -1902,8 +1902,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Title (A-Z)"
+            "state" : "translated",
+            "value" : "Naslov (A–Z)"
           }
         },
         "sv" : {
@@ -2063,8 +2063,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Title (Z-A)"
+            "state" : "translated",
+            "value" : "Naslov (Z–A)"
           }
         },
         "sv" : {
