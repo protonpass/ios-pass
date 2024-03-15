@@ -127,8 +127,8 @@ private extension DetailHistoryView {
             CircleButton(icon: IconProvider.arrowLeft,
                          iconColor: viewModel.currentRevision.contentData.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.contentData.type.normMinor1Color,
+                         accessibilityLabel: "Go back",
                          action: dismiss.callAsFunction)
-                .accessibilityLabel(Text("Go back"))
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
