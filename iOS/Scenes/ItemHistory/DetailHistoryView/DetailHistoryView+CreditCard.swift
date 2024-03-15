@@ -100,9 +100,9 @@ private extension DetailHistoryView {
             CircleButton(icon: isShowingCardNumber ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingCardNumber ? "Hide card number" : "Show card number",
                          action: { isShowingCardNumber.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
-                .accessibilityLabel(Text(isShowingCardNumber ? "Hide card number" : "Show card number"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -130,10 +130,10 @@ private extension DetailHistoryView {
             CircleButton(icon: isShowingVerificationNumber ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingVerificationNumber ? "Hide security code" :
+                             "Show security code",
                          action: { isShowingVerificationNumber.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
-                .accessibilityLabel(Text(isShowingVerificationNumber ? "Hide security code" :
-                        "Show security code"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -160,9 +160,9 @@ private extension DetailHistoryView {
             CircleButton(icon: isShowingPIN ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingVerificationNumber ? "Hide pin" : "Show pin",
                          action: { isShowingPIN.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
-                .accessibilityLabel(Text(isShowingVerificationNumber ? "Hide pin" : "Show pin"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }

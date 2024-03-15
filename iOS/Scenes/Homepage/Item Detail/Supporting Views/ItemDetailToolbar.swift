@@ -37,10 +37,10 @@ struct ItemDetailToolbar: ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: itemContentType.normMajor2Color,
-                         backgroundColor: itemContentType.normMinor1Color) {
+                         backgroundColor: itemContentType.normMinor1Color,
+                         accessibilityLabel: "Close") {
                 viewModel.goBack()
             }
-            .accessibilityLabel(Text("Close"))
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -58,9 +58,10 @@ struct ItemDetailToolbar: ToolbarContent {
                     if viewModel.isAllowedToShare {
                         CircleButton(icon: IconProvider.usersPlus,
                                      iconColor: itemContentType.normMajor2Color,
-                                     backgroundColor: itemContentType.normMinor1Color) {
+                                     backgroundColor: itemContentType.normMinor1Color,
+                                     accessibilityLabel: "Share") {
                             viewModel.share()
-                        }.accessibilityLabel(Text("Share"))
+                        }
                     }
 
                     Menu(content: {
@@ -101,9 +102,9 @@ struct ItemDetailToolbar: ToolbarContent {
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,
                                      iconColor: itemContentType.normMajor2Color,
-                                     backgroundColor: itemContentType.normMinor1Color)
+                                     backgroundColor: itemContentType.normMinor1Color,
+                                     accessibilityLabel: "Item's action Menu")
                     })
-                    .accessibilityLabel(Text("Item's action Menu"))
                 }
 
             case .trashed:
