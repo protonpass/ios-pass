@@ -234,6 +234,7 @@ private extension LogInDetailView {
                              action: { isShowingPassword.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
+                    .accessibilityLabel(Text(isShowingPassword ? "Hide password" : "Show password"))
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
