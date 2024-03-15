@@ -41,6 +41,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,
                          action: onGoBack)
+                .accessibilityLabel(Text("Close"))
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -68,6 +69,7 @@ private extension CreateEditItemToolbar {
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color,
                                  action: onScan)
+                        .accessibilityLabel(Text("Scan \(itemContentType == .creditCard ? "credit card" : "document")"))
                 default:
                     EmptyView()
                 }

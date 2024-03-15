@@ -145,6 +145,7 @@ struct HiddenCustomFieldSection: View {
                              action: { isShowingText.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
+                    .accessibilityLabel(Text(isShowingText ? "Hide custom field" : "Show custom filed"))
             }
         }
         .animation(.default, value: isShowingText)

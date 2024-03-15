@@ -102,6 +102,7 @@ private extension DetailHistoryView {
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
                          action: { isShowingCardNumber.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
+                .accessibilityLabel(Text(isShowingCardNumber ? "Hide card number" : "Show card number"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -131,6 +132,8 @@ private extension DetailHistoryView {
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
                          action: { isShowingVerificationNumber.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
+                .accessibilityLabel(Text(isShowingVerificationNumber ? "Hide security code" :
+                        "Show security code"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -159,6 +162,7 @@ private extension DetailHistoryView {
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
                          action: { isShowingPIN.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
+                .accessibilityLabel(Text(isShowingVerificationNumber ? "Hide pin" : "Show pin"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
