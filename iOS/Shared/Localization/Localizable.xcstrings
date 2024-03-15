@@ -132,8 +132,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%@ vault"
+            "state" : "translated",
+            "value" : "%@ trezor"
           }
         },
         "sv" : {
@@ -293,8 +293,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%@%% decrypted..."
+            "state" : "translated",
+            "value" : "%@%% dešifrirano..."
           }
         },
         "sv" : {
@@ -454,8 +454,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%@%% downloaded..."
+            "state" : "translated",
+            "value" : "%@%% preneseno ..."
           }
         },
         "sv" : {
@@ -906,26 +906,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld characters"
+                  "state" : "translated",
+                  "value" : "%lld znakov"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld character"
+                  "state" : "translated",
+                  "value" : "%lld znakov"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld characters"
+                  "state" : "translated",
+                  "value" : "%lld znakov"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld characters"
+                  "state" : "translated",
+                  "value" : "%lld znakov"
                 }
               }
             }
@@ -1432,26 +1432,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
+                  "state" : "translated",
+                  "value" : "Preostala so še %lld vabila"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invite remaining"
+                  "state" : "translated",
+                  "value" : "Preostalo je še %lld vabilo"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
+                  "state" : "translated",
+                  "value" : "Preostalo je še %lld vabil"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
+                  "state" : "translated",
+                  "value" : "Preostali sta še %lld vabili"
                 }
               }
             }
@@ -2085,32 +2085,32 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items"
+                  "state" : "translated",
+                  "value" : "%lld predmeta"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld item"
+                  "state" : "translated",
+                  "value" : "%lld predmet"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items"
+                  "state" : "translated",
+                  "value" : "%lld predmeta"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items"
+                  "state" : "translated",
+                  "value" : "%lld predmeti"
                 }
               },
               "zero" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld item"
+                  "state" : "translated",
+                  "value" : "%lld predmet"
                 }
               }
             }
@@ -2641,26 +2641,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
+                  "state" : "translated",
+                  "value" : "%lld predmeti premaknjeni v smetnjak"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld item moved to trash"
+                  "state" : "translated",
+                  "value" : "%lld predmet premaknjen v smetnjak"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
+                  "state" : "translated",
+                  "value" : "%lld predmeti premaknjeni v smetnjak"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
+                  "state" : "translated",
+                  "value" : "%lld predmeta premaknjena v smetnjak"
                 }
               }
             }
@@ -3167,26 +3167,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
+                  "state" : "translated",
+                  "value" : "%1$lld predmeti premaknjeni v trezor « %2$@ »"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld item moved to vault « %2$@ »"
+                  "state" : "translated",
+                  "value" : "%1$lld predmet premaknjen v trezor « %2$@ »"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
+                  "state" : "translated",
+                  "value" : "%1$lld predmeti premaknjeni v trezor « %2$@ »"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
+                  "state" : "translated",
+                  "value" : "%1$lld predmeta premaknjena v trezor « %2$@ »"
                 }
               }
             }
@@ -3694,26 +3694,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld members"
+                  "state" : "translated",
+                  "value" : "%lld članov"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld member"
+                  "state" : "translated",
+                  "value" : "%lld član"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld members"
+                  "state" : "translated",
+                  "value" : "%lld članov"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld members"
+                  "state" : "translated",
+                  "value" : "%lld članov"
                 }
               }
             }
@@ -4221,26 +4221,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld remaining attempts"
+                  "state" : "translated",
+                  "value" : "Še %lld poskusov"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld remaining attempt"
+                  "state" : "translated",
+                  "value" : "Še %lld poskus"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld remaining attempts"
+                  "state" : "translated",
+                  "value" : "Še %lld poskusov"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld remaining attempts"
+                  "state" : "translated",
+                  "value" : "Še %lld poskusa"
                 }
               }
             }
@@ -4748,26 +4748,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld results"
+                  "state" : "translated",
+                  "value" : "%lld rezultati"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld result"
+                  "state" : "translated",
+                  "value" : "%lld rezultat"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld results"
+                  "state" : "translated",
+                  "value" : "%lld rezultatov"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld results"
+                  "state" : "translated",
+                  "value" : "%lld rezultata"
                 }
               }
             }
@@ -5275,26 +5275,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld times"
+                  "state" : "translated",
+                  "value" : "%lld-krat"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Once"
+                  "state" : "translated",
+                  "value" : "Enkrat"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld times"
+                  "state" : "translated",
+                  "value" : "%lld-krat"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld times"
+                  "state" : "translated",
+                  "value" : "%lld-krat"
                 }
               }
             }
@@ -5802,26 +5802,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld days left to try premium features"
+                  "state" : "translated",
+                  "value" : "Še %lld dni, da preizkusite vrhunske funkcije"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld day left to try premium features"
+                  "state" : "translated",
+                  "value" : "Še %lld dan za preizkus premium funkcij"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld days left to try premium features"
+                  "state" : "translated",
+                  "value" : "Še %lld dni, da preizkusite vrhunske funkcije"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld days left to try premium features"
+                  "state" : "translated",
+                  "value" : "Še %lld dni, da preizkusite vrhunske funkcije"
                 }
               }
             }
@@ -6329,26 +6329,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld words"
+                  "state" : "translated",
+                  "value" : "%lld besede"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld word"
+                  "state" : "translated",
+                  "value" : "%lld beseda"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld words"
+                  "state" : "translated",
+                  "value" : "%lld besed"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld words"
+                  "state" : "translated",
+                  "value" : "%lld besedi"
                 }
               }
             }
@@ -6564,8 +6564,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA limit reached"
+            "state" : "translated",
+            "value" : "Dosežena je omejitev za 2FA"
           }
         },
         "sv" : {
@@ -6724,8 +6724,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA secret key (TOTP)"
+            "state" : "translated",
+            "value" : "Skrivni ključ 2FA (TOTP)"
           }
         },
         "sv" : {
@@ -6884,8 +6884,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA secret key (TOTP) custom field"
+            "state" : "translated",
+            "value" : "Polje po meri za skrivni ključ 2FA (TOTP)."
           }
         },
         "sv" : {
@@ -7044,8 +7044,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA token (TOTP)"
+            "state" : "translated",
+            "value" : "Žeton 2FA (TOTP)"
           }
         },
         "sv" : {
@@ -7204,8 +7204,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "7 days to try premium features for free. Only during your first week of Proton Pass."
+            "state" : "translated",
+            "value" : "7 dni, da brezplačno preizkusite vrhunske funkcije. Samo v prvem tednu Proton Pass."
           }
         },
         "sv" : {
@@ -7365,8 +7365,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "20 vaults"
+            "state" : "translated",
+            "value" : "20 trezorji"
           }
         },
         "sv" : {
@@ -7525,8 +7525,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs."
+            "state" : "translated",
+            "value" : "Dnevnik je vrsta datoteke, ki nam prikazuje dejanja, ki ste jih izvedli in so povzročila napako. Uporabljali jih bomo samo za pomoč našim inženirjem pri odpravljanju napak."
           }
         },
         "sv" : {
@@ -7685,8 +7685,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "A passkey will be created for the \"%@\" login."
+            "state" : "translated",
+            "value" : "Za \"%@\" prijavo bo ustvarjen identifikacijski ključ."
           }
         },
         "sv" : {
@@ -7847,8 +7847,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Access level"
+            "state" : "translated",
+            "value" : "Raven dostopa"
           }
         },
         "sv" : {
@@ -8008,8 +8008,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Account"
+            "state" : "translated",
+            "value" : "Račun"
           }
         },
         "sv" : {
@@ -8168,8 +8168,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Active"
+            "state" : "translated",
+            "value" : "Aktivno"
           }
         },
         "sv" : {
@@ -8328,8 +8328,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add"
+            "state" : "translated",
+            "value" : "Dodaj"
           }
         },
         "sv" : {
@@ -8489,8 +8489,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add 2FA secret"
+            "state" : "translated",
+            "value" : "Dodajte skrivni ključ 2FA"
           }
         },
         "sv" : {
@@ -8651,8 +8651,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add a file"
+            "state" : "translated",
+            "value" : "Dodaj datoteko"
           }
         },
         "sv" : {
@@ -8811,8 +8811,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add a prefix"
+            "state" : "translated",
+            "value" : "Dodaj predpono"
           }
         },
         "sv" : {
@@ -8972,8 +8972,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add login details for an app or site"
+            "state" : "translated",
+            "value" : "Dodajte podatke za prijavo v aplikacijo ali spletno mesto"
           }
         },
         "sv" : {
@@ -9132,8 +9132,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add more"
+            "state" : "translated",
+            "value" : "Dodaj več"
           }
         },
         "sv" : {
@@ -9293,8 +9293,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add note"
+            "state" : "translated",
+            "value" : "Dodaj opombo"
           }
         },
         "sv" : {
@@ -9454,8 +9454,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add password"
+            "state" : "translated",
+            "value" : "Dodaj geslo"
           }
         },
         "sv" : {
@@ -9616,8 +9616,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add relevant files or images to the report"
+            "state" : "translated",
+            "value" : "Dodaj ustrezne datoteke ali slike k poročilu."
           }
         },
         "sv" : {
@@ -9777,8 +9777,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add username or email address"
+            "state" : "translated",
+            "value" : "Dodajte uporabniško ime ali e-poštni naslov"
           }
         },
         "sv" : {
@@ -9939,8 +9939,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Added files"
+            "state" : "translated",
+            "value" : "Dodane datoteke"
           }
         },
         "sv" : {
@@ -10101,8 +10101,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "admin"
+            "state" : "translated",
+            "value" : "administrator"
           }
         },
         "sv" : {
@@ -10263,8 +10263,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Admin"
+            "state" : "translated",
+            "value" : "Administrator"
           }
         },
         "sv" : {
@@ -10423,8 +10423,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Advanced options"
+            "state" : "translated",
+            "value" : "Napredne nastavitve"
           }
         },
         "sv" : {
@@ -10875,26 +10875,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld hours"
+                  "state" : "translated",
+                  "value" : "Čez %lld ure"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld hour"
+                  "state" : "translated",
+                  "value" : "Čez %lld uro"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld hours"
+                  "state" : "translated",
+                  "value" : "Čez %lld ur"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld hours"
+                  "state" : "translated",
+                  "value" : "Čez %lld uri"
                 }
               }
             }
@@ -11402,26 +11402,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld minutes"
+                  "state" : "translated",
+                  "value" : "Čez %lld minute"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld minute"
+                  "state" : "translated",
+                  "value" : "Čez %lld minuto"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld minutes"
+                  "state" : "translated",
+                  "value" : "Čez %lld minute"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "After %lld minutes"
+                  "state" : "translated",
+                  "value" : "Čez %lld minuti"
                 }
               }
             }
@@ -11638,8 +11638,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "After 15 seconds"
+            "state" : "translated",
+            "value" : "Po 15 sekundah"
           }
         },
         "sv" : {
@@ -11799,8 +11799,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias"
+            "state" : "translated",
+            "value" : "Vzdevek"
           }
         },
         "sv" : {
@@ -11960,8 +11960,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias \"%@\" will stop forwarding emails to your mailbox"
+            "state" : "translated",
+            "value" : "Vzdevek »%@« bo ustavil posredovanje e-pošte v vaš nabiralnik"
           }
         },
         "sv" : {
@@ -12121,8 +12121,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias address"
+            "state" : "translated",
+            "value" : "Vzdevek naslova"
           }
         },
         "sv" : {
@@ -12282,8 +12282,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias address copied"
+            "state" : "translated",
+            "value" : "Naslov vzdevka je kopiran"
           }
         },
         "sv" : {
@@ -12443,8 +12443,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias can not contain 2 consecutive dots (..)"
+            "state" : "translated",
+            "value" : "Vzdevek ne sme vsebovati 2 zaporednih pik (..)"
           }
         },
         "sv" : {
@@ -12605,8 +12605,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias can not start with a dot (.)"
+            "state" : "translated",
+            "value" : "Vzdevek se ne sme začeti s piko (.)"
           }
         },
         "sv" : {
@@ -12766,8 +12766,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias copied"
+            "state" : "translated",
+            "value" : "Vzdevek je kopiran"
           }
         },
         "sv" : {
@@ -12927,8 +12927,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias created"
+            "state" : "translated",
+            "value" : "Vzdevek ustvarjen"
           }
         },
         "sv" : {
@@ -13088,8 +13088,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias of login item \"%@\""
+            "state" : "translated",
+            "value" : "Vzdevek elementa prijave \"%@\""
           }
         },
         "sv" : {
@@ -13249,8 +13249,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias permanently deleted"
+            "state" : "translated",
+            "value" : "Vzdevek je trajno izbrisan"
           }
         },
         "sv" : {
@@ -13410,8 +13410,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias restored"
+            "state" : "translated",
+            "value" : "Vzdevek je obnovljen"
           }
         },
         "sv" : {
@@ -13571,8 +13571,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias updated"
+            "state" : "translated",
+            "value" : "Vzdevek posodobljen"
           }
         },
         "sv" : {
@@ -13732,8 +13732,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Aliases"
+            "state" : "translated",
+            "value" : "Vzdevki"
           }
         },
         "sv" : {
@@ -13892,8 +13892,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All"
+            "state" : "translated",
+            "value" : "Vse"
           }
         },
         "sv" : {
@@ -14052,8 +14052,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All except sensitive data"
+            "state" : "translated",
+            "value" : "Vse razen občutljivih podatkov"
           }
         },
         "sv" : {
@@ -14212,8 +14212,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All items in trash will be permanently deleted"
+            "state" : "translated",
+            "value" : "Vsi predmeti v smetnjaku bodo trajno izbrisani"
           }
         },
         "sv" : {
@@ -14373,8 +14373,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All items permanently deleted"
+            "state" : "translated",
+            "value" : "Vsi predmeti so trajno izbrisani"
           }
         },
         "sv" : {
@@ -14534,8 +14534,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All items restored"
+            "state" : "translated",
+            "value" : "Vsi predmeti obnovljeni"
           }
         },
         "sv" : {
@@ -14695,8 +14695,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All logs cleared"
+            "state" : "translated",
+            "value" : "Vsi dnevniki počiščeni"
           }
         },
         "sv" : {
@@ -14857,8 +14857,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All vaults"
+            "state" : "translated",
+            "value" : "Vsi trezorji"
           }
         },
         "sv" : {
@@ -15017,8 +15017,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Allow items to appear in Search"
+            "state" : "translated",
+            "value" : "Dovolite, da se predmeti prikažejo v Iskalniku"
           }
         },
         "sv" : {
@@ -15177,8 +15177,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Application"
+            "state" : "translated",
+            "value" : "Aplikacija"
           }
         },
         "sv" : {
@@ -15337,8 +15337,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Are you sure you want to add a 2FA secret to \"%@\"?"
+            "state" : "translated",
+            "value" : "Ali ste prepričani, da želite dodati varnostni 2FA v »%@«?"
           }
         },
         "sv" : {
@@ -15497,8 +15497,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate 2FA?"
+            "state" : "translated",
+            "value" : "Povezava 2FA?"
           }
         },
         "sv" : {
@@ -15657,8 +15657,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate and autofill"
+            "state" : "translated",
+            "value" : "Poveži in samodejno izpolni"
           }
         },
         "sv" : {
@@ -15817,8 +15817,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate and save"
+            "state" : "translated",
+            "value" : "Poveži in shrani"
           }
         },
         "sv" : {
@@ -15977,8 +15977,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate URL?"
+            "state" : "translated",
+            "value" : "Povezani URL?"
           }
         },
         "sv" : {
@@ -16138,8 +16138,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Auto-filled:"
+            "state" : "translated",
+            "value" : "Samodejno izpolnjeno:"
           }
         },
         "sv" : {
@@ -16299,8 +16299,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "AutoFill"
+            "state" : "translated",
+            "value" : "Samodejno izpolnjevanje"
           }
         },
         "sv" : {
@@ -16459,8 +16459,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "AutoFill disabled"
+            "state" : "translated",
+            "value" : "Samodejno izpolnjevanje onemogočeno"
           }
         },
         "sv" : {
@@ -16619,8 +16619,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "AutoFill on apps and websites by enabling Proton Pass AutoFill"
+            "state" : "translated",
+            "value" : "Samodejno izpolnjevanje v aplikacijah in spletnih mestih z omogočanjem Proton Pass AutoFill"
           }
         },
         "sv" : {
@@ -16779,8 +16779,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Automatic lock"
+            "state" : "translated",
+            "value" : "Samodejno zaklepanje"
           }
         },
         "sv" : {
@@ -16940,8 +16940,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Autosave"
+            "state" : "translated",
+            "value" : "Samodejno shranjevanje"
           }
         },
         "sv" : {
@@ -17101,8 +17101,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera permission required for this feature to be available"
+            "state" : "translated",
+            "value" : "Za to funkcijo je potrebno dovoljenje za kamero"
           }
         },
         "sv" : {
@@ -17262,8 +17262,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Can create, edit, delete and export items in this vault"
+            "state" : "translated",
+            "value" : "Lahko ustvarja, ureja, briše in izvaža elemente v tem trezorju"
           }
         },
         "sv" : {
@@ -17423,8 +17423,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Can grant and revoke access to this vault"
+            "state" : "translated",
+            "value" : "Lahko odobri in prekliče dostop do tega trezorja"
           }
         },
         "sv" : {
@@ -17585,8 +17585,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Can view items in this vault"
+            "state" : "translated",
+            "value" : "Lahko si ogleda predmete v tem trezorju"
           }
         },
         "sv" : {
@@ -17745,8 +17745,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Cancel"
+            "state" : "translated",
+            "value" : "Prekliči"
           }
         },
         "sv" : {
@@ -17907,8 +17907,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Cancel invitation"
+            "state" : "translated",
+            "value" : "Prekliči povabilo"
           }
         },
         "sv" : {
@@ -18068,8 +18068,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Capital letters"
+            "state" : "translated",
+            "value" : "Velike črke"
           }
         },
         "sv" : {
@@ -18229,8 +18229,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Capitalize"
+            "state" : "translated",
+            "value" : "Napiši veliko začetnico"
           }
         },
         "sv" : {
@@ -18390,8 +18390,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Card"
+            "state" : "translated",
+            "value" : "Kartica"
           }
         },
         "sv" : {
@@ -18550,8 +18550,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Card number"
+            "state" : "translated",
+            "value" : "Številka kartice"
           }
         },
         "sv" : {
@@ -18711,8 +18711,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Card number copied"
+            "state" : "translated",
+            "value" : "Številka kreditne kartice je kopirana"
           }
         },
         "sv" : {
@@ -18872,8 +18872,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Cardholder name"
+            "state" : "translated",
+            "value" : "Ime imetnika kartice"
           }
         },
         "sv" : {
@@ -19033,8 +19033,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Cardholder name copied"
+            "state" : "translated",
+            "value" : "Ime imetnika kartice je kopirano"
           }
         },
         "sv" : {
@@ -19193,8 +19193,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Change PIN code"
+            "state" : "translated",
+            "value" : "Spremeni kodo PIN"
           }
         },
         "sv" : {
@@ -19353,8 +19353,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Changelog"
+            "state" : "translated",
+            "value" : "Dnevnik sprememb"
           }
         },
         "sv" : {
@@ -19514,8 +19514,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Check out all the exclusive features that are available to you for a limited time"
+            "state" : "translated",
+            "value" : "Preverite vse ekskluzivne funkcije, ki so vam na voljo omejen čas"
           }
         },
         "sv" : {
@@ -19674,8 +19674,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clear"
+            "state" : "translated",
+            "value" : "Počisti"
           }
         },
         "sv" : {
@@ -19836,8 +19836,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clear all files"
+            "state" : "translated",
+            "value" : "Počistite vse datoteke"
           }
         },
         "sv" : {
@@ -19996,8 +19996,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clear all logs"
+            "state" : "translated",
+            "value" : "Počistite vse dnevnike"
           }
         },
         "sv" : {
@@ -20156,8 +20156,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clear clipboard"
+            "state" : "translated",
+            "value" : "Počisti odložišče"
           }
         },
         "sv" : {
@@ -20316,8 +20316,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clipboard"
+            "state" : "translated",
+            "value" : "Odložišče"
           }
         },
         "sv" : {
@@ -20400,8 +20400,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
+            "state" : "translated",
+            "value" : "Kloonaa"
           }
         },
         "fr" : {
@@ -20436,8 +20436,8 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
+            "state" : "translated",
+            "value" : "복제"
           }
         },
         "nl" : {
@@ -20478,8 +20478,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
+            "state" : "translated",
+            "value" : "Kloniraj"
           }
         },
         "sv" : {
@@ -20638,8 +20638,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Close"
+            "state" : "translated",
+            "value" : "Zapri"
           }
         },
         "sv" : {
@@ -20799,8 +20799,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Commas"
+            "state" : "translated",
+            "value" : "Vejice"
           }
         },
         "sv" : {
@@ -20959,8 +20959,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Conceal"
+            "state" : "translated",
+            "value" : "Skrij"
           }
         },
         "sv" : {
@@ -21119,8 +21119,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Confirm"
+            "state" : "translated",
+            "value" : "Potrdi"
           }
         },
         "sv" : {
@@ -21281,8 +21281,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Confirm access"
+            "state" : "translated",
+            "value" : "Potrdite dostop"
           }
         },
         "sv" : {
@@ -21443,8 +21443,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Congratulations,\n your access has been confirmed"
+            "state" : "translated",
+            "value" : "Čestitke,\n vaš dostop je potrjen"
           }
         },
         "sv" : {
@@ -21604,8 +21604,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Continue"
+            "state" : "translated",
+            "value" : "Nadaljuj"
           }
         },
         "sv" : {
@@ -21766,8 +21766,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Continue item creation"
+            "state" : "translated",
+            "value" : "Nadaljujte z ustvarjanjem predmeta"
           }
         },
         "sv" : {
@@ -21927,8 +21927,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Control what lands in your inbox"
+            "state" : "translated",
+            "value" : "Nadzorujte, kaj pristane v vaši mapi »Prejeto«."
           }
         },
         "sv" : {
@@ -22087,8 +22087,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy"
+            "state" : "translated",
+            "value" : "Kopiraj"
           }
         },
         "sv" : {
@@ -22247,8 +22247,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy 2FA code"
+            "state" : "translated",
+            "value" : "Kopirajte kodo 2FA"
           }
         },
         "sv" : {
@@ -22408,8 +22408,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy alias address"
+            "state" : "translated",
+            "value" : "Kopiraj vzdevek naslova"
           }
         },
         "sv" : {
@@ -22569,8 +22569,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy and close"
+            "state" : "translated",
+            "value" : "Kopiraj in zapri"
           }
         },
         "sv" : {
@@ -22729,8 +22729,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy card number"
+            "state" : "translated",
+            "value" : "Kopiraj številko kartice"
           }
         },
         "sv" : {
@@ -22889,8 +22889,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy cardholder name"
+            "state" : "translated",
+            "value" : "Kopiraj ime imetnika kartice"
           }
         },
         "sv" : {
@@ -23049,8 +23049,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy expiration date"
+            "state" : "translated",
+            "value" : "Kopiraj datum poteka"
           }
         },
         "sv" : {
@@ -23210,8 +23210,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy note content"
+            "state" : "translated",
+            "value" : "Kopiraj vsebino opombe"
           }
         },
         "sv" : {
@@ -23371,8 +23371,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy password"
+            "state" : "translated",
+            "value" : "Kopiraj geslo"
           }
         },
         "sv" : {
@@ -23531,8 +23531,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy security code"
+            "state" : "translated",
+            "value" : "Kopiraj varnostno kodo"
           }
         },
         "sv" : {
@@ -23693,8 +23693,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy username"
+            "state" : "translated",
+            "value" : "Kopiraj uporabniško ime"
           }
         },
         "sv" : {
@@ -23854,8 +23854,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\""
+            "state" : "translated",
+            "value" : "Ni bilo mogoče najti \"%@\""
           }
         },
         "sv" : {
@@ -24016,8 +24016,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
+            "state" : "translated",
+            "value" : "V smetnjaku ni bilo mogoče najti »%@«."
           }
         },
         "sv" : {
@@ -24178,8 +24178,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
+            "state" : "translated",
+            "value" : "Ni bilo mogoče najti « %1$@ » v %2$@"
           }
         },
         "sv" : {
@@ -24339,8 +24339,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create"
+            "state" : "translated",
+            "value" : "Ustvari"
           }
         },
         "sv" : {
@@ -24500,8 +24500,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create & AutoFill"
+            "state" : "translated",
+            "value" : "Ustvari in samodejno izpolni"
           }
         },
         "sv" : {
@@ -24661,8 +24661,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create a card"
+            "state" : "translated",
+            "value" : "Ustvari kartico"
           }
         },
         "sv" : {
@@ -24822,8 +24822,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create a Hide My Email alias"
+            "state" : "translated",
+            "value" : "Ustvari vzdevek Skrij moj e-poštni naslov."
           }
         },
         "sv" : {
@@ -24983,8 +24983,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create a login"
+            "state" : "translated",
+            "value" : "Ustvarite prijavo"
           }
         },
         "sv" : {
@@ -25143,8 +25143,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create a new vault to share"
+            "state" : "translated",
+            "value" : "Ustvarite nov trezor za skupno rabo"
           }
         },
         "sv" : {
@@ -25304,8 +25304,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create a note"
+            "state" : "translated",
+            "value" : "Ustvari opombo"
           }
         },
         "sv" : {
@@ -25466,8 +25466,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create login"
+            "state" : "translated",
+            "value" : "Ustvarite prijavo"
           }
         },
         "sv" : {
@@ -25626,8 +25626,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
+            "state" : "translated",
+            "value" : "Ustvari identifikacijski ključ"
           }
         },
         "sv" : {
@@ -25787,8 +25787,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create vault"
+            "state" : "translated",
+            "value" : "Ustvari nov trezor"
           }
         },
         "sv" : {
@@ -25948,8 +25948,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Created"
+            "state" : "translated",
+            "value" : "Ustvarjeno"
           }
         },
         "sv" : {
@@ -26109,8 +26109,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Credit card created"
+            "state" : "translated",
+            "value" : "Kreditna kartica ustvarjena"
           }
         },
         "sv" : {
@@ -26270,8 +26270,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Credit card moved to trash"
+            "state" : "translated",
+            "value" : "Kreditna kartica premaknjena v smetnjak"
           }
         },
         "sv" : {
@@ -26431,8 +26431,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Credit card permanently deleted"
+            "state" : "translated",
+            "value" : "Kreditna kartica je trajno izbrisana"
           }
         },
         "sv" : {
@@ -26592,8 +26592,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Credit card restored"
+            "state" : "translated",
+            "value" : "Kreditna kartica obnovljena"
           }
         },
         "sv" : {
@@ -26753,8 +26753,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Credit card updated"
+            "state" : "translated",
+            "value" : "Kreditna kartica posodobljena"
           }
         },
         "sv" : {
@@ -26914,8 +26914,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Credit cards"
+            "state" : "translated",
+            "value" : "Kreditne kartice"
           }
         },
         "sv" : {
@@ -27074,8 +27074,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Current"
+            "state" : "translated",
+            "value" : "Trenutna"
           }
         },
         "sv" : {
@@ -27234,8 +27234,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Current version"
+            "state" : "translated",
+            "value" : "Trenutna različica"
           }
         },
         "sv" : {
@@ -27395,8 +27395,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Custom fields"
+            "state" : "translated",
+            "value" : "Polja po meri"
           }
         },
         "sv" : {
@@ -27557,8 +27557,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Customize"
+            "state" : "translated",
+            "value" : "Prilagodi"
           }
         },
         "sv" : {
@@ -27718,8 +27718,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Dark"
+            "state" : "translated",
+            "value" : "Temna"
           }
         },
         "sv" : {
@@ -27770,8 +27770,8 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Schutz vor unbefugtem Datenzugriff"
           }
         },
         "el" : {
@@ -27878,8 +27878,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Zaščita pred vdori v podatke"
           }
         },
         "sv" : {
@@ -28039,8 +28039,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Default browser"
+            "state" : "translated",
+            "value" : "Privzeti brskalnik"
           }
         },
         "sv" : {
@@ -28199,8 +28199,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete"
+            "state" : "translated",
+            "value" : "Izbriši"
           }
         },
         "sv" : {
@@ -28359,8 +28359,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete account"
+            "state" : "translated",
+            "value" : "Izbriši račun"
           }
         },
         "sv" : {
@@ -28520,8 +28520,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete alias"
+            "state" : "translated",
+            "value" : "Izbriši vzdevek"
           }
         },
         "sv" : {
@@ -28680,8 +28680,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete permanently"
+            "state" : "translated",
+            "value" : "Trajno izbriši"
           }
         },
         "sv" : {
@@ -28840,8 +28840,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete permanently?"
+            "state" : "translated",
+            "value" : "Trajno izbriši?"
           }
         },
         "sv" : {
@@ -29000,8 +29000,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete vault"
+            "state" : "translated",
+            "value" : "Izbriši trezor"
           }
         },
         "sv" : {
@@ -29161,8 +29161,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete vault?"
+            "state" : "translated",
+            "value" : "Izbriši trezor?"
           }
         },
         "sv" : {
@@ -29321,8 +29321,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Disable Proton Sentinel"
+            "state" : "translated",
+            "value" : "Onemogoči Proton Sentinel"
           }
         },
         "sv" : {
@@ -29483,8 +29483,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Domain"
+            "state" : "translated",
+            "value" : "Domena"
           }
         },
         "sv" : {
@@ -29643,8 +29643,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Download all your items again to make sure you are in sync"
+            "state" : "translated",
+            "value" : "Ponovno prenesite vse svoje predmete, da se prepričate, da ste sinhronizirani"
           }
         },
         "sv" : {
@@ -29805,8 +29805,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "E.g, Recovery key, PIN"
+            "state" : "translated",
+            "value" : "Npr. ključ za obnovitev, PIN"
           }
         },
         "sv" : {
@@ -29967,8 +29967,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "E.g., User ID, Acct number"
+            "state" : "translated",
+            "value" : "Npr. ID uporabnika, številka računa"
           }
         },
         "sv" : {
@@ -30128,8 +30128,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "edit"
+            "state" : "translated",
+            "value" : "uredi"
           }
         },
         "sv" : {
@@ -30289,8 +30289,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit"
+            "state" : "translated",
+            "value" : "Uredi"
           }
         },
         "sv" : {
@@ -30449,8 +30449,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit alias"
+            "state" : "translated",
+            "value" : "Uredi vzdevek"
           }
         },
         "sv" : {
@@ -30611,8 +30611,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit field name"
+            "state" : "translated",
+            "value" : "Uredi ime polja"
           }
         },
         "sv" : {
@@ -30771,8 +30771,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit name"
+            "state" : "translated",
+            "value" : "Uredi ime"
           }
         },
         "sv" : {
@@ -30933,8 +30933,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Editor"
+            "state" : "translated",
+            "value" : "Urejevalnik"
           }
         },
         "sv" : {
@@ -31093,8 +31093,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Email address"
+            "state" : "translated",
+            "value" : "E-poštni naslov"
           }
         },
         "sv" : {
@@ -31255,8 +31255,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Email address copied"
+            "state" : "translated",
+            "value" : "E-poštni naslov je kopiran"
           }
         },
         "sv" : {
@@ -31415,8 +31415,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Empty"
+            "state" : "translated",
+            "value" : "Prazno"
           }
         },
         "sv" : {
@@ -31576,8 +31576,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Empty note"
+            "state" : "translated",
+            "value" : "Prazna opomba"
           }
         },
         "sv" : {
@@ -31736,8 +31736,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Empty trash"
+            "state" : "translated",
+            "value" : "Izprazni smetnjak"
           }
         },
         "sv" : {
@@ -31896,8 +31896,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enable AutoFill"
+            "state" : "translated",
+            "value" : "Omogoči Samodejno izpolnjevanje"
           }
         },
         "sv" : {
@@ -32057,8 +32057,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enable Face ID"
+            "state" : "translated",
+            "value" : "Omogoči obrazni ID"
           }
         },
         "sv" : {
@@ -32217,8 +32217,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enable Proton Sentinel"
+            "state" : "translated",
+            "value" : "Omogoči Proton Sentinel"
           }
         },
         "sv" : {
@@ -32378,8 +32378,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enable Touch ID"
+            "state" : "translated",
+            "value" : "Omogoči ID na dotik"
           }
         },
         "sv" : {
@@ -32538,8 +32538,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enjoy next-level password management"
+            "state" : "translated",
+            "value" : "Uživajte v upravljanju gesel naslednje stopnje"
           }
         },
         "sv" : {
@@ -32700,8 +32700,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enjoy the magic of AutoFill"
+            "state" : "translated",
+            "value" : "Uživajte v čarobnosti samodejnega izpolnjevanja"
           }
         },
         "sv" : {
@@ -32861,8 +32861,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enter a field name"
+            "state" : "translated",
+            "value" : "Vnesite ime polja"
           }
         },
         "sv" : {
@@ -33022,8 +33022,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enter new name for « %@ »"
+            "state" : "translated",
+            "value" : "Vnesite novo ime za « %@ »"
           }
         },
         "sv" : {
@@ -33183,8 +33183,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Choose a PIN code"
+            "state" : "translated",
+            "value" : "Izberite kodo PIN"
           }
         },
         "sv" : {
@@ -33343,8 +33343,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Enter your PIN code"
+            "state" : "translated",
+            "value" : "Vnesi svojo PIN kodo."
           }
         },
         "sv" : {
@@ -33503,8 +33503,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Error occured"
+            "state" : "translated",
+            "value" : "Prišlo je do napake"
           }
         },
         "sv" : {
@@ -33663,8 +33663,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Izključi iz spremljanja"
           }
         },
         "sv" : {
@@ -33823,8 +33823,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Izključeni predmeti"
           }
         },
         "sv" : {
@@ -33983,8 +33983,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Expiration date"
+            "state" : "translated",
+            "value" : "Datum poteka"
           }
         },
         "sv" : {
@@ -34143,8 +34143,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Expiration date copied"
+            "state" : "translated",
+            "value" : "Datum poteka kopiran"
           }
         },
         "sv" : {
@@ -34303,8 +34303,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Izpostavljena e-pošta"
           }
         },
         "sv" : {
@@ -34463,8 +34463,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Izpostavljena gesla"
           }
         },
         "sv" : {
@@ -34785,8 +34785,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID enabled"
+            "state" : "translated",
+            "value" : "Obrazni ID omogočen"
           }
         },
         "sv" : {
@@ -34947,8 +34947,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Failed to authenticate"
+            "state" : "translated",
+            "value" : "Preverjanje pristnosti ni uspelo"
           }
         },
         "sv" : {
@@ -35108,8 +35108,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Feature request"
+            "state" : "translated",
+            "value" : "Zahteva za funkcijo"
           }
         },
         "sv" : {
@@ -35268,8 +35268,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Feedback"
+            "state" : "translated",
+            "value" : "Povratne informacije"
           }
         },
         "sv" : {
@@ -35429,8 +35429,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Find an alias, login, or note"
+            "state" : "translated",
+            "value" : "Poiščite vzdevek, prijavo ali opombo"
           }
         },
         "sv" : {
@@ -35589,8 +35589,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Follow these simple steps to get the best experience:"
+            "state" : "translated",
+            "value" : "Za najboljšo izkušnjo sledite tem preprostim korakom:"
           }
         },
         "sv" : {
@@ -35749,8 +35749,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Force synchronization"
+            "state" : "translated",
+            "value" : "Vsili sinhronizacijo"
           }
         },
         "sv" : {
@@ -35910,8 +35910,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Forward to"
+            "state" : "translated",
+            "value" : "Posreduj na"
           }
         },
         "sv" : {
@@ -36070,8 +36070,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Forwarding to"
+            "state" : "translated",
+            "value" : "Posredovanje na"
           }
         },
         "sv" : {
@@ -36231,8 +36231,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Free trial"
+            "state" : "translated",
+            "value" : "Brezplačni preizkus"
           }
         },
         "sv" : {
@@ -36392,8 +36392,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate a secure password"
+            "state" : "translated",
+            "value" : "Ustvari varno geslo"
           }
         },
         "sv" : {
@@ -36553,8 +36553,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate password"
+            "state" : "translated",
+            "value" : "Ustvari geslo"
           }
         },
         "sv" : {
@@ -36713,8 +36713,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Ustvarite edinstvena gesla in zvišajte raven varnosti."
           }
         },
         "sv" : {
@@ -36874,8 +36874,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Get an email alias to use on new apps"
+            "state" : "translated",
+            "value" : "Pridobite e-poštni vzdevek za uporabo v novih aplikacijah"
           }
         },
         "sv" : {
@@ -37036,8 +37036,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Go to Settings"
+            "state" : "translated",
+            "value" : "Pojdi v nastavitve"
           }
         },
         "sv" : {
@@ -37197,8 +37197,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Goodbye spam and scams"
+            "state" : "translated",
+            "value" : "Adijo vsiljena pošta in prevare"
           }
         },
         "sv" : {
@@ -37357,8 +37357,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Help center"
+            "state" : "translated",
+            "value" : "Center za pomoč"
           }
         },
         "sv" : {
@@ -37518,8 +37518,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Hidden"
+            "state" : "translated",
+            "value" : "Skrito"
           }
         },
         "sv" : {
@@ -37678,8 +37678,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Hidden custom field"
+            "state" : "translated",
+            "value" : "Skrito polje po meri"
           }
         },
         "sv" : {
@@ -37839,8 +37839,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Hidden text copied"
+            "state" : "translated",
+            "value" : "Skrito besedilo je kopirano"
           }
         },
         "sv" : {
@@ -37999,8 +37999,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide my email"
+            "state" : "translated",
+            "value" : "Hide-my-email"
           }
         },
         "sv" : {
@@ -38159,8 +38159,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "History"
+            "state" : "translated",
+            "value" : "Zgodovina"
           }
         },
         "sv" : {
@@ -38320,8 +38320,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "How to import to Proton Pass"
+            "state" : "translated",
+            "value" : "Kako uvoziti v Proton Pass"
           }
         },
         "sv" : {
@@ -38480,8 +38480,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "How to use Proton Pass"
+            "state" : "translated",
+            "value" : "Kako uporabljati Proton Pass"
           }
         },
         "sv" : {
@@ -38641,8 +38641,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Hyphens"
+            "state" : "translated",
+            "value" : "Vezaji"
           }
         },
         "sv" : {
@@ -38802,8 +38802,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "I want to report a problem with..."
+            "state" : "translated",
+            "value" : "Želim prijaviti težavo z..."
           }
         },
         "sv" : {
@@ -38963,8 +38963,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Immediately"
+            "state" : "translated",
+            "value" : "Takoj"
           }
         },
         "sv" : {
@@ -39123,8 +39123,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Inactive"
+            "state" : "translated",
+            "value" : "Neaktivno"
           }
         },
         "sv" : {
@@ -39284,8 +39284,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Include numbers"
+            "state" : "translated",
+            "value" : "Vključi številke"
           }
         },
         "sv" : {
@@ -39444,8 +39444,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Incorrect PIN code."
+            "state" : "translated",
+            "value" : "Napačna koda PIN."
           }
         },
         "sv" : {
@@ -39604,8 +39604,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Increase your security"
+            "state" : "translated",
+            "value" : "Povečajte svojo varnost"
           }
         },
         "sv" : {
@@ -39765,8 +39765,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Integrated 2FA authenticator"
+            "state" : "translated",
+            "value" : "Vgrajen modul za preverjanje pristnosti 2FA"
           }
         },
         "sv" : {
@@ -39925,8 +39925,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Invalid email address"
+            "state" : "translated",
+            "value" : "Neveljaven e-poštni naslov"
           }
         },
         "sv" : {
@@ -40087,8 +40087,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Invalid prefix"
+            "state" : "translated",
+            "value" : "Neveljavna predpona"
           }
         },
         "sv" : {
@@ -40247,8 +40247,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Invalid TOTP URI"
+            "state" : "translated",
+            "value" : "Neveljaven TOTP URI"
           }
         },
         "sv" : {
@@ -40409,8 +40409,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Invitation sent"
+            "state" : "translated",
+            "value" : "Povabilo poslano."
           }
         },
         "sv" : {
@@ -40571,8 +40571,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Invitations"
+            "state" : "translated",
+            "value" : "Vabila"
           }
         },
         "sv" : {
@@ -40733,8 +40733,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "invites you to access items in"
+            "state" : "translated",
+            "value" : "vas vabi k dostopu do predmetov v"
           }
         },
         "sv" : {
@@ -40893,8 +40893,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID"
+            "state" : "translated",
+            "value" : "ID predmeta"
           }
         },
         "sv" : {
@@ -41053,8 +41053,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID copied"
+            "state" : "translated",
+            "value" : "ID artikla je kopiran"
           }
         },
         "sv" : {
@@ -41214,8 +41214,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Item moved to vault « %@ »"
+            "state" : "translated",
+            "value" : "Predmet premaknjen v trezor « %@ »"
           }
         },
         "sv" : {
@@ -41376,8 +41376,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Item successfully pinned"
+            "state" : "translated",
+            "value" : "Predmet je bil uspešno pripet"
           }
         },
         "sv" : {
@@ -41538,8 +41538,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Item successfully unpinned"
+            "state" : "translated",
+            "value" : "Predmet je bil uspešno odpet"
           }
         },
         "sv" : {
@@ -41698,8 +41698,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Items"
+            "state" : "translated",
+            "value" : "Predmetov"
           }
         },
         "sv" : {
@@ -41859,8 +41859,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Items from « %@ » moved to vault « %@ »"
+            "state" : "translated",
+            "value" : "Predmeti iz « %@ » premaknjeni v trezor « %@ »"
           }
         },
         "sv" : {
@@ -42019,8 +42019,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Deleted items will be moved here first"
+            "state" : "translated",
+            "value" : "Izbrisani predmeti bodo najprej premaknjeni sem"
           }
         },
         "sv" : {
@@ -42180,8 +42180,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Join shared vault"
+            "state" : "translated",
+            "value" : "Pridružite se skupnemu trezorju"
           }
         },
         "sv" : {
@@ -42341,8 +42341,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Jot down a PIN, code, or note to self"
+            "state" : "translated",
+            "value" : "Zapišite si PIN, kodo ali opombo"
           }
         },
         "sv" : {
@@ -42503,8 +42503,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Just autofill"
+            "state" : "translated",
+            "value" : "Samo samodejno izpolnjevanje"
           }
         },
         "sv" : {
@@ -42665,8 +42665,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Key"
+            "state" : "translated",
+            "value" : "Ključ"
           }
         },
         "sv" : {
@@ -42826,8 +42826,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last 30 days"
+            "state" : "translated",
+            "value" : "Zadnjih 30 dni"
           }
         },
         "sv" : {
@@ -42987,8 +42987,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last 60 days"
+            "state" : "translated",
+            "value" : "Zadnjih 60 dni"
           }
         },
         "sv" : {
@@ -43148,8 +43148,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last 90 days"
+            "state" : "translated",
+            "value" : "Zadnjih 90 dni"
           }
         },
         "sv" : {
@@ -43308,8 +43308,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last autofill"
+            "state" : "translated",
+            "value" : "Zadnje samodejno izpolnjevanje"
           }
         },
         "sv" : {
@@ -43360,8 +43360,8 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Letzte Synchronisierung zum Schutz vor Datenmissbrauch:"
           }
         },
         "el" : {
@@ -43468,8 +43468,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Zadnja sinhronizacija zaščite pred vdori v podatke:"
           }
         },
         "sv" : {
@@ -43629,8 +43629,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last modified"
+            "state" : "translated",
+            "value" : "Zadnjič urejano"
           }
         },
         "sv" : {
@@ -43790,8 +43790,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last two weeks"
+            "state" : "translated",
+            "value" : "Zadnja dva tedna"
           }
         },
         "sv" : {
@@ -43951,8 +43951,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last week"
+            "state" : "translated",
+            "value" : "Prejšnji teden"
           }
         },
         "sv" : {
@@ -44111,8 +44111,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Learn more"
+            "state" : "translated",
+            "value" : "Več o tem"
           }
         },
         "sv" : {
@@ -44271,8 +44271,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Leave vault"
+            "state" : "translated",
+            "value" : "Zapusti trezor"
           }
         },
         "sv" : {
@@ -44431,8 +44431,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Let's get started by creating your first item"
+            "state" : "translated",
+            "value" : "Začnimo z ustvarjanjem vašega prvega predmeta"
           }
         },
         "sv" : {
@@ -44591,8 +44591,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Light"
+            "state" : "translated",
+            "value" : "Svetla"
           }
         },
         "sv" : {
@@ -44752,8 +44752,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Log in to apps instantly"
+            "state" : "translated",
+            "value" : "Takoj se prijavite v aplikacije"
           }
         },
         "sv" : {
@@ -44913,8 +44913,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login"
+            "state" : "translated",
+            "value" : "Prijava"
           }
         },
         "sv" : {
@@ -45075,8 +45075,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login created"
+            "state" : "translated",
+            "value" : "Prijava ustvarjena"
           }
         },
         "sv" : {
@@ -45235,8 +45235,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login for %@"
+            "state" : "translated",
+            "value" : "Prijava za %@"
           }
         },
         "sv" : {
@@ -45397,8 +45397,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login items"
+            "state" : "translated",
+            "value" : "Predmeti za prijavo"
           }
         },
         "sv" : {
@@ -45559,8 +45559,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login moved to trash"
+            "state" : "translated",
+            "value" : "Prijava premaknjena v koš"
           }
         },
         "sv" : {
@@ -45721,8 +45721,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login permanently deleted"
+            "state" : "translated",
+            "value" : "Prijava je trajno izbrisana"
           }
         },
         "sv" : {
@@ -45883,8 +45883,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login restored"
+            "state" : "translated",
+            "value" : "Prijava je obnovljena"
           }
         },
         "sv" : {
@@ -46045,8 +46045,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Login updated"
+            "state" : "translated",
+            "value" : "Prijava posodobljena"
           }
         },
         "sv" : {
@@ -46206,8 +46206,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins"
+            "state" : "translated",
+            "value" : "Prijave"
           }
         },
         "sv" : {
@@ -46318,8 +46318,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "შესვლის ჩანაწერები საიტებით, რომლებსაც 2FA-სთან წვდომა აქვთ, მორგებული კი - ჯერ არა."
           }
         },
         "ko" : {
@@ -46366,8 +46366,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Prijave v spletna mesta, ki imajo na voljo dvojno preverjanje pristnosti, vendar ga še niste nastavili."
           }
         },
         "sv" : {
@@ -46526,8 +46526,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logs"
+            "state" : "translated",
+            "value" : "Dnevniki"
           }
         },
         "sv" : {
@@ -46686,8 +46686,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Manage access"
+            "state" : "translated",
+            "value" : "Upravljanje dostopa"
           }
         },
         "sv" : {
@@ -46846,8 +46846,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Manage account"
+            "state" : "translated",
+            "value" : "Upravljajte račun"
           }
         },
         "sv" : {
@@ -47006,8 +47006,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Manage subscription"
+            "state" : "translated",
+            "value" : "Upravljanje z naročnino"
           }
         },
         "sv" : {
@@ -47167,8 +47167,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Match system"
+            "state" : "translated",
+            "value" : "Sistemsko ujemanje"
           }
         },
         "sv" : {
@@ -47329,8 +47329,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Member Limit"
+            "state" : "translated",
+            "value" : "Omejeno članstvo"
           }
         },
         "sv" : {
@@ -47491,8 +47491,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Members"
+            "state" : "translated",
+            "value" : "Člani"
           }
         },
         "sv" : {
@@ -47652,8 +47652,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Memorable password"
+            "state" : "translated",
+            "value" : "Geslo, ki si ga je mogoče zapomniti"
           }
         },
         "sv" : {
@@ -47812,8 +47812,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Manjkajoče dvojno preverjanje pristnosti"
           }
         },
         "sv" : {
@@ -47973,8 +47973,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "MM / YY"
+            "state" : "translated",
+            "value" : "MM / LL"
           }
         },
         "sv" : {
@@ -48133,8 +48133,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Modified"
+            "state" : "translated",
+            "value" : "Spremenjeno"
           }
         },
         "sv" : {
@@ -48293,8 +48293,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "More info"
+            "state" : "translated",
+            "value" : "Več informacij"
           }
         },
         "sv" : {
@@ -48454,8 +48454,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "More than 90 days"
+            "state" : "translated",
+            "value" : "Več kot 90 dni"
           }
         },
         "sv" : {
@@ -48615,8 +48615,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Move all items to another vault"
+            "state" : "translated",
+            "value" : "Premaknite vse predmete v drug trezor"
           }
         },
         "sv" : {
@@ -48775,8 +48775,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Move to another vault"
+            "state" : "translated",
+            "value" : "Premakni se v drug trezor"
           }
         },
         "sv" : {
@@ -48935,8 +48935,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Move to trash"
+            "state" : "translated",
+            "value" : "Premakni v smetnjak"
           }
         },
         "sv" : {
@@ -49096,8 +49096,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Moving an item will reset its history"
+            "state" : "translated",
+            "value" : "Če premaknete element, boste ponastavili njegovo zgodovino"
           }
         },
         "sv" : {
@@ -49258,8 +49258,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Name on card"
+            "state" : "translated",
+            "value" : "Ime na kartici"
           }
         },
         "sv" : {
@@ -49419,8 +49419,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Never"
+            "state" : "translated",
+            "value" : "Nikoli"
           }
         },
         "sv" : {
@@ -49580,8 +49580,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Next"
+            "state" : "translated",
+            "value" : "Naprej"
           }
         },
         "sv" : {
@@ -49740,8 +49740,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "No logs"
+            "state" : "translated",
+            "value" : "Ni dnevnikov"
           }
         },
         "sv" : {
@@ -49900,8 +49900,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "No logs for %@"
+            "state" : "translated",
+            "value" : "Ni dnevnikov za %@"
           }
         },
         "sv" : {
@@ -50060,8 +50060,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "No suggestions"
+            "state" : "translated",
+            "value" : "Ni namigov"
           }
         },
         "sv" : {
@@ -50221,8 +50221,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "None"
+            "state" : "translated",
+            "value" : "Brez"
           }
         },
         "sv" : {
@@ -50381,8 +50381,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "No vaults"
+            "state" : "translated",
+            "value" : "Brez trezorjev"
           }
         },
         "sv" : {
@@ -50543,8 +50543,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Non editable vault"
+            "state" : "translated",
+            "value" : "Trezor, ki ga ni mogoče urejati"
           }
         },
         "sv" : {
@@ -50704,8 +50704,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Not now"
+            "state" : "translated",
+            "value" : "Ne zdaj"
           }
         },
         "sv" : {
@@ -50864,8 +50864,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note"
+            "state" : "translated",
+            "value" : "Opomba"
           }
         },
         "sv" : {
@@ -51025,8 +51025,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note content copied"
+            "state" : "translated",
+            "value" : "Vsebina opombe je kopirana"
           }
         },
         "sv" : {
@@ -51186,8 +51186,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note created"
+            "state" : "translated",
+            "value" : "Opomba ustvarjena"
           }
         },
         "sv" : {
@@ -51346,8 +51346,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note for %@"
+            "state" : "translated",
+            "value" : "Opomba za %@"
           }
         },
         "sv" : {
@@ -51507,8 +51507,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note moved to trash"
+            "state" : "translated",
+            "value" : "Opomba premaknjena v koš"
           }
         },
         "sv" : {
@@ -51668,8 +51668,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note permanently deleted"
+            "state" : "translated",
+            "value" : "Opomba je trajno izbrisana"
           }
         },
         "sv" : {
@@ -51829,8 +51829,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note restored"
+            "state" : "translated",
+            "value" : "Opomba je obnovljena"
           }
         },
         "sv" : {
@@ -51990,8 +51990,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Note updated"
+            "state" : "translated",
+            "value" : "Opomba posodobljena"
           }
         },
         "sv" : {
@@ -52151,8 +52151,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Notes"
+            "state" : "translated",
+            "value" : "Zapiski"
           }
         },
         "sv" : {
@@ -52312,8 +52312,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Now you can unlock Proton Pass only when you need it⏤quickly and securely"
+            "state" : "translated",
+            "value" : "Zdaj lahko Proton Pass odklenete samo, ko ga potrebujete⏤hitro in varno"
           }
         },
         "sv" : {
@@ -52473,8 +52473,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Numbers"
+            "state" : "translated",
+            "value" : "Številke"
           }
         },
         "sv" : {
@@ -52634,8 +52634,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Numbers and Symbols"
+            "state" : "translated",
+            "value" : "Številke in simboli"
           }
         },
         "sv" : {
@@ -52794,8 +52794,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "OK"
+            "state" : "translated",
+            "value" : "V REDU"
           }
         },
         "sv" : {
@@ -52955,8 +52955,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "One tap and⏤presto!⏤your username and password are filled in instantly"
+            "state" : "translated",
+            "value" : "En dotik in — hitro! — vaše uporabniško ime in geslo sta v trenutku izpolnjena"
           }
         },
         "sv" : {
@@ -53115,8 +53115,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Open"
+            "state" : "translated",
+            "value" : "Odpri"
           }
         },
         "sv" : {
@@ -53276,8 +53276,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Open **Settings** app"
+            "state" : "translated",
+            "value" : "Odprite aplikacijo **Nastavitve**"
           }
         },
         "sv" : {
@@ -53436,8 +53436,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Open camera"
+            "state" : "translated",
+            "value" : "Odpri kamero"
           }
         },
         "sv" : {
@@ -53596,8 +53596,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Open Settings"
+            "state" : "translated",
+            "value" : "Odpri nastavitve"
           }
         },
         "sv" : {
@@ -53757,8 +53757,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Open System Settings → Passwords → Password Options"
+            "state" : "translated",
+            "value" : "Odprite sistemske nastavitve → Gesla → Možnosti gesla"
           }
         },
         "sv" : {
@@ -53791,7 +53791,7 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53875,7 +53875,7 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53917,13 +53917,13 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -54078,8 +54078,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Other"
+            "state" : "translated",
+            "value" : "Drugo"
           }
         },
         "sv" : {
@@ -54238,8 +54238,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Other items"
+            "state" : "translated",
+            "value" : "Drugi predmeti"
           }
         },
         "sv" : {
@@ -54398,8 +54398,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Our welcome gift to you"
+            "state" : "translated",
+            "value" : "Naše darilo dobrodošlice za vas"
           }
         },
         "sv" : {
@@ -54560,8 +54560,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Owner"
+            "state" : "translated",
+            "value" : "Lastnik"
           }
         },
         "sv" : {
@@ -54720,8 +54720,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Passkey"
+            "state" : "translated",
+            "value" : "Identifikacijski ključ"
           }
         },
         "sv" : {
@@ -54880,8 +54880,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Password"
+            "state" : "translated",
+            "value" : "Geslo"
           }
         },
         "sv" : {
@@ -55041,8 +55041,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Password copied"
+            "state" : "translated",
+            "value" : "Geslo je bilo kopirano"
           }
         },
         "sv" : {
@@ -55201,8 +55201,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Paste"
+            "state" : "translated",
+            "value" : "Prilepi"
           }
         },
         "sv" : {
@@ -55363,8 +55363,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pending account creation"
+            "state" : "translated",
+            "value" : "Ustvarjanje računa v teku"
           }
         },
         "sv" : {
@@ -55524,8 +55524,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Periods"
+            "state" : "translated",
+            "value" : "Pike"
           }
         },
         "sv" : {
@@ -55684,8 +55684,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Permanently delete"
+            "state" : "translated",
+            "value" : "Trajno izbriši"
           }
         },
         "sv" : {
@@ -56135,26 +56135,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
+                  "state" : "translated",
+                  "value" : "Trajno izbrisani %lld elementi"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld item"
+                  "state" : "translated",
+                  "value" : "Trajno izbrisan %lld predmet"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
+                  "state" : "translated",
+                  "value" : "Trajno izbrisani %lld predmeti"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
+                  "state" : "translated",
+                  "value" : "Trajno izbrisana %lld predmeta"
                 }
               }
             }
@@ -56372,8 +56372,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Personal"
+            "state" : "translated",
+            "value" : "Osebno"
           }
         },
         "sv" : {
@@ -56534,8 +56534,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pin "
+            "state" : "translated",
+            "value" : "Pripni "
           }
         },
         "sv" : {
@@ -56694,8 +56694,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "PIN Code"
+            "state" : "translated",
+            "value" : "PIN koda"
           }
         },
         "sv" : {
@@ -56855,8 +56855,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "PIN code set"
+            "state" : "translated",
+            "value" : "Koda PIN je nastavljena"
           }
         },
         "sv" : {
@@ -57015,8 +57015,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "PIN number"
+            "state" : "translated",
+            "value" : "Številka PIN"
           }
         },
         "sv" : {
@@ -57176,8 +57176,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "PINs not matched"
+            "state" : "translated",
+            "value" : "PIN-i se ne ujemajo"
           }
         },
         "sv" : {
@@ -57336,8 +57336,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please allow camera access in Settings"
+            "state" : "translated",
+            "value" : "Dovolite dostop do kamere v nastavitvah"
           }
         },
         "sv" : {
@@ -57497,8 +57497,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please authenticate"
+            "state" : "translated",
+            "value" : "Prosimo za preverjanje pristnosti"
           }
         },
         "sv" : {
@@ -57657,8 +57657,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please contact us to investigate the issue"
+            "state" : "translated",
+            "value" : "Prosimo kontaktirajte nas, da raziščemo težavo"
           }
         },
         "sv" : {
@@ -57818,8 +57818,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said."
+            "state" : "translated",
+            "value" : "Težavo čim bolj podrobno opišite. Če se je pojavilo sporočilo o napaki, nam sporočite, kaj je v njem pisalo."
           }
         },
         "sv" : {
@@ -57978,8 +57978,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please keep the app open."
+            "state" : "translated",
+            "value" : "Pustite aplikacijo odprto."
           }
         },
         "sv" : {
@@ -58138,8 +58138,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please log in again"
+            "state" : "translated",
+            "value" : "Prosimo, prijavite se znova"
           }
         },
         "sv" : {
@@ -58298,8 +58298,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Prefix"
+            "state" : "translated",
+            "value" : "Predpona"
           }
         },
         "sv" : {
@@ -58459,8 +58459,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Prefix can not be empty"
+            "state" : "translated",
+            "value" : "Predpona ne sme biti prazna"
           }
         },
         "sv" : {
@@ -58620,8 +58620,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Prefix can not contain 2 consecutive dots (..)"
+            "state" : "translated",
+            "value" : "Predpona ne sme vsebovati 2 zaporednih pik (..)"
           }
         },
         "sv" : {
@@ -58781,8 +58781,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)"
+            "state" : "translated",
+            "value" : "Predpona mora vsebovati le alfanumerične male črke (a-z, 0-9), piko (.), vezaj (-) in podčrtaj (_)"
           }
         },
         "sv" : {
@@ -58942,8 +58942,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Preparing..."
+            "state" : "translated",
+            "value" : "Priprava..."
           }
         },
         "sv" : {
@@ -59103,8 +59103,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Privacy policy"
+            "state" : "translated",
+            "value" : "Pravilnik o zasebnosti"
           }
         },
         "sv" : {
@@ -59264,8 +59264,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Profile"
+            "state" : "translated",
+            "value" : "Profil"
           }
         },
         "sv" : {
@@ -59425,8 +59425,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Protect your most sensitive data"
+            "state" : "translated",
+            "value" : "Zaščitite svoje najbolj občutljive podatke"
           }
         },
         "sv" : {
@@ -59747,8 +59747,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Quickly pick a login item from suggestions above the keyboard"
+            "state" : "translated",
+            "value" : "Hitro izberite element za prijavo med predlogi nad tipkovnico"
           }
         },
         "sv" : {
@@ -59907,8 +59907,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "QuickType bar suggestions"
+            "state" : "translated",
+            "value" : "Predlogi vrstice QuickType"
           }
         },
         "sv" : {
@@ -60068,8 +60068,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Random password"
+            "state" : "translated",
+            "value" : "Naključno geslo"
           }
         },
         "sv" : {
@@ -60229,8 +60229,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "read"
+            "state" : "translated",
+            "value" : "prebrano"
           }
         },
         "sv" : {
@@ -60389,8 +60389,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Recent searches"
+            "state" : "translated",
+            "value" : "Nedavna iskanja"
           }
         },
         "sv" : {
@@ -60550,8 +60550,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reject invitation"
+            "state" : "translated",
+            "value" : "Zavrni povabilo"
           }
         },
         "sv" : {
@@ -60710,8 +60710,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Remove alias"
+            "state" : "translated",
+            "value" : "Odstrani vzdevek"
           }
         },
         "sv" : {
@@ -60870,8 +60870,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Remove field"
+            "state" : "translated",
+            "value" : "Odstrani polje"
           }
         },
         "sv" : {
@@ -61031,8 +61031,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Repeat PIN code"
+            "state" : "translated",
+            "value" : "Ponovite kodo PIN"
           }
         },
         "sv" : {
@@ -61192,8 +61192,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Report a problem"
+            "state" : "translated",
+            "value" : "Prijavi težavo"
           }
         },
         "sv" : {
@@ -61353,8 +61353,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Report successfully sent"
+            "state" : "translated",
+            "value" : "Poročilo uspešno poslano"
           }
         },
         "sv" : {
@@ -61513,8 +61513,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Resend invitation"
+            "state" : "translated",
+            "value" : "Ponovno pošlji povabilo"
           }
         },
         "sv" : {
@@ -61675,8 +61675,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reset filters"
+            "state" : "translated",
+            "value" : "Ponastavi filtre"
           }
         },
         "sv" : {
@@ -61836,8 +61836,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restart Proton Pass"
+            "state" : "translated",
+            "value" : "Znova zaženite Proton Pass"
           }
         },
         "sv" : {
@@ -61996,8 +61996,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restore"
+            "state" : "translated",
+            "value" : "Obnovitev"
           }
         },
         "sv" : {
@@ -62156,8 +62156,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restore all items"
+            "state" : "translated",
+            "value" : "Obnovi vse predmete"
           }
         },
         "sv" : {
@@ -62316,8 +62316,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restore this version?"
+            "state" : "translated",
+            "value" : "Obnovi to različico?"
           }
         },
         "sv" : {
@@ -62767,26 +62767,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
+                  "state" : "translated",
+                  "value" : "Obnovljeni %lld predmeti"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld item"
+                  "state" : "translated",
+                  "value" : "Obnovljen %lld predmet"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
+                  "state" : "translated",
+                  "value" : "Obnovljeni %lld predmeti"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
+                  "state" : "translated",
+                  "value" : "Obnovljena %lld predmeta"
                 }
               }
             }
@@ -63002,8 +63002,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Results"
+            "state" : "translated",
+            "value" : "Rezultati"
           }
         },
         "sv" : {
@@ -63454,26 +63454,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljeno %lld-krat"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld time"
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljeno %lld-krat"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljeno %lld-krat"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
+                  "state" : "translated",
+                  "value" : "Ponovno uporabljeno %lld-krat"
                 }
               }
             }
@@ -63689,8 +63689,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Ponovno uporabljena gesla"
           }
         },
         "sv" : {
@@ -63849,8 +63849,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reveal"
+            "state" : "translated",
+            "value" : "Pokaži"
           }
         },
         "sv" : {
@@ -64011,8 +64011,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Review and share"
+            "state" : "translated",
+            "value" : "Preglejte in delite"
           }
         },
         "sv" : {
@@ -64173,8 +64173,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Revoke access"
+            "state" : "translated",
+            "value" : "Odvzemi dostop"
           }
         },
         "sv" : {
@@ -64335,8 +64335,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Save"
+            "state" : "translated",
+            "value" : "Shrani"
           }
         },
         "sv" : {
@@ -64495,8 +64495,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in all vaults"
+            "state" : "translated",
+            "value" : "Iskanje v vseh trezorjih"
           }
         },
         "sv" : {
@@ -64657,8 +64657,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in oldest 2 vaults"
+            "state" : "translated",
+            "value" : "Išči v najstarejših 2 trezorjih"
           }
         },
         "sv" : {
@@ -64818,8 +64818,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in Trash..."
+            "state" : "translated",
+            "value" : "Iskanje v smetnjaku…"
           }
         },
         "sv" : {
@@ -64980,8 +64980,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
+            "state" : "translated",
+            "value" : "Iskanje pripetih predmetov"
           }
         },
         "sv" : {
@@ -65140,8 +65140,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable content"
+            "state" : "translated",
+            "value" : "Iskalna vsebina"
           }
         },
         "sv" : {
@@ -65300,8 +65300,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable vaults"
+            "state" : "translated",
+            "value" : "Iskalni trezorji"
           }
         },
         "sv" : {
@@ -65462,8 +65462,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Secure password manager and more"
+            "state" : "translated",
+            "value" : "Varen upravitelj gesel in več"
           }
         },
         "sv" : {
@@ -65623,8 +65623,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Securely store your payment information"
+            "state" : "translated",
+            "value" : "Varno shranite svoje podatke o plačilu"
           }
         },
         "sv" : {
@@ -65784,8 +65784,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security"
+            "state" : "translated",
+            "value" : "Varnost"
           }
         },
         "sv" : {
@@ -65944,8 +65944,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Center za varnost"
           }
         },
         "sv" : {
@@ -66104,8 +66104,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security code"
+            "state" : "translated",
+            "value" : "Varnostna koda"
           }
         },
         "sv" : {
@@ -66265,8 +66265,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security code copied"
+            "state" : "translated",
+            "value" : "Varnostna koda je kopirana"
           }
         },
         "sv" : {
@@ -66427,8 +66427,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "See all"
+            "state" : "translated",
+            "value" : "Poglejte vse"
           }
         },
         "sv" : {
@@ -66589,8 +66589,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "See the shared vault"
+            "state" : "translated",
+            "value" : "Oglejte si skupni trezor"
           }
         },
         "sv" : {
@@ -66749,8 +66749,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select **Proton Pass**"
+            "state" : "translated",
+            "value" : "Izberi **Proton Pass**"
           }
         },
         "sv" : {
@@ -66909,8 +66909,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select a vault"
+            "state" : "translated",
+            "value" : "Izberi trezor"
           }
         },
         "sv" : {
@@ -67071,8 +67071,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Content"
+            "state" : "translated",
+            "value" : "Izberi vsebino"
           }
         },
         "sv" : {
@@ -67233,8 +67233,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select items"
+            "state" : "translated",
+            "value" : "Izberite predmete"
           }
         },
         "sv" : {
@@ -67393,8 +67393,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Passkey"
+            "state" : "translated",
+            "value" : "Izberi identifikacijski ključ"
           }
         },
         "sv" : {
@@ -67553,8 +67553,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Selected vaults"
+            "state" : "translated",
+            "value" : "Izbrani trezorji"
           }
         },
         "sv" : {
@@ -67713,8 +67713,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Send logs"
+            "state" : "translated",
+            "value" : "Pošlji dnevnike"
           }
         },
         "sv" : {
@@ -67875,8 +67875,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel is an advanced account protection program powered by sophisticated AI systems and specialists working around the clock to protect you from bad actors and security threats."
+            "state" : "translated",
+            "value" : "Proton Sentinel je napreden program za zaščito računa, ki ga poganjajo prefinjeni sistemi umetne inteligence in strokovnjaki, ki delajo 24 ur na dan, da vas zaščitijo pred zlobnimi akterji in varnostnimi grožnjami."
           }
         },
         "sv" : {
@@ -68037,8 +68037,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Set access level"
+            "state" : "translated",
+            "value" : "Nastavite raven dostopa"
           }
         },
         "sv" : {
@@ -68199,8 +68199,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Set access level for all members"
+            "state" : "translated",
+            "value" : "Nastavite raven dostopa za vse člane"
           }
         },
         "sv" : {
@@ -68360,8 +68360,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Set PIN code"
+            "state" : "translated",
+            "value" : "Nastavi kodo PIN"
           }
         },
         "sv" : {
@@ -68521,8 +68521,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Set Proton Pass to unlock with your face or fingerprint so only you have access"
+            "state" : "translated",
+            "value" : "Nastavite Proton Pass za odklepanje z obrazom ali prstnim odtisom, tako da imate samo vi dostop"
           }
         },
         "sv" : {
@@ -68683,8 +68683,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Set up 2FA"
+            "state" : "translated",
+            "value" : "Nastavitev 2FA"
           }
         },
         "sv" : {
@@ -68843,8 +68843,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Settings"
+            "state" : "translated",
+            "value" : "Nastavitve"
           }
         },
         "sv" : {
@@ -69003,8 +69003,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Share"
+            "state" : "translated",
+            "value" : "Deli"
           }
         },
         "sv" : {
@@ -69163,8 +69163,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Share clipboard between devices"
+            "state" : "translated",
+            "value" : "Delite odložišče med napravami"
           }
         },
         "sv" : {
@@ -69323,8 +69323,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Share this vault"
+            "state" : "translated",
+            "value" : "Delite ta trezor"
           }
         },
         "sv" : {
@@ -69485,8 +69485,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Share Vault"
+            "state" : "translated",
+            "value" : "Skupni trezor"
           }
         },
         "sv" : {
@@ -69646,8 +69646,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Share with"
+            "state" : "translated",
+            "value" : "Deli z"
           }
         },
         "sv" : {
@@ -69807,8 +69807,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Share with more people"
+            "state" : "translated",
+            "value" : "Delite z več ljudmi"
           }
         },
         "sv" : {
@@ -69969,8 +69969,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Shared vault"
+            "state" : "translated",
+            "value" : "Skupni trezor"
           }
         },
         "sv" : {
@@ -70131,8 +70131,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Show"
+            "state" : "translated",
+            "value" : "Pokaži"
           }
         },
         "sv" : {
@@ -70291,8 +70291,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Show content in search"
+            "state" : "translated",
+            "value" : "Pokaži vsebino v iskanju"
           }
         },
         "sv" : {
@@ -70451,8 +70451,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Show large"
+            "state" : "translated",
+            "value" : "Pokaži veliko"
           }
         },
         "sv" : {
@@ -70611,8 +70611,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Show me how"
+            "state" : "translated",
+            "value" : "Pokaži mi kako"
           }
         },
         "sv" : {
@@ -70771,8 +70771,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Show website thumbnails"
+            "state" : "translated",
+            "value" : "Pokaži sličice spletnega mesta"
           }
         },
         "sv" : {
@@ -70931,8 +70931,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sign out"
+            "state" : "translated",
+            "value" : "Odjava"
           }
         },
         "sv" : {
@@ -71093,8 +71093,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "Razvrsti po"
           }
         },
         "sv" : {
@@ -71254,8 +71254,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Spaces"
+            "state" : "translated",
+            "value" : "Presledki"
           }
         },
         "sv" : {
@@ -71415,8 +71415,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Special characters"
+            "state" : "translated",
+            "value" : "Posebni znaki"
           }
         },
         "sv" : {
@@ -71575,8 +71575,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Spotlight"
+            "state" : "translated",
+            "value" : "V ospredju"
           }
         },
         "sv" : {
@@ -71736,8 +71736,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Start using Proton Pass"
+            "state" : "translated",
+            "value" : "Začnite uporabljati Proton Pass"
           }
         },
         "sv" : {
@@ -71898,8 +71898,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Stop item creation process"
+            "state" : "translated",
+            "value" : "Ustavi postopek ustvarjanja predmeta"
           }
         },
         "sv" : {
@@ -72059,8 +72059,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive."
+            "state" : "translated",
+            "value" : "Nehaj deliti svoj pravi e-poštni naslov. Namesto tega ga skrijte z e-poštnimi vzdevki⏤a ekskluzivno za Proton Pass."
           }
         },
         "sv" : {
@@ -72221,8 +72221,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Strong"
+            "state" : "translated",
+            "value" : "Močno"
           }
         },
         "sv" : {
@@ -72382,8 +72382,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Subscription plan"
+            "state" : "translated",
+            "value" : "Naročnina"
           }
         },
         "sv" : {
@@ -72542,8 +72542,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Suffix"
+            "state" : "translated",
+            "value" : "Pripona"
           }
         },
         "sv" : {
@@ -72704,8 +72704,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggestions for %@"
+            "state" : "translated",
+            "value" : "Namigi za %@"
           }
         },
         "sv" : {
@@ -72864,8 +72864,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sync complete"
+            "state" : "translated",
+            "value" : "Sinhronizacija končana"
           }
         },
         "sv" : {
@@ -73025,8 +73025,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Syncing"
+            "state" : "translated",
+            "value" : "Sinhronizacija"
           }
         },
         "sv" : {
@@ -73186,8 +73186,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Syncing items..."
+            "state" : "translated",
+            "value" : "Sinhronizacija predmetov..."
           }
         },
         "sv" : {
@@ -73348,8 +73348,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "System default"
+            "state" : "translated",
+            "value" : "Sistemsko privzeto"
           }
         },
         "sv" : {
@@ -73508,8 +73508,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Tap **Password Options**"
+            "state" : "translated",
+            "value" : "Tapnite **Možnosti gesla**"
           }
         },
         "sv" : {
@@ -73668,8 +73668,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Tap **Passwords**"
+            "state" : "translated",
+            "value" : "Tapnite **Gesla**"
           }
         },
         "sv" : {
@@ -73829,8 +73829,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Terms of service"
+            "state" : "translated",
+            "value" : "Pogoji uporabe"
           }
         },
         "sv" : {
@@ -73991,8 +73991,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Text"
+            "state" : "translated",
+            "value" : "Besedilo"
           }
         },
         "sv" : {
@@ -74151,8 +74151,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Text custom field"
+            "state" : "translated",
+            "value" : "Besedilno polje po meri"
           }
         },
         "sv" : {
@@ -74313,8 +74313,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The alias prefix is too long"
+            "state" : "translated",
+            "value" : "Predpona vzdevka je predolga"
           }
         },
         "sv" : {
@@ -74473,8 +74473,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The app is now ready to use"
+            "state" : "translated",
+            "value" : "Aplikacija je zdaj pripravljena za uporabo"
           }
         },
         "sv" : {
@@ -74633,8 +74633,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Naslednji predmeti so izključeni iz"
           }
         },
         "sv" : {
@@ -74795,8 +74795,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The item will be moved to the new vault"
+            "state" : "translated",
+            "value" : "Predmet bo premaknjen v nov trezor"
           }
         },
         "sv" : {
@@ -74955,8 +74955,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Theme"
+            "state" : "translated",
+            "value" : "Tema"
           }
         },
         "sv" : {
@@ -75007,8 +75007,8 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Diese Konten tauchen bei Datenmissbrauch auf. Aktualisiere sofort deine Anmeldedaten."
           }
         },
         "el" : {
@@ -75115,8 +75115,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Ti računi se pojavljajo pri vdorih v podatke. Takoj posodobite svoje poverilnice."
           }
         },
         "sv" : {
@@ -75167,8 +75167,8 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Dieses Passwort taucht bei Datenmissbrauch auf. Aktualisiere sofort deine Anmeldedaten."
           }
         },
         "el" : {
@@ -75275,8 +75275,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Ta gesla se pojavljajo pri vdorih v podatke. Takoj posodobite svoje poverilnice."
           }
         },
         "sv" : {
@@ -75411,8 +75411,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "To konto jest zagrożone, odwiedź serwis i zmień swoje hasło."
           }
         },
         "pt-BR" : {
@@ -75435,8 +75435,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Vaš račun je ranljiv, pojdite v nastavitve in spremenite geslo."
           }
         },
         "sv" : {
@@ -75596,8 +75596,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This is your last attempt. You will be logged out after failing to authenticate again."
+            "state" : "translated",
+            "value" : "To je tvoj zadnji poskus. Po ponovnem neuspešnem preverjanju pristnosti boste odjavljeni."
           }
         },
         "sv" : {
@@ -75756,8 +75756,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This login item already contains a 2FA secret"
+            "state" : "translated",
+            "value" : "Ta prijavni element že vsebuje skrivnost 2FA"
           }
         },
         "sv" : {
@@ -75916,8 +75916,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This might take a few minutes."
+            "state" : "translated",
+            "value" : "To lahko traja nekaj minut"
           }
         },
         "sv" : {
@@ -76077,8 +76077,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
+            "state" : "translated",
+            "value" : "S tem boste trajno izbrisali trezor « %@ » in vso njegovo vsebino. Vnesite ime trezorja, da potrdite izbris."
           }
         },
         "sv" : {
@@ -76237,8 +76237,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This will permanently delete your Proton account and all of its data, including email, calendars and data stored in Drive. You will not be able to reactivate this account."
+            "state" : "translated",
+            "value" : "S tem boste trajno izbrisali svoj račun Proton in vse njegove podatke, vključno z e-pošto, koledarji in podatki, shranjenimi v storitvi Drive. Tega računa ne boste mogli ponovno aktivirati."
           }
         },
         "sv" : {
@@ -76397,8 +76397,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Title"
+            "state" : "translated",
+            "value" : "Naslov"
           }
         },
         "sv" : {
@@ -76558,8 +76558,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Title (A-Z)"
+            "state" : "translated",
+            "value" : "Naslov (A–Z)"
           }
         },
         "sv" : {
@@ -76719,8 +76719,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Title (Z-A)"
+            "state" : "translated",
+            "value" : "Naslov (Z–A)"
           }
         },
         "sv" : {
@@ -76879,8 +76879,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Title and note"
+            "state" : "translated",
+            "value" : "Naslov in opomba"
           }
         },
         "sv" : {
@@ -77039,8 +77039,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "To interact with your other vaults, you need to upgrade your account."
+            "state" : "translated",
+            "value" : "Za interakcijo z drugimi trezorji morate nadgraditi svoj račun."
           }
         },
         "sv" : {
@@ -77200,8 +77200,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Today"
+            "state" : "translated",
+            "value" : "Danes"
           }
         },
         "sv" : {
@@ -77361,8 +77361,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "TOTP copied"
+            "state" : "translated",
+            "value" : "TOTP kopiran"
           }
         },
         "sv" : {
@@ -77683,8 +77683,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID enabled"
+            "state" : "translated",
+            "value" : "ID na dotik omogočen"
           }
         },
         "sv" : {
@@ -77844,8 +77844,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Transfer ownership"
+            "state" : "translated",
+            "value" : "Prenos lastništva"
           }
         },
         "sv" : {
@@ -78006,8 +78006,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Transfer ownership of this vault to %@?"
+            "state" : "translated",
+            "value" : "Želite prenesti lastništvo tega trezorja na %@?"
           }
         },
         "sv" : {
@@ -78166,8 +78166,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Trash"
+            "state" : "translated",
+            "value" : "Smetnjak"
           }
         },
         "sv" : {
@@ -78327,8 +78327,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Trash empty"
+            "state" : "translated",
+            "value" : "Smetnjak je prazen"
           }
         },
         "sv" : {
@@ -78487,8 +78487,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Try again"
+            "state" : "translated",
+            "value" : "Poskusite ponovno"
           }
         },
         "sv" : {
@@ -78648,8 +78648,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Try searching using different spelling or keywords"
+            "state" : "translated",
+            "value" : "Poskusite iskati z drugačnim črkovanjem ali ključnimi besedami"
           }
         },
         "sv" : {
@@ -78808,8 +78808,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Turn on **Autofill Passwords**"
+            "state" : "translated",
+            "value" : "Vklopite **Samodejno izpolnjevanje gesel**"
           }
         },
         "sv" : {
@@ -78969,8 +78969,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Turn on AutoFill"
+            "state" : "translated",
+            "value" : "Vklopi samodejno izpolnjevanje"
           }
         },
         "sv" : {
@@ -79130,8 +79130,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Turn on AutoFill Passwords and allow filling from Proton Pass"
+            "state" : "translated",
+            "value" : "Vklopite samodejno izpolnjevanje gesel in dovolite polnjenje iz Proton Pass"
           }
         },
         "sv" : {
@@ -79292,8 +79292,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours"
+            "state" : "translated",
+            "value" : "Vklopite samodejno izpolnjevanje, da Proton Pass izpolni podatke za prijavo namesto vas⏤10 sekund, kar vam bo prihranilo ure"
           }
         },
         "sv" : {
@@ -79452,8 +79452,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Type"
+            "state" : "translated",
+            "value" : "Tip"
           }
         },
         "sv" : {
@@ -79613,8 +79613,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Type your PIN again to confirm"
+            "state" : "translated",
+            "value" : "Za potrditev znova vnesite PIN"
           }
         },
         "sv" : {
@@ -79774,8 +79774,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Underscores"
+            "state" : "translated",
+            "value" : "Podčrtaji"
           }
         },
         "sv" : {
@@ -79935,8 +79935,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Undo"
+            "state" : "translated",
+            "value" : "Razveljavi"
           }
         },
         "sv" : {
@@ -80096,8 +80096,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlimited email aliases"
+            "state" : "translated",
+            "value" : "Neomejeno število e-poštnih vzdevkov"
           }
         },
         "sv" : {
@@ -80257,8 +80257,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlock"
+            "state" : "translated",
+            "value" : "Odkleni"
           }
         },
         "sv" : {
@@ -80418,8 +80418,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlock the app with this code"
+            "state" : "translated",
+            "value" : "Odklenite aplikacijo s to kodo"
           }
         },
         "sv" : {
@@ -80578,8 +80578,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlock with"
+            "state" : "translated",
+            "value" : "Odkleni z"
           }
         },
         "sv" : {
@@ -80740,8 +80740,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unpin"
+            "state" : "translated",
+            "value" : "Odpni"
           }
         },
         "sv" : {
@@ -80900,8 +80900,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Untitled"
+            "state" : "translated",
+            "value" : "Brez naslova"
           }
         },
         "sv" : {
@@ -81062,8 +81062,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Update vault"
+            "state" : "translated",
+            "value" : "Posodobi trezor"
           }
         },
         "sv" : {
@@ -81222,8 +81222,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade"
+            "state" : "translated",
+            "value" : "Nadgradi"
           }
         },
         "sv" : {
@@ -81382,8 +81382,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade for custom domains"
+            "state" : "translated",
+            "value" : "Nadgradnja za domene po meri"
           }
         },
         "sv" : {
@@ -81542,8 +81542,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade for more mailboxes"
+            "state" : "translated",
+            "value" : "Nadgradite za več nabiralnikov"
           }
         },
         "sv" : {
@@ -81702,8 +81702,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade now"
+            "state" : "translated",
+            "value" : "Nadgradi zdaj"
           }
         },
         "sv" : {
@@ -81864,8 +81864,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade now to share with more people"
+            "state" : "translated",
+            "value" : "Nadgradite zdaj za skupno rabo z več ljudmi"
           }
         },
         "sv" : {
@@ -82024,8 +82024,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade to add custom fields"
+            "state" : "translated",
+            "value" : "Nadgradite, da dodate polja po meri"
           }
         },
         "sv" : {
@@ -82184,8 +82184,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade to create credit cards"
+            "state" : "translated",
+            "value" : "Nadgradite za ustvarjanje kreditnih kartic"
           }
         },
         "sv" : {
@@ -82345,8 +82345,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use %@"
+            "state" : "translated",
+            "value" : "Uporabi %@"
           }
         },
         "sv" : {
@@ -82506,8 +82506,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use email aliases to protect your inbox and identity"
+            "state" : "translated",
+            "value" : "Uporabite e-poštne vzdevke, da zaščitite svoj nabiralnik in identiteto"
           }
         },
         "sv" : {
@@ -82667,8 +82667,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Face ID fails"
+            "state" : "translated",
+            "value" : "Uporabite sistemsko geslo, ko obrazni ID ne uspe"
           }
         },
         "sv" : {
@@ -82701,8 +82701,8 @@
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Выкарыстоўваць сістэмны код доступу пры збоі Optic ID"
           }
         },
         "cs" : {
@@ -82744,7 +82744,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilize el código de acceso del sistema cuando Optic ID no funciona."
+            "value" : "Utilice el código de acceso del sistema cuando Optic ID no funciona."
           }
         },
         "fi" : {
@@ -82785,8 +82785,8 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Optic ID 실패시 시스템 비밀번호 사용하기"
           }
         },
         "nl" : {
@@ -82827,14 +82827,14 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Uporabite sistemsko geslo, ko Optic ID na dotik ne uspe"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Använd systemets lösenkod när Optic ID misslyckas"
           }
         },
         "tr" : {
@@ -82988,8 +82988,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Touch ID fails"
+            "state" : "translated",
+            "value" : "Uporabite sistemsko geslo, ko ID na dotik ne uspe"
           }
         },
         "sv" : {
@@ -83148,8 +83148,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use vaults to share this item with another person"
+            "state" : "translated",
+            "value" : "Uporabite trezorje za skupno rabo tega predmeta z drugo osebo"
           }
         },
         "sv" : {
@@ -83310,8 +83310,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Username"
+            "state" : "translated",
+            "value" : "Uporabniško ime"
           }
         },
         "sv" : {
@@ -83471,8 +83471,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Username copied"
+            "state" : "translated",
+            "value" : "Uporabniško ime je kopirano"
           }
         },
         "sv" : {
@@ -83632,8 +83632,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Username or email address"
+            "state" : "translated",
+            "value" : "Uporabniško ime ali elektronski naslov"
           }
         },
         "sv" : {
@@ -83792,8 +83792,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault"
+            "state" : "translated",
+            "value" : "Trezor"
           }
         },
         "sv" : {
@@ -83953,8 +83953,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault « %@ » deleted"
+            "state" : "translated",
+            "value" : "Trezor « %@ » izbrisan"
           }
         },
         "sv" : {
@@ -84114,8 +84114,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault created"
+            "state" : "translated",
+            "value" : "Trezor ustvarjen"
           }
         },
         "sv" : {
@@ -84274,8 +84274,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault has been transferred"
+            "state" : "translated",
+            "value" : "Trezor je bil prenesen"
           }
         },
         "sv" : {
@@ -84434,8 +84434,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID"
+            "state" : "translated",
+            "value" : "ID trezorja"
           }
         },
         "sv" : {
@@ -84594,8 +84594,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID copied"
+            "state" : "translated",
+            "value" : "ID trezorja je kopiran"
           }
         },
         "sv" : {
@@ -84755,8 +84755,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault name"
+            "state" : "translated",
+            "value" : "Ime trezorja"
           }
         },
         "sv" : {
@@ -84917,8 +84917,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault shared with you"
+            "state" : "translated",
+            "value" : "Trezor v skupni rabi z vami"
           }
         },
         "sv" : {
@@ -85078,8 +85078,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault updated"
+            "state" : "translated",
+            "value" : "Trezor posodobljen"
           }
         },
         "sv" : {
@@ -85240,8 +85240,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vaults can’t contain more than 3 users with a free plan."
+            "state" : "translated",
+            "value" : "Trezorji ne smejo vsebovati več kot 3 uporabnike z brezplačnim načrtom."
           }
         },
         "sv" : {
@@ -85402,8 +85402,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vaults can’t contain more than 10 users."
+            "state" : "translated",
+            "value" : "Trezorji ne smejo vsebovati več kot 10 uporabnikov."
           }
         },
         "sv" : {
@@ -85562,8 +85562,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Version %@"
+            "state" : "translated",
+            "value" : "Različica %@"
           }
         },
         "sv" : {
@@ -85722,8 +85722,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "View"
+            "state" : "translated",
+            "value" : "Pogled"
           }
         },
         "sv" : {
@@ -85882,8 +85882,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "View alias"
+            "state" : "translated",
+            "value" : "Prikaži vzdevek"
           }
         },
         "sv" : {
@@ -86042,8 +86042,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "View and edit details for this alias on the separate alias page."
+            "state" : "translated",
+            "value" : "Oglejte si in uredite podrobnosti za ta vzdevek na ločeni strani za vzdevek."
           }
         },
         "sv" : {
@@ -86202,8 +86202,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "View history"
+            "state" : "translated",
+            "value" : "Prikaži zgodovino"
           }
         },
         "sv" : {
@@ -86362,8 +86362,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "View members"
+            "state" : "translated",
+            "value" : "Prikaži članov"
           }
         },
         "sv" : {
@@ -86524,8 +86524,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Viewer"
+            "state" : "translated",
+            "value" : "Preglednik"
           }
         },
         "sv" : {
@@ -86685,8 +86685,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vote for new features"
+            "state" : "translated",
+            "value" : "Glasujte za nove funkcije"
           }
         },
         "sv" : {
@@ -86847,8 +86847,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Vulnerable"
+            "state" : "translated",
+            "value" : "Slab"
           }
         },
         "sv" : {
@@ -87007,8 +87007,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Watch a short video on how to use Proton Pass"
+            "state" : "translated",
+            "value" : "Oglejte si kratek video o uporabi Proton Pass"
           }
         },
         "sv" : {
@@ -87167,8 +87167,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "We are downloading and decrypting your items."
+            "state" : "translated",
+            "value" : "Prenašamo in dešifriramo vaše predmete."
           }
         },
         "sv" : {
@@ -87329,8 +87329,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak"
+            "state" : "translated",
+            "value" : "Šibko"
           }
         },
         "sv" : {
@@ -87489,8 +87489,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Šibka gesla"
           }
         },
         "sv" : {
@@ -87601,8 +87601,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "სუსტი პაროლების მიხვედრა ადვილია. შექმენით ძლიერი პაროლები, რომ თქვენი ანგარიში უსაფრთხოდ იყოს."
           }
         },
         "ko" : {
@@ -87649,8 +87649,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Šibka gesla je lažje uganiti. Ustvarite močna gesla, da bodo vaši računi varni."
           }
         },
         "sv" : {
@@ -87809,8 +87809,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Website"
+            "state" : "translated",
+            "value" : "Spletna stran"
           }
         },
         "sv" : {
@@ -87970,8 +87970,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Website copied"
+            "state" : "translated",
+            "value" : "Spletna stran kopirana"
           }
         },
         "sv" : {
@@ -88131,8 +88131,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "What went wrong?"
+            "state" : "translated",
+            "value" : "Katere težave so nastale?"
           }
         },
         "sv" : {
@@ -88292,8 +88292,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details"
+            "state" : "translated",
+            "value" : "Ko se prijavljate na spletno mesto ali storitev, tapnite ikono Proton Pass, da samodejno izpolnite podatke za prijavo"
           }
         },
         "sv" : {
@@ -88452,8 +88452,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Word separator"
+            "state" : "translated",
+            "value" : "Ločilo besed"
           }
         },
         "sv" : {
@@ -88613,8 +88613,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Would you want to associate « %@ » with « %@ »?"
+            "state" : "translated",
+            "value" : "Ali želite povezati « %@ » z « %@ »?"
           }
         },
         "sv" : {
@@ -88774,8 +88774,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Write us on Reddit"
+            "state" : "translated",
+            "value" : "Pišite nam na Reddit"
           }
         },
         "sv" : {
@@ -88934,8 +88934,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Yes, sign me out"
+            "state" : "translated",
+            "value" : "Da, odjavi me"
           }
         },
         "sv" : {
@@ -89095,8 +89095,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Yesterday"
+            "state" : "translated",
+            "value" : "Včeraj"
           }
         },
         "sv" : {
@@ -89255,8 +89255,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You"
+            "state" : "translated",
+            "value" : "Vi"
           }
         },
         "sv" : {
@@ -89416,8 +89416,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You are about to create"
+            "state" : "translated",
+            "value" : "Ustvarili boste"
           }
         },
         "sv" : {
@@ -89867,26 +89867,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
+                  "state" : "translated",
+                  "value" : "Ste prepričani, da boste nepovratno izbrisali %lld predmete?"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld item irreversibly, are you sure?"
+                  "state" : "translated",
+                  "value" : "Ste prepričani, da boste nepovratno izbrisali %lld predmet?"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
+                  "state" : "translated",
+                  "value" : "Ste prepričani, da boste nepovratno izbrisali %lld predmeta?"
                 }
               },
               "two" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
+                  "state" : "translated",
+                  "value" : "Ste prepričani, da boste nepovratno izbrisali %lld predmeta?"
                 }
               }
             }
@@ -90102,8 +90102,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You are going to delete the item irreversibly, are you sure?"
+            "state" : "translated",
+            "value" : "Predmete boste nepovratno izbrisali, ste prepričani?"
           }
         },
         "sv" : {
@@ -90214,8 +90214,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "თქვენი ორგანიზაციის გარედან ხალხს ვერ მოიწვევთ. მეტი დეტალებისთვის დაუკავშირდით ადმინისტრატორს."
           }
         },
         "ko" : {
@@ -90262,8 +90262,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "Ne morete povabiti ljudi izven vaše organizacije, za več informacij se obrnite na skrbnika."
           }
         },
         "sv" : {
@@ -90422,8 +90422,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You currently have no login items"
+            "state" : "translated",
+            "value" : "Trenutno nimate predmetov za prijavo"
           }
         },
         "sv" : {
@@ -90584,8 +90584,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
+            "state" : "translated",
+            "value" : "Na izbranem trezorju niste imeli dovoljenja za urejanje, za vas smo izbrali novega"
           }
         },
         "sv" : {
@@ -90744,8 +90744,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription."
+            "state" : "translated",
+            "value" : "Dosegli ste omejitev vzdevkov, ki jih lahko ustvarite. Ko nadgradite svojo naročnino, ustvarite neomejeno število vzdevkov."
           }
         },
         "sv" : {
@@ -90906,8 +90906,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You have reached the limit of users in this vault."
+            "state" : "translated",
+            "value" : "Dosegli ste omejitev uporabnikov v tem trezorju."
           }
         },
         "sv" : {
@@ -91066,8 +91066,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription."
+            "state" : "translated",
+            "value" : "Dosegli ste omejitev trezorjev, ki jih lahko ustvarite. Ko nadgradite svojo naročnino, ustvarite neomejene trezorje."
           }
         },
         "sv" : {
@@ -91226,8 +91226,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You will be signed out"
+            "state" : "translated",
+            "value" : "Odjavljeni boste"
           }
         },
         "sv" : {
@@ -91388,8 +91388,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You're invited to a shared vault. Tap for details."
+            "state" : "translated",
+            "value" : "Vabljeni ste v skupni trezor. Poglejte podrobnosti."
           }
         },
         "sv" : {
@@ -91548,8 +91548,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current document will revert to the version from %@"
+            "state" : "translated",
+            "value" : "Vaš trenutni dokument bo povrnjen na različico iz %@"
           }
         },
         "sv" : {
@@ -91708,8 +91708,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current version of the app is no longer supported. Please update to the latest version."
+            "state" : "translated",
+            "value" : "Trenutna različica aplikacije ni več podprta. Posodobite jo na najnovejšo različico."
           }
         },
         "sv" : {
@@ -91760,8 +91760,8 @@
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Deine Daten tauchen in Datenmissbrauch auf, aktualisiere sie, um zu sehen, welche das sind."
           }
         },
         "el" : {
@@ -91868,8 +91868,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Vaši podatki se pojavljajo pri vdorih v podatke. Nadgradite in preverite, kateri."
           }
         },
         "sv" : {
@@ -92030,8 +92030,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
+            "state" : "translated",
+            "value" : "Vaš načrt dovoljuje samo uporabo predmetov iz vaših prvih trezorjev za namene samodejnega izpolnjevanja.\n​"
           }
         },
         "sv" : {
@@ -92190,8 +92190,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your session is expired"
+            "state" : "translated",
+            "value" : "Vaša seja je potekla"
           }
         },
         "sv" : {
@@ -92351,8 +92351,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your vault is empty"
+            "state" : "translated",
+            "value" : "Vaša košarica je prazna"
           }
         },
         "sv" : {
@@ -92511,8 +92511,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your welcome gift"
+            "state" : "translated",
+            "value" : "Vaš bonus za dobrodošlico"
           }
         },
         "sv" : {
