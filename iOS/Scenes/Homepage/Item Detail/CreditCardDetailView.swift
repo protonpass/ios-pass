@@ -172,6 +172,7 @@ private extension CreditCardDetailView {
                              action: { isShowingCardNumber.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
+                    .accessibilityLabel(Text(isShowingCardNumber ? "Hide card number" : "Show card number"))
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -224,6 +225,8 @@ private extension CreditCardDetailView {
                              action: { isShowingVerificationNumber.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
+                    .accessibilityLabel(Text(isShowingVerificationNumber ? "Hide security code" :
+                            "Show security code"))
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -274,6 +277,7 @@ private extension CreditCardDetailView {
                              action: { isShowingPIN.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
+                    .accessibilityLabel(Text(isShowingPIN ? "Hide pin" : "Show pin"))
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

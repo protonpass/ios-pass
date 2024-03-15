@@ -215,7 +215,7 @@ private extension ItemHistoryView {
                          iconColor: viewModel.item.contentData.type.normMajor2Color,
                          backgroundColor: viewModel.item.contentData.type.normMinor1Color) {
                 dismiss()
-            }
+            }.accessibilityLabel(Text("Close"))
         }
     }
 }

@@ -40,6 +40,7 @@ struct ItemDetailToolbar: ToolbarContent {
                          backgroundColor: itemContentType.normMinor1Color) {
                 viewModel.goBack()
             }
+            .accessibilityLabel(Text("Close"))
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -59,7 +60,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                      iconColor: itemContentType.normMajor2Color,
                                      backgroundColor: itemContentType.normMinor1Color) {
                             viewModel.share()
-                        }
+                        }.accessibilityLabel(Text("Share"))
                     }
 
                     Menu(content: {
@@ -102,6 +103,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                      iconColor: itemContentType.normMajor2Color,
                                      backgroundColor: itemContentType.normMinor1Color)
                     })
+                    .accessibilityLabel(Text("Item's action Menu"))
                 }
 
             case .trashed:

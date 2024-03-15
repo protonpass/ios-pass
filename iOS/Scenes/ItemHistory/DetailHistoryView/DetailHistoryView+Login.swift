@@ -127,6 +127,7 @@ private extension DetailHistoryView {
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
                          action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
+                .accessibilityLabel(Text(isShowingPassword ? "Hide password" : "Show password"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
