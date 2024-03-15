@@ -11990,6 +11990,18 @@
         }
       }
     },
+    "Alias action menu" : {
+      "comment" : "Accessibility label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias action menu"
+          }
+        }
+      }
+    },
     "Alias address" : {
       "comment" : "Alias item detail page",
       "localizations" : {
@@ -27264,6 +27276,18 @@
         }
       }
     },
+    "Custom field menu" : {
+      "comment" : "accessibility",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom field menu"
+          }
+        }
+      }
+    },
     "Custom fields" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -36905,6 +36929,7 @@
       }
     },
     "Go back" : {
+      "comment" : "accessibility",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -36914,6 +36939,9 @@
           }
         }
       }
+    },
+    "Go Back" : {
+
     },
     "Go to Settings" : {
       "comment" : "Onboarding: Buttons title of the steps",
@@ -41812,6 +41840,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Items filter Menus"
+          }
+        }
+      }
+    },
+    "Items filtering and sort menu" : {
+      "comment" : "accessibility",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items filtering and sort menu"
           }
         }
       }
@@ -67689,6 +67729,18 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Selected vaults"
+          }
+        }
+      }
+    },
+    "Send bug report" : {
+      "comment" : "Accessibility Label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send bug report"
           }
         }
       }
