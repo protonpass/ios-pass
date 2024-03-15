@@ -118,8 +118,8 @@ struct GeneratePasswordView: View {
                     CircleButton(icon: IconProvider.arrowsRotate,
                                  iconColor: PassColor.loginInteractionNormMajor2,
                                  backgroundColor: PassColor.loginInteractionNormMinor1,
+                                 accessibilityLabel: "Regenerate password",
                                  action: { viewModel.regenerate() })
-                        .accessibilityLabel(Text("Regenerate password"))
                 }
             }
         }

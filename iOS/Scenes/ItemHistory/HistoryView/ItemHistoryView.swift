@@ -213,9 +213,10 @@ private extension ItemHistoryView {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.chevronDown,
                          iconColor: viewModel.item.contentData.type.normMajor2Color,
-                         backgroundColor: viewModel.item.contentData.type.normMinor1Color) {
+                         backgroundColor: viewModel.item.contentData.type.normMinor1Color,
+                         accessibilityLabel: "Close") {
                 dismiss()
-            }.accessibilityLabel(Text("Close"))
+            }
         }
     }
 }

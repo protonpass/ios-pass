@@ -125,9 +125,9 @@ private extension DetailHistoryView {
             CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingPassword ? "Hide password" : "Show password",
                          action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
-                .accessibilityLabel(Text(isShowingPassword ? "Hide password" : "Show password"))
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
