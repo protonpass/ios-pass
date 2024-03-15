@@ -28,18 +28,20 @@ import SwiftUI
 import UIKit
 
 enum HomepageTab: CaseIterable {
-    case items, itemCreation, securityCenter, profile
+    case items, authenticator, itemCreation, securityCenter, profile
 
     var index: Int {
         switch self {
         case .items:
             0
-        case .itemCreation:
+        case .authenticator:
             1
-        case .securityCenter:
+        case .itemCreation:
             2
-        case .profile:
+        case .securityCenter:
             3
+        case .profile:
+            4
         }
     }
 
@@ -47,6 +49,8 @@ enum HomepageTab: CaseIterable {
         switch self {
         case .items:
             IconProvider.listBullets
+        case .authenticator:
+            UIImage(systemName: "lock.shield") ?? IconProvider.shieldFilled
         case .itemCreation:
             IconProvider.plus
         case .securityCenter:
@@ -60,6 +64,8 @@ enum HomepageTab: CaseIterable {
         switch self {
         case .items:
             "Homepage tab"
+        case .authenticator:
+            "2fa Authenticator"
         case .itemCreation:
             "Create new item button"
         case .securityCenter:
@@ -161,7 +167,8 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
-    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView, securityCenter: SecurityCenterView) {
+    init(itemsTabView: ItemsTabView,
+         profileTabView: ProfileTabView, securityCenter: SecurityCenterView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
         securityCenterView = securityCenter
@@ -183,6 +190,13 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         itemsTabViewController.tabBarItem.accessibilityHint = HomepageTab.items.hint
 
         controllers.append(itemsTabViewController)
+
+        if userDefaults.bool(forKey: Constants.QA.displayAuthenticator) {
+            let authenticator = UIHostingController(rootView: AuthenticatorView())
+            authenticator.tabBarItem.image = HomepageTab.authenticator.image
+            authenticator.tabBarItem.accessibilityHint = HomepageTab.authenticator.hint
+            controllers.append(authenticator)
+        }
 
         let dummyViewController = UIViewController()
         dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
@@ -288,6 +302,11 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
 
         if viewController == viewControllers[HomepageTab.items.index] {
             homepageTabBarControllerDelegate?.selected(tab: HomepageTab.items)
+            return true
+        }
+
+        if viewController == viewControllers[HomepageTab.authenticator.index] {
+            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.authenticator)
             return true
         }
 
