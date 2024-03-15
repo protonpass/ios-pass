@@ -128,7 +128,7 @@ private extension DetailHistoryView {
                          iconColor: viewModel.currentRevision.contentData.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.contentData.type.normMinor1Color,
                          action: dismiss.callAsFunction)
-                .accessibilityLabel(Text("Back"))
+                .accessibilityLabel(Text("Go back"))
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
