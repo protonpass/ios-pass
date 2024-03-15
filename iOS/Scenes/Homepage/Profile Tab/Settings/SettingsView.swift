@@ -75,7 +75,7 @@ private extension SettingsView {
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          action: { viewModel.goBack() })
-            .accessibilityLabel(Text("Go back"))
+                .accessibilityLabel(Text("Go back"))
         }
     }
 }
