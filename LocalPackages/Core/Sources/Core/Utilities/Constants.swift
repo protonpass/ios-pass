@@ -51,6 +51,7 @@ public enum Constants {
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"
         public static let displaySecurityCenter = "displaySecurityCenter"
+        public static let displayAuthenticator = "displayAuthenticator"
     }
 }
 
