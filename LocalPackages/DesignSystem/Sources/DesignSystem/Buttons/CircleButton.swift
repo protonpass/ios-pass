@@ -56,10 +56,6 @@ public struct CircleButton: View {
     let accessibilityLabel: LocalizedStringKey?
     let action: (() -> Void)?
 
-    private var addAccessibilityLabel: Bool {
-        accessibilityLabel != nil
-    }
-
     public init(icon: UIImage,
                 iconColor: UIColor,
                 backgroundColor: UIColor,
@@ -97,8 +93,8 @@ public struct CircleButton: View {
                 .frame(width: type.iconWidth, height: type.iconWidth)
         }
         .frame(width: type.width, height: type.width)
-        .if(addAccessibilityLabel) { view in
-            view.accessibilityLabel(accessibilityLabel ?? "")
+        .if(accessibilityLabel) { view, label in
+            view.accessibilityLabel(label)
         }
     }
 }

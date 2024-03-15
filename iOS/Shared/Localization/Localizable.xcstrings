@@ -36940,9 +36940,6 @@
         }
       }
     },
-    "Go Back" : {
-
-    },
     "Go to Settings" : {
       "comment" : "Onboarding: Buttons title of the steps",
       "extractionState" : "manual",
