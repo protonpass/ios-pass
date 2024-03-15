@@ -119,6 +119,7 @@ struct GeneratePasswordView: View {
                                  iconColor: PassColor.loginInteractionNormMajor2,
                                  backgroundColor: PassColor.loginInteractionNormMinor1,
                                  action: { viewModel.regenerate() })
+                        .accessibilityLabel(Text("Regenerate password"))
                 }
             }
         }
