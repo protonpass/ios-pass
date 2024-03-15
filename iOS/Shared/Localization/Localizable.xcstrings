@@ -60508,7 +60508,14 @@
       }
     },
     "Regenerate password" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regenerate password"
+          }
+        }
+      }
     },
     "Reject invitation" : {
       "extractionState" : "manual",
@@ -62438,6 +62445,7 @@
       }
     },
     "Restored %lld items" : {
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
