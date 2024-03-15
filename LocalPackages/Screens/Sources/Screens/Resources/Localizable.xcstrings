@@ -131,8 +131,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\""
+            "state" : "translated",
+            "value" : "Ni bilo mogoče najti \"%@\""
           }
         },
         "sv" : {
@@ -291,8 +291,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
+            "state" : "translated",
+            "value" : "V smetnjaku ni bilo mogoče najti »%@«."
           }
         },
         "sv" : {
@@ -451,8 +451,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
+            "state" : "translated",
+            "value" : "Ni bilo mogoče najti « %1$@ » v %2$@"
           }
         },
         "sv" : {
@@ -611,8 +611,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create login"
+            "state" : "translated",
+            "value" : "Ustvarite prijavo"
           }
         },
         "sv" : {
@@ -771,8 +771,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
+            "state" : "translated",
+            "value" : "Ustvari identifikacijski ključ"
           }
         },
         "sv" : {
@@ -933,8 +933,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "For security reasons, your access needs to be confirmed"
+            "state" : "translated",
+            "value" : "Iz varnostnih razlogov mora biti vaš dostop potrjen"
           }
         },
         "sv" : {
@@ -1095,8 +1095,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
+            "state" : "translated",
+            "value" : "Pridobite neomejeno število vzdevkov, uživajte v ekskluzivnih funkcijah in nas podprite tako, da se naročite na Pass Plus."
           }
         },
         "sv" : {
@@ -1256,8 +1256,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Learn more about Pass"
+            "state" : "translated",
+            "value" : "Izvedite več o Pass-u"
           }
         },
         "sv" : {
@@ -1418,8 +1418,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Multiple Vaults"
+            "state" : "translated",
+            "value" : "Več trezorjev"
           }
         },
         "sv" : {
@@ -1580,7 +1580,7 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Pass Plus"
           }
         },
@@ -1742,8 +1742,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pending access to the shared data"
+            "state" : "translated",
+            "value" : "Čakanje na dostop do podatkov v skupni rabi"
           }
         },
         "sv" : {
@@ -1903,8 +1903,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass AutoFill extension"
+            "state" : "translated",
+            "value" : "Za uporabo razširitve Proton Pass AutoFill se prijavite"
           }
         },
         "sv" : {
@@ -2064,8 +2064,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass Share extension"
+            "state" : "translated",
+            "value" : "Za uporabo razširitve Proton Pass Share se prijavite"
           }
         },
         "sv" : {
@@ -2226,8 +2226,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Recents"
+            "state" : "translated",
+            "value" : "Nedavne"
           }
         },
         "sv" : {
@@ -2386,8 +2386,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search"
+            "state" : "translated",
+            "value" : "Iskanje"
           }
         },
         "sv" : {
@@ -2546,8 +2546,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in all vaults"
+            "state" : "translated",
+            "value" : "Iskanje v vseh trezorjih"
           }
         },
         "sv" : {
@@ -2706,8 +2706,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select an existing login or create a new one."
+            "state" : "translated",
+            "value" : "Izberite obstoječo prijavo ali ustvarite novo."
           }
         },
         "sv" : {
@@ -2868,8 +2868,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sharing with up to 10 people"
+            "state" : "translated",
+            "value" : "Skupna raba z do 10 osebami"
           }
         },
         "sv" : {
@@ -3028,8 +3028,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Signed out"
+            "state" : "translated",
+            "value" : "Odjavljeni ste"
           }
         },
         "sv" : {
@@ -3188,8 +3188,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "Razvrsti po"
           }
         },
         "sv" : {
@@ -3350,8 +3350,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggestions"
+            "state" : "translated",
+            "value" : "Predlogi"
           }
         },
         "sv" : {
@@ -3510,8 +3510,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Try searching using different spelling or keywords"
+            "state" : "translated",
+            "value" : "Poskusite iskati z drugačnim črkovanjem ali ključnimi besedami"
           }
         },
         "sv" : {
@@ -3672,8 +3672,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlimited 2FA Autofill"
+            "state" : "translated",
+            "value" : "Neomejeno samodejno izpolnjevanje 2FA"
           }
         },
         "sv" : {
@@ -3834,8 +3834,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unlimited email aliases"
+            "state" : "translated",
+            "value" : "Neomejeno število e-poštnih vzdevkov"
           }
         },
         "sv" : {
@@ -3996,8 +3996,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade"
+            "state" : "translated",
+            "value" : "Nadgradi"
           }
         },
         "sv" : {
