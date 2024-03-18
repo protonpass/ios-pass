@@ -239,6 +239,7 @@ private extension UserPermissionView {
             CircleButton(icon: IconProvider.arrowLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Go back",
                          action: dismiss.callAsFunction)
         }
 
