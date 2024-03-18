@@ -95,4 +95,10 @@ extension SharedServiceContainer {
     var userDefaultService: Factory<UserDefaultPersistency> {
         self { UserDefaultService(appGroup: Constants.appGroup) }
     }
+
+    var totpManager: Factory<TOTPManagerProtocol> {
+        self { TOTPManager(logManager: SharedToolingContainer.shared.logManager(),
+                           currentDateProvider: SharedToolingContainer.shared.currentDateProvider()) }
+            .unique
+    }
 }

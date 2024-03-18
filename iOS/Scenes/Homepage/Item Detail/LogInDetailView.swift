@@ -139,7 +139,7 @@ private extension LogInDetailView {
                     EmptyView()
                 } else {
                     PassSectionDivider()
-                    TOTPRow(totpManager: viewModel.totpManager,
+                    TOTPRow(uri: viewModel.totpUri,
                             tintColor: iconTintColor,
                             onCopyTotpToken: { viewModel.copyTotpToken($0) })
                 }
