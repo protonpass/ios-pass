@@ -53,11 +53,13 @@ public struct CircleButton: View {
     let iconColor: UIColor
     let backgroundColor: UIColor
     let type: CircleButtonType
+    let accessibilityLabel: LocalizedStringKey?
     let action: (() -> Void)?
 
     public init(icon: UIImage,
                 iconColor: UIColor,
                 backgroundColor: UIColor,
+                accessibilityLabel: LocalizedStringKey? = nil,
                 type: CircleButtonType = .regular,
                 action: (() -> Void)? = nil) {
         self.icon = icon
@@ -65,6 +67,7 @@ public struct CircleButton: View {
         self.backgroundColor = backgroundColor
         self.type = type
         self.action = action
+        self.accessibilityLabel = accessibilityLabel
     }
 
     public var body: some View {
@@ -86,9 +89,12 @@ public struct CircleButton: View {
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()
-                .foregroundColor(isEnabled ? Color(uiColor: iconColor) : PassColor.textDisabled.toColor)
+                .foregroundColor(isEnabled ? iconColor.toColor : PassColor.textDisabled.toColor)
                 .frame(width: type.iconWidth, height: type.iconWidth)
         }
         .frame(width: type.width, height: type.width)
+        .if(accessibilityLabel) { view, label in
+            view.accessibilityLabel(label)
+        }
     }
 }
