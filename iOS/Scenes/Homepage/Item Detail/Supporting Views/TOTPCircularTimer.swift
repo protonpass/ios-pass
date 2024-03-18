@@ -70,12 +70,11 @@ final class TOTPCircularTimerViewModel: ObservableObject {
     }
 }
 
-@MainActor
 struct TOTPCircularTimer: View {
     @ObservedObject var viewModel: TOTPCircularTimerViewModel
 
     init(data: TOTPTimerData) {
-        _viewModel = .init(wrappedValue: TOTPCircularTimerViewModel(data: data)) /* .init(data: )*/
+        _viewModel = .init(wrappedValue: TOTPCircularTimerViewModel(data: data))
     }
 
     var body: some View {
