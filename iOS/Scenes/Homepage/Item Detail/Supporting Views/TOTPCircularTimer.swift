@@ -22,47 +22,91 @@ import DesignSystem
 import Entities
 import SwiftUI
 
-struct TOTPCircularTimer: View {
-    let percentage: CGFloat
-    let data: TOTPTimerData
+@MainActor
+final class TOTPCircularTimerViewModel: ObservableObject {
+    @Published var currentTime = 1.0
+    @Published var percentage = 1.0
+
+    private var timer: Timer?
+
+    private(set) var data: TOTPTimerData
 
     init(data: TOTPTimerData) {
         self.data = data
         percentage = CGFloat(data.remaining) / CGFloat(data.total)
+        currentTime = Double(self.data.remaining)
+
+        startTimer()
+    }
+
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    func startTimer() {
+        timer?.invalidate()
+        timer = nil
+
+        // Create a new timer
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self else {
+                return
+            }
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    return
+                }
+
+                currentTime -= 1
+                percentage = currentTime / Double(data.total)
+            }
+        }
+    }
+
+    func stopTimer() {
+        timer?.invalidate() // Stop the timer
+        timer = nil // Clear the timer
+    }
+}
+
+@MainActor
+struct TOTPCircularTimer: View {
+    @ObservedObject var viewModel: TOTPCircularTimerViewModel
+
+    init(data: TOTPTimerData) {
+        _viewModel = .init(wrappedValue: TOTPCircularTimerViewModel(data: data)) /* .init(data: )*/
     }
 
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color(uiColor: PassColor.textHint), style: StrokeStyle(lineWidth: 3))
+                .stroke(PassColor.textHint.toColor, style: StrokeStyle(lineWidth: 3))
 
             Circle()
-                .trim(from: 0, to: percentage)
+                .trim(from: 0, to: viewModel.percentage)
                 .stroke(color, style: StrokeStyle(lineWidth: 3))
                 .rotationEffect(.degrees(-90))
-                .transaction { transaction in
-                    // Do not animate when closing the ring and start a new loop
-                    if data.remaining == data.total {
-                        transaction.animation = nil
-                    }
-                }
-                .animation(.default, value: data)
+                .animation(.default, value: viewModel.percentage)
 
-            Text(verbatim: "\(data.remaining)")
+            Text(verbatim: "\(Int(viewModel.currentTime))")
                 .font(.caption)
                 .fontWeight(.light)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
+                .foregroundColor(PassColor.textWeak.toColor)
                 .animationsDisabled()
         }
         .frame(width: 32, height: 32)
+        .onDisappear {
+            viewModel.stopTimer()
+        }
     }
 
     private var color: Color {
-        switch data.remaining {
+        switch viewModel.currentTime {
         case 0...10:
-            Color(uiColor: PassColor.signalDanger)
+            PassColor.signalDanger.toColor
         default:
-            Color(uiColor: PassColor.signalSuccess)
+            PassColor.signalSuccess.toColor
         }
     }
 }
