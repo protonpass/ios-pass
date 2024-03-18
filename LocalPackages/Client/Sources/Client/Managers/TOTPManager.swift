@@ -26,9 +26,10 @@ import PassRustCore
 
 public protocol TOTPManagerProtocol: Sendable {
     var totpData: TOTPData? { get }
+    var currentState: CurrentValueSubject<TOTPState, Never> { get }
+
     func bind(uri: String)
     func generateTotpToken(uri: String) throws -> TOTPData
-    var currentState: CurrentValueSubject<TOTPState, Never> { get }
 }
 
 public final class TOTPManager: TOTPManagerProtocol, Sendable {
@@ -38,7 +39,6 @@ public final class TOTPManager: TOTPManagerProtocol, Sendable {
     private let generator: any TotpTokenGeneratorProtocol
     private let currentDateProvider: any CurrentDateProviderProtocol
     public let currentState: CurrentValueSubject<Entities.TOTPState, Never> = .init(TOTPState.empty)
-//    @Published public private(set) var state = TOTPState.empty
 
     /// The current `URI` whether it's valid or not
     public private(set) var uri = ""
