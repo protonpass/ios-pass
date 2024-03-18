@@ -71,7 +71,7 @@ private extension DetailHistoryView {
             passwordRow(logItem: logItem)
             if !logItem.totpUri.isEmpty {
                 PassSectionDivider()
-                TOTPRow(totpManager: viewModel.totpManager,
+                TOTPRow(uri: logItem.totpUri,
                         textColor: textColor(for: \.loginItem?.totpUri),
                         tintColor: PassColor.loginInteractionNorm,
                         onCopyTotpToken: { viewModel.copyTotpToken($0) })

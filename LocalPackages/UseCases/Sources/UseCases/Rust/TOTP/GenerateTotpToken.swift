@@ -19,32 +19,66 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Core
+import Client
 import Entities
 import Foundation
 
 @preconcurrency import PassRustCore
 
-public final class GenerateTotpToken: GenerateTotpTokenUseCase {
-    private let currentDateProvider: any CurrentDateProviderProtocol
-    private let handler: any TotpHandlerProtocol
-    private let generator: any TotpTokenGeneratorProtocol
+public protocol GenerateTotpTokenUseCase: Sendable {
+    func execute(uri: String) throws -> TOTPData
+}
 
-    public init(currentDateProvider: any CurrentDateProviderProtocol,
-                handler: any TotpHandlerProtocol = TotpHandler(),
-                generator: any TotpTokenGeneratorProtocol = TotpTokenGenerator()) {
-        self.currentDateProvider = currentDateProvider
-        self.handler = handler
-        self.generator = generator
+public extension GenerateTotpTokenUseCase {
+    func callAsFunction(uri: String) throws -> TOTPData {
+        try execute(uri: uri)
+    }
+}
+
+// public final class GenerateTotpToken: GenerateTotpTokenUseCase {
+//    private let currentDateProvider: any CurrentDateProviderProtocol
+//    private let handler: any TotpHandlerProtocol
+//    private let generator: any TotpTokenGeneratorProtocol
+//
+//    public init(currentDateProvider: any CurrentDateProviderProtocol,
+//                handler: any TotpHandlerProtocol = TotpHandler(),
+//                generator: any TotpTokenGeneratorProtocol = TotpTokenGenerator()) {
+//        self.currentDateProvider = currentDateProvider
+//        self.handler = handler
+//        self.generator = generator
+//    }
+//
+//    public func execute(uri: String) throws -> TOTPData {
+//        let date = currentDateProvider.getCurrentDate()
+//        let result = try generator.generateToken(uri: uri,
+//                                                 currentTime: UInt64(date.timeIntervalSince1970))
+//        let period = Double(handler.getPeriod(totp: result.totp))
+//        let remainingSeconds = period - date.timeIntervalSince1970.truncatingRemainder(dividingBy: period)
+//        return .init(code: result.token,
+//                     timerData: .init(total: Int(period), remaining: Int(remainingSeconds)),
+//                     label: result.totp.label,
+//                     issuer: result.totp.issuer)
+//    }
+// }
+
+public final class GenerateTotpToken: GenerateTotpTokenUseCase {
+    private let totpManager: any TOTPManagerProtocol
+
+    public init(totpManager: any TOTPManagerProtocol) {
+        self.totpManager = totpManager
     }
 
+    @MainActor
     public func execute(uri: String) throws -> TOTPData {
-        let date = currentDateProvider.getCurrentDate()
-        let result = try generator.generateToken(uri: uri,
-                                                 currentTime: UInt64(date.timeIntervalSince1970))
-        let period = Double(handler.getPeriod(totp: result.totp))
-        let remainingSeconds = period - date.timeIntervalSince1970.truncatingRemainder(dividingBy: period)
-        return .init(code: result.token,
-                     timerData: .init(total: Int(period), remaining: Int(remainingSeconds)))
+        try totpManager.generateTotpToken(uri: uri)
+//        let date = currentDateProvider.getCurrentDate()
+//        let result = try generator.generateToken(uri: uri,
+//                                                 currentTime: UInt64(date.timeIntervalSince1970))
+//        let period = Double(handler.getPeriod(totp: result.totp))
+//        let remainingSeconds = period - date.timeIntervalSince1970.truncatingRemainder(dividingBy: period)
+//        return .init(code: result.token,
+//                     timerData: .init(total: Int(period), remaining: Int(remainingSeconds)),
+//                     label: result.totp.label,
+//                     issuer: result.totp.issuer)
     }
 }

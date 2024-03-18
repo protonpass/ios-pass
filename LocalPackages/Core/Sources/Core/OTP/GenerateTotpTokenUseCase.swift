@@ -19,14 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Entities
-
-public protocol GenerateTotpTokenUseCase: Sendable {
-    func execute(uri: String) throws -> TOTPData
-}
-
-public extension GenerateTotpTokenUseCase {
-    func callAsFunction(uri: String) throws -> TOTPData {
-        try execute(uri: uri)
-    }
-}
+// import Entities
+//
+// public protocol GenerateTotpTokenUseCase: Sendable {
+//    func execute(uri: String) throws -> TOTPData
+// }
+//
+// public extension GenerateTotpTokenUseCase {
+//    func callAsFunction(uri: String) throws -> TOTPData {
+//        try execute(uri: uri)
+//    }
+// }
