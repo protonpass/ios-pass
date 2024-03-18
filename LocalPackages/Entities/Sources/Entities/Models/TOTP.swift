@@ -27,7 +27,7 @@ public enum TOTPState: Equatable {
     case invalid
 }
 
-public struct TOTPTimerData: Hashable {
+public struct TOTPTimerData: Hashable, Sendable {
     public let total: Int
     public let remaining: Int
 
