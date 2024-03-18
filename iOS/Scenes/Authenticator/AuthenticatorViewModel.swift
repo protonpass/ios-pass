@@ -51,7 +51,9 @@ final class AuthenticatorViewModel: ObservableObject, Sendable {
                     }
                     return true
                 }
-            displayedItems = items
+            if displayedItems != items {
+                displayedItems = items
+            }
         } catch {
             print(error)
         }
@@ -60,8 +62,12 @@ final class AuthenticatorViewModel: ObservableObject, Sendable {
 
 private extension AuthenticatorViewModel {
     func setUp() {
+        Task {
+            await load()
+        }
+
         $searchText
-            .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
@@ -71,19 +77,7 @@ private extension AuthenticatorViewModel {
                     displayedItems = items
                 } else {
                     displayedItems = items.filter { item in
-                        guard let totpUri = item.loginItem?.totpUri.lowercased() else {
-                            return false
-                        }
-                        print("totpUri: \(totpUri)")
-                        print("term: \(term)")
-                        print("totpUri contains: \(totpUri.contains(term.lowercased))")
-
-                        guard let totpUri = item.loginItem?.totpUri,
-                              totpUri.contains(term.lowercased)
-                        else {
-                            return false
-                        }
-                        return true
+                        item.name.lowercased().contains(term.lowercased)
                     }
                 }
             }
