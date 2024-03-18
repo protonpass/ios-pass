@@ -262,7 +262,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ゴミ箱で\"%@\"が見つかりませんでした"
+            "value" : "ごみ箱で\"%@\"が見つかりませんでした"
           }
         },
         "ka" : {
@@ -790,7 +790,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vytvoriť prihlasovací kľúč"
+            "value" : "Vytvoriť prístupový kľúč"
           }
         },
         "sl" : {
@@ -2707,7 +2707,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wybierz istniejący login lub utwórz nowy."
+            "value" : "Wybierz dane logowania lub utwórz nowe."
           }
         },
         "pt-BR" : {
