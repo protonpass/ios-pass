@@ -24,5 +24,4 @@ import Entities
 public protocol SecuritySettingsProvider: Sendable, AnyObject {
     var localAuthenticationMethod: LocalAuthenticationMethod { get set }
     var appLockTime: AppLockTime { get set }
-    var pinCode: String? { get set }
 }

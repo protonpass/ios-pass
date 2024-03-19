@@ -41,10 +41,12 @@ public final class OverrideSecuritySettings: OverrideSecuritySettingsUseCase {
     }
 
     public func execute(with organization: Organization) {
-        if let appLockTime = organization.settings.appLockTime {
+        guard let appLockTime = organization.settings.appLockTime else { return }
+        settingsProvider.appLockTime = appLockTime
+
+        // Only default to biometric authentication if user has no authentication method
+        if settingsProvider.localAuthenticationMethod == .none {
             settingsProvider.localAuthenticationMethod = .biometric
-            settingsProvider.appLockTime = appLockTime
-            settingsProvider.pinCode = nil
         }
     }
 }

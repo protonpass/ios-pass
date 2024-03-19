@@ -43,6 +43,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
@@ -60,6 +61,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
+    @Published private(set) var canUpdateAppLockTime = true
     @Published var fallbackToPasscode = true {
         didSet {
             preferences.fallbackToPasscode = fallbackToPasscode
@@ -169,6 +171,7 @@ extension ProfileTabViewModel {
     }
 
     func editAppLockTime() {
+        guard canUpdateAppLockTime else { return }
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -254,6 +257,18 @@ private extension ProfileTabViewModel {
                 updateSecuritySettings()
             }
             .store(in: &cancellables)
+
+        $plan
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] plan in
+                guard let self else { return }
+                if plan.isBusinessUser {
+                    applyOrganizationSettings()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func refresh() {
@@ -295,6 +310,19 @@ private extension ProfileTabViewModel {
         }
     }
 
+    func applyOrganizationSettings() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                if let organization = try await organizationRepository.getOrganization() {
+                    canUpdateAppLockTime = organization.settings.appLockTime == nil
+                }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
     func populateOrRemoveCredentials() {
         // When not enabled, iOS already deleted the credential database.
         // Atempting to populate this database will throw an error anyway so early exit here
@@ -314,10 +342,14 @@ private extension ProfileTabViewModel {
                 }
                 preferences.quickTypeBar = quickTypeBar
             } catch {
-                logger.error(error)
                 quickTypeBar.toggle() // rollback to previous value
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
+    }
+
+    func handle(error: Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }

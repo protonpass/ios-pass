@@ -55,7 +55,7 @@ extension LocalOrganizationDatasourceTests {
         XCTAssertEqual(result1, org1)
 
         // Given
-        // Overwrite the organization
+        // Override the organization
         let org2 = Organization(canUpdate: false,
                                 settings: .init(shareMode: .unrestricted,
                                                 forceLockSeconds: 300,
