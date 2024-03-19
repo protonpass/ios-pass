@@ -27,26 +27,15 @@ import ProtonCoreUIFoundations
 import SwiftUI
 import UIKit
 
-enum HomepageTab: CaseIterable {
-    case items, itemCreation, securityCenter, profile
-
-    var index: Int {
-        switch self {
-        case .items:
-            0
-        case .itemCreation:
-            1
-        case .securityCenter:
-            2
-        case .profile:
-            3
-        }
-    }
+enum HomepageTab: CaseIterable, Hashable {
+    case items, authenticator, itemCreation, securityCenter, profile
 
     var image: UIImage {
         switch self {
         case .items:
             IconProvider.listBullets
+        case .authenticator:
+            UIImage(systemName: "lock.shield") ?? IconProvider.shieldFilled
         case .itemCreation:
             IconProvider.plus
         case .securityCenter:
@@ -60,6 +49,8 @@ enum HomepageTab: CaseIterable {
         switch self {
         case .items:
             "Homepage tab"
+        case .authenticator:
+            "2fa Authenticator tab"
         case .itemCreation:
             "Create new item button"
         case .securityCenter:
@@ -161,7 +152,11 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
-    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView, securityCenter: SecurityCenterView) {
+    private var tabIndexes = [HomepageTab: Int]()
+
+    init(itemsTabView: ItemsTabView,
+         profileTabView: ProfileTabView,
+         securityCenter: SecurityCenterView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
         securityCenterView = securityCenter
@@ -176,24 +171,40 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
+        var currentIndex = 0
 
         var controllers = [UIViewController]()
         let itemsTabViewController = UIHostingController(rootView: itemsTabView)
         itemsTabViewController.tabBarItem.image = HomepageTab.items.image
         itemsTabViewController.tabBarItem.accessibilityLabel = HomepageTab.items.hint
 
+        tabIndexes[.items] = currentIndex
+        currentIndex += 1
         controllers.append(itemsTabViewController)
+
+        if userDefaults.bool(forKey: Constants.QA.displayAuthenticator) {
+            let authenticator = UIHostingController(rootView: AuthenticatorView())
+            authenticator.tabBarItem.image = HomepageTab.authenticator.image
+            authenticator.tabBarItem.accessibilityHint = HomepageTab.authenticator.hint
+            controllers.append(authenticator)
+            tabIndexes[.authenticator] = currentIndex
+            currentIndex += 1
+        }
 
         let dummyViewController = UIViewController()
         dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
         dummyViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
         controllers.append(dummyViewController)
+        tabIndexes[.itemCreation] = currentIndex
+        currentIndex += 1
 
         if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
             let secureCenter = UIHostingController(rootView: securityCenterView)
             secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
             secureCenter.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
             controllers.append(secureCenter)
+            tabIndexes[.securityCenter] = currentIndex
+            currentIndex += 1
         }
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
@@ -202,6 +213,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.identifier
         self.profileTabViewController = profileTabViewController
         controllers.append(profileTabViewController)
+        tabIndexes[.profile] = currentIndex
 
         viewControllers = controllers
 
@@ -229,7 +241,9 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
 extension HomepageTabBarController {
     func select(tab: HomepageTab) {
-        selectedViewController = viewControllers?[tab.index]
+        if let index = tabIndexes[tab] {
+            selectedViewController = viewControllers?[index]
+        }
     }
 
     func refreshTabBarIcons() {
@@ -273,8 +287,9 @@ extension HomepageTabBarController {
 
     func disableCreateButton(_ isDisabled: Bool) {
         UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let self else { return }
-            viewControllers?[HomepageTab.itemCreation.index].tabBarItem.isEnabled = !isDisabled
+            guard let self, let index = tabIndexes[.itemCreation] else { return }
+
+            viewControllers?[index].tabBarItem.isEnabled = !isDisabled
         }
     }
 }
@@ -286,24 +301,17 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
                           shouldSelect viewController: UIViewController) -> Bool {
         guard let viewControllers = tabBarController.viewControllers else { return false }
 
-        if viewController == viewControllers[HomepageTab.items.index] {
-            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.items)
-            return true
-        }
-
-        if viewController == viewControllers[HomepageTab.itemCreation.index] {
-            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.itemCreation)
-            return false
-        }
-
-        if viewController == viewControllers[HomepageTab.securityCenter.index] {
-            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.securityCenter)
-            return true
-        }
-
-        if viewController == viewControllers[HomepageTab.profile.index] {
-            homepageTabBarControllerDelegate?.selected(tab: HomepageTab.profile)
-            return true
+        if let index = viewControllers.firstIndex(of: viewController),
+           let tab = tabIndexes.first(where: { $0.value == index })?.key {
+            homepageTabBarControllerDelegate?.selected(tab: tab)
+            switch tab {
+            case .itemCreation:
+                return false
+            case .authenticator:
+                return !UIDevice.current.isIpad
+            default:
+                return true
+            }
         }
 
         return false
