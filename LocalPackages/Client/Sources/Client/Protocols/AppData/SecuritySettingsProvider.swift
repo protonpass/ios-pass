@@ -1,5 +1,5 @@
 //
-// LocalAuthenticationMethodProvider.swift
+// SecuritySettingsProvider.swift
 // Proton Pass - Created on 04/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,6 +21,8 @@
 
 import Entities
 
-public protocol LocalAuthenticationMethodProvider: Sendable {
-    var localAuthenticationMethod: LocalAuthenticationMethod { get }
+public protocol SecuritySettingsProvider: Sendable, AnyObject {
+    var localAuthenticationMethod: LocalAuthenticationMethod { get set }
+    var appLockTime: AppLockTime { get set }
+    var pinCode: String? { get set }
 }

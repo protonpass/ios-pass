@@ -416,3 +416,11 @@ extension UseCasesContainer {
         }
     }
 }
+
+// MARK: - Organization
+
+extension UseCasesContainer {
+    var overrideSecuritySettings: Factory<OverrideSecuritySettingsUseCase> {
+        self { OverrideSecuritySettings(settingsProvider: SharedToolingContainer.shared.preferences()) }
+    }
+}

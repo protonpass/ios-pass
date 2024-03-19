@@ -71,11 +71,13 @@ public extension Organization {
     }
 }
 
-extension Organization.Settings {
-    var appLockTime: AppLockTime {
+public extension Organization.Settings {
+    /// `AppLockTime` base on `forceLockSeconds`
+    /// Return `nil` if not applicable
+    var appLockTime: AppLockTime? {
         switch forceLockSeconds {
         case 0:
-            .immediately
+            nil
         case 1...60:
             .oneMinute
         case 61...120:
@@ -86,10 +88,8 @@ extension Organization.Settings {
             .tenMinutes
         case 601...3_600:
             .oneHour
-        case 3_601...14_400:
-            .fourHours
         default:
-            .never
+            .fourHours
         }
     }
 }
