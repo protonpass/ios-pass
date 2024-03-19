@@ -33,6 +33,7 @@ extension OrganizationEntity {
         NSFetchRequest<OrganizationEntity>(entityName: "OrganizationEntity")
     }
 
+    @NSManaged var userID: String
     @NSManaged var canUpdate: Bool
     @NSManaged var exportMode: Int64
     @NSManaged var forceLockSeconds: Int64
@@ -49,7 +50,8 @@ extension OrganizationEntity {
         return .init(canUpdate: canUpdate, settings: settings)
     }
 
-    func hydrate(from org: Organization) {
+    func hydrate(from org: Organization, userId: String) {
+        userID = userId
         canUpdate = org.canUpdate
         exportMode = Int64(org.settings.exportMode.rawValue)
         forceLockSeconds = Int64(org.settings.forceLockSeconds)
