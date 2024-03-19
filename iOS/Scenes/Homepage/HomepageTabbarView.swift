@@ -308,7 +308,7 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
             case .itemCreation:
                 return false
             case .authenticator:
-               return !UIDevice.current.isIpad
+                return !UIDevice.current.isIpad
             default:
                 return true
             }
