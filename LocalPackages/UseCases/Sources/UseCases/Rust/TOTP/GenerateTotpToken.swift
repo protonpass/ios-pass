@@ -23,8 +23,6 @@ import Client
 import Entities
 import Foundation
 
-@preconcurrency import PassRustCore
-
 public protocol GenerateTotpTokenUseCase: Sendable {
     func execute(uri: String) throws -> TOTPData
 }
@@ -36,13 +34,13 @@ public extension GenerateTotpTokenUseCase {
 }
 
 public final class GenerateTotpToken: GenerateTotpTokenUseCase {
-    private let totpManager: any TOTPManagerProtocol
+    private let totpService: any TOTPServiceProtocol
 
-    public init(totpManager: any TOTPManagerProtocol) {
-        self.totpManager = totpManager
+    public init(totpService: any TOTPServiceProtocol) {
+        self.totpService = totpService
     }
 
     public func execute(uri: String) throws -> TOTPData {
-        try totpManager.generateTotpToken(uri: uri)
+        try totpService.generateTotpToken(uri: uri)
     }
 }

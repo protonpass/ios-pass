@@ -191,7 +191,7 @@ extension SharedUseCasesContainer {
     }
 
     var generateTotpToken: Factory<GenerateTotpTokenUseCase> {
-        self { GenerateTotpToken(totpManager: SharedServiceContainer.shared.totpManager()) }
+        self { GenerateTotpToken(totpService: SharedServiceContainer.shared.totpService()) }
     }
 }
 

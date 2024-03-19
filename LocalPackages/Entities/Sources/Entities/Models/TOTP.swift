@@ -39,9 +39,9 @@ public struct TOTPTimerData: Hashable, Sendable {
 
 public struct TOTPData: Equatable {
     public let code: String
+    public let timerData: TOTPTimerData
     public let label: String?
     public let issuer: String?
-    public let timerData: TOTPTimerData
 
     public init(code: String, timerData: TOTPTimerData, label: String?, issuer: String?) {
         self.code = code

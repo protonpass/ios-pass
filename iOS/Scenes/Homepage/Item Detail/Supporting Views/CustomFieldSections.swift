@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import DesignSystem
 import Entities
@@ -155,8 +156,6 @@ struct HiddenCustomFieldSection: View {
         .padding(.top, 8)
     }
 }
-
-import Combine
 
 @MainActor
 final class TotpCustomFieldSectionViewModel: ObservableObject {
