@@ -1,4 +1,4 @@
-//  
+//
 // AuthenticatorItem.swift
 // Proton Pass - Created on 19/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
@@ -19,3 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+
+public struct AuthenticatorItem: Identifiable, Equatable {
+    public let itemId: String
+    public let shareId: String
+    public let icon: ItemThumbnailData
+    public let title: String
+    public let uri: String
+
+    public var id: String {
+        "\(itemId + shareId)"
+    }
+
+    public init(itemId: String, shareId: String, icon: ItemThumbnailData, title: String, uri: String) {
+        self.itemId = itemId
+        self.shareId = shareId
+        self.icon = icon
+        self.title = title
+        self.uri = uri
+    }
+}

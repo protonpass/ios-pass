@@ -168,7 +168,8 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
     init(itemsTabView: ItemsTabView,
-         profileTabView: ProfileTabView, securityCenter: SecurityCenterView) {
+         profileTabView: ProfileTabView,
+         securityCenter: SecurityCenterView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
         securityCenterView = securityCenter
@@ -307,7 +308,7 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
 
         if viewController == viewControllers[HomepageTab.authenticator.index] {
             homepageTabBarControllerDelegate?.selected(tab: HomepageTab.authenticator)
-            return true
+            return UIDevice.current.isIpad ? false : true
         }
 
         if viewController == viewControllers[HomepageTab.itemCreation.index] {

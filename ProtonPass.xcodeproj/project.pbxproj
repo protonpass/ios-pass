@@ -565,6 +565,7 @@
 		5BF35D6C2B21FA4200D3E297 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
 		5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
 		5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
+		5BF725B02BA9D33E00FD3624 /* AuthenticatorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF725AF2BA9D33E00FD3624 /* AuthenticatorRow.swift */; };
 		5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */; };
 		5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */; };
 		5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */; };
@@ -1005,6 +1006,7 @@
 		5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecurityWeakness+Extensions.swift"; sourceTree = "<group>"; };
 		5BF35D692B21F82900D3E297 /* Item+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+Extensions.swift"; sourceTree = "<group>"; };
 		5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pinnable+Extensions.swift"; sourceTree = "<group>"; };
+		5BF725AF2BA9D33E00FD3624 /* AuthenticatorRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorRow.swift; sourceTree = "<group>"; };
 		5BFD5D052AE145E70025185B /* Screens */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Screens; path = LocalPackages/Screens; sourceTree = "<group>"; };
 		5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClipboardExpiration+Extensions.swift"; sourceTree = "<group>"; };
 		5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalAuthenticationMethodUiModel+Extensions.swift"; sourceTree = "<group>"; };
@@ -2046,6 +2048,7 @@
 		5B87CC8C2BA4AE6E00258D70 /* Authenticator */ = {
 			isa = PBXGroup;
 			children = (
+				5BF725AE2BA9D1DE00FD3624 /* Subviews */,
 				5B87CC8D2BA4AF5600258D70 /* AuthenticatorView.swift */,
 				5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */,
 			);
@@ -2219,6 +2222,14 @@
 				5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */,
 			);
 			path = SecurityWeaknessDetailView;
+			sourceTree = "<group>";
+		};
+		5BF725AE2BA9D1DE00FD3624 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				5BF725AF2BA9D33E00FD3624 /* AuthenticatorRow.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */ = {
@@ -3210,6 +3221,7 @@
 				35AC9A542A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+Extensions.swift in Sources */,
 				353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */,
+				5BF725B02BA9D33E00FD3624 /* AuthenticatorRow.swift in Sources */,
 				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContentType+Extensions.swift in Sources */,
 				3565FD57298D3E9400E2A0EE /* TOTPText.swift in Sources */,

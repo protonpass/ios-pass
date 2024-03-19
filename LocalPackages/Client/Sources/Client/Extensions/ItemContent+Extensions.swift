@@ -60,4 +60,12 @@ public extension ItemContent {
                      state: item.itemState,
                      pinned: item.pinned)
     }
+
+    func toAuthenticatorItem(totpData: TOTPData) -> AuthenticatorItem? {
+        guard let uri = loginItem?.totpUri, !uri.isEmpty else {
+            return nil
+        }
+        let title = totpData.title ?? name
+        return AuthenticatorItem(itemId: itemId, shareId: shareId, icon: thumbnailData(), title: title, uri: uri)
+    }
 }
