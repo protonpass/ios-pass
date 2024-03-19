@@ -50,3 +50,15 @@ public struct TOTPData: Equatable {
         self.issuer = issuer
     }
 }
+
+public extension TOTPData {
+    var title: String? {
+        if let label, let issuer {
+            "\(issuer): \(label)"
+        } else if let issuer {
+            issuer
+        } else {
+            label
+        }
+    }
+}
