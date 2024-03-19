@@ -70,3 +70,26 @@ public extension Organization {
         }
     }
 }
+
+extension Organization.Settings {
+    var appLockTime: AppLockTime {
+        switch forceLockSeconds {
+        case 0:
+            .immediately
+        case 1...60:
+            .oneMinute
+        case 61...120:
+            .twoMinutes
+        case 121...300:
+            .fiveMinutes
+        case 301...600:
+            .tenMinutes
+        case 601...3_600:
+            .oneHour
+        case 3_601...14_400:
+            .fourHours
+        default:
+            .never
+        }
+    }
+}
