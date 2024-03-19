@@ -101,8 +101,7 @@ extension SharedServiceContainer {
     }
 
     var totpService: Factory<TOTPServiceProtocol> {
-        self { TOTPService(logManager: SharedToolingContainer.shared.logManager(),
-                           currentDateProvider: self.currentDateProvider) }
+        self { TOTPService(currentDateProvider: self.currentDateProvider) }
     }
 
     var totpManager: Factory<TOTPManagerProtocol> {
