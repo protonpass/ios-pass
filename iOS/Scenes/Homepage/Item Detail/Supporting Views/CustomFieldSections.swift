@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import DesignSystem
 import Entities
@@ -156,8 +157,35 @@ struct HiddenCustomFieldSection: View {
     }
 }
 
+@MainActor
+final class TotpCustomFieldSectionViewModel: ObservableObject {
+    @Published public private(set) var state = TOTPState.empty
+
+    private let totpManager = resolve(\SharedServiceContainer.totpManager)
+    private var cancellable = Set<AnyCancellable>()
+
+    var code: String? {
+        totpManager.totpData?.code
+    }
+
+    init() {
+        totpManager.currentState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newState in
+                guard let self else {
+                    return
+                }
+                state = newState
+            }.store(in: &cancellable)
+    }
+
+    func bind(uri: String) {
+        totpManager.bind(uri: uri)
+    }
+}
+
 struct TotpCustomFieldSection: View {
-    @StateObject private var totpManager = resolve(\ServiceContainer.totpManager)
+    @StateObject private var viewModel = TotpCustomFieldSectionViewModel()
     let title: String
     let content: String
     let itemContentType: ItemContentType
@@ -191,7 +219,7 @@ struct TotpCustomFieldSection: View {
                 if isFreeUser {
                     UpgradeButtonLite(action: onUpgrade)
                 } else {
-                    switch totpManager.state {
+                    switch viewModel.state {
                     case .empty:
                         EmptyView()
                     case .loading:
@@ -209,13 +237,13 @@ struct TotpCustomFieldSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
             .onTapGesture {
-                if !isFreeUser, let code = totpManager.totpData?.code {
+                if !isFreeUser, let code = viewModel.code {
                     onSelectTotpToken(code)
                 }
             }
 
             if !isFreeUser {
-                switch totpManager.state {
+                switch viewModel.state {
                 case let .valid(data):
                     TOTPCircularTimer(data: data.timerData)
                 default:
@@ -229,7 +257,7 @@ struct TotpCustomFieldSection: View {
         .padding(.top, 8)
         .onFirstAppear {
             if !isFreeUser {
-                totpManager.bind(uri: content)
+                viewModel.bind(uri: content)
             }
         }
     }
