@@ -54,26 +54,26 @@ public actor OrganizationRepository: OrganizationRepositoryProtocol {
 public extension OrganizationRepository {
     func getOrganization() async throws -> Organization? {
         let userId = try userDataProvider.getUserId()
-        logger.trace("Getting organization userId \(userId)")
+        logger.trace("Getting organization for userId \(userId)")
         if let organization = try await localDatasource.getOrganization(userId: userId) {
-            logger.info("Found local organization userId \(userId)")
+            logger.info("Found local organization for userId \(userId)")
             return organization
         }
 
-        logger.trace("Found no local organization userId \(userId)")
+        logger.trace("Found no local organization for userId \(userId)")
         return try await refreshOrganization()
     }
 
     func refreshOrganization() async throws -> Organization? {
         let userId = try userDataProvider.getUserId()
-        logger.trace("Refreshing organization userId \(userId)")
+        logger.trace("Refreshing organization for userId \(userId)")
         if let organization = try await remoteDatasource.getOrganization() {
-            logger.trace("Refreshed organization userId \(userId). Upserting to local database.")
+            logger.trace("Refreshed organization for userId \(userId). Upserting to local database.")
             try await localDatasource.upsertOrganization(organization, userId: userId)
-            logger.trace("Refreshed organization userId \(userId). Upserted to local database.")
+            logger.trace("Refreshed organization for userId \(userId). Upserted to local database.")
             return organization
         }
-        logger.info("Refreshed and found no organization userId \(userId)")
+        logger.info("Refreshed and found no organization for suserId \(userId)")
         return nil
     }
 }

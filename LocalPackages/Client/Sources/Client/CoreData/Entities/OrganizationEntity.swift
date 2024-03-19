@@ -41,7 +41,7 @@ extension OrganizationEntity {
 }
 
 extension OrganizationEntity {
-    func toOrganization() -> Organization {
+    var toOrganization: Organization {
         let shareMode = Organization.ShareMode(rawValue: Int(shareMode)) ?? .default
         let exportMode = Organization.ExportMode(rawValue: Int(exportMode)) ?? .default
         let settings = Organization.Settings(shareMode: shareMode,

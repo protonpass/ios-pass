@@ -38,7 +38,7 @@ public extension LocalOrganizationDatasource {
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         assert(entities.count <= 1, "Can not have more than 1 organization per userId")
-        return entities.first?.toOrganization()
+        return entities.first?.toOrganization
     }
 
     func upsertOrganization(_ organization: Organization, userId: String) async throws {
