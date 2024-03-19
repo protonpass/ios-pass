@@ -1,5 +1,5 @@
 //
-// Theme.swift
+// Theme+Extensions.swift
 // Proton Pass - Created on 21/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,15 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Macro
 import ProtonCoreUIFoundations
-import UIKit
+import SwiftUI
 
-public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable, Sendable {
-    case light = 0
-    case dark = 1
-    case matchSystem = 2
-
+extension Theme: CustomStringConvertible {
     public var description: String {
         switch self {
         case .light:
@@ -38,7 +35,7 @@ public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable, Sendable
         }
     }
 
-    public var icon: UIImage {
+    var icon: UIImage {
         switch self {
         case .light:
             IconProvider.sun
@@ -49,7 +46,7 @@ public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable, Sendable
         }
     }
 
-    public var userInterfaceStyle: UIUserInterfaceStyle {
+    var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
         case .light:
             .light
@@ -60,7 +57,7 @@ public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable, Sendable
         }
     }
 
-    public var inAppTheme: InAppTheme {
+    var inAppTheme: InAppTheme {
         switch self {
         case .light:
             .light
@@ -68,6 +65,17 @@ public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable, Sendable
             .dark
         case .matchSystem:
             .matchSystem
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .dark:
+            .dark
+        case .light:
+            .light
+        case .matchSystem:
+            nil
         }
     }
 }

@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import Entities
 import Factory
 import Foundation
 import Macro
