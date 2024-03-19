@@ -25,10 +25,18 @@ import Foundation
 import PassRustCore
 
 public protocol TOTPManagerProtocol: Sendable {
-    var totpData: TOTPData? { get }
     var currentState: CurrentValueSubject<TOTPState, Never> { get }
 
     func bind(uri: String)
+}
+
+public extension TOTPManagerProtocol {
+    var totpData: TOTPData? {
+        if case let .valid(data) = currentState.value {
+            return data
+        }
+        return nil
+    }
 }
 
 public final class TOTPManager: TOTPManagerProtocol, @unchecked Sendable {
@@ -51,13 +59,6 @@ public final class TOTPManager: TOTPManagerProtocol, @unchecked Sendable {
     deinit {
         timer?.invalidate()
         timer = nil
-    }
-
-    public var totpData: TOTPData? {
-        if case let .valid(data) = currentState.value {
-            return data
-        }
-        return nil
     }
 
     public func bind(uri: String) {
