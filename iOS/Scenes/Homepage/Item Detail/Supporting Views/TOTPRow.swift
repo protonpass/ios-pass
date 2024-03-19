@@ -29,7 +29,7 @@ import SwiftUI
 
 @MainActor
 final class TOTPRowViewModel: ObservableObject {
-    @Published public private(set) var state = TOTPState.empty
+    @Published private(set) var state = TOTPState.empty
 
     private let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable = Set<AnyCancellable>()

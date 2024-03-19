@@ -29,15 +29,12 @@ public protocol TOTPManagerProtocol: Sendable {
     var currentState: CurrentValueSubject<TOTPState, Never> { get }
 
     func bind(uri: String)
-    func generateTotpToken(uri: String) throws -> TOTPData
 }
 
-public final class TOTPManager: TOTPManagerProtocol, Sendable {
+public final class TOTPManager: TOTPManagerProtocol, @unchecked Sendable {
     private var timer: Timer?
     private let logger: Logger
-    private let handler: any TotpHandlerProtocol
-    private let generator: any TotpTokenGeneratorProtocol
-    private let currentDateProvider: any CurrentDateProviderProtocol
+    private let totpService: any TOTPServiceProtocol
     public let currentState: CurrentValueSubject<Entities.TOTPState, Never> = .init(TOTPState.empty)
 
     /// The current `URI` whether it's valid or not
@@ -46,13 +43,9 @@ public final class TOTPManager: TOTPManagerProtocol, Sendable {
     private var remainTime = 0
 
     public init(logManager: any LogManagerProtocol,
-                currentDateProvider: any CurrentDateProviderProtocol,
-                handler: any TotpHandlerProtocol = TotpHandler(),
-                generator: any TotpTokenGeneratorProtocol = TotpTokenGenerator()) {
+                totpService: any TOTPServiceProtocol) {
         logger = .init(manager: logManager)
-        self.currentDateProvider = currentDateProvider
-        self.handler = handler
-        self.generator = generator
+        self.totpService = totpService
     }
 
     deinit {
@@ -98,7 +91,7 @@ public final class TOTPManager: TOTPManagerProtocol, Sendable {
 
     func refreshData() {
         do {
-            let data = try generateTotpToken(uri: uri)
+            let data = try totpService.generateTotpToken(uri: uri)
             remainTime = data.timerData.remaining
             currentState.send(.valid(data))
         } catch {
@@ -106,17 +99,5 @@ public final class TOTPManager: TOTPManagerProtocol, Sendable {
             currentState.send(.invalid)
             resetTimer()
         }
-    }
-
-    public func generateTotpToken(uri: String) throws -> TOTPData {
-        let date = currentDateProvider.getCurrentDate()
-        let result = try generator.generateToken(uri: uri,
-                                                 currentTime: UInt64(date.timeIntervalSince1970))
-        let period = Double(handler.getPeriod(totp: result.totp))
-        let remainingSeconds = period - date.timeIntervalSince1970.truncatingRemainder(dividingBy: period)
-        return .init(code: result.token,
-                     timerData: .init(total: Int(period), remaining: Int(remainingSeconds)),
-                     label: result.totp.label,
-                     issuer: result.totp.issuer)
     }
 }
