@@ -35,6 +35,10 @@ private extension SharedServiceContainer {
     var logManager: LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
+
+    var currentDateProvider: CurrentDateProviderProtocol {
+        SharedToolingContainer.shared.currentDateProvider()
+    }
 }
 
 extension SharedServiceContainer {
@@ -58,7 +62,7 @@ extension SharedServiceContainer {
     }
 
     var syncEventLoop: Factory<SyncEventLoop> {
-        self { SyncEventLoop(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
+        self { SyncEventLoop(currentDateProvider: self.currentDateProvider,
                              synchronizer: self.eventSynchronizer(),
                              logManager: self.logManager,
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
@@ -96,9 +100,14 @@ extension SharedServiceContainer {
         self { UserDefaultService(appGroup: Constants.appGroup) }
     }
 
+    var totpService: Factory<TOTPServiceProtocol> {
+        self { TOTPService(logManager: SharedToolingContainer.shared.logManager(),
+                           currentDateProvider: self.currentDateProvider) }
+    }
+
     var totpManager: Factory<TOTPManagerProtocol> {
         self { TOTPManager(logManager: SharedToolingContainer.shared.logManager(),
-                           currentDateProvider: SharedToolingContainer.shared.currentDateProvider()) }
+                           totpService: self.totpService()) }
             .unique
     }
 }

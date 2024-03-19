@@ -24,8 +24,8 @@ import SwiftUI
 
 @MainActor
 final class TOTPCircularTimerViewModel: ObservableObject {
-    @Published var currentTime = 1.0
-    @Published var percentage = 1.0
+    @Published private(set) var remainingSeconds = 1.0
+    @Published private(set) var percentage = 1.0
 
     private var timer: Timer?
 
@@ -34,7 +34,7 @@ final class TOTPCircularTimerViewModel: ObservableObject {
     init(data: TOTPTimerData) {
         self.data = data
         percentage = CGFloat(data.remaining) / CGFloat(data.total)
-        currentTime = Double(self.data.remaining)
+        remainingSeconds = Double(self.data.remaining)
 
         startTimer()
     }
@@ -58,8 +58,8 @@ final class TOTPCircularTimerViewModel: ObservableObject {
                     return
                 }
 
-                currentTime -= 1
-                percentage = currentTime / Double(data.total)
+                remainingSeconds -= 1
+                percentage = remainingSeconds / Double(data.total)
             }
         }
     }
@@ -88,7 +88,7 @@ struct TOTPCircularTimer: View {
                 .rotationEffect(.degrees(-90))
                 .animation(.default, value: viewModel.percentage)
 
-            Text(verbatim: "\(Int(viewModel.currentTime))")
+            Text(verbatim: "\(Int(viewModel.remainingSeconds))")
                 .font(.caption)
                 .fontWeight(.light)
                 .foregroundColor(PassColor.textWeak.toColor)
@@ -101,7 +101,7 @@ struct TOTPCircularTimer: View {
     }
 
     private var color: Color {
-        switch viewModel.currentTime {
+        switch viewModel.remainingSeconds {
         case 0...10:
             PassColor.signalDanger.toColor
         default:
