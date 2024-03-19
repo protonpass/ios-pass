@@ -1,5 +1,5 @@
 //
-// Browser.swift
+// Browser+Extensions.swift
 // Proton Pass - Created on 25/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,13 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Macro
 
-public enum Browser: Int, CaseIterable, Codable, CustomStringConvertible {
-    case safari = 0
-    case inAppSafari = 1
-    case systemDefault = 2
-
+extension Browser: CustomStringConvertible {
     public var description: String {
         switch self {
         case .safari:
@@ -33,15 +30,6 @@ public enum Browser: Int, CaseIterable, Codable, CustomStringConvertible {
             "In-App Safari"
         case .systemDefault:
             #localized("System default")
-        }
-    }
-
-    public var appScheme: String? {
-        switch self {
-        case .safari:
-            "com-apple-mobilesafari-tab://"
-        default:
-            nil
         }
     }
 }
