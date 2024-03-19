@@ -431,6 +431,10 @@
 		35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */; };
 		35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */; };
 		35EC5C9A2AE015DE0050614F /* ShareInviteeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EC5C992AE015DE0050614F /* ShareInviteeView.swift */; };
+		35ECCEE02BA48E1B00202613 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
+		35ECCEE12BA48E1B00202613 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
+		35ECCEE22BA48E1C00202613 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
+		35ECCEE32BA48E1F00202613 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
 		35F3A2F82AB0967B00DD30DC /* ObfuscatedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F3A2F72AB0967B00DD30DC /* ObfuscatedConstants.swift */; };
 		35F3EF282AF673E000A67459 /* AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F3EF272AF673E000A67459 /* AppDataTests.swift */; };
 		35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F6D0C52A20A93800C8E395 /* InfoBanner.swift */; };
@@ -2644,6 +2648,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35ECCEE02BA48E1B00202613 /* PrivacyInfo.xcprivacy in Resources */,
 				5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */,
 				3569AE432A69842F0026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				5BCF61A02ABB1171002AD351 /* Localizable.xcstrings in Resources */,
@@ -2665,6 +2670,7 @@
 			files = (
 				3569AE442A6984300026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */,
+				35ECCEE12BA48E1B00202613 /* PrivacyInfo.xcprivacy in Resources */,
 				5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2673,6 +2679,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35ECCEE22BA48E1C00202613 /* PrivacyInfo.xcprivacy in Resources */,
 				357C71DB2B5FE51000AA0BF1 /* Pass-Constant-Scientist.plist in Resources */,
 				357C71D92B5FE50C00AA0BF1 /* Pass-Constant-Black.plist in Resources */,
 				357C71D72B5FB9BC00AA0BF1 /* Localizable.xcstrings in Resources */,
@@ -2701,6 +2708,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35ECCEE32BA48E1F00202613 /* PrivacyInfo.xcprivacy in Resources */,
 				35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

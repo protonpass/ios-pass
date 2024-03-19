@@ -71,7 +71,7 @@ private extension DetailHistoryView {
             passwordRow(logItem: logItem)
             if !logItem.totpUri.isEmpty {
                 PassSectionDivider()
-                TOTPRow(totpManager: viewModel.totpManager,
+                TOTPRow(uri: logItem.totpUri,
                         textColor: textColor(for: \.loginItem?.totpUri),
                         tintColor: PassColor.loginInteractionNorm,
                         onCopyTotpToken: { viewModel.copyTotpToken($0) })
@@ -125,6 +125,7 @@ private extension DetailHistoryView {
             CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingPassword ? "Hide password" : "Show password",
                          action: { isShowingPassword.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
         }

@@ -1,6 +1,30 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Cancel" : {
+      "comment" : "Accessibility label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "comment" : "Accessibility label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
     "Couldn't find \"%@\"" : {
       "localizations" : {
         "be" : {
@@ -93,16 +117,16 @@
             "value" : "\"%@\"을(를) 찾을 수 없습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finne \"%@\""
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kon niet vinden \"%@\""
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finne \"%@\""
           }
         },
         "pl" : {
@@ -238,7 +262,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ゴミ箱で\"%@\"が見つかりませんでした"
+            "value" : "ごみ箱で\"%@\"が見つかりませんでした"
           }
         },
         "ka" : {
@@ -253,16 +277,16 @@
             "value" : "휴지통에서 \"%@\"을(를) 찾을 수 없습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finne \"%@\" i papirkurven"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kon niet vinden \"%@\" in prullenbak"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finne \"%@\" i papirkurven"
           }
         },
         "pl" : {
@@ -413,16 +437,16 @@
             "value" : "%2$@에서 \"%1$@ \"을(를) 찾을 수 없습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finne \"%1$@\" i %2$@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kon niet vinden \"%1$@\" in %2$@"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finne \"%1$@\" i %2$@"
           }
         },
         "pl" : {
@@ -573,16 +597,16 @@
             "value" : "로그인 생성"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett pålogging"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Login aanmaken"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opprett pålogging"
           }
         },
         "pl" : {
@@ -733,16 +757,16 @@
             "value" : "패스키 생성"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett tilgangsnøkkel"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Maak een Passkey"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opprett tilgangsnøkkel"
           }
         },
         "pl" : {
@@ -766,7 +790,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vytvoriť prihlasovací kľúč"
+            "value" : "Vytvoriť prístupový kľúč"
           }
         },
         "sl" : {
@@ -895,16 +919,16 @@
             "value" : "보안 상의 이유로, 접근이 수락되어야 합니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Av sikkerhetsgrunner må tilgangen din bekreftes"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voor veiligheidsredenen dient uw toegang bevestigd te worden"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Av sikkerhetsgrunner må tilgangen din bekreftes"
           }
         },
         "pl" : {
@@ -1057,16 +1081,16 @@
             "value" : "Pass Plus를 구독하여 무제한 별명을 사용하고, 독점 기능과 Proton 지원을 사용해 보세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få ubegrensede aliaser, nyt eksklusive funksjoner og støtt oss ved å abonnere på Pass Plus."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Krijg ongelimiteerde aliassen, geniet van exclusieve functies, en ondersteun ons door te abonneren op Pass Plus."
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Få ubegrensede aliaser, nyt eksklusive funksjoner og støtt oss ved å abonnere på Pass Plus."
           }
         },
         "pl" : {
@@ -1218,16 +1242,16 @@
             "value" : "Pass에 대해 알아보기"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lær mer om Pass"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meer informatie over Pass"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lær mer om Pass"
           }
         },
         "pl" : {
@@ -1380,16 +1404,16 @@
             "value" : "다중 금고"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flere hvelv"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meerdere kluizen"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flere hvelv"
           }
         },
         "pl" : {
@@ -1542,13 +1566,13 @@
             "value" : "Pass Plus"
           }
         },
-        "nl" : {
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass Plus"
           }
         },
-        "no" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass Plus"
@@ -1704,16 +1728,16 @@
             "value" : "공유 데이터에 대한 접근 대기 중"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venter på tilgang til de delte dataene"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toegang tot gedeelde data in afwachting"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Venter på tilgang til de delte dataene"
           }
         },
         "pl" : {
@@ -1865,16 +1889,16 @@
             "value" : "Proton Pass 자동 완성 확장을 사용하기 위해선 로그인하십시오."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vennligst logg på for å bruke Proton Pass-AutoFyll-utvidelsen"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Log in om de Proton Pass AutoFill extensie te gebruiken"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vennligst logg på for å bruke Proton Pass-AutoFyll-utvidelsen"
           }
         },
         "pl" : {
@@ -2026,16 +2050,16 @@
             "value" : "Proton Pass 공유 확장을 사용하기 위해선 로그인하십시오."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vennligst logg på for å bruke Proton Pass Share-utvidelsen"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Log in om Proton Pass Share extensie te gebruiken"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vennligst logg på for å bruke Proton Pass Share-utvidelsen"
           }
         },
         "pl" : {
@@ -2188,16 +2212,16 @@
             "value" : "최근"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nylige"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recente"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nylige"
           }
         },
         "pl" : {
@@ -2348,16 +2372,16 @@
             "value" : "검색"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zoeken"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk"
           }
         },
         "pl" : {
@@ -2508,16 +2532,16 @@
             "value" : "모든 금고에서 검색"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i alle hvelv"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zoeken in alle kluizen"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk i alle hvelv"
           }
         },
         "pl" : {
@@ -2668,22 +2692,22 @@
             "value" : "기존의 로그인을 선택하거나 새 로그인을 만드십시오."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg en eksisterende pålogging eller opprett en ny."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Selecteer een bestaande login of maak een nieuwe aan."
           }
         },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Velg en eksisterende pålogging eller opprett en ny."
-          }
-        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wybierz istniejący login lub utwórz nowy."
+            "value" : "Wybierz dane logowania lub utwórz nowe."
           }
         },
         "pt-BR" : {
@@ -2830,16 +2854,16 @@
             "value" : "최대 10명 까지 공유"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deling med opptil 10 personer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delen met maximaal 10 mensen"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deling med opptil 10 personer"
           }
         },
         "pl" : {
@@ -2990,16 +3014,16 @@
             "value" : "로그아웃됨"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logget av"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uitgelogd"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logget av"
           }
         },
         "pl" : {
@@ -3150,16 +3174,16 @@
             "value" : "정렬 기준"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorter etter"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorteren op"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sorter etter"
           }
         },
         "pl" : {
@@ -3312,16 +3336,16 @@
             "value" : "제안"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forslag"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suggesties"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Forslag"
           }
         },
         "pl" : {
@@ -3472,16 +3496,16 @@
             "value" : "다른 검색어로 검색을 시도해 보세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv å søke med andre stave- eller nøkkelord"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Probeer te zoeken met een andere spelling of trefwoorden."
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prøv å søke med andre stave- eller nøkkelord"
           }
         },
         "pl" : {
@@ -3634,16 +3658,16 @@
             "value" : "무제한 2FA 자동 완성"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrenset antall 2FA-autofyll"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onbeperkt 2FA Autofill"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ubegrenset antall 2FA-autofyll"
           }
         },
         "pl" : {
@@ -3796,16 +3820,16 @@
             "value" : "무제한 나의 이메일 별명"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrenset antall e-postaliaser"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onbeperkt aantal Hide-my-email-alliassen"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ubegrenset antall e-postaliaser"
           }
         },
         "pl" : {
@@ -3958,16 +3982,16 @@
             "value" : "업그레이드"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgraden"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oppgrader"
           }
         },
         "pl" : {
