@@ -196,6 +196,6 @@ extension Preferences: FavIconSettings {
 
 extension Preferences: SpotlightSettingsProvider {}
 
-// MARK: LocalAuthenticationMethodProvider
+// MARK: - SecuritySettingsProvider
 
-extension Preferences: LocalAuthenticationMethodProvider {}
+extension Preferences: SecuritySettingsProvider {}
