@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Core
 import Entities
 import Foundation
@@ -29,16 +28,13 @@ public protocol TOTPServiceProtocol: Sendable {
 }
 
 public final class TOTPService: TOTPServiceProtocol, @unchecked Sendable {
-    private let logger: Logger
     private let handler: any TotpHandlerProtocol
     private let generator: any TotpTokenGeneratorProtocol
     private let currentDateProvider: any CurrentDateProviderProtocol
 
-    public init(logManager: any LogManagerProtocol,
-                currentDateProvider: any CurrentDateProviderProtocol,
+    public init(currentDateProvider: any CurrentDateProviderProtocol,
                 handler: any TotpHandlerProtocol = TotpHandler(),
                 generator: any TotpTokenGeneratorProtocol = TotpTokenGenerator()) {
-        logger = .init(manager: logManager)
         self.currentDateProvider = currentDateProvider
         self.handler = handler
         self.generator = generator
