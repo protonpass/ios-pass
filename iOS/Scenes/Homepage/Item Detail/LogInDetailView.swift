@@ -139,7 +139,7 @@ private extension LogInDetailView {
                     EmptyView()
                 } else {
                     PassSectionDivider()
-                    TOTPRow(totpManager: viewModel.totpManager,
+                    TOTPRow(uri: viewModel.totpUri,
                             tintColor: iconTintColor,
                             onCopyTotpToken: { viewModel.copyTotpToken($0) })
                 }
@@ -231,6 +231,7 @@ private extension LogInDetailView {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                             accessibilityLabel: isShowingPassword ? "Hide password" : "Show password",
                              action: { isShowingPassword.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()

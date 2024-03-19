@@ -1,7 +1,7 @@
 //
-// GenerateTotpTokenUseCase.swift
-// Proton Pass - Created on 06/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// AuthenticatorRow.swift
+// Proton Pass - Created on 19/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,16 +17,5 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Entities
-
-public protocol GenerateTotpTokenUseCase: Sendable {
-    func execute(uri: String) throws -> TOTPData
-}
-
-public extension GenerateTotpTokenUseCase {
-    func callAsFunction(uri: String) throws -> TOTPData {
-        try execute(uri: uri)
-    }
-}
+import Foundation

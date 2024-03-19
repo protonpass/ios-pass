@@ -187,7 +187,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         var controllers = [UIViewController]()
         let itemsTabViewController = UIHostingController(rootView: itemsTabView)
         itemsTabViewController.tabBarItem.image = HomepageTab.items.image
-        itemsTabViewController.tabBarItem.accessibilityHint = HomepageTab.items.hint
+        itemsTabViewController.tabBarItem.accessibilityLabel = HomepageTab.items.hint
 
         controllers.append(itemsTabViewController)
 
@@ -200,19 +200,19 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
         let dummyViewController = UIViewController()
         dummyViewController.tabBarItem.image = HomepageTab.itemCreation.image
-        dummyViewController.tabBarItem.accessibilityHint = HomepageTab.itemCreation.hint
+        dummyViewController.tabBarItem.accessibilityLabel = HomepageTab.itemCreation.hint
         controllers.append(dummyViewController)
 
         if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
             let secureCenter = UIHostingController(rootView: securityCenterView)
             secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
-            secureCenter.tabBarItem.accessibilityHint = HomepageTab.securityCenter.hint
+            secureCenter.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
             controllers.append(secureCenter)
         }
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = HomepageTab.profile.image
-        profileTabViewController.tabBarItem.accessibilityHint = HomepageTab.profile.hint
+        profileTabViewController.tabBarItem.accessibilityLabel = HomepageTab.profile.hint
         profileTabViewController.tabBarItem.accessibilityIdentifier = HomepageTab.profile.identifier
         self.profileTabViewController = profileTabViewController
         controllers.append(profileTabViewController)

@@ -60,7 +60,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
 
-    let totpManager = resolve(\ServiceContainer.totpManager)
+    let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
