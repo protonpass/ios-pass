@@ -54,11 +54,10 @@ private extension HomepageCoordinator {
         guard !isCollapsed() else {
             return
         }
-        let placeholderView = ItemDetailPlaceholderView { [weak self] in
-            guard let self else { return }
-            popTopViewController(animated: true)
-        }
-        push(placeholderView)
+        let view = AuthenticatorView()
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.large, parentViewController: rootViewController)
+        present(viewController)
     }
 
     func createNewItem() {

@@ -16019,6 +16019,9 @@
         }
       }
     },
+    "Authenticator" : {
+
+    },
     "Auto-filled:" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -64511,6 +64514,9 @@
           }
         }
       }
+    },
+    "Search ..." : {
+
     },
     "Search in all vaults" : {
       "localizations" : {
