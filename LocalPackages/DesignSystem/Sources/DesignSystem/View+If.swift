@@ -35,4 +35,18 @@ public extension View {
             self
         }
     }
+
+    /// Applies the given transform if the given value is not nil.
+    /// - Parameters:
+    ///   - value: The optional value.
+    ///   - transform: The transform to apply to the source `View`.
+    /// - Returns: Either the original `View` or the modified `View` if the value is not nil.
+    @ViewBuilder
+    func `if`<T>(_ value: T?, transform: (Self, T) -> some View) -> some View {
+        if let value {
+            transform(self, value)
+        } else {
+            self
+        }
+    }
 }

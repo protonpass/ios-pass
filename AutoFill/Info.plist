@@ -17,7 +17,7 @@
 			<key>ASCredentialProviderExtensionCapabilities</key>
 			<dict>
 				<key>ProvidesPasskeys</key>
-				<false/>
+				<true/>
 				<key>ProvidesPasswords</key>
 				<true/>
 				<key>ShowsConfigurationUI</key>
