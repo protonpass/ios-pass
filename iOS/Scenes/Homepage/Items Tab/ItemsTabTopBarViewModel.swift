@@ -23,7 +23,21 @@ import Combine
 import Core
 import Entities
 import Factory
+import Macro
 import SwiftUI
+
+extension VaultSelection {
+    var accessibilityLabel: String {
+        switch self {
+        case .all:
+            #localized("Show all vaults")
+        case let .precise(vault):
+            #localized("Show %@ vault", vault.name)
+        case .trash:
+            #localized("Show trash")
+        }
+    }
+}
 
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)

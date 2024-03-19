@@ -59,6 +59,7 @@ private extension ItemsTabTopBar {
                              type: .big,
                              action: onShowVaultList)
                     .frame(width: DesignConstant.searchBarHeight)
+                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
 
             case let .precise(vault):
                 CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
@@ -66,6 +67,7 @@ private extension ItemsTabTopBar {
                              backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
                              action: onShowVaultList)
                     .frame(width: DesignConstant.searchBarHeight)
+                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,
@@ -73,6 +75,7 @@ private extension ItemsTabTopBar {
                              backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16),
                              action: onShowVaultList)
                     .frame(width: DesignConstant.searchBarHeight)
+                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
             }
 
             // Search bar
@@ -97,6 +100,7 @@ private extension ItemsTabTopBar {
             .onTapGesture(perform: onSearch)
 
             ItemsTabOptionsButton(isEditMode: $isEditMode)
+                .accessibilityLabel(Text("Items filter Menus"))
         }
         .padding(.horizontal)
     }
