@@ -16019,6 +16019,16 @@
         }
       }
     },
+    "Authenticator" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authenticator"
+          }
+        }
+      }
+    },
     "Auto-filled:" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -64508,6 +64518,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scan %@"
+          }
+        }
+      }
+    },
+    "Search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
           }
         }
       }
