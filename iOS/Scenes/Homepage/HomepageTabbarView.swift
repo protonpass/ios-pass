@@ -304,8 +304,14 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         if let index = viewControllers.firstIndex(of: viewController),
            let tab = tabIndexes.first(where: { $0.value == index })?.key {
             homepageTabBarControllerDelegate?.selected(tab: tab)
-            return tab == HomepageTab.itemCreation ? false : tab == .authenticator ? !UIDevice.current
-                .isIpad : true
+            switch tab {
+            case .itemCreation:
+                return false
+            case .authenticator:
+               return !UIDevice.current.isIpad
+            default:
+                return true
+            }
         }
 
         return false
