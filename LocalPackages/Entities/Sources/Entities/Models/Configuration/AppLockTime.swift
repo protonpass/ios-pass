@@ -1,7 +1,7 @@
 //
 // AppLockTime.swift
-// Proton Pass - Created on 27/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 19/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,11 +17,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
-import Macro
 
-public enum AppLockTime: Int, Codable, CustomStringConvertible, CaseIterable {
+public enum AppLockTime: Int, Codable, CaseIterable {
     case immediately = 0
     case oneMinute = 1
     case twoMinutes = 2
@@ -30,27 +30,6 @@ public enum AppLockTime: Int, Codable, CustomStringConvertible, CaseIterable {
     case oneHour = 5
     case fourHours = 6
     case never = 7
-
-    public var description: String {
-        switch self {
-        case .immediately:
-            #localized("Immediately")
-        case .oneMinute:
-            #localized("After %lld minute(s)", 1)
-        case .twoMinutes:
-            #localized("After %lld minute(s)", 2)
-        case .fiveMinutes:
-            #localized("After %lld minute(s)", 5)
-        case .tenMinutes:
-            #localized("After %lld minute(s)", 10)
-        case .oneHour:
-            #localized("After %lld hour(s)", 1)
-        case .fourHours:
-            #localized("After %lld hour(s)", 4)
-        case .never:
-            #localized("Never")
-        }
-    }
 
     public var intervalInMinutes: Int? {
         switch self {
