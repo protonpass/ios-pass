@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct Organization: Sendable, Decodable {
+public struct Organization: Sendable, Decodable, Equatable {
     /// Whether this user can update the organization
     public let canUpdate: Bool
     public let settings: Settings
@@ -33,7 +33,7 @@ public struct Organization: Sendable, Decodable {
 }
 
 public extension Organization {
-    enum ShareMode: Int, Sendable, Decodable {
+    enum ShareMode: Int, Sendable, Decodable, Equatable {
         /// Able to share within and outside of organization
         case unrestricted = 0
 
@@ -43,7 +43,7 @@ public extension Organization {
         public static var `default`: Self { .restricted }
     }
 
-    enum ExportMode: Int, Sendable, Decodable {
+    enum ExportMode: Int, Sendable, Decodable, Equatable {
         /// Anyone can export data
         case anyone = 0
 
@@ -53,7 +53,7 @@ public extension Organization {
         public static var `default`: Self { .admins }
     }
 
-    struct Settings: Sendable, Decodable {
+    struct Settings: Sendable, Decodable, Equatable {
         public let shareMode: ShareMode
 
         /// 0 means lock time is not enforced

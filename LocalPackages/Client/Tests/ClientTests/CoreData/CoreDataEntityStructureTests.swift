@@ -159,5 +159,6 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "exportMode", on: sut, hasType: .integer64)
         verifyAttribute(named: "forceLockSeconds", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareMode", on: sut, hasType: .integer64)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 }
