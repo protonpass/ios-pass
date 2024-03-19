@@ -16020,7 +16020,14 @@
       }
     },
     "Authenticator" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authenticator"
+          }
+        }
+      }
     },
     "Auto-filled:" : {
       "extractionState" : "manual",
@@ -64516,7 +64523,14 @@
       }
     },
     "Search ..." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search ..."
+          }
+        }
+      }
     },
     "Search in all vaults" : {
       "localizations" : {
