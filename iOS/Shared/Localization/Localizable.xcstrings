@@ -64522,12 +64522,12 @@
         }
       }
     },
-    "Search ..." : {
+    "Search" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Search ..."
+            "value" : "Search"
           }
         }
       }

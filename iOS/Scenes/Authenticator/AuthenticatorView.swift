@@ -38,7 +38,7 @@ struct AuthenticatorView: View {
             .navigationStackEmbeded()
             .searchable(text: $viewModel.searchText,
                         placement: .navigationBarDrawer(displayMode: .always),
-                        prompt: "Search ...")
+                        prompt: "Search")
             .task {
                 await viewModel.load()
             }

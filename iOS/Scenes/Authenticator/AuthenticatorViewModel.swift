@@ -67,10 +67,6 @@ final class AuthenticatorViewModel: ObservableObject, Sendable {
 
 private extension AuthenticatorViewModel {
     func setUp() {
-        Task {
-            await load()
-        }
-
         $searchText
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .removeDuplicates()
