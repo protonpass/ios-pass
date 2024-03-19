@@ -85,8 +85,8 @@ struct TrialDetailView: View {
                 Button(action: onLearnMore) {
                     Text("Learn more")
                         .font(.callout)
-                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
-                        .underline(color: Color(uiColor: PassColor.interactionNormMajor2))
+                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                        .underline(color: PassColor.interactionNormMajor2.toColor)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -98,6 +98,7 @@ struct TrialDetailView: View {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Close",
                                  action: dismiss.callAsFunction)
                 }
             }

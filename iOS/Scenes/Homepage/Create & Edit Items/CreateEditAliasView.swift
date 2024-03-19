@@ -70,6 +70,7 @@ struct CreateEditAliasView: View {
             CircleButton(icon: IconProvider.cross,
                          iconColor: ItemContentType.alias.normMajor2Color,
                          backgroundColor: ItemContentType.alias.normMinor1Color,
+                         accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
         }
     }

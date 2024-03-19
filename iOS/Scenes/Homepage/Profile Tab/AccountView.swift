@@ -154,6 +154,7 @@ struct AccountView: View {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: viewModel.isShownAsSheet ? "Close" : "Go back",
                          action: { viewModel.goBack() })
         }
         ToolbarItem(placement: .navigationBarTrailing) {

@@ -22,6 +22,7 @@ import Client
 import Core
 import Entities
 import Macro
+import UseCases
 import UserNotifications
 
 protocol CopyTotpTokenAndNotifyUseCase: Sendable {
