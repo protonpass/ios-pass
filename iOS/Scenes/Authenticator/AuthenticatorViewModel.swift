@@ -24,17 +24,18 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 
 @MainActor
 final class AuthenticatorViewModel: ObservableObject, Sendable {
-    @Published private(set) var displayedItems = [ItemContent]()
-    private var items = [ItemContent]()
+    @Published private(set) var displayedItems = [AuthenticatorItem]()
     @Published var searchText = ""
 
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
-    let totpManager = resolve(\ServiceContainer.totpManager)
-
+    private let generateTotpToken = resolve(\SharedUseCasesContainer.generateTotpToken)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
+    private var items = [AuthenticatorItem]()
 
     init() {
         setUp()
@@ -43,20 +44,24 @@ final class AuthenticatorViewModel: ObservableObject, Sendable {
     func load() async {
         do {
             items = try await getActiveLoginItems()
-                .filter { item in
+                .compactMap { item in
                     guard let totpUri = item.loginItem?.totpUri,
-                          !totpUri.isEmpty
-                    else {
-                        return false
+                          !totpUri.isEmpty, let data = try? generateTotpToken(uri: totpUri) else {
+                        return nil
                     }
-                    return true
+                    return item.toAuthenticatorItem(totpData: data)
                 }
+
             if displayedItems != items {
                 displayedItems = items
             }
         } catch {
-            print(error)
+            router.display(element: .displayErrorBanner(error))
         }
+    }
+
+    func copyTotpToken(_ token: String) {
+        router.action(.copyToClipboard(text: token, message: #localized("TOTP copied")))
     }
 }
 
@@ -77,7 +82,7 @@ private extension AuthenticatorViewModel {
                     displayedItems = items
                 } else {
                     displayedItems = items.filter { item in
-                        item.name.lowercased().contains(term.lowercased)
+                        item.title.lowercased().contains(term.lowercased)
                     }
                 }
             }
