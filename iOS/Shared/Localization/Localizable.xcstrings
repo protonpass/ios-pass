@@ -1857,8 +1857,8 @@
               },
               "zero" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld item"
+                  "state" : "translated",
+                  "value" : "%lld 件のアイテム"
                 }
               }
             }
@@ -2461,8 +2461,8 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
+                  "state" : "translated",
+                  "value" : "%lld 件のアイテムがごみ箱に移動されました"
                 }
               }
             }
@@ -7680,7 +7680,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pre prihlásenie \"%@\" sa vytvorí prihlasovací kľúč."
+            "value" : "Pre prihlásenie \"%@\" sa vytvorí prístupový kľúč."
           }
         },
         "sl" : {
@@ -11990,6 +11990,18 @@
         }
       }
     },
+    "Alias action menu" : {
+      "comment" : "Accessibility label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias action menu"
+          }
+        }
+      }
+    },
     "Alias address" : {
       "comment" : "Alias item detail page",
       "localizations" : {
@@ -14159,7 +14171,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ゴミ箱にあるすべてのアイテムは永久に削除されます"
+            "value" : "ごみ箱にあるすべてのアイテムは永久に削除されます"
           }
         },
         "ka" : {
@@ -16006,9 +16018,6 @@
           }
         }
       }
-    },
-    "Authenticator" : {
-
     },
     "Auto-filled:" : {
       "extractionState" : "manual",
@@ -20451,8 +20460,8 @@
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
+            "state" : "translated",
+            "value" : "Dupliceren"
           }
         },
         "pl" : {
@@ -20469,14 +20478,14 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
+            "state" : "translated",
+            "value" : "Clonează"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
+            "state" : "translated",
+            "value" : "Klonovať"
           }
         },
         "sl" : {
@@ -20494,7 +20503,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Klonla"
+            "value" : "Kopyala"
           }
         },
         "uk" : {
@@ -22678,8 +22687,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy card number"
+            "state" : "translated",
+            "value" : "カード番号をコピー"
           }
         },
         "ka" : {
@@ -22726,8 +22735,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy card number"
+            "state" : "translated",
+            "value" : "Kopírovať číslo karty"
           }
         },
         "sl" : {
@@ -22886,8 +22895,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy cardholder name"
+            "state" : "translated",
+            "value" : "Kopírovať meno držiteľa karty"
           }
         },
         "sl" : {
@@ -23046,8 +23055,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy expiration date"
+            "state" : "translated",
+            "value" : "Kopírovať dátum exspirácie"
           }
         },
         "sl" : {
@@ -23966,7 +23975,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ゴミ箱で\"%@\"が見つかりませんでした"
+            "value" : "ごみ箱で\"%@\"が見つかりませんでした"
           }
         },
         "ka" : {
@@ -25624,7 +25633,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vytvoriť prihlasovací kľúč"
+            "value" : "Vytvoriť prístupový kľúč"
           }
         },
         "sl" : {
@@ -27267,6 +27276,18 @@
         }
       }
     },
+    "Custom field menu" : {
+      "comment" : "accessibility",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom field menu"
+          }
+        }
+      }
+    },
     "Custom fields" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -27875,8 +27896,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Ochrana pri úniku údajov"
           }
         },
         "sl" : {
@@ -27887,8 +27908,8 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
+            "state" : "translated",
+            "value" : "Skydd mot dataintrång"
           }
         },
         "tr" : {
@@ -29743,7 +29764,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Misalnya, kunci pemulihan, PIN"
+            "value" : "mis. Kunci pemulihan, PIN"
           }
         },
         "it" : {
@@ -29905,7 +29926,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Misalnya, ID pengguna, nomor acct"
+            "value" : "mis. ID pengguna, Nomor akun"
           }
         },
         "it" : {
@@ -33660,8 +33681,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
+            "state" : "translated",
+            "value" : "Vylúčiť z monitorovania"
           }
         },
         "sl" : {
@@ -33820,8 +33841,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
+            "state" : "translated",
+            "value" : "Vylúčené položky"
           }
         },
         "sl" : {
@@ -34140,8 +34161,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Expiration date copied"
+            "state" : "translated",
+            "value" : "Dátum exspirácie skopírovaný"
           }
         },
         "sl" : {
@@ -34283,7 +34304,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wykluczone adresy"
+            "value" : "Ujawnione adresy"
           }
         },
         "pt-BR" : {
@@ -34300,8 +34321,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
+            "state" : "translated",
+            "value" : "Uniknuté emaily"
           }
         },
         "sl" : {
@@ -34460,8 +34481,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
+            "state" : "translated",
+            "value" : "Uniknuté heslá"
           }
         },
         "sl" : {
@@ -36710,8 +36731,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
+            "state" : "translated",
+            "value" : "Generujte jedinečné heslá na zvýšenie zabezpečenia."
           }
         },
         "sl" : {
@@ -36903,6 +36924,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo một bí danh email để sử dụng trên các ứng dụng mới"
+          }
+        }
+      }
+    },
+    "Go back" : {
+      "comment" : "accessibility",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go back"
           }
         }
       }
@@ -37872,6 +37905,28 @@
         }
       }
     },
+    "Hide card number" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide card number"
+          }
+        }
+      }
+    },
+    "Hide custom field" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide custom field"
+          }
+        }
+      }
+    },
     "Hide my email" : {
       "localizations" : {
         "be" : {
@@ -38028,6 +38083,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hide My Email"
+          }
+        }
+      }
+    },
+    "Hide password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide password"
+          }
+        }
+      }
+    },
+    "Hide pin" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide pin"
+          }
+        }
+      }
+    },
+    "Hide security code" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide security code"
           }
         }
       }
@@ -41571,6 +41659,17 @@
         }
       }
     },
+    "Item's action Menu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item's action Menu"
+          }
+        }
+      }
+    },
     "Items" : {
       "localizations" : {
         "be" : {
@@ -41727,6 +41826,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nội dung"
+          }
+        }
+      }
+    },
+    "Items filter Menus" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items filter Menus"
+          }
+        }
+      }
+    },
+    "Items filtering and sort menu" : {
+      "comment" : "accessibility",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items filtering and sort menu"
           }
         }
       }
@@ -43465,8 +43587,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Posledná synchronizácia ochrany pri úniku údajov:"
           }
         },
         "sl" : {
@@ -43477,8 +43599,8 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
+            "state" : "translated",
+            "value" : "Senaste synkronisering av skydd mot dataintrång:"
           }
         },
         "tr" : {
@@ -46363,8 +46485,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
+            "state" : "translated",
+            "value" : "Prihlásenia na stránky, ktoré majú k dvojstupňové overenie, ale vy ste ho ešte nenastavili."
           }
         },
         "sl" : {
@@ -46558,9 +46680,6 @@
           }
         }
       }
-    },
-    "Look for something" : {
-
     },
     "Manage access" : {
       "localizations" : {
@@ -47812,8 +47931,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
+            "state" : "translated",
+            "value" : "Chýbajúce dvojstupňové overenie"
           }
         },
         "sl" : {
@@ -53809,19 +53928,19 @@
         },
         "da" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53845,7 +53964,7 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53857,7 +53976,7 @@
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53875,7 +53994,7 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53887,19 +54006,19 @@
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Optic ID"
+            "state" : "translated",
+            "value" : "Optisk-ID"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53911,13 +54030,13 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Optic ID"
+            "state" : "translated",
+            "value" : "ID optic"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Optic ID"
           }
         },
@@ -53935,8 +54054,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Optic ID"
+            "state" : "translated",
+            "value" : "Optik kimlik"
           }
         },
         "uk" : {
@@ -54672,8 +54791,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Passkey"
+            "state" : "translated",
+            "value" : "パスキー"
           }
         },
         "ka" : {
@@ -54721,7 +54840,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prihlasovací kľúč"
+            "value" : "Prístupový kľúč"
           }
         },
         "sl" : {
@@ -55153,8 +55272,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Paste"
+            "state" : "translated",
+            "value" : "貼り付け"
           }
         },
         "ka" : {
@@ -55636,8 +55755,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Permanently delete"
+            "state" : "translated",
+            "value" : "完全に削除"
           }
         },
         "ka" : {
@@ -60425,6 +60544,16 @@
         }
       }
     },
+    "Regenerate password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regenerate password"
+          }
+        }
+      }
+    },
     "Reject invitation" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -62353,6 +62482,7 @@
       }
     },
     "Restored %lld items" : {
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -63430,26 +63560,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
+                  "state" : "translated",
+                  "value" : "Použité %lld-krát"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
+                  "state" : "translated",
+                  "value" : "Použité %lld-krát"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld time"
+                  "state" : "translated",
+                  "value" : "Použité %lld-krát"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
+                  "state" : "translated",
+                  "value" : "Použité %lld-krát"
                 }
               }
             }
@@ -63689,8 +63819,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
+            "state" : "translated",
+            "value" : "Opakovane použité heslá"
           }
         },
         "sl" : {
@@ -64367,6 +64497,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lưu"
+          }
+        }
+      }
+    },
+    "Scan %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan %@"
           }
         }
       }
@@ -65944,8 +66085,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Security Center"
+            "state" : "translated",
+            "value" : "Centrum zabezpečenia"
           }
         },
         "sl" : {
@@ -66146,7 +66287,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Праверачны нумар скапіяваны"
+            "value" : "Код бяспекі скапіяваны"
           }
         },
         "cs" : {
@@ -67345,8 +67486,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Passkey"
+            "state" : "translated",
+            "value" : "パスキーを選択"
           }
         },
         "ka" : {
@@ -67394,7 +67535,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vybrať prihlasovací kľúč"
+            "value" : "Vybrať prístupový kľúč"
           }
         },
         "sl" : {
@@ -67585,6 +67726,18 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Selected vaults"
+          }
+        }
+      }
+    },
+    "Send bug report" : {
+      "comment" : "Accessibility Label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send bug report"
           }
         }
       }
@@ -68635,8 +68788,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Set up 2FA"
+            "state" : "translated",
+            "value" : "2FA を設定"
           }
         },
         "ka" : {
@@ -70167,6 +70320,39 @@
         }
       }
     },
+    "Show %@ vault" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show %@ vault"
+          }
+        }
+      }
+    },
+    "Show all vaults" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show all vaults"
+          }
+        }
+      }
+    },
+    "Show card number" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show card number"
+          }
+        }
+      }
+    },
     "Show content in search" : {
       "localizations" : {
         "be" : {
@@ -70323,6 +70509,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Show content in search"
+          }
+        }
+      }
+    },
+    "Show custom filed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show custom filed"
           }
         }
       }
@@ -70643,6 +70840,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hãy chỉ cho tôi"
+          }
+        }
+      }
+    },
+    "Show password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show password"
+          }
+        }
+      }
+    },
+    "Show pin" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show pin"
+          }
+        }
+      }
+    },
+    "Show security code" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show security code"
+          }
+        }
+      }
+    },
+    "Show trash" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show trash"
           }
         }
       }
@@ -74633,8 +74874,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
+            "state" : "translated",
+            "value" : "Nasledujúce položky sú vylúčené z"
           }
         },
         "sl" : {
@@ -75115,8 +75356,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Tieto účty sa objavujú v uniknutých údajoch. Okamžite aktualizujte svoje prihlasovacie údaje."
           }
         },
         "sl" : {
@@ -75127,8 +75368,8 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Dessa konton visas i dataintrång. Uppdatera dina inloggningsuppgifter omedelbart."
           }
         },
         "tr" : {
@@ -75275,8 +75516,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Tieto heslá sa objavujú v uniknutých údajoch. Okamžite aktualizujte svoje prihlasovacie údaje."
           }
         },
         "sl" : {
@@ -75287,8 +75528,8 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
+            "state" : "translated",
+            "value" : "Dessa lösenord visas i dataintrång. Uppdatera dina inloggningsuppgifter omedelbart."
           }
         },
         "tr" : {
@@ -75435,8 +75676,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password."
+            "state" : "translated",
+            "value" : "Tento účet je zraniteľný. Navštívte službu a zmeňte si heslo."
           }
         },
         "sl" : {
@@ -78280,7 +78521,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ゴミ箱は空です"
+            "value" : "ごみ箱は空です"
           }
         },
         "ka" : {
@@ -82719,20 +82960,20 @@
         },
         "da" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Brug systemadgangskode, når Optic ID ikke virker"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "System-PIN verwenden, wenn Optic ID fehlschlägt"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Χρήση συνθηματικού συστήματος σε περίπτωση αποτυχίας του Optic ID"
           }
         },
         "en" : {
@@ -82755,8 +82996,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Käytä järjestelmän pääsykoodia, kun Optic ID ei toimi"
           }
         },
         "fr" : {
@@ -82767,8 +83008,8 @@
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Gunakan kode sandi sistem ketika Optic ID gagal"
           }
         },
         "it" : {
@@ -82785,8 +83026,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Optic ID-ის ჩავარდნის შემთხვევაში სისტემური საკვანძო კოდის გამოყენება"
           }
         },
         "ko" : {
@@ -82797,20 +83038,20 @@
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Gebruik systeem toegangscode wanneer Face ID niet lukt"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Bruk systempasskode når Optisk-ID mislykkes"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Użyj kodu, jeśli Optic ID nie działa"
           }
         },
         "pt-BR" : {
@@ -82821,14 +83062,14 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Folosire parolă sistem dacă ID-ul optic eșuează"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Použiť systémový kód, keď Optic ID zlyhá"
           }
         },
         "sl" : {
@@ -82845,8 +83086,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
+            "state" : "translated",
+            "value" : "Optik kimlik kullanılamadığında sistem parolasını kullanın"
           }
         },
         "uk" : {
@@ -86196,14 +86437,14 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "View history"
+            "state" : "translated",
+            "value" : "Afișare istoric"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "View history"
+            "state" : "translated",
+            "value" : "Zobraziť históriu"
           }
         },
         "sl" : {
@@ -87489,8 +87730,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
+            "state" : "translated",
+            "value" : "Slabé heslá"
           }
         },
         "sl" : {
@@ -87649,8 +87890,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
+            "state" : "translated",
+            "value" : "Slabé heslá sa dajú ľahšie uhádnuť. Vygenerujte si silné heslá, aby boli vaše účty v bezpečí."
           }
         },
         "sl" : {
@@ -90262,8 +90503,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
+            "state" : "translated",
+            "value" : "Nemôžete pozvať ľudí mimo vašej organizácie, ďalšie informácie získate od správcu."
           }
         },
         "sl" : {
@@ -91868,8 +92109,8 @@
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Vaše údaje sa zobrazujú v únikoch údajov, upgradujte a zistite, v ktorých."
           }
         },
         "sl" : {
@@ -91880,8 +92121,8 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
+            "state" : "translated",
+            "value" : "Din data visas i dataintrång, uppgradera för att se vilka."
           }
         },
         "tr" : {

@@ -108,7 +108,7 @@ private extension TotpLoginsView {
 
             Spacer()
 
-            TOTPRow(totpManager: viewModel.totpManager,
+            TOTPRow(uri: viewModel.totpUri,
                     tintColor: PassColor.loginInteractionNormMajor2,
                     onCopyTotpToken: { viewModel.copyTotpToken($0) })
                 .frame(height: 52)
