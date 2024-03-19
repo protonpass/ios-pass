@@ -169,8 +169,8 @@ extension UseCasesContainer {
 
     var checkAddressesForInvite: Factory<CheckAddressesForInviteUseCase> {
         self { CheckAddressesForInvite(accessRepository: self.accessRepository,
-                                       remoteOrganizationDatasource: SharedRepositoryContainer.shared
-                                           .remoteOrganizationDatasource(),
+                                       organizationRepository: SharedRepositoryContainer.shared
+                                           .organizationRepository(),
                                        shareInviteRepository: self.shareInviteRepository) }
     }
 
