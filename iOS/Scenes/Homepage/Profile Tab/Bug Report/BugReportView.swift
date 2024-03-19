@@ -73,13 +73,15 @@ private extension BugReportView {
             CircleButton(icon: IconProvider.chevronDown,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
             CircleButton(icon: IconProvider.paperPlane,
                          iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1) {
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Send bug report") {
                 viewModel.send()
             }.disabled(viewModel.cantSend)
         }

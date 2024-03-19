@@ -111,7 +111,8 @@ private extension SecurityWeaknessDetailView {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: isSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1) {
+                         backgroundColor: PassColor.loginInteractionNormMinor1,
+                         accessibilityLabel: "Close") {
                 viewModel.dismiss(isSheet: isSheet)
             }
         }
