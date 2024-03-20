@@ -1,7 +1,7 @@
 //
-// Browser.swift
-// Proton Pass - Created on 25/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// SecuritySettingsProvider.swift
+// Proton Pass - Created on 04/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,31 +17,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Macro
+import Entities
 
-public enum Browser: Int, CaseIterable, Codable, CustomStringConvertible {
-    case safari = 0
-    case inAppSafari = 1
-    case systemDefault = 2
-
-    public var description: String {
-        switch self {
-        case .safari:
-            "Safari"
-        case .inAppSafari:
-            "In-App Safari"
-        case .systemDefault:
-            #localized("System default")
-        }
-    }
-
-    public var appScheme: String? {
-        switch self {
-        case .safari:
-            "com-apple-mobilesafari-tab://"
-        default:
-            nil
-        }
-    }
+public protocol SecuritySettingsProvider: Sendable, AnyObject {
+    var localAuthenticationMethod: LocalAuthenticationMethod { get set }
+    var appLockTime: AppLockTime { get set }
 }
