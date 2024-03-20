@@ -1,7 +1,7 @@
 //
-// LocalAuthenticationMethodProvider.swift
-// Proton Pass - Created on 04/03/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// Browser+Extensions.swift
+// Proton Pass - Created on 25/12/2022.
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,10 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Entities
+import Macro
 
-public protocol LocalAuthenticationMethodProvider: Sendable {
-    var localAuthenticationMethod: LocalAuthenticationMethod { get }
+extension Browser: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .safari:
+            "Safari"
+        case .inAppSafari:
+            "In-App Safari"
+        case .systemDefault:
+            #localized("System default")
+        }
+    }
 }

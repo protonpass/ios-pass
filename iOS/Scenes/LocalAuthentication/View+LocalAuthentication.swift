@@ -21,6 +21,7 @@
 import Combine
 import Core
 import DesignSystem
+import Entities
 import Factory
 import ProtonCoreKeymaker
 import SwiftUI
