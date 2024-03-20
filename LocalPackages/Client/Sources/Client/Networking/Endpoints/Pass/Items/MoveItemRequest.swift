@@ -77,18 +77,15 @@ extension MoveItemRequest {
                                                 associatedData: .itemKey)
         let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
 
-        var historyToBeMoved: [ItemHistoryToBeMoved]?
-        if !itemHistory.isEmpty {
-            historyToBeMoved = try itemHistory
-                .map { try $0.toItemHistoryToBeMoved(itemKey: itemKey, destinationShareKey: destinationShareKey) }
-        }
+        let historyToBeMoved = try itemHistory
+            .map { try $0.toItemHistoryToBeMoved(itemKey: itemKey, destinationShareKey: destinationShareKey) }
 
         self.init(shareId: destinationShareId,
                   item: ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
                                       contentFormatVersion: Constants.ContentFormatVersion.item,
                                       content: content,
                                       itemKey: encryptedItemKeyData.base64EncodedString()),
-                  history: historyToBeMoved)
+                  history: historyToBeMoved.nilIfEmpty)
     }
 }
 
@@ -114,7 +111,7 @@ private extension ItemContent {
     }
 }
 
-extension ItemHistory {
+private extension ItemHistory {
     func toItemHistoryToBeMoved(itemKey: Data,
                                 destinationShareKey: DecryptedShareKey) throws -> ItemHistoryToBeMoved {
         try ItemHistoryToBeMoved(revision: revision,
