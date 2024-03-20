@@ -88589,6 +88589,16 @@
         }
       }
     },
+    "When moving items between vaults we will preserve up to the last 50 modifications performed to each item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
+          }
+        }
+      }
+    },
     "Word separator" : {
       "localizations" : {
         "be" : {

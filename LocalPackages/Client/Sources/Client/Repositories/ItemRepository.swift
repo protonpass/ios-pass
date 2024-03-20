@@ -138,7 +138,7 @@ public extension ItemRepositoryProtocol {
     }
 }
 
-// swiftlint: disable discouraged_optional_self
+// swiftlint: disable discouraged_optional_self file_length
 public actor ItemRepository: ItemRepositoryProtocol {
     private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
     private let localDatasource: any LocalItemDatasourceProtocol
@@ -707,4 +707,4 @@ private extension ItemRepository {
     }
 }
 
-// swiftlint: enable discouraged_optional_self
+// swiftlint: enable discouraged_optional_self file_length
