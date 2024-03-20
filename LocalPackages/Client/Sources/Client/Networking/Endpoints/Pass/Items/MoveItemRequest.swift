@@ -80,7 +80,7 @@ extension MoveItemRequest {
         var historyToBeMoved: [ItemHistoryToBeMoved]?
         if !itemHistory.isEmpty {
             historyToBeMoved = try itemHistory
-                .map { try $0.toItemHistoryToBeMoved(destinationShareKey: destinationShareKey) }
+                .map { try $0.toItemHistoryToBeMoved(itemKey: itemKey, destinationShareKey: destinationShareKey) }
         }
 
         self.init(shareId: destinationShareId,
@@ -93,8 +93,7 @@ extension MoveItemRequest {
 }
 
 extension ItemContent {
-    func toItemToBeMoved(destinationShareKey: DecryptedShareKey) throws -> ItemToBeMoved {
-        let itemKey = try Data.random()
+    func toItemToBeMoved(itemKey: Data, destinationShareKey: DecryptedShareKey) throws -> ItemToBeMoved {
         let encryptedContent = try AES.GCM.seal(protobuf.data(),
                                                 key: itemKey,
                                                 associatedData: .itemContent)
@@ -116,9 +115,11 @@ extension ItemContent {
 }
 
 extension ItemHistory {
-    func toItemHistoryToBeMoved(destinationShareKey: DecryptedShareKey) throws -> ItemHistoryToBeMoved {
+    func toItemHistoryToBeMoved(itemKey: Data,
+                                destinationShareKey: DecryptedShareKey) throws -> ItemHistoryToBeMoved {
         try ItemHistoryToBeMoved(revision: revision,
-                                 item: itemContent.toItemToBeMoved(destinationShareKey: destinationShareKey))
+                                 item: itemContent.toItemToBeMoved(itemKey: itemKey,
+                                                                   destinationShareKey: destinationShareKey))
     }
 }
 
