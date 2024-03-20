@@ -58,6 +58,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -77,6 +78,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
+    private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -103,6 +105,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         finalizeInitialization()
         start()
         synchroniseData()
+        refreshOrganizationAndOverrideSecuritySettings()
         refreshAccess()
         refreshSettings()
         refreshFeatureFlags()
@@ -266,6 +269,19 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func refreshOrganizationAndOverrideSecuritySettings() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if let organization = try await organizationRepository.refreshOrganization() {
+                    overrideSecuritySettings(with: organization)
+                }
             } catch {
                 logger.error(error)
             }
