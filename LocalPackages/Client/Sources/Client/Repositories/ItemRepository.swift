@@ -210,12 +210,11 @@ public extension ItemRepository {
         let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: shareId,
                                                                          itemId: itemId,
                                                                          lastToken: lastToken)
-        let symmetricKey = try getSymmetricKey()
-        let contents: [ItemContent?] = try await paginatedItems.data.parallelMap { [weak self] item in
-            try await self?.symmetricallyEncrypt(itemRevision: item, shareId: shareId)
-                .getItemContent(symmetricKey: symmetricKey)
+        let itemsContent: [ItemContent] = try await paginatedItems.data.asyncCompactMap { [weak self] item in
+            guard let self else { return nil }
+            return try await decrypt(item: item, shareId: shareId)
         }
-        let itemsContent = contents.compactMap { $0 }
+
         return Paginated(lastToken: paginatedItems.lastToken,
                          data: itemsContent,
                          total: paginatedItems.total)
@@ -493,23 +492,6 @@ public extension ItemRepository {
         return newEncryptedItem
     }
 
-    func getItemHistory(itemIDs: any ItemIdentifiable) async throws -> [ItemHistory] {
-        let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: itemIDs.shareId,
-                                                                         itemId: itemIDs.itemId,
-                                                                         lastToken: nil)
-        let symmetricKey = try getSymmetricKey()
-        let maxHistory = Array(paginatedItems.data.dropFirst().prefix(49))
-        let contents: [ItemHistory] = try await maxHistory.asyncCompactMap { [weak self] item in
-            let revision = Int(item.revision)
-            guard let content = try await self?.symmetricallyEncrypt(itemRevision: item, shareId: itemIDs.shareId)
-                .getItemContent(symmetricKey: symmetricKey) else {
-                return nil
-            }
-            return ItemHistory(revision: revision, itemContent: content)
-        }
-        return contents
-    }
-
     func move(items: [any ItemIdentifiable], toShareId: String) async throws {
         logger.trace("Bulk moving \(items.count) items to share \(toShareId)")
         try await bulkAction(items: items) { [weak self] groupedItems, shareId in
@@ -704,6 +686,28 @@ private extension ItemRepository {
         try await allItems.groupAndBulkAction(by: \.shareId,
                                               shouldInclude: shouldInclude,
                                               action: action)
+    }
+}
+
+private extension ItemRepository {
+    func getItemHistory(itemIDs: any ItemIdentifiable) async throws -> [ItemHistory] {
+        let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: itemIDs.shareId,
+                                                                         itemId: itemIDs.itemId,
+                                                                         lastToken: nil)
+        let maxHistory = Array(paginatedItems.data.dropFirst().prefix(49))
+
+        return try await maxHistory.asyncCompactMap { [weak self] item in
+            guard let self else { return nil }
+            let content = try await decrypt(item: item, shareId: itemIDs.shareId)
+            return ItemHistory(revision: Int(item.revision), itemContent: content)
+        }
+    }
+
+    func decrypt(item: Item, shareId: String) async throws -> ItemContent {
+        let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
+                                                            keyRotation: item.keyRotation)
+        let contentProtobuf = try item.getContentProtobuf(vaultKey: vaultKey)
+        return ItemContent(shareId: shareId, item: item, contentProtobuf: contentProtobuf)
     }
 }
 
