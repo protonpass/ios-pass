@@ -92,7 +92,7 @@ extension MoveItemRequest {
     }
 }
 
-extension ItemContent {
+private extension ItemContent {
     func toItemToBeMoved(itemKey: Data, destinationShareKey: DecryptedShareKey) throws -> ItemToBeMoved {
         let encryptedContent = try AES.GCM.seal(protobuf.data(),
                                                 key: itemKey,
