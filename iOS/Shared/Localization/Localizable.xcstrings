@@ -49100,167 +49100,6 @@
         }
       }
     },
-    "Moving an item will reset its history" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Перамяшчэнне элемента прывядзе да скіду яго гісторыі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Moving an item will reset its history"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytning af et element nulstiller dets historik"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das Verschieben eines Eintrags setzt seinen Verlauf zurück."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Η μετακίνηση ενός στοιχείου θα επαναφέρει το ιστορικό του"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moving an item will reset its history"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover un elemento restablecerá su historial."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover un elemento restablecerá su historial"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kohteen siirto tyhjentää sen historian"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le déplacement d'un élément effacera son historique."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Memindahkan item akan mengatur ulang riwayatnya"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spostare un elemento ripristinerà la sua cronologia"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Moving an item will reset its history"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელემენტის გადატანა მის ისტორიას ჩამოყრის"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "항목 이동 기록이 재설정 됩니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hvis du flytter et element, tilbakestilles historikken."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het verplaatsen van een item zal zijn geschiedenis resetten"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przenoszenie elementu zresetuje historię wersji"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover um item redefinirá seu histórico"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mutarea unui articol îi va reseta istoricul."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Presunutím položky sa vynuluje jej história"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Če premaknete element, boste ponastavili njegovo zgodovino"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Att flytta ett objekt kommer att återställa dess historik"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taşınan bir ögenin geçmişi silinir"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Moving an item will reset its history"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Moving an item will reset its history"
-          }
-        }
-      }
-    },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
       "extractionState" : "manual",
@@ -88585,6 +88424,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Khi đăng nhập vào một trang web hoặc một dịch vụ, nhần vào biểu tượng Proton Pass để tự động điền các thông tin đăng nhập của bạn"
+          }
+        }
+      }
+    },
+    "When moving items between vaults we will preserve up to the last 50 modifications performed to each item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
           }
         }
       }
