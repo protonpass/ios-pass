@@ -474,12 +474,14 @@ public extension ItemRepository {
         guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
             throw PassError.itemNotFound(item)
         }
+        let itemHistory = try await getItemHistory(itemIDs: item)
 
         let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: getSymmetricKey())
         let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
         let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
                                           destinationShareId: toShareId,
-                                          destinationShareKey: destinationShareKey)
+                                          destinationShareKey: destinationShareKey,
+                                          itemHistory: itemHistory)
         let newItem = try await remoteDatasource.move(itemId: item.itemId,
                                                       fromShareId: item.shareId,
                                                       request: request)
@@ -489,6 +491,23 @@ public extension ItemRepository {
         try await refreshPinnedItemDataStream()
         logger.info("Moved \(item.debugDescription) to share \(toShareId)")
         return newEncryptedItem
+    }
+
+    func getItemHistory(itemIDs: any ItemIdentifiable) async throws -> [ItemHistory] {
+        let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: itemIDs.shareId,
+                                                                         itemId: itemIDs.itemId,
+                                                                         lastToken: nil)
+        let symmetricKey = try getSymmetricKey()
+        let maxHistory = Array(paginatedItems.data.dropFirst().prefix(49))
+        let contents: [ItemHistory] = try await maxHistory.asyncCompactMap { [weak self] item in
+            let revision = Int(item.revision)
+            guard let content = try await self?.symmetricallyEncrypt(itemRevision: item, shareId: itemIDs.shareId)
+                .getItemContent(symmetricKey: symmetricKey) else {
+                return nil
+            }
+            return ItemHistory(revision: revision, itemContent: content)
+        }
+        return contents
     }
 
     func move(items: [any ItemIdentifiable], toShareId: String) async throws {
