@@ -35,7 +35,9 @@ struct MoveVaultListView: View {
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(PassColor.textNorm.toColor)
-                Label("Moving an item will reset its history", systemImage: "info.circle.fill")
+                // swiftlint:disable:next line_length
+                Label("When moving items between vaults we will preserve up to the last 50 modifications performed to each item",
+                      systemImage: "info.circle.fill")
                     .font(.callout)
                     .foregroundColor(PassColor.textWeak.toColor)
                     .padding(.horizontal, 16)
