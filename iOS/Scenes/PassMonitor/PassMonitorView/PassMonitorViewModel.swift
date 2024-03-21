@@ -1,6 +1,6 @@
 //
 //
-// SecurityCenterViewModel.swift
+// PassMonitorViewModel.swift
 // Proton Pass - Created on 29/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -27,7 +27,7 @@ import Factory
 import Foundation
 
 @MainActor
-final class SecurityCenterViewModel: ObservableObject, Sendable {
+final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
@@ -35,7 +35,7 @@ final class SecurityCenterViewModel: ObservableObject, Sendable {
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let securityCenterRepository = resolve(\SharedRepositoryContainer.securityCenterRepository)
+    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -48,14 +48,14 @@ final class SecurityCenterViewModel: ObservableObject, Sendable {
 
     func refresh() async {
         do {
-            try await securityCenterRepository.refreshSecurityChecks()
+            try await passMonitorRepository.refreshSecurityChecks()
         } catch {
             router.display(element: .displayErrorBanner(error))
         }
     }
 }
 
-private extension SecurityCenterViewModel {
+private extension PassMonitorViewModel {
     func setUp() {
         Task { [weak self] in
             guard let self else {
@@ -68,7 +68,7 @@ private extension SecurityCenterViewModel {
             }
         }
 
-        securityCenterRepository.weaknessStats
+        passMonitorRepository.weaknessStats
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newWeaknessStats in

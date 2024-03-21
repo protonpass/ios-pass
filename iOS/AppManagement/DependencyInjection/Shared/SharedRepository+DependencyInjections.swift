@@ -327,10 +327,10 @@ extension SharedRepositoryContainer {
 // MARK: - Security
 
 extension SharedRepositoryContainer {
-    var securityCenterRepository: Factory<SecurityCenterRepositoryProtocol> {
+    var passMonitorRepository: Factory<PassMonitorRepositoryProtocol> {
         self {
-            SecurityCenterRepository(itemRepository: self.itemRepository(),
-                                     symmetricKeyProvider: self.symmetricKeyProvider)
+            PassMonitorRepository(itemRepository: self.itemRepository(),
+                                  symmetricKeyProvider: self.symmetricKeyProvider)
         }
     }
 }
