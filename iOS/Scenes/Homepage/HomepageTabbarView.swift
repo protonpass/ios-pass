@@ -35,7 +35,7 @@ enum HomepageTab: CaseIterable, Hashable {
         case .items:
             IconProvider.listBullets
         case .authenticator:
-            UIImage(systemName: "lock.shield") ?? IconProvider.shieldFilled
+            PassIcon.tabAuthenticator
         case .itemCreation:
             IconProvider.plus
         case .securityCenter:
@@ -81,26 +81,26 @@ protocol HomepageTabDelegate: AnyObject {
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
-    let mainSecurityCenterViewModel: SecurityCenterViewModel
+    let passMonitorViewModel: PassMonitorViewModel
     weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
     init(itemsTabViewModel: ItemsTabViewModel,
          profileTabViewModel: ProfileTabViewModel,
-         mainSecurityCenterViewModel: SecurityCenterViewModel,
+         passMonitorViewModel: PassMonitorViewModel,
          homepageCoordinator: HomepageCoordinator? = nil,
          delegate: HomepageTabBarControllerDelegate? = nil) {
         self.itemsTabViewModel = itemsTabViewModel
         self.profileTabViewModel = profileTabViewModel
         self.homepageCoordinator = homepageCoordinator
-        self.mainSecurityCenterViewModel = mainSecurityCenterViewModel
+        self.passMonitorViewModel = passMonitorViewModel
         self.delegate = delegate
     }
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
         let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
                                                   profileTabView: .init(viewModel: profileTabViewModel),
-                                                  securityCenter: .init(viewModel: mainSecurityCenterViewModel))
+                                                  passMonitorView: .init(viewModel: passMonitorViewModelViewModel))
         controller.homepageTabBarControllerDelegate = delegate
         context.coordinator.homepageTabBarController = controller
         homepageCoordinator?.homepageTabDelegate = context.coordinator
@@ -143,7 +143,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
-    private let securityCenterView: SecurityCenterView
+    private let passMonitorView: PassMonitorView
     private var profileTabViewController: UIViewController?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -156,10 +156,10 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     init(itemsTabView: ItemsTabView,
          profileTabView: ProfileTabView,
-         securityCenter: SecurityCenterView) {
+         passMonitorView: PassMonitorView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
-        securityCenterView = securityCenter
+        self.passMonitorView = passMonitorView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -199,10 +199,10 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         currentIndex += 1
 
         if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
-            let secureCenter = UIHostingController(rootView: securityCenterView)
-            secureCenter.tabBarItem.image = HomepageTab.securityCenter.image
-            secureCenter.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
-            controllers.append(secureCenter)
+            let passMonitor = UIHostingController(rootView: passMonitorView)
+            passMonitor.tabBarItem.image = HomepageTab.securityCenter.image
+            passMonitor.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
+            controllers.append(passMonitor)
             tabIndexes[.securityCenter] = currentIndex
             currentIndex += 1
         }
