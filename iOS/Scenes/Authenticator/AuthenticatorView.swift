@@ -20,7 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import DesignSystem
 import Entities
 import SwiftUI
