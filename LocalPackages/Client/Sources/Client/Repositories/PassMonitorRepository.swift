@@ -1,5 +1,5 @@
 //
-// SecurityCenterRepository.swift
+// PassMonitorRepository.swift
 // Proton Pass - Created on 06/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -26,7 +26,7 @@ import Foundation
 import PassRustCore
 
 // sourcery: AutoMockable
-public protocol SecurityCenterRepositoryProtocol: Sendable {
+public protocol PassMonitorRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
     var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
@@ -34,7 +34,7 @@ public protocol SecurityCenterRepositoryProtocol: Sendable {
     func refreshSecurityChecks() async throws
 }
 
-public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
+public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let itemRepository: any ItemRepositoryProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let passwordScorer: any PasswordScorerProtocol
@@ -118,7 +118,7 @@ public actor SecurityCenterRepository: SecurityCenterRepositoryProtocol {
     }
 }
 
-private extension SecurityCenterRepository {
+private extension PassMonitorRepository {
     func getPasswords(encryptedItems: [SymmetricallyEncryptedItem], symmetricKey: SymmetricKey) -> [String: Int] {
         var passwordCounts = [String: Int]()
 

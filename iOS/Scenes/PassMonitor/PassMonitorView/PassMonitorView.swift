@@ -184,60 +184,60 @@ private extension PassMonitorView {
     }
 
     func breachedPasswordsRow(_ breachedPasswords: Int, showAdvice: Bool) -> some View {
-        securityCenterRow(rowType: breachedPasswords > 0 ? .warning : .success,
-                          title: "Exposed passwords",
-                          subTitle: showAdvice ? "Requires immediate action" : nil,
-                          info: "\(breachedPasswords)",
-                          action: { viewModel.showSecurityWeakness(type: .exposedPassword) })
+        passMonitorRow(rowType: breachedPasswords > 0 ? .warning : .success,
+                       title: "Exposed passwords",
+                       subTitle: showAdvice ? "Requires immediate action" : nil,
+                       info: "\(breachedPasswords)",
+                       action: { viewModel.showSecurityWeakness(type: .exposedPassword) })
     }
 
     func breachedEmailsRow(_ breachedEmails: Int, showAdvice: Bool) -> some View {
-        securityCenterRow(rowType: breachedEmails > 0 ? .warning : .success,
-                          title: "Exposed emails",
-                          subTitle: showAdvice ? "Requires immediate action" : nil,
-                          info: "\(breachedEmails)",
-                          action: { viewModel.showSecurityWeakness(type: .exposedEmail) })
+        passMonitorRow(rowType: breachedEmails > 0 ? .warning : .success,
+                       title: "Exposed emails",
+                       subTitle: showAdvice ? "Requires immediate action" : nil,
+                       info: "\(breachedEmails)",
+                       action: { viewModel.showSecurityWeakness(type: .exposedEmail) })
     }
 }
 
 private extension PassMonitorView {
     func weakPasswordsRow(_ weakPasswords: Int) -> some View {
-        securityCenterRow(rowType: weakPasswords > 0 ? .warning : .success,
-                          title: "Weak Passwords",
-                          subTitle: weakPasswords > 0 ? "Create strong passwords" :
-                              "you don't have any weak passwords",
-                          info: "\(weakPasswords)",
-                          action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
+        passMonitorRow(rowType: weakPasswords > 0 ? .warning : .success,
+                       title: "Weak Passwords",
+                       subTitle: weakPasswords > 0 ? "Create strong passwords" :
+                           "you don't have any weak passwords",
+                       info: "\(weakPasswords)",
+                       action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
     }
 }
 
 private extension PassMonitorView {
     func reusedPasswordsRow(_ reusedPasswords: Int) -> some View {
-        securityCenterRow(rowType: reusedPasswords > 0 ? .warning : .success,
-                          title: "Reused passwords",
-                          subTitle: "Create unique passwords",
-                          info: "\(reusedPasswords)",
-                          action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
+        passMonitorRow(rowType: reusedPasswords > 0 ? .warning : .success,
+                       title: "Reused passwords",
+                       subTitle: "Create unique passwords",
+                       info: "\(reusedPasswords)",
+                       action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
     }
 }
 
 private extension PassMonitorView {
     func missing2FARow(_ missing2FA: Int) -> some View {
-        securityCenterRow(rowType: missing2FA > 0 ? .warning : .success,
-                          title: "Missing two-factor authentication",
-                          subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
-                          info: "\(missing2FA)",
-                          action: { viewModel.showSecurityWeakness(type: .missing2FA) })
+        passMonitorRow(rowType: missing2FA > 0 ? .warning : .success,
+                       title: "Missing two-factor authentication",
+                       subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
+                       info: "\(missing2FA)",
+                       action: { viewModel.showSecurityWeakness(type: .missing2FA) })
     }
 }
 
 private extension PassMonitorView {
     func excludedItemsRow(_ excludedItems: Int) -> some View {
-        securityCenterRow(rowType: .info,
-                          title: "Excluded items",
-                          subTitle: "These items remain at risk",
-                          info: "\(excludedItems)",
-                          action: { viewModel.showSecurityWeakness(type: .excludedItems) })
+        passMonitorRow(rowType: .info,
+                       title: "Excluded items",
+                       subTitle: "These items remain at risk",
+                       info: "\(excludedItems)",
+                       action: { viewModel.showSecurityWeakness(type: .excludedItems) })
     }
 }
 
@@ -256,11 +256,11 @@ private extension PassMonitorView {
 // MARK: - Rows
 
 private extension PassMonitorView {
-    func securityCenterRow(rowType: SecureRowType,
-                           title: String,
-                           subTitle: String?,
-                           info: String,
-                           action: @escaping () -> Void) -> some View {
+    func passMonitorRow(rowType: SecureRowType,
+                        title: String,
+                        subTitle: String?,
+                        info: String,
+                        action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: DesignConstant.sectionPadding) {
                 if let iconName = rowType.icon {
