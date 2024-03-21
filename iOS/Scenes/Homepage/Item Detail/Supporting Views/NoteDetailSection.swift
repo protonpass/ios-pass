@@ -94,6 +94,7 @@ private struct FullNoteView: View {
                     CircleButton(icon: IconProvider.chevronDown,
                                  iconColor: itemContent.type.normMajor1Color,
                                  backgroundColor: itemContent.type.normMinor2Color,
+                                 accessibilityLabel: "Close",
                                  action: dismiss.callAsFunction)
                 }
             }

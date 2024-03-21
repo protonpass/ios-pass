@@ -404,7 +404,8 @@ private extension CreateEditLoginView {
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: viewModel.itemContentType().normMajor1Color,
-                             backgroundColor: viewModel.itemContentType().normMinor1Color)
+                             backgroundColor: viewModel.itemContentType().normMinor1Color,
+                             accessibilityLabel: "Alias action menu")
             })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

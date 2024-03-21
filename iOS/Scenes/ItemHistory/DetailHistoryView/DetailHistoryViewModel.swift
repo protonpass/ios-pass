@@ -40,7 +40,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private var cancellables = Set<AnyCancellable>()
 
-    let totpManager = resolve(\ServiceContainer.totpManager)
+    let totpManager = resolve(\SharedServiceContainer.totpManager)
     let currentRevision: ItemContent
     let pastRevision: ItemContent
 

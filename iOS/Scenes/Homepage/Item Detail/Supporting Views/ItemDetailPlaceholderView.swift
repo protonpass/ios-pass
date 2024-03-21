@@ -46,6 +46,7 @@ struct ItemDetailPlaceholderView: View {
             CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor1,
                          backgroundColor: PassColor.interactionNormMinor2,
+                         accessibilityLabel: "Go back",
                          action: onGoBack)
         }
     }

@@ -1,7 +1,7 @@
 //
-// GenerateTotpTokenUseCase.swift
-// Proton Pass - Created on 06/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Browser+Extensions.swift
+// Proton Pass - Created on 25/12/2022.
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,16 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Entities
+import Macro
 
-public protocol GenerateTotpTokenUseCase: Sendable {
-    func execute(uri: String) throws -> TOTPData
-}
-
-public extension GenerateTotpTokenUseCase {
-    func callAsFunction(uri: String) throws -> TOTPData {
-        try execute(uri: uri)
+extension Browser: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .safari:
+            "Safari"
+        case .inAppSafari:
+            "In-App Safari"
+        case .systemDefault:
+            #localized("System default")
+        }
     }
 }

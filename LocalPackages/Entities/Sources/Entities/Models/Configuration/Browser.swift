@@ -1,7 +1,7 @@
 //
 // Browser.swift
-// Proton Pass - Created on 25/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 19/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,24 +17,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Macro
+import Foundation
 
-public enum Browser: Int, CaseIterable, Codable, CustomStringConvertible {
+public enum Browser: Int, CaseIterable, Codable {
     case safari = 0
     case inAppSafari = 1
     case systemDefault = 2
-
-    public var description: String {
-        switch self {
-        case .safari:
-            "Safari"
-        case .inAppSafari:
-            "In-App Safari"
-        case .systemDefault:
-            #localized("System default")
-        }
-    }
 
     public var appScheme: String? {
         switch self {
