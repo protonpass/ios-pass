@@ -100,7 +100,7 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> HomepageTabBarController {
         let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
                                                   profileTabView: .init(viewModel: profileTabViewModel),
-                                                  passMonitorView: .init(viewModel: passMonitorViewModelViewModel))
+                                                  passMonitorView: .init(viewModel: passMonitorViewModel))
         controller.homepageTabBarControllerDelegate = delegate
         context.coordinator.homepageTabBarController = controller
         homepageCoordinator?.homepageTabDelegate = context.coordinator
