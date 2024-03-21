@@ -138,7 +138,7 @@ public extension ItemRepositoryProtocol {
     }
 }
 
-// swiftlint: disable discouraged_optional_self
+// swiftlint: disable discouraged_optional_self file_length
 public actor ItemRepository: ItemRepositoryProtocol {
     private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
     private let localDatasource: any LocalItemDatasourceProtocol
@@ -210,12 +210,11 @@ public extension ItemRepository {
         let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: shareId,
                                                                          itemId: itemId,
                                                                          lastToken: lastToken)
-        let symmetricKey = try getSymmetricKey()
-        let contents: [ItemContent?] = try await paginatedItems.data.parallelMap { [weak self] item in
-            try await self?.symmetricallyEncrypt(itemRevision: item, shareId: shareId)
-                .getItemContent(symmetricKey: symmetricKey)
+        let itemsContent: [ItemContent] = try await paginatedItems.data.asyncCompactMap { [weak self] item in
+            guard let self else { return nil }
+            return try await decrypt(item: item, shareId: shareId)
         }
-        let itemsContent = contents.compactMap { $0 }
+
         return Paginated(lastToken: paginatedItems.lastToken,
                          data: itemsContent,
                          total: paginatedItems.total)
@@ -474,12 +473,14 @@ public extension ItemRepository {
         guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
             throw PassError.itemNotFound(item)
         }
+        let itemHistory = try await getItemHistory(itemIDs: item)
 
         let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: getSymmetricKey())
         let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
         let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
                                           destinationShareId: toShareId,
-                                          destinationShareKey: destinationShareKey)
+                                          destinationShareKey: destinationShareKey,
+                                          itemHistory: itemHistory)
         let newItem = try await remoteDatasource.move(itemId: item.itemId,
                                                       fromShareId: item.shareId,
                                                       request: request)
@@ -688,4 +689,26 @@ private extension ItemRepository {
     }
 }
 
-// swiftlint: enable discouraged_optional_self
+private extension ItemRepository {
+    func getItemHistory(itemIDs: any ItemIdentifiable) async throws -> [ItemHistory] {
+        let paginatedItems = try await remoteDatasource.getItemRevisions(shareId: itemIDs.shareId,
+                                                                         itemId: itemIDs.itemId,
+                                                                         lastToken: nil)
+        let maxHistory = Array(paginatedItems.data.dropFirst().prefix(49))
+
+        return try await maxHistory.asyncCompactMap { [weak self] item in
+            guard let self else { return nil }
+            let content = try await decrypt(item: item, shareId: itemIDs.shareId)
+            return ItemHistory(revision: Int(item.revision), itemContent: content)
+        }
+    }
+
+    func decrypt(item: Item, shareId: String) async throws -> ItemContent {
+        let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
+                                                            keyRotation: item.keyRotation)
+        let contentProtobuf = try item.getContentProtobuf(vaultKey: vaultKey)
+        return ItemContent(shareId: shareId, item: item, contentProtobuf: contentProtobuf)
+    }
+}
+
+// swiftlint: enable discouraged_optional_self file_length

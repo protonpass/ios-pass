@@ -40,6 +40,7 @@ struct CreateEditItemToolbar: ToolbarContent {
             CircleButton(icon: IconProvider.cross,
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,
+                         accessibilityLabel: "Close",
                          action: onGoBack)
         }
 
@@ -67,6 +68,7 @@ private extension CreateEditItemToolbar {
                     CircleButton(icon: PassIcon.scanner,
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color,
+                                 accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
                                  action: onScan)
                 default:
                     EmptyView()

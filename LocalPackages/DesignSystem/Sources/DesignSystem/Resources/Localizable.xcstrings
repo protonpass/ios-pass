@@ -93,16 +93,16 @@
             "value" : "취소"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuleren"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avbryt"
           }
         },
         "pl" : {
@@ -254,16 +254,16 @@
             "value" : "저장 안함"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forkast"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verwijderen"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Forkast"
           }
         },
         "pl" : {
@@ -415,16 +415,16 @@
             "value" : "변경 사항 취소"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forkaste endringer?"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wijzigingen weggooien?"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Forkaste endringer?"
           }
         },
         "pl" : {
@@ -575,16 +575,16 @@
             "value" : "오류 발생"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feil oppstod"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er is iets fout gegaan"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Feil oppstod"
           }
         },
         "pl" : {
@@ -736,16 +736,16 @@
             "value" : "계속 편집하기"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsett å redigere"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doorgaan met bewerken"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fortsett å redigere"
           }
         },
         "pl" : {
@@ -896,13 +896,13 @@
             "value" : "확인"
           }
         },
-        "nl" : {
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
           }
         },
-        "no" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -1056,16 +1056,16 @@
             "value" : "재시도"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv på nytt"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opnieuw proberen"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prøv på nytt"
           }
         },
         "pl" : {
@@ -1216,16 +1216,16 @@
             "value" : "이 항목에 관한 몇 가지 변경사항이 있어 이전 페이지로 이동되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noen endringer skjedde med dette elementet, på vei tilbake til forrige side."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sommige wijzigingen zijn gebeurd met dit item, in de kop terug naar de vorige pagina."
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Noen endringer skjedde med dette elementet, på vei tilbake til forrige side."
           }
         },
         "pl" : {
@@ -1376,16 +1376,16 @@
             "value" : "이 항목은 오래되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette elementet er foreldet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dit item is verouderd"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dette elementet er foreldet"
           }
         },
         "pl" : {
@@ -1537,16 +1537,16 @@
             "value" : "저장되지 않은 변경 사항이 있어요. 정말 나가시겠어요?"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ulagrede endringer, er du sikker på at du vil forkaste dem?"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "U heeft niet-opgeslagen wijzigingen. Weet u zeker dat u deze wilt verwijderen?"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du har ulagrede endringer, er du sikker på at du vil forkaste dem?"
           }
         },
         "pl" : {

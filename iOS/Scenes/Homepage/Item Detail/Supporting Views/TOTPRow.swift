@@ -18,25 +18,56 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Combine
 import Core
 import DesignSystem
+import Entities
+import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
+final class TOTPRowViewModel: ObservableObject {
+    @Published private(set) var state = TOTPState.empty
+
+    private let totpManager = resolve(\SharedServiceContainer.totpManager)
+    private var cancellable = Set<AnyCancellable>()
+
+    var code: String? {
+        totpManager.totpData?.code
+    }
+
+    init() {
+        totpManager.currentState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newState in
+                guard let self else {
+                    return
+                }
+                state = newState
+            }.store(in: &cancellable)
+    }
+
+    func bind(uri: String) {
+        totpManager.bind(uri: uri)
+    }
+}
+
 struct TOTPRow: View {
-    @ObservedObject private var totpManager: TOTPManager
+    @ObservedObject private var viewModel = TOTPRowViewModel()
     let textColor: UIColor
     let tintColor: UIColor
     let onCopyTotpToken: (String) -> Void
 
-    init(totpManager: TOTPManager,
+    init(uri: String,
          textColor: UIColor = PassColor.textNorm,
          tintColor: UIColor,
          onCopyTotpToken: @escaping (String) -> Void) {
-        _totpManager = .init(initialValue: totpManager)
         self.textColor = textColor
         self.tintColor = tintColor
         self.onCopyTotpToken = onCopyTotpToken
+        viewModel.bind(uri: uri)
     }
 
     var body: some View {
@@ -47,7 +78,7 @@ struct TOTPRow: View {
                 Text("2FA token (TOTP)")
                     .sectionTitleText()
 
-                switch totpManager.state {
+                switch viewModel.state {
                 case .empty:
                     EmptyView()
                 case .loading:
@@ -64,12 +95,12 @@ struct TOTPRow: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
             .onTapGesture {
-                if let data = totpManager.totpData {
-                    onCopyTotpToken(data.code)
+                if let code = viewModel.code {
+                    onCopyTotpToken(code)
                 }
             }
 
-            switch totpManager.state {
+            switch viewModel.state {
             case let .valid(data):
                 TOTPCircularTimer(data: data.timerData)
             default:
@@ -77,6 +108,6 @@ struct TOTPRow: View {
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: totpManager.state)
+        .animation(.default, value: viewModel.state)
     }
 }
