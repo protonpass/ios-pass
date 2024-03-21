@@ -35,7 +35,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let securityCenterRepository = resolve(\SharedRepositoryContainer.securityCenterRepository)
+    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -48,7 +48,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func refresh() async {
         do {
-            try await securityCenterRepository.refreshSecurityChecks()
+            try await passMonitorRepository.refreshSecurityChecks()
         } catch {
             router.display(element: .displayErrorBanner(error))
         }
@@ -68,7 +68,7 @@ private extension PassMonitorViewModel {
             }
         }
 
-        securityCenterRepository.weaknessStats
+        passMonitorRepository.weaknessStats
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newWeaknessStats in
