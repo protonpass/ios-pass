@@ -226,7 +226,7 @@ private extension HomepageCoordinator {
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
-                                          mainSecurityCenterViewModel: SecurityCenterViewModel(),
+                                          passMonitorViewModel: PassMonitorViewModel(),
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])

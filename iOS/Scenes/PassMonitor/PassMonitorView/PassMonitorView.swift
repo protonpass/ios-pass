@@ -1,6 +1,6 @@
 //
 //
-// SecurityCenterView.swift
+// PassMonitorView.swift
 // Proton Pass - Created on 29/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -105,8 +105,8 @@ enum SecureRowType {
     }
 }
 
-struct SecurityCenterView: View {
-    @StateObject var viewModel: SecurityCenterViewModel
+struct PassMonitorView: View {
+    @StateObject var viewModel: PassMonitorViewModel
 
     private enum ElementSizes {
         static let cellHeight: CGFloat = 75
@@ -115,7 +115,7 @@ struct SecurityCenterView: View {
     var body: some View {
         mainContent
             .animation(.default, value: viewModel.weaknessStats)
-            .navigationTitle("Security Center")
+            .navigationTitle("Pass Monitor")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
@@ -127,7 +127,7 @@ struct SecurityCenterView: View {
     }
 }
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     var mainContent: some View {
         LazyVStack {
             if let weaknessStats = viewModel.weaknessStats {
@@ -144,7 +144,7 @@ private extension SecurityCenterView {
     }
 }
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     func breachedDataRows(weaknessStats: WeaknessStats) -> some View {
         VStack {
             if viewModel.isFreeUser {
@@ -200,7 +200,7 @@ private extension SecurityCenterView {
     }
 }
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     func weakPasswordsRow(_ weakPasswords: Int) -> some View {
         securityCenterRow(rowType: weakPasswords > 0 ? .warning : .success,
                           title: "Weak Passwords",
@@ -211,7 +211,7 @@ private extension SecurityCenterView {
     }
 }
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     func reusedPasswordsRow(_ reusedPasswords: Int) -> some View {
         securityCenterRow(rowType: reusedPasswords > 0 ? .warning : .success,
                           title: "Reused passwords",
@@ -221,7 +221,7 @@ private extension SecurityCenterView {
     }
 }
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     func missing2FARow(_ missing2FA: Int) -> some View {
         securityCenterRow(rowType: missing2FA > 0 ? .warning : .success,
                           title: "Missing two-factor authentication",
@@ -231,7 +231,7 @@ private extension SecurityCenterView {
     }
 }
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     func excludedItemsRow(_ excludedItems: Int) -> some View {
         securityCenterRow(rowType: .info,
                           title: "Excluded items",
@@ -241,7 +241,7 @@ private extension SecurityCenterView {
     }
 }
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     func lastUpdateInfo(date: String?) -> some View {
         VStack {
             if let date {
@@ -255,7 +255,7 @@ private extension SecurityCenterView {
 
 // MARK: - Rows
 
-private extension SecurityCenterView {
+private extension PassMonitorView {
     func securityCenterRow(rowType: SecureRowType,
                            title: String,
                            subTitle: String?,
