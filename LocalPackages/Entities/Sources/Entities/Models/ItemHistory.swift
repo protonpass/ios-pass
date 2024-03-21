@@ -1,7 +1,7 @@
 //
-// Theme+Extensions.swift
-// Proton Pass - Created on 07/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ItemHistory.swift
+// Proton Pass - Created on 20/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,18 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import SwiftUI
+import Foundation
 
-extension Theme {
-    var colorScheme: ColorScheme? {
-        switch self {
-        case .dark:
-            .dark
-        case .light:
-            .light
-        case .matchSystem:
-            nil
-        }
+public struct ItemHistory: Sendable {
+    public let revision: Int
+    public let itemContent: ItemContent
+
+    public init(revision: Int, itemContent: ItemContent) {
+        self.revision = revision
+        self.itemContent = itemContent
     }
 }

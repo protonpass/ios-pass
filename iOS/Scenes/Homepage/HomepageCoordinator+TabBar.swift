@@ -27,6 +27,8 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
         switch tab {
         case .items:
             itemsTab()
+        case .authenticator:
+            securityAuthenticator()
         case .itemCreation:
             createNewItem()
         case .securityCenter:
@@ -46,6 +48,16 @@ private extension HomepageCoordinator {
             }
             push(placeholderView)
         }
+    }
+
+    func securityAuthenticator() {
+        guard !isCollapsed() else {
+            return
+        }
+        let view = AuthenticatorView()
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.large, parentViewController: rootViewController)
+        present(viewController)
     }
 
     func createNewItem() {

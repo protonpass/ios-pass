@@ -41,24 +41,24 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     private let generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
-    private let localAuthenticationMethodProvider: LocalAuthenticationMethodProvider
+    private let securitySettingsProvider: any SecuritySettingsProvider
 
     init(credentialProvider: any CredentialProvider,
          generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
          completeAutoFill: any CompleteAutoFillUseCase,
-         localAuthenticationMethodProvider: any LocalAuthenticationMethodProvider) {
+         securitySettingsProvider: any SecuritySettingsProvider) {
         self.credentialProvider = credentialProvider
         self.generateAuthorizationCredential = generateAuthorizationCredential
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
-        self.localAuthenticationMethodProvider = localAuthenticationMethodProvider
+        self.securitySettingsProvider = securitySettingsProvider
     }
 
     func execute(_ request: AutoFillRequest,
                  context: ASCredentialProviderExtensionContext) async throws {
         guard credentialProvider.isAuthenticated,
-              localAuthenticationMethodProvider.localAuthenticationMethod == .none else {
+              securitySettingsProvider.localAuthenticationMethod == .none else {
             cancelAutoFill(reason: .userInteractionRequired, context: context)
             return
         }
