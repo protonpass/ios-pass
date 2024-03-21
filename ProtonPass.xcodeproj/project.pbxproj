@@ -554,8 +554,8 @@
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BECDE442B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE432B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift */; };
-		5BECDE492B90EC900040FCA7 /* SecurityCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE472B90EC900040FCA7 /* SecurityCenterView.swift */; };
-		5BECDE4A2B90EC900040FCA7 /* SecurityCenterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE482B90EC900040FCA7 /* SecurityCenterViewModel.swift */; };
+		5BECDE492B90EC900040FCA7 /* PassMonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE472B90EC900040FCA7 /* PassMonitorView.swift */; };
+		5BECDE4A2B90EC900040FCA7 /* PassMonitorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE482B90EC900040FCA7 /* PassMonitorViewModel.swift */; };
 		5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */; };
 		5BECDE4F2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */; };
 		5BECDE512B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */; };
@@ -996,8 +996,8 @@
 		5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthIcon.swift; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
 		5BECDE432B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+TabBar.swift"; sourceTree = "<group>"; };
-		5BECDE472B90EC900040FCA7 /* SecurityCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCenterView.swift; sourceTree = "<group>"; };
-		5BECDE482B90EC900040FCA7 /* SecurityCenterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCenterViewModel.swift; sourceTree = "<group>"; };
+		5BECDE472B90EC900040FCA7 /* PassMonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassMonitorView.swift; sourceTree = "<group>"; };
+		5BECDE482B90EC900040FCA7 /* PassMonitorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassMonitorViewModel.swift; sourceTree = "<group>"; };
 		5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailView.swift; sourceTree = "<group>"; };
 		5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailViewModel.swift; sourceTree = "<group>"; };
 		5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecurityWeakness+Extensions.swift"; sourceTree = "<group>"; };
@@ -1711,7 +1711,7 @@
 				5B66395A2B4D87730029F8DA /* ItemHistory */,
 				354E9A9A2A443CA200AD2B9A /* LocalAuthentication */,
 				354E19F2293F8EB900A3F853 /* Onboarding */,
-				5BECDE452B90EC230040FCA7 /* SecurityCenter */,
+				5BECDE452B90EC230040FCA7 /* PassMonitor */,
 				5B1453902A6831C60048B022 /* Sharing */,
 				35E50712286FB5F500A3F6EA /* Welcome */,
 			);
@@ -2194,22 +2194,22 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		5BECDE452B90EC230040FCA7 /* SecurityCenter */ = {
+		5BECDE452B90EC230040FCA7 /* PassMonitor */ = {
 			isa = PBXGroup;
 			children = (
 				5BECDE4B2B9778610040FCA7 /* SecurityWeaknessDetailView */,
-				5BECDE462B90EC640040FCA7 /* SecurityCenterView */,
+				5BECDE462B90EC640040FCA7 /* PassMonitorView */,
 			);
-			path = SecurityCenter;
+			path = PassMonitor;
 			sourceTree = "<group>";
 		};
-		5BECDE462B90EC640040FCA7 /* SecurityCenterView */ = {
+		5BECDE462B90EC640040FCA7 /* PassMonitorView */ = {
 			isa = PBXGroup;
 			children = (
-				5BECDE472B90EC900040FCA7 /* SecurityCenterView.swift */,
-				5BECDE482B90EC900040FCA7 /* SecurityCenterViewModel.swift */,
+				5BECDE472B90EC900040FCA7 /* PassMonitorView.swift */,
+				5BECDE482B90EC900040FCA7 /* PassMonitorViewModel.swift */,
 			);
-			path = SecurityCenterView;
+			path = PassMonitorView;
 			sourceTree = "<group>";
 		};
 		5BECDE4B2B9778610040FCA7 /* SecurityWeaknessDetailView */ = {
@@ -3314,7 +3314,7 @@
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
-				5BECDE492B90EC900040FCA7 /* SecurityCenterView.swift in Sources */,
+				5BECDE492B90EC900040FCA7 /* PassMonitorView.swift in Sources */,
 				357ABEB42B18BB04003D05C8 /* DataStream+DependencyInjections.swift in Sources */,
 				354E9A9C2A443D9700AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
@@ -3343,7 +3343,7 @@
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URL+Extensions.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
-				5BECDE4A2B90EC900040FCA7 /* SecurityCenterViewModel.swift in Sources */,
+				5BECDE4A2B90EC900040FCA7 /* PassMonitorViewModel.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */,
