@@ -25,12 +25,15 @@ import Factory
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreCryptoGoInterface
 import ProtonCoreLog
+import TipKit
 import UIKit
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let userDefaults: UserDefaults = .standard
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -38,6 +41,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpSentry(bundle: .main)
         setUpDefaultValuesForSettingsBundle()
         configureCoreLogger()
+        configureTipKit()
         return true
     }
 
@@ -70,7 +74,7 @@ private extension AppDelegate {
         setUserDefaultsIfUITestsRunning()
     }
 
-    private func setUserDefaultsIfUITestsRunning() {
+    func setUserDefaultsIfUITestsRunning() {
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             UIView.setAnimationsEnabled(false)
             if ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] != "" {
@@ -80,6 +84,22 @@ private extension AppDelegate {
                 kSharedUserDefaults.setValue("scientist", forKey: "pref_environment")
                 kSharedUserDefaults.setValue(envName, forKey: "pref_scientist_env_name")
             }
+        }
+    }
+
+    func configureTipKit() {
+        guard #available(iOS 17, *) else { return }
+        if Bundle.main.isQaBuild, userDefaults.bool(forKey: Constants.QA.showAllTips) {
+            Tips.showAllTipsForTesting()
+        }
+        do {
+            try Tips.configure([
+                .datastoreLocation(.groupContainer(identifier: Constants.appGroup)),
+                // The system shows no more than one tip per day.
+                .displayFrequency(.daily)
+            ])
+        } catch {
+            logger.error(error)
         }
     }
 }

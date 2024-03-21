@@ -56,6 +56,9 @@ struct QAFeaturesView: View {
                         Text(verbatim: "Display Authenticator")
                     }
                 }
+                if #available(iOS 17, *) {
+                    TipKitSection()
+                }
             }
             .navigationTitle(Text(verbatim: "QA Features"))
             .toolbar {
