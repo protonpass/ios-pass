@@ -20,7 +20,6 @@
 //
 
 import Client
-import Entities
 
 @preconcurrency import ProtonCoreServices
 

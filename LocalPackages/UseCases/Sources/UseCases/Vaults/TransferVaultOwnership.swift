@@ -21,7 +21,6 @@
 //
 
 import Client
-import Entities
 
 public protocol TransferVaultOwnershipUseCase: Sendable {
     func execute(newOwnerID: String, shareId: String) async throws

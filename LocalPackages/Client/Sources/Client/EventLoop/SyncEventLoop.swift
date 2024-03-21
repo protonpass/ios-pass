@@ -20,7 +20,6 @@
 
 import Combine
 import Core
-import Entities
 import Foundation
 import ProtonCoreNetworking
 
@@ -116,7 +115,7 @@ public extension SyncEventLoop {
 }
 
 /// A background event loop that keeps data up to date by synching after a random number of seconds
-public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, Sendable {
+public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unchecked Sendable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params

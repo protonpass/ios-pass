@@ -23,7 +23,6 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
-import DesignSystem
 import Entities
 import Factory
 import Macro
