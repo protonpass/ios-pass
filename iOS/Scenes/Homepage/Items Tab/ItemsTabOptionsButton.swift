@@ -37,7 +37,8 @@ struct ItemsTabOptionsButton: View {
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,
                          iconColor: viewModel.highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
-                         backgroundColor: viewModel.highlighted ? PassColor.interactionNormMajor2 : .clear)
+                         backgroundColor: viewModel.highlighted ? PassColor.interactionNormMajor2 : .clear,
+                         accessibilityLabel: "Items filtering and sort menu")
         })
     }
 }

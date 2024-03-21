@@ -18,59 +18,67 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import Core
 import Entities
 import Foundation
+import PassRustCore
 
-@MainActor
-public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
+public protocol TOTPManagerProtocol: Sendable {
+    var currentState: CurrentValueSubject<TOTPState, Never> { get }
+
+    func bind(uri: String)
+}
+
+public extension TOTPManagerProtocol {
+    var totpData: TOTPData? {
+        if case let .valid(data) = currentState.value {
+            return data
+        }
+        return nil
+    }
+}
+
+public final class TOTPManager: TOTPManagerProtocol, @unchecked Sendable {
     private var timer: Timer?
     private let logger: Logger
-    private let generateTotpToken: any GenerateTotpTokenUseCase
-
-    @Published public private(set) var state = TOTPState.empty
+    private let totpService: any TOTPServiceProtocol
+    public let currentState: CurrentValueSubject<Entities.TOTPState, Never> = .init(TOTPState.empty)
 
     /// The current `URI` whether it's valid or not
     public private(set) var uri = ""
 
+    private var remainTime = 0
+
     public init(logManager: any LogManagerProtocol,
-                generateTotpToken: any GenerateTotpTokenUseCase) {
+                totpService: any TOTPServiceProtocol) {
         logger = .init(manager: logManager)
-        self.generateTotpToken = generateTotpToken
+        self.totpService = totpService
     }
 
     deinit {
         timer?.invalidate()
         timer = nil
-        print(deinitMessage)
-    }
-
-    public var totpData: TOTPData? {
-        if case let .valid(data) = state {
-            return data
-        }
-        return nil
     }
 
     public func bind(uri: String) {
         self.uri = uri
         resetTimer()
-        state = .loading
+        currentState.send(.loading)
         guard !uri.isEmpty else {
-            state = .empty
+            currentState.send(.empty)
             return
         }
+        refreshData()
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self else { return }
             Task { @MainActor [weak self] in
                 guard let self else { return }
-                do {
-                    let data = try generateTotpToken(uri: uri)
-                    state = .valid(data)
-                } catch {
-                    logger.error(error)
-                    state = .invalid
-                    resetTimer()
+                if remainTime > 0 {
+                    remainTime -= 1
+                } else {
+                    refreshData()
                 }
             }
         }
@@ -80,5 +88,17 @@ public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
     private func resetTimer() {
         timer?.invalidate()
         timer = nil
+    }
+
+    func refreshData() {
+        do {
+            let data = try totpService.generateTotpToken(uri: uri)
+            remainTime = data.timerData.remaining
+            currentState.send(.valid(data))
+        } catch {
+            logger.error(error)
+            currentState.send(.invalid)
+            resetTimer()
+        }
     }
 }

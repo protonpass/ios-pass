@@ -177,6 +177,15 @@ private extension SharedRepositoryContainer {
         self { RemoteFavIconDatasource(apiService: self.apiService,
                                        eventStream: self.corruptedSessionEventStream) }
     }
+
+    var localOrganizationDatasource: Factory<LocalOrganizationDatasourceProtocol> {
+        self { LocalOrganizationDatasource(databaseService: self.databaseService) }
+    }
+
+    var remoteOrganizationDatasource: Factory<RemoteOrganizationDatasourceProtocol> {
+        self { RemoteOrganizationDatasource(apiService: self.apiService,
+                                            eventStream: self.corruptedSessionEventStream) }
+    }
 }
 
 // MARK: Public datasources
@@ -184,11 +193,6 @@ private extension SharedRepositoryContainer {
 extension SharedRepositoryContainer {
     var localSpotlightVaultDatasource: Factory<LocalSpotlightVaultDatasourceProtocol> {
         self { LocalSpotlightVaultDatasource(databaseService: self.databaseService) }
-    }
-
-    var remoteOrganizationDatasource: Factory<RemoteOrganizationDatasourceProtocol> {
-        self { RemoteOrganizationDatasource(apiService: self.apiService,
-                                            eventStream: self.corruptedSessionEventStream) }
     }
 }
 
@@ -310,6 +314,13 @@ extension SharedRepositoryContainer {
     var userSettingsRepository: Factory<UserSettingsRepositoryProtocol> {
         self { UserSettingsRepository(userDefaultService: SharedServiceContainer.shared.userDefaultService(),
                                       remoteDatasource: self.remoteUserSettingsDatasource()) }
+    }
+
+    var organizationRepository: Factory<OrganizationRepositoryProtocol> {
+        self { OrganizationRepository(localDatasource: self.localOrganizationDatasource(),
+                                      remoteDatasource: self.remoteOrganizationDatasource(),
+                                      userDataProvider: self.userDataProvider,
+                                      logManager: self.logManager) }
     }
 }
 

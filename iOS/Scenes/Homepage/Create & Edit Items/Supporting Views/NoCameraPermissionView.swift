@@ -60,6 +60,7 @@ struct NoCameraPermissionView: View {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Close",
                                  action: dismiss.callAsFunction)
                 }
             }

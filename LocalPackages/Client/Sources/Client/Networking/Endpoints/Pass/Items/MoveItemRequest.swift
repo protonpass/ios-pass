@@ -27,6 +27,19 @@ public struct MoveItemRequest: Sendable {
     /// Encrypted ID of the destination share
     public let shareId: String
     public let item: ItemToBeMoved
+    public let history: [ItemHistoryToBeMoved]?
+}
+
+public struct ItemHistoryToBeMoved: Decodable, Sendable {
+    public let revision: Int
+    public let item: ItemToBeMoved
+}
+
+extension ItemHistoryToBeMoved: Encodable {
+    enum CodingKeys: String, CodingKey {
+        case revision = "Revision"
+        case item = "Item"
+    }
 }
 
 public struct ItemToBeMoved: Decodable, Sendable {
@@ -48,7 +61,8 @@ public struct ItemToBeMoved: Decodable, Sendable {
 extension MoveItemRequest {
     init(itemContent: any ProtobufableItemContentProtocol,
          destinationShareId: String,
-         destinationShareKey: DecryptedShareKey) throws {
+         destinationShareKey: DecryptedShareKey,
+         itemHistory: [ItemHistory]) throws {
         let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),
                                                 key: itemKey,
@@ -63,11 +77,46 @@ extension MoveItemRequest {
                                                 associatedData: .itemKey)
         let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
 
+        let historyToBeMoved = try itemHistory
+            .map { try $0.toItemHistoryToBeMoved(itemKey: itemKey, destinationShareKey: destinationShareKey) }
+
         self.init(shareId: destinationShareId,
-                  item: .init(keyRotation: destinationShareKey.keyRotation,
-                              contentFormatVersion: Constants.ContentFormatVersion.item,
-                              content: content,
-                              itemKey: encryptedItemKeyData.base64EncodedString()))
+                  item: ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
+                                      contentFormatVersion: Constants.ContentFormatVersion.item,
+                                      content: content,
+                                      itemKey: encryptedItemKeyData.base64EncodedString()),
+                  history: historyToBeMoved.nilIfEmpty)
+    }
+}
+
+private extension ItemContent {
+    func toItemToBeMoved(itemKey: Data, destinationShareKey: DecryptedShareKey) throws -> ItemToBeMoved {
+        let encryptedContent = try AES.GCM.seal(protobuf.data(),
+                                                key: itemKey,
+                                                associatedData: .itemContent)
+
+        guard let content = encryptedContent.combined?.base64EncodedString() else {
+            throw PassError.crypto(.failedToAESEncrypt)
+        }
+
+        let encryptedItemKey = try AES.GCM.seal(itemKey,
+                                                key: destinationShareKey.keyData,
+                                                associatedData: .itemKey)
+        let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
+
+        return ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
+                             contentFormatVersion: Constants.ContentFormatVersion.item,
+                             content: content,
+                             itemKey: encryptedItemKeyData.base64EncodedString())
+    }
+}
+
+private extension ItemHistory {
+    func toItemHistoryToBeMoved(itemKey: Data,
+                                destinationShareKey: DecryptedShareKey) throws -> ItemHistoryToBeMoved {
+        try ItemHistoryToBeMoved(revision: revision,
+                                 item: itemContent.toItemToBeMoved(itemKey: itemKey,
+                                                                   destinationShareKey: destinationShareKey))
     }
 }
 
@@ -84,5 +133,6 @@ extension MoveItemRequest: Encodable {
     enum CodingKeys: String, CodingKey {
         case shareId = "ShareID"
         case item = "Item"
+        case history = "History"
     }
 }
