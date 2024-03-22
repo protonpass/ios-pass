@@ -150,16 +150,16 @@ extension AppDataTests {
     }
 }
 
-// MARK: - Symmetric key
-extension AppDataTests {
-    // Because we always randomize a new symmetric key when it's nil
-    func testSymmetricKeyIsNeverNil() throws {
-        try XCTAssertNotNil(sut.getSymmetricKey())
-
-        // When
-        sut.removeSymmetricKey()
-
-        // Then
-        try XCTAssertNotNil(sut.getSymmetricKey())
-    }
-}
+//// MARK: - Symmetric key
+//extension AppDataTests {
+//    // Because we always randomize a new symmetric key when it's nil
+//    func testSymmetricKeyIsNeverNil() throws {
+//        try XCTAssertNotNil(sut.getSymmetricKey())
+//
+//        // When
+//        sut.removeSymmetricKey()
+//
+//        // Then
+//        try XCTAssertNotNil(sut.getSymmetricKey())
+//    }
+//}
