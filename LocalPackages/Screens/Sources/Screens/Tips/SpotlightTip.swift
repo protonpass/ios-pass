@@ -1,5 +1,5 @@
 //
-// PassTip.swift
+// SpotlightTip.swift
 // Proton Pass - Created on 22/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -18,12 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import DesignSystem
 import TipKit
 
-enum PassTip: String {
-    case itemForceTouch
-    case spotlight
+@available(iOS 17, *)
+public struct SpotlightTip: Tip {
+    public var id: String { PassTip.spotlight.id }
 
-    var id: String { rawValue }
+    public var title: Text {
+        Text(verbatim: "Search from your homescreen")
+            .foregroundStyle(PassColor.textNorm.toColor)
+    }
+
+    public var message: Text? {
+        Text(verbatim: "Enable Spotlight to search for your items from homescreen.")
+            .foregroundStyle(PassColor.textWeak.toColor)
+    }
+
+    public var image: Image? {
+        Image(systemName: "magnifyingglass.circle.fill")
+    }
+
+    public var options: [TipOption] {
+        // Show this tip once
+        Tips.MaxDisplayCount(1)
+    }
 }

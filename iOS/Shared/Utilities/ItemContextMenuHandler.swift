@@ -24,6 +24,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 
 @MainActor
 final class ItemContextMenuHandler: Sendable {
@@ -193,6 +194,9 @@ private extension ItemContextMenuHandler {
                 guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                                 itemId: item.itemId) else {
                     throw PassError.itemNotFound(item)
+                }
+                if #available(iOS 17, *) {
+                    ItemForceTouchTip().invalidate(reason: .actionPerformed)
                 }
                 try await handler(itemContent)
             } catch {
