@@ -30,9 +30,9 @@ public protocol VaultsManagerProtocol: Sendable {
     func refresh()
     func fullSync() async throws
     func getItems(for vault: Vault) -> [ItemUiModel]
-    func getItemCount(for selection: Vault) -> Int
+//    func getItemCount(for selection: Vault) -> Int
     func getAllVaults() -> [Vault]
-    func vaultHasTrashedItems(_ vault: Vault) -> Bool
+//    func vaultHasTrashedItems(_ vault: Vault) -> Bool
     func delete(vault: Vault) async throws
     func delete(shareId: String) async throws
     func restoreAllTrashedItems() async throws
