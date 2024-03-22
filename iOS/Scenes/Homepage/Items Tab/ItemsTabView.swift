@@ -24,6 +24,7 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 import TipKit
 
@@ -351,6 +352,7 @@ private extension ItemsTabView {
             VStack {
                 Spacer()
                 TipView(ItemForceTouchTip())
+                    .tipViewStyle(.passTipStyle)
                     .padding()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
