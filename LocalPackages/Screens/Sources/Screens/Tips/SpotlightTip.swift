@@ -26,12 +26,12 @@ public struct SpotlightTip: Tip {
     public var id: String { PassTip.spotlight.id }
 
     public var title: Text {
-        Text(verbatim: "Search from your homescreen")
+        Text(verbatim: "Enable Spotlight search")
             .foregroundStyle(PassColor.textNorm.toColor)
     }
 
     public var message: Text? {
-        Text(verbatim: "Enable Spotlight to search for your items from homescreen.")
+        Text(verbatim: "Seamlessly search for items via your home screen. Open Settings → Spotlight to enable.")
             .foregroundStyle(PassColor.textWeak.toColor)
     }
 
@@ -43,4 +43,12 @@ public struct SpotlightTip: Tip {
         // Show this tip once
         Tips.MaxDisplayCount(1)
     }
+
+    public var actions: [Action] {
+        [
+            PassTipAction.openSettings.toAction()
+        ]
+    }
+
+    public init() {}
 }
