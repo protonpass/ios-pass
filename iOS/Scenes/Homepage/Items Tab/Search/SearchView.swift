@@ -22,6 +22,7 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
+import TipKit
 
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
@@ -61,6 +62,18 @@ struct SearchView: View {
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.searchBarPlaceholder,
                       onCancel: dismiss.callAsFunction)
+
+            if #available(iOS 17, *) {
+                let tip = SpotlightTip()
+                TipView(tip) { action in
+                    if action.is(.openSettings) {
+                        tip.invalidate(reason: .actionPerformed)
+                        viewModel.openSettings()
+                    }
+                }
+                .passTipView()
+                .padding([.horizontal, .bottom])
+            }
 
             switch viewModel.state {
             case .empty:

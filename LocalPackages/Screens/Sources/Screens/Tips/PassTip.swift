@@ -27,3 +27,29 @@ public enum PassTip: String {
 
     public var id: String { rawValue }
 }
+
+public enum PassTipAction: String {
+    /// Open Pass settings, not iOS settings
+    case openSettings
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .openSettings:
+            "Open Settings"
+        }
+    }
+
+    @available(iOS 17, *)
+    public func toAction() -> Tip.Action {
+        .init(id: id, title: title)
+    }
+}
+
+@available(iOS 17, *)
+public extension Tip.Action {
+    func `is`(_ action: PassTipAction) -> Bool {
+        id == action.id
+    }
+}
