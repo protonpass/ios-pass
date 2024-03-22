@@ -27,8 +27,8 @@ public protocol LocalShareEventIDDatasourceProtocol: Sendable {
     /// Upsert last event ID of a share
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws
 
-    /// Remove everything
-    func removeAllEntries(userId: String) async throws
+//    /// Remove everything
+//    func removeAllEntries(userId: String) async throws
 }
 
 public final class LocalShareEventIDDatasource: LocalDatasource, LocalShareEventIDDatasourceProtocol {}
@@ -58,11 +58,11 @@ public extension LocalShareEventIDDatasource {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    func removeAllEntries(userId: String) async throws {
-        let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareEventIDEntity")
-        fetchRequest.predicate = .init(format: "userID = %@", userId)
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: taskContext)
-    }
+//    func removeAllEntries(userId: String) async throws {
+//        let taskContext = newTaskContext(type: .delete)
+//        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareEventIDEntity")
+//        fetchRequest.predicate = .init(format: "userID = %@", userId)
+//        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+//                          context: taskContext)
+//    }
 }

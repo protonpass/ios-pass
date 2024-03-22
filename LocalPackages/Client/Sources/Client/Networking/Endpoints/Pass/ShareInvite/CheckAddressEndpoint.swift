@@ -40,16 +40,16 @@ struct CheckAddressEndpoint: Endpoint {
     }
 }
 
-public struct CheckAddressRequest: Sendable, Encodable {
-    public let emails: [String]
+struct CheckAddressRequest: Sendable, Encodable {
+    let emails: [String]
 
     enum CodingKeys: String, CodingKey {
         case emails = "Emails"
     }
 }
 
-public struct CheckAddressResponse: Sendable, Decodable {
+struct CheckAddressResponse: Sendable, Decodable {
     // Optional array because otherwise decode process would fail
     // when receiving an empty array instead of null
-    public let emails: [String]?
+    let emails: [String]?
 }

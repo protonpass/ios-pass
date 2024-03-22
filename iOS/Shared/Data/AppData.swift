@@ -91,9 +91,9 @@ final class AppData: AppDataProtocol {
         }
     }
 
-    func removeSymmetricKey() {
-        symmetricKey = nil
-    }
+//    func removeSymmetricKey() {
+//        symmetricKey = nil
+//    }
 
     func setUserData(_ userData: UserData?) {
         self.userData = userData
