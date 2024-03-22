@@ -61,8 +61,9 @@ public struct LogFormatOptions: OptionSet, Sendable {
         .fileFunctionLineColumn
     ]
 
-//    /// Only include `subsystem` & `category`
-//    public static let standard: LogFormatOptions = [.subsystem, .category]
+    //periphery:ignore
+ /// Only include `subsystem` & `category`
+    public static let standard: LogFormatOptions = [.subsystem, .category]
 }
 
 public let kDefaultLogDateFormatter: DateFormatter = {
