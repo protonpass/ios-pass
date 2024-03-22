@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
+
 import Core
 import LocalAuthentication
 
@@ -41,7 +43,6 @@ public extension AuthenticateBiometricallyUseCase {
  */
 public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     private let keychainService: any KeychainProtocol
-    // periphery:ignore
     private let biometricKey = "BiometricsPolicyState"
 
     public init(keychainService: any KeychainProtocol) {

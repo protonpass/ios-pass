@@ -34,16 +34,16 @@ public struct TransferOwnershipVaultRequest: Encodable, Sendable {
     }
 }
 
-public struct TransferOwnershipVaultEndpoint: Endpoint {
-    public typealias Body = TransferOwnershipVaultRequest
-    public typealias Response = CodeOnlyResponse
+struct TransferOwnershipVaultEndpoint: Endpoint {
+    typealias Body = TransferOwnershipVaultRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: Body?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: Body?
 
-    public init(vaultShareId: String, request: TransferOwnershipVaultRequest) {
+    init(vaultShareId: String, request: TransferOwnershipVaultRequest) {
         debugDescription = "Transfert vault ownership"
         path = "/pass/v1/vault/\(vaultShareId)/owner"
         method = .put

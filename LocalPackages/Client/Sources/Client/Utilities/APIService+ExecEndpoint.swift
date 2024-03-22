@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public extension APIService {
+extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         try await withCheckedThrowingContinuation { continuation in

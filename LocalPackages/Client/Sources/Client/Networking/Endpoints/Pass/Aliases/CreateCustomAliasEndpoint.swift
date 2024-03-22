@@ -21,16 +21,16 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct CreateCustomAliasEndpoint: Endpoint {
-    public typealias Body = CreateCustomAliasRequest
-    public typealias Response = CreateItemResponse
+struct CreateCustomAliasEndpoint: Endpoint {
+    typealias Body = CreateCustomAliasRequest
+    typealias Response = CreateItemResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: CreateCustomAliasRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: CreateCustomAliasRequest?
 
-    public init(shareId: String, request: CreateCustomAliasRequest) {
+    init(shareId: String, request: CreateCustomAliasRequest) {
         debugDescription = "Create a custom alias"
         path = "/pass/v1/share/\(shareId)/alias/custom"
         method = .post

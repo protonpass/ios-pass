@@ -18,11 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
+
 import Foundation
 
 public struct CreateAliasAndAnotherItemRequest: Sendable {
-    let alias: CreateCustomAliasRequest
-    let item: CreateItemRequest
+    public let alias: CreateCustomAliasRequest
+    public let item: CreateItemRequest
 
     public init(info: AliasCreationInfo,
                 aliasItem: CreateItemRequest,
