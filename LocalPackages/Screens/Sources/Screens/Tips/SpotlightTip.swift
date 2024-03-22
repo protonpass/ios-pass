@@ -25,6 +25,18 @@ import TipKit
 public struct SpotlightTip: Tip {
     public var id: String { PassTip.spotlight.id }
 
+    @Parameter
+    // swiftlint:disable:next redundant_type_annotation
+    public static var spotlightEnabled: Bool = false
+    public static let didPerformSearch = Event(id: "didPerformSearch")
+
+    public var rules: [Rule] {
+        [
+            #Rule(Self.$spotlightEnabled) { $0 == false },
+            #Rule(Self.didPerformSearch) { $0.donations.count >= 10 }
+        ]
+    }
+
     public var title: Text {
         Text(verbatim: "Enable Spotlight search")
             .foregroundStyle(PassColor.textNorm.toColor)
