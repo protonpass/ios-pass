@@ -57,10 +57,6 @@ private extension SharedUseCasesContainer {
         SharedDataContainer.shared.userDataProvider()
     }
 
-    var apiManager: APIManager {
-        SharedToolingContainer.shared.apiManager()
-    }
-
     var symmetricKeyProvider: any SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }

@@ -71,13 +71,13 @@ public protocol SyncEventLoopDelegate: AnyObject {
     func syncEventLoopDidFailedAdditionalTask(label: String, error: any Error)
 }
 
-public protocol SyncEventLoopActionProtocol {
-    func start()
-    func stop()
-    func forceSync()
-    func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
-    func removeAdditionalTask(label: String)
-}
+// public protocol SyncEventLoopActionProtocol {
+//    func start()
+//    func stop()
+//    func forceSync()
+//    func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
+//    func removeAdditionalTask(label: String)
+// }
 
 public enum SyncEventLoopSkipReason {
     case noInternetConnection
@@ -152,9 +152,9 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
 
 // MARK: - Public APIs
 
-extension SyncEventLoop: SyncEventLoopActionProtocol {
+public extension SyncEventLoop /*: SyncEventLoopActionProtocol */ {
     /// Start looping
-    public func start() {
+    func start() {
         guard timer == nil else { return }
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: 1,
@@ -171,12 +171,12 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
     }
 
     /// Force a sync loop e.g when the app goes foreground, pull to refresh is triggered
-    public func forceSync() {
+    func forceSync() {
         timerTask()
     }
 
     /// Stop looping
-    public func stop() {
+    func stop() {
         ongoingTask?.cancel()
         ongoingTask = nil
         timer?.invalidate()
@@ -184,7 +184,7 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
         delegate?.syncEventLoopDidStopLooping()
     }
 
-    public func addAdditionalTask(_ task: AdditionalTask) {
+    func addAdditionalTask(_ task: AdditionalTask) {
         guard !additionalTasks.contains(where: { $0.label == task.label }) else {
             assertionFailure("Existing task with label \(task.label)")
             return
@@ -192,7 +192,7 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
         additionalTasks.append(task)
     }
 
-    public func removeAdditionalTask(label: String) {
+    func removeAdditionalTask(label: String) {
         additionalTasks.removeAll(where: { $0.label == label })
     }
 }
