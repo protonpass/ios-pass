@@ -61,8 +61,8 @@ public struct LogFormatOptions: OptionSet, Sendable {
         .fileFunctionLineColumn
     ]
 
-    //periphery:ignore
- /// Only include `subsystem` & `category`
+    // periphery:ignore
+    /// Only include `subsystem` & `category`
     public static let standard: LogFormatOptions = [.subsystem, .category]
 }
 
