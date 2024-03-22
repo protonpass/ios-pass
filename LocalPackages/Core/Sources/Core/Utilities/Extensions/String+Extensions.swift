@@ -67,9 +67,10 @@ public extension String {
         replacingOccurrences(of: " ", with: "")
     }
 
-//    func characterCount(_ character: Character) -> Int {
-//        filter { $0 == character }.count
-//    }
+    // periphery:ignore
+    func characterCount(_ character: Character) -> Int {
+        filter { $0 == character }.count
+    }
 
     func toCreditCardNumber() -> String {
         // Amex format: NNNN-NNNNNN-NNNNN (4-6-5)

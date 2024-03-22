@@ -27,18 +27,20 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public enum CryptoUtils {
-//    public static func generateKey(name: String, email: String) throws -> (String, String) {
-//        let keyPassphrase = String.random(length: 32)
-//        let key = try throwing { error in
-//            CryptoGo.HelperGenerateKey(name,
-//                                       email,
-//                                       Data(keyPassphrase.utf8),
-//                                       "x25519",
-//                                       0,
-//                                       &error)
-//        }
-//        return (key, keyPassphrase)
-//    }
+    // periphery:ignore
+    public static func generateKey(name: String, email: String) throws -> (String, String) {
+        let keyPassphrase = String.random(length: 32)
+        let key = try throwing { error in
+            CryptoGo.HelperGenerateKey(name,
+                                       email,
+                                       Data(keyPassphrase.utf8),
+                                       "x25519",
+                                       0,
+                                       &error)
+        }
+        return (key, keyPassphrase)
+    }
+
 //
 //    public static func getFingerprint(key: String) throws -> String {
 //        let data = try throwing { error in

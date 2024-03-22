@@ -75,12 +75,13 @@ public enum FileUtils {
         return attributes[.modificationDate] as? Date
     }
 
-//    /// - Returns: `nil` if the file does not exist or failed to get file's attributes
-//    public static func getCreationDate(url: URL) throws -> Date? {
-//        guard FileManager.default.fileExists(atPath: url.path) else { return nil }
-//        let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
-//        return attributes[.creationDate] as? Date
-//    }
+    // periphery:ignore
+    /// - Returns: `nil` if the file does not exist or failed to get file's attributes
+    public static func getCreationDate(url: URL) throws -> Date? {
+        guard FileManager.default.fileExists(atPath: url.path) else { return nil }
+        let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+        return attributes[.creationDate] as? Date
+    }
 
     /// Do not care if the file exist or not.
     /// Consider obsolete by default if the file does not exist or fail to get file's attributes

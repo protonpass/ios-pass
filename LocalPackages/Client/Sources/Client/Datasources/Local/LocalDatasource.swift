@@ -152,18 +152,19 @@ extension LocalDatasource {
         }
     }
 
-//    func count(fetchRequest request: NSFetchRequest<some Any>,
-//               context: NSManagedObjectContext) async throws -> Int {
-//        try await context.perform {
-//            guard context.hasPersistentStore else { return 0 }
-//            #if DEBUG
-//            if Thread.isMainThread {
-//                throw LocalDatasourceError.databaseOperationsOnMainThread
-//            }
-//            #endif
-//            return try context.count(for: request)
-//        }
-//    }
+    // periphery:ignore
+    func count(fetchRequest request: NSFetchRequest<some Any>,
+               context: NSManagedObjectContext) async throws -> Int {
+        try await context.perform {
+            guard context.hasPersistentStore else { return 0 }
+            #if DEBUG
+            if Thread.isMainThread {
+                throw LocalDatasourceError.databaseOperationsOnMainThread
+            }
+            #endif
+            return try context.count(for: request)
+        }
+    }
 }
 
 extension NSManagedObject {
