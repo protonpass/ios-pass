@@ -34,16 +34,16 @@ public extension RevokeCurrentSessionUseCase {
 }
 
 public final class RevokeCurrentSession: RevokeCurrentSessionUseCase {
-    private let apiService: any APIService
+    private let networkRepository: any NetworkRepositoryProtocol
 
-    public init(apiService: any APIService) {
-        self.apiService = apiService
+    public init(networkRepository: any NetworkRepositoryProtocol) {
+        self.networkRepository = networkRepository
     }
 
     // Do not care if revoke is successful or not
     // because we don't want to prevent users from logging out
     // e.g when there's no internet connection
     public func execute() async {
-        _ = try? await apiService.exec(endpoint: RevokeTokenEndpoint())
+        _ = try? await networkRepository.revokeCurrentSession()
     }
 }

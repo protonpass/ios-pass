@@ -22,19 +22,19 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetPendingInviteForUserResponse: Decodable, Sendable {
+struct GetPendingInviteForUserResponse: Decodable, Sendable {
     let invites: [UserInvite]
 }
 
-public struct GetPendingInviteForUserEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetPendingInviteForUserResponse
+struct GetPendingInviteForUserEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetPendingInviteForUserResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init() {
+    init() {
         debugDescription = "Get pending invites for user"
         path = "/pass/v1/invite"
         method = .get

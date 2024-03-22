@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct ChangeMailboxesRequest: Encodable, Sendable {
-    public let mailboxIDs: [Int]
+struct ChangeMailboxesRequest: Encodable, Sendable {
+    let mailboxIDs: [Int]
 
     enum CodingKeys: String, CodingKey {
         case mailboxIDs = "MailboxIDs"

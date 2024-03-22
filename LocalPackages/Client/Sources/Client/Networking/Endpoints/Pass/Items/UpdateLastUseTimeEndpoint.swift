@@ -23,21 +23,21 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct UpdateLastUseTimeResponse: Decodable, Sendable {
+struct UpdateLastUseTimeResponse: Decodable, Sendable {
     let revision: Item
 }
 
-public struct UpdateLastUseTimeEndpoint: Endpoint {
-    public typealias Body = UpdateLastUseTimeRequest
-    public typealias Response = UpdateLastUseTimeResponse
+struct UpdateLastUseTimeEndpoint: Endpoint {
+    typealias Body = UpdateLastUseTimeRequest
+    typealias Response = UpdateLastUseTimeResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: UpdateLastUseTimeRequest?
-    public var nonDefaultTimeout: TimeInterval?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: UpdateLastUseTimeRequest?
+    var nonDefaultTimeout: TimeInterval?
 
-    public init(shareId: String, itemId: String, lastUseTime: TimeInterval) {
+    init(shareId: String, itemId: String, lastUseTime: TimeInterval) {
         debugDescription = "Update item"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/lastuse"
         method = .put

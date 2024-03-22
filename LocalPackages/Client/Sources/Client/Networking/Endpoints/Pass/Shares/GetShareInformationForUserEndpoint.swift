@@ -22,19 +22,19 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetUserInformationForShareResponse: Decodable, Sendable {
+struct GetUserInformationForShareResponse: Decodable, Sendable {
     let share: UserShareInfos
 }
 
-public struct GetUserInformationForShareEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetUserInformationForShareResponse
+struct GetUserInformationForShareEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetUserInformationForShareResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(for shareId: String, and userId: String) {
+    init(for shareId: String, and userId: String) {
         debugDescription = "Get information about one user share"
         path = "/pass/v1/share/\(shareId)/user/\(userId)"
         method = .get

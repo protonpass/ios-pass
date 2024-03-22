@@ -31,7 +31,7 @@ public class RemoteDatasource: @unchecked Sendable {
         self.eventStream = eventStream
     }
 
-    public func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
+    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         do {
             return try await apiService.exec(endpoint: endpoint)
         } catch {
@@ -39,7 +39,7 @@ public class RemoteDatasource: @unchecked Sendable {
         }
     }
 
-    public func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
+    func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
         do {
             return try await apiService.exec(endpoint: endpoint, files: files)
         } catch {
@@ -47,7 +47,7 @@ public class RemoteDatasource: @unchecked Sendable {
         }
     }
 
-    public func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
+    func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
         do {
             return try await apiService.execExpectingData(endpoint: endpoint)
         } catch {
