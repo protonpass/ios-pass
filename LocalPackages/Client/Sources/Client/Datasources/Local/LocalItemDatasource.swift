@@ -38,8 +38,9 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
-//    /// Get total items of a share (both active and trashed ones)
-//    func getItemCount(shareId: String) async throws -> Int
+    // periphery:ignore
+    /// Get total items of a share (both active and trashed ones)
+    func getItemCount(shareId: String) async throws -> Int
 
     /// Insert or update a list of items
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws
@@ -127,12 +128,13 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
-//    func getItemCount(shareId: String) async throws -> Int {
-//        let taskContext = newTaskContext(type: .fetch)
-//        let fetchRequest = ItemEntity.fetchRequest()
-//        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-//        return try await count(fetchRequest: fetchRequest, context: taskContext)
-//    }
+    // periphery:ignore
+    func getItemCount(shareId: String) async throws -> Int {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        return try await count(fetchRequest: fetchRequest, context: taskContext)
+    }
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         // We are removing the items before insert due to the bug of non updating boolean variables
