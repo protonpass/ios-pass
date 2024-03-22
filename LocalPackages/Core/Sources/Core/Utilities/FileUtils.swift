@@ -21,11 +21,12 @@
 import Foundation
 
 public enum FileUtils {
-//    public static func getDocumentsDirectory() -> URL {
-//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        let documentsDirectory = paths[0]
-//        return documentsDirectory
-//    }
+    //periphery:ignore
+    public static func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
 
     /// Create the file with given data, if the file already exists, overwrite with the given data.
     /// - Parameters:
