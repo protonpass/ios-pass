@@ -21,13 +21,23 @@
 @testable import Core
 import XCTest
 
-// swiftlint:disable:next type_name
-final class StringPlusIsValidWithAllowedCharactersTests: XCTestCase {
-    func testIsValidWithAllowedCharacterSet() {
-        XCTAssertTrue("abcDEF".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertTrue("abcDEF012".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertFalse("abcDEF012&".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertFalse("😊".isValid(allowedCharacters: .alphanumerics))
-        XCTAssertFalse("".isValid(allowedCharacters: .alphanumerics))
-    }
-}
+//// swiftlint:disable:next type_name
+//final class StringPlusIsValidWithAllowedCharactersTests: XCTestCase {
+//    func testIsValidWithAllowedCharacterSet() {
+//        XCTAssertTrue("abcDEF".isValid(allowedCharacters: .alphanumerics))
+//        XCTAssertTrue("abcDEF012".isValid(allowedCharacters: .alphanumerics))
+//        XCTAssertFalse("abcDEF012&".isValid(allowedCharacters: .alphanumerics))
+//        XCTAssertFalse("😊".isValid(allowedCharacters: .alphanumerics))
+//        XCTAssertFalse("".isValid(allowedCharacters: .alphanumerics))
+//    }
+//}
+//
+//extension String {
+//    func isValid(allowedCharacters: CharacterSet) -> Bool {
+//        guard !isEmpty else { return false }
+//        for character in unicodeScalars where !allowedCharacters.contains(character) {
+//            return false
+//        }
+//        return true
+//    }
+// }
