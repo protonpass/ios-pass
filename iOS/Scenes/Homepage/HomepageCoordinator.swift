@@ -82,7 +82,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
-    private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -217,7 +216,6 @@ private extension HomepageCoordinator {
 
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
-        self.profileTabViewModel = profileTabViewModel
 
         let placeholderView = ItemDetailPlaceholderView { [weak self] in
             guard let self else { return }
