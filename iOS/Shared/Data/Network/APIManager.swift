@@ -47,6 +47,7 @@ final class APIManager {
     private let appData = resolve(\SharedDataContainer.appData)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let doh = resolve(\SharedToolingContainer.doh)
+    // periphery:ignore
     private let trustKitDelegate: TrustKitDelegate
     let authHelper: AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
 

@@ -44,12 +44,9 @@ public protocol ReportRepositoryProtocol: Sendable {
 public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
     private let apiService: any APIService
     private let userDataProvider: any UserDataProvider
-    private let logger: Logger
 
     public init(apiService: any APIService,
-                userDataProvider: any UserDataProvider,
-                logManager: any LogManagerProtocol) {
-        logger = .init(manager: logManager)
+                userDataProvider: any UserDataProvider) {
         self.apiService = apiService
         self.userDataProvider = userDataProvider
     }

@@ -173,8 +173,7 @@ extension SharedUseCasesContainer {
     // periphery:ignore
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
-            GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 logManager: SharedToolingContainer.shared.logManager())
+            GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository())
         }
     }
 }
