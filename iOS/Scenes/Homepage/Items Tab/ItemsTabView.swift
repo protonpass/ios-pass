@@ -352,7 +352,7 @@ private extension ItemsTabView {
             VStack {
                 Spacer()
                 TipView(ItemForceTouchTip())
-                    .tipViewStyle(.passTipStyle)
+                    .passTipView()
                     .padding()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
