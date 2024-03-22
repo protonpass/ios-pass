@@ -51,7 +51,7 @@ struct ItemsTabView: View {
                     vaultContent(vaultsManager.getFilteredItems())
                 }
 
-                forceTouchTip
+                itemForceTouchTip
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
@@ -346,16 +346,14 @@ private struct ItemsTabsSkeleton: View {
 
 private extension ItemsTabView {
     @ViewBuilder
-    var forceTouchTip: some View {
+    var itemForceTouchTip: some View {
         if #available(iOS 17, *) {
-            let tip = ItemForceTouchTip()
             VStack {
                 Spacer()
-                TipView(tip)
-                    .tint(PassColor.interactionNormMajor2.toColor)
+                TipView(ItemForceTouchTip())
+                    .padding()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding()
         }
     }
 }

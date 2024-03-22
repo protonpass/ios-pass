@@ -67,8 +67,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
     private var cancellable = Set<AnyCancellable>()
 
-    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
-
     var isAllowedToShare: Bool {
         guard let vault else {
             return false
@@ -126,6 +124,9 @@ class BaseItemDetailViewModel: ObservableObject {
     ///    - text: The text to be copied to clipboard.
     ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
+        if #available(iOS 17, *) {
+            Task { await ItemForceTouchTip.didTapToCopy.donate() }
+        }
         router.action(.copyToClipboard(text: text, message: message))
     }
 
@@ -134,6 +135,9 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func edit() {
+        if #available(iOS 17, *) {
+            Task { await ItemForceTouchTip.didEdit.donate() }
+        }
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 
@@ -190,6 +194,9 @@ class BaseItemDetailViewModel: ObservableObject {
                 }
                 router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
+                if #available(iOS 17, *) {
+                    await ItemForceTouchTip.didTogglePin.donate()
+                }
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -202,8 +209,7 @@ class BaseItemDetailViewModel: ObservableObject {
             assertionFailure("Only applicable to note item")
             return
         }
-        clipboardManager.copy(text: itemContent.note,
-                              bannerMessage: #localized("Note content copied"))
+        copyToClipboard(text: itemContent.note, message: #localized("Note content copied"))
     }
 
     func clone() {
@@ -222,6 +228,9 @@ class BaseItemDetailViewModel: ObservableObject {
                 try await itemRepository.trashItems([encryptedItem])
                 delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 logger.info("Trashed \(item.debugDescription)")
+                if #available(iOS 17, *) {
+                    await ItemForceTouchTip.didTrash.donate()
+                }
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
