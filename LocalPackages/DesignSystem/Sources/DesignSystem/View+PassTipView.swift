@@ -1,5 +1,5 @@
 //
-// PassTip.swift
+// View+PassTipView.swift
 // Proton Pass - Created on 22/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -17,39 +17,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
-import TipKit
+import SwiftUI
 
-public enum PassTip: String {
-    case itemForceTouch
-    case spotlight
-
-    public var id: String { rawValue }
-}
-
-public enum PassTipAction: String {
-    /// Open Pass settings, not iOS settings
-    case openSettings
-
-    public var id: String { rawValue }
-
-    public var title: String {
-        switch self {
-        case .openSettings:
-            "Open Settings"
-        }
-    }
-
-    @available(iOS 17, *)
-    public func toAction() -> Tip.Action {
-        .init(id: id, title: title)
-    }
-}
-
-@available(iOS 17, *)
-public extension Tip.Action {
-    func `is`(_ action: PassTipAction) -> Bool {
-        id == action.id
+public extension View {
+    /// Change foreground colors of icon and buttons of a `TipView`
+    /// `tint` modifier only affects the icon
+    /// `accentColor` though deprecated but needed for tinting buttons. Thanks SwiftUI.
+    func passTipView() -> some View {
+        tint(PassColor.interactionNormMajor2.toColor)
+            .accentColor(PassColor.interactionNormMajor2.toColor)
     }
 }

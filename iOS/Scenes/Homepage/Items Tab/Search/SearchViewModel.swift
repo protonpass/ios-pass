@@ -288,6 +288,10 @@ extension SearchViewModel {
         searchMode = .all(.all)
         refreshResults()
     }
+
+    func openSettings() {
+        router.present(for: .settingsMenu)
+    }
 }
 
 // MARK: SetUP & Utils

@@ -413,6 +413,8 @@ extension HomepageCoordinator {
                     openTutorialVideo()
                 case .accountSettings:
                     beginAccountSettingsFlow()
+                case .settingsMenu:
+                    profileTabViewModelWantsToShowSettingsMenu()
                 case let .createEditLogin(item):
                     presentCreateEditLoginView(mode: item)
                 case let .createItem(_, type, _):

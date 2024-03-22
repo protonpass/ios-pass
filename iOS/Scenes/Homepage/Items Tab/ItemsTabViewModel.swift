@@ -186,10 +186,6 @@ private extension ItemsTabViewModel {
                 await banners.append(contentsOf: localBanners())
             }
             self.banners = banners
-
-            if #available(iOS 17, *), banners.isEmpty {
-                ItemForceTouchTip.allBannersDismissed = true
-            }
         }
     }
 
