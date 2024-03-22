@@ -22,22 +22,22 @@ import DesignSystem
 import TipKit
 
 @available(iOS 17, *)
-struct ItemForceTouchTip: Tip {
-    var id: String { PassTip.itemForceTouch.id }
+public struct ItemForceTouchTip: Tip {
+    public var id: String { PassTip.itemForceTouch.id }
 
     // As this tip is shown on top of the item list which could have an above banner section
     // we show this tip only when no other banners are displayed to make room for items
     @Parameter
     // swiftlint:disable:next redundant_type_annotation
-    static var allBannersDismissed: Bool = false
+    public static var allBannersDismissed: Bool = false
 
     // Tap to copy items' detail like username or password
-    static let didTapToCopy = Event(id: "didTapToCopy")
-    static let didEdit = Event(id: "didEdit")
-    static let didTogglePin = Event(id: "didTogglePin")
-    static let didTrash = Event(id: "didTrash")
+    public static let didTapToCopy = Event(id: "didTapToCopy")
+    public static let didEdit = Event(id: "didEdit")
+    public static let didTogglePin = Event(id: "didTogglePin")
+    public static let didTrash = Event(id: "didTrash")
 
-    var rules: [Rule] {
+    public var rules: [Rule] {
         [
             #Rule(Self.$allBannersDismissed) { $0 == true },
             #Rule(Self.didTapToCopy) { $0.donations.count >= 10 },
@@ -47,22 +47,24 @@ struct ItemForceTouchTip: Tip {
         ]
     }
 
-    var title: Text {
+    public var title: Text {
         Text(verbatim: "Quick actions on items")
             .foregroundStyle(PassColor.textNorm.toColor)
     }
 
-    var message: Text? {
+    public var message: Text? {
         Text(verbatim: "Press and hold an item to reveal extra options.")
             .foregroundStyle(PassColor.textWeak.toColor)
     }
 
-    var image: Image? {
+    public var image: Image? {
         Image(systemName: "hand.tap.fill")
     }
 
-    var options: [TipOption] {
+    public var options: [TipOption] {
         // Show this tip once
         Tips.MaxDisplayCount(1)
     }
+
+    public init() {}
 }
