@@ -41,7 +41,8 @@ public final class ForkSession: ForkSessionUseCase {
     }
 
     public func execute(payload: String?, childClientId: String, independent: Int) async throws -> String {
-        try await networkRepository.forkSession(payload: payload, childClientId: childClientId,
+        try await networkRepository.forkSession(payload: payload,
+                                                childClientId: childClientId,
                                                 independent: independent)
     }
 }

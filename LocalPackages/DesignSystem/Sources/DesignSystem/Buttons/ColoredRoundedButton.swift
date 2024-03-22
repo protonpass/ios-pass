@@ -20,30 +20,30 @@
 
 import SwiftUI
 
-public struct ColoredRoundedButton: View {
-    let title: String
-    let titleColor: Color
-    let backgroundColor: Color
-    let action: () -> Void
-
-    public init(title: String,
-                titleColor: Color = .white,
-                backgroundColor: Color = Color(uiColor: PassColor.interactionNorm),
-                action: @escaping () -> Void) {
-        self.title = title
-        self.titleColor = titleColor
-        self.backgroundColor = backgroundColor
-        self.action = action
-    }
-
-    public var body: some View {
-        Button(action: action) {
-            Text(title)
-                .foregroundColor(titleColor)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(12)
-                .background(backgroundColor)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-        }
-    }
-}
+// public struct ColoredRoundedButton: View {
+//    let title: String
+//    let titleColor: Color
+//    let backgroundColor: Color
+//    let action: () -> Void
+//
+//    public init(title: String,
+//                titleColor: Color = .white,
+//                backgroundColor: Color = Color(uiColor: PassColor.interactionNorm),
+//                action: @escaping () -> Void) {
+//        self.title = title
+//        self.titleColor = titleColor
+//        self.backgroundColor = backgroundColor
+//        self.action = action
+//    }
+//
+//    public var body: some View {
+//        Button(action: action) {
+//            Text(title)
+//                .foregroundColor(titleColor)
+//                .frame(maxWidth: .infinity, alignment: .center)
+//                .padding(12)
+//                .background(backgroundColor)
+//                .clipShape(RoundedRectangle(cornerRadius: 8))
+//        }
+//    }
+// }

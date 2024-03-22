@@ -31,31 +31,31 @@ public extension SymmetricallyEncryptedItem {
     }
 }
 
-public extension SymmetricallyEncryptedItem {
-    func toSearchEntryUiModel(_ symmetricKey: SymmetricKey) throws -> SearchEntryUiModel {
-        let itemContent = try getItemContent(symmetricKey: symmetricKey)
-
-        let note: String?
-        var url: String?
-
-        switch itemContent.contentData {
-        case let .login(data):
-            note = data.username
-            url = data.urls.first
-        case .alias:
-            note = item.aliasEmail
-        default:
-            note = itemContent.note
-        }
-
-        return .init(itemId: item.itemID,
-                     shareId: shareId,
-                     type: itemContent.contentData.type,
-                     title: itemContent.name,
-                     url: url,
-                     description: note?.isEmpty == true ? nil : note)
-    }
-}
+// public extension SymmetricallyEncryptedItem {
+//    func toSearchEntryUiModel(_ symmetricKey: SymmetricKey) throws -> SearchEntryUiModel {
+//        let itemContent = try getItemContent(symmetricKey: symmetricKey)
+//
+//        let note: String?
+//        var url: String?
+//
+//        switch itemContent.contentData {
+//        case let .login(data):
+//            note = data.username
+//            url = data.urls.first
+//        case .alias:
+//            note = item.aliasEmail
+//        default:
+//            note = itemContent.note
+//        }
+//
+//        return .init(itemId: item.itemID,
+//                     shareId: shareId,
+//                     type: itemContent.contentData.type,
+//                     title: itemContent.name,
+//                     url: url,
+//                     description: note?.isEmpty == true ? nil : note)
+//    }
+// }
 
 public extension SymmetricallyEncryptedItem {
     func toItemUiModel(_ symmetricKey: SymmetricKey) throws -> ItemUiModel {

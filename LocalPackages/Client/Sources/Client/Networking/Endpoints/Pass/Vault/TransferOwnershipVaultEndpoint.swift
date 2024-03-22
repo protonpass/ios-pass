@@ -23,7 +23,8 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct TransferOwnershipVaultRequest: Encodable, Sendable {
-    public let newOwnerShareID: String
+    // periphery:ignore
+    let newOwnerShareID: String
 
     enum CodingKeys: String, CodingKey {
         case newOwnerShareID = "NewOwnerShareID"

@@ -137,9 +137,9 @@ public extension TelemetryEventRepository {
 // MARK: - TelemetrySchedulerProtocol
 
 public protocol TelemetrySchedulerProtocol: Actor, Sendable {
-    var currentDateProvider: any CurrentDateProviderProtocol { get }
-    var minIntervalInHours: Int { get }
-    var maxIntervalInHours: Int { get }
+//    var currentDateProvider: any CurrentDateProviderProtocol { get }
+//    var minIntervalInHours: Int { get }
+//    var maxIntervalInHours: Int { get }
 
     func shouldSendEvents() async -> Bool
     func randomNextThreshold() async
@@ -148,7 +148,7 @@ public protocol TelemetrySchedulerProtocol: Actor, Sendable {
 
 public actor TelemetryScheduler: TelemetrySchedulerProtocol {
     public let currentDateProvider: any CurrentDateProviderProtocol
-    public let eventCount = 500
+//    public let eventCount = 500
     public let minIntervalInHours = 6
     public let maxIntervalInHours = 12
     public let thresholdProvider: any TelemetryThresholdProviderProtocol

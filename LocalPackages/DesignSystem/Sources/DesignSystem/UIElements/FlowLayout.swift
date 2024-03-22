@@ -50,7 +50,7 @@ public struct FlowLayout<T: Hashable, V: View>: View {
     }
 
     public enum Mode {
-        case scrollable, vstack
+        case scrollable
     }
 }
 

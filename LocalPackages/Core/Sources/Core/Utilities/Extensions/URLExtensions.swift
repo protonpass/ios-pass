@@ -28,15 +28,15 @@ public extension URL {
         return "\(scheme)://\(host)"
     }
 
-    /// Get value of a query parameter.
-    /// E.g: Given an URL `https://example.com?param1=123&param2=abc`
-    /// `url["param1"]` returns `123`
-    /// `url["param2"]` returns `abc`
-    /// `url["param3"]` returns `nil`
-    subscript(parameter: String) -> String? {
-        guard let components = URLComponents(string: absoluteString) else { return nil }
-        return components.queryItems?.first(where: { $0.name == parameter })?.value
-    }
+//    /// Get value of a query parameter.
+//    /// E.g: Given an URL `https://example.com?param1=123&param2=abc`
+//    /// `url["param1"]` returns `123`
+//    /// `url["param2"]` returns `abc`
+//    /// `url["param3"]` returns `nil`
+//    subscript(parameter: String) -> String? {
+//        guard let components = URLComponents(string: absoluteString) else { return nil }
+//        return components.queryItems?.first(where: { $0.name == parameter })?.value
+//    }
 
     /// Returns a URL for the given app group and database pointing to the sqlite database.
     static func storeURL(for appGroup: String, databaseName: String) -> URL {

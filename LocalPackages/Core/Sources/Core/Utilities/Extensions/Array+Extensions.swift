@@ -20,11 +20,11 @@
 
 import Foundation
 
-public extension ArraySlice {
-    var toArray: [Element] {
-        Array(self)
-    }
-}
+// public extension ArraySlice {
+//    var toArray: [Element] {
+//        Array(self)
+//    }
+// }
 
 public extension Array where Element: Identifiable, Element: Equatable {
     /// Compare 2 arrays of `Identifiable` & `Equatable` objects
