@@ -77,8 +77,10 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
+    // periphery:ignore
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
+    // periphery:ignore
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
     private var customCoordinator: CustomCoordinator?
 

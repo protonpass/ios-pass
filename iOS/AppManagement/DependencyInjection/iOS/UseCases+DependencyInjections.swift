@@ -216,8 +216,7 @@ extension UseCasesContainer {
     }
 
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
-        self { RefreshInvitations(inviteRepository: self.inviteRepository,
-                                  accessRepository: self.accessRepository) }
+        self { RefreshInvitations(inviteRepository: self.inviteRepository) }
     }
 
     var rejectInvitation: Factory<RejectInvitationUseCase> {
