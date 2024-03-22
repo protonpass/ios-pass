@@ -32,23 +32,23 @@ public protocol CoordinatorProtocol: AnyObject {
     func start(with viewController: UIViewController, secondaryViewController: UIViewController?)
     func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
-    func present<V: View>(_ view: V,
-                          userInterfaceStyle: UIUserInterfaceStyle,
-                          animated: Bool,
-                          dismissible: Bool)
+//    func present<V: View>(_ view: V,
+//                          userInterfaceStyle: UIUserInterfaceStyle,
+//                          animated: Bool,
+//                          dismissible: Bool)
     func present(_ viewController: UIViewController,
                  userInterfaceStyle: UIUserInterfaceStyle,
                  animated: Bool,
                  dismissible: Bool)
-    func hideSecondaryView()
-    func showSecondaryView()
+//    func hideSecondaryView()
+//    func showSecondaryView()
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
     func coordinatorDidDismiss()
-    func popTopViewController(animated: Bool)
-    func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
-    func isAtRootViewController() -> Bool
-    func setStatusBarStyle(_ style: UIStatusBarStyle)
+//    func popTopViewController(animated: Bool)
+//    func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
+//    func isAtRootViewController() -> Bool
+//    func setStatusBarStyle(_ style: UIStatusBarStyle)
 }
 
 public extension CoordinatorProtocol {
@@ -62,15 +62,15 @@ public extension CoordinatorProtocol {
         push(UIHostingController(rootView: view), animated: animated, hidesBackButton: hidesBackButton)
     }
 
-    func present(_ view: some View,
-                 userInterfaceStyle: UIUserInterfaceStyle,
-                 animated: Bool = true,
-                 dismissible: Bool = true) {
-        present(UIHostingController(rootView: view),
-                userInterfaceStyle: userInterfaceStyle,
-                animated: animated,
-                dismissible: dismissible)
-    }
+//    func present(_ view: some View,
+//                 userInterfaceStyle: UIUserInterfaceStyle,
+//                 animated: Bool = true,
+//                 dismissible: Bool = true) {
+//        present(UIHostingController(rootView: view),
+//                userInterfaceStyle: userInterfaceStyle,
+//                animated: animated,
+//                dismissible: dismissible)
+//    }
 
     func present(_ viewController: UIViewController,
                  userInterfaceStyle: UIUserInterfaceStyle,
@@ -137,14 +137,14 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-    public func setStatusBarStyle(_ style: UIStatusBarStyle) {
-        switch type {
-        case let .navigation(navigationController):
-            navigationController.setStatusBarStyle(style)
-        case let .split(splitViewController):
-            splitViewController.setStatusBarStyle(style)
-        }
-    }
+//    public func setStatusBarStyle(_ style: UIStatusBarStyle) {
+//        switch type {
+//        case let .navigation(navigationController):
+//            navigationController.setStatusBarStyle(style)
+//        case let .split(splitViewController):
+//            splitViewController.setStatusBarStyle(style)
+//        }
+//    }
 
     public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
         switch type {
@@ -203,26 +203,27 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-    public func popToRoot(animated: Bool, secondaryViewController: UIViewController?) {
-        if let topMostNavigationController = topMostViewController as? UINavigationController {
-            topMostNavigationController.popToRootViewController(animated: animated)
-        } else {
-            switch type {
-            case let .navigation(navigationController):
-                navigationController.popToRootViewController(animated: animated)
-            case let .split(splitViewController):
-                splitViewController.show(.primary)
-                if let secondaryViewController {
-                    secondaryViewController.navigationItem.hidesBackButton = true
-                    let navigationController = UINavigationController(rootViewController: secondaryViewController)
-                    // Set to nil before setting to the real secondary view controller
-                    // otherwise in spit mode, secondary view is shown instead of primary one.
-                    splitViewController.setViewController(nil, for: .secondary)
-                    splitViewController.setViewController(navigationController, for: .secondary)
-                }
-            }
-        }
-    }
+//    public func popToRoot(animated: Bool, secondaryViewController: UIViewController?) {
+//        if let topMostNavigationController = topMostViewController as? UINavigationController {
+//            topMostNavigationController.popToRootViewController(animated: animated)
+//        } else {
+//            switch type {
+//            case let .navigation(navigationController):
+//                navigationController.popToRootViewController(animated: animated)
+//            case let .split(splitViewController):
+//                splitViewController.show(.primary)
+//                if let secondaryViewController {
+//                    secondaryViewController.navigationItem.hidesBackButton = true
+//                    let navigationController = UINavigationController(rootViewController:
+//                    secondaryViewController)
+//                    // Set to nil before setting to the real secondary view controller
+//                    // otherwise in spit mode, secondary view is shown instead of primary one.
+//                    splitViewController.setViewController(nil, for: .secondary)
+//                    splitViewController.setViewController(navigationController, for: .secondary)
+//                }
+//            }
+//        }
+//    }
 
     public func hideSecondaryView() {
         guard case let .split(splitViewController) = type else { return }
@@ -236,19 +237,20 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-    public func isAtRootViewController() -> Bool {
-        if topMostViewController == rootViewController {
-            switch type {
-            case let .navigation(navigationController):
-                return navigationController.viewControllers.count == 1
-            case .split:
-                return true
-            }
-        } else if let topMostNavigationController = topMostViewController as? UINavigationController {
-            return topMostNavigationController.viewControllers.count == 1
-        }
-        return false
-    }
+//
+//    public func isAtRootViewController() -> Bool {
+//        if topMostViewController == rootViewController {
+//            switch type {
+//            case let .navigation(navigationController):
+//                return navigationController.viewControllers.count == 1
+//            case .split:
+//                return true
+//            }
+//        } else if let topMostNavigationController = topMostViewController as? UINavigationController {
+//            return topMostNavigationController.viewControllers.count == 1
+//        }
+//        return false
+//    }
 
     /// Only applicable for iPad
     /// `true` when the app is not in full screen (only show 1 page at a time, not in split mode)
@@ -262,7 +264,7 @@ open class Coordinator: CoordinatorProtocol {
     }
 }
 
-public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
+final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
     private var statusBarStyle = UIStatusBarStyle.default
 
     override public var preferredStatusBarStyle: UIStatusBarStyle {
@@ -279,13 +281,13 @@ public final class PPNavigationController: UINavigationController, UIGestureReco
         viewControllers.count > 1
     }
 
-    func setStatusBarStyle(_ style: UIStatusBarStyle) {
-        statusBarStyle = style
-        setNeedsStatusBarAppearanceUpdate()
-    }
+//    func setStatusBarStyle(_ style: UIStatusBarStyle) {
+//        statusBarStyle = style
+//        setNeedsStatusBarAppearanceUpdate()
+//    }
 }
 
-public final class PPSplitViewController: UISplitViewController {
+final class PPSplitViewController: UISplitViewController {
     private var statusBarStyle = UIStatusBarStyle.default
 
     override public var preferredStatusBarStyle: UIStatusBarStyle {
@@ -302,8 +304,8 @@ public final class PPSplitViewController: UISplitViewController {
         show(.primary)
     }
 
-    func setStatusBarStyle(_ style: UIStatusBarStyle) {
-        statusBarStyle = style
-        setNeedsStatusBarAppearanceUpdate()
-    }
+//    func setStatusBarStyle(_ style: UIStatusBarStyle) {
+//        statusBarStyle = style
+//        setNeedsStatusBarAppearanceUpdate()
+//    }
 }

@@ -89,9 +89,9 @@ private let kThresholdRange = 55...60
 
 // sourcery: AutoMockable
 public protocol SyncEventLoopProtocol {
-    func start()
+//    func start()
     func forceSync()
-    func stop()
+//    func stop()
     func reset()
 }
 
@@ -192,9 +192,9 @@ public extension SyncEventLoop /*: SyncEventLoopActionProtocol */ {
         additionalTasks.append(task)
     }
 
-    func removeAdditionalTask(label: String) {
-        additionalTasks.removeAll(where: { $0.label == label })
-    }
+//    func removeAdditionalTask(label: String) {
+//        additionalTasks.removeAll(where: { $0.label == label })
+//    }
 }
 
 // MARK: - Private APIs

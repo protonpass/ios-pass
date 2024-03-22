@@ -27,54 +27,54 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public enum CryptoUtils {
-    public static func generateKey(name: String, email: String) throws -> (String, String) {
-        let keyPassphrase = String.random(length: 32)
-        let key = try throwing { error in
-            CryptoGo.HelperGenerateKey(name,
-                                       email,
-                                       Data(keyPassphrase.utf8),
-                                       "x25519",
-                                       0,
-                                       &error)
-        }
-        return (key, keyPassphrase)
-    }
+//    public static func generateKey(name: String, email: String) throws -> (String, String) {
+//        let keyPassphrase = String.random(length: 32)
+//        let key = try throwing { error in
+//            CryptoGo.HelperGenerateKey(name,
+//                                       email,
+//                                       Data(keyPassphrase.utf8),
+//                                       "x25519",
+//                                       0,
+//                                       &error)
+//        }
+//        return (key, keyPassphrase)
+//    }
+//
+//    public static func getFingerprint(key: String) throws -> String {
+//        let data = try throwing { error in
+//            CryptoGo.HelperGetJsonSHA256Fingerprints(key, &error)
+//        }
+//        guard let data else {
+//            throw PassError.crypto(.failedToGetFingerprint)
+//        }
+//        let array = try JSONDecoder().decode([String].self, from: data)
+//        guard let fingerprint = array.first else {
+//            throw PassError.crypto(.failedToGetFingerprint)
+//        }
+//        return fingerprint
+//    }
 
-    public static func getFingerprint(key: String) throws -> String {
-        let data = try throwing { error in
-            CryptoGo.HelperGetJsonSHA256Fingerprints(key, &error)
-        }
-        guard let data else {
-            throw PassError.crypto(.failedToGetFingerprint)
-        }
-        let array = try JSONDecoder().decode([String].self, from: data)
-        guard let fingerprint = array.first else {
-            throw PassError.crypto(.failedToGetFingerprint)
-        }
-        return fingerprint
-    }
+//    public static func splitPGPMessage(_ message: String) throws -> (keyPacket: Data, dataPacket: Data) {
+//        let splitMessage = try unwrap { CryptoGo.CryptoPGPSplitMessage(fromArmored: message) }
+//        guard let keyPacket = splitMessage.keyPacket,
+//              let dataPacket = splitMessage.dataPacket else {
+//            throw PassError.crypto(.failedToSplitPGPMessage)
+//        }
+//        return (keyPacket, dataPacket)
+//    }
 
-    public static func splitPGPMessage(_ message: String) throws -> (keyPacket: Data, dataPacket: Data) {
-        let splitMessage = try unwrap { CryptoGo.CryptoPGPSplitMessage(fromArmored: message) }
-        guard let keyPacket = splitMessage.keyPacket,
-              let dataPacket = splitMessage.dataPacket else {
-            throw PassError.crypto(.failedToSplitPGPMessage)
-        }
-        return (keyPacket, dataPacket)
-    }
-
-    public static func unarmorAndBase64(data: String, name: String) throws -> String {
-        guard let unarmoredData = data.unArmor else {
-            throw PassError.crypto(.failedToUnarmor(name))
-        }
-        return unarmoredData.base64EncodedString()
-    }
-
-    public static func armorSignature(_ signature: Data) throws -> String {
-        try throwing { error in
-            CryptoGo.ArmorArmorWithType(signature, "SIGNATURE", &error)
-        }
-    }
+//    public static func unarmorAndBase64(data: String, name: String) throws -> String {
+//        guard let unarmoredData = data.unArmor else {
+//            throw PassError.crypto(.failedToUnarmor(name))
+//        }
+//        return unarmoredData.base64EncodedString()
+//    }
+//
+//    public static func armorSignature(_ signature: Data) throws -> String {
+//        try throwing { error in
+//            CryptoGo.ArmorArmorWithType(signature, "SIGNATURE", &error)
+//        }
+//    }
 
     public static func armorMessage(_ message: Data) throws -> String {
         try throwing { error in
@@ -82,14 +82,14 @@ public enum CryptoUtils {
         }
     }
 
-    public static func generateSessionKey() throws -> any CryptoSessionKey {
-        var error: NSError?
-        guard let sessionKey = CryptoGo.CryptoGenerateSessionKey(&error) else {
-            throw PassError.crypto(.failedToGenerateSessionKey)
-        }
-        if let error { throw error }
-        return sessionKey
-    }
+//    public static func generateSessionKey() throws -> any CryptoSessionKey {
+//        var error: NSError?
+//        guard let sessionKey = CryptoGo.CryptoGenerateSessionKey(&error) else {
+//            throw PassError.crypto(.failedToGenerateSessionKey)
+//        }
+//        if let error { throw error }
+//        return sessionKey
+//    }
 
     public static func unlockAddressKeys(address: Address,
                                          userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
@@ -115,10 +115,10 @@ public enum CryptoUtils {
         return try CryptoUtils.unlockAddressKeys(address: firstAddress, userData: userData)
     }
 
-    public static func unlockKey(_ armoredKey: String,
-                                 passphrase: String) throws -> ProtonCoreCrypto.DecryptionKey {
-        DecryptionKey(privateKey: .init(value: armoredKey), passphrase: .init(value: passphrase))
-    }
+//    public static func unlockKey(_ armoredKey: String,
+//                                 passphrase: String) throws -> ProtonCoreCrypto.DecryptionKey {
+//        DecryptionKey(privateKey: .init(value: armoredKey), passphrase: .init(value: passphrase))
+//    }
 
     public static func encryptKeyForSharing(addressId: String,
                                             publicReceiverKey: PublicKey,

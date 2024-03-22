@@ -20,21 +20,21 @@
 
 import ProtonCoreNetworking
 
-struct GetShareResponse: Decodable, Sendable {
-    let share: Share
-}
-
-struct GetShareEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = GetShareResponse
-
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init(shareId: String) {
-        debugDescription = "Get share data"
-        path = "/pass/v1/share/\(shareId)"
-        method = .get
-    }
-}
+// struct GetShareResponse: Decodable, Sendable {
+//    let share: Share
+// }
+//
+// struct GetShareEndpoint: Endpoint {
+//    typealias Body = EmptyRequest
+//    typealias Response = GetShareResponse
+//
+//    var debugDescription: String
+//    var path: String
+//    var method: HTTPMethod
+//
+//    init(shareId: String) {
+//        debugDescription = "Get share data"
+//        path = "/pass/v1/share/\(shareId)"
+//        method = .get
+//    }
+// }

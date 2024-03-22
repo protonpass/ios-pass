@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
 import Entities
 import Foundation
 import ProtonCoreNetworking
@@ -42,17 +43,17 @@ struct InviteUserToShareEndpoint: Endpoint {
 
 public struct InviteUserToShareRequest: Sendable {
     /// List of keys encrypted for the other user's address key and signed with your address key
-    public let keys: [ItemKey]
+    let keys: [ItemKey]
     /// Email of the target user
-    public let email: String
+    let email: String
     /// Invite target type. 1 = Vault, 2 = Item
-    public let targetType: Int
+    let targetType: Int
     /// ShareRoleID assigned to this invite
-    public let shareRoleId: String
+    let shareRoleId: String
     /// Invite encrypted item ID (only in case the invite is of type Item)
-    public let itemId: String?
+    let itemId: String?
     /// Expiration time for the share
-    public let expirationTime: Int?
+    let expirationTime: Int?
 
     public init(keys: [ItemKey],
                 email: String,

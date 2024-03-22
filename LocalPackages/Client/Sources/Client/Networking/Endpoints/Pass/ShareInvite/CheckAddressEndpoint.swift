@@ -41,6 +41,7 @@ struct CheckAddressEndpoint: Endpoint {
 }
 
 struct CheckAddressRequest: Sendable, Encodable {
+    // periphery:ignore
     let emails: [String]
 
     enum CodingKeys: String, CodingKey {

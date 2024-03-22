@@ -82,7 +82,7 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func trashItems(_ items: [any ItemIdentifiable]) async throws
 
-    func deleteAlias(email: String) async throws
+//    func deleteAlias(email: String) async throws
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
@@ -337,14 +337,14 @@ public extension ItemRepository {
         logger.info("Trashed \(items.count) items")
     }
 
-    func deleteAlias(email: String) async throws {
-        logger.trace("Deleting alias item \(email)")
-        guard let item = try await localDatasource.getAliasItem(email: email) else {
-            logger.trace("Failed to delete alias item. No alias item found for \(email)")
-            return
-        }
-        try await deleteItems([item], skipTrash: true)
-    }
+//    func deleteAlias(email: String) async throws {
+//        logger.trace("Deleting alias item \(email)")
+//        guard let item = try await localDatasource.getAliasItem(email: email) else {
+//            logger.trace("Failed to delete alias item. No alias item found for \(email)")
+//            return
+//        }
+//        try await deleteItems([item], skipTrash: true)
+//    }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let count = items.count

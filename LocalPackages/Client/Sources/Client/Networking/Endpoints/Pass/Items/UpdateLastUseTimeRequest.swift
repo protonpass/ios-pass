@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 struct UpdateLastUseTimeRequest: Encodable, Sendable {
+    // periphery:ignore
     let lastUseTime: Int
 
     enum CodingKeys: String, CodingKey {

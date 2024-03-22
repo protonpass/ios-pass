@@ -37,7 +37,9 @@ public struct DecryptedShareKey: Hashable, Sendable {
 }
 
 public struct DecryptedItemKey: Hashable, Sendable {
+    // periphery:ignore
     public let shareId: String
+    // periphery:ignore
     public let itemId: String
     public let keyRotation: Int64
     public let keyData: Data
