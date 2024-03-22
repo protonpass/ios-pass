@@ -89,14 +89,22 @@ private extension AppDelegate {
 
     func configureTipKit() {
         guard #available(iOS 17, *) else { return }
-        if Bundle.main.isQaBuild, userDefaults.bool(forKey: Constants.QA.showAllTips) {
-            Tips.showAllTipsForTesting()
-        }
         do {
+            if !userDefaults.bool(forKey: Constants.QA.enableTips) {
+                Tips.hideAllTipsForTesting()
+            }
+
+            if userDefaults.bool(forKey: Constants.QA.forceShowTips) {
+                Tips.showAllTipsForTesting()
+            }
+
+            if userDefaults.bool(forKey: Constants.QA.resetTipsStateOnLaunch) {
+                try Tips.resetDatastore()
+            }
+
             try Tips.configure([
                 .datastoreLocation(.groupContainer(identifier: Constants.appGroup)),
-                // The system shows no more than one tip per day.
-                .displayFrequency(.daily)
+                .displayFrequency(Bundle.main.isQaBuild ? .immediate : .daily)
             ])
         } catch {
             logger.error(error)
