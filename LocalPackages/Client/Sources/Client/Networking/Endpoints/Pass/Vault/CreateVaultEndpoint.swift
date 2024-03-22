@@ -25,16 +25,16 @@ public struct CreateVaultResponse: Decodable, Sendable {
     let share: Share
 }
 
-public struct CreateVaultEndpoint: Endpoint {
-    public typealias Body = CreateVaultRequest
-    public typealias Response = CreateVaultResponse
+struct CreateVaultEndpoint: Endpoint {
+    typealias Body = CreateVaultRequest
+    typealias Response = CreateVaultResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: CreateVaultRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: CreateVaultRequest?
 
-    public init(request: CreateVaultRequest) {
+    init(request: CreateVaultRequest) {
         debugDescription = "Create vault"
         path = "/pass/v1/vault"
         method = .post

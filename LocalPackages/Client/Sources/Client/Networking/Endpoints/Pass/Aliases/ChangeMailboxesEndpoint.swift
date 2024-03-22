@@ -21,18 +21,18 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct ChangeMailboxesEndpoint: Endpoint {
-    public typealias Body = ChangeMailboxesRequest
-    public typealias Response = GetAliasDetailsResponse
+struct ChangeMailboxesEndpoint: Endpoint {
+    typealias Body = ChangeMailboxesRequest
+    typealias Response = GetAliasDetailsResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: ChangeMailboxesRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: ChangeMailboxesRequest?
 
-    public init(shareId: String,
-                itemId: String,
-                mailboxIDs: [Int]) {
+    init(shareId: String,
+         itemId: String,
+         mailboxIDs: [Int]) {
         debugDescription = "Change alias target mailboxes"
         path = "/pass/v1/share/\(shareId)/alias/\(itemId)/mailbox"
         method = .post

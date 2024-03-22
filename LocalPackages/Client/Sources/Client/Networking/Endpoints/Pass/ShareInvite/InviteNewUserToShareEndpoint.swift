@@ -24,16 +24,16 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct InviteNewUserToShareEndpoint: Endpoint {
-    public typealias Body = InviteNewUserToShareRequest
-    public typealias Response = CodeOnlyResponse
+struct InviteNewUserToShareEndpoint: Endpoint {
+    typealias Body = InviteNewUserToShareRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: InviteNewUserToShareRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: InviteNewUserToShareRequest?
 
-    public init(shareId: String, request: InviteNewUserToShareRequest) {
+    init(shareId: String, request: InviteNewUserToShareRequest) {
         debugDescription = "Invite non Proton user to share"
         path = "/pass/v1/share/\(shareId)/invite/new_user"
         method = .post

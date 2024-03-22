@@ -20,12 +20,12 @@
 
 import Foundation
 
-public struct FeedbackRequest: Sendable {
-    public let feedbackType: String
-    public let feedback: String
-    public let score: Int
+struct FeedbackRequest: Sendable {
+    let feedbackType: String
+    let feedback: String
+    let score: Int
 
-    public init(with feedbackType: String, and feedback: String, score: Int = 0) {
+    init(with feedbackType: String, and feedback: String, score: Int = 0) {
         self.feedbackType = feedbackType
         self.feedback = feedback
         self.score = score

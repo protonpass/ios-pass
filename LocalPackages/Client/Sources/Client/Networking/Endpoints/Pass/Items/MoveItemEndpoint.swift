@@ -26,16 +26,16 @@ public struct MoveItemResponse: Decodable, Sendable {
     let item: Item
 }
 
-public struct MoveItemEndpoint: Endpoint {
-    public typealias Body = MoveItemRequest
-    public typealias Response = MoveItemResponse
+struct MoveItemEndpoint: Endpoint {
+    typealias Body = MoveItemRequest
+    typealias Response = MoveItemResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: MoveItemRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: MoveItemRequest?
 
-    public init(request: MoveItemRequest, itemId: String, fromShareId: String) {
+    init(request: MoveItemRequest, itemId: String, fromShareId: String) {
         debugDescription = "Move item"
         path = "/pass/v1/share/\(fromShareId)/item/\(itemId)/share"
         method = .put

@@ -21,15 +21,15 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct SendInviteReminderToUserEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct SendInviteReminderToUserEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(shareId: String, inviteId: String) {
+    init(shareId: String, inviteId: String) {
         debugDescription = "Send invite reminder"
         path = "/pass/v1/share/\(shareId)/invite/\(inviteId)/reminder"
         method = .post
