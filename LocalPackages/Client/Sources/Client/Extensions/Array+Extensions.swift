@@ -22,7 +22,7 @@ import Entities
 
 public struct WritableOldestVaults {
     public let owned: Vault?
-    public let other: Vault?
+    let other: Vault?
 
     static var empty: WritableOldestVaults {
         WritableOldestVaults(owned: nil, other: nil)

@@ -31,10 +31,4 @@ struct ForkSessionRequest: Sendable, Encodable {
         case childClientId = "ChildClientID"
         case independent = "Independent"
     }
-
-    init(payload: String?, childClientId: String, independent: Int) {
-        self.payload = payload
-        self.childClientId = childClientId
-        self.independent = independent
-    }
 }
