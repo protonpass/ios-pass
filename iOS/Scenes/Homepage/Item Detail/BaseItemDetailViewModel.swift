@@ -125,9 +125,7 @@ class BaseItemDetailViewModel: ObservableObject {
     ///    - text: The text to be copied to clipboard.
     ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
-        if #available(iOS 17, *) {
-            Task { await ItemForceTouchTip.didTapToCopy.donate() }
-        }
+        donateToItemForceTouchTip()
         router.action(.copyToClipboard(text: text, message: message))
     }
 
@@ -136,9 +134,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func edit() {
-        if #available(iOS 17, *) {
-            Task { await ItemForceTouchTip.didEdit.donate() }
-        }
+        donateToItemForceTouchTip()
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 
@@ -195,9 +191,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 }
                 router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
-                if #available(iOS 17, *) {
-                    await ItemForceTouchTip.didTogglePin.donate()
-                }
+                await donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -229,9 +223,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 try await itemRepository.trashItems([encryptedItem])
                 delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 logger.info("Trashed \(item.debugDescription)")
-                if #available(iOS 17, *) {
-                    await ItemForceTouchTip.didTrash.donate()
-                }
+                await donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -252,6 +244,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .successMessage(item.type.restoreMessage,
                                                         config: .dismissAndRefresh(with: .update(item.type))))
                 logger.info("Restored \(item.debugDescription)")
+                await donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -272,6 +265,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .successMessage(item.type.deleteMessage,
                                                         config: .dismissAndRefresh(with: .delete(item.type))))
                 logger.info("Permanently deleted \(item.debugDescription)")
+                await donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -317,6 +311,18 @@ private extension BaseItemDetailViewModel {
                 throw PassError.itemNotFound(item)
             }
             return item
+        }
+    }
+
+    func donateToItemForceTouchTip() async {
+        guard #available(iOS 17, *) else { return }
+        await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
+    }
+
+    func donateToItemForceTouchTip() {
+        Task { [weak self] in
+            guard let self else { return }
+            donateToItemForceTouchTip()
         }
     }
 }

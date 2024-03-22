@@ -25,25 +25,12 @@ import TipKit
 public struct ItemForceTouchTip: Tip {
     public var id: String { PassTip.itemForceTouch.id }
 
-    // As this tip is shown on top of the item list which could have an above banner section
-    // we show this tip only when no other banners are displayed to make room for items
-    @Parameter
-    // swiftlint:disable:next redundant_type_annotation
-    public static var allBannersDismissed: Bool = false
-
-    // Tap to copy items' detail like username or password
-    public static let didTapToCopy = Event(id: "didTapToCopy")
-    public static let didEdit = Event(id: "didEdit")
-    public static let didTogglePin = Event(id: "didTogglePin")
-    public static let didTrash = Event(id: "didTrash")
+    /// Any actions that is accessible via context menu like copy username/password, pin/unpin or trash, etc...
+    public static let didPerformEligibleQuickAction = Event(id: "didPerformEligibleQuickAction")
 
     public var rules: [Rule] {
         [
-            #Rule(Self.$allBannersDismissed) { $0 == true },
-            #Rule(Self.didTapToCopy) { $0.donations.count >= 10 },
-            #Rule(Self.didEdit) { $0.donations.count >= 10 },
-            #Rule(Self.didTogglePin) { $0.donations.count >= 10 },
-            #Rule(Self.didTrash) { $0.donations.count >= 10 }
+            #Rule(Self.didPerformEligibleQuickAction) { $0.donations.count >= 10 }
         ]
     }
 
