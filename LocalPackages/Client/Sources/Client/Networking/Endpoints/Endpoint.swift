@@ -46,7 +46,7 @@ protocol Endpoint: Request, Sendable {
 
 extension Endpoint {
     public var isAuth: Bool { true }
-    var autoRetry: Bool { true }
+//    var autoRetry: Bool { true }
     var method: HTTPMethod { .get }
     var body: Body? { nil }
     public var nonDefaultTimeout: TimeInterval? { nil }

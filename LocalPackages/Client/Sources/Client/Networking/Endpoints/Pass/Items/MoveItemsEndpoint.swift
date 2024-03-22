@@ -18,22 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
 import Core
 import CryptoKit
 import Entities
 import Foundation
-
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct MoveItemsResponse: Decodable, Sendable {
+struct MoveItemsResponse: Decodable, Sendable {
     let items: [Item]
 }
 
 public struct MoveItemsRequest: Encodable, Sendable {
     /// Encrypted ID of the destination share
-    public let shareId: String
-    public let items: [ItemToBeMovedContainer]
+    let shareId: String
+    let items: [ItemToBeMovedContainer]
 
     enum CodingKeys: String, CodingKey {
         case shareId = "ShareID"
@@ -78,8 +78,8 @@ extension MoveItemsRequest {
 }
 
 public struct ItemToBeMovedContainer: Codable, Sendable {
-    public let itemId: String
-    public let item: ItemToBeMoved
+    let itemId: String
+    let item: ItemToBeMoved
 
     enum CodingKeys: String, CodingKey {
         case itemId = "ItemID"

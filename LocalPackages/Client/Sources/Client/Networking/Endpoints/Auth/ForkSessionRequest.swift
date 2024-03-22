@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+// periphery:ignore:all
 import Foundation
 
 struct ForkSessionRequest: Sendable, Encodable {

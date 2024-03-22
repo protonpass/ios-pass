@@ -34,12 +34,6 @@ public struct LogFormatStyle: Sendable {
 
     /// Same as `subsystemColors` but for `category` strings.
     let categoryColors: [String: HexColor]
-
-    public init(subsystemColors: [String: HexColor],
-                categoryColors: [String: HexColor]) {
-        self.subsystemColors = subsystemColors
-        self.categoryColors = categoryColors
-    }
 }
 
 public struct LogFormatOptions: OptionSet, Sendable {
@@ -67,8 +61,8 @@ public struct LogFormatOptions: OptionSet, Sendable {
         .fileFunctionLineColumn
     ]
 
-    /// Only include `subsystem` & `category`
-    public static let standard: LogFormatOptions = [.subsystem, .category]
+//    /// Only include `subsystem` & `category`
+//    public static let standard: LogFormatOptions = [.subsystem, .category]
 }
 
 public let kDefaultLogDateFormatter: DateFormatter = {

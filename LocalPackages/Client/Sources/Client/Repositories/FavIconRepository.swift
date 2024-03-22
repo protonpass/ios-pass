@@ -27,6 +27,7 @@ import ProtonCoreServices
 public struct FavIcon: Hashable, Sendable {
     public let domain: String
     public let data: Data
+    // periphery:ignore
     public let isFromCache: Bool
 }
 
@@ -42,9 +43,9 @@ public protocol FavIconRepositoryProtocol: Sendable {
     /// Check if the icon is cached on disk and decryptable. Otherwise go fetch a new icon.
     func getIcon(for domain: String) async throws -> FavIcon?
 
-    /// Always return `nil` if fav icons are disabled in `Preferences`
-    /// Only get icon from disk. Do not go fetch if icon is not cached.
-    func getCachedIcon(for domain: String) async -> FavIcon?
+//    /// Always return `nil` if fav icons are disabled in `Preferences`
+//    /// Only get icon from disk. Do not go fetch if icon is not cached.
+//    func getCachedIcon(for domain: String) async -> FavIcon?
 
     /// For debugging purposes only
     func getAllCachedIcons() async throws -> [FavIcon]
@@ -103,19 +104,19 @@ public extension FavIconRepository {
         return try await task.value
     }
 
-    func getCachedIcon(for domain: String) -> FavIcon? {
-        guard settings.shouldDisplayFavIcons else { return nil }
-        let domain = URL(string: domain)?.host ?? domain
-        let hashedDomain = domain.sha256
-        let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
-                                                          conformingTo: .data)
-        if let data = try? getDataOrRemoveIfObsolete(url: dataUrl) {
-            return try? FavIcon(domain: domain,
-                                data: getSymmetricKey().decrypt(data),
-                                isFromCache: true)
-        }
-        return nil
-    }
+//    func getCachedIcon(for domain: String) -> FavIcon? {
+//        guard settings.shouldDisplayFavIcons else { return nil }
+//        let domain = URL(string: domain)?.host ?? domain
+//        let hashedDomain = domain.sha256
+//        let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
+//                                                          conformingTo: .data)
+//        if let data = try? getDataOrRemoveIfObsolete(url: dataUrl) {
+//            return try? FavIcon(domain: domain,
+//                                data: getSymmetricKey().decrypt(data),
+//                                isFromCache: true)
+//        }
+//        return nil
+//    }
 
     func getAllCachedIcons() async throws -> [FavIcon] {
         let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,

@@ -40,7 +40,7 @@ struct PromoteNewUserInviteEndpoint: Endpoint {
     }
 }
 
-public struct PromoteNewUserInviteRequest: Encodable, Sendable {
+struct PromoteNewUserInviteRequest: Encodable, Sendable {
     // periphery:ignore
     let keys: [ItemKey]
 

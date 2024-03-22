@@ -29,6 +29,7 @@ public protocol MapLoginItemUseCase: Sendable {
 }
 
 public extension MapLoginItemUseCase {
+    // periphery:ignore
     func callAsFunction(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity] {
         try execute(for: item)
     }

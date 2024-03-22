@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 struct ChangeMailboxesRequest: Encodable, Sendable {
+    // periphery:ignore
     let mailboxIDs: [Int]
 
     enum CodingKeys: String, CodingKey {

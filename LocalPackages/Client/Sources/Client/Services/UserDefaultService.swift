@@ -24,7 +24,7 @@ import Foundation
 public protocol UserDefaultPersistency: Sendable {
     func set<T>(value: T, forKey key: UserDefaultsKey, and id: String) throws
     func value<T>(forKey key: UserDefaultsKey, and id: String) -> T?
-    func remove(forKey key: UserDefaultsKey, and id: String)
+//    func remove(forKey key: UserDefaultsKey, and id: String)
 }
 
 public enum UserDefaultsKey: String, Sendable {
@@ -49,9 +49,9 @@ public final class UserDefaultService: @unchecked Sendable, UserDefaultPersisten
         defaults.object(forKey: id.userSpecificKey(with: key)) as? T
     }
 
-    public func remove(forKey key: UserDefaultsKey, and id: String) {
-        defaults.removeObject(forKey: id.userSpecificKey(with: key))
-    }
+//    public func remove(forKey key: UserDefaultsKey, and id: String) {
+//        defaults.removeObject(forKey: id.userSpecificKey(with: key))
+//    }
 }
 
 private extension UserDefaultService {

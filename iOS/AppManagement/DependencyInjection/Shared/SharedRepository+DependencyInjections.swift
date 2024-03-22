@@ -324,7 +324,7 @@ extension SharedRepositoryContainer {
     }
 
     var networkRepository: Factory<NetworkRepositoryProtocol> {
-        self { NetworkRepository(apiService: self.apiService, logManager: self.logManager) }
+        self { NetworkRepository(apiService: self.apiService) }
     }
 }
 

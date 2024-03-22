@@ -20,6 +20,7 @@
 
 import Entities
 
+// periphery:ignore
 public struct WritableOldestVaults {
     public let owned: Vault?
     let other: Vault?

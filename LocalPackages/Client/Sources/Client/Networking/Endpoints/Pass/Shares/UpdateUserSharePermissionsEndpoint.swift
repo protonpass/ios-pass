@@ -42,8 +42,10 @@ struct UpdateUserSharePermissionsEndpoint: Endpoint {
 }
 
 public struct UserSharePermissionRequest: Encodable, Sendable {
-    public let shareRoleID: String?
-    public let expireTime: Int?
+    // periphery:ignore
+    let shareRoleID: String?
+    // periphery:ignore
+    let expireTime: Int?
 
     enum CodingKeys: String, CodingKey {
         case shareRoleID = "ShareRoleID"

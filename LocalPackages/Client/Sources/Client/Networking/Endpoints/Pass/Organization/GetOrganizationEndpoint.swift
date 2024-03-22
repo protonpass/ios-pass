@@ -24,7 +24,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 struct GetOrganizationResponse: Sendable, Decodable {
-    public let organization: Organization?
+    let organization: Organization?
 }
 
 struct GetOrganizationEndpoint: Endpoint {

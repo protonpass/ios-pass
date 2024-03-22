@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import Foundation
 @preconcurrency import ProtonCoreServices
 
@@ -29,12 +28,9 @@ public protocol NetworkRepositoryProtocol: Sendable {
 
 public actor NetworkRepository: NetworkRepositoryProtocol {
     private let apiService: any APIService
-    private let logger: Logger
 
-    public init(apiService: any APIService,
-                logManager: any LogManagerProtocol) {
+    public init(apiService: any APIService) {
         self.apiService = apiService
-        logger = .init(manager: logManager)
     }
 }
 
