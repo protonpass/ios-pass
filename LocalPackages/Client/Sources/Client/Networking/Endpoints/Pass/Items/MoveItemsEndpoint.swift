@@ -87,16 +87,16 @@ public struct ItemToBeMovedContainer: Codable, Sendable {
     }
 }
 
-public struct MoveItemsEndpoint: Endpoint {
-    public typealias Body = MoveItemsRequest
-    public typealias Response = MoveItemsResponse
+struct MoveItemsEndpoint: Endpoint {
+    typealias Body = MoveItemsRequest
+    typealias Response = MoveItemsResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: MoveItemsRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: MoveItemsRequest?
 
-    public init(request: MoveItemsRequest, fromShareId: String) {
+    init(request: MoveItemsRequest, fromShareId: String) {
         debugDescription = "Move items"
         path = "/pass/v1/share/\(fromShareId)/item/share"
         method = .put

@@ -874,10 +874,7 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 showLoadingHud()
-                let request = ForkSessionRequest(payload: nil,
-                                                 childClientId: "pass-ios",
-                                                 independent: 1)
-                let selector = try await forkSession(request)
+                let selector = try await forkSession(payload: nil, childClientId: "pass-ios", independent: 1)
                 hideLoadingHud()
                 let url = try makeImportExportUrl(selector: selector)
                 presentImportExportView(url: url)

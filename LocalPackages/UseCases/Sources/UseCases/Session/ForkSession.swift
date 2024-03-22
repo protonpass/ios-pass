@@ -21,29 +21,27 @@
 
 import Client
 import Foundation
-@preconcurrency import ProtonCoreServices
 
 /// Fork the session and return the `selector`
 public protocol ForkSessionUseCase: Sendable {
-    func execute(_ request: ForkSessionRequest) async throws -> String
+    func execute(payload: String?, childClientId: String, independent: Int) async throws -> String
 }
 
 public extension ForkSessionUseCase {
-    func callAsFunction(_ request: ForkSessionRequest) async throws -> String {
-        try await execute(request)
+    func callAsFunction(payload: String?, childClientId: String, independent: Int) async throws -> String {
+        try await execute(payload: payload, childClientId: childClientId, independent: independent)
     }
 }
 
 public final class ForkSession: ForkSessionUseCase {
-    private let apiService: any APIService
+    private let networkRepository: any NetworkRepositoryProtocol
 
-    public init(apiService: any APIService) {
-        self.apiService = apiService
+    public init(networkRepository: any NetworkRepositoryProtocol) {
+        self.networkRepository = networkRepository
     }
 
-    public func execute(_ request: ForkSessionRequest) async throws -> String {
-        let endpoint = ForkSessionEndpoint(request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.selector
+    public func execute(payload: String?, childClientId: String, independent: Int) async throws -> String {
+        try await networkRepository.forkSession(payload: payload, childClientId: childClientId,
+                                                independent: independent)
     }
 }

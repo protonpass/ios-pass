@@ -22,16 +22,16 @@
 import Foundation
 import ProtonCoreNetworking
 
-public struct RevokeTokenEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct RevokeTokenEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var nonDefaultTimeout: TimeInterval?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var nonDefaultTimeout: TimeInterval?
 
-    public init() {
+    init() {
         debugDescription = "Revoke a token when logging out"
         path = "/core/v4/auth"
         method = .delete

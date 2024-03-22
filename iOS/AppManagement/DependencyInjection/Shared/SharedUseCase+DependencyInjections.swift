@@ -218,7 +218,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var revokeCurrentSession: Factory<RevokeCurrentSessionUseCase> {
-        self { RevokeCurrentSession(apiService: SharedToolingContainer.shared.apiManager().apiService) }
+        self { RevokeCurrentSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
     }
 
     var deleteLocalDataBeforeFullSync: Factory<DeleteLocalDataBeforeFullSyncUseCase> {
@@ -279,7 +279,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var forkSession: Factory<ForkSessionUseCase> {
-        self { ForkSession(apiService: self.apiManager.apiService) }
+        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
     }
 }
 

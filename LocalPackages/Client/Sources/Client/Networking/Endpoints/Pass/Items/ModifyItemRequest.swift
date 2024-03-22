@@ -20,35 +20,35 @@
 
 import Entities
 
-public struct ModifyItemRequest: Encodable, Sendable {
+struct ModifyItemRequest: Encodable, Sendable {
     /// Pairs of item IDs with their latest revision
-    public let items: [ItemToBeModified]
+    let items: [ItemToBeModified]
 
     /// Skip checking that the items are in the trash. Allows to delete directly
-    public let skipTrash: Bool
+    let skipTrash: Bool
 
     enum CodingKeys: String, CodingKey {
         case items = "Items"
         case skipTrash = "SkipTrash"
     }
 
-    public init(items: [ItemToBeModified], skipTrash: Bool) {
+    init(items: [ItemToBeModified], skipTrash: Bool) {
         self.items = items
         self.skipTrash = skipTrash
     }
 
-    public init(items: [Item], skipTrash: Bool) {
+    init(items: [Item], skipTrash: Bool) {
         self.items = items.map { .init(itemID: $0.itemID, revision: $0.revision) }
         self.skipTrash = skipTrash
     }
 }
 
-public struct ModifyItemResponse: Decodable, Sendable {
+struct ModifyItemResponse: Decodable, Sendable {
     let items: [ModifiedItem]
 }
 
 /// To be deleted/trashed/untrashed
-public struct ItemToBeModified: Encodable, Sendable {
+struct ItemToBeModified: Encodable, Sendable {
     public let itemID: String
     public let revision: Int64
 

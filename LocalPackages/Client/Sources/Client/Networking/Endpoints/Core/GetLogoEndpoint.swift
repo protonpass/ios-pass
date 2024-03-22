@@ -19,23 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-
 import ProtonCoreNetworking
 import ProtonCoreServices
 
 // Dummy empty response
-public struct GetLogoResponse: Decodable, Sendable {}
+struct GetLogoResponse: Decodable, Sendable {}
 
-public struct GetLogoEndpoint: Endpoint, @unchecked Sendable {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetLogoResponse
+struct GetLogoEndpoint: Endpoint, @unchecked Sendable {
+    typealias Body = EmptyRequest
+    typealias Response = GetLogoResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var parameters: [String: Any]?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var parameters: [String: Any]?
 
-    public init(domain: String, size: Int = 32, mode: String = "dark", format: String = "png") {
+    init(domain: String, size: Int = 32, mode: String = "dark", format: String = "png") {
         debugDescription = "Get fav icon of a domain"
         path = "/core/v4/images/logo"
         method = .get

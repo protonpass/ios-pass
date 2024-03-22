@@ -158,7 +158,7 @@ struct HiddenCustomFieldSection: View {
 
 @MainActor
 final class TotpCustomFieldSectionViewModel: ObservableObject {
-    @Published public private(set) var state = TOTPState.empty
+    @Published private(set) var state = TOTPState.empty
 
     private let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable = Set<AnyCancellable>()

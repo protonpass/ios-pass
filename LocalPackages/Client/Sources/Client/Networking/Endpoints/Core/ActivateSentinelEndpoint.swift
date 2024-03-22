@@ -22,15 +22,15 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct ActivateSentinelEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct ActivateSentinelEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init() {
+    init() {
         debugDescription = "Activate Sentinel"
         path = "/core/v4/settings/highsecurity"
         method = .post

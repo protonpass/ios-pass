@@ -20,16 +20,16 @@
 
 import SwiftUI
 
-public struct ObsoleteItemAlertModifier: ViewModifier {
+struct ObsoleteItemAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let onAction: () -> Void
 
-    public init(isPresented: Binding<Bool>, onAction: @escaping () -> Void) {
+    init(isPresented: Binding<Bool>, onAction: @escaping () -> Void) {
         _isPresented = isPresented
         self.onAction = onAction
     }
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .alert("This item is obsolete",
                    isPresented: $isPresented,
