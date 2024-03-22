@@ -23,6 +23,30 @@ import TipKit
 
 @available(iOS 17, *)
 struct ItemForceTouchTip: Tip {
+    var id: String { PassTip.itemForceTouch.id }
+
+    // As this tip is shown on top of the item list which could have an above banner section
+    // we show this tip only when no other banners are displayed to make room for items
+    @Parameter
+    // swiftlint:disable:next redundant_type_annotation
+    static var allBannersDismissed: Bool = false
+
+    // Tap to copy items' detail like username or password
+    static let didTapToCopy = Event(id: "didTapToCopy")
+    static let didEdit = Event(id: "didEdit")
+    static let didTogglePin = Event(id: "didTogglePin")
+    static let didTrash = Event(id: "didTrash")
+
+    var rules: [Rule] {
+        [
+            #Rule(Self.$allBannersDismissed) { $0 == true },
+            #Rule(Self.didTapToCopy) { $0.donations.count >= 10 },
+            #Rule(Self.didEdit) { $0.donations.count >= 10 },
+            #Rule(Self.didTogglePin) { $0.donations.count >= 10 },
+            #Rule(Self.didTrash) { $0.donations.count >= 10 }
+        ]
+    }
+
     var title: Text {
         Text(verbatim: "Quick actions on items")
             .foregroundStyle(PassColor.textNorm.toColor)
