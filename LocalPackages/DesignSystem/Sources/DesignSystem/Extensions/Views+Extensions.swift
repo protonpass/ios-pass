@@ -34,19 +34,19 @@ public extension View {
 // MARK: - ViewBuilders
 
 public extension View {
-    @ViewBuilder
-    func errorAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
-        if let unwrappedError = error.wrappedValue {
-            alert(unwrappedError.localizedDescription,
-                  isPresented: .constant(true)) {
-                Button(buttonTitle) {
-                    error.wrappedValue = nil
-                }
-            }
-        } else {
-            self
-        }
-    }
+//    @ViewBuilder
+//    func errorAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
+//        if let unwrappedError = error.wrappedValue {
+//            alert(unwrappedError.localizedDescription,
+//                  isPresented: .constant(true)) {
+//                Button(buttonTitle) {
+//                    error.wrappedValue = nil
+//                }
+//            }
+//        } else {
+//            self
+//        }
+//    }
 
     @ViewBuilder
     func navigationStackEmbeded(_ path: Binding<NavigationPath>? = nil) -> some View {

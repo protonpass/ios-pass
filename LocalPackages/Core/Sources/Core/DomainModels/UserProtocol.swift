@@ -20,13 +20,13 @@
 
 import ProtonCoreDataModel
 
-public protocol UserProtocol {
-    var email: String? { get }
-    var finalDisplayName: String { get }
-    var initials: String { get }
-}
+// protocol UserProtocol {
+//    var email: String? { get }
+////    var finalDisplayName: String { get }
+////    var initials: String { get }
+// }
 
-extension User: UserProtocol {
-    public var finalDisplayName: String { displayName ?? name ?? "" }
-    public var initials: String { finalDisplayName.initials() }
-}
+// public extension User {
+//    var finalDisplayName: String { displayName ?? name ?? "" }
+//    var initials: String { finalDisplayName.initials() }
+// }

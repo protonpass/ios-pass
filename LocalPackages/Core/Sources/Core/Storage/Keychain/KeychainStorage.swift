@@ -66,6 +66,7 @@ public struct KeychainStorage<Value: Codable> {
         set { fatalError("Not applicable") } // swiftlint:disable:this unused_setter_value
     }
 
+    // periphery:ignore
     /// The wrapped value used by the subscript. The name doesn't have to be `stored`.
     /// We cannot use the name `wrappedValue` because that would imply the `wrappedValue` mechanism instead of
     /// subcript one
@@ -105,6 +106,7 @@ public struct KeychainStorage<Value: Codable> {
         }
     }
 
+    // periphery:ignore
     public static subscript<T>(_enclosingInstance instance: T,
                                wrapped wrappedKeyPath: ReferenceWritableKeyPath<T,
                                    Value>,

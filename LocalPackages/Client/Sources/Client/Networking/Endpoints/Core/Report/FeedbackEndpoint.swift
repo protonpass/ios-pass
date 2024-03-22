@@ -21,19 +21,19 @@
 import Foundation
 import ProtonCoreNetworking
 
-struct FeedbackEndpoint: Endpoint {
-    typealias Body = FeedbackRequest
-    typealias Response = CodeOnlyResponse
-
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-    var body: FeedbackRequest?
-
-    init(request: FeedbackRequest) {
-        debugDescription = "User Feedback"
-        path = "/core/v4/feedback"
-        method = .post
-        body = request
-    }
-}
+// struct FeedbackEndpoint: Endpoint {
+//    typealias Body = FeedbackRequest
+//    typealias Response = CodeOnlyResponse
+//
+//    var debugDescription: String
+//    var path: String
+//    var method: HTTPMethod
+//    var body: FeedbackRequest?
+//
+//    init(request: FeedbackRequest) {
+//        debugDescription = "User Feedback"
+//        path = "/core/v4/feedback"
+//        method = .post
+//        body = request
+//    }
+// }
