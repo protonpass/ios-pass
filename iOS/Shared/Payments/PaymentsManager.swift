@@ -34,6 +34,7 @@ final class PaymentsManager {
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let payments: Payments
+    // periphery:ignore
     private var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)

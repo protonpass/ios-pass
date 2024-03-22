@@ -43,7 +43,9 @@ final class AppCoordinator {
     private let appStateObserver: AppStateObserver
     private var isUITest: Bool
 
+    // periphery:ignore
     private var homepageCoordinator: HomepageCoordinator?
+    // periphery:ignore
     private var welcomeCoordinator: WelcomeCoordinator?
 
     private var rootViewController: UIViewController? { window.rootViewController }

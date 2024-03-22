@@ -20,7 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Core
 import ProtonCoreFeatureFlags
 
 // sourcery: AutoMockable
@@ -41,12 +40,9 @@ public extension GetFeatureFlagStatusUseCase {
 
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
-    private let logger: Logger
 
-    public init(repository: any FeatureFlagsRepositoryProtocol,
-                logManager: any LogManagerProtocol) {
+    public init(repository: any FeatureFlagsRepositoryProtocol) {
         featureFlagsRepository = repository
-        logger = .init(manager: logManager)
     }
 
     public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {

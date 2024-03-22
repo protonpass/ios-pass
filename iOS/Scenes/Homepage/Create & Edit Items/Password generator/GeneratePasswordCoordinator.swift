@@ -48,6 +48,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
     private let mode: GeneratePasswordViewMode
     weak var delegate: GeneratePasswordCoordinatorDelegate?
 
+    // periphery:ignore
     private var generatePasswordViewModel: GeneratePasswordViewModel?
     private var sheetPresentationController: UISheetPresentationController?
 

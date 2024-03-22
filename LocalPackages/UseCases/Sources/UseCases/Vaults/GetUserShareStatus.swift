@@ -40,11 +40,9 @@ public enum UserShareStatus {
 }
 
 public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUseCase {
-    private let accessRepository: any AccessRepositoryProtocol
     private var plan: Plan?
 
     public init(accessRepository: any AccessRepositoryProtocol) {
-        self.accessRepository = accessRepository
         Task { [weak self] in
             guard let self else {
                 return

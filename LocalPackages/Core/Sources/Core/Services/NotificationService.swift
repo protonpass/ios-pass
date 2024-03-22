@@ -35,7 +35,7 @@ public extension LocalNotificationServiceProtocol {
     }
 }
 
-public final class NotificationService: LocalNotificationServiceProtocol, Sendable {
+public final class NotificationService: LocalNotificationServiceProtocol, @unchecked Sendable {
     private let unUserNotificationCenter: UNUserNotificationCenter
     private var currentTimers: [String: Timer] = [:]
     private let logger: Logger
