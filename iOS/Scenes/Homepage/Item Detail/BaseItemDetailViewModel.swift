@@ -191,7 +191,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 }
                 router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
-                await donateToItemForceTouchTip()
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -223,7 +223,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 try await itemRepository.trashItems([encryptedItem])
                 delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 logger.info("Trashed \(item.debugDescription)")
-                await donateToItemForceTouchTip()
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -244,7 +244,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .successMessage(item.type.restoreMessage,
                                                         config: .dismissAndRefresh(with: .update(item.type))))
                 logger.info("Restored \(item.debugDescription)")
-                await donateToItemForceTouchTip()
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -265,7 +265,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .successMessage(item.type.deleteMessage,
                                                         config: .dismissAndRefresh(with: .delete(item.type))))
                 logger.info("Permanently deleted \(item.debugDescription)")
-                await donateToItemForceTouchTip()
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -314,15 +314,10 @@ private extension BaseItemDetailViewModel {
         }
     }
 
-    func donateToItemForceTouchTip() async {
-        guard #available(iOS 17, *) else { return }
-        await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
-    }
-
     func donateToItemForceTouchTip() {
         Task { [weak self] in
-            guard let self else { return }
-            donateToItemForceTouchTip()
+            guard #available(iOS 17, *), let self else { return }
+            await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
         }
     }
 }
