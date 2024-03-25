@@ -437,7 +437,6 @@ private extension Plan {
 }
 
 struct SentinelSheetView: View {
-    // periphery:ignore
     @Binding var isPresented: Bool
     let sentinelActive: Bool
     let mainAction: () -> Void

@@ -50,24 +50,6 @@ public struct Logger: Sendable {
 // MARK: - Public APIs
 
 public extension Logger {
-//    @discardableResult
-//    func fatal(_ message: String,
-//               timestamp: TimeInterval = Date().timeIntervalSince1970,
-//               file: String = #file,
-//               function: String = #function,
-//               line: UInt = #line,
-//               column: UInt = #column) -> LogEntry {
-//        let entry = generateEntry(message: message,
-//                                  timestamp: timestamp,
-//                                  level: .fatal,
-//                                  file: file,
-//                                  function: function,
-//                                  line: line,
-//                                  column: column)
-//        log(entry: entry)
-//        return entry
-//    }
-
     @discardableResult
     func error(_ message: String,
                timestamp: TimeInterval = Date().timeIntervalSince1970,

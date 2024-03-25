@@ -42,9 +42,7 @@ struct UpdateUserSharePermissionsEndpoint: Endpoint {
 }
 
 public struct UserSharePermissionRequest: Encodable, Sendable {
-    // periphery:ignore
     let shareRoleID: String?
-    // periphery:ignore
     let expireTime: Int?
 
     enum CodingKeys: String, CodingKey {

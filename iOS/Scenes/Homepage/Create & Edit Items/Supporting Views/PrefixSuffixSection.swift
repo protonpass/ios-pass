@@ -35,7 +35,6 @@ enum PrefixUtils {
 
 struct PrefixSuffixSection<Field: Hashable>: View {
     @Binding var prefix: String
-    // periphery:ignore
     @Binding var prefixManuallyEdited: Bool
     let focusedField: FocusState<Field?>.Binding
     let field: Field

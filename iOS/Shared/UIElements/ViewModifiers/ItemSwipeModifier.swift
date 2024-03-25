@@ -24,7 +24,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemSwipeModifier: ViewModifier {
-    // periphery:ignore
     @Binding var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     let item: any ItemTypeIdentifiable
     let isEditMode: Bool
