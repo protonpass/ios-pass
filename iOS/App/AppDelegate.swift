@@ -104,6 +104,8 @@ private extension AppDelegate {
 
             try Tips.configure([
                 .datastoreLocation(.groupContainer(identifier: Constants.appGroup)),
+                // Show eligible tips right away for QA builds
+                // Only show 1 tip per day for normal builds
                 .displayFrequency(Bundle.main.isQaBuild ? .immediate : .daily)
             ])
         } catch {
