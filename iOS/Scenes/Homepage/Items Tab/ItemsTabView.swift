@@ -24,7 +24,9 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
+import TipKit
 
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
@@ -49,6 +51,8 @@ struct ItemsTabView: View {
                 } else {
                     vaultContent(vaultsManager.getFilteredItems())
                 }
+
+                itemForceTouchTip
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
@@ -338,6 +342,21 @@ private struct ItemsTabsSkeleton: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .shimmering()
+    }
+}
+
+private extension ItemsTabView {
+    @ViewBuilder
+    var itemForceTouchTip: some View {
+        if #available(iOS 17, *) {
+            VStack {
+                Spacer()
+                TipView(ItemForceTouchTip())
+                    .passTipView()
+                    .padding()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
 }
 
