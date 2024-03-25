@@ -90,24 +90,24 @@ extension TelemetrySchedulerTests {
         XCTAssertFalse(result)
     }
 
-//    func testRandomNextThresholdDate() async throws {
-//        // Given
-//        let givenThreshold = Date.now
-//        thresholdProvider.telemetryThreshold = givenThreshold.timeIntervalSince1970
-//
-//        // When
-//        await sut.randomNextThreshold()
-//        let threshhold = await sut.getThreshold()
-//        let newThreshhold = try XCTUnwrap(threshhold)
-//        let difference = Calendar.current.dateComponents([.hour],
-//                                                         from: givenThreshold,
-//                                                         to: newThreshhold)
-//
-//        // Then
-//        let differenceInHours = try XCTUnwrap(difference.hour)
-//        let min = await sut.minIntervalInHours
-//        let max = await sut.maxIntervalInHours
-//        XCTAssertTrue(differenceInHours >= min)
-//        XCTAssertTrue(differenceInHours <= max)
-//    }
+    func testRandomNextThresholdDate() async throws {
+        // Given
+        let givenThreshold = Date.now
+        thresholdProvider.telemetryThreshold = givenThreshold.timeIntervalSince1970
+
+        // When
+        await sut.randomNextThreshold()
+        let threshhold = await sut.getThreshold()
+        let newThreshhold = try XCTUnwrap(threshhold)
+        let difference = Calendar.current.dateComponents([.hour],
+                                                         from: givenThreshold,
+                                                         to: newThreshhold)
+
+        // Then
+        let differenceInHours = try XCTUnwrap(difference.hour)
+        let min = await sut.minIntervalInHours
+        let max = await sut.maxIntervalInHours
+        XCTAssertTrue(differenceInHours >= min)
+        XCTAssertTrue(differenceInHours <= max)
+    }
 }

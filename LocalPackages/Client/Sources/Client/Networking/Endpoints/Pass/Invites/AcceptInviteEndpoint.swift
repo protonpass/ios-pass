@@ -40,7 +40,6 @@ struct AcceptInviteEndpoint: Endpoint {
 }
 
 public struct AcceptInviteRequest: Sendable {
-    // periphery:ignore
     /// Invite keys encrypted and signed with the User Key
     public let keys: [ItemKey]
 

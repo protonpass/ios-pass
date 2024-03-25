@@ -152,7 +152,6 @@ extension LocalDatasource {
         }
     }
 
-    // periphery:ignore
     func count(fetchRequest request: NSFetchRequest<some Any>,
                context: NSManagedObjectContext) async throws -> Int {
         try await context.perform {

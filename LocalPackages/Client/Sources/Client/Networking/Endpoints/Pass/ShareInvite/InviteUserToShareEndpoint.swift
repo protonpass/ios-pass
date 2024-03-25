@@ -18,28 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-struct InviteUserToShareEndpoint: Endpoint {
-    typealias Body = InviteUserToShareRequest
-    typealias Response = CodeOnlyResponse
-
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-    var body: InviteUserToShareRequest?
-
-    init(shareId: String, request: InviteUserToShareRequest) {
-        debugDescription = "Invite a user to share"
-        path = "/pass/v1/share/\(shareId)/invite"
-        method = .post
-        body = request
-    }
-}
+// struct InviteUserToShareEndpoint: Endpoint {
+//    typealias Body = InviteUserToShareRequest
+//    typealias Response = CodeOnlyResponse
+//
+//    var debugDescription: String
+//    var path: String
+//    var method: HTTPMethod
+//    var body: InviteUserToShareRequest?
+//
+//    init(shareId: String, request: InviteUserToShareRequest) {
+//        debugDescription = "Invite a user to share"
+//        path = "/pass/v1/share/\(shareId)/invite"
+//        method = .post
+//        body = request
+//    }
+// }
 
 public struct InviteUserToShareRequest: Sendable {
     /// List of keys encrypted for the other user's address key and signed with your address key

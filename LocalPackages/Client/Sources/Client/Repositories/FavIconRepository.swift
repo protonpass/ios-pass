@@ -27,7 +27,6 @@ import ProtonCoreServices
 public struct FavIcon: Hashable, Sendable {
     public let domain: String
     public let data: Data
-    // periphery:ignore
     public let isFromCache: Bool
 }
 
