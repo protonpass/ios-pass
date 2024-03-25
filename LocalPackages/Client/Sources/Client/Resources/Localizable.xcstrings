@@ -94,16 +94,16 @@
             "value" : "어플리케이션 로그"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applikasjonslogger"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Applicatielogboek"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Applikasjonslogger"
           }
         },
         "pl" : {
@@ -255,16 +255,16 @@
             "value" : "자동 완성 확장 로그"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AutoFyll-utvidelselogger"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "AutoFill extensie logs"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AutoFyll-utvidelselogger"
           }
         },
         "pl" : {
@@ -416,16 +416,16 @@
             "value" : "가장 최근순"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nyeste"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meest recent"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nyeste"
           }
         },
         "pl" : {
@@ -577,16 +577,16 @@
             "value" : "최신 항목 순"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nyeste til eldste"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Van nieuw naar oud"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nyeste til eldste"
           }
         },
         "pl" : {
@@ -737,13 +737,13 @@
             "value" : "확인"
           }
         },
-        "nl" : {
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
           }
         },
-        "no" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -898,16 +898,16 @@
             "value" : "오래된 항목 순"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eldste til nyeste"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Van oud naar nieuw"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eldste til nyeste"
           }
         },
         "pl" : {
@@ -1059,16 +1059,16 @@
             "value" : "%@에서 검색..."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i %@..."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zoeken in %@..."
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk i %@..."
           }
         },
         "pl" : {
@@ -1220,16 +1220,16 @@
             "value" : "모든 금고에서 검색..."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i alle hvelv…..."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zoeken in alle kluizen..."
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk i alle hvelv…..."
           }
         },
         "pl" : {
@@ -1381,16 +1381,16 @@
             "value" : "휴지통 검색..."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i papirkurven…..."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zoeken in prullenbak..."
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk i papirkurven…..."
           }
         },
         "pl" : {
@@ -1543,16 +1543,16 @@
             "value" : "고정된 항목 내에서 검색"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i festede elementer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zoek vastgezette items"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk i festede elementer"
           }
         },
         "pl" : {
@@ -1703,16 +1703,16 @@
             "value" : "확장 로그 공유"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis utvidelseslogger"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deel extensie logs"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vis utvidelseslogger"
           }
         },
         "pl" : {
@@ -1864,16 +1864,16 @@
             "value" : "제목 (A-Z)"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tittel (A-Å)"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Titel (A-Z)"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tittel (A-Å)"
           }
         },
         "pl" : {
@@ -2025,16 +2025,16 @@
             "value" : "제목 (Z-A)"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tittel (Å-A)"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Titel (Z-A)"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tittel (Å-A)"
           }
         },
         "pl" : {
