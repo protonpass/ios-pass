@@ -23,8 +23,6 @@ import Foundation
 
 public protocol RemoteShareInviteDatasourceProtocol: Sendable {
     func getPendingInvites(sharedId: String) async throws -> ShareInvites
-//    func inviteProtonUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool
-//    func inviteExternalUser(shareId: String, request: InviteNewUserToShareRequest) async throws -> Bool
     func inviteMultipleProtonUsers(shareId: String, request: InviteMultipleUsersToShareRequest) async throws
         -> Bool
     func inviteMultipleExternalUsers(shareId: String, request: InviteMultipleNewUsersToShareRequest) async throws
@@ -49,24 +47,11 @@ public extension RemoteShareInviteDatasource {
                      newUserInvites: response.newUserInvites)
     }
 
-//
-//    func inviteProtonUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool {
-//        let endpoint = InviteUserToShareEndpoint(shareId: shareId, request: request)
-//        let response = try await exec(endpoint: endpoint)
-//        return response.isSuccessful
-//    }
-
     func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
         let endpoint = PromoteNewUserInviteEndpoint(shareId: shareId, inviteId: inviteId, keys: keys)
         let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
     }
-
-//    func inviteExternalUser(shareId: String, request: InviteNewUserToShareRequest) async throws -> Bool {
-//        let endpoint = InviteNewUserToShareEndpoint(shareId: shareId, request: request)
-//        let response = try await exec(endpoint: endpoint)
-//        return response.isSuccessful
-//    }
 
     func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool {
         let endpoint = SendInviteReminderToUserEndpoint(shareId: shareId, inviteId: inviteId)

@@ -40,7 +40,6 @@ struct InviteMultipleNewUserToShareEndpoint: Endpoint {
 }
 
 public struct InviteMultipleNewUsersToShareRequest: Sendable, Encodable {
-    // periphery:ignore
     let newUserInvites: [InviteNewUserToShareRequest]
 
     public init(newUserInvites: [InviteNewUserToShareRequest]) {

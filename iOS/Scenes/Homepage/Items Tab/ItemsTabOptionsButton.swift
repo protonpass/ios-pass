@@ -25,7 +25,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemsTabOptionsButton: View {
-    // periphery:ignore
     @Binding var isEditMode: Bool
     @StateObject private var viewModel = ItemsTabOptionsButtonViewModel()
 

@@ -18,17 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// import Core
 import CryptoKit
 import Entities
 import Macro
 import ProtonCoreCrypto
 import ProtonCoreLogin
-
-// public enum ShareContent {
-//    case vault(Vault)
-//    case item // Not handled yet
-// }
 
 @Copyable
 public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
@@ -94,43 +88,3 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
 extension Share: Identifiable {
     public var id: String { shareID }
 }
-
-// public extension Share {
-//    func getShareContent(key: DecryptedShareKey) throws -> ShareContent {
-//        guard let contentData = try content?.base64Decode() else {
-//            throw PassError.crypto(.failedToBase64Decode)
-//        }
-//
-//        guard contentData.count > 12 else {
-//            throw PassError.crypto(.corruptedShareContent(shareID: shareID))
-//        }
-//
-//        let decryptedContent = try AES.GCM.open(contentData,
-//                                                key: key.keyData,
-//                                                associatedData: .vaultContent)
-//
-//        switch shareType {
-//        case .unknown:
-//            throw PassError.unknownShareType
-//        case .vault:
-//            let vaultContent = try VaultProtobuf(data: decryptedContent)
-//            let vault = Vault(id: vaultID,
-//                              shareId: shareID,
-//                              addressId: addressID,
-//                              name: vaultContent.name,
-//                              description: vaultContent.description_p,
-//                              displayPreferences: vaultContent.display,
-//                              isOwner: owner,
-//                              shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
-//                              members: Int(targetMembers),
-//                              maxMembers: Int(targetMaxMembers),
-//                              pendingInvites: Int(pendingInvites),
-//                              newUserInvitesReady: Int(newUserInvitesReady),
-//                              shared: shared,
-//                              createTime: createTime)
-//            return .vault(vault)
-//        case .item:
-//            return .item
-//        }
-//    }
-// }

@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
-
 import Entities
 
 struct ModifyItemRequest: Encodable, Sendable {
@@ -34,10 +32,10 @@ struct ModifyItemRequest: Encodable, Sendable {
         case skipTrash = "SkipTrash"
     }
 
-    init(items: [ItemToBeModified], skipTrash: Bool) {
-        self.items = items
-        self.skipTrash = skipTrash
-    }
+//    init(items: [ItemToBeModified], skipTrash: Bool) {
+//        self.items = items
+//        self.skipTrash = skipTrash
+//    }
 
     init(items: [Item], skipTrash: Bool) {
         self.items = items.map { .init(itemID: $0.itemID, revision: $0.revision) }
@@ -51,8 +49,8 @@ struct ModifyItemResponse: Decodable, Sendable {
 
 /// To be deleted/trashed/untrashed
 struct ItemToBeModified: Encodable, Sendable {
-    public let itemID: String
-    public let revision: Int64
+    let itemID: String
+    let revision: Int64
 
     enum CodingKeys: String, CodingKey {
         case itemID = "ItemID"

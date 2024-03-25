@@ -47,7 +47,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     private weak var createEditItemDelegates: CreateEditItemDelegates?
 
     private var currentViewModel: BaseCreateEditItemViewModel?
-    // periphery:ignore
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     weak var delegate: CreateEditItemCoordinatorDelegate?

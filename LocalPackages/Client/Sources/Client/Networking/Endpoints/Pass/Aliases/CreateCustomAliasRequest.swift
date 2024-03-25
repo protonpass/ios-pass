@@ -18,14 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
-
 public struct AliasCreationInfo: Sendable {
-    public let prefix: String
-    public let suffix: Suffix
+    let prefix: String
+    let suffix: Suffix
     public let mailboxIds: [Int]
 
-    public var aliasAddress: String { prefix + suffix.suffix }
+//    var aliasAddress: String { prefix + suffix.suffix }
 
     public init(prefix: String, suffix: Suffix, mailboxIds: [Int]) {
         self.prefix = prefix

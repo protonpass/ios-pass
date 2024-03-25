@@ -59,10 +59,6 @@ public extension String {
         return String(first2Words.first?.prefix(2) ?? "").uppercased()
     }
 
-//    mutating func capitalizeFirstLetter() {
-//        self = capitalizingFirstLetter()
-//    }
-
     var spacesRemoved: String {
         replacingOccurrences(of: " ", with: "")
     }
@@ -161,12 +157,6 @@ public extension String {
 }
 
 // MARK: Computed Extensions
-
-// public extension String {
-//    var toBase8EncodedData: Data? {
-//        data(using: .utf8)
-//    }
-// }
 
 public extension Substring {
     var toString: String { String(self) }

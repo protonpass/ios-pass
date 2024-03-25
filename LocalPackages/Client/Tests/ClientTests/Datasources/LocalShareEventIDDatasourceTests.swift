@@ -74,43 +74,43 @@ extension LocalShareEventIDDatasourceTests {
         XCTAssertEqual(eventId2, givenEventId2)
     }
 
-//    func testRemoveAllEntries() async throws {
-//        // Given
-//        let userId1 = String.random()
-//        let shareId1 = String.random()
-//        try await sut.upsertLastEventId(userId: userId1,
-//                                        shareId: shareId1,
-//                                        lastEventId: .random())
-//        let shareId2 = String.random()
-//        try await sut.upsertLastEventId(userId: userId1,
-//                                        shareId: shareId2,
-//                                        lastEventId: .random())
-//
-//        let userId2 = String.random()
-//        let shareId3 = String.random()
-//        try await sut.upsertLastEventId(userId: userId2,
-//                                        shareId: shareId3,
-//                                        lastEventId: .random())
-//
-//        let shareId4 = String.random()
-//        try await sut.upsertLastEventId(userId: userId2,
-//                                        shareId: shareId4,
-//                                        lastEventId: .random())
-//
-//        // When
-//        try await sut.removeAllEntries(userId: userId1)
-//
-//        // Then
-//        let eventId1 = try await sut.getLastEventId(userId: userId1, shareId: shareId1)
-//        XCTAssertNil(eventId1)
-//
-//        let eventId2 = try await sut.getLastEventId(userId: userId1, shareId: shareId2)
-//        XCTAssertNil(eventId2)
-//
-//        let eventId3 = try await sut.getLastEventId(userId: userId2, shareId: shareId3)
-//        XCTAssertNotNil(eventId3)
-//
-//        let eventId4 = try await sut.getLastEventId(userId: userId2, shareId: shareId4)
-//        XCTAssertNotNil(eventId4)
-//    }
+    func testRemoveAllEntries() async throws {
+        // Given
+        let userId1 = String.random()
+        let shareId1 = String.random()
+        try await sut.upsertLastEventId(userId: userId1,
+                                        shareId: shareId1,
+                                        lastEventId: .random())
+        let shareId2 = String.random()
+        try await sut.upsertLastEventId(userId: userId1,
+                                        shareId: shareId2,
+                                        lastEventId: .random())
+
+        let userId2 = String.random()
+        let shareId3 = String.random()
+        try await sut.upsertLastEventId(userId: userId2,
+                                        shareId: shareId3,
+                                        lastEventId: .random())
+
+        let shareId4 = String.random()
+        try await sut.upsertLastEventId(userId: userId2,
+                                        shareId: shareId4,
+                                        lastEventId: .random())
+
+        // When
+        try await sut.removeAllEntries(userId: userId1)
+
+        // Then
+        let eventId1 = try await sut.getLastEventId(userId: userId1, shareId: shareId1)
+        XCTAssertNil(eventId1)
+
+        let eventId2 = try await sut.getLastEventId(userId: userId1, shareId: shareId2)
+        XCTAssertNil(eventId2)
+
+        let eventId3 = try await sut.getLastEventId(userId: userId2, shareId: shareId3)
+        XCTAssertNotNil(eventId3)
+
+        let eventId4 = try await sut.getLastEventId(userId: userId2, shareId: shareId4)
+        XCTAssertNotNil(eventId4)
+    }
 }

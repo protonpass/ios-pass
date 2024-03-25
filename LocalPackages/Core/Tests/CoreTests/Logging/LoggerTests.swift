@@ -43,21 +43,6 @@ final class LoggerTests: XCTestCase {
         super.tearDown()
     }
 
-//    func testGenerateFatalLogEntry() {
-//        let message = "Something fatal happened"
-//        let timestamp = Date().timeIntervalSince1970
-//        let entry = sut.fatal(message, timestamp: timestamp)
-//        XCTAssertEqual(entry.timestamp, timestamp)
-//        XCTAssertEqual(entry.subsystem, Self.subsystem)
-//        XCTAssertEqual(entry.category, Self.category)
-//        XCTAssertEqual(entry.level, .fatal)
-//        XCTAssertEqual(entry.message, message)
-//        XCTAssertEqual(entry.file, Self.fileName)
-//        XCTAssertEqual(entry.function, "testGenerateFatalLogEntry()")
-//        XCTAssertEqual(entry.line, 49)
-//        XCTAssertEqual(entry.column, 30)
-//    }
-
     func testGenerateErrorLogEntry() {
         let message = "Error occured"
         let timestamp = Date().timeIntervalSince1970
@@ -69,7 +54,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateErrorLogEntry()")
-        XCTAssertEqual(entry.line, 64)
+        XCTAssertEqual(entry.line, 49)
         XCTAssertEqual(entry.column, 30)
     }
 
@@ -84,7 +69,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateWarningLogEntry()")
-        XCTAssertEqual(entry.line, 79)
+        XCTAssertEqual(entry.line, 64)
         XCTAssertEqual(entry.column, 32)
     }
 
@@ -99,7 +84,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateInfoLogEntry()")
-        XCTAssertEqual(entry.line, 94)
+        XCTAssertEqual(entry.line, 79)
         XCTAssertEqual(entry.column, 29)
     }
 
@@ -114,7 +99,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateDebugLogEntry()")
-        XCTAssertEqual(entry.line, 109)
+        XCTAssertEqual(entry.line, 94)
         XCTAssertEqual(entry.column, 30)
     }
 
@@ -129,7 +114,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateTraceLogEntry()")
-        XCTAssertEqual(entry.line, 124)
+        XCTAssertEqual(entry.line, 109)
         XCTAssertEqual(entry.column, 30)
     }
 }
