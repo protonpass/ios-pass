@@ -79,6 +79,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case importExport
     case tutorial
     case accountSettings
+    case settingsMenu
     case createEditLogin(mode: ItemMode)
     case createItem(item: SymmetricallyEncryptedItem,
                     type: ItemContentType,
