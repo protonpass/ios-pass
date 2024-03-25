@@ -181,8 +181,8 @@
         },
         "da" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Scan 2FA-kode, betalingskort og håndskrevet note"
           }
         },
         "de" : {
@@ -193,8 +193,8 @@
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Σάρωση κωδικού 2FA, πιστωτικής κάρτας και χειρόγραφης σημείωσης"
           }
         },
         "en" : {
@@ -205,8 +205,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Escanea códigos 2FA, tarjetas de crédito y notas escritas"
           }
         },
         "es-419" : {
@@ -217,8 +217,8 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Skannaa 2FA-koodi, maksukortti tai käsin kirjoitettu muistiinpano"
           }
         },
         "fr" : {
@@ -247,8 +247,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "დაასკანერეთ 2FA კოდი, საკრედიტო ბარათი და ხელნაწერი შენიშვნა"
           }
         },
         "ko" : {
@@ -259,8 +259,8 @@
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Scan 2FA-code, kredietkaart en handgeschreven notitie"
           }
         },
         "no" : {
@@ -271,8 +271,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Zeskanuj kod uwierzytelniający, kartę płatniczą i ręcznie zapisaną notatkę"
           }
         },
         "pt-BR" : {
@@ -283,20 +283,20 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Scanați coduri de A2F, carduri de credit și note de mână"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Naskenujte 2FA kód, platobnú kartu a rukou napísanú poznámku"
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Skeniranje 2FA kode, kreditne kartice ali ročno napisane opombe"
           }
         },
         "sv" : {
@@ -343,8 +343,8 @@
         },
         "da" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Begræns uvelkommen adgang til din Proton Pass-konto på denne enhed"
           }
         },
         "de" : {
@@ -355,8 +355,8 @@
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Περιορίστε την ανεπιθύμητη πρόσβαση στον λογαριασμό σας Proton Pass σε αυτήν τη συσκευή"
           }
         },
         "en" : {
@@ -367,8 +367,8 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Limita el acceso indeseado a tu cuenta de Proton Pass en este dispositivo"
           }
         },
         "es-419" : {
@@ -379,14 +379,14 @@
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Estä ulkopuolisten pääsy Proton Pass -tiliisi tällä laitteella"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Empêcher les intrusions dans Proton Pass sur cet appareil"
+            "value" : "Empêchez les intrusions pour votre compte Proton Pass sur cet appareil."
           }
         },
         "id" : {
@@ -409,8 +409,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "შეზღუდეთ არასასურველი წვდომა თქვენს Proton Pass-ის ანგარიშთან ამ მოწყობილობაზე"
           }
         },
         "ko" : {
@@ -421,8 +421,8 @@
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Beperk ongewenste toegang tot uw Proton Pass account op dit apparaat"
           }
         },
         "no" : {
@@ -433,8 +433,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Ogranicza niepożądany dostęp do konta Proton Pass na tym urządzeniu"
           }
         },
         "pt-BR" : {
@@ -445,20 +445,20 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Restricționați accesul la contul Proton Pass pe acest dispozitiv"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Obmedzte neželaný prístup k vášmu Proton Pass účtu na tomto zariadení"
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Omejite neželen dostop do računa Proton Pass v tej napravi"
           }
         },
         "sv" : {
