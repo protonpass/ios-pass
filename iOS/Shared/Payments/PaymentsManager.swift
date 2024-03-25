@@ -34,8 +34,6 @@ final class PaymentsManager {
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let payments: Payments
-    // periphery:ignore
-    private var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let inMemoryTokenStorage: PaymentTokenStorage
@@ -89,8 +87,6 @@ final class PaymentsManager {
         guard !Bundle.main.isBetaBuild else { return }
 
         let paymentsUI = createPaymentsUI()
-        // keep reference to avoid being deallocated
-        self.paymentsUI = paymentsUI
         paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
             guard let self else { return }
             handlePaymentsResponse(result: result, completion: completion)
@@ -101,8 +97,7 @@ final class PaymentsManager {
         guard !Bundle.main.isBetaBuild else { return }
 
         let paymentsUI = createPaymentsUI()
-        // keep reference to avoid being deallocated
-        self.paymentsUI = paymentsUI
+
         paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
             guard let self else { return }
             handlePaymentsResponse(result: reason, completion: completion)

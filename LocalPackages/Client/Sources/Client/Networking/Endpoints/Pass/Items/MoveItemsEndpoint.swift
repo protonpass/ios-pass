@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// periphery:ignore:all
 import Core
 import CryptoKit
 import Entities
@@ -77,7 +76,7 @@ extension MoveItemsRequest {
     }
 }
 
-public struct ItemToBeMovedContainer: Codable, Sendable {
+struct ItemToBeMovedContainer: Codable, Sendable {
     let itemId: String
     let item: ItemToBeMoved
 

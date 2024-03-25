@@ -19,29 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// periphery:ignore:all
-
 import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-struct InviteNewUserToShareEndpoint: Endpoint {
-    typealias Body = InviteNewUserToShareRequest
-    typealias Response = CodeOnlyResponse
-
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-    var body: InviteNewUserToShareRequest?
-
-    init(shareId: String, request: InviteNewUserToShareRequest) {
-        debugDescription = "Invite non Proton user to share"
-        path = "/pass/v1/share/\(shareId)/invite/new_user"
-        method = .post
-        body = request
-    }
-}
+// struct InviteNewUserToShareEndpoint: Endpoint {
+//    typealias Body = InviteNewUserToShareRequest
+//    typealias Response = CodeOnlyResponse
+//
+//    var debugDescription: String
+//    var path: String
+//    var method: HTTPMethod
+//    var body: InviteNewUserToShareRequest?
+//
+//    init(shareId: String, request: InviteNewUserToShareRequest) {
+//        debugDescription = "Invite non Proton user to share"
+//        path = "/pass/v1/share/\(shareId)/invite/new_user"
+//        method = .post
+//        body = request
+//    }
+// }
 
 public struct InviteNewUserToShareRequest: Sendable {
     /// Email of the target user

@@ -82,41 +82,41 @@ extension LocalShareKeyDatasourceTests {
         XCTAssertEqual(Set(keys), Set(givenKeys))
     }
 
-//    func testRemoveAllKeysForGivenShares() async throws {
-//        // Given
-//        let givenFirstShareId = String.random()
-//        let givenFirstShareKeys = [SymmetricallyEncryptedShareKey]
-//            .random(randomElement: .init(encryptedKey: .random(),
-//                                         shareId: givenFirstShareId,
-//                                         shareKey: .random()))
-//
-//        let givenSecondShareId = String.random()
-//        let givenSecondShareKeys = [SymmetricallyEncryptedShareKey]
-//            .random(randomElement: .init(encryptedKey: .random(),
-//                                         shareId: givenSecondShareId,
-//                                         shareKey: .random()))
-//
-//        // When
-//        try await sut.upsertKeys(givenFirstShareKeys)
-//        try await sut.upsertKeys(givenSecondShareKeys)
-//
-//        // Then
-//        let firstShareKeysFirstGet = try await sut.getKeys(shareId: givenFirstShareId)
-//        XCTAssertEqual(Set(givenFirstShareKeys), Set(firstShareKeysFirstGet))
-//
-//        let secondShareKeysFirstGet = try await sut.getKeys(shareId: givenSecondShareId)
-//        XCTAssertEqual(Set(secondShareKeysFirstGet), Set(givenSecondShareKeys))
-//
-//        // When
-//        try await sut.removeAllKeys(shareId: givenFirstShareId)
-//
-//        // Then
-//        let firstShareKeysSecondGet = try await sut.getKeys(shareId: givenFirstShareId)
-//        XCTAssertTrue(firstShareKeysSecondGet.isEmpty)
-//
-//        let secondShareKeysSecondGet = try await sut.getKeys(shareId: givenSecondShareId)
-//        XCTAssertEqual(Set(secondShareKeysSecondGet), Set(givenSecondShareKeys))
-//    }
+    func testRemoveAllKeysForGivenShares() async throws {
+        // Given
+        let givenFirstShareId = String.random()
+        let givenFirstShareKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenFirstShareId,
+                                         shareKey: .random()))
+
+        let givenSecondShareId = String.random()
+        let givenSecondShareKeys = [SymmetricallyEncryptedShareKey]
+            .random(randomElement: .init(encryptedKey: .random(),
+                                         shareId: givenSecondShareId,
+                                         shareKey: .random()))
+
+        // When
+        try await sut.upsertKeys(givenFirstShareKeys)
+        try await sut.upsertKeys(givenSecondShareKeys)
+
+        // Then
+        let firstShareKeysFirstGet = try await sut.getKeys(shareId: givenFirstShareId)
+        XCTAssertEqual(Set(givenFirstShareKeys), Set(firstShareKeysFirstGet))
+
+        let secondShareKeysFirstGet = try await sut.getKeys(shareId: givenSecondShareId)
+        XCTAssertEqual(Set(secondShareKeysFirstGet), Set(givenSecondShareKeys))
+
+        // When
+        try await sut.removeAllKeys(shareId: givenFirstShareId)
+
+        // Then
+        let firstShareKeysSecondGet = try await sut.getKeys(shareId: givenFirstShareId)
+        XCTAssertTrue(firstShareKeysSecondGet.isEmpty)
+
+        let secondShareKeysSecondGet = try await sut.getKeys(shareId: givenSecondShareId)
+        XCTAssertEqual(Set(secondShareKeysSecondGet), Set(givenSecondShareKeys))
+    }
 
     func testRemoveAllKeys() async throws {
         // Given

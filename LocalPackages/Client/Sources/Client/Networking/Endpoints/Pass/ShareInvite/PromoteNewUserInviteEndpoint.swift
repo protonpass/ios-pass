@@ -41,7 +41,6 @@ struct PromoteNewUserInviteEndpoint: Endpoint {
 }
 
 struct PromoteNewUserInviteRequest: Encodable, Sendable {
-    // periphery:ignore
     let keys: [ItemKey]
 
     enum CodingKeys: String, CodingKey {
