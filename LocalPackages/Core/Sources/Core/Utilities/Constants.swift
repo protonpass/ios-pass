@@ -52,6 +52,9 @@ public enum Constants {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"
         public static let displaySecurityCenter = "displaySecurityCenter"
         public static let displayAuthenticator = "displayAuthenticator"
+        public static let enableTips = "enableTips"
+        public static let resetTipsStateOnLaunch = "resetTipsStateOnLaunch"
+        public static let forceShowTips = "forceShowTips"
     }
 }
 
