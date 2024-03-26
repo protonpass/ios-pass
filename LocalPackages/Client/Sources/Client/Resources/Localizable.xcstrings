@@ -2,7 +2,6 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Application logs" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -163,7 +162,6 @@
       }
     },
     "AutoFill extension logs" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -324,7 +322,6 @@
       }
     },
     "Most recent" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -485,7 +482,6 @@
       }
     },
     "Newest to oldest" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -806,7 +802,6 @@
       }
     },
     "Oldest to newest" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -967,7 +962,6 @@
       }
     },
     "Search in %@..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1128,7 +1122,6 @@
       }
     },
     "Search in all vaults..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1289,7 +1282,6 @@
       }
     },
     "Search in Trash..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1451,7 +1443,6 @@
     },
     "Search pinned items" : {
       "comment" : "Pinned item search bar placeholder",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1772,7 +1763,6 @@
       }
     },
     "Title (A-Z)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1933,7 +1923,6 @@
       }
     },
     "Title (Z-A)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
