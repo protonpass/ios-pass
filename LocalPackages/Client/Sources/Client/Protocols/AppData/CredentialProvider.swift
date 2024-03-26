@@ -28,7 +28,7 @@ public protocol CredentialProvider: Sendable {
     var isAuthenticated: Bool { get }
 
     // Should be removed after session forking
-    func migrateToSeparatedCredentialsIfNeccessary()
+//    func migrateToSeparatedCredentialsIfNeccessary()
 }
 
 public extension CredentialProvider {

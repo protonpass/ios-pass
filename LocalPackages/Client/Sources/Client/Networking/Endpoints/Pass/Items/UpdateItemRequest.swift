@@ -25,16 +25,16 @@ import ProtonCoreKeyManager
 
 public struct UpdateItemRequest: Sendable {
     /// RotationID used to encrypt the item contents
-    public let keyRotation: Int64
+    let keyRotation: Int64
 
     /// Last item revision existing when the item was created
-    public let lastRevision: Int64
+    let lastRevision: Int64
 
     /// Encrypted item content encoded in Base64
-    public let content: String
+    let content: String
 
     /// Version of the content format used to create the item
-    public let contentFormatVersion: Int16
+    let contentFormatVersion: Int16
 }
 
 public extension UpdateItemRequest {

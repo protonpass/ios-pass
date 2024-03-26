@@ -20,7 +20,6 @@
 //
 
 import AuthenticationServices
-import Entities
 import Foundation
 import PassRustCore
 

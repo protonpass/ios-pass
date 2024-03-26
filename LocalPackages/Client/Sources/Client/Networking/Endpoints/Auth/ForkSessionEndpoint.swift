@@ -21,20 +21,20 @@
 
 import ProtonCoreNetworking
 
-public struct ForkSessionResponse: Decodable, Sendable {
-    public let selector: String
+struct ForkSessionResponse: Decodable, Sendable {
+    let selector: String
 }
 
-public struct ForkSessionEndpoint: Endpoint {
-    public typealias Body = ForkSessionRequest
-    public typealias Response = ForkSessionResponse
+struct ForkSessionEndpoint: Endpoint {
+    typealias Body = ForkSessionRequest
+    typealias Response = ForkSessionResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: ForkSessionRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: ForkSessionRequest?
 
-    public init(request: ForkSessionRequest) {
+    init(request: ForkSessionRequest) {
         debugDescription = "Fork a session"
         path = "/auth/v4/sessions/forks"
         method = .post

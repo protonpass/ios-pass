@@ -24,10 +24,12 @@ import Foundation
 @preconcurrency import ProtonCoreDoh
 
 public protocol MakeImportExportUrlUseCase: Sendable {
+    // periphery:ignore
     func execute(selector: String) throws -> URL
 }
 
 public extension MakeImportExportUrlUseCase {
+    // periphery:ignore
     func callAsFunction(selector: String) throws -> URL {
         try execute(selector: selector)
     }
@@ -41,6 +43,7 @@ public final class MakeImportExportUrl: MakeImportExportUrlUseCase {
     }
 
     #warning("Make use of selector")
+    // periphery:ignore
     public func execute(selector: String) throws -> URL {
         let urlString = "https://pass.\(doh.getSignUpString())"
         guard let url = URL(string: urlString) else {

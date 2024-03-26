@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import CoreImage.CIFilterBuiltins
 import DesignSystem
 import Factory
@@ -78,8 +77,7 @@ struct FullScreenView: View {
                 Group {
                     switch mode {
                     case .text:
-                        FullScreenTextView(originalBrightness: $originalBrightness,
-                                           percentage: $percentage,
+                        FullScreenTextView(percentage: $percentage,
                                            data: data)
                     case .qr:
                         QrCodeView(text: data.text)
@@ -124,7 +122,6 @@ struct FullScreenView: View {
 }
 
 private struct FullScreenTextView: View {
-    @Binding var originalBrightness: CGFloat
     @Binding var percentage: Double
     let data: FullScreenData
 

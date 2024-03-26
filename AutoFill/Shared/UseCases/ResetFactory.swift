@@ -22,7 +22,7 @@
 
 import Factory
 
-public protocol ResetFactoryUseCase: Sendable {
+protocol ResetFactoryUseCase: Sendable {
     func execute()
 }
 

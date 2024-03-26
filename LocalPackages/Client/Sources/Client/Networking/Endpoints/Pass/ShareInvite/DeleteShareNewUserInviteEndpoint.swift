@@ -22,15 +22,15 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct DeleteShareNewUserInviteEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct DeleteShareNewUserInviteEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(shareId: String, inviteId: String) {
+    init(shareId: String, inviteId: String) {
         debugDescription = "Delete a new user invite"
         path = "/pass/v1/share/\(shareId)/invite/new_user/\(inviteId)"
         method = .delete

@@ -20,8 +20,6 @@
 
 import Client
 import Combine
-import Core
-import DesignSystem
 import Factory
 import LocalAuthentication
 import SwiftUI

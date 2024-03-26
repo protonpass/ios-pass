@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import Macro
 import PhotosUI
@@ -243,8 +242,7 @@ private extension BugReportView {
                 .padding(.vertical, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
-                FlowLayout(mode: .scrollable,
-                           items: Array(viewModel.currentFiles.keys),
+                FlowLayout(items: Array(viewModel.currentFiles.keys),
                            viewMapping: { element in
                                HStack(alignment: .center, spacing: 10) {
                                    Text(element)

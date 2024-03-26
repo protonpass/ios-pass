@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import BackgroundTasks
-import Client
 import Core
 import Factory
 import ProtonCoreCryptoGoImplementation

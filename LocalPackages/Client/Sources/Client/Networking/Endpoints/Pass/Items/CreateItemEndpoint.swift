@@ -22,20 +22,20 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct CreateItemResponse: Decodable, Sendable {
+struct CreateItemResponse: Decodable, Sendable {
     let item: Item
 }
 
-public struct CreateItemEndpoint: Endpoint {
-    public typealias Body = CreateItemRequest
-    public typealias Response = CreateItemResponse
+struct CreateItemEndpoint: Endpoint {
+    typealias Body = CreateItemRequest
+    typealias Response = CreateItemResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: CreateItemRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: CreateItemRequest?
 
-    public init(shareId: String, request: CreateItemRequest) {
+    init(shareId: String, request: CreateItemRequest) {
         debugDescription = "Create item"
         path = "/pass/v1/share/\(shareId)/item"
         method = .post

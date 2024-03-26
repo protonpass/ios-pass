@@ -38,6 +38,7 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
+    // periphery:ignore
     /// Get total items of a share (both active and trashed ones)
     func getItemCount(shareId: String) async throws -> Int
 
@@ -127,6 +128,7 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
+    // periphery:ignore
     func getItemCount(shareId: String) async throws -> Int {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()

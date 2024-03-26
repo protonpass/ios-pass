@@ -41,7 +41,6 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
-    @Published private(set) var plan: Plan?
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -65,8 +64,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
-    private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
-    private var cancellable = Set<AnyCancellable>()
 
     var isAllowedToShare: Bool {
         guard let vault else {
@@ -80,10 +77,6 @@ class BaseItemDetailViewModel: ObservableObject {
             return false
         }
         return canUserPerformActionOnVault(for: vault.vault)
-    }
-
-    var itemHistoryEnabled: Bool {
-        plan?.isFreeUser == false
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
@@ -104,17 +97,6 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
-
-        getUserPlan()
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .compactMap { $0 }
-            .sink { [weak self] refreshedPlan in
-                guard let self else {
-                    return
-                }
-                plan = refreshedPlan
-            }.store(in: &cancellable)
     }
 
     /// To be overidden by subclasses

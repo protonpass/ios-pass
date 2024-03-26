@@ -48,7 +48,7 @@ extension CreateItemRequest: Encodable {
     }
 }
 
-public extension CreateItemRequest {
+extension CreateItemRequest {
     init(vaultKey: DecryptedShareKey, itemContent: any ProtobufableItemContentProtocol) throws {
         let itemKey = try Data.random()
         let encryptedContent = try AES.GCM.seal(itemContent.data(),

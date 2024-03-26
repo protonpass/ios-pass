@@ -21,15 +21,15 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct UnpinItemEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = PinItemResponse
+struct UnpinItemEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = PinItemResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(shareId: String, itemId: String) {
+    init(shareId: String, itemId: String) {
         debugDescription = "Unpin item"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/pin"
         method = .delete

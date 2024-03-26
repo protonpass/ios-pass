@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import Entities
 import Factory
@@ -81,15 +80,12 @@ extension Int64 {
 
 struct ItemDetailHistorySection: View {
     private let item: ItemContent
-    private let itemHistoryEnable: Bool
     let action: () -> Void
 
     init(itemContent: ItemContent,
-         itemHistoryEnable: Bool,
          action: @escaping () -> Void) {
         item = itemContent
         self.action = action
-        self.itemHistoryEnable = itemHistoryEnable
     }
 
     var body: some View {

@@ -23,18 +23,18 @@ import Foundation
 import ProtonCoreLogin
 import UIKit
 
-public struct BugReportRequest: Sendable {
-    public let os: String // iOS, MacOS
-    public let osVersion: String
-    public let client: String
-    public let clientVersion: String
-    public let clientType: String // 1 = email, 2 = VPN, 5 = Pass
-    public var title: String
-    public var description: String
-    public let username: String
-    public let email: String
+struct BugReportRequest: Sendable {
+    let os: String // iOS, MacOS
+    let osVersion: String
+    let client: String
+    let clientVersion: String
+    let clientType: String // 1 = email, 2 = VPN, 5 = Pass
+    var title: String
+    var description: String
+    let username: String
+    let email: String
 
-    public init(with title: String, and description: String, userData: UserData) async {
+    init(with title: String, and description: String, userData: UserData) async {
         #if os(iOS)
         os = "iOS"
         osVersion = await UIDevice.current.systemVersion
