@@ -44,21 +44,4 @@ final class URLUtilsPlusSanitizerTests: XCTestCase {
 
         XCTAssertEqual(URLUtils.Sanitizer.sanitize("example.com"), "https://example.com")
     }
-
-    func testSanitizeAndGetRootDomain() {
-        guard let parser = try? DomainParser() else {
-            XCTFail("Should not reach the part of guard")
-            return
-        }
-        let test: (String, String) -> Void = { input, output in
-            XCTAssertEqual(URLUtils.Sanitizer.sanitizeAndGetRootDomain(input,
-                                                                       domainParser: parser),
-                           output)
-        }
-        test("example.com/path?param=true", "example.com")
-        test("ssh://example.com/test?abc=", "example.com")
-        test("https://account.proton.me/path?param=true", "proton.me")
-        test("https://gitlab.tech.proton.me/test?abc=", "proton.me")
-        test("https://gitlab.tech.proton.co.uk/test?abc=", "proton.co.uk")
-    }
 }

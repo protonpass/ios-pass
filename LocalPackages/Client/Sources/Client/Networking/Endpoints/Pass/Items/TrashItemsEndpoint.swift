@@ -22,16 +22,16 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct TrashItemsEndpoint: Endpoint {
-    public typealias Body = ModifyItemRequest
-    public typealias Response = ModifyItemResponse
+struct TrashItemsEndpoint: Endpoint {
+    typealias Body = ModifyItemRequest
+    typealias Response = ModifyItemResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: ModifyItemRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: ModifyItemRequest?
 
-    public init(shareId: String, items: [Item]) {
+    init(shareId: String, items: [Item]) {
         debugDescription = "Trash items"
         path = "/pass/v1/share/\(shareId)/item/trash"
         method = .post

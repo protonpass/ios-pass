@@ -24,5 +24,5 @@ import CryptoKit
 // sourcery: AutoMockable
 public protocol SymmetricKeyProvider: Sendable {
     func getSymmetricKey() throws -> SymmetricKey
-    func removeSymmetricKey()
+//    func removeSymmetricKey()
 }

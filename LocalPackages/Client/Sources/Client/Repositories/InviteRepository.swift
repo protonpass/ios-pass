@@ -27,7 +27,7 @@ import ProtonCoreLogin
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 
-    func getPendingInvitesForUser() async throws -> [UserInvite]
+//    func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool
 
     @discardableResult

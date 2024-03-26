@@ -23,7 +23,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct CreateAliasAndAnotherItemResponse: Decodable, Sendable {
-    let bundle: Bundle
+    public let bundle: Bundle
 
     public struct Bundle: Decodable, Sendable {
         let alias: Item
@@ -31,16 +31,16 @@ public struct CreateAliasAndAnotherItemResponse: Decodable, Sendable {
     }
 }
 
-public struct CreateAliasAndAnotherItemEndpoint: Endpoint {
-    public typealias Body = CreateAliasAndAnotherItemRequest
-    public typealias Response = CreateAliasAndAnotherItemResponse
+struct CreateAliasAndAnotherItemEndpoint: Endpoint {
+    typealias Body = CreateAliasAndAnotherItemRequest
+    typealias Response = CreateAliasAndAnotherItemResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: CreateAliasAndAnotherItemRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: CreateAliasAndAnotherItemRequest?
 
-    public init(shareId: String, request: CreateAliasAndAnotherItemRequest) {
+    init(shareId: String, request: CreateAliasAndAnotherItemRequest) {
         debugDescription = "Create alias and another item"
         path = "/pass/v1/share/\(shareId)/item/with_alias"
         method = .post

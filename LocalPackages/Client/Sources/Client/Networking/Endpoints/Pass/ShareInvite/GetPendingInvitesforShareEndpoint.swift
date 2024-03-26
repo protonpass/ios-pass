@@ -22,20 +22,20 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetPendingInvitesForShareResponse: Decodable, Equatable, Sendable {
+struct GetPendingInvitesForShareResponse: Decodable, Equatable, Sendable {
     let invites: [ShareExistingUserInvite]
     let newUserInvites: [ShareNewUserInvite]
 }
 
-public struct GetPendingInvitesForShareEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetPendingInvitesForShareResponse
+struct GetPendingInvitesForShareEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetPendingInvitesForShareResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(for shareId: String) {
+    init(for shareId: String) {
         debugDescription = "Get pending invites for share"
         path = "/pass/v1/share/\(shareId)/invite"
         method = .get

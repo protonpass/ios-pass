@@ -23,36 +23,36 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct InviteUserToShareEndpoint: Endpoint {
-    public typealias Body = InviteUserToShareRequest
-    public typealias Response = CodeOnlyResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: InviteUserToShareRequest?
-
-    public init(shareId: String, request: InviteUserToShareRequest) {
-        debugDescription = "Invite a user to share"
-        path = "/pass/v1/share/\(shareId)/invite"
-        method = .post
-        body = request
-    }
-}
+// struct InviteUserToShareEndpoint: Endpoint {
+//    typealias Body = InviteUserToShareRequest
+//    typealias Response = CodeOnlyResponse
+//
+//    var debugDescription: String
+//    var path: String
+//    var method: HTTPMethod
+//    var body: InviteUserToShareRequest?
+//
+//    init(shareId: String, request: InviteUserToShareRequest) {
+//        debugDescription = "Invite a user to share"
+//        path = "/pass/v1/share/\(shareId)/invite"
+//        method = .post
+//        body = request
+//    }
+// }
 
 public struct InviteUserToShareRequest: Sendable {
     /// List of keys encrypted for the other user's address key and signed with your address key
-    public let keys: [ItemKey]
+    let keys: [ItemKey]
     /// Email of the target user
-    public let email: String
+    let email: String
     /// Invite target type. 1 = Vault, 2 = Item
-    public let targetType: Int
+    let targetType: Int
     /// ShareRoleID assigned to this invite
-    public let shareRoleId: String
+    let shareRoleId: String
     /// Invite encrypted item ID (only in case the invite is of type Item)
-    public let itemId: String?
+    let itemId: String?
     /// Expiration time for the share
-    public let expirationTime: Int?
+    let expirationTime: Int?
 
     public init(keys: [ItemKey],
                 email: String,

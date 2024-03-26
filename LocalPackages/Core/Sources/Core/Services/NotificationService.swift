@@ -25,7 +25,7 @@ import Foundation
 public protocol LocalNotificationServiceProtocol: Sendable {
     func requestNotificationPermission(with options: UNAuthorizationOptions)
 
-    func add(for request: UNNotificationRequest)
+//    func add(for request: UNNotificationRequest)
     func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval)
 }
 
@@ -35,7 +35,7 @@ public extension LocalNotificationServiceProtocol {
     }
 }
 
-public final class NotificationService: LocalNotificationServiceProtocol, Sendable {
+public final class NotificationService: LocalNotificationServiceProtocol, @unchecked Sendable {
     private let unUserNotificationCenter: UNUserNotificationCenter
     private var currentTimers: [String: Timer] = [:]
     private let logger: Logger
@@ -53,10 +53,10 @@ public final class NotificationService: LocalNotificationServiceProtocol, Sendab
         }
     }
 
-    public func add(for request: UNNotificationRequest) {
-        logger.info("Adding following non timed notification: \(request.description)")
-        unUserNotificationCenter.add(request)
-    }
+//    public func add(for request: UNNotificationRequest) {
+//        logger.info("Adding following non timed notification: \(request.description)")
+//        unUserNotificationCenter.add(request)
+//    }
 
     public func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval = 5) {
         logger.info("Adding following timed notification: \(request.description), with removal delay: \(delay)")

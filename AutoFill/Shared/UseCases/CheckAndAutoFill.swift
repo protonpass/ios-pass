@@ -22,7 +22,6 @@ import AuthenticationServices
 import Client
 import Entities
 import Foundation
-import UseCases
 
 protocol CheckAndAutoFillUseCase: Sendable {
     func execute(_ request: AutoFillRequest,

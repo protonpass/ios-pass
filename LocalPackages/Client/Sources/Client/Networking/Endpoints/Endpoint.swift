@@ -23,10 +23,10 @@ import ProtonCoreKeyManager
 import ProtonCoreNetworking
 
 /// For endpoints that have no body like GET ones
-public struct EmptyRequest: Encodable, Sendable {}
+struct EmptyRequest: Encodable, Sendable {}
 
 /// Holds responses that only have `code` field
-public struct CodeOnlyResponse: Decodable, Sendable {
+struct CodeOnlyResponse: Decodable, Sendable {
     let code: Int
     var isSuccessful: Bool { code == 1_000 }
 }
@@ -34,7 +34,7 @@ public struct CodeOnlyResponse: Decodable, Sendable {
 /// The content of Endpoint should not be changed to anything other than [String:  Any]
 /// as the parsing in the `Networking` core lib is very strict on this aspect.
 /// You should annotate the endpoint as `@unchecked Sendable` if you have params or queries set on it
-public protocol Endpoint: Request, Sendable {
+protocol Endpoint: Request, Sendable {
     associatedtype Body: Encodable & Sendable
     associatedtype Response: Decodable & Sendable
 
@@ -44,14 +44,14 @@ public protocol Endpoint: Request, Sendable {
     var queries: [String: Any]? { get }
 }
 
-public extension Endpoint {
-    var isAuth: Bool { true }
-    var autoRetry: Bool { true }
+extension Endpoint {
+    public var isAuth: Bool { true }
+//    var autoRetry: Bool { true }
     var method: HTTPMethod { .get }
     var body: Body? { nil }
-    var nonDefaultTimeout: TimeInterval? { nil }
+    public var nonDefaultTimeout: TimeInterval? { nil }
     var queries: [String: Any]? { nil }
-    var parameters: [String: Any]? {
+    public var parameters: [String: Any]? {
         var finalParams: [String: Any] = [:]
 
         if let queries {

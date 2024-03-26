@@ -21,20 +21,14 @@
 
 import Foundation
 
-public struct ForkSessionRequest: Sendable, Encodable {
-    public let payload: String?
-    public let childClientId: String
-    public let independent: Int
+struct ForkSessionRequest: Sendable, Encodable {
+    let payload: String?
+    let childClientId: String
+    let independent: Int
 
     enum CodingKeys: String, CodingKey {
         case payload = "Payload"
         case childClientId = "ChildClientID"
         case independent = "Independent"
-    }
-
-    public init(payload: String?, childClientId: String, independent: Int) {
-        self.payload = payload
-        self.childClientId = childClientId
-        self.independent = independent
     }
 }

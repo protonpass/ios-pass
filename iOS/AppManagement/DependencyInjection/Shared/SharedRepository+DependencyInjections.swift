@@ -322,6 +322,10 @@ extension SharedRepositoryContainer {
                                       userDataProvider: self.userDataProvider,
                                       logManager: self.logManager) }
     }
+
+    var networkRepository: Factory<NetworkRepositoryProtocol> {
+        self { NetworkRepository(apiService: self.apiService) }
+    }
 }
 
 // MARK: - Security
