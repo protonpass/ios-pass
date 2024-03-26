@@ -47,7 +47,7 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
 
-    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
+//    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
 
     @discardableResult
     func updateUserPermission(userId: String,
@@ -186,18 +186,18 @@ public extension ShareRepository {
         return users
     }
 
-    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
-        let logInfo = "user \(userId), share \(shareId)"
-        logger.trace("Getting user information \(logInfo)")
-        do {
-            let user = try await remoteDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
-            logger.trace("Got user information \(logInfo)")
-            return user
-        } catch {
-            logger.error(message: "Failed to get user information \(logInfo)", error: error)
-            throw error
-        }
-    }
+//    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
+//        let logInfo = "user \(userId), share \(shareId)"
+//        logger.trace("Getting user information \(logInfo)")
+//        do {
+//            let user = try await remoteDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
+//            logger.trace("Got user information \(logInfo)")
+//            return user
+//        } catch {
+//            logger.error(message: "Failed to get user information \(logInfo)", error: error)
+//            throw error
+//        }
+//    }
 
     func updateUserPermission(userId: String,
                               shareId: String,

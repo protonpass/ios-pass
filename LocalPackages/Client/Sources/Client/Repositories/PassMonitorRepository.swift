@@ -29,7 +29,7 @@ import PassRustCore
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
-    var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
+//    var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
 
     func refreshSecurityChecks() async throws
 }
@@ -43,7 +43,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
-    public let hasBreachedItems: CurrentValueSubject<Bool, Never> = .init(false)
+//    public let hasBreachedItems: CurrentValueSubject<Bool, Never> = .init(false)
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,

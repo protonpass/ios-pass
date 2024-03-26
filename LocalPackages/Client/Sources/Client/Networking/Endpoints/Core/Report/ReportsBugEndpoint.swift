@@ -21,16 +21,16 @@
 import Foundation
 import ProtonCoreNetworking
 
-public struct ReportsBugEndpoint: Endpoint {
-    public typealias Body = BugReportRequest
-    public typealias Response = CodeOnlyResponse
+struct ReportsBugEndpoint: Endpoint {
+    typealias Body = BugReportRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: BugReportRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: BugReportRequest?
 
-    public init(request: BugReportRequest) {
+    init(request: BugReportRequest) {
         debugDescription = "Report Bug"
         path = "/core/v4/reports/bug"
         method = .post

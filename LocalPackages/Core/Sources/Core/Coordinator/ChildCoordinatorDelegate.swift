@@ -27,8 +27,6 @@ public protocol ChildCoordinatorDelegate: AnyObject {
     func childCoordinatorWantsToPresent(viewController: UIViewController,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption)
-    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
-                                              presentationOption: ChildCoordinatorPresentationOption)
     func childCoordinatorWantsToDismissTopViewController()
     func childCoordinatorDidFailLocalAuthentication()
 }
@@ -67,10 +65,4 @@ public enum ChildCoordinatorPresentationOption {
     case dismissTopViewController
     /// Dismiss all presented view controllers before presenting
     case dismissAllViewControllers
-}
-
-public enum ChildCoordinatorBannerOption {
-    case info(String)
-    case success(String)
-    case error(String)
 }

@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import DesignSystem
 import Entities
 import Macro
@@ -93,7 +92,6 @@ private extension LogInDetailView {
                                             onUpgrade: { viewModel.upgrade() })
 
                         ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                                 itemHistoryEnable: viewModel.itemHistoryEnabled,
                                                  action: { viewModel.showItemHistory() })
 
                         ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,

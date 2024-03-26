@@ -82,7 +82,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
-    private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -217,7 +216,6 @@ private extension HomepageCoordinator {
 
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
-        self.profileTabViewModel = profileTabViewModel
 
         let placeholderView = ItemDetailPlaceholderView { [weak self] in
             guard let self else { return }
@@ -876,10 +874,7 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 showLoadingHud()
-                let request = ForkSessionRequest(payload: nil,
-                                                 childClientId: "pass-ios",
-                                                 independent: 1)
-                let selector = try await forkSession(request)
+                let selector = try await forkSession(payload: nil, childClientId: "pass-ios", independent: 1)
                 hideLoadingHud()
                 let url = try makeImportExportUrl(selector: selector)
                 presentImportExportView(url: url)
@@ -1017,28 +1012,28 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
         }
     }
 
-    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
-                                              presentationOption: ChildCoordinatorPresentationOption) {
-        let display: () -> Void = { [weak self] in
-            guard let self else { return }
-            switch bannerOption {
-            case let .info(message):
-                bannerManager.displayBottomInfoMessage(message)
-            case let .success(message):
-                bannerManager.displayBottomSuccessMessage(message)
-            case let .error(message):
-                bannerManager.displayTopErrorMessage(message)
-            }
-        }
-        switch presentationOption {
-        case .none:
-            display()
-        case .dismissTopViewController:
-            dismissTopMostViewController(animated: true, completion: display)
-        case .dismissAllViewControllers:
-            dismissAllViewControllers(animated: true, completion: display)
-        }
-    }
+//    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
+//                                              presentationOption: ChildCoordinatorPresentationOption) {
+//        let display: () -> Void = { [weak self] in
+//            guard let self else { return }
+//            switch bannerOption {
+//            case let .info(message):
+//                bannerManager.displayBottomInfoMessage(message)
+//            case let .success(message):
+//                bannerManager.displayBottomSuccessMessage(message)
+//            case let .error(message):
+//                bannerManager.displayTopErrorMessage(message)
+//            }
+//        }
+//        switch presentationOption {
+//        case .none:
+//            display()
+//        case .dismissTopViewController:
+//            dismissTopMostViewController(animated: true, completion: display)
+//        case .dismissAllViewControllers:
+//            dismissAllViewControllers(animated: true, completion: display)
+//        }
+//    }
 
     func childCoordinatorWantsToDismissTopViewController() {
         dismissTopMostViewController()

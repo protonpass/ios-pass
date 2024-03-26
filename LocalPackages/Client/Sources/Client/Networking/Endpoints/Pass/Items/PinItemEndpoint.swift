@@ -22,19 +22,19 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct PinItemResponse: Decodable, Sendable {
+struct PinItemResponse: Decodable, Sendable {
     let item: Item
 }
 
-public struct PinItemEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = PinItemResponse
+struct PinItemEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = PinItemResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(shareId: String, itemId: String) {
+    init(shareId: String, itemId: String) {
         debugDescription = "Pin item"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/pin"
         method = .post

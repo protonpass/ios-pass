@@ -21,15 +21,15 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct DeleteVaultEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct DeleteVaultEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(shareId: String) {
+    init(shareId: String) {
         debugDescription = "Delete vault"
         path = "/pass/v1/vault/\(shareId)"
         method = .delete

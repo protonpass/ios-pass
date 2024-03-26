@@ -22,16 +22,14 @@ import SwiftUI
 
 @MainActor
 public struct FlowLayout<T: Hashable, V: View>: View {
-    private let mode: Mode
     private let items: [T]
     private let viewMapping: (T) -> V
     @State private var totalHeight: CGFloat
 
-    public init(mode: Mode, items: [T], viewMapping: @escaping (T) -> V) {
-        self.mode = mode
+    public init(items: [T], viewMapping: @escaping (T) -> V) {
         self.items = items
         self.viewMapping = viewMapping
-        _totalHeight = State(initialValue: (mode == .scrollable) ? .zero : .infinity)
+        _totalHeight = State(initialValue: .zero)
     }
 
     public var body: some View {
@@ -41,16 +39,8 @@ public struct FlowLayout<T: Hashable, V: View>: View {
             }
         }
         return Group {
-            if mode == .scrollable {
-                stack.frame(height: totalHeight)
-            } else {
-                stack.frame(maxHeight: totalHeight)
-            }
+            stack.frame(height: totalHeight)
         }
-    }
-
-    public enum Mode {
-        case scrollable, vstack
     }
 }
 

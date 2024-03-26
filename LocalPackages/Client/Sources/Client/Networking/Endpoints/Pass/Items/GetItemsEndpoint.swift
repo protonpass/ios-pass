@@ -22,19 +22,19 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetItemsResponse: Decodable, Sendable {
+struct GetItemsResponse: Decodable, Sendable {
     let items: ItemsPaginated
 }
 
-public struct GetItemsEndpoint: Endpoint, @unchecked Sendable {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetItemsResponse
+struct GetItemsEndpoint: Endpoint, @unchecked Sendable {
+    typealias Body = EmptyRequest
+    typealias Response = GetItemsResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var queries: [String: Any]?
+    var debugDescription: String
+    var path: String
+    var queries: [String: Any]?
 
-    public init(shareId: String, sinceToken: String?, pageSize: Int) {
+    init(shareId: String, sinceToken: String?, pageSize: Int) {
         debugDescription = "Get items for share"
         path = "/pass/v1/share/\(shareId)/item"
 

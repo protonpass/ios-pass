@@ -21,18 +21,18 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetAliasOptionsResponse: Decodable, Sendable {
+struct GetAliasOptionsResponse: Decodable, Sendable {
     let options: AliasOptions
 }
 
-public struct GetAliasOptionsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetAliasOptionsResponse
+struct GetAliasOptionsEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetAliasOptionsResponse
 
-    public var debugDescription: String
-    public var path: String
+    var debugDescription: String
+    var path: String
 
-    public init(shareId: String) {
+    init(shareId: String) {
         debugDescription = "Get alias options"
         path = "/pass/v1/share/\(shareId)/alias/options"
     }

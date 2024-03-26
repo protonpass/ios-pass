@@ -19,11 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct AliasCreationInfo: Sendable {
-    public let prefix: String
-    public let suffix: Suffix
+    let prefix: String
+    let suffix: Suffix
     public let mailboxIds: [Int]
 
-    public var aliasAddress: String { prefix + suffix.suffix }
+//    var aliasAddress: String { prefix + suffix.suffix }
 
     public init(prefix: String, suffix: Suffix, mailboxIds: [Int]) {
         self.prefix = prefix

@@ -21,8 +21,8 @@
 import Foundation
 
 public struct CreateAliasAndAnotherItemRequest: Sendable {
-    let alias: CreateCustomAliasRequest
-    let item: CreateItemRequest
+    public let alias: CreateCustomAliasRequest
+    public let item: CreateItemRequest
 
     public init(info: AliasCreationInfo,
                 aliasItem: CreateItemRequest,

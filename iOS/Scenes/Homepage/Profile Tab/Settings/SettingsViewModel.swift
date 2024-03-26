@@ -42,7 +42,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
+    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let currentSpotlightVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)

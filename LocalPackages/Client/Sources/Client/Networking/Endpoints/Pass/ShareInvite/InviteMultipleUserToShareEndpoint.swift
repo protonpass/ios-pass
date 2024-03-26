@@ -18,21 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct InviteMultipleUserToShareEndpoint: Endpoint {
-    public typealias Body = InviteMultipleUsersToShareRequest
-    public typealias Response = CodeOnlyResponse
+struct InviteMultipleUserToShareEndpoint: Endpoint {
+    typealias Body = InviteMultipleUsersToShareRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: InviteMultipleUsersToShareRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: InviteMultipleUsersToShareRequest?
 
-    public init(shareId: String, request: InviteMultipleUsersToShareRequest) {
+    init(shareId: String, request: InviteMultipleUsersToShareRequest) {
         debugDescription = "Invite a user to share"
         path = "/pass/v1/share/\(shareId)/invite/batch"
         method = .post
@@ -41,7 +40,7 @@ public struct InviteMultipleUserToShareEndpoint: Endpoint {
 }
 
 public struct InviteMultipleUsersToShareRequest: Sendable, Encodable {
-    public let invites: [InviteUserToShareRequest]
+    let invites: [InviteUserToShareRequest]
 
     public init(invites: [InviteUserToShareRequest]) {
         self.invites = invites

@@ -57,10 +57,6 @@ private extension SharedUseCasesContainer {
         SharedDataContainer.shared.userDataProvider()
     }
 
-    var apiManager: APIManager {
-        SharedToolingContainer.shared.apiManager()
-    }
-
     var symmetricKeyProvider: any SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
@@ -170,11 +166,9 @@ extension SharedUseCasesContainer {
 // MARK: - Feature Flags
 
 extension SharedUseCasesContainer {
-    // periphery:ignore
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
-            GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 logManager: SharedToolingContainer.shared.logManager())
+            GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository())
         }
     }
 }
@@ -219,7 +213,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var revokeCurrentSession: Factory<RevokeCurrentSessionUseCase> {
-        self { RevokeCurrentSession(apiService: SharedToolingContainer.shared.apiManager().apiService) }
+        self { RevokeCurrentSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
     }
 
     var deleteLocalDataBeforeFullSync: Factory<DeleteLocalDataBeforeFullSyncUseCase> {
@@ -280,7 +274,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var forkSession: Factory<ForkSessionUseCase> {
-        self { ForkSession(apiService: self.apiManager.apiService) }
+        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
     }
 }
 

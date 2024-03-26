@@ -21,6 +21,7 @@
 import ProtonCoreNetworking
 
 public extension AuthCredential {
+    // periphery:ignore
     static var preview: AuthCredential {
         AuthCredential(sessionID: .random(),
                        accessToken: .random(),
