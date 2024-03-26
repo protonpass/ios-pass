@@ -111,8 +111,6 @@ struct CreateEditLoginView: View {
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
-                    case .custom:
-                        id = bottomID
                     default: id = nil
                     }
 
