@@ -20,7 +20,7 @@
 
 @preconcurrency import CoreData
 
-public let kProtonPassContainerName = "ProtonPass"
+let kProtonPassContainerName = "ProtonPass"
 
 public enum TaskContextType: String {
     case insert = "insertContext"
@@ -28,7 +28,7 @@ public enum TaskContextType: String {
     case fetch = "fetchContext"
 }
 
-public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
+enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     case batchInsertError(NSBatchInsertRequest)
     case batchDeleteError(NSBatchDeleteRequest)
     case databaseOperationsOnMainThread

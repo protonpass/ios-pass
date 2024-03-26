@@ -1,3 +1,28 @@
+## Version 1.10.0
+Features:
+- Added support for Passkeys
+- Added support for Dutch, Danish, Indonesian and Slovenian languages
+- Implemented item cloning feature
+
+Fixes:
+- Fixed issue preventing QR code scanning in photos selected from the photo library
+
+Others:
+- Updated core library version to 20.0.0
+- Updated Rust library version 0.7.1
+- Changed the position of quick action buttons when creating/editing login items
+- Updated the error message when B2B users reach vault sharing limit
+- Implemented server update message handling
+- Respect organization settings when sharing to addresses outside of the organization
+- Show TOTP token instead of URI when viewing item's history
+- Implemented upselling feature for item history
+- Added more actions to context menu for credit cards
+- Added localization for permission descriptions
+- Added support for Optic ID in visionOS
+- Added "view history" option to context menu
+- Declared app privacy manifest
+- Mitigated crashes on AutoFill extension
+
 ## Version 1.9.1
 Improvements:
 - Made alias addresses searchable

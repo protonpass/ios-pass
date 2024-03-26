@@ -21,7 +21,6 @@
 import Client
 import Combine
 import Core
-import DesignSystem
 import Entities
 import Factory
 import Macro
@@ -61,7 +60,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
     private let removeItemMonitoring = resolve(\UseCasesContainer.removeItemMonitoring)
 
-    let totpManager = resolve(\ServiceContainer.totpManager)
+    let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?

@@ -22,16 +22,16 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct CheckAddressEndpoint: Endpoint {
-    public typealias Body = CheckAddressRequest
-    public typealias Response = CheckAddressResponse
+struct CheckAddressEndpoint: Endpoint {
+    typealias Body = CheckAddressRequest
+    typealias Response = CheckAddressResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: CheckAddressRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: CheckAddressRequest?
 
-    public init(shareId: String, emails: [String]) {
+    init(shareId: String, emails: [String]) {
         assert(emails.count <= 10, "At most 10 addresses are allowed")
         debugDescription = "Check if an address can be invited"
         path = "/pass/v1/share/\(shareId)/invite/check_address"
@@ -40,16 +40,16 @@ public struct CheckAddressEndpoint: Endpoint {
     }
 }
 
-public struct CheckAddressRequest: Sendable, Encodable {
-    public let emails: [String]
+struct CheckAddressRequest: Sendable, Encodable {
+    let emails: [String]
 
     enum CodingKeys: String, CodingKey {
         case emails = "Emails"
     }
 }
 
-public struct CheckAddressResponse: Sendable, Decodable {
+struct CheckAddressResponse: Sendable, Decodable {
     // Optional array because otherwise decode process would fail
     // when receiving an empty array instead of null
-    public let emails: [String]?
+    let emails: [String]?
 }

@@ -21,15 +21,15 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct DeleteShareEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct DeleteShareEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(for shareId: String) {
+    init(for shareId: String) {
         debugDescription = "Delete the current share"
         path = "/pass/v1/share/\(shareId)"
         method = .delete

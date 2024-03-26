@@ -21,17 +21,17 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetPublicKeysResponse: Decodable, Sendable {
+struct GetPublicKeysResponse: Decodable, Sendable {
     let address: PublicKeys
 }
 
-public struct GetPublicKeysEndpoint: Endpoint, @unchecked Sendable {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetPublicKeysResponse
+struct GetPublicKeysEndpoint: Endpoint, @unchecked Sendable {
+    typealias Body = EmptyRequest
+    typealias Response = GetPublicKeysResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var parameters: [String: Any]?
+    var debugDescription: String
+    var path: String
+    var parameters: [String: Any]?
 
     init(email: String) {
         debugDescription = "Get public keys"

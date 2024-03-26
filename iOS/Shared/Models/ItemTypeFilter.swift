@@ -53,6 +53,7 @@ enum ItemTypeFilterOption: Equatable, Hashable {
 }
 
 struct ItemTypeFilterOptionUiModel {
+    // periphery:ignore
     let icon: UIImage
     let title: String
     let count: Int

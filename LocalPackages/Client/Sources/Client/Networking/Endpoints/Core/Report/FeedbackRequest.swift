@@ -18,24 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-public struct FeedbackRequest: Sendable {
-    public let feedbackType: String
-    public let feedback: String
-    public let score: Int
-
-    public init(with feedbackType: String, and feedback: String, score: Int = 0) {
-        self.feedbackType = feedbackType
-        self.feedback = feedback
-        self.score = score
-    }
-}
-
-extension FeedbackRequest: Encodable {
-    enum CodingKeys: String, CodingKey {
-        case feedbackType = "FeedbackType"
-        case feedback = "Feedback"
-        case score = "Score"
-    }
-}
+// import Foundation
+//
+// struct FeedbackRequest: Sendable {
+//    let feedbackType: String
+//    let feedback: String
+//    let score: Int
+//
+//    init(with feedbackType: String, and feedback: String, score: Int = 0) {
+//        self.feedbackType = feedbackType
+//        self.feedback = feedback
+//        self.score = score
+//    }
+// }
+//
+// extension FeedbackRequest: Encodable {
+//    enum CodingKeys: String, CodingKey {
+//        case feedbackType = "FeedbackType"
+//        case feedback = "Feedback"
+//        case score = "Score"
+//    }
+// }

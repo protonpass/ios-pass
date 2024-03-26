@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import Entities
 import Macro
@@ -64,7 +63,6 @@ enum ItemContextMenu {
               onTrash: () -> Void)
 
     case trashedItem(isEditable: Bool,
-                     onViewHistory: () -> Void,
                      onRestore: () -> Void,
                      onPermanentlyDelete: () -> Void)
 
@@ -178,7 +176,6 @@ enum ItemContextMenu {
             return sections
 
         case let .trashedItem(isEditable,
-                              onViewHistory,
                               onRestore,
                               onPermanentlyDelete):
             if isEditable {
@@ -303,7 +300,6 @@ extension View {
                          handler: ItemContextMenuHandler) -> some View {
         if isTrashed {
             itemContextMenu(.trashedItem(isEditable: isEditable,
-                                         onViewHistory: { handler.viewHistory(item) },
                                          onRestore: { handler.restore(item) },
                                          onPermanentlyDelete: onPermanentlyDelete))
         } else {

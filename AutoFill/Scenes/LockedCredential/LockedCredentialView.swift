@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -52,6 +51,7 @@ struct LockedCredentialView: View {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Cancel",
                          action: {
                              Task {
                                  await viewModel.handleCancellation()

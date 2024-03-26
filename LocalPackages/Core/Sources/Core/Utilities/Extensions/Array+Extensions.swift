@@ -20,12 +20,6 @@
 
 import Foundation
 
-public extension ArraySlice {
-    var toArray: [Element] {
-        Array(self)
-    }
-}
-
 public extension Array where Element: Identifiable, Element: Equatable {
     /// Compare 2 arrays of `Identifiable` & `Equatable` objects
     /// Return `true` if the 2 arrays contain the same set of objects regardless of their order

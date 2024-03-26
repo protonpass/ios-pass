@@ -21,19 +21,19 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetSharesResponse: Decodable, Sendable {
+struct GetSharesResponse: Decodable, Sendable {
     let shares: [Share]
 }
 
-public struct GetSharesEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetSharesResponse
+struct GetSharesEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetSharesResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init() {
+    init() {
         debugDescription = "Get (partial) shares"
         path = "/pass/v1/share"
         method = .get
