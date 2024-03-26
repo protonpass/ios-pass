@@ -2,7 +2,6 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@ vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -163,7 +162,6 @@
       }
     },
     "%@%% decrypted..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -324,7 +322,6 @@
       }
     },
     "%@%% downloaded..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -485,7 +482,6 @@
       }
     },
     "%lld characters" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -1538,7 +1534,6 @@
       }
     },
     "%lld item(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -3273,7 +3268,6 @@
       }
     },
     "%lld member(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -3800,7 +3794,6 @@
       }
     },
     "%lld remaining attempt(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -4327,7 +4320,6 @@
       }
     },
     "%lld search result(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -4854,7 +4846,6 @@
       }
     },
     "%lld time(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -5381,7 +5372,6 @@
       }
     },
     "%lld trial day(s) left" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -5908,7 +5898,6 @@
       }
     },
     "%lld word(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -7235,7 +7224,6 @@
       }
     },
     "20 vaults" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8359,7 +8347,6 @@
       }
     },
     "Add 2FA secret" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8842,7 +8829,6 @@
       }
     },
     "Add login details for an app or site" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9163,7 +9149,6 @@
       }
     },
     "Add note" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9324,7 +9309,6 @@
       }
     },
     "Add password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -10454,7 +10438,6 @@
       }
     },
     "After %lld hour(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -10981,7 +10964,6 @@
       }
     },
     "After %lld minute(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -11508,7 +11490,6 @@
       }
     },
     "After 15 seconds" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -11669,7 +11650,6 @@
       }
     },
     "Alias" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -11830,7 +11810,6 @@
       }
     },
     "Alias \"%@\" will stop forwarding emails to your mailbox" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12314,7 +12293,6 @@
       }
     },
     "Alias address copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12475,7 +12453,6 @@
       }
     },
     "Alias can not contain 2 consecutive dots (..)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12798,7 +12775,6 @@
       }
     },
     "Alias copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12959,7 +12935,6 @@
       }
     },
     "Alias created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13120,7 +13095,6 @@
       }
     },
     "Alias of login item \"%@\"" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13281,7 +13255,6 @@
       }
     },
     "Alias permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13442,7 +13415,6 @@
       }
     },
     "Alias restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13603,7 +13575,6 @@
       }
     },
     "Alias updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13764,7 +13735,6 @@
       }
     },
     "Aliases" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -14405,7 +14375,6 @@
       }
     },
     "All items permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -14566,7 +14535,6 @@
       }
     },
     "All items restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -14727,7 +14695,6 @@
       }
     },
     "All logs cleared" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -16330,7 +16297,6 @@
       }
     },
     "Auto-filled:" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17132,7 +17098,6 @@
       }
     },
     "Autosave" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17454,7 +17419,6 @@
       }
     },
     "Can create, edit, delete and export items in this vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17615,7 +17579,6 @@
       }
     },
     "Can grant and revoke access to this vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18260,7 +18223,6 @@
       }
     },
     "Capital letters" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18421,7 +18383,6 @@
       }
     },
     "Capitalize" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18582,7 +18543,6 @@
       }
     },
     "Card" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18903,7 +18863,6 @@
       }
     },
     "Card number copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -19225,7 +19184,6 @@
       }
     },
     "Cardholder name copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -19706,7 +19664,6 @@
       }
     },
     "Check out all the exclusive features that are available to you for a limited time" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -20991,7 +20948,6 @@
       }
     },
     "Commas" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -21796,7 +21752,6 @@
       }
     },
     "Continue" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -22119,7 +22074,6 @@
       }
     },
     "Control what lands in your inbox" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -22600,7 +22554,6 @@
       }
     },
     "Copy alias address" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -22761,7 +22714,6 @@
       }
     },
     "Copy and close" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -23402,7 +23354,6 @@
       }
     },
     "Copy note content" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -23563,7 +23514,6 @@
       }
     },
     "Copy password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -24046,7 +23996,6 @@
       }
     },
     "Couldn't find \"%@\"" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -24692,7 +24641,6 @@
       }
     },
     "Create & AutoFill" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -24853,7 +24801,6 @@
       }
     },
     "Create a card" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25014,7 +24961,6 @@
       }
     },
     "Create a Hide My Email alias" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25175,7 +25121,6 @@
       }
     },
     "Create a login" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25496,7 +25441,6 @@
       }
     },
     "Create a note" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25979,7 +25923,6 @@
       }
     },
     "Create vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26140,7 +26083,6 @@
       }
     },
     "Created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26301,7 +26243,6 @@
       }
     },
     "Credit card created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26462,7 +26403,6 @@
       }
     },
     "Credit card moved to trash" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26623,7 +26563,6 @@
       }
     },
     "Credit card permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26784,7 +26723,6 @@
       }
     },
     "Credit card restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26945,7 +26883,6 @@
       }
     },
     "Credit card updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -27106,7 +27043,6 @@
       }
     },
     "Credit cards" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -27749,7 +27685,6 @@
       }
     },
     "Custom fields" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -28072,7 +28007,6 @@
       }
     },
     "Dark" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -28874,7 +28808,6 @@
       }
     },
     "Delete alias" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -29515,7 +29448,6 @@
       }
     },
     "Delete vault?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -30482,7 +30414,6 @@
       }
     },
     "edit" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -32411,7 +32342,6 @@
       }
     },
     "Enable Face ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -32732,7 +32662,6 @@
       }
     },
     "Enable Touch ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33215,7 +33144,6 @@
       }
     },
     "Enter a field name" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33376,7 +33304,6 @@
       }
     },
     "Enter new name for « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33537,7 +33464,6 @@
       }
     },
     "Enter PIN code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -34978,7 +34904,6 @@
       }
     },
     "Face ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35139,7 +35064,6 @@
       }
     },
     "Face ID enabled" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35462,7 +35386,6 @@
       }
     },
     "Feature request" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -36264,7 +36187,6 @@
       }
     },
     "Forward to" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -36585,7 +36507,6 @@
       }
     },
     "Free trial" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -36746,7 +36667,6 @@
       }
     },
     "Generate a secure password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -37228,7 +37148,6 @@
       }
     },
     "Get an email alias to use on new apps" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -37713,7 +37632,6 @@
       }
     },
     "Goodbye spam and scams" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38034,7 +37952,6 @@
       }
     },
     "Hidden" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38355,7 +38272,6 @@
       }
     },
     "Hidden text copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38516,7 +38432,6 @@
       }
     },
     "Hide card number" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38677,7 +38592,6 @@
       }
     },
     "Hide custom field" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38998,7 +38912,6 @@
       }
     },
     "Hide password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39159,7 +39072,6 @@
       }
     },
     "Hide pin" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39320,7 +39232,6 @@
       }
     },
     "Hide security code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39641,7 +39552,6 @@
       }
     },
     "How to import to Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39962,7 +39872,6 @@
       }
     },
     "Hyphens" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -40284,7 +40193,6 @@
       }
     },
     "Immediately" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -40605,7 +40513,6 @@
       }
     },
     "Include numbers" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -41086,7 +40993,6 @@
       }
     },
     "Integrated 2FA authenticator" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -42535,7 +42441,6 @@
       }
     },
     "Item moved to vault « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43020,7 +42925,6 @@
       }
     },
     "Item's action Menu" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43341,7 +43245,6 @@
       }
     },
     "Items filter Menus" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43664,7 +43567,6 @@
       }
     },
     "Items from « %@ » moved to vault « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43985,7 +43887,6 @@
       }
     },
     "Join shared vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44146,7 +44047,6 @@
       }
     },
     "Jot down a PIN, code, or note to self" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44631,7 +44531,6 @@
       }
     },
     "Last 30 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44792,7 +44691,6 @@
       }
     },
     "Last 60 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44953,7 +44851,6 @@
       }
     },
     "Last 90 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -45434,7 +45331,6 @@
       }
     },
     "Last modified" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -45595,7 +45491,6 @@
       }
     },
     "Last two weeks" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -45756,7 +45651,6 @@
       }
     },
     "Last week" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -46557,7 +46451,6 @@
       }
     },
     "Log in to apps instantly" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -46718,7 +46611,6 @@
       }
     },
     "Login" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -48011,7 +47903,6 @@
       }
     },
     "Logins" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -48972,7 +48863,6 @@
       }
     },
     "Match system" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -49457,7 +49347,6 @@
       }
     },
     "Memorable password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -49778,7 +49667,6 @@
       }
     },
     "MM / YY" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -50259,7 +50147,6 @@
       }
     },
     "More than 90 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -51063,7 +50950,6 @@
       }
     },
     "Never" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -51224,7 +51110,6 @@
       }
     },
     "Next" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -51865,7 +51750,6 @@
       }
     },
     "No unlock" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -52348,7 +52232,6 @@
       }
     },
     "Not now" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -52669,7 +52552,6 @@
       }
     },
     "Note content copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -52830,7 +52712,6 @@
       }
     },
     "Note created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53151,7 +53032,6 @@
       }
     },
     "Note moved to trash" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53312,7 +53192,6 @@
       }
     },
     "Note permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53473,7 +53352,6 @@
       }
     },
     "Note restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53634,7 +53512,6 @@
       }
     },
     "Note updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53795,7 +53672,6 @@
       }
     },
     "Notes" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53956,7 +53832,6 @@
       }
     },
     "Now you can unlock Proton Pass only when you need it⏤quickly and securely" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -54117,7 +53992,6 @@
       }
     },
     "Numbers" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -54278,7 +54152,6 @@
       }
     },
     "Numbers and Symbols" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -54599,7 +54472,6 @@
       }
     },
     "One tap and⏤presto!⏤your username and password are filled in instantly" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -55401,7 +55273,6 @@
       }
     },
     "Open System Settings → Passwords → Password Options" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -55722,7 +55593,6 @@
       }
     },
     "Other" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -56845,7 +56715,6 @@
       }
     },
     "Password copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -57328,7 +57197,6 @@
       }
     },
     "Periods" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -58659,7 +58527,6 @@
       }
     },
     "PIN code set" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -58980,7 +58847,6 @@
       }
     },
     "PINs not matched" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -59301,7 +59167,6 @@
       }
     },
     "Please authenticate" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -59622,7 +59487,6 @@
       }
     },
     "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60263,7 +60127,6 @@
       }
     },
     "Prefix can not be empty" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60424,7 +60287,6 @@
       }
     },
     "Prefix can not contain 2 consecutive dots (..)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60585,7 +60447,6 @@
       }
     },
     "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60746,7 +60607,6 @@
       }
     },
     "Preparing..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60907,7 +60767,6 @@
       }
     },
     "Privacy policy" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -61229,7 +61088,6 @@
       }
     },
     "Protect your most sensitive data" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -61872,7 +61730,6 @@
       }
     },
     "Random password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -62033,7 +61890,6 @@
       }
     },
     "read" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -62514,7 +62370,6 @@
       }
     },
     "Reject invitation" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -62995,7 +62850,6 @@
       }
     },
     "Repeat PIN code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -63317,7 +63171,6 @@
       }
     },
     "Report successfully sent" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -63800,7 +63653,6 @@
       }
     },
     "Restart Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -64441,7 +64293,6 @@
       }
     },
     "Restored %lld items" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -65128,7 +64979,6 @@
       }
     },
     "Reused %lld times" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -66461,7 +66311,6 @@
       }
     },
     "Scan %@" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -67104,7 +66953,6 @@
       }
     },
     "Search in Trash..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -67909,7 +67757,6 @@
       }
     },
     "Securely store your payment information" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -68391,7 +68238,6 @@
       }
     },
     "Security code copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70648,7 +70494,6 @@
       }
     },
     "Set PIN code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70809,7 +70654,6 @@
       }
     },
     "Set Proton Pass to unlock with your face or fingerprint so only you have access" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72095,7 +71939,6 @@
       }
     },
     "Share with more people" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72580,7 +72423,6 @@
       }
     },
     "Show %@ vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72741,7 +72583,6 @@
       }
     },
     "Show all vaults" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72902,7 +72743,6 @@
       }
     },
     "Show card number" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -73223,7 +73063,6 @@
       }
     },
     "Show custom filed" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -73704,7 +73543,6 @@
       }
     },
     "Show password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -73865,7 +73703,6 @@
       }
     },
     "Show pin" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74026,7 +73863,6 @@
       }
     },
     "Show security code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74187,7 +74023,6 @@
       }
     },
     "Show trash" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74830,7 +74665,6 @@
       }
     },
     "Spaces" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74991,7 +74825,6 @@
       }
     },
     "Special characters" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -75312,7 +75145,6 @@
       }
     },
     "Start using Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -75635,7 +75467,6 @@
       }
     },
     "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -75958,7 +75789,6 @@
       }
     },
     "Subscription plan" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -76601,7 +76431,6 @@
       }
     },
     "Syncing" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -77405,7 +77234,6 @@
       }
     },
     "Terms of service" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -79653,7 +79481,6 @@
       }
     },
     "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -80134,7 +79961,6 @@
       }
     },
     "Title (A-Z)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -80295,7 +80121,6 @@
       }
     },
     "Title (Z-A)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -80776,7 +80601,6 @@
       }
     },
     "Today" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -80937,7 +80761,6 @@
       }
     },
     "TOTP copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -81098,7 +80921,6 @@
       }
     },
     "Touch ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -81259,7 +81081,6 @@
       }
     },
     "Touch ID enabled" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -82224,7 +82045,6 @@
       }
     },
     "Try searching using different spelling or keywords" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -82545,7 +82365,6 @@
       }
     },
     "Turn on AutoFill" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -82706,7 +82525,6 @@
       }
     },
     "Turn on AutoFill Passwords and allow filling from Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83189,7 +83007,6 @@
       }
     },
     "Type your PIN again to confirm" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83350,7 +83167,6 @@
       }
     },
     "Underscores" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83511,7 +83327,6 @@
       }
     },
     "Undo" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83672,7 +83487,6 @@
       }
     },
     "Unlimited email aliases" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83833,7 +83647,6 @@
       }
     },
     "Unlock" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83994,7 +83807,6 @@
       }
     },
     "Unlock the app with this code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -85921,7 +85733,6 @@
       }
     },
     "Use %@" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -86082,7 +85893,6 @@
       }
     },
     "Use email aliases to protect your inbox and identity" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -86243,7 +86053,6 @@
       }
     },
     "Use system passcode when Face ID fails" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -86564,7 +86373,6 @@
       }
     },
     "Use system passcode when Touch ID fails" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -87047,7 +86855,6 @@
       }
     },
     "Username copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -87529,7 +87336,6 @@
       }
     },
     "Vault « %@ » deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -87690,7 +87496,6 @@
       }
     },
     "Vault created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -88331,7 +88136,6 @@
       }
     },
     "Vault name" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -88654,7 +88458,6 @@
       }
     },
     "Vault updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -90261,7 +90064,6 @@
       }
     },
     "Vote for new features" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -91546,7 +91348,6 @@
       }
     },
     "Website copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -91707,7 +91508,6 @@
       }
     },
     "What went wrong?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -91868,7 +91668,6 @@
       }
     },
     "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -92349,7 +92148,6 @@
       }
     },
     "Would you want to associate « %@ » with « %@ »?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -92510,7 +92308,6 @@
       }
     },
     "Write us on Reddit" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -92831,7 +92628,6 @@
       }
     },
     "Yesterday" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
