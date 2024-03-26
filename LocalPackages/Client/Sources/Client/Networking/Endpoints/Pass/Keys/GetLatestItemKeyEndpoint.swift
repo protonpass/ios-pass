@@ -21,19 +21,19 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetLatestItemKeyResponse: Decodable, Sendable {
+struct GetLatestItemKeyResponse: Decodable, Sendable {
     let key: ItemKey
 }
 
-public struct GetLatestItemKeyEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetLatestItemKeyResponse
+struct GetLatestItemKeyEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetLatestItemKeyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(shareId: String, itemId: String) {
+    init(shareId: String, itemId: String) {
         debugDescription = "Get latest key for item"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/key/latest"
         method = .get

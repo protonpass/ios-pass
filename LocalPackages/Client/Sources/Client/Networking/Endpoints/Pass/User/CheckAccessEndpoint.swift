@@ -21,19 +21,19 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct CheckAccessResponse: Decodable, Equatable, Sendable {
+struct CheckAccessResponse: Decodable, Equatable, Sendable {
     let access: Access
 }
 
-public struct CheckAccessEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CheckAccessResponse
+struct CheckAccessEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CheckAccessResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init() {
+    init() {
         debugDescription = "Check access to Pass"
         path = "/pass/v1/user/access"
         method = .get

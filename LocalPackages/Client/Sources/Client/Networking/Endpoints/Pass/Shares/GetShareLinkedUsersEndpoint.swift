@@ -22,19 +22,19 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetShareLinkedUsersResponse: Decodable, Sendable {
+struct GetShareLinkedUsersResponse: Decodable, Sendable {
     let shares: [UserShareInfos]
 }
 
-public struct GetShareLinkedUsersEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetShareLinkedUsersResponse
+struct GetShareLinkedUsersEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetShareLinkedUsersResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(for shareId: String) {
+    init(for shareId: String) {
         debugDescription = "Get users that have access to the whole vault, or item"
         path = "/pass/v1/share/\(shareId)/user"
         method = .get

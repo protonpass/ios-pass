@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
@@ -70,6 +69,7 @@ struct CreateEditAliasView: View {
             CircleButton(icon: IconProvider.cross,
                          iconColor: ItemContentType.alias.normMajor2Color,
                          backgroundColor: ItemContentType.alias.normMinor1Color,
+                         accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
         }
     }

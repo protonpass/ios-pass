@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
 import DesignSystem
 import Entities
 import Factory
@@ -94,6 +92,7 @@ private struct FullNoteView: View {
                     CircleButton(icon: IconProvider.chevronDown,
                                  iconColor: itemContent.type.normMajor1Color,
                                  backgroundColor: itemContent.type.normMinor2Color,
+                                 accessibilityLabel: "Close",
                                  action: dismiss.callAsFunction)
                 }
             }

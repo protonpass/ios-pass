@@ -22,20 +22,20 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetShareKeysResponse: Decodable, Sendable {
+struct GetShareKeysResponse: Decodable, Sendable {
     let shareKeys: ShareKeys
 }
 
-public struct GetShareKeysEndpoint: Endpoint, @unchecked Sendable {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetShareKeysResponse
+struct GetShareKeysEndpoint: Endpoint, @unchecked Sendable {
+    typealias Body = EmptyRequest
+    typealias Response = GetShareKeysResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var queries: [String: Any]?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var queries: [String: Any]?
 
-    public init(shareId: String, page: Int, pageSize: Int) {
+    init(shareId: String, page: Int, pageSize: Int) {
         debugDescription = "Get keys for share"
         path = "/pass/v1/share/\(shareId)/key"
         method = .get

@@ -21,20 +21,20 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct UpdateVaultResponse: Decodable, Sendable {
+struct UpdateVaultResponse: Decodable, Sendable {
     let share: Share
 }
 
-public struct UpdateVaultEndpoint: Endpoint {
-    public typealias Body = UpdateVaultRequest
-    public typealias Response = UpdateVaultResponse
+struct UpdateVaultEndpoint: Endpoint {
+    typealias Body = UpdateVaultRequest
+    typealias Response = UpdateVaultResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: UpdateVaultRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: UpdateVaultRequest?
 
-    public init(shareId: String, request: UpdateVaultRequest) {
+    init(shareId: String, request: UpdateVaultRequest) {
         debugDescription = "Edit vault"
         path = "/pass/v1/vault/\(shareId)"
         method = .put

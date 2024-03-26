@@ -23,19 +23,19 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetOrganizationResponse: Sendable, Decodable {
-    public let organization: Organization?
+struct GetOrganizationResponse: Sendable, Decodable {
+    let organization: Organization?
 }
 
-public struct GetOrganizationEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetOrganizationResponse
+struct GetOrganizationEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetOrganizationResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init() {
+    init() {
         debugDescription = "Get the information about the organization"
         path = "/pass/v1/organization"
         method = .get

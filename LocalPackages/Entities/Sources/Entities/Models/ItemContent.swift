@@ -72,6 +72,18 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
     public let expirationDate: String // YYYY-MM
     public let pin: String
 
+    public var month: Int {
+        Int(expirationDate.components(separatedBy: "-").last ?? "") ?? 0
+    }
+
+    public var year: Int {
+        Int(expirationDate.components(separatedBy: "-").first ?? "") ?? 0
+    }
+
+    public var displayedExpirationDate: String {
+        Self.expirationDate(month: month, year: year)
+    }
+
     public init(cardholderName: String,
                 type: ProtonPassItemV1_CardType,
                 number: String,
@@ -84,6 +96,12 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
         self.verificationNumber = verificationNumber
         self.expirationDate = expirationDate
         self.pin = pin
+    }
+}
+
+public extension CreditCardData {
+    static func expirationDate(month: Int, year: Int) -> String {
+        String(format: "%02d / %02d", month, year % 100)
     }
 }
 
