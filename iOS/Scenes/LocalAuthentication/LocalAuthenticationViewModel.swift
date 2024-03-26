@@ -23,6 +23,7 @@ import Core
 import Entities
 import Factory
 import Foundation
+import Macro
 
 private let kMaxAttemptCount = 3
 
@@ -81,7 +82,8 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let authenticated = try await authenticate(policy: preferences.localAuthenticationPolicy)
+                let authenticated = try await authenticate(policy: preferences.localAuthenticationPolicy,
+                                                           reason: #localized("Please authenticate"))
                 if authenticated {
                     recordSuccess()
                 } else {
