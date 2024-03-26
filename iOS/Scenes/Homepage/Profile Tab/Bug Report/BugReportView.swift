@@ -242,8 +242,7 @@ private extension BugReportView {
                 .padding(.vertical, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
-                FlowLayout(mode: .scrollable,
-                           items: Array(viewModel.currentFiles.keys),
+                FlowLayout(items: Array(viewModel.currentFiles.keys),
                            viewMapping: { element in
                                HStack(alignment: .center, spacing: 10) {
                                    Text(element)
