@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Macro
 import SwiftUI
 
@@ -29,16 +30,12 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
     @Published private(set) var cardNumber = ""
     @Published private(set) var verificationNumber = ""
     @Published private(set) var pin = ""
-    @Published private(set) var month: Int?
-    @Published private(set) var year: Int?
+    @Published private(set) var month: Int = 0
+    @Published private(set) var year: Int = 0
     @Published private(set) var note = ""
 
     var expirationDate: String {
-        if let month, let year {
-            String(format: "%02d / %02d", month, year % 100)
-        } else {
-            ""
-        }
+        CreditCardData.expirationDate(month: month, year: year)
     }
 
     override func bindValues() {
@@ -47,10 +44,8 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
             cardNumber = data.number
             verificationNumber = data.verificationNumber
             pin = data.pin
-
-            let monthYear = data.expirationDate.components(separatedBy: "-")
-            month = Int(monthYear.last ?? "")
-            year = Int(monthYear.first ?? "")
+            month = data.month
+            year = data.year
 
             note = itemContent.note
         } else {

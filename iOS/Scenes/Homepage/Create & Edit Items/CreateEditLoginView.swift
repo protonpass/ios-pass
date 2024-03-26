@@ -111,8 +111,6 @@ struct CreateEditLoginView: View {
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
-                    case .custom:
-                        id = bottomID
                     default: id = nil
                     }
 
@@ -404,7 +402,8 @@ private extension CreateEditLoginView {
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: viewModel.itemContentType().normMajor1Color,
-                             backgroundColor: viewModel.itemContentType().normMinor1Color)
+                             backgroundColor: viewModel.itemContentType().normMinor1Color,
+                             accessibilityLabel: "Alias action menu")
             })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

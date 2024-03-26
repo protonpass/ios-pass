@@ -27,6 +27,7 @@ public protocol LocalShareEventIDDatasourceProtocol: Sendable {
     /// Upsert last event ID of a share
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws
 
+    // periphery:ignore
     /// Remove everything
     func removeAllEntries(userId: String) async throws
 }

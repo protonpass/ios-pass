@@ -22,10 +22,10 @@ import Client
 import DesignSystem
 import SwiftUI
 
-public struct HighlightText: View {
-    public let texts: [Text]
+struct HighlightText: View {
+    let texts: [Text]
 
-    public init(highlightableText: HighlightableText) {
+    init(highlightableText: HighlightableText) {
         var texts = [Text]()
 
         if !highlightableText.isLeadingText {

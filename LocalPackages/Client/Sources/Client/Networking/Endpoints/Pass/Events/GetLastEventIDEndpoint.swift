@@ -21,18 +21,18 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetLastEventIDResponse: Decodable, Sendable {
+struct GetLastEventIDResponse: Decodable, Sendable {
     let eventID: String
 }
 
-public struct GetLastEventIDEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetLastEventIDResponse
+struct GetLastEventIDEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetLastEventIDResponse
 
-    public var debugDescription: String
-    public var path: String
+    var debugDescription: String
+    var path: String
 
-    public init(shareId: String) {
+    init(shareId: String) {
         debugDescription = "Get last eventID"
         path = "/pass/v1/share/\(shareId)/event"
     }

@@ -28,6 +28,7 @@ public extension URL {
         return "\(scheme)://\(host)"
     }
 
+    // periphery:ignore
     /// Get value of a query parameter.
     /// E.g: Given an URL `https://example.com?param1=123&param2=abc`
     /// `url["param1"]` returns `123`

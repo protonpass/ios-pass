@@ -34,12 +34,9 @@ public extension RefreshInvitationsUseCase {
 
 public final class RefreshInvitations: RefreshInvitationsUseCase {
     private let inviteRepository: any InviteRepositoryProtocol
-    private let accessRepository: any AccessRepositoryProtocol
 
-    public init(inviteRepository: any InviteRepositoryProtocol,
-                accessRepository: any AccessRepositoryProtocol) {
+    public init(inviteRepository: any InviteRepositoryProtocol) {
         self.inviteRepository = inviteRepository
-        self.accessRepository = accessRepository
     }
 
     public func execute() async throws {

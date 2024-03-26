@@ -37,7 +37,7 @@ import Sentry
 import SwiftUI
 
 @MainActor
-public final class CredentialProviderCoordinator: DeinitPrintable {
+final class CredentialProviderCoordinator: DeinitPrintable {
     deinit {
         print(deinitMessage)
     }

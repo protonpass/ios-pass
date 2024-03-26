@@ -54,6 +54,7 @@ extension UserData: Codable {
 }
 
 public extension UserData {
+    // periphery:ignore
     static var preview: UserData {
         let credential = AuthCredential(sessionID: .random(),
                                         accessToken: .random(),

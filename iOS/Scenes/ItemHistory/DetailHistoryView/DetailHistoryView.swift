@@ -42,6 +42,7 @@ struct DetailHistoryView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(DesignConstant.sectionPadding)
             .navigationBarTitleDisplayMode(.inline)
+            .tint(viewModel.currentRevision.type.normMajor2Color.toColor)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
             .alert(isPresented: $showAlert) {
@@ -126,6 +127,7 @@ private extension DetailHistoryView {
             CircleButton(icon: IconProvider.arrowLeft,
                          iconColor: viewModel.currentRevision.contentData.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.contentData.type.normMinor1Color,
+                         accessibilityLabel: "Go back",
                          action: dismiss.callAsFunction)
         }
 

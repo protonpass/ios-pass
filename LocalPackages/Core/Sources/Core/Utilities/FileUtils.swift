@@ -21,6 +21,7 @@
 import Foundation
 
 public enum FileUtils {
+    // periphery:ignore
     public static func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
@@ -74,6 +75,7 @@ public enum FileUtils {
         return attributes[.modificationDate] as? Date
     }
 
+    // periphery:ignore
     /// - Returns: `nil` if the file does not exist or failed to get file's attributes
     public static func getCreationDate(url: URL) throws -> Date? {
         guard FileManager.default.fileExists(atPath: url.path) else { return nil }

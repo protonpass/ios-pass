@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -34,13 +33,20 @@ struct AliasDetailView: View {
     }
 
     var body: some View {
-        if viewModel.isShownAsSheet {
-            NavigationView {
+        if let error = viewModel.error {
+            RetryableErrorView(errorMessage: error.localizedDescription) {
+                viewModel.refresh()
+            }
+            .padding()
+        } else {
+            if viewModel.isShownAsSheet {
+                NavigationView {
+                    realBody
+                }
+                .navigationViewStyle(.stack)
+            } else {
                 realBody
             }
-            .navigationViewStyle(.stack)
-        } else {
-            realBody
         }
     }
 
@@ -62,7 +68,6 @@ struct AliasDetailView: View {
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                             itemHistoryEnable: viewModel.itemHistoryEnabled,
                                              action: { viewModel.showItemHistory() })
 
                     ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,

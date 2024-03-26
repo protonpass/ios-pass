@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
@@ -81,6 +80,7 @@ private extension SetPINCodeView {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
         }
 

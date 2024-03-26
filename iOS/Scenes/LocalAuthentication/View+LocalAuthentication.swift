@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import Core
 import DesignSystem
+import Entities
 import Factory
 import ProtonCoreKeymaker
 import SwiftUI

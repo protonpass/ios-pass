@@ -64,6 +64,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
@@ -245,6 +246,9 @@ extension SearchViewModel {
                     try await refreshSearchHistory()
                     addTelemetryEvent(with: .searchClick)
                     router.present(for: .itemDetail(itemContent, automaticDisplay: false))
+                    if #available(iOS 17, *) {
+                        await SpotlightTip.didPerformSearch.donate()
+                    }
                 }
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -288,6 +292,10 @@ extension SearchViewModel {
         searchMode = .all(.all)
         refreshResults()
     }
+
+    func openSettings() {
+        router.present(for: .settingsMenu)
+    }
 }
 
 // MARK: SetUP & Utils
@@ -313,6 +321,10 @@ private extension SearchViewModel {
                 filterAndSortResults()
             }
             .store(in: &cancellables)
+
+        if #available(iOS 17, *) {
+            SpotlightTip.spotlightEnabled = preferences.spotlightEnabled
+        }
     }
 }
 

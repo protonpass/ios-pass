@@ -47,8 +47,6 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
     private weak var generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?
     private let mode: GeneratePasswordViewMode
     weak var delegate: GeneratePasswordCoordinatorDelegate?
-
-    private var generatePasswordViewModel: GeneratePasswordViewModel?
     private var sheetPresentationController: UISheetPresentationController?
 
     init(generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?,
@@ -70,7 +68,6 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.prefersGrabberVisible = true
 
-        generatePasswordViewModel = viewModel
         sheetPresentationController = viewController.sheetPresentationController
         updateSheetHeight(isShowingAdvancedOptions: viewModel.isShowingAdvancedOptions)
 

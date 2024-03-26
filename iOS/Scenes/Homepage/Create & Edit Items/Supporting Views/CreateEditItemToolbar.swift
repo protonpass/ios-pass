@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
@@ -40,6 +39,7 @@ struct CreateEditItemToolbar: ToolbarContent {
             CircleButton(icon: IconProvider.cross,
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,
+                         accessibilityLabel: "Close",
                          action: onGoBack)
         }
 
@@ -67,6 +67,7 @@ private extension CreateEditItemToolbar {
                     CircleButton(icon: PassIcon.scanner,
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color,
+                                 accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
                                  action: onScan)
                 default:
                     EmptyView()

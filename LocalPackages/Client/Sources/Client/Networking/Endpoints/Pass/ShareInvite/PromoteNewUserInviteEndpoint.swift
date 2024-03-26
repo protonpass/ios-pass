@@ -23,16 +23,16 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct PromoteNewUserInviteEndpoint: Endpoint {
-    public typealias Body = PromoteNewUserInviteRequest
-    public typealias Response = CodeOnlyResponse
+struct PromoteNewUserInviteEndpoint: Endpoint {
+    typealias Body = PromoteNewUserInviteRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: PromoteNewUserInviteRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: PromoteNewUserInviteRequest?
 
-    public init(shareId: String, inviteId: String, keys: [ItemKey]) {
+    init(shareId: String, inviteId: String, keys: [ItemKey]) {
         debugDescription = "Confirm new user invite"
         path = "/pass/v1/share/\(shareId)/invite/new_user/\(inviteId)/keys"
         method = .post
@@ -40,7 +40,7 @@ public struct PromoteNewUserInviteEndpoint: Endpoint {
     }
 }
 
-public struct PromoteNewUserInviteRequest: Encodable, Sendable {
+struct PromoteNewUserInviteRequest: Encodable, Sendable {
     let keys: [ItemKey]
 
     enum CodingKeys: String, CodingKey {

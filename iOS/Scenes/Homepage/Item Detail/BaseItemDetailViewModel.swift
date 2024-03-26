@@ -25,6 +25,7 @@ import CryptoKit
 import Entities
 import Factory
 import Macro
+import Screens
 import UIKit
 
 @MainActor
@@ -40,7 +41,6 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
-    @Published private(set) var plan: Plan?
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -64,10 +64,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
-    private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
-    private var cancellable = Set<AnyCancellable>()
-
-    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
     var isAllowedToShare: Bool {
         guard let vault else {
@@ -81,10 +77,6 @@ class BaseItemDetailViewModel: ObservableObject {
             return false
         }
         return canUserPerformActionOnVault(for: vault.vault)
-    }
-
-    var itemHistoryEnabled: Bool {
-        plan?.isFreeUser == false
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
@@ -105,17 +97,6 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
-
-        getUserPlan()
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .compactMap { $0 }
-            .sink { [weak self] refreshedPlan in
-                guard let self else {
-                    return
-                }
-                plan = refreshedPlan
-            }.store(in: &cancellable)
     }
 
     /// To be overidden by subclasses
@@ -126,6 +107,7 @@ class BaseItemDetailViewModel: ObservableObject {
     ///    - text: The text to be copied to clipboard.
     ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
+        donateToItemForceTouchTip()
         router.action(.copyToClipboard(text: text, message: message))
     }
 
@@ -134,6 +116,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func edit() {
+        donateToItemForceTouchTip()
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 
@@ -190,6 +173,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 }
                 router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -202,8 +186,7 @@ class BaseItemDetailViewModel: ObservableObject {
             assertionFailure("Only applicable to note item")
             return
         }
-        clipboardManager.copy(text: itemContent.note,
-                              bannerMessage: #localized("Note content copied"))
+        copyToClipboard(text: itemContent.note, message: #localized("Note content copied"))
     }
 
     func clone() {
@@ -222,6 +205,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 try await itemRepository.trashItems([encryptedItem])
                 delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 logger.info("Trashed \(item.debugDescription)")
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -242,6 +226,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .successMessage(item.type.restoreMessage,
                                                         config: .dismissAndRefresh(with: .update(item.type))))
                 logger.info("Restored \(item.debugDescription)")
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -262,6 +247,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .successMessage(item.type.deleteMessage,
                                                         config: .dismissAndRefresh(with: .delete(item.type))))
                 logger.info("Permanently deleted \(item.debugDescription)")
+                donateToItemForceTouchTip()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -307,6 +293,13 @@ private extension BaseItemDetailViewModel {
                 throw PassError.itemNotFound(item)
             }
             return item
+        }
+    }
+
+    func donateToItemForceTouchTip() {
+        Task { [weak self] in
+            guard #available(iOS 17, *), let self else { return }
+            await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
         }
     }
 }

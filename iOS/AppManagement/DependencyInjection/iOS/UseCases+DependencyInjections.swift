@@ -84,8 +84,8 @@ private extension UseCasesContainer {
         SharedServiceContainer.shared.vaultsManager()
     }
 
-    var securityCenterRepository: any SecurityCenterRepositoryProtocol {
-        SharedRepositoryContainer.shared.securityCenterRepository()
+    var passMonitorRepository: any PassMonitorRepositoryProtocol {
+        SharedRepositoryContainer.shared.passMonitorRepository()
     }
 }
 
@@ -169,8 +169,8 @@ extension UseCasesContainer {
 
     var checkAddressesForInvite: Factory<CheckAddressesForInviteUseCase> {
         self { CheckAddressesForInvite(accessRepository: self.accessRepository,
-                                       remoteOrganizationDatasource: SharedRepositoryContainer.shared
-                                           .remoteOrganizationDatasource(),
+                                       organizationRepository: SharedRepositoryContainer.shared
+                                           .organizationRepository(),
                                        shareInviteRepository: self.shareInviteRepository) }
     }
 
@@ -216,8 +216,7 @@ extension UseCasesContainer {
     }
 
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
-        self { RefreshInvitations(inviteRepository: self.inviteRepository,
-                                  accessRepository: self.accessRepository) }
+        self { RefreshInvitations(inviteRepository: self.inviteRepository) }
     }
 
     var rejectInvitation: Factory<RejectInvitationUseCase> {
@@ -404,7 +403,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var getAllSecurityAffectedLogins: Factory<GetAllSecurityAffectedLoginsUseCase> {
         self {
-            GetAllSecurityAffectedLogins(securityCenterRepository: self.securityCenterRepository,
+            GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository,
                                          symmetricKeyProvider: self.symmetricKeyProvider,
                                          getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
         }
@@ -412,7 +411,7 @@ extension UseCasesContainer {
 
     var getLoginSecurityIssues: Factory<GetLoginSecurityIssuesUseCase> {
         self {
-            GetLoginSecurityIssues(securityCenterRepository: self.securityCenterRepository)
+            GetLoginSecurityIssues(passMonitorRepository: self.passMonitorRepository)
         }
     }
     
@@ -420,5 +419,13 @@ extension UseCasesContainer {
         self {
             RemoveItemMonitoring(securityCenterRepository: self.securityCenterRepository)
         }
+    }
+}
+
+// MARK: - Organization
+
+extension UseCasesContainer {
+    var overrideSecuritySettings: Factory<OverrideSecuritySettingsUseCase> {
+        self { OverrideSecuritySettings(settingsProvider: SharedToolingContainer.shared.preferences()) }
     }
 }

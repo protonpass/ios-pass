@@ -32,13 +32,6 @@ public struct Suffix: Decodable, Hashable, Sendable {
     public let domain: String
     public let signedSuffix: String
     public let isCustom: Bool
-
-    public init(suffix: String, domain: String, signedSuffix: String, isCustom: Bool) {
-        self.suffix = suffix
-        self.domain = domain
-        self.signedSuffix = signedSuffix
-        self.isCustom = isCustom
-    }
 }
 
 extension Suffix: Equatable {
