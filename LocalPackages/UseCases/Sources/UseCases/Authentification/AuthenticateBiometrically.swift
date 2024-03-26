@@ -27,7 +27,7 @@ public protocol AuthenticateBiometricallyUseCase: Sendable {
 }
 
 public extension AuthenticateBiometricallyUseCase {
-    func callAsFunction(policy: LAPolicy, reason: String = "Please authenticate") async throws -> Bool {
+    func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool {
         try await execute(policy: policy, reason: reason)
     }
 }
