@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Core
 import Factory
 import UserNotifications
@@ -35,8 +34,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
         }
     }
 
-    @Published var isLocked: Bool
-
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
@@ -49,7 +46,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
     init() {
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
-        isLocked = preferences.localAuthenticationMethod != .none
     }
 }
 

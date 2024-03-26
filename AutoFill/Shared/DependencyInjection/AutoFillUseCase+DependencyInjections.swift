@@ -119,7 +119,7 @@ extension AutoFillUseCaseContainer {
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
                                 completeAutoFill: self.completeAutoFill(),
-                                localAuthenticationMethodProvider: self.preferences) }
+                                securitySettingsProvider: self.preferences) }
     }
 
     var autoFillPassword: Factory<AutoFillPasswordUseCase> {

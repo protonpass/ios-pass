@@ -15,6 +15,12 @@
             "value" : "Zrušit"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annullér"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57,6 +63,12 @@
             "value" : "Annuler"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batal"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +93,18 @@
             "value" : "취소"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleren"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,6 +127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zrušiť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prekliči"
           }
         },
         "sv" : {
@@ -144,6 +174,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zahodit"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kassér"
           }
         },
         "de" : {
@@ -188,6 +224,12 @@
             "value" : "Abandonner"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buang"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -212,6 +254,18 @@
             "value" : "저장 안함"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forkast"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijderen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -234,6 +288,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zahodiť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zavrzi"
           }
         },
         "sv" : {
@@ -275,6 +335,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zahodit změny?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kassér ændringer?"
           }
         },
         "de" : {
@@ -319,6 +385,12 @@
             "value" : "Abandonner les modifications ?"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batalkan perubahan?"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -343,6 +415,18 @@
             "value" : "변경 사항 취소"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forkaste endringer?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wijzigingen weggooien?"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -365,6 +449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zahodiť zmeny?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zavrzi spremembe?"
           }
         },
         "sv" : {
@@ -405,6 +495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Došlo k chybě"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fejl opstod"
           }
         },
         "de" : {
@@ -449,6 +545,12 @@
             "value" : "Une erreur s'est produite."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terjadi kesalahan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -473,6 +575,18 @@
             "value" : "오류 발생"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feil oppstod"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is iets fout gegaan"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -495,6 +609,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyskytla sa chyba"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prišlo je do napake"
           }
         },
         "sv" : {
@@ -536,6 +656,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokračovat v úpravách"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsæt Redigering"
           }
         },
         "de" : {
@@ -580,6 +706,12 @@
             "value" : "Poursuivre les modifications"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terus Mengedit"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -604,6 +736,18 @@
             "value" : "계속 편집하기"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsett å redigere"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doorgaan met bewerken"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -626,6 +770,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokračovať v úpravách"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadaljuj z urejanjem"
           }
         },
         "sv" : {
@@ -666,6 +816,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
           }
         },
         "de" : {
@@ -710,6 +866,12 @@
             "value" : "OK"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -734,6 +896,18 @@
             "value" : "확인"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -756,6 +930,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V REDU"
           }
         },
         "sv" : {
@@ -796,6 +976,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opakovat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv igen"
           }
         },
         "de" : {
@@ -840,6 +1026,12 @@
             "value" : "Réessayer"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coba lagi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -864,6 +1056,18 @@
             "value" : "재시도"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv på nytt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw proberen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -886,6 +1090,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skúsiť znova"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poskusite znova"
           }
         },
         "sv" : {
@@ -926,6 +1136,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Some changes happened to this item, heading back to the previous page."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der er sket nogle ændringer i dette element, vender tilbage til den forrige side."
           }
         },
         "de" : {
@@ -970,6 +1186,12 @@
             "value" : "Certaines modifications ont été apportées à cet élément. Vous allez revenir à la page précédente."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beberapa perubahan telah terjadi pada item ini, kembali ke laman sebelumnya."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -994,6 +1216,18 @@
             "value" : "이 항목에 관한 몇 가지 변경사항이 있어 이전 페이지로 이동되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noen endringer skjedde med dette elementet, på vei tilbake til forrige side."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sommige wijzigingen zijn gebeurd met dit item, in de kop terug naar de vorige pagina."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1016,6 +1250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "V tejto položke došlo k nejakým zmenám, vrátite sa späť na predchádzajúcu stránku."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nekaj se je spremenilo, zato se vračamo na prejšnjo stran."
           }
         },
         "sv" : {
@@ -1056,6 +1296,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tato položka je zastaralá"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette element er forældet"
           }
         },
         "de" : {
@@ -1100,6 +1346,12 @@
             "value" : "Cet élément est obsolète."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ini lawas"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1124,6 +1376,18 @@
             "value" : "이 항목은 오래되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette elementet er foreldet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit item is verouderd"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1146,6 +1410,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Táto položka je zastaraná"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta predmet je zastarel."
           }
         },
         "sv" : {
@@ -1187,6 +1457,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Máte neuložené změny, určitě je chcete zahodit?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ikke-gemte ændringer, er du sikker på, at du vil kassere dem?"
           }
         },
         "de" : {
@@ -1231,6 +1507,12 @@
             "value" : "Des modifications n'ont pas été enregistrées. Voulez-vous vraiment les abandonner ?"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin untuk membatalkan perubahan ini?"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1255,6 +1537,18 @@
             "value" : "저장되지 않은 변경 사항이 있어요. 정말 나가시겠어요?"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ulagrede endringer, er du sikker på at du vil forkaste dem?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U heeft niet-opgeslagen wijzigingen. Weet u zeker dat u deze wilt verwijderen?"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1277,6 +1571,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Máte neuložené zmeny, naozaj ich chcete zahodiť?"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imate neshranjene spremembe. Ste prepričani, da jih želite zavreči?"
           }
         },
         "sv" : {

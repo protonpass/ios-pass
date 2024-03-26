@@ -35,14 +35,14 @@ public extension CheckAddressesForInviteUseCase {
 
 public final class CheckAddressesForInvite: CheckAddressesForInviteUseCase {
     private let accessRepository: any AccessRepositoryProtocol
-    private let remoteOrganizationDatasource: any RemoteOrganizationDatasourceProtocol
+    private let organizationRepository: any OrganizationRepositoryProtocol
     private let shareInviteRepository: any ShareInviteRepositoryProtocol
 
     public init(accessRepository: any AccessRepositoryProtocol,
-                remoteOrganizationDatasource: any RemoteOrganizationDatasourceProtocol,
+                organizationRepository: any OrganizationRepositoryProtocol,
                 shareInviteRepository: any ShareInviteRepositoryProtocol) {
         self.accessRepository = accessRepository
-        self.remoteOrganizationDatasource = remoteOrganizationDatasource
+        self.organizationRepository = organizationRepository
         self.shareInviteRepository = shareInviteRepository
     }
 
@@ -54,8 +54,8 @@ public final class CheckAddressesForInvite: CheckAddressesForInviteUseCase {
             return .valid
         }
 
-        guard let organization = try await remoteOrganizationDatasource.getOrganization() else {
-            // Organization must be not nil for business user
+        guard let organization = try await organizationRepository.refreshOrganization() else {
+            assertionFailure("Organization must be not nil for business user")
             throw PassError.organizationNotFound
         }
 

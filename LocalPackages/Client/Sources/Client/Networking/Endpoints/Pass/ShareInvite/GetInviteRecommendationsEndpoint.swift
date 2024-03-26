@@ -23,20 +23,20 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetInviteRecommendationsResponse: Sendable, Decodable {
+struct GetInviteRecommendationsResponse: Sendable, Decodable {
     let recommendation: InviteRecommendations
 }
 
-public struct GetInviteRecommendationsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetInviteRecommendationsResponse
+struct GetInviteRecommendationsEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetInviteRecommendationsResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var parameters: [String: Any]?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var parameters: [String: Any]?
 
-    public init(shareId: String, query: InviteRecommendationsQuery) {
+    init(shareId: String, query: InviteRecommendationsQuery) {
         debugDescription = "Get invite recommendations"
         path = "/pass/v1/share/\(shareId)/invite/recommended_emails"
         method = .get

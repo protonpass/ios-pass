@@ -24,18 +24,18 @@ import SwiftUI
 struct TOTPText: View {
     private let texts: [Text]
 
-    public init(code: String, textColor: UIColor = PassColor.textNorm) {
+    init(code: String, textColor: UIColor = PassColor.textNorm, font: Font = .callout) {
         let segments = Array(code).chunked(into: 3).map { String($0) }
         var texts = [Text]()
 
         for (index, segment) in segments.enumerated() {
             texts.append(Text(segment)
-                .font(.callout)
+                .font(font)
                 .fontWeight(.medium)
                 .foregroundColor(textColor.toColor))
             if index != segments.count - 1 {
                 texts.append(Text(verbatim: " • ")
-                    .font(.callout)
+                    .font(font)
                     .foregroundColor(PassColor.textHint.toColor))
             }
         }

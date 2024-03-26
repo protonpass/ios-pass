@@ -20,7 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import DesignSystem
 import Entities
 import Factory
@@ -48,8 +47,7 @@ struct UserEmailView: View {
                     vaultRow(vault)
                 }
 
-                FlowLayout(mode: .scrollable,
-                           items: viewModel.selectedEmails + [""],
+                FlowLayout(items: viewModel.selectedEmails + [""],
                            viewMapping: { token(for: $0) })
                     .padding(.leading, -4)
 
@@ -230,7 +228,8 @@ private extension UserEmailView {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1) {
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Close") {
                 viewModel.resetShareInviteInformation()
                 dismiss()
             }

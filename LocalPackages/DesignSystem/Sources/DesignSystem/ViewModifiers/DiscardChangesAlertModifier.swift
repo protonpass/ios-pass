@@ -20,16 +20,16 @@
 
 import SwiftUI
 
-public struct DiscardChangesAlertModifier: ViewModifier {
+struct DiscardChangesAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let onDiscard: () -> Void
 
-    public init(isPresented: Binding<Bool>, onDiscard: @escaping () -> Void) {
+    init(isPresented: Binding<Bool>, onDiscard: @escaping () -> Void) {
         _isPresented = isPresented
         self.onDiscard = onDiscard
     }
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .alert("Discard changes?",
                    isPresented: $isPresented,

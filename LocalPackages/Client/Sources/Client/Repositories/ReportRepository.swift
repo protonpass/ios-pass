@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreLogin
 import ProtonCoreServices
 
-public enum ReportRepositoryError: Error {
+enum ReportRepositoryError: Error {
     case noUserData
 }
 
@@ -37,19 +37,16 @@ public protocol ReportRepositoryProtocol: Sendable {
     func sendBug(with title: String,
                  and description: String,
                  optional logs: [String: URL]) async throws -> Bool
-    func sendFeedback(with title: String,
-                      and description: String) async throws -> Bool
+//    func sendFeedback(with title: String,
+//                      and description: String) async throws -> Bool
 }
 
 public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
     private let apiService: any APIService
     private let userDataProvider: any UserDataProvider
-    private let logger: Logger
 
     public init(apiService: any APIService,
-                userDataProvider: any UserDataProvider,
-                logManager: any LogManagerProtocol) {
-        logger = .init(manager: logManager)
+                userDataProvider: any UserDataProvider) {
         self.apiService = apiService
         self.userDataProvider = userDataProvider
     }
@@ -82,16 +79,16 @@ public extension ReportRepository {
         }
     }
 
-    /// Sends a user feedback
-    /// - Parameters:
-    ///   - title: The feedback title
-    ///   - description: The feedback description
-    /// - Returns: `True` if the  feedback was sent correctly or and `Error` if not
-    func sendFeedback(with title: String, and description: String) async throws -> Bool {
-        let request = FeedbackRequest(with: title, and: description)
-        let endpoint = FeedbackEndpoint(request: request)
-        return try await apiService.exec(endpoint: endpoint).isSuccessful
-    }
+//    /// Sends a user feedback
+//    /// - Parameters:
+//    ///   - title: The feedback title
+//    ///   - description: The feedback description
+//    /// - Returns: `True` if the  feedback was sent correctly or and `Error` if not
+//    func sendFeedback(with title: String, and description: String) async throws -> Bool {
+//        let request = FeedbackRequest(with: title, and: description)
+//        let endpoint = FeedbackEndpoint(request: request)
+//        return try await apiService.exec(endpoint: endpoint).isSuccessful
+//    }
 }
 
 private extension ReportRepository {

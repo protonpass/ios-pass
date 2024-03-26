@@ -22,18 +22,17 @@ import Core
 import CryptoKit
 import Entities
 import Foundation
-
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct MoveItemsResponse: Decodable, Sendable {
+struct MoveItemsResponse: Decodable, Sendable {
     let items: [Item]
 }
 
 public struct MoveItemsRequest: Encodable, Sendable {
     /// Encrypted ID of the destination share
-    public let shareId: String
-    public let items: [ItemToBeMovedContainer]
+    let shareId: String
+    let items: [ItemToBeMovedContainer]
 
     enum CodingKeys: String, CodingKey {
         case shareId = "ShareID"
@@ -77,9 +76,9 @@ extension MoveItemsRequest {
     }
 }
 
-public struct ItemToBeMovedContainer: Codable, Sendable {
-    public let itemId: String
-    public let item: ItemToBeMoved
+struct ItemToBeMovedContainer: Codable, Sendable {
+    let itemId: String
+    let item: ItemToBeMoved
 
     enum CodingKeys: String, CodingKey {
         case itemId = "ItemID"
@@ -87,16 +86,16 @@ public struct ItemToBeMovedContainer: Codable, Sendable {
     }
 }
 
-public struct MoveItemsEndpoint: Endpoint {
-    public typealias Body = MoveItemsRequest
-    public typealias Response = MoveItemsResponse
+struct MoveItemsEndpoint: Endpoint {
+    typealias Body = MoveItemsRequest
+    typealias Response = MoveItemsResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: MoveItemsRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: MoveItemsRequest?
 
-    public init(request: MoveItemsRequest, fromShareId: String) {
+    init(request: MoveItemsRequest, fromShareId: String) {
         debugDescription = "Move items"
         path = "/pass/v1/share/\(fromShareId)/item/share"
         method = .put

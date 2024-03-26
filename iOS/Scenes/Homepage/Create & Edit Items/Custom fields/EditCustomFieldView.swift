@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
@@ -97,7 +96,8 @@ struct EditCustomFieldView<Field: Hashable>: View {
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: contentType.normMajor1Color,
-                             backgroundColor: contentType.normMinor1Color)
+                             backgroundColor: contentType.normMinor1Color,
+                             accessibilityLabel: "Custom field menu")
             })
         }
         .padding(DesignConstant.sectionPadding)

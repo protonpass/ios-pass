@@ -23,7 +23,6 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
-import DesignSystem
 import Entities
 import Factory
 import Macro
@@ -46,7 +45,6 @@ final class AppCoordinator {
 
     private var homepageCoordinator: HomepageCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
-
     private var rootViewController: UIViewController? { window.rootViewController }
 
     private var cancellables = Set<AnyCancellable>()

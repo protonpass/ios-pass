@@ -44,7 +44,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let totpManager = resolve(\ServiceContainer.totpManager)
+    let totpManager = resolve(\SharedServiceContainer.totpManager)
 
     private var searchableItems = [SearchableItem]()
     private(set) var selectedItem: ItemContent?

@@ -1,6 +1,330 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Cancel" : {
+      "comment" : "Accessibility label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скасаваць"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annullér"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ακύρωση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peru"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batal"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაუქმება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuluj"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anulare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušiť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prekliči"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скасувати"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hủy"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "comment" : "Accessibility label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрыць"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zavřít"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luk"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κλείσιμο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sulje"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutup"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiudi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დახურვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "닫기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lukk"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sluiten"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamknij"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Închidere"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatvoriť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapri"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stäng"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapat"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрити"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đóng"
+          }
+        }
+      }
+    },
     "Couldn't find \"%@\"" : {
       "localizations" : {
         "be" : {
@@ -13,6 +337,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nepodařilo se najít \"%@\""
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finde \"%@\""
           }
         },
         "de" : {
@@ -57,6 +387,12 @@
             "value" : "Aucun résultat n'a été trouvé pour « %@ »."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" tidak dapat ditemukan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +417,18 @@
             "value" : "\"%@\"을(를) 찾을 수 없습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finne \"%@\""
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kon niet vinden \"%@\""
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,6 +451,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nepodarilo sa nájsť \"%@\""
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni bilo mogoče najti \"%@\""
           }
         },
         "sv" : {
@@ -143,6 +497,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Couldn't find \"%@\" in Trash"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finde \"%@\" i papirkurven"
           }
         },
         "de" : {
@@ -187,6 +547,12 @@
             "value" : "Aucun résultat n'a été trouvé dans la corbeille pour « %@ »."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" tidak dapat ditemukan di Sampah"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -196,7 +562,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ゴミ箱で\"%@\"が見つかりませんでした"
+            "value" : "ごみ箱で\"%@\"が見つかりませんでした"
           }
         },
         "ka" : {
@@ -209,6 +575,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "휴지통에서 \"%@\"을(를) 찾을 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finne \"%@\" i papirkurven"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kon niet vinden \"%@\" in prullenbak"
           }
         },
         "pl" : {
@@ -233,6 +611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "V koši sa nepodarilo nájsť \"%@\""
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V smetnjaku ni bilo mogoče najti »%@«."
           }
         },
         "sv" : {
@@ -273,6 +657,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Couldn't find \"%1$@\" in %2$@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finde \"%1$@\" i %2$@"
           }
         },
         "de" : {
@@ -317,6 +707,12 @@
             "value" : "Aucun résultat n'a été trouvé dans  %2$@  pour « %1$@ »."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" tidak dapat ditemukan di %2$@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -341,6 +737,18 @@
             "value" : "%2$@에서 \"%1$@ \"을(를) 찾을 수 없습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke finne \"%1$@\" i %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kon niet vinden \"%1$@\" in %2$@"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -363,6 +771,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nepodarilo sa nájsť \"%1$@\" v %2$@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni bilo mogoče najti « %1$@ » v %2$@"
           }
         },
         "sv" : {
@@ -403,6 +817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vytvořit přihlášení"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opret login"
           }
         },
         "de" : {
@@ -447,6 +867,12 @@
             "value" : "Créer un identifiant"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buat entri masuk"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -471,6 +897,18 @@
             "value" : "로그인 생성"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett pålogging"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login aanmaken"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -493,6 +931,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vytvoriť prihlásenie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarite prijavo"
           }
         },
         "sv" : {
@@ -533,6 +977,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Create passkey"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opret adgangsnøgle"
           }
         },
         "de" : {
@@ -577,6 +1027,12 @@
             "value" : "Créer une clé d'identification"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buat passkey"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -601,6 +1057,18 @@
             "value" : "패스키 생성"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett tilgangsnøkkel"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maak een Passkey"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -622,7 +1090,13 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vytvoriť prihlasovací kľúč"
+            "value" : "Vytvoriť prístupový kľúč"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvari identifikacijski ključ"
           }
         },
         "sv" : {
@@ -667,6 +1141,12 @@
             "value" : "Z bezpečnostních důvodů musí být váš přístup potvrzen"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Af sikkerhedsmæssige årsager skal din adgang bekræftes."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -709,6 +1189,12 @@
             "value" : "Pour des raisons de sécurité, votre accès doit être confirmé."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demi alasan keamanan, akses Anda perlu untuk dikonfirmasi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -733,6 +1219,18 @@
             "value" : "보안 상의 이유로, 접근이 수락되어야 합니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Av sikkerhetsgrunner må tilgangen din bekreftes"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voor veiligheidsredenen dient uw toegang bevestigd te worden"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -755,6 +1253,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Z bezpečnostných dôvodov musí byť váš prístup potvrdený"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iz varnostnih razlogov mora biti vaš dostop potrjen"
           }
         },
         "sv" : {
@@ -799,6 +1303,12 @@
             "value" : "Získejte neomezený počet aliasů, využívejte exkluzivní funkce a podpořte nás předplacením Proton Pass Plus."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få ubegrænsede aliasser, eksklusive funktioner, og støt os ved at abonnere på Pass Plus."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -841,6 +1351,12 @@
             "value" : "Obtenez un nombre illimité d'alias, profitez de fonctionnalités exceptionnelles et soutenez-nous en vous abonnant à Pass Plus."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dapatkan alias tanpa batasan jumlah, nikmati berbagai fitur eksklusif, dan dukung kami dengan berlangganan ke Pass Plus."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -865,6 +1381,18 @@
             "value" : "Pass Plus를 구독하여 무제한 별명을 사용하고, 독점 기능과 Proton 지원을 사용해 보세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få ubegrensede aliaser, nyt eksklusive funksjoner og støtt oss ved å abonnere på Pass Plus."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krijg ongelimiteerde aliassen, geniet van exclusieve functies, en ondersteun ons door te abonneren op Pass Plus."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -887,6 +1415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Získajte neobmedzený počet aliasov, využívajte exkluzívne funkcie a podporte nás predplatením služby Pass Plus."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridobite neomejeno število vzdevkov, uživajte v ekskluzivnih funkcijah in nas podprite tako, da se naročite na Pass Plus."
           }
         },
         "sv" : {
@@ -928,6 +1462,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Více informací o Pass"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få mere at vide om Pass"
           }
         },
         "de" : {
@@ -972,6 +1512,12 @@
             "value" : "En savoir plus sur Pass"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pelajari lebih lanjut tentang Pass"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -996,6 +1542,18 @@
             "value" : "Pass에 대해 알아보기"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lær mer om Pass"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meer informatie over Pass"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1018,6 +1576,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zistiť viac o Pass"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izvedite več o Pass-u"
           }
         },
         "sv" : {
@@ -1062,6 +1626,12 @@
             "value" : "Více trezorů"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flere bokse"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1104,6 +1674,12 @@
             "value" : "Plusieurs coffres-forts"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dukungan Berbagai Brankas"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1128,6 +1704,18 @@
             "value" : "다중 금고"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flere hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meerdere kluizen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1150,6 +1738,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Viacero trezorov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Več trezorjev"
           }
         },
         "sv" : {
@@ -1194,6 +1788,12 @@
             "value" : "Pass Plus"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1236,6 +1836,12 @@
             "value" : "Pass Plus"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1260,6 +1866,18 @@
             "value" : "Pass Plus"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1279,6 +1897,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass Plus"
@@ -1326,6 +1950,12 @@
             "value" : "Čekání na přístup ke sdíleným datům"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afventer adgang til de delte data"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1368,6 +1998,12 @@
             "value" : "En attente d'accès aux données partagées"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menunggu akses ke data yang dibagikan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1392,6 +2028,18 @@
             "value" : "공유 데이터에 대한 접근 대기 중"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venter på tilgang til de delte dataene"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toegang tot gedeelde data in afwachting"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1414,6 +2062,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Čaká sa na prístup k zdieľaným údajom"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čakanje na dostop do podatkov v skupni rabi"
           }
         },
         "sv" : {
@@ -1455,6 +2109,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Please sign in to use Proton Pass AutoFill extension"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log ind for at bruge Proton Pass Autofyld-udvidelsen"
           }
         },
         "de" : {
@@ -1499,6 +2159,12 @@
             "value" : "Veuillez vous connecter pour utiliser la fonction de remplissage automatique de Proton Pass."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silakan masuk untuk menggunakan ekstensi AutoFill Proton Pass"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1523,6 +2189,18 @@
             "value" : "Proton Pass 자동 완성 확장을 사용하기 위해선 로그인하십시오."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vennligst logg på for å bruke Proton Pass-AutoFyll-utvidelsen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in om de Proton Pass AutoFill extensie te gebruiken"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1545,6 +2223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ak chcete používať rozšírenie automatického vypĺňania Proton Pass AutoFill, prosím prihláste sa."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za uporabo razširitve Proton Pass AutoFill se prijavite"
           }
         },
         "sv" : {
@@ -1588,6 +2272,12 @@
             "value" : "Please sign in to use Proton Pass Share extension"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log ind for at bruge Proton Pass Deling-udvidelsen"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1609,13 +2299,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inicia sesión para usar la extensión de compartir de Proton Pass"
+            "value" : "Inicia sesión para usar la extensión de uso compartido de Proton Pass"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inicie sesión para usar la extensión de compartir de Proton Pass"
+            "value" : "Inicie sesión para usar la extensión de uso compartido de Proton Pass"
           }
         },
         "fi" : {
@@ -1628,6 +2318,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Veuillez vous connecter pour utiliser la fonction de partage de Proton Pass."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silakan masuk untuk menggunakan ekstensi Share Proton Pass"
           }
         },
         "it" : {
@@ -1654,6 +2350,18 @@
             "value" : "Proton Pass 공유 확장을 사용하기 위해선 로그인하십시오."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vennligst logg på for å bruke Proton Pass Share-utvidelsen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in om Proton Pass Share extensie te gebruiken"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1676,6 +2384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ak chcete používať rozšírenie Proton Pass Share, prosím prihláste sa."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za uporabo razširitve Proton Pass Share se prijavite"
           }
         },
         "sv" : {
@@ -1720,6 +2434,12 @@
             "value" : "Nedávné"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seneste"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1762,6 +2482,12 @@
             "value" : "Connexions récentes"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terkini"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1786,6 +2512,18 @@
             "value" : "최근"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nylige"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recente"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1808,6 +2546,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nedávne"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nedavne"
           }
         },
         "sv" : {
@@ -1848,6 +2592,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyhledat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søg"
           }
         },
         "de" : {
@@ -1892,6 +2642,12 @@
             "value" : "Rechercher"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pencarian"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1916,6 +2672,18 @@
             "value" : "검색"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoeken"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1938,6 +2706,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hľadať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iskanje"
           }
         },
         "sv" : {
@@ -1978,6 +2752,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hledat ve všech trezorech"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søg i alle bokse"
           }
         },
         "de" : {
@@ -2022,6 +2802,12 @@
             "value" : "Rechercher dans tous les coffres-forts"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari di seluruh brankas"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2046,6 +2832,18 @@
             "value" : "모든 금고에서 검색"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i alle hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoeken in alle kluizen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2068,6 +2866,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hľadať vo všetkých trezoroch"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iskanje v vseh trezorjih"
           }
         },
         "sv" : {
@@ -2108,6 +2912,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Select an existing login or create a new one."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vælg et eksisterende login, eller opret et nyt."
           }
         },
         "de" : {
@@ -2152,6 +2962,12 @@
             "value" : "Sélectionnez un identifiant existant ou créez-en un nouveau."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilih entri masuk yang telah ada atau buat entri masuk baru."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2176,10 +2992,22 @@
             "value" : "기존의 로그인을 선택하거나 새 로그인을 만드십시오."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg en eksisterende pålogging eller opprett en ny."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecteer een bestaande login of maak een nieuwe aan."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wybierz istniejący login lub utwórz nowy."
+            "value" : "Wybierz dane logowania lub utwórz nowe."
           }
         },
         "pt-BR" : {
@@ -2198,6 +3026,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyberte existujúce prihlásenie alebo vytvorte nové."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite obstoječo prijavo ali ustvarite novo."
           }
         },
         "sv" : {
@@ -2242,6 +3076,12 @@
             "value" : "Sdílení až s 10 osobami"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del med op til 10 personer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2284,6 +3124,12 @@
             "value" : "Partage avec jusqu'à 10 personnes"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berbagi sampai dengan 10 orang"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2308,6 +3154,18 @@
             "value" : "최대 10명 까지 공유"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deling med opptil 10 personer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delen met maximaal 10 mensen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2330,6 +3188,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdieľanie až s 10 osobami"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skupna raba z do 10 osebami"
           }
         },
         "sv" : {
@@ -2370,6 +3234,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odhlášeno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logget ud"
           }
         },
         "de" : {
@@ -2414,6 +3284,12 @@
             "value" : "Déconnecté"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keluar"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2438,6 +3314,18 @@
             "value" : "로그아웃됨"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logget av"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uitgelogd"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2460,6 +3348,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odhlásené"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odjavljeni ste"
           }
         },
         "sv" : {
@@ -2500,6 +3394,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seřadit podle"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortér efter"
           }
         },
         "de" : {
@@ -2544,6 +3444,12 @@
             "value" : "Trier par"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urut Berdasarkan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2568,6 +3474,18 @@
             "value" : "정렬 기준"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorter etter"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorteren op"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2590,6 +3508,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zoradiť podľa"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Razvrsti po"
           }
         },
         "sv" : {
@@ -2634,6 +3558,12 @@
             "value" : "Návrhy"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forslag"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2676,6 +3606,12 @@
             "value" : "Suggestions"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saran"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2700,6 +3636,18 @@
             "value" : "제안"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forslag"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggesties"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2722,6 +3670,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Návrhy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predlogi"
           }
         },
         "sv" : {
@@ -2762,6 +3716,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zkuste vyhledávat pomocí jiných písmen nebo klíčových slov"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv at søge med en anden stavemåde eller andre søgeord."
           }
         },
         "de" : {
@@ -2806,6 +3766,12 @@
             "value" : "Essayez de faire une recherche en utilisant une autre orthographe ou d'autres mots-clés."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coba mencari menggunakan pengejaan atau kata kunci yang beda"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2830,6 +3796,18 @@
             "value" : "다른 검색어로 검색을 시도해 보세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv å søke med andre stave- eller nøkkelord"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probeer te zoeken met een andere spelling of trefwoorden."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2852,6 +3830,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skúste hľadať pomocou iného formátu zápisu alebo kľúčových slov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poskusite iskati z drugačnim črkovanjem ali ključnimi besedami"
           }
         },
         "sv" : {
@@ -2896,6 +3880,12 @@
             "value" : "Neomezené automatické vyplňování 2FA"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrænset 2FA-autofyld"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2938,6 +3928,12 @@
             "value" : "Remplissage automatique A2F illimité"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isi otomatis 2FA tanpa batas"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2962,6 +3958,18 @@
             "value" : "무제한 2FA 자동 완성"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrenset antall 2FA-autofyll"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onbeperkt 2FA Autofill"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2984,6 +3992,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neobmedzené 2FA automatické vypĺňanie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neomejeno samodejno izpolnjevanje 2FA"
           }
         },
         "sv" : {
@@ -3028,6 +4042,12 @@
             "value" : "Neomezený počet emailových aliasů"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrænsede e-mail-aliasser"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3070,6 +4090,12 @@
             "value" : "Nombre illimité d'alias"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanpa batasan alias surel"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3094,6 +4120,18 @@
             "value" : "무제한 나의 이메일 별명"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrenset antall e-postaliaser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onbeperkt aantal Hide-my-email-alliassen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3116,6 +4154,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neobmedzený počet emailových aliasov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neomejeno število e-poštnih vzdevkov"
           }
         },
         "sv" : {
@@ -3160,6 +4204,12 @@
             "value" : "Navýšit"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgradér"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3202,6 +4252,12 @@
             "value" : "Changer d'abonnement"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tingkatkan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3226,6 +4282,18 @@
             "value" : "업그레이드"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgraden"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3248,6 +4316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgradovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadgradi"
           }
         },
         "sv" : {

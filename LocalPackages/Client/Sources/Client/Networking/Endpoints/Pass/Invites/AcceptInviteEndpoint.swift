@@ -22,16 +22,16 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct AcceptInviteEndpoint: Endpoint {
-    public typealias Body = AcceptInviteRequest
-    public typealias Response = CodeOnlyResponse
+struct AcceptInviteEndpoint: Endpoint {
+    typealias Body = AcceptInviteRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: AcceptInviteRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: AcceptInviteRequest?
 
-    public init(with inviteToken: String, and request: AcceptInviteRequest) {
+    init(with inviteToken: String, and request: AcceptInviteRequest) {
         debugDescription = "Accept an invite"
         path = "/pass/v1/invite/\(inviteToken)"
         method = .post

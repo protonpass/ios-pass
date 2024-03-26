@@ -73,6 +73,7 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyCardholderName() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -92,12 +93,14 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyCardNumber() }
 
             Spacer()
 
             CircleButton(icon: isShowingCardNumber ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingCardNumber ? "Hide card number" : "Show card number",
                          action: { isShowingCardNumber.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
         }
@@ -120,12 +123,15 @@ private extension DetailHistoryView {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
             .animation(.default, value: isShowingVerificationNumber)
+            .onTapGesture { viewModel.copySecurityCode() }
 
             Spacer()
 
             CircleButton(icon: isShowingVerificationNumber ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingVerificationNumber ? "Hide security code" :
+                             "Show security code",
                          action: { isShowingVerificationNumber.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
         }
@@ -154,6 +160,7 @@ private extension DetailHistoryView {
             CircleButton(icon: isShowingPIN ? IconProvider.eyeSlash : IconProvider.eye,
                          iconColor: viewModel.currentRevision.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.type.normMinor2Color,
+                         accessibilityLabel: isShowingVerificationNumber ? "Hide pin" : "Show pin",
                          action: { isShowingPIN.toggle() })
                 .fixedSize(horizontal: true, vertical: true)
         }
@@ -168,10 +175,12 @@ private extension DetailHistoryView {
                 Text("Expiration date")
                     .sectionTitleText()
 
-                Text(creditCardItem.expirationDate)
+                Text(creditCardItem.displayedExpirationDate)
                     .foregroundStyle(textColor(for: \.creditCardItem?.expirationDate).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyExpirationDate() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }

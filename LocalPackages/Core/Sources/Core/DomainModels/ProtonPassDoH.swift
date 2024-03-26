@@ -31,6 +31,7 @@ public final class ProtonPassDoH: DoH, ServerConfig {
     public let humanVerificationV3Host: String
     public let accountHost: String
     public let defaultHost: String
+    // periphery:ignore
     public let apiHost: String
     public let defaultPath: String
 

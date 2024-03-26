@@ -58,6 +58,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -77,10 +78,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
+    private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
-    private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -103,6 +104,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         finalizeInitialization()
         start()
         synchroniseData()
+        refreshOrganizationAndOverrideSecuritySettings()
         refreshAccess()
         refreshSettings()
         refreshFeatureFlags()
@@ -214,7 +216,6 @@ private extension HomepageCoordinator {
 
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
-        self.profileTabViewModel = profileTabViewModel
 
         let placeholderView = ItemDetailPlaceholderView { [weak self] in
             guard let self else { return }
@@ -223,7 +224,7 @@ private extension HomepageCoordinator {
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
-                                          mainSecurityCenterViewModel: SecurityCenterViewModel(),
+                                          passMonitorViewModel: PassMonitorViewModel(),
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
@@ -266,6 +267,19 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func refreshOrganizationAndOverrideSecuritySettings() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if let organization = try await organizationRepository.refreshOrganization() {
+                    overrideSecuritySettings(with: organization)
+                }
             } catch {
                 logger.error(error)
             }
@@ -397,6 +411,8 @@ extension HomepageCoordinator {
                     openTutorialVideo()
                 case .accountSettings:
                     beginAccountSettingsFlow()
+                case .settingsMenu:
+                    profileTabViewModelWantsToShowSettingsMenu()
                 case let .createEditLogin(item):
                     presentCreateEditLoginView(mode: item)
                 case let .createItem(_, type, _):
@@ -858,10 +874,7 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 showLoadingHud()
-                let request = ForkSessionRequest(payload: nil,
-                                                 childClientId: "pass-ios",
-                                                 independent: 1)
-                let selector = try await forkSession(request)
+                let selector = try await forkSession(payload: nil, childClientId: "pass-ios", independent: 1)
                 hideLoadingHud()
                 let url = try makeImportExportUrl(selector: selector)
                 presentImportExportView(url: url)
@@ -999,28 +1012,28 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
         }
     }
 
-    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
-                                              presentationOption: ChildCoordinatorPresentationOption) {
-        let display: () -> Void = { [weak self] in
-            guard let self else { return }
-            switch bannerOption {
-            case let .info(message):
-                bannerManager.displayBottomInfoMessage(message)
-            case let .success(message):
-                bannerManager.displayBottomSuccessMessage(message)
-            case let .error(message):
-                bannerManager.displayTopErrorMessage(message)
-            }
-        }
-        switch presentationOption {
-        case .none:
-            display()
-        case .dismissTopViewController:
-            dismissTopMostViewController(animated: true, completion: display)
-        case .dismissAllViewControllers:
-            dismissAllViewControllers(animated: true, completion: display)
-        }
-    }
+//    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
+//                                              presentationOption: ChildCoordinatorPresentationOption) {
+//        let display: () -> Void = { [weak self] in
+//            guard let self else { return }
+//            switch bannerOption {
+//            case let .info(message):
+//                bannerManager.displayBottomInfoMessage(message)
+//            case let .success(message):
+//                bannerManager.displayBottomSuccessMessage(message)
+//            case let .error(message):
+//                bannerManager.displayTopErrorMessage(message)
+//            }
+//        }
+//        switch presentationOption {
+//        case .none:
+//            display()
+//        case .dismissTopViewController:
+//            dismissTopMostViewController(animated: true, completion: display)
+//        case .dismissAllViewControllers:
+//            dismissAllViewControllers(animated: true, completion: display)
+//        }
+//    }
 
     func childCoordinatorWantsToDismissTopViewController() {
         dismissTopMostViewController()

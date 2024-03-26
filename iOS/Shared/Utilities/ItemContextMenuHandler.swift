@@ -24,10 +24,10 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 
 @MainActor
 final class ItemContextMenuHandler: Sendable {
-    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -38,10 +38,8 @@ final class ItemContextMenuHandler: Sendable {
     init() {}
 }
 
-// MARK: - Public APIs
+// MARK: - Common operations
 
-// Only show & hide spinner when trashing because API calls are needed.
-// Other operations are local so no need.
 extension ItemContextMenuHandler {
     func edit(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
@@ -94,78 +92,6 @@ extension ItemContextMenuHandler {
         }
     }
 
-    func copyUsername(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self, let data = itemContent.loginItem else { return }
-            clipboardManager.copy(text: data.username,
-                                  bannerMessage: #localized("Username copied"))
-            logger.info("Copied username \(item.debugDescription)")
-        }
-    }
-
-    func copyPassword(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self, let data = itemContent.loginItem else { return }
-            clipboardManager.copy(text: data.password,
-                                  bannerMessage: #localized("Password copied"))
-            logger.info("Copied Password \(item.debugDescription)")
-        }
-    }
-
-    func copyAlias(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self, let aliasEmail = itemContent.aliasEmail else { return }
-            clipboardManager.copy(text: aliasEmail,
-                                  bannerMessage: #localized("Alias address copied"))
-            logger.info("Copied alias address \(item.debugDescription)")
-        }
-    }
-
-    func copyNoteContent(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self else { return }
-            clipboardManager.copy(text: itemContent.note,
-                                  bannerMessage: #localized("Note content copied"))
-            logger.info("Copied note content \(item.debugDescription)")
-        }
-    }
-
-    func copyCardholderName(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self, let data = itemContent.creditCardItem else { return }
-            clipboardManager.copy(text: data.cardholderName,
-                                  bannerMessage: #localized("Cardholder name copied"))
-            logger.info("Copied cardholder name \(item.debugDescription)")
-        }
-    }
-
-    func copyCardNumber(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self, let data = itemContent.creditCardItem else { return }
-            clipboardManager.copy(text: data.number,
-                                  bannerMessage: #localized("Card number copied"))
-            logger.info("Copied card number \(item.debugDescription)")
-        }
-    }
-
-    func copyExpirationDate(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self, let data = itemContent.creditCardItem else { return }
-            clipboardManager.copy(text: data.expirationDate,
-                                  bannerMessage: #localized("Expiration date copied"))
-            logger.info("Copied expiration date \(item.debugDescription)")
-        }
-    }
-
-    func copySecurityCode(_ item: any ItemTypeIdentifiable) {
-        performAction(on: item, showSpinner: false) { [weak self] itemContent in
-            guard let self, let data = itemContent.creditCardItem else { return }
-            clipboardManager.copy(text: data.verificationNumber,
-                                  bannerMessage: #localized("Security code copied"))
-            logger.info("Copied security code \(item.debugDescription)")
-        }
-    }
-
     func toggleItemPinning(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: true) { [weak self] itemContent in
             guard let self else { return }
@@ -183,6 +109,67 @@ extension ItemContextMenuHandler {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
             router.present(for: .history(itemContent))
+        }
+    }
+}
+
+// MARK: - Copy functions
+
+extension ItemContextMenuHandler {
+    func copyUsername(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.loginItem?.username, message: #localized("Username copied"))
+        }
+    }
+
+    func copyPassword(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.loginItem?.password, message: #localized("Password copied"))
+        }
+    }
+
+    func copyAlias(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.aliasEmail, message: #localized("Alias address copied"))
+        }
+    }
+
+    func copyNoteContent(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.note, message: #localized("Note content copied"))
+        }
+    }
+
+    func copyCardholderName(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.creditCardItem?.cardholderName, message: #localized("Cardholder name copied"))
+        }
+    }
+
+    func copyCardNumber(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.creditCardItem?.number, message: #localized("Card number copied"))
+        }
+    }
+
+    func copyExpirationDate(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.creditCardItem?.displayedExpirationDate,
+                 message: #localized("Expiration date copied"))
+        }
+    }
+
+    func copySecurityCode(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.creditCardItem?.verificationNumber, message: #localized("Security code copied"))
         }
     }
 }
@@ -208,11 +195,23 @@ private extension ItemContextMenuHandler {
                                                                                 itemId: item.itemId) else {
                     throw PassError.itemNotFound(item)
                 }
+                if #available(iOS 17, *) {
+                    ItemForceTouchTip().invalidate(reason: .actionPerformed)
+                }
                 try await handler(itemContent)
             } catch {
                 logger.error(error)
                 bannerManager.displayTopErrorMessage(error)
             }
+        }
+    }
+
+    /// Do not check for emptiness because the context menu options are always displayed
+    /// we can't tell in advance if a field is empty or not
+    /// so if we check for emptiness and do nothing, users might think it bugs when copying an empty field
+    func copy(_ text: String?, message: String) {
+        if let text {
+            router.action(.copyToClipboard(text: text, message: message))
         }
     }
 }

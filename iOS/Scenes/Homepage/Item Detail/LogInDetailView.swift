@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import DesignSystem
 import Entities
 import Macro
@@ -93,7 +92,6 @@ private extension LogInDetailView {
                                             onUpgrade: { viewModel.upgrade() })
 
                         ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                                 itemHistoryEnable: viewModel.itemHistoryEnabled,
                                                  action: { viewModel.showItemHistory() })
 
                         ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
@@ -139,7 +137,7 @@ private extension LogInDetailView {
                     EmptyView()
                 } else {
                     PassSectionDivider()
-                    TOTPRow(totpManager: viewModel.totpManager,
+                    TOTPRow(uri: viewModel.totpUri,
                             tintColor: iconTintColor,
                             onCopyTotpToken: { viewModel.copyTotpToken($0) })
                 }
@@ -231,6 +229,7 @@ private extension LogInDetailView {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                             accessibilityLabel: isShowingPassword ? "Hide password" : "Show password",
                              action: { isShowingPassword.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()

@@ -35,14 +35,14 @@ public extension GetLoginSecurityIssuesUseCase {
 }
 
 public final class GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
-    private let securityCenterRepository: any SecurityCenterRepositoryProtocol
+    private let passMonitorRepository: any PassMonitorRepositoryProtocol
 
-    public init(securityCenterRepository: any SecurityCenterRepositoryProtocol) {
-        self.securityCenterRepository = securityCenterRepository
+    public init(passMonitorRepository: any PassMonitorRepositoryProtocol) {
+        self.passMonitorRepository = passMonitorRepository
     }
 
     public func execute(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never> {
-        securityCenterRepository.itemsWithSecurityIssues
+        passMonitorRepository.itemsWithSecurityIssues
             .map { items -> [SecurityWeakness]? in
                 items.first { $0.item.itemId == itemId }?.weaknesses
             }.eraseToAnyPublisher()

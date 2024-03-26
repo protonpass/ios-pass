@@ -21,18 +21,18 @@
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetUserSettingsResponse: Decodable, Sendable {
+struct GetUserSettingsResponse: Decodable, Sendable {
     let userSettings: UserSettings
 }
 
-public struct GetUserSettingsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetUserSettingsResponse
+struct GetUserSettingsEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetUserSettingsResponse
 
-    public var debugDescription: String
-    public var path: String
+    var debugDescription: String
+    var path: String
 
-    public init() {
+    init() {
         debugDescription = "Get user settings"
         path = "/core/v4/settings"
     }

@@ -59,14 +59,11 @@ public extension String {
         return String(first2Words.first?.prefix(2) ?? "").uppercased()
     }
 
-    mutating func capitalizeFirstLetter() {
-        self = capitalizingFirstLetter()
-    }
-
     var spacesRemoved: String {
         replacingOccurrences(of: " ", with: "")
     }
 
+    // periphery:ignore
     func characterCount(_ character: Character) -> Int {
         filter { $0 == character }.count
     }
@@ -123,6 +120,7 @@ public extension String {
     }
 
     // https://www.hackingwithswift.com/example-code/strings/how-to-detect-a-url-in-a-string-using-nsdatadetector
+    // periphery:ignore
     func firstUrl() -> URL? {
         guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
             return nil
@@ -159,12 +157,6 @@ public extension String {
 }
 
 // MARK: Computed Extensions
-
-public extension String {
-    var toBase8EncodedData: Data? {
-        data(using: .utf8)
-    }
-}
 
 public extension Substring {
     var toString: String { String(self) }

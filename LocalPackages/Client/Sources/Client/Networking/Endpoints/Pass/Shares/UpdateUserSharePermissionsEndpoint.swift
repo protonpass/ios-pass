@@ -22,18 +22,18 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct UpdateUserSharePermissionsEndpoint: Endpoint {
-    public typealias Body = UserSharePermissionRequest
-    public typealias Response = CodeOnlyResponse
+struct UpdateUserSharePermissionsEndpoint: Endpoint {
+    typealias Body = UserSharePermissionRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: UserSharePermissionRequest?
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: UserSharePermissionRequest?
 
-    public init(shareId: String,
-                userId: String,
-                request: UserSharePermissionRequest) {
+    init(shareId: String,
+         userId: String,
+         request: UserSharePermissionRequest) {
         debugDescription = "Update a user's share persmission"
         path = "/pass/v1/share/\(shareId)/user/\(userId)"
         method = .put
@@ -42,8 +42,8 @@ public struct UpdateUserSharePermissionsEndpoint: Endpoint {
 }
 
 public struct UserSharePermissionRequest: Encodable, Sendable {
-    public let shareRoleID: String?
-    public let expireTime: Int?
+    let shareRoleID: String?
+    let expireTime: Int?
 
     enum CodingKeys: String, CodingKey {
         case shareRoleID = "ShareRoleID"

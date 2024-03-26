@@ -19,23 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CodeScanner
-import Core
 import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct WrappedCodeScannerView: View {
+struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
     private let theme = resolve(\SharedToolingContainer.theme)
     let completion: (Result<String, Error>) -> Void
 
-    public init(completion: @escaping (Result<String, Error>) -> Void) {
+    init(completion: @escaping (Result<String, Error>) -> Void) {
         self.completion = completion
     }
 
-    public var body: some View {
+    var body: some View {
         NavigationView {
             CodeScannerView(codeTypes: [.qr],
                             simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
@@ -54,6 +53,7 @@ public struct WrappedCodeScannerView: View {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Close",
                                  action: dismiss.callAsFunction)
                 }
 

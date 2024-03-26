@@ -157,7 +157,12 @@ struct ProfileTabView: View {
                                           .foregroundColor(PassColor.textNorm.toColor)
                                   }
                               },
-                              trailing: { ChevronRight() })
+                              trailing: {
+                                  if viewModel.canUpdateAppLockTime {
+                                      ChevronRight()
+                                  }
+                              })
+                              .disabled(!viewModel.canUpdateAppLockTime)
                 }
 
                 switch viewModel.localAuthenticationMethod {

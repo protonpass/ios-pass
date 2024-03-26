@@ -38,20 +38,20 @@ public extension GetAllSecurityAffectedLoginsUseCase {
 }
 
 public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase {
-    private let securityCenterRepository: any SecurityCenterRepositoryProtocol
+    private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let getPasswordStrength: any GetPasswordStrengthUseCase
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
-    public init(securityCenterRepository: any SecurityCenterRepositoryProtocol,
+    public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 getPasswordStrength: any GetPasswordStrengthUseCase) {
-        self.securityCenterRepository = securityCenterRepository
+        self.passMonitorRepository = passMonitorRepository
         self.getPasswordStrength = getPasswordStrength
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
     public func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, any Error> {
-        securityCenterRepository.itemsWithSecurityIssues.tryMap { [weak self] items in
+        passMonitorRepository.itemsWithSecurityIssues.tryMap { [weak self] items in
             guard let self else {
                 return [:]
             }
