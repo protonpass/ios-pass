@@ -20,15 +20,15 @@
 
 import ProtonCoreNetworking
 
-public struct RejectInviteEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct RejectInviteEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init(with inviteToken: String) {
+    init(with inviteToken: String) {
         debugDescription = "Reject an invite"
         path = "/pass/v1/invite/\(inviteToken)"
         method = .delete

@@ -21,11 +21,11 @@
 import Foundation
 
 /// Proton Pass core module related errors.
-public enum PPCoreError: Error, CustomDebugStringConvertible, Sendable {
+enum PPCoreError: Error, CustomDebugStringConvertible, Sendable {
     case biometryTypeNotInitialized
     case failedToRandomizeData
 
-    public var debugDescription: String {
+    var debugDescription: String {
         switch self {
         case .biometryTypeNotInitialized:
             "Biometry type not initialized"

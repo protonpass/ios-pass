@@ -20,7 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import DesignSystem
 import Entities
 import Factory
@@ -48,8 +47,7 @@ struct UserEmailView: View {
                     vaultRow(vault)
                 }
 
-                FlowLayout(mode: .scrollable,
-                           items: viewModel.selectedEmails + [""],
+                FlowLayout(items: viewModel.selectedEmails + [""],
                            viewMapping: { token(for: $0) })
                     .padding(.leading, -4)
 

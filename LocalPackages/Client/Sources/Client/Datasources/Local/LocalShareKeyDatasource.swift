@@ -27,6 +27,7 @@ public protocol LocalShareKeyDatasourceProtocol: Sendable {
     /// Insert or update if exist keys
     func upsertKeys(_ keys: [SymmetricallyEncryptedShareKey]) async throws
 
+    // periphery:ignore
     /// Remove all keys of a share
     func removeAllKeys(shareId: String) async throws
 

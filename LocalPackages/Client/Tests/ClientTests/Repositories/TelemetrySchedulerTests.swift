@@ -41,7 +41,7 @@ final class TelemetryThresholdProviderMock: TelemetryThresholdProviderProtocol {
 }
 
 final class TelemetrySchedulerTests: XCTestCase {
-    var sut: TelemetrySchedulerProtocol!
+    var sut: TelemetryScheduler!
     var thresholdProvider: TelemetryThresholdProviderMock!
 
     override func setUp() {

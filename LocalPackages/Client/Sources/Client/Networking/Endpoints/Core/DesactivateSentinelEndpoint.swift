@@ -22,15 +22,15 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct DesactivateSentinelEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+struct DesactivateSentinelEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public init() {
+    init() {
         debugDescription = "Desactivate Sentinel"
         path = "/core/v4/settings/highsecurity"
         method = .delete
