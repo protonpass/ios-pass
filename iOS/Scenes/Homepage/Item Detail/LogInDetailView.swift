@@ -414,7 +414,7 @@ private extension LogInDetailView {
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .padding(.vertical, DesignConstant.sectionPadding / 2)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection(backgroundColor: rowType.background,
                               borderColor: rowType.border)
     }
@@ -439,6 +439,8 @@ private extension LogInDetailView {
                     Text("use this password.")
                         .font(.callout)
                         .foregroundColor(rowType.iconColor.toColor)
+                        .minimumScaleFactor(0.75)
+                        .lineLimit(1)
                 }
             } else {
                 VStack(alignment: .leading) {
