@@ -162,7 +162,6 @@
       }
     },
     "Discard" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -323,7 +322,6 @@
       }
     },
     "Discard changes?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -644,7 +642,6 @@
       }
     },
     "Keep Editing" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1445,7 +1442,6 @@
       }
     },
     "You have unsaved changes, are you sure you want to discard them?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
