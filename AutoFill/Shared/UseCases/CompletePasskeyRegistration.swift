@@ -54,7 +54,7 @@ final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
         // Add telemetry event before completing on purpose
         // because after completing the extension is dismissed
         addTelemetryEvent(with: .passkeyCreate)
-        let credential = ASPasskeyRegistrationCredential(relyingParty: response.rpName,
+        let credential = ASPasskeyRegistrationCredential(relyingParty: response.rpId ?? response.rpName,
                                                          clientDataHash: response.clientDataHash,
                                                          credentialID: response.credentialId,
                                                          attestationObject: response.attestationObject)
