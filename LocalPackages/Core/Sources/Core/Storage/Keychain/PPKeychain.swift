@@ -21,6 +21,7 @@
 import Foundation
 import ProtonCoreKeymaker
 
+// sourcery: AutoMockable
 public protocol KeychainProtocol: AnyObject, Sendable {
     // Getters
     func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data?

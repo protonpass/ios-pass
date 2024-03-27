@@ -18,15 +18,48 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Factory
 @testable import Proton_Pass
+import CoreMocks
+import Factory
+import ProtonCoreKeymaker
+import ProtonCoreLogin
+import ProtonCoreNetworking
 import XCTest
 
 final class PreferencesTests: XCTestCase {
+    var keychainData: [String: Data] = [:]
+    var keychain: KeychainProtocolMock!
+    var mainKeyProvider: MainKeyProviderMock!
     var sut: Preferences!
 
     override func setUp() {
         super.setUp()
+        keychain = KeychainProtocolMock()
+
+        keychain.closureSetOrErrorDataKeyAttributes3 = {
+            if let data = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.0,
+               let key = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.1 {
+                self.keychainData[key] = data
+            }
+        }
+
+        keychain.closureDataOrError = {
+            if let key = self.keychain.invokedDataOrErrorParameters?.0 {
+                self.keychain.stubbedDataOrErrorResult = self.keychainData[key]
+            }
+        }
+
+        keychain.closureRemoveOrError = {
+            if let key = self.keychain.invokedRemoveOrErrorParameters?.0 {
+                self.keychainData[key] = nil
+            }
+        }
+
+        mainKeyProvider = MainKeyProviderMock()
+        mainKeyProvider.mainKeyStub.fixture = Array(repeating: .zero, count: 32)
+        Scope.singleton.reset()
+        SharedToolingContainer.shared.keychain.register { self.keychain }
+        SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
         sut = Preferences()
     }
 
