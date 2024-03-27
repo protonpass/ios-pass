@@ -1,5 +1,5 @@
 //
-//  
+//
 // RemoveItemMonitoring.swift
 // Proton Pass - Created on 14/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
@@ -24,26 +24,29 @@ import Client
 import Combine
 import Entities
 
-public protocol RemoveItemMonitoringUseCase: Sendable {
-   func execute(item: ItemContent) async throws
+public protocol ToggleItemMonitoringUseCase: Sendable {
+    func execute(item: ItemContent, shouldNotMonitor: Bool) async throws
 }
 
-public extension RemoveItemMonitoringUseCase {
-    func callAsFunction(item: ItemContent) async throws {
-        try await execute(item: item)
+public extension ToggleItemMonitoringUseCase {
+    func callAsFunction(item: ItemContent, shouldNotMonitor: Bool) async throws {
+        try await execute(item: item, shouldNotMonitor: shouldNotMonitor)
     }
 }
 
-public final class RemoveItemMonitoring: RemoveItemMonitoringUseCase {
-    private let securityCenterRepository: any SecurityCenterRepositoryProtocol
+public final class ToggleItemMonitoring: ToggleItemMonitoringUseCase {
+    private let passMonitorRepository: any PassMonitorRepositoryProtocol
+    private let itemRepository: any ItemRepositoryProtocol
 
-    public init(securityCenterRepository: any SecurityCenterRepositoryProtocol) {
-        self.securityCenterRepository = securityCenterRepository
+    public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
+                itemRepository: any ItemRepositoryProtocol) {
+        self.passMonitorRepository = passMonitorRepository
+        self.itemRepository = itemRepository
     }
-    
-    public func execute(item: ItemContent) async throws {
-        // TODO: Update the flags of the item and send update to BE
-        // This should also reflect in local database and update a the security centre data by calling the refreshSecurityChecks function
-       try await securityCenterRepository.refreshSecurityChecks()
+
+    public func execute(item: ItemContent, shouldNotMonitor: Bool) async throws {
+        try await itemRepository.updateItemFlags(flags: [.skipHealthCheck(shouldNotMonitor)],
+                                                 shareId: item.shareId,
+                                                 itemId: item.itemId)
     }
 }
