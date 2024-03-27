@@ -21,8 +21,8 @@
     import Client
 import Combine
 import Entities
-import ProtonCoreLogin
 import CryptoKit
+import ProtonCoreLogin
 
 public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider, UserDataProvider {
 
@@ -44,16 +44,6 @@ public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, Symmet
         }
         closureGetSymmetricKey()
         return stubbedGetSymmetricKeyResult
-    }
-    // MARK: - removeSymmetricKey
-    public var closureRemoveSymmetricKey: () -> () = {}
-    public var invokedRemoveSymmetricKeyfunction = false
-    public var invokedRemoveSymmetricKeyCount = 0
-
-    public func removeSymmetricKey() {
-        invokedRemoveSymmetricKeyfunction = true
-        invokedRemoveSymmetricKeyCount += 1
-        closureRemoveSymmetricKey()
     }
     // MARK: - ⚡️ UserDataProvider
     // MARK: - getUserData
