@@ -250,8 +250,15 @@ struct ProfileTabView: View {
                     }
                     .tint(PassColor.interactionNorm.toColor)
                 }
+                .disabled(viewModel.automaticallyCopyTotpCodeDisabled)
             }
             .roundedEditableSection()
+
+            if viewModel.automaticallyCopyTotpCodeDisabled {
+                Text("Automatic copy of the 2FA code requires biometric lock or PIN code to be set up")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
         .padding(.horizontal)
     }
