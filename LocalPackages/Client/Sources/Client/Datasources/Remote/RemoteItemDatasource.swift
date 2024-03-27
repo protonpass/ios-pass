@@ -163,7 +163,8 @@ public extension RemoteItemDatasource {
         return response.item
     }
 
-    func updateItemFlags(itemId: String, fromShareId: String,
+    func updateItemFlags(itemId: String,
+                         fromShareId: String,
                          request: UpdateItemFlagsRequest) async throws -> Item {
         let endpoint = UpdateItemFlagsEndpoint(shareId: fromShareId, itemId: itemId, request: request)
         let response = try await exec(endpoint: endpoint)

@@ -99,8 +99,6 @@ class BaseCreateEditItemViewModel {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     var hasEmptyCustomField: Bool {
