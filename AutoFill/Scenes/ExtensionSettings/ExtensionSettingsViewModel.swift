@@ -43,9 +43,14 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
+    var automaticallyCopyTotpCodeDisabled: Bool {
+        preferences.localAuthenticationMethod == .none
+    }
+
     init() {
         quickTypeBar = preferences.quickTypeBar
-        automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
+        automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
+            .localAuthenticationMethod != .none
     }
 }
 
