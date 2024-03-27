@@ -25,10 +25,12 @@ import ProtonCoreKeymaker
 public protocol KeychainProtocol: AnyObject, Sendable {
     // Getters
     func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data?
+    // periphery:ignore
     func stringOrError(forKey key: String, attributes: [CFString: Any]?) throws -> String?
 
     // Setters
     func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws
+    // periphery:ignore
     func setOrError(_ string: String, forKey key: String, attributes: [CFString: Any]?) throws
 
     // Cleaner
@@ -40,6 +42,7 @@ public extension KeychainProtocol {
         try dataOrError(forKey: key, attributes: nil)
     }
 
+    // periphery:ignore
     func stringOrError(forKey key: String) throws -> String? {
         try stringOrError(forKey: key, attributes: nil)
     }
@@ -48,6 +51,7 @@ public extension KeychainProtocol {
         try setOrError(data, forKey: key, attributes: nil)
     }
 
+    // periphery:ignore
     func setOrError(_ string: String, forKey key: String) throws {
         try setOrError(string, forKey: key, attributes: nil)
     }
