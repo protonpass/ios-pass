@@ -15921,6 +15921,16 @@
         }
       }
     },
+    "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        }
+      }
+    },
     "Automatic lock" : {
       "localizations" : {
         "be" : {

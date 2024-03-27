@@ -63,6 +63,13 @@ struct ExtensionSettingsView: View {
                         .tint(Color(uiColor: PassColor.interactionNorm))
                     }
                     .roundedEditableSection()
+                    .disabled(viewModel.automaticallyCopyTotpCodeDisabled)
+
+                    if viewModel.automaticallyCopyTotpCodeDisabled {
+                        Text("Automatic copy of the 2FA code requires biometric lock or PIN code to be set up")
+                            .sectionTitleText()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
 
                     Spacer()
                 }
