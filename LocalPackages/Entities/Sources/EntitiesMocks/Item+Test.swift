@@ -46,6 +46,7 @@ public extension Item {
               createTime: .random(in: 0...1_000_000),
               modifyTime: modifyTime,
               lastUseTime: lastUseTime,
-              revisionTime: .random(in: 0...1_000_000))
+              revisionTime: .random(in: 0...1_000_000), 
+              flags: .random(in: 0...1_000_000))
     }
 }
