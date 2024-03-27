@@ -1,7 +1,7 @@
 //
 //
-// SecurityWeaknessDetailView.swift
-// Proton Pass - Created on 05/03/2024.
+// PasswordReusedView.swift
+// Proton Pass - Created on 27/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -25,34 +25,32 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SecurityWeaknessDetailView: View {
-    @StateObject var viewModel: SecurityWeaknessDetailViewModel
-    let isSheet: Bool
+struct PasswordReusedView: View {
+    @StateObject private var viewModel: PasswordReusedViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    init(viewModel: PasswordReusedViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
-        mainContainer.if(isSheet) { view in
-            NavigationStack {
-                view
-            }
+        NavigationStack {
+            mainContainer
         }
     }
 }
 
-private extension SecurityWeaknessDetailView {
+private extension PasswordReusedView {
     var mainContainer: some View {
         VStack {
-            Text(viewModel.info)
+            Text("List of all other items from your vaults that use this password.")
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .font(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
 
             LazyVStack(spacing: 0) {
-                if viewModel.showSections {
-                    itemsSections(sections: viewModel.sectionedData)
-                } else {
-                    itemsList(items: viewModel.sectionedData.flatMap(\.value))
-                }
+                itemsList(items: viewModel.reusedItems)
                 Spacer()
             }
         }.padding(.horizontal, DesignConstant.sectionPadding)
@@ -62,28 +60,6 @@ private extension SecurityWeaknessDetailView {
             .background(PassColor.backgroundNorm.toColor)
             .showSpinner(viewModel.loading)
             .navigationTitle(viewModel.title)
-    }
-}
-
-// MARK: - List of Items
-
-private extension SecurityWeaknessDetailView {
-    func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
-        ForEach(sections.keys.sorted(), id: \.self) { key in
-            Section(content: {
-                itemsList(items: sections[key] ?? [])
-            }, header: {
-                Group {
-                    if let iconName = key.iconName {
-                        Label(key.title, systemImage: iconName)
-                    } else {
-                        Text(key.title)
-                    }
-                }.font(.callout)
-                    .foregroundColor(key.color)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            })
-        }
     }
 
     func itemsList(items: [ItemContent]) -> some View {
@@ -105,37 +81,16 @@ private extension SecurityWeaknessDetailView {
     }
 }
 
-private extension SecurityWeaknessDetailView {
+private extension PasswordReusedView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: isSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+            CircleButton(icon: IconProvider.chevronDown,
                          iconColor: PassColor.loginInteractionNormMajor2,
                          backgroundColor: PassColor.loginInteractionNormMinor1,
                          accessibilityLabel: "Close") {
-                viewModel.dismiss(isSheet: isSheet)
+                dismiss()
             }
         }
-    }
-}
-
-struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
-    let id: String
-    let color: Color
-    let title: String
-    let iconName: String?
-
-    init(id: String = UUID().uuidString,
-         color: Color = PassColor.textWeak.toColor,
-         title: String,
-         iconName: String? = nil) {
-        self.color = color
-        self.title = title
-        self.iconName = iconName
-        self.id = id
-    }
-
-    static func < (lhs: SecuritySectionHeaderKey, rhs: SecuritySectionHeaderKey) -> Bool {
-        lhs.title < rhs.title
     }
 }

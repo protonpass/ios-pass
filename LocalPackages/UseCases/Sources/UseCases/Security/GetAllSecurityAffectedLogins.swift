@@ -138,10 +138,10 @@ private extension GetAllSecurityAffectedLogins {
         }
         return missing2fas
     }
-    
+
     func filterExcludedItems(items: [SecurityAffectedItem],
-                          type: SecurityWeakness,
-                          key: SymmetricKey) throws -> SecurityIssuesContent {
+                             type: SecurityWeakness,
+                             key: SymmetricKey) throws -> SecurityIssuesContent {
         let section = SecuritySection.excludedItems
         var excludedItems: [SecuritySection: [ItemContent]] = [section: []]
 

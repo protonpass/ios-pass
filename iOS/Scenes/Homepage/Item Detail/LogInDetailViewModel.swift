@@ -52,16 +52,19 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published private(set) var securityIssues: [SecurityWeakness]?
+    @Published private(set) var reusedItems: [ItemContent]?
 
     var isAlias: Bool { aliasItem != nil }
     let showSecurityIssues: Bool
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
-    private let removeItemMonitoring = resolve(\UseCasesContainer.removeItemMonitoring)
+    private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
+    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
@@ -81,12 +84,22 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             cancellable = getLoginSecurityIssues(itemId: itemContent.itemId)
                 .subscribe(on: DispatchQueue.global())
                 .receive(on: DispatchQueue.main)
-                .sink { [weak self] securityIssues in
+                .sink { [weak self] newSecurityIssues in
                     guard let self else {
                         return
                     }
-                    self.securityIssues = securityIssues
+                    securityIssues = newSecurityIssues
                 }
+
+            $securityIssues.receive(on: DispatchQueue.main)
+                .sink { [weak self] issues in
+                    guard let self, let issues else {
+                        return
+                    }
+                    if issues.contains(.reusedPasswords) {
+                        fetchSimilarPasswordItems()
+                    }
+                }.store(in: &cancellables)
         }
     }
 
@@ -180,17 +193,41 @@ extension LogInDetailViewModel {
         }
     }
 
+    func showDetail(for item: ItemContent) {
+        router.present(for: .itemDetail(item))
+    }
+
+    func showItemList() {
+        router.present(for: .passwordReusedItemList(itemContent))
+    }
+
     func openUrl(_ urlString: String) {
         router.navigate(to: .urlPage(urlString: urlString))
     }
-    
-    func removeItemFromSecurityMonitoring() {
+
+    func toggleFromSecurityMonitoring() {
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
-               try await removeItemMonitoring(item: itemContent)
+                if let securityIssues {
+                    try await toggleItemMonitoring(item: itemContent,
+                                                   shouldNotMonitor: !securityIssues.contains(.excludedItems))
+                }
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func fetchSimilarPasswordItems() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                reusedItems = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
@@ -201,12 +238,10 @@ extension LogInDetailViewModel {
 extension SecurityWeakness {
     var secureRowType: SecureRowType {
         switch self {
-        case .missing2FA, .reusedPasswords, .weakPasswords:
+        case .excludedItems, .missing2FA, .reusedPasswords, .weakPasswords:
             .warning
         case .exposedEmail, .exposedPassword:
             .danger
-        default:
-            .info
         }
     }
 }

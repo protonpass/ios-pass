@@ -54,6 +54,11 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
     /// Creation time of this revision
     public let revisionTime: Int64
 
+    /// Flags for this item. Possible values:
+    /// - SkipHealthCheck: 1<<0 = 1, if first bit of Int is 1 then the item should not be monitored in `Pass
+    /// Monitor`
+    public let flags: Int64
+
     /// Enum representation of `state`
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
 
@@ -69,7 +74,8 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
                 createTime: Int64,
                 modifyTime: Int64,
                 lastUseTime: Int64?,
-                revisionTime: Int64) {
+                revisionTime: Int64,
+                flags: Int64) {
         self.itemID = itemID
         self.revision = revision
         self.contentFormatVersion = contentFormatVersion
@@ -83,5 +89,12 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
         self.modifyTime = modifyTime
         self.lastUseTime = lastUseTime
         self.revisionTime = revisionTime
+        self.flags = flags
+    }
+}
+
+public extension Item {
+    func isFlagActive(flagToCheck: Int) -> Bool {
+        (Int(flags) & flagToCheck) != 0
     }
 }

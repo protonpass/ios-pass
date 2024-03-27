@@ -3799,6 +3799,12 @@
         }
       }
     },
+    "%lld other logins" : {
+
+    },
+    "%lld other logins use this password" : {
+
+    },
     "%lld remaining attempt(s)" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9645,6 +9651,9 @@
           }
         }
       }
+    },
+    "Add to monitoring" : {
+
     },
     "Add username or email address" : {
       "comment" : "Login item create/edit page",
@@ -42214,6 +42223,9 @@
         }
       }
     },
+    "It would be more secure to set up 2FA for this item" : {
+
+    },
     "Item ID" : {
       "localizations" : {
         "be" : {
@@ -46555,6 +46567,9 @@
           }
         }
       }
+    },
+    "List of all other items from your vaults that use this password." : {
+
     },
     "Log in to apps instantly" : {
       "extractionState" : "manual",
@@ -79332,6 +79347,9 @@
         }
       }
     },
+    "This item is not being monitored" : {
+
+    },
     "This login item already contains a 2FA secret" : {
       "localizations" : {
         "be" : {
@@ -86724,6 +86742,9 @@
         }
       }
     },
+    "use this password." : {
+
+    },
     "Use vaults to share this item with another person" : {
       "localizations" : {
         "be" : {
@@ -90259,6 +90280,9 @@
           }
         }
       }
+    },
+    "Visit the website and generate a unique password for this item." : {
+
     },
     "Vote for new features" : {
       "extractionState" : "manual",

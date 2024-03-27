@@ -25,6 +25,27 @@ import Entities
 import Foundation
 import PassRustCore
 
+public enum ItemFlag: Sendable, Hashable {
+    case skipHealthCheck(Bool)
+
+    // swiftlint:disable:next discouraged_optional_boolean
+    var flagValue: Bool? {
+        switch self {
+        case let .skipHealthCheck(value):
+            value
+        }
+    }
+}
+
+extension ItemFlag: Equatable {
+    public static func == (lhs: ItemFlag, rhs: ItemFlag) -> Bool {
+        switch (lhs, rhs) {
+        case (.skipHealthCheck, .skipHealthCheck):
+            true
+        }
+    }
+}
+
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
@@ -32,6 +53,7 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
 //    var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
 
     func refreshSecurityChecks() async throws
+    func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent]
 }
 
 public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
@@ -44,6 +66,9 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
 //    public let hasBreachedItems: CurrentValueSubject<Bool, Never> = .init(false)
+
+    private var cancellable = Set<AnyCancellable>()
+    private var refreshTask: Task<Void, Never>?
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
@@ -60,13 +85,11 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             guard let self else {
                 return
             }
-            try? await refreshSecurityChecks()
+            await setup()
         }
     }
 
     public func refreshSecurityChecks() async throws {
-        // swiftlint:disable:next todo
-        // TODO: remove excluded items
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let encryptedItems = try await itemRepository.getActiveLogInItems()
 
@@ -85,10 +108,11 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                   let loginItem = item.loginItem else {
                 continue
             }
-            
+
             var weaknesses = [SecurityWeakness]()
-           
-            if loginItem.excluded {
+
+            if encryptedItem.item
+                .isFlagActive(flagToCheck: ItemFlags.skipHealthCheck) {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
@@ -108,7 +132,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                     numberOfMissing2fa += 1
                 }
             }
-            
+
             // swiftlint:disable:next todo
             // TODO: check breached passwords /emails
 
@@ -122,6 +146,24 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                                          excludedItems: numberOfExcludedItems,
                                          exposedPasswords: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
+    }
+
+    public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
+        guard let login = item.loginItem else {
+            return []
+        }
+        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let encryptedItems = try await itemRepository.getActiveLogInItems()
+
+        return encryptedItems.compactMap { encryptedItem in
+            guard let decriptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+                  let loginItem = decriptedItem.loginItem,
+                  decriptedItem.ids != item.ids,
+                  !loginItem.password.isEmpty, loginItem.password == login.password else {
+                return nil
+            }
+            return decriptedItem
+        }
     }
 }
 
@@ -147,5 +189,32 @@ private extension PassMonitorRepository {
         urls
             .compactMap { domainParser?.parse(host: $0)?.domain }
             .contains { twofaDomainChecker.twofaDomainEligible(domain: $0) }
+    }
+
+    func refresh() {
+        refreshTask?.cancel()
+        refreshTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            try? await refreshSecurityChecks()
+        }
+    }
+
+    func setup() {
+        itemRepository.itemsWereUpdated
+            .sink { [weak self] updated in
+                guard let self, updated else {
+                    return
+                }
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await refresh()
+                }
+            }
+            .store(in: &cancellable)
+        refresh()
     }
 }

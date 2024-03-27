@@ -439,6 +439,8 @@ extension HomepageCoordinator {
                     presentPasskeyDetailView(for: passkey)
                 case let .securityDetail(securityWeakness):
                     presentSecurity(securityWeakness)
+                case let .passwordReusedItemList(content):
+                    presentPasswordReusedListView(for: content)
                 }
             }
             .store(in: &cancellables)
@@ -569,6 +571,11 @@ extension HomepageCoordinator {
         coordinator.showDetail(for: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
+    }
+
+    func presentPasswordReusedListView(for itemContent: ItemContent) {
+        let view = PasswordReusedView(viewModel: .init(itemContent: itemContent))
+        present(view)
     }
 
     func presentEditItemView(for itemContent: ItemContent) {

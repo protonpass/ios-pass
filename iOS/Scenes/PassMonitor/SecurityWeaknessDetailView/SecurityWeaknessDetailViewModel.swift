@@ -39,7 +39,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
     private var cancellables = Set<AnyCancellable>()
-    
+
     var showSections: Bool {
         switch type {
         case .excludedItems, .missing2FA:
@@ -60,15 +60,10 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
         router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
     }
 
-    
     func itemAction(item: ItemContent) {
-        if type != .excludedItems {
-            router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
-        } else {
-            // TODO: action to execute with excluded item
-        }
+        router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
     }
-    
+
     func dismiss(isSheet: Bool) {
         router.action(.back(isShownAsSheet: isSheet))
     }
@@ -121,7 +116,7 @@ extension SecuritySection {
             passwordStrength.toSecuritySectionHeaderKey
         case let .reusedPasswords(numberOfTime):
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime))
-        case .missing2fa, .excludedItems:
+        case .excludedItems, .missing2fa:
             SecuritySectionHeaderKey(title: "")
         }
     }

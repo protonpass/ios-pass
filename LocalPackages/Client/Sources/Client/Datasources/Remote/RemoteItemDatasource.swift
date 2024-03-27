@@ -40,6 +40,8 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
     func move(fromShareId: String, request: MoveItemsRequest) async throws -> [Item]
     func pin(item: any ItemIdentifiable) async throws -> Item
     func unpin(item: any ItemIdentifiable) async throws -> Item
+
+    func updateItemFlags(itemId: String, fromShareId: String, request: UpdateItemFlagsRequest) async throws -> Item
 }
 
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
@@ -157,6 +159,13 @@ public extension RemoteItemDatasource {
 
     func unpin(item: any ItemIdentifiable) async throws -> Item {
         let endpoint = UnpinItemEndpoint(shareId: item.shareId, itemId: item.itemId)
+        let response = try await exec(endpoint: endpoint)
+        return response.item
+    }
+
+    func updateItemFlags(itemId: String, fromShareId: String,
+                         request: UpdateItemFlagsRequest) async throws -> Item {
+        let endpoint = UpdateItemFlagsEndpoint(shareId: fromShareId, itemId: itemId, request: request)
         let response = try await exec(endpoint: endpoint)
         return response.item
     }

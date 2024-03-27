@@ -48,24 +48,4 @@ public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepo
         closureSendBug()
         return stubbedSendBugResult
     }
-    // MARK: - sendFeedback
-    public var sendFeedbackWithAndThrowableError2: Error?
-    public var closureSendFeedback: () -> () = {}
-    public var invokedSendFeedbackfunction = false
-    public var invokedSendFeedbackCount = 0
-    public var invokedSendFeedbackParameters: (title: String, description: String)?
-    public var invokedSendFeedbackParametersList = [(title: String, description: String)]()
-    public var stubbedSendFeedbackResult: Bool!
-
-    public func sendFeedback(with title: String, and description: String) async throws -> Bool {
-        invokedSendFeedbackfunction = true
-        invokedSendFeedbackCount += 1
-        invokedSendFeedbackParameters = (title, description)
-        invokedSendFeedbackParametersList.append((title, description))
-        if let error = sendFeedbackWithAndThrowableError2 {
-            throw error
-        }
-        closureSendFeedback()
-        return stubbedSendFeedbackResult
-    }
 }

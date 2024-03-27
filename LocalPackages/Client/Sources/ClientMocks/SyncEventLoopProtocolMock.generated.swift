@@ -21,7 +21,6 @@
 import Client
 import Combine
 import Core
-import Entities
 import Foundation
 import ProtonCoreNetworking
 
@@ -29,16 +28,6 @@ public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoop
 
     public init() {}
 
-    // MARK: - start
-    public var closureStart: () -> () = {}
-    public var invokedStartfunction = false
-    public var invokedStartCount = 0
-
-    public func start() {
-        invokedStartfunction = true
-        invokedStartCount += 1
-        closureStart()
-    }
     // MARK: - forceSync
     public var closureForceSync: () -> () = {}
     public var invokedForceSyncfunction = false
@@ -48,16 +37,6 @@ public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoop
         invokedForceSyncfunction = true
         invokedForceSyncCount += 1
         closureForceSync()
-    }
-    // MARK: - stop
-    public var closureStop: () -> () = {}
-    public var invokedStopfunction = false
-    public var invokedStopCount = 0
-
-    public func stop() {
-        invokedStopfunction = true
-        invokedStopCount += 1
-        closureStop()
     }
     // MARK: - reset
     public var closureReset: () -> () = {}
