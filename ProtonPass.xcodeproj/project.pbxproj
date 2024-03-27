@@ -369,6 +369,7 @@
 		35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
 		35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
 		3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
+		359A229B2BA3702D0005C750 /* CoreMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 359A229A2BA3702D0005C750 /* CoreMocks */; };
 		359A902A2B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A90292B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift */; };
 		359A902C2B90AFFC00A50138 /* AutoFillPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A902B2B90AFFC00A50138 /* AutoFillPassword.swift */; };
 		359A90302B90C58300A50138 /* AutoFillPasskey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A902F2B90C58300A50138 /* AutoFillPasskey.swift */; };
@@ -573,7 +574,6 @@
 		5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
 		5BFFB5132A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
-		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
 		66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA927929F9643900F2FC59 /* PaymentsManager.swift */; };
 		66CA927D29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA927C29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift */; };
@@ -1015,7 +1015,6 @@
 		5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCodeScannerView.swift; sourceTree = "<group>"; };
 		5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedUseCase+DependencyInjections.swift"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
-		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
 		6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProviderMock.swift; sourceTree = "<group>"; };
 		66CA927929F9643900F2FC59 /* PaymentsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsManager.swift; sourceTree = "<group>"; };
 		66CA927C29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsServicePlanDataStorage.swift; sourceTree = "<group>"; };
@@ -1117,6 +1116,7 @@
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
 				5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */,
 				5B0783712B1A301C0006424C /* UseCasesMocks in Frameworks */,
+				359A229B2BA3702D0005C750 /* CoreMocks in Frameworks */,
 				5B0783732B1A33F90006424C /* ClientMocks in Frameworks */,
 				5B8D20A42AA74A4600457CA3 /* Core in Frameworks */,
 				353518292AE14FB700574991 /* Screens in Frameworks */,
@@ -2267,7 +2267,6 @@
 			isa = PBXGroup;
 			children = (
 				84E10EABA5BC087B06289733 /* Generated */,
-				6699002D29A77197001033B6 /* KeychainMock.swift */,
 				5B503FF42A4E018500E6681C /* LogingManagerMock.swift */,
 				5B1453CE2A7114530048B022 /* UserDataMock.swift */,
 			);
@@ -2509,6 +2508,7 @@
 				57F59FB12AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation */,
 				5B0783702B1A301C0006424C /* UseCasesMocks */,
 				5B0783722B1A33F90006424C /* ClientMocks */,
+				359A229A2BA3702D0005C750 /* CoreMocks */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -2984,7 +2984,6 @@
 				5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */,
 				6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */,
 				35F3EF282AF673E000A67459 /* AppDataTests.swift in Sources */,
-				6699002E29A77197001033B6 /* KeychainMock.swift in Sources */,
 				6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */,
 				5B503FF52A4E018500E6681C /* LogingManagerMock.swift in Sources */,
 				5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */,
@@ -5658,6 +5657,10 @@
 		35855C122AC8744A00794DB4 /* UseCases */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UseCases;
+		};
+		359A229A2BA3702D0005C750 /* CoreMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreMocks;
 		};
 		35ABE1292AA08275001E20F9 /* DocScanner */ = {
 			isa = XCSwiftPackageProductDependency;

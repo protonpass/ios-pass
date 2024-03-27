@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Proton_Pass
+import CoreMocks
 import Factory
 import ProtonCoreKeymaker
 import ProtonCoreLogin
@@ -27,25 +28,34 @@ import XCTest
 
 final class AppDataTests: XCTestCase {
     var keychainData: [String: Data] = [:]
-    var keychain: KeychainMock!
+    var keychain: KeychainProtocolMock!
     var mainKeyProvider: MainKeyProviderMock!
     var migrationStateProvider: CredentialsMigrationStateProviderMock!
     var sut: AppData!
 
     override func setUp() {
         super.setUp()
-        keychain = KeychainMock()
-        keychain.setDataStub.bodyIs { _, data, key, _ in
-            self.keychainData[key] = data
-        }
-        keychain.dataStub.bodyIs { _, key, _ in
-            self.keychainData[key]
-        }
-        keychain.removeStub.bodyIs { _, key in
-            self.keychainData[key] = nil
+        keychain = KeychainProtocolMock()
+
+        keychain.closureSetOrErrorDataKeyAttributes3 = {
+            if let data = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.0,
+               let key = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.1 {
+                self.keychainData[key] = data
+            }
         }
 
-        
+        keychain.closureDataOrError = {
+            if let key = self.keychain.invokedDataOrErrorParameters?.0 {
+                self.keychain.stubbedDataOrErrorResult = self.keychainData[key]
+            }
+        }
+
+        keychain.closureRemoveOrError = {
+            if let key = self.keychain.invokedRemoveOrErrorParameters?.0 {
+                self.keychainData[key] = nil
+            }
+        }
+
         mainKeyProvider = MainKeyProviderMock()
         mainKeyProvider.mainKeyStub.fixture = Array(repeating: .zero, count: 32)
         let migrationStateProviderMock = CredentialsMigrationStateProviderMock()
@@ -76,7 +86,7 @@ extension AppDataTests {
         let data = try JSONEncoder().encode(givenUserData)
         let lockedData = try Locked<Data>(clearValue: data, with: mainKeyProvider.mainKey!)
         let cypherdata = lockedData.encryptedValue
-        keychain.set(cypherdata, forKey: AppDataKey.userData.rawValue, attributes: nil)
+        try keychain.setOrError(cypherdata, forKey: AppDataKey.userData.rawValue, attributes: nil)
 
         // When
         // Get credential when not yet migrated
