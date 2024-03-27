@@ -3800,10 +3800,24 @@
       }
     },
     "%lld other logins" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld other logins"
+          }
+        }
+      }
     },
     "%lld other logins use this password" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld other logins use this password"
+          }
+        }
+      }
     },
     "%lld remaining attempt(s)" : {
       "extractionState" : "manual",
@@ -9653,7 +9667,14 @@
       }
     },
     "Add to monitoring" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to monitoring"
+          }
+        }
+      }
     },
     "Add username or email address" : {
       "comment" : "Login item create/edit page",
@@ -42224,7 +42245,14 @@
       }
     },
     "It would be more secure to set up 2FA for this item" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It would be more secure to set up 2FA for this item"
+          }
+        }
+      }
     },
     "Item ID" : {
       "localizations" : {
@@ -46569,7 +46597,14 @@
       }
     },
     "List of all other items from your vaults that use this password." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List of all other items from your vaults that use this password."
+          }
+        }
+      }
     },
     "Log in to apps instantly" : {
       "extractionState" : "manual",
@@ -79348,7 +79383,14 @@
       }
     },
     "This item is not being monitored" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This item is not being monitored"
+          }
+        }
+      }
     },
     "This login item already contains a 2FA secret" : {
       "localizations" : {
@@ -86743,7 +86785,14 @@
       }
     },
     "use this password." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "use this password."
+          }
+        }
+      }
     },
     "Use vaults to share this item with another person" : {
       "localizations" : {
@@ -90282,7 +90331,14 @@
       }
     },
     "Visit the website and generate a unique password for this item." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visit the website and generate a unique password for this item."
+          }
+        }
+      }
     },
     "Vote for new features" : {
       "extractionState" : "manual",
