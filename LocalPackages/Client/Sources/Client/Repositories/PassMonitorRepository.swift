@@ -27,14 +27,6 @@ import PassRustCore
 
 public enum ItemFlag: Sendable, Hashable {
     case skipHealthCheck(Bool)
-
-    // swiftlint:disable:next discouraged_optional_boolean
-    var flagValue: Bool? {
-        switch self {
-        case let .skipHealthCheck(value):
-            value
-        }
-    }
 }
 
 extension ItemFlag: Equatable {

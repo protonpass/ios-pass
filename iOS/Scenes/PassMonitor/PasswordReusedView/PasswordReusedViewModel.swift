@@ -42,7 +42,7 @@ final class PasswordReusedViewModel: ObservableObject, Sendable {
 
         fetchSimilarPasswordItems()
     }
-    
+
     func itemAction(item: ItemContent) {
         router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
     }
@@ -69,13 +69,15 @@ private extension PasswordReusedViewModel {
 
 extension String {
     func transformString(withChar newChar: Character) -> String {
-        guard count > 2 else { return self } // Return the original string if it's too short
+        guard count > 2,
+              let firstChar = first,
+              let lastChar = last else { return self } // Return the original string if it's too short
 
         let startIndex = index(after: startIndex)
         let endIndex = index(before: endIndex)
         let middleCount = distance(from: startIndex, to: endIndex)
 
         let middleReplacement = String(repeating: newChar, count: middleCount)
-        return "\(first!)\(middleReplacement)\(last!)"
+        return "\(firstChar)\(middleReplacement)\(lastChar)"
     }
 }

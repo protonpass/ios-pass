@@ -60,10 +60,6 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
         router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
     }
 
-    func itemAction(item: ItemContent) {
-        router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
-    }
-
     func dismiss(isSheet: Bool) {
         router.action(.back(isShownAsSheet: isSheet))
     }
