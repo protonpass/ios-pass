@@ -74,7 +74,7 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
                                                        passkey: key.content)
             if #available(iOS 17.0, *) {
                 credential = ASPasskeyAssertionCredential(userHandle: key.userHandle,
-                                                          relyingParty: key.rpName,
+                                                          relyingParty: key.rpID,
                                                           signature: response.signature,
                                                           clientDataHash: response.clientDataHash,
                                                           authenticatorData: response.authenticatorData,
