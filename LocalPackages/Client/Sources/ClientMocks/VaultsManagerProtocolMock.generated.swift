@@ -96,20 +96,6 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         invokedRefreshCount += 1
         closureRefresh()
     }
-    // MARK: - fullSync
-    public var fullSyncThrowableError2: Error?
-    public var closureFullSync: () -> () = {}
-    public var invokedFullSyncfunction = false
-    public var invokedFullSyncCount = 0
-
-    public func fullSync() async throws {
-        invokedFullSyncfunction = true
-        invokedFullSyncCount += 1
-        if let error = fullSyncThrowableError2 {
-            throw error
-        }
-        closureFullSync()
-    }
     // MARK: - getItems
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
@@ -126,22 +112,6 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         closureGetItems()
         return stubbedGetItemsResult
     }
-    // MARK: - getItemCount
-    public var closureGetItemCount: () -> () = {}
-    public var invokedGetItemCountfunction = false
-    public var invokedGetItemCountCount = 0
-    public var invokedGetItemCountParameters: (selection: Vault, Void)?
-    public var invokedGetItemCountParametersList = [(selection: Vault, Void)]()
-    public var stubbedGetItemCountResult: Int!
-
-    public func getItemCount(for selection: Vault) -> Int {
-        invokedGetItemCountfunction = true
-        invokedGetItemCountCount += 1
-        invokedGetItemCountParameters = (selection, ())
-        invokedGetItemCountParametersList.append((selection, ()))
-        closureGetItemCount()
-        return stubbedGetItemCountResult
-    }
     // MARK: - getAllVaults
     public var closureGetAllVaults: () -> () = {}
     public var invokedGetAllVaultsfunction = false
@@ -154,85 +124,23 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         closureGetAllVaults()
         return stubbedGetAllVaultsResult
     }
-    // MARK: - vaultHasTrashedItems
-    public var closureVaultHasTrashedItems: () -> () = {}
-    public var invokedVaultHasTrashedItemsfunction = false
-    public var invokedVaultHasTrashedItemsCount = 0
-    public var invokedVaultHasTrashedItemsParameters: (vault: Vault, Void)?
-    public var invokedVaultHasTrashedItemsParametersList = [(vault: Vault, Void)]()
-    public var stubbedVaultHasTrashedItemsResult: Bool!
-
-    public func vaultHasTrashedItems(_ vault: Vault) -> Bool {
-        invokedVaultHasTrashedItemsfunction = true
-        invokedVaultHasTrashedItemsCount += 1
-        invokedVaultHasTrashedItemsParameters = (vault, ())
-        invokedVaultHasTrashedItemsParametersList.append((vault, ()))
-        closureVaultHasTrashedItems()
-        return stubbedVaultHasTrashedItemsResult
-    }
-    // MARK: - deleteVault
-    public var deleteVaultThrowableError7: Error?
-    public var closureDeleteVaultAsync7: () -> () = {}
-    public var invokedDeleteVaultAsync7 = false
-    public var invokedDeleteVaultAsyncCount7 = 0
-    public var invokedDeleteVaultAsyncParameters7: (vault: Vault, Void)?
-    public var invokedDeleteVaultAsyncParametersList7 = [(vault: Vault, Void)]()
-
-    public func delete(vault: Vault) async throws {
-        invokedDeleteVaultAsync7 = true
-        invokedDeleteVaultAsyncCount7 += 1
-        invokedDeleteVaultAsyncParameters7 = (vault, ())
-        invokedDeleteVaultAsyncParametersList7.append((vault, ()))
-        if let error = deleteVaultThrowableError7 {
-            throw error
-        }
-        closureDeleteVaultAsync7()
-    }
-    // MARK: - deleteShareId
-    public var deleteShareIdThrowableError8: Error?
-    public var closureDeleteShareIdAsync8: () -> () = {}
-    public var invokedDeleteShareIdAsync8 = false
-    public var invokedDeleteShareIdAsyncCount8 = 0
-    public var invokedDeleteShareIdAsyncParameters8: (shareId: String, Void)?
-    public var invokedDeleteShareIdAsyncParametersList8 = [(shareId: String, Void)]()
+    // MARK: - delete
+    public var deleteShareIdThrowableError4: Error?
+    public var closureDelete: () -> () = {}
+    public var invokedDeletefunction = false
+    public var invokedDeleteCount = 0
+    public var invokedDeleteParameters: (shareId: String, Void)?
+    public var invokedDeleteParametersList = [(shareId: String, Void)]()
 
     public func delete(shareId: String) async throws {
-        invokedDeleteShareIdAsync8 = true
-        invokedDeleteShareIdAsyncCount8 += 1
-        invokedDeleteShareIdAsyncParameters8 = (shareId, ())
-        invokedDeleteShareIdAsyncParametersList8.append((shareId, ()))
-        if let error = deleteShareIdThrowableError8 {
+        invokedDeletefunction = true
+        invokedDeleteCount += 1
+        invokedDeleteParameters = (shareId, ())
+        invokedDeleteParametersList.append((shareId, ()))
+        if let error = deleteShareIdThrowableError4 {
             throw error
         }
-        closureDeleteShareIdAsync8()
-    }
-    // MARK: - restoreAllTrashedItems
-    public var restoreAllTrashedItemsThrowableError9: Error?
-    public var closureRestoreAllTrashedItems: () -> () = {}
-    public var invokedRestoreAllTrashedItemsfunction = false
-    public var invokedRestoreAllTrashedItemsCount = 0
-
-    public func restoreAllTrashedItems() async throws {
-        invokedRestoreAllTrashedItemsfunction = true
-        invokedRestoreAllTrashedItemsCount += 1
-        if let error = restoreAllTrashedItemsThrowableError9 {
-            throw error
-        }
-        closureRestoreAllTrashedItems()
-    }
-    // MARK: - permanentlyDeleteAllTrashedItems
-    public var permanentlyDeleteAllTrashedItemsThrowableError10: Error?
-    public var closurePermanentlyDeleteAllTrashedItems: () -> () = {}
-    public var invokedPermanentlyDeleteAllTrashedItemsfunction = false
-    public var invokedPermanentlyDeleteAllTrashedItemsCount = 0
-
-    public func permanentlyDeleteAllTrashedItems() async throws {
-        invokedPermanentlyDeleteAllTrashedItemsfunction = true
-        invokedPermanentlyDeleteAllTrashedItemsCount += 1
-        if let error = permanentlyDeleteAllTrashedItemsThrowableError10 {
-            throw error
-        }
-        closurePermanentlyDeleteAllTrashedItems()
+        closureDelete()
     }
     // MARK: - getOldestOwnedVault
     public var closureGetOldestOwnedVault: () -> () = {}
@@ -245,17 +153,5 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         invokedGetOldestOwnedVaultCount += 1
         closureGetOldestOwnedVault()
         return stubbedGetOldestOwnedVaultResult
-    }
-    // MARK: - getFilteredItems
-    public var closureGetFilteredItems: () -> () = {}
-    public var invokedGetFilteredItemsfunction = false
-    public var invokedGetFilteredItemsCount = 0
-    public var stubbedGetFilteredItemsResult: [ItemUiModel]!
-
-    public func getFilteredItems() -> [ItemUiModel] {
-        invokedGetFilteredItemsfunction = true
-        invokedGetFilteredItemsCount += 1
-        closureGetFilteredItems()
-        return stubbedGetFilteredItemsResult
     }
 }
