@@ -41,14 +41,4 @@ public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyPr
         closureGetSymmetricKey()
         return stubbedGetSymmetricKeyResult
     }
-    // MARK: - removeSymmetricKey
-    public var closureRemoveSymmetricKey: () -> () = {}
-    public var invokedRemoveSymmetricKeyfunction = false
-    public var invokedRemoveSymmetricKeyCount = 0
-
-    public func removeSymmetricKey() {
-        invokedRemoveSymmetricKeyfunction = true
-        invokedRemoveSymmetricKeyCount += 1
-        closureRemoveSymmetricKey()
-    }
 }
