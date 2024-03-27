@@ -1,169 +1,7 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@ vault" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ сховішча"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "trezor %@"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ boks"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Tresor"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ κρύπτη"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ vault"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "la caja fuerte %@"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "la bóveda %@"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Holvi \"%@\""
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coffre-fort %@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ brankas"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ cassaforte"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 保管庫"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ საცავი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@개 금고"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ hvelv"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ kluis"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "sejfu %@"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "cofre %@"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "seiful %@"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ trezor"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ trezor"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ valv"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ kasa"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховище %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kho lưu trữ %@"
-          }
-        }
-      }
-    },
     "%@%% decrypted..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -324,7 +162,6 @@
       }
     },
     "%@%% downloaded..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -485,7 +322,6 @@
       }
     },
     "%lld characters" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -1538,7 +1374,6 @@
       }
     },
     "%lld item(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -3273,7 +3108,6 @@
       }
     },
     "%lld member(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -3800,7 +3634,6 @@
       }
     },
     "%lld remaining attempt(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -4327,7 +4160,6 @@
       }
     },
     "%lld search result(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -4853,535 +4685,7 @@
         }
       }
     },
-    "%lld time(s)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld разы"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld разоў"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "1 раз"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld разоў"
-                }
-              }
-            }
-          }
-        },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lldkrát"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lldkrát"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Jednou"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lldkrát"
-                }
-              }
-            }
-          }
-        },
-        "da" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Én gang"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld gange"
-                }
-              }
-            }
-          }
-        },
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Einmal"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Mal"
-                }
-              }
-            }
-          }
-        },
-        "el" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Μία φορά"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld φορές"
-                }
-              }
-            }
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Once"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld times"
-                }
-              }
-            }
-          }
-        },
-        "es" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Una vez"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld veces"
-                }
-              }
-            }
-          }
-        },
-        "es-419" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Una vez"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld veces"
-                }
-              }
-            }
-          }
-        },
-        "fi" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Kerran"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld kertaa"
-                }
-              }
-            }
-          }
-        },
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Une fois"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld fois"
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld kali"
-                }
-              }
-            }
-          }
-        },
-        "it" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Una volta"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld volte"
-                }
-              }
-            }
-          }
-        },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 回"
-                }
-              }
-            }
-          }
-        },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "ერთხელ"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld-ჯერ"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld번"
-                }
-              }
-            }
-          }
-        },
-        "nb" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Én gang"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld ganger"
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Één keer"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld keer"
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld razy"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld razy"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "1 raz"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld razy"
-                }
-              }
-            }
-          }
-        },
-        "pt-BR" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Uma vez"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld vezes"
-                }
-              }
-            }
-          }
-        },
-        "ro" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "de %lld ori"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "o dată"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "de %lld de ori"
-                }
-              }
-            }
-          }
-        },
-        "sk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld -krát"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld -krát"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Raz"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld-krát"
-                }
-              }
-            }
-          }
-        },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld-krat"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Enkrat"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld-krat"
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld-krat"
-                }
-              }
-            }
-          }
-        },
-        "sv" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "En gång"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld gånger"
-                }
-              }
-            }
-          }
-        },
-        "tr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Bir kez"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld kez"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld рази"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld разів"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Один раз"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld разів"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld lần"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "%lld trial day(s) left" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -5908,7 +5212,6 @@
       }
     },
     "%lld word(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -7235,7 +6538,6 @@
       }
     },
     "20 vaults" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -7717,7 +7019,6 @@
     },
     "Access level" : {
       "comment" : "Used in sharing context",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8359,7 +7660,6 @@
       }
     },
     "Add 2FA secret" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8521,7 +7821,6 @@
     },
     "Add a File" : {
       "comment" : "Title for the button to add a file to the bug report",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8842,7 +8141,6 @@
       }
     },
     "Add login details for an app or site" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9163,7 +8461,6 @@
       }
     },
     "Add note" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9324,7 +8621,6 @@
       }
     },
     "Add password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9486,7 +8782,6 @@
     },
     "Add relevant files or images to the report" : {
       "comment" : "Explanation for button to add file or image to bug report",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9809,7 +9104,6 @@
     },
     "Added files" : {
       "comment" : "Title for added file in bug report",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9969,171 +9263,8 @@
         }
       }
     },
-    "admin" : {
-      "comment" : "Vault sharing: Short description for share permission",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "адміністратар"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "správce"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "admin"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Administrator"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "διαχειριστής"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "admin"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "administrador"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "administrador"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ylläpito"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "gérer (administrateur)"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "admin"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "gestire"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "管理者"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ადმინისტრატორი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "관리자"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "administrator"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "beheerder"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "administrator"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "administrador"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "administrator"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "správca"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "administrator"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "admin"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yönetici"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "адміністратор"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "quản trị viên"
-          }
-        }
-      }
-    },
     "Admin" : {
       "comment" : "A sharing access level, user can do anything with the shared vault.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -10454,7 +9585,6 @@
       }
     },
     "After %lld hour(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -10981,7 +10111,6 @@
       }
     },
     "After %lld minute(s)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -11508,7 +10637,6 @@
       }
     },
     "After 15 seconds" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -11669,7 +10797,6 @@
       }
     },
     "Alias" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -11830,7 +10957,6 @@
       }
     },
     "Alias \"%@\" will stop forwarding emails to your mailbox" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -11992,7 +11118,6 @@
     },
     "Alias action menu" : {
       "comment" : "Accessibility label",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12314,7 +11439,6 @@
       }
     },
     "Alias address copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12475,7 +11599,6 @@
       }
     },
     "Alias can not contain 2 consecutive dots (..)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12637,7 +11760,6 @@
     },
     "Alias can not start with a dot (.)" : {
       "comment" : "Error message displayed to users when they try to create an alias",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12798,7 +11920,6 @@
       }
     },
     "Alias copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12959,7 +12080,6 @@
       }
     },
     "Alias created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13120,7 +12240,6 @@
       }
     },
     "Alias of login item \"%@\"" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13281,7 +12400,6 @@
       }
     },
     "Alias permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13442,7 +12560,6 @@
       }
     },
     "Alias restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13603,7 +12720,6 @@
       }
     },
     "Alias updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13764,7 +12880,6 @@
       }
     },
     "Aliases" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -14405,7 +13520,6 @@
       }
     },
     "All items permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -14566,7 +13680,6 @@
       }
     },
     "All items restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -14727,7 +13840,6 @@
       }
     },
     "All logs cleared" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -14889,7 +14001,6 @@
     },
     "All vaults" : {
       "comment" : "Vault list",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -16329,167 +15440,6 @@
         }
       }
     },
-    "Auto-filled:" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Аўтазапаўненне:"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automaticky vyplněno:"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Autofyldt:"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatisch ausgefüllt:"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αυτόματη συμπλήρωση:"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auto-filled:"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rellenado automáticamente:"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Completado automáticamente:"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Täytetty:"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remplissage automatique :"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diisi secara otomatis"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Compilato automaticamente:"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自動入力:"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ავტომატურად-შევსებული:"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "자동 생성됨:"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatisk utfylt:"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auto-invullen:"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ostatnie autouzupełnianie:"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preenchimento automático:"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Autocompletat:"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automaticky vyplnené:"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Samodejno izpolnjeno:"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Autofylld:"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Otomatik dolduruldu:"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Автозаповнення:"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Đã tự động điền:"
-          }
-        }
-      }
-    },
     "AutoFill" : {
       "comment" : "Profile tab: AutoFill settings",
       "localizations" : {
@@ -17132,7 +16082,6 @@
       }
     },
     "Autosave" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17454,7 +16403,6 @@
       }
     },
     "Can create, edit, delete and export items in this vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17615,7 +16563,6 @@
       }
     },
     "Can grant and revoke access to this vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17777,7 +16724,6 @@
     },
     "Can view items in this vault" : {
       "comment" : "Vault sharing: Descriptions for role",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18099,7 +17045,6 @@
     },
     "Cancel invitation" : {
       "comment" : "Used in sharing context, the title of the button to cancel an invitation",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18260,7 +17205,6 @@
       }
     },
     "Capital letters" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18421,7 +17365,6 @@
       }
     },
     "Capitalize" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18582,7 +17525,6 @@
       }
     },
     "Card" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18903,7 +17845,6 @@
       }
     },
     "Card number copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -19225,7 +18166,6 @@
       }
     },
     "Cardholder name copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -19705,167 +18645,6 @@
         }
       }
     },
-    "Check out all the exclusive features that are available to you for a limited time" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Даведайцеся пра ўсе эксклюзіўныя функцыі, якія будуць даступны вам на працягу абмежаванага часу"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podívejte se na všechny exkluzivní funkce, které jsou vám po omezenou dobu k dispozici"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se alle de eksklusive funktioner, der er tilgængelige for dig i en begrænset periode"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sieh dir all die exklusiven Funktionen an, die dir für eine begrenzte Zeit zur Verfügung stehen."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δείτε όλες τις αποκλειστικές λειτουργίες που είναι διαθέσιμες σε εσάς για περιορισμένο χρονικό διάστημα"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check out all the exclusive features that are available to you for a limited time"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Echa un vistazo a todas las funciones exclusivas que están disponibles para ti por tiempo limitado"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eche un vistazo a todas las funciones exclusivas que están disponibles para usted por tiempo limitado"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tutustu kaikkiin ainutlaatuisiin ominaisuuksiin, jotka ovat käytettävissäsi rajoitetun ajan"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Découvrez toutes les fonctionnalités exclusives disponibles pour une durée limitée."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lihat semua fitur eksklusif yang tersedia untuk Anda hanya untuk waktu terbatas"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scopri tutte le funzionalità esclusive che sono disponibili per te per un periodo di tempo limitato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "期間限定で利用可能なすべての限定機能をチェックする"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შეამოწმეთ ყველა ექსკლუზიური შემოთავაზება, რომელიც, მხოლოდ, შეზღუდული დროითაა თქვენთვის შემოთავაზებული"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "한정 기간 동안 사용할 수 있는 특전 기능들을 살펴보세요"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sjekk ut alle de eksklusive funksjonene som er tilgjengelige for deg i en begrenset periode."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bekijk alle exclusieve functies die voor een beperkte tijd voor u beschikbaar zijn"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sprawdź wszystkie dodatkowe funkcje, które możesz przetestować przez ograniczony czas"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confira todos os recursos exclusivos que estão disponíveis para você por um tempo limitado"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Încercați toate funcțiile exclusive care vă sunt disponibile pentru o perioadă limitată de timp"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pozrite si všetky exkluzívne funkcie, ktoré máte k dispozícii na obmedzený čas"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preverite vse ekskluzivne funkcije, ki so vam na voljo omejen čas"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kolla in alla exklusiva funktioner som är tillgängliga för dig under en begränsad tid"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tüm ücretli özellikleri sınırlı bir süre için deneyimleyebilirsiniz"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ознайомтеся з усіма ексклюзивними функціями протягом обмеженого часу"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Xem tất cả các tính năng độc quyền mà bạn có thể sử dụng trong một thời gian giới hạn"
-          }
-        }
-      }
-    },
     "Clear" : {
       "localizations" : {
         "be" : {
@@ -20028,7 +18807,6 @@
     },
     "Clear all files" : {
       "comment" : "Title of a button to removed all attached files from the bug report",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -20670,7 +19448,6 @@
     },
     "Clone" : {
       "comment" : "Title of the button that clones the content of an item to make a new one",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -20991,7 +19768,6 @@
       }
     },
     "Commas" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -21473,7 +20249,6 @@
     },
     "Confirm access" : {
       "comment" : "Confirm the invitation of a new user",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -21635,7 +20410,6 @@
     },
     "Congratulations,\n your access has been confirmed" : {
       "comment" : "When an admin confirmed access of a new user",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -21796,7 +20570,6 @@
       }
     },
     "Continue" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -21956,170 +20729,7 @@
         }
       }
     },
-    "Continue item creation" : {
-      "comment" : "Title for a button in alert when user is trying to create a new item and wants to proceed with creation",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Працягнуць стварэнне элемента"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pokračovat ve vytváření položky"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fortsæt oprettelse af element"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erstellung von Einträgen fortsetzen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Συνέχεια δημιουργίας στοιχείου"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue item creation"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuar con la creación del elemento"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuar con la creación del elemento"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jatka kohteen luontia"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuer la création de l'élément"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lanjutkan pembuatan item"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continua la creazione dell'elemento"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アイテムの作成を続行"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელემენტის შექმნის გაგრძელება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "항목 생성 계속하기"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fortsett oppretting av element"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ga verder met het maken van een item"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kontynuuj tworzenie elementu"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuar criação de item"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuare creare articol"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pokračovať vo vytváraní položky"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nadaljujte z ustvarjanjem predmeta"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fortsätt skapa objekt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ögeler eklemeyi sürdürün"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Continue item creation"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tiếp tục tạo nội dung"
-          }
-        }
-      }
-    },
     "Control what lands in your inbox" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -22600,7 +21210,6 @@
       }
     },
     "Copy alias address" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -22761,7 +21370,6 @@
       }
     },
     "Copy and close" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -23402,7 +22010,6 @@
       }
     },
     "Copy note content" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -23563,7 +22170,6 @@
       }
     },
     "Copy password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -23885,7 +22491,6 @@
     },
     "Copy username" : {
       "comment" : "Context menu options for items",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -24041,491 +22646,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sao chép tên đăng nhập"
-          }
-        }
-      }
-    },
-    "Couldn't find \"%@\"" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Немагчыма знайсці \"%@\""
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nepodařilo se najít \"%@\""
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finde \"%@\""
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" konnte nicht gefunden werden"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η εύρεση του \"%@\""
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Couldn't find \"%@\""
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se ha podido encontrar «%@»."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudo encontrar \"%@\""
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haulla \"%@\" ei löytynyt mitään"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun résultat n'a été trouvé pour « %@ »."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" tidak dapat ditemukan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossibile trovare \"%@\""
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\"が見つかりませんでした"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" ვერ ვიპოვე"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\"을(를) 찾을 수 없습니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finne \"%@\""
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kon niet vinden \"%@\""
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nie można znaleźć \"%@\""
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível encontrar \"%@\""
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nu s-a putut găsi „%@”"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nepodarilo sa nájsť \"%@\""
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ni bilo mogoče najti \"%@\""
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunde inte hitta “%@“"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" bulunamadı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\""
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\""
-          }
-        }
-      }
-    },
-    "Couldn't find \"%@\" in Trash" : {
-      "comment" : "Message shown when user searches for something in Trash and nothing is found",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Немагчыма знайсці \"%@\" у сметніцы"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finde \"%@\" i papirkurven"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" konnte nicht im Papierkorb gefunden werden."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η εύρεση του \"%@\" στα Διαγραμμένα"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Couldn't find \"%@\" in Trash"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se ha podido encontrar «%@» en la papelera."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudo encontrar \"%@\" en la papelera"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Roskakorista ei löytynyt mitään haulla \"%@\""
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun résultat n'a été trouvé dans la corbeille pour « %@ »."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" tidak dapat ditemukan di Sampah"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossibile trovare \"%@\" nel cestino"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ごみ箱で\"%@\"が見つかりませんでした"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "„%@“-ის ნაგვის ყუთში აღმოჩენა შეუძლებელია"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "휴지통에서 \"%@\"을(를) 찾을 수 없습니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finne \"%@\" i papirkurven"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kon niet vinden \"%@\" in prullenbak"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nie można znaleźć \"%@\" w Koszu"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível encontrar \"%@\" na lixeira"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nu s-a putut găsi „%@” în gunoi"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "V koši sa nepodarilo nájsť \"%@\""
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "V smetnjaku ni bilo mogoče najti »%@«."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunde inte hitta “%@“ i papperskorg"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" çöp kutusunda bulunamadı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
-          }
-        }
-      }
-    },
-    "Couldn't find \"%1$@\" in %2$@" : {
-      "comment" : "Message shown when user searches for something in a vault and nothing is found. The first placeholder is the search query and the second placeholder is the  name of the vault.",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Немагчыма знайсці \"%1$@\" у %2$@"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finde \"%1$@\" i %2$@"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" konnte nicht in %2$@ gefunden werden."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η εύρεση του \"%1$@\" στο %2$@"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se ha podido encontrar «%1$@» en %2$@."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudo encontrar \"%1$@\" en %2$@"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Holvista %2$@ ei löytynyt mitään haulla \"%1$@\""
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun résultat n'a été trouvé dans  %2$@  pour « %1$@ »."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" tidak dapat ditemukan di %2$@"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossibile trovare \"%1$@\" in %2$@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "„%1$@“-ის %2$@-ში აღმოჩენა შეუძლებელია"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$@에서 \"%1$@ \"을(를) 찾을 수 없습니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke finne \"%1$@\" i %2$@"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kon niet vinden \"%1$@\" in %2$@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nie można znaleźć \"%1$@\" w sejfie %2$@"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível encontrar \"%1$@\" no %2$@"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nu s-a putut găsi „%1$@” în %2$@"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nepodarilo sa nájsť \"%1$@\" v %2$@"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ni bilo mogoče najti « %1$@ » v %2$@"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunde inte hitta “%1$@“ i %2$@"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\", %2$@ içinde bulunamadı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
           }
         }
       }
@@ -24692,7 +22812,6 @@
       }
     },
     "Create & AutoFill" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -24853,7 +22972,6 @@
       }
     },
     "Create a card" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25014,7 +23132,6 @@
       }
     },
     "Create a Hide My Email alias" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25175,7 +23292,6 @@
       }
     },
     "Create a login" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25496,7 +23612,6 @@
       }
     },
     "Create a note" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25658,7 +23773,6 @@
     },
     "Create login" : {
       "comment" : "AutoFill extension",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25979,7 +24093,6 @@
       }
     },
     "Create vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26140,7 +24253,6 @@
       }
     },
     "Created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26301,7 +24413,6 @@
       }
     },
     "Credit card created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26462,7 +24573,6 @@
       }
     },
     "Credit card moved to trash" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26623,7 +24733,6 @@
       }
     },
     "Credit card permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26784,7 +24893,6 @@
       }
     },
     "Credit card restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -26945,7 +25053,6 @@
       }
     },
     "Credit card updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -27106,7 +25213,6 @@
       }
     },
     "Credit cards" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -27588,7 +25694,6 @@
     },
     "Custom field menu" : {
       "comment" : "accessibility",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -27749,7 +25854,6 @@
       }
     },
     "Custom fields" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -27909,170 +26013,7 @@
         }
       }
     },
-    "Customize" : {
-      "comment" : "Customize a default value e.g customize default shared vault's information",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Наладзіць"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Přizpůsobit"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tilpas"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anpassen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Προσαρμογή"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customize"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalizar"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalizar"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mukauta"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personnaliser"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sesuaikan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalizza"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "カスタマイズ"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მორგება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "맞춤화"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tilpass"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personaliseer"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dostosuj"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalizar"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalizare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prispôsobiť"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prilagodi"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anpassa"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Özelleştir"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Налаштувати"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tuỳ chỉnh"
-          }
-        }
-      }
-    },
     "Dark" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -28873,167 +26814,6 @@
         }
       }
     },
-    "Delete alias" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выдаліць псеўданім"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smazat alias"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Slet alias"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alias löschen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Διαγραφή ψευδώνυμου"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete alias"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar el alias"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar alias"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poista alias"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprimer l'alias"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hapus alias"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina alias"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "エイリアスを削除"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ფსევდონიმის წაშლა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "별명 삭제"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Slett alias"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verwijder alias"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usuń alias"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Excluir alias"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ștergere alias"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odstrániť alias"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Izbriši vzdevek"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ta bort alias"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Takma adı sil"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Видалити псевдонім"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Xóa bí danh"
-          }
-        }
-      }
-    },
     "Delete permanently" : {
       "localizations" : {
         "be" : {
@@ -29515,7 +27295,6 @@
       }
     },
     "Delete vault?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -29837,7 +27616,6 @@
     },
     "Domain" : {
       "comment" : "Passkey's domain",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -30159,7 +27937,6 @@
     },
     "E.g., Recovery key, PIN" : {
       "comment" : "Placeholder of hidden custom field",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -30321,7 +28098,6 @@
     },
     "E.g., User ID, Acct number" : {
       "comment" : "Placeholder of text custom field",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -30477,167 +28253,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "V.d, ID người dùng, số tài khoản"
-          }
-        }
-      }
-    },
-    "edit" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "рэдагаваць"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "upravit"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "redigér"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bearbeiten"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "επεξεργασία"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "edit"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "editar"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "editar"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "muokkaus"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "modifier"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "sunting"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "modificare"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "編集"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ჩასწორება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "편집"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "rediger"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "bewerk"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "edytuj"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "editar"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "editare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "upraviť"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "uredi"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "redigera"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "düzenle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "редагувати"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "chỉnh sửa"
           }
         }
       }
@@ -30965,7 +28580,6 @@
     },
     "Edit field name" : {
       "comment" : "Title of the dialog when editing a custom field's name",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -31287,7 +28901,6 @@
     },
     "Editor" : {
       "comment" : "A sharing access level, user can create, edit, delete items in a shared vault.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -31609,7 +29222,6 @@
     },
     "Email address copied" : {
       "comment" : "Toast message when user taps on one of the emails of an alias in alias detail page",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -32411,7 +30023,6 @@
       }
     },
     "Enable Face ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -32732,7 +30343,6 @@
       }
     },
     "Enable Touch ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33054,7 +30664,6 @@
     },
     "Enjoy the magic of AutoFill" : {
       "comment" : "Onboarding: Titles of the steps",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33215,7 +30824,6 @@
       }
     },
     "Enter a field name" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33376,7 +30984,6 @@
       }
     },
     "Enter new name for « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33537,7 +31144,6 @@
       }
     },
     "Enter PIN code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -34978,7 +32584,6 @@
       }
     },
     "Face ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35139,7 +32744,6 @@
       }
     },
     "Face ID enabled" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35301,7 +32905,6 @@
     },
     "Failed to authenticate" : {
       "comment" : "Users failed to authenticate via Face ID/Touch ID or PIN. We log them out and show an alert with this message.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35462,7 +33065,6 @@
       }
     },
     "Feature request" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -36264,7 +33866,6 @@
       }
     },
     "Forward to" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -36585,7 +34186,6 @@
       }
     },
     "Free trial" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -36746,7 +34346,6 @@
       }
     },
     "Generate a secure password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -37228,7 +34827,6 @@
       }
     },
     "Get an email alias to use on new apps" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -37390,7 +34988,6 @@
     },
     "Go back" : {
       "comment" : "accessibility",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -37552,7 +35149,6 @@
     },
     "Go to Settings" : {
       "comment" : "Onboarding: Buttons title of the steps",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -37713,7 +35309,6 @@
       }
     },
     "Goodbye spam and scams" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38034,7 +35629,6 @@
       }
     },
     "Hidden" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38355,7 +35949,6 @@
       }
     },
     "Hidden text copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38516,7 +36109,6 @@
       }
     },
     "Hide card number" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38677,7 +36269,6 @@
       }
     },
     "Hide custom field" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -38998,7 +36589,6 @@
       }
     },
     "Hide password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39159,7 +36749,6 @@
       }
     },
     "Hide pin" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39320,7 +36909,6 @@
       }
     },
     "Hide security code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39641,7 +37229,6 @@
       }
     },
     "How to import to Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -39962,7 +37549,6 @@
       }
     },
     "Hyphens" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -40284,7 +37870,6 @@
       }
     },
     "Immediately" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -40605,7 +38190,6 @@
       }
     },
     "Include numbers" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -41086,7 +38670,6 @@
       }
     },
     "Integrated 2FA authenticator" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -41408,7 +38991,6 @@
     },
     "Invalid prefix" : {
       "comment" : "Error message displayed to user when they try to create a badly formatted alias ",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -41730,7 +39312,6 @@
     },
     "Invitation sent" : {
       "comment" : "Subtitle below an email address in manage sharing access page, indicating that the invitation is made but the invitee has not yet accepted.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -41892,7 +39473,6 @@
     },
     "Invitations" : {
       "comment" : "Title of the section which shows the list of pending invitations",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -42054,7 +39634,6 @@
     },
     "invites you to access items in" : {
       "comment" : "The description of the sheet to reject/accept invitation. This is prefixed by the inviter's email. E.g \"john.doe@example.com invites you to access items in\". Below this phrase are the vault's details like name and number of items.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -42535,7 +40114,6 @@
       }
     },
     "Item moved to vault « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -42697,7 +40275,6 @@
     },
     "Item successfully pinned" : {
       "comment" : "Message displayed to user after pinning an item",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -42859,7 +40436,6 @@
     },
     "Item successfully unpinned" : {
       "comment" : "Message displayed to user after unpinning an item",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43020,7 +40596,6 @@
       }
     },
     "Item's action Menu" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43341,7 +40916,6 @@
       }
     },
     "Items filter Menus" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43503,7 +41077,6 @@
     },
     "Items filtering and sort menu" : {
       "comment" : "accessibility",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43664,7 +41237,6 @@
       }
     },
     "Items from « %@ » moved to vault « %@ »" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -43985,7 +41557,6 @@
       }
     },
     "Join shared vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44146,7 +41717,6 @@
       }
     },
     "Jot down a PIN, code, or note to self" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44308,7 +41878,6 @@
     },
     "Just autofill" : {
       "comment" : "When autofilling an unmatched login item, the app will ask the user whether to \"just autofill\" (autofill and do nothing) or \"associate and autofill\" (associate the current URL to the login item and then autofill)",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44470,7 +42039,6 @@
     },
     "Key" : {
       "comment" : "Passkey's key ID",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44631,7 +42199,6 @@
       }
     },
     "Last 30 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44792,7 +42359,6 @@
       }
     },
     "Last 60 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -44953,7 +42519,6 @@
       }
     },
     "Last 90 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -45434,7 +42999,6 @@
       }
     },
     "Last modified" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -45595,7 +43159,6 @@
       }
     },
     "Last two weeks" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -45756,7 +43319,6 @@
       }
     },
     "Last week" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -46557,7 +44119,6 @@
       }
     },
     "Log in to apps instantly" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -46718,7 +44279,6 @@
       }
     },
     "Login" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -46880,7 +44440,6 @@
     },
     "Login created" : {
       "comment" : "Messages when items are created",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -47202,7 +44761,6 @@
     },
     "Login items" : {
       "comment" : "Title in totp deeplink login view",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -47364,7 +44922,6 @@
     },
     "Login moved to trash" : {
       "comment" : "Messages when items are moved to trash",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -47526,7 +45083,6 @@
     },
     "Login permanently deleted" : {
       "comment" : "Messages when items are permanently deleted",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -47688,7 +45244,6 @@
     },
     "Login restored" : {
       "comment" : "Messages when items are restored",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -47850,7 +45405,6 @@
     },
     "Login updated" : {
       "comment" : "Message when items are edited",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -48011,7 +45565,6 @@
       }
     },
     "Logins" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -48972,7 +46525,6 @@
       }
     },
     "Match system" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -49134,7 +46686,6 @@
     },
     "Member Limit" : {
       "comment" : "Title of an alert to explain sharing limit",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -49296,7 +46847,6 @@
     },
     "Members" : {
       "comment" : "Title of the section which shows the list of members",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -49457,7 +47007,6 @@
       }
     },
     "Memorable password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -49778,7 +47327,6 @@
       }
     },
     "MM / YY" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -50259,7 +47807,6 @@
       }
     },
     "More than 90 days" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -50902,7 +48449,6 @@
     },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -51063,7 +48609,6 @@
       }
     },
     "Never" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -51224,7 +48769,6 @@
       }
     },
     "Next" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -51865,7 +49409,6 @@
       }
     },
     "No unlock" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -52185,170 +49728,7 @@
         }
       }
     },
-    "Non editable vault" : {
-      "comment" : "Alert title explaining that the current selected vault is not editable",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Не рэдагуемае сховішча"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neupravitelný trezor"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ikke-redigerbar boks"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nicht bearbeitbarer Tresor"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Μη επεξεργάσιμη κρύπτη"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non editable vault"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La caja fuerte no está editable."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bóveda no editable"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tätä holvia ei ole mahdollista muokata"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coffre-fort en lecture seule"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brankas tidak dapat disunting"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cassaforte non modificabile"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Non editable vault"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "არჩასწორებადი საცავი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "편집 가능한 금고 아님"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ikke redigerbart hvelv"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kluis niet aan te passen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tylko do odczytu"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nenhum cofre editável"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seif needitabil"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neupraviteľný trezor"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor, ki ga ni mogoče urejati"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inget redigerbart valv"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Düzenlenemez kasa"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Non editable vault"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kho lưu trữ không được chỉnh sửa"
-          }
-        }
-      }
-    },
     "Not now" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -52669,7 +50049,6 @@
       }
     },
     "Note content copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -52830,7 +50209,6 @@
       }
     },
     "Note created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53151,7 +50529,6 @@
       }
     },
     "Note moved to trash" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53312,7 +50689,6 @@
       }
     },
     "Note permanently deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53473,7 +50849,6 @@
       }
     },
     "Note restored" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53634,7 +51009,6 @@
       }
     },
     "Note updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53795,7 +51169,6 @@
       }
     },
     "Notes" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53956,7 +51329,6 @@
       }
     },
     "Now you can unlock Proton Pass only when you need it⏤quickly and securely" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -54117,7 +51489,6 @@
       }
     },
     "Numbers" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -54278,7 +51649,6 @@
       }
     },
     "Numbers and Symbols" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -54599,7 +51969,6 @@
       }
     },
     "One tap and⏤presto!⏤your username and password are filled in instantly" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -55401,7 +52770,6 @@
       }
     },
     "Open System Settings → Passwords → Password Options" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -55722,7 +53090,6 @@
       }
     },
     "Other" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -56204,7 +53571,6 @@
     },
     "Owner" : {
       "comment" : "Share access level",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -56845,7 +54211,6 @@
       }
     },
     "Password copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -57167,7 +54532,6 @@
     },
     "Pending account creation" : {
       "comment" : "The subtitle to indicate the state of an invitation. In this case the invitation is made to a non Proton email and we're waiting for the owner of this email to create a Proton account.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -57328,7 +54692,6 @@
       }
     },
     "Periods" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -58176,7 +55539,6 @@
     },
     "Personal" : {
       "comment" : "The name of the default vault",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -58338,7 +55700,6 @@
     },
     "Pin" : {
       "comment" : "Title for action to pin item",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -58659,7 +56020,6 @@
       }
     },
     "PIN code set" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -58980,7 +56340,6 @@
       }
     },
     "PINs not matched" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -59301,7 +56660,6 @@
       }
     },
     "Please authenticate" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -59622,7 +56980,6 @@
       }
     },
     "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60263,7 +57620,6 @@
       }
     },
     "Prefix can not be empty" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60424,7 +57780,6 @@
       }
     },
     "Prefix can not contain 2 consecutive dots (..)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60585,7 +57940,6 @@
       }
     },
     "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60746,7 +58100,6 @@
       }
     },
     "Preparing..." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -60907,7 +58260,6 @@
       }
     },
     "Privacy policy" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -61229,7 +58581,6 @@
       }
     },
     "Protect your most sensitive data" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -61391,7 +58742,6 @@
     },
     "Proton Sentinel" : {
       "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -61872,7 +59222,6 @@
       }
     },
     "Random password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -62028,167 +59377,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mật khẩu ngẫu nhiên"
-          }
-        }
-      }
-    },
-    "read" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "прачытана"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "číst"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "læst"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lesen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ανάγνωση"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "read"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "leer"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "leer"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "tarkastelu"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "consulter"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "dibaca"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "visualizzare"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "既読にする"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "წაკითხულია"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "읽음"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "lest"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "gelezen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "przeczytane"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "lidos"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "citit"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "čítať"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "prebrano"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "läs"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "okunmuş"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "читати"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "đã đọc"
           }
         }
       }
@@ -62514,7 +59702,6 @@
       }
     },
     "Reject invitation" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -62995,7 +60182,6 @@
       }
     },
     "Repeat PIN code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -63317,7 +60503,6 @@
       }
     },
     "Report successfully sent" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -63639,7 +60824,6 @@
     },
     "Reset filters" : {
       "comment" : "Reset to default filters (display all types of item & sort by most recently use time)",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -63800,7 +60984,6 @@
       }
     },
     "Restart Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -64441,7 +61624,6 @@
       }
     },
     "Restored %lld items" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -65128,7 +62310,6 @@
       }
     },
     "Reused %lld times" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "variations" : {
@@ -65976,7 +63157,6 @@
     },
     "Review and share" : {
       "comment" : "Used in sharing context, the title of the summary page to let users review sharing details (email, access level, vault) before sharing.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -66138,7 +63318,6 @@
     },
     "Revoke access" : {
       "comment" : "Used in sharing context, the title of the button to revoke access of a user to a shared vault",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -66300,7 +63479,6 @@
     },
     "Save" : {
       "comment" : "Item create/edit page",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -66461,7 +63639,6 @@
       }
     },
     "Scan %@" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -66943,7 +64120,6 @@
     },
     "Search in oldest 2 vaults" : {
       "comment" : "Displayed to free user while searching in autofill",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -67099,329 +64275,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm trong 2 kho lưu trữ cũ nhất"
-          }
-        }
-      }
-    },
-    "Search in Trash..." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пошук у сметніцы..."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hledat v koši..."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søg i papirkurv..."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Im Papierkorb suchen..."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αναζήτηση στον Κάδο απορριμμάτων..."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search in Trash..."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buscar en la papelera..."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buscar en la papelera..."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Etsi roskakorista..."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rechercher dans la corbeille…"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cari di Sampah..."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ricerca nel cestino..."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ごみ箱を検索..."
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ნაგვის ყუთში ძებნა..."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "휴지통 검색..."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk i papirkurven…..."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zoeken in prullenbak..."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przeszukaj Kosz..."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesquisar na Lixeira..."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Căutare în gunoi..."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hľadať v koši..."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iskanje v smetnjaku…"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sök i papperskorg..."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çöp kutusunda ara..."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пошук у смітнику..."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tìm trong thùng rác..."
-          }
-        }
-      }
-    },
-    "Search pinned items" : {
-      "comment" : "Pinned item search bar placeholder",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пошук замацаваных элементаў"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hledat v připnutých položkách"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søg fastgjorte elementer"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Angeheftete Einträge durchsuchen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αναζήτηση καρφιτσωμένων στοιχείων"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search pinned items"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buscar los elementos anclados"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buscar los elementos anclados"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Etsi kiinnitetyistä kohteista"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rechercher les éléments épinglés"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cari item yang tersemat"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cerca tra gli elementi fissati"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მიმაგრებული ელემენტების ძებნა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "고정된 항목 내에서 검색"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Søk i festede elementer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zoek vastgezette items"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przeszukaj przypięte elementy"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesquisar itens fixados"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Căutare articole fixate"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vyhľadávanie v pripnutých položkách"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iskanje pripetih predmetov"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sök bland fästa objekt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sabitlenmiş ögeleri ara"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
           }
         }
       }
@@ -67748,7 +64601,6 @@
     },
     "Secure password manager and more" : {
       "comment" : "Slogan",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -67909,7 +64761,6 @@
       }
     },
     "Securely store your payment information" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -68391,7 +65242,6 @@
       }
     },
     "Security code copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -68553,7 +65403,6 @@
     },
     "See all" : {
       "comment" : "Last button on the home page for pinned items. This will redirect the user to a search screen for pinned items",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -68715,7 +65564,6 @@
     },
     "See the shared vault" : {
       "comment" : "New user accepts the invitation",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -69197,7 +66045,6 @@
     },
     "Select Content" : {
       "comment" : "Title for button to add image or video to bug report",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -69359,7 +66206,6 @@
     },
     "Select items" : {
       "comment" : "Enable bulk action mode",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -69841,7 +66687,6 @@
     },
     "Send bug report" : {
       "comment" : "Accessibility Label",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70163,7 +67008,6 @@
     },
     "Sentinel description" : {
       "comment" : "Description of the sentinel feature.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70325,7 +67169,6 @@
     },
     "Set access level" : {
       "comment" : "Used in sharing context, this is the title of the page in which an owner of the vault can set permission before sharing.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70487,7 +67330,6 @@
     },
     "Set access level for all members" : {
       "comment" : "Title of menu helping set the role for all invitee to a vault",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70648,7 +67490,6 @@
       }
     },
     "Set PIN code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70809,7 +67650,6 @@
       }
     },
     "Set Proton Pass to unlock with your face or fingerprint so only you have access" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -70971,7 +67811,6 @@
     },
     "Set up 2FA" : {
       "comment" : "Title on the deep link totp login list page",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -71773,7 +68612,6 @@
     },
     "Share Vault" : {
       "comment" : "Vault sharing: Summary page before making the share request",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72095,7 +68933,6 @@
       }
     },
     "Share with more people" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72257,7 +69094,6 @@
     },
     "Shared vault" : {
       "comment" : "Used in sharing vault flow. The user has the option to create a new vault and share that new vault. This string is the default name for the vault.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72419,7 +69255,6 @@
     },
     "Show" : {
       "comment" : "Show all filter options",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72580,7 +69415,6 @@
       }
     },
     "Show %@ vault" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72741,7 +69575,6 @@
       }
     },
     "Show all vaults" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -72902,7 +69735,6 @@
       }
     },
     "Show card number" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -73223,7 +70055,6 @@
       }
     },
     "Show custom filed" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -73704,7 +70535,6 @@
       }
     },
     "Show password" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -73865,7 +70695,6 @@
       }
     },
     "Show pin" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74026,7 +70855,6 @@
       }
     },
     "Show security code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74187,7 +71015,6 @@
       }
     },
     "Show trash" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74669,7 +71496,6 @@
     },
     "Sort By" : {
       "comment" : "Items filtering",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74830,7 +71656,6 @@
       }
     },
     "Spaces" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74991,7 +71816,6 @@
       }
     },
     "Special characters" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -75312,7 +72136,6 @@
       }
     },
     "Start using Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -75472,170 +72295,7 @@
         }
       }
     },
-    "Stop item creation process" : {
-      "comment" : "Title for a button in alert when user is trying to create a new item and wants to cancel the creation",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Спыніць працэс стварэння элемента"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Stop item creation process"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop oprettelsesprocessen"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vorgang der Eintragserstellung anhalten"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Διακοπή διαδικασίας δημιουργίας στοιχείου"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop item creation process"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detener la creación del elemento"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detener creación del elemento"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lopeta kohteen luontiprosessi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arrêter la création de l'élément"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hentikan proses pembuatan item"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interrompi la creazione dell'elemento"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Stop item creation process"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელემენტის შექმნის პროცესის გაჩერება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "항목 생성 절차 중지"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stopp prosessen med å opprette elementer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop item creatie proces"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zatrzymaj tworzenie elementu"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Parar proceso de criação de item"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oprire creare articol"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ukončiť vytváranie položky"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ustavi postopek ustvarjanja predmeta"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stoppa process för att skapa objekt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öge ekleme işlemini durdur"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Stop item creation process"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dừng quá trình tạo nội dung"
-          }
-        }
-      }
-    },
     "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -75797,7 +72457,6 @@
     },
     "Strong" : {
       "comment" : "Title describing a strong password",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -75958,7 +72617,6 @@
       }
     },
     "Subscription plan" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -76280,7 +72938,6 @@
     },
     "Suggestions for %@" : {
       "comment" : "The title of the section of matched login items of a given URL. E.g \"Suggestions for https://proton.me\"",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -76601,7 +73258,6 @@
       }
     },
     "Syncing" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -76924,7 +73580,6 @@
     },
     "System default" : {
       "comment" : "An option in \"Default browser\" settings menu. We have 3 options: \"Safari\", \"In-App Safari\" & \"System default\". This option means using the whatever current default browser of the system to open URLs.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -77405,7 +74060,6 @@
       }
     },
     "Terms of service" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -77567,7 +74221,6 @@
     },
     "Text" : {
       "comment" : "Custom fields",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -77889,7 +74542,6 @@
     },
     "The alias prefix is too long" : {
       "comment" : "Error message displayed to user when they try to create a badly formatted alias",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -78371,7 +75023,6 @@
     },
     "The item will be moved to the new vault" : {
       "comment" : "Used in share from item detail page flow. The users are offered the option to create a new vault on the fly and share that new vault. This message makes it clear that once the new vault is created, the current item will be migrated to that new vault.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -79653,7 +76304,6 @@
       }
     },
     "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -80133,328 +76783,6 @@
         }
       }
     },
-    "Title (A-Z)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Па назве (А-Я)"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Název (A-Z)"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel (A-Å)"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel (A-Z)"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Τίτλος (Α-Ω)"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Title (A-Z)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título (A-Z)"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título (A-Z)"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nimi (A-Ö)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titre (A-Z)"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Judul (A-Z)"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titolo (A-Z)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "タイトル (A-Z)"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "სათაური (A-Z)"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "제목 (A-Z)"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tittel (A-Å)"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel (A-Z)"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tytuł (A-Z)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título (A-Z)"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titlu (A-Z)"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Názov (A-Z)"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Naslov (A–Z)"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rubrik (A-Ö)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Başlığa göre (A-Z)"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "За назвою (А-Я)"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tiêu đề (A-Z)"
-          }
-        }
-      }
-    },
-    "Title (Z-A)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Па назве (Я-А)"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Název (Z-A)"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel (Å-A)"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel (Z-A)"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Τίτλος (Ω-Α)"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Title (Z-A)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título (Z-A)"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título (Z-A)"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nimi (Ö-A)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titre (Z-A)"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Judul (Z-A)"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titolo (Z-A)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "タイトル (Z-A)"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "სათაური (Z-A)"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "제목 (Z-A)"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tittel (Å-A)"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel (Z-A)"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tytuł (Z-A)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título (Z-A)"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titlu (Z-A)"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Názov (Z-A)"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Naslov (Z–A)"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rubrik (Ö-A)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Başlığa göre (Z-A)"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "За назвою (Я-А)"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tiêu đề (Z-A)"
-          }
-        }
-      }
-    },
     "Title and note" : {
       "localizations" : {
         "be" : {
@@ -80776,7 +77104,6 @@
       }
     },
     "Today" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -80937,7 +77264,6 @@
       }
     },
     "TOTP copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -81098,7 +77424,6 @@
       }
     },
     "Touch ID" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -81259,7 +77584,6 @@
       }
     },
     "Touch ID enabled" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -81582,7 +77906,6 @@
     },
     "Transfer ownership of this vault to %@?" : {
       "comment" : "Used in sharing context, the description of the confirmation dialog when transferring ownership of a vault",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -82223,167 +78546,6 @@
         }
       }
     },
-    "Try searching using different spelling or keywords" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Паспрабуйце шукаць з іншым варыянтам напісання або ключавымі словамі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zkuste vyhledávat pomocí jiných písmen nebo klíčových slov"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prøv at søge med en anden stavemåde eller andre søgeord."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Versuche eine andere Schreibweise oder suche nach einem anderen Schlüsselwort."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δοκιμάστε να κάνετε αναζήτηση χρησιμοποιώντας διαφορετική ορθογραφία ή λέξεις-κλειδιά"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Try searching using different spelling or keywords"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Intenta buscar con otra ortografía o palabras claves."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Intente buscar con otra ortografía o palabras claves."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yritä etsiä eri kirjoitusasulla tai avainsanoilla"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Essayez de faire une recherche en utilisant une autre orthographe ou d'autres mots-clés."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coba mencari menggunakan pengejaan atau kata kunci yang beda"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prova a cercare utilizzando ortografia o parole chiave differenti"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スペルやキーワードを変えて検索してみる"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "სცადეთ, სხვა მართლწერით ან საკვანზო სიტყვებით მოძებნოთ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다른 검색어로 검색을 시도해 보세요."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prøv å søke med andre stave- eller nøkkelord"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Probeer te zoeken met een andere spelling of trefwoorden."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wyszukaj ponownie, używając innej pisowni lub słów kluczowych"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tente pesquisar usando ortografia ou palavras-chave diferentes"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Încercați să căutați alt termen sau caractere diferite"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skúste hľadať pomocou iného formátu zápisu alebo kľúčových slov"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poskusite iskati z drugačnim črkovanjem ali ključnimi besedami"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prova söka med annan stavning eller nyckelord"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Farklı ifade veya anahtar sözcüklerle aramayı deneyin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Спробуйте виконати пошук, використавши інше написання або ключове слово"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Thử tìm kiếm bằng cách sử dụng cách viết hoặc từ khóa khác"
-          }
-        }
-      }
-    },
     "Turn on **Autofill Passwords**" : {
       "localizations" : {
         "be" : {
@@ -82545,7 +78707,6 @@
       }
     },
     "Turn on AutoFill" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -82706,7 +78867,6 @@
       }
     },
     "Turn on AutoFill Passwords and allow filling from Proton Pass" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -82868,7 +79028,6 @@
     },
     "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours" : {
       "comment" : "Onboarding: Descriptions of the steps",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83189,7 +79348,6 @@
       }
     },
     "Type your PIN again to confirm" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83350,7 +79508,6 @@
       }
     },
     "Underscores" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83511,7 +79668,6 @@
       }
     },
     "Undo" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83672,7 +79828,6 @@
       }
     },
     "Unlimited email aliases" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83833,7 +79988,6 @@
       }
     },
     "Unlock" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -83994,7 +80148,6 @@
       }
     },
     "Unlock the app with this code" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -84316,7 +80469,6 @@
     },
     "Unpin" : {
       "comment" : "Title for action to unpin item",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -84638,7 +80790,6 @@
     },
     "Update vault" : {
       "comment" : "The title for the save button when editing vault",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -85440,7 +81591,6 @@
     },
     "Upgrade now to share with more people" : {
       "comment" : "Message shown to user when they reach the limit of sharing when they are free",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -85921,7 +82071,6 @@
       }
     },
     "Use %@" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -86082,7 +82231,6 @@
       }
     },
     "Use email aliases to protect your inbox and identity" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -86243,7 +82391,6 @@
       }
     },
     "Use system passcode when Face ID fails" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -86564,7 +82711,6 @@
       }
     },
     "Use system passcode when Touch ID fails" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -86886,7 +83032,6 @@
     },
     "Username" : {
       "comment" : "Account page",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -87047,7 +83192,6 @@
       }
     },
     "Username copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -87529,7 +83673,6 @@
       }
     },
     "Vault « %@ » deleted" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -87690,7 +83833,6 @@
       }
     },
     "Vault created" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -88331,7 +84473,6 @@
       }
     },
     "Vault name" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -88493,7 +84634,6 @@
     },
     "Vault shared with you" : {
       "comment" : "The title of the banner when the user has a pending invitation to join a vault",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -88654,7 +84794,6 @@
       }
     },
     "Vault updated" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -88816,7 +84955,6 @@
     },
     "Vaults can’t contain more than 3 users with a free plan." : {
       "comment" : "Message shown to free user to explain the sharing limits in an alert",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -88978,7 +85116,6 @@
     },
     "Vaults can’t contain more than 10 users." : {
       "comment" : "Message shown to paid user to explain the sharing limits in an alert",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -90100,7 +86237,6 @@
     },
     "Viewer" : {
       "comment" : "A sharing access level, user can only view items in a shared vault.",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -90261,7 +86397,6 @@
       }
     },
     "Vote for new features" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -90423,7 +86558,6 @@
     },
     "Vulnerable" : {
       "comment" : "Title describing a vulnerable password",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -90905,7 +87039,6 @@
     },
     "Weak" : {
       "comment" : "Title describing a weak password",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -91546,7 +87679,6 @@
       }
     },
     "Website copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -91707,7 +87839,6 @@
       }
     },
     "What went wrong?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -91868,7 +87999,6 @@
       }
     },
     "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -92349,7 +88479,6 @@
       }
     },
     "Would you want to associate « %@ » with « %@ »?" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -92510,7 +88639,6 @@
       }
     },
     "Write us on Reddit" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -92831,7 +88959,6 @@
       }
     },
     "Yesterday" : {
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -94318,168 +90445,6 @@
         }
       }
     },
-    "You didn't have editable clearance on the selected vault, we have chosen a new one for you" : {
-      "comment" : "The message in the alert explaining why the current vault for the item creation has been changed atomatically",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вы не маеце допуск на рэдагаванне ў выбраным сховішчы. Для вас выбрана новае сховішча"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du havde ikke redigerbar adgang til den valgte boks, så vi har valgt en ny til dig"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du hattest keine bearbeitbare Freigabe für den ausgewählten Tresor, wir haben einen neuen für dich ausgewählt"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δεν είχατε επεξεργάσιμη εκκαθάριση στην επιλεγμένη κρύπτη, επιλέξαμε μια νέα για εσάς"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No tienes una autorización para editar la caja fuerte seleccionada. Hemos elegido una nueva para ti."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No tenía una autorización editable en la bóveda seleccionada, hemos elegido una nueva para usted"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sinulla ei ollut muuttamisoikeuksia valittuun säilöön, joten valitsimme sinulle uuden"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous ne disposez pas des autorisations nécessaires pour modifier ce coffre-fort. Nous en avons choisi un pour vous."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anda tidak memiliki izin yang dapat disunting pada brankas yang dipilih, kami telah memilihkan yang baru untuk Anda"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La cassaforte selezionata non era modificabile, ne abbiamo scelta una nuova per te."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "არჩეული საცავის ჩასწორების უფლება არ გაგაჩნიათ, ამიტომ ჩვენ ახალ აგირჩიეთ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용자가 선택한 금고의 편집 권한을 가지고 있지 않습니다, 이를 위해 새로운 하나를 선택하였습니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du hadde ikke redigerbar klarering på det valgte hvelvet, vi har valgt et nytt for deg."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "U heeft geen bewerkrechten op de geselecteerde kluis, we hebben een nieuwe voor u gekozen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nie masz uprawnienia do edytowania tego sejfu, więc wybraliśmy inny sejf"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Você não tinha autorização editável no cofre selecionado, escolhemos uma nova para você"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nu ați avut autorizație de editare pentru seiful selectat, v-am ales unul nou."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Na vybranom trezore ste nemali upraviteľné povolenie, vybrali sme pre vás nové."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Na izbranem trezorju niste imeli dovoljenja za urejanje, za vas smo izbrali novega"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du hade inte redigerbart utrymme för det valda valvet, vi har valt ett nytt åt dig"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seçilmiş kasayı düzenleme izniniz olmadığından sizin için yeni bir kasa seçtik"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bạn không có đủ quyền chỉnh sửa trên kho lưu trữ được chọn, chúng tôi đã chọn một cái khác cho bạn"
-          }
-        }
-      }
-    },
     "You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription." : {
       "localizations" : {
         "be" : {
@@ -94642,7 +90607,6 @@
     },
     "You have reached the limit of users in this vault." : {
       "comment" : "Message shown to free user when they reach sharing limits",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -95124,7 +91088,6 @@
     },
     "You're invited to a shared vault. Tap for details." : {
       "comment" : "The description of the banner when the user has a pending invitation to join a vault",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -95766,7 +91729,6 @@
     },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
-      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
