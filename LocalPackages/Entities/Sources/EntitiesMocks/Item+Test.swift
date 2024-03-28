@@ -33,7 +33,8 @@ public extension Item {
                        pinned: Bool = false,
                        keyRotation: Int64 = .random(in: 0...100),
                        lastUseTime: Int64 = .random(in: 0...1_000_000),
-                       modifyTime: Int64 = .random(in: 0...1_000_000)) -> Item {
+                       modifyTime: Int64 = .random(in: 0...1_000_000),
+                       flags: Int64 = .random(in: 0...1_000_000)) -> Item {
         .init(itemID: itemId ?? .random(),
               revision: .random(in: 0...100),
               contentFormatVersion: .random(in: 0...100),
@@ -47,6 +48,6 @@ public extension Item {
               modifyTime: modifyTime,
               lastUseTime: lastUseTime,
               revisionTime: .random(in: 0...1_000_000),
-              flags: .random(in: 0...1_000_000))
+              flags: flags)
     }
 }
