@@ -306,20 +306,20 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         return stubbedUnpinResult
     }
     // MARK: - updateItemFlags
-    public var updateItemFlagsItemIdFromShareIdRequestThrowableError15: Error?
+    public var updateItemFlagsItemIdShareIdRequestThrowableError15: Error?
     public var closureUpdateItemFlags: () -> () = {}
     public var invokedUpdateItemFlagsfunction = false
     public var invokedUpdateItemFlagsCount = 0
-    public var invokedUpdateItemFlagsParameters: (itemId: String, fromShareId: String, request: UpdateItemFlagsRequest)?
-    public var invokedUpdateItemFlagsParametersList = [(itemId: String, fromShareId: String, request: UpdateItemFlagsRequest)]()
+    public var invokedUpdateItemFlagsParameters: (itemId: String, shareId: String, request: UpdateItemFlagsRequest)?
+    public var invokedUpdateItemFlagsParametersList = [(itemId: String, shareId: String, request: UpdateItemFlagsRequest)]()
     public var stubbedUpdateItemFlagsResult: Item!
 
-    public func updateItemFlags(itemId: String, fromShareId: String, request: UpdateItemFlagsRequest) async throws -> Item {
+    public func updateItemFlags(itemId: String, shareId: String, request: UpdateItemFlagsRequest) async throws -> Item {
         invokedUpdateItemFlagsfunction = true
         invokedUpdateItemFlagsCount += 1
-        invokedUpdateItemFlagsParameters = (itemId, fromShareId, request)
-        invokedUpdateItemFlagsParametersList.append((itemId, fromShareId, request))
-        if let error = updateItemFlagsItemIdFromShareIdRequestThrowableError15 {
+        invokedUpdateItemFlagsParameters = (itemId, shareId, request)
+        invokedUpdateItemFlagsParametersList.append((itemId, shareId, request))
+        if let error = updateItemFlagsItemIdShareIdRequestThrowableError15 {
             throw error
         }
         closureUpdateItemFlags()
