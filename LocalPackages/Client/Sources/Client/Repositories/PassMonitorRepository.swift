@@ -149,6 +149,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
         return encryptedItems.compactMap { encryptedItem in
             guard let decriptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+                  !decriptedItem.item.isFlagActive(flagToCheck: ItemFlags.skipHealthCheck),
                   let loginItem = decriptedItem.loginItem,
                   decriptedItem.ids != item.ids,
                   !loginItem.password.isEmpty, loginItem.password == login.password else {

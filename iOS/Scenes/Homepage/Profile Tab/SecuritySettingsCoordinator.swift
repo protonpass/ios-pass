@@ -154,7 +154,8 @@ private extension SecuritySettingsCoordinator {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 do {
-                    let authenticate = try await authenticate(policy: policy)
+                    let authenticate = try await authenticate(policy: policy,
+                                                              reason: #localized("Please authenticate"))
                     if authenticate {
                         succesHandler()
                     }
