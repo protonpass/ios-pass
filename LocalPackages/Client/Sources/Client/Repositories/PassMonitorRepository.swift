@@ -29,15 +29,6 @@ public enum ItemFlag: Sendable, Hashable {
     case skipHealthCheck(Bool)
 }
 
-extension ItemFlag: Equatable {
-    public static func == (lhs: ItemFlag, rhs: ItemFlag) -> Bool {
-        switch (lhs, rhs) {
-        case (.skipHealthCheck, .skipHealthCheck):
-            true
-        }
-    }
-}
-
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
@@ -104,7 +95,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             var weaknesses = [SecurityWeakness]()
 
             if encryptedItem.item
-                .isFlagActive(flagToCheck: ItemFlags.skipHealthCheck) {
+                .isFlagActive(ItemFlags.skipHealthCheck) {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
@@ -149,7 +140,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
         return encryptedItems.compactMap { encryptedItem in
             guard let decriptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  !decriptedItem.item.isFlagActive(flagToCheck: ItemFlags.skipHealthCheck),
+                  !decriptedItem.item.isFlagActive(ItemFlags.skipHealthCheck),
                   let loginItem = decriptedItem.loginItem,
                   decriptedItem.ids != item.ids,
                   !loginItem.password.isEmpty, loginItem.password == login.password else {
@@ -165,7 +156,8 @@ private extension PassMonitorRepository {
         var passwordCounts = [String: Int]()
 
         // Count occurrences of each password
-        for encryptedItem in encryptedItems {
+        for encryptedItem in encryptedItems
+            where !encryptedItem.item.isFlagActive(ItemFlags.skipHealthCheck) {
             guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
                   let loginItem = item.loginItem,
                   !loginItem.password.isEmpty else {
@@ -196,8 +188,9 @@ private extension PassMonitorRepository {
 
     func setup() {
         itemRepository.itemsWereUpdated
-            .sink { [weak self] updated in
-                guard let self, updated else {
+            .dropFirst()
+            .sink { [weak self] in
+                guard let self else {
                     return
                 }
                 Task { [weak self] in

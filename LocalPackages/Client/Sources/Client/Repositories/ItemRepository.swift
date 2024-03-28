@@ -34,7 +34,7 @@ extension KeyPath: @unchecked Sendable {}
 // sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> { get }
-    var itemsWereUpdated: CurrentValueSubject<Bool, Never> { get }
+    var itemsWereUpdated: CurrentValueSubject<Void, Never> { get }
 
     /// Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
@@ -151,7 +151,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let logger: Logger
 
     public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
-    public let itemsWereUpdated: CurrentValueSubject<Bool, Never> = .init(false)
+    public let itemsWereUpdated: CurrentValueSubject<Void, Never> = .init(())
 
     public init(userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider,
                 localDatasource: any LocalItemDatasourceProtocol,
@@ -330,7 +330,7 @@ public extension ItemRepository {
                 logger.trace("Trashed \(batch.count) items for share \(shareId)")
             }
         }
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
     }
 
     func trashItems(_ items: [any ItemIdentifiable]) async throws {
@@ -340,7 +340,7 @@ public extension ItemRepository {
             try await trashItems(groupedItems)
         }
         logger.info("Trashed \(items.count) items")
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
     }
 
 //    func deleteAlias(email: String) async throws {
@@ -369,7 +369,7 @@ public extension ItemRepository {
                 logger.trace("Untrashed \(batch.count) items for share \(shareId)")
             }
         }
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
     }
 
     func untrashItems(_ items: [any ItemIdentifiable]) async throws {
@@ -379,7 +379,7 @@ public extension ItemRepository {
             try await untrashItems(groupedItems)
         }
         logger.info("Bulk restored \(items.count) items")
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws {
@@ -398,7 +398,7 @@ public extension ItemRepository {
                 logger.trace("Deleted \(batch.count) items for share \(shareId)")
             }
         }
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
     }
 
@@ -408,7 +408,7 @@ public extension ItemRepository {
             guard let self else { return }
             try await deleteItems(groupedItems, skipTrash: false)
         }
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
         logger.info("Bulk permanently deleted \(items.count) items")
     }
 
@@ -423,7 +423,7 @@ public extension ItemRepository {
         logger.trace("Deleting all items locally for share \(shareId)")
         try await localDatasource.removeAllItems(shareId: shareId)
         try await refreshPinnedItemDataStream()
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
         logger.trace("Deleted all items locally for share \(shareId)")
     }
 
@@ -431,7 +431,7 @@ public extension ItemRepository {
         logger.trace("Deleting locally items \(itemIds) for share \(shareId)")
         try await localDatasource.deleteItems(itemIds: itemIds, shareId: shareId)
         try await refreshPinnedItemDataStream()
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
         logger.trace("Deleted locally items \(itemIds) for share \(shareId)")
     }
 
@@ -452,7 +452,7 @@ public extension ItemRepository {
         logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localDatasource.upsertItems([encryptedItem])
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
     }
@@ -463,7 +463,7 @@ public extension ItemRepository {
         }.compactMap { $0 }
 
         try await localDatasource.upsertItems(encryptedItems)
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
     }
 
@@ -567,13 +567,13 @@ public extension ItemRepository {
         logger.trace("Update flags for item \(itemId) of share \(shareId)")
         let request = UpdateItemFlagsRequest(flags: flags)
         let itemWithUpdatedFlags = try await remoteDatasource.updateItemFlags(itemId: itemId,
-                                                                              fromShareId: shareId,
+                                                                              shareId: shareId,
                                                                               request: request)
         logger.trace("Updating item \(itemWithUpdatedFlags.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemWithUpdatedFlags, shareId: shareId)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(itemWithUpdatedFlags.itemID) to local database")
-        itemsWereUpdated.send(true)
+        itemsWereUpdated.send()
     }
 }
 
