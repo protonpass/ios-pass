@@ -72,36 +72,20 @@ public struct KeychainStorage<Value: Codable> {
     /// subcript one
     private var stored: Value {
         get {
-            // Get serialized data from keychain and then deserialize
-            if let data = keychain.data(forKey: key) {
-                do {
-                    return try JSONDecoder().decode(Value.self, from: data)
-                } catch {
-                    logger.error("Corrupted data for key \(key). Fall back to defaultValue")
-                    logger.error(error)
-                    keychain.remove(forKey: key)
-                    return defaultValue
-                }
-            } else {
-                logger.debug("No value for key \(key). Fall back to defaultValue")
+            do {
+                return try getValue(for: key)
+            } catch {
+                logger.error("Error retrieving data for key \(key). Fall back to defaultValue.")
+                logger.error(error)
                 return defaultValue
             }
         }
 
         set {
-            // Check if the newValue is nil or not
-            // If nil, remove the data from keychain
-            // If not nil, serialize and save to keychain
-            if let optional = newValue as? (any AnyOptional), optional.isNil {
-                // Set to nil => remove from keychain
-                keychain.remove(forKey: key)
-            } else {
-                do {
-                    let data = try JSONEncoder().encode(newValue)
-                    keychain.set(data, forKey: key)
-                } catch {
-                    logger.error("Failed to serialize data for key \(key) \(error.localizedDescription)")
-                }
+            do {
+                try setValue(newValue, for: key)
+            } catch {
+                logger.error("Error setting data for key \(key) \(error.localizedDescription)")
             }
         }
     }
@@ -121,6 +105,41 @@ public struct KeychainStorage<Value: Codable> {
             if let observableObject = instance as? any ObservableObject {
                 let publisher = observableObject.objectWillChange as any Publisher
                 (publisher as? ObservableObjectPublisher)?.send()
+            }
+        }
+    }
+}
+
+private extension KeychainStorage {
+    /// Get serialized data from keychain and then deserialize
+    func getValue(for key: String) throws -> Value {
+        guard let data = try keychain.dataOrError(forKey: key) else {
+            logger.debug("No value for key \(key). Fall back to defaultValue")
+            return defaultValue
+        }
+        do {
+            return try JSONDecoder().decode(Value.self, from: data)
+        } catch {
+            logger.error("Corrupted data for key \(key). Fall back to defaultValue")
+            logger.error(error)
+            try keychain.removeOrError(forKey: key)
+            return defaultValue
+        }
+    }
+
+    // Check if the newValue is nil or not
+    // If nil, remove the data from keychain
+    // If not nil, serialize and save to keychain
+    func setValue(_ value: Value, for key: String) throws {
+        if let optional = value as? (any AnyOptional), optional.isNil {
+            // Set to nil => remove from keychain
+            try keychain.removeOrError(forKey: key)
+        } else {
+            do {
+                let data = try JSONEncoder().encode(value)
+                try keychain.setOrError(data, forKey: key)
+            } catch {
+                logger.error("Failed to serialize data for key \(key) \(error.localizedDescription)")
             }
         }
     }
