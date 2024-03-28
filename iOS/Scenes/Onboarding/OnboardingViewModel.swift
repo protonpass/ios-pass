@@ -22,6 +22,7 @@ import Client
 import Combine
 import Factory
 import LocalAuthentication
+import Macro
 import SwiftUI
 
 @MainActor
@@ -87,7 +88,8 @@ extension OnboardingViewModel {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 do {
-                    let authenticated = try await authenticate(policy: policy)
+                    let authenticated = try await authenticate(policy: policy,
+                                                               reason: #localized("Please authenticate"))
                     if authenticated {
                         preferences.localAuthenticationMethod = .biometric
                         showAppropriateBiometricAuthenticationStep()

@@ -93,6 +93,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1)
     }
 
+    var automaticallyCopyTotpCodeDisabled: Bool {
+        localAuthenticationMethod == .none
+    }
+
     init(childCoordinatorDelegate: ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
@@ -100,7 +104,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
         autoFillEnabled = false
         quickTypeBar = preferences.quickTypeBar
-        automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
+        automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
+            .localAuthenticationMethod != .none
 
         refresh()
 
@@ -280,6 +285,7 @@ private extension ProfileTabViewModel {
         switch preferences.localAuthenticationMethod {
         case .none:
             localAuthenticationMethod = .none
+            automaticallyCopyTotpCode = false
         case .biometric:
             do {
                 let biometryType = try checkBiometryType(policy: policy)
