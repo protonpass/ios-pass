@@ -681,7 +681,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureUpdateItemFlags()
     }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError34: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError33: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -694,7 +694,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError34 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError33 {
             throw error
         }
         closureTotpCreationDateThreshold()
