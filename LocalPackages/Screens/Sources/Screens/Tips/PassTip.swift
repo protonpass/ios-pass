@@ -21,11 +21,11 @@
 import Foundation
 import TipKit
 
-public enum PassTip: String {
+enum PassTip: String {
     case itemForceTouch
     case spotlight
 
-    public var id: String { rawValue }
+    var id: String { rawValue }
 }
 
 public enum PassTipAction: String {
