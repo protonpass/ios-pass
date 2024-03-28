@@ -113,17 +113,16 @@ public struct KeychainStorage<Value: Codable> {
 private extension KeychainStorage {
     /// Get serialized data from keychain and then deserialize
     func getValue(for key: String) throws -> Value {
-        if let data = try keychain.dataOrError(forKey: key) {
-            do {
-                return try JSONDecoder().decode(Value.self, from: data)
-            } catch {
-                logger.error("Corrupted data for key \(key). Fall back to defaultValue")
-                logger.error(error)
-                try keychain.removeOrError(forKey: key)
-                return defaultValue
-            }
-        } else {
+        guard let data = try keychain.dataOrError(forKey: key) else {
             logger.debug("No value for key \(key). Fall back to defaultValue")
+            return defaultValue
+        }
+        do {
+            return try JSONDecoder().decode(Value.self, from: data)
+        } catch {
+            logger.error("Corrupted data for key \(key). Fall back to defaultValue")
+            logger.error(error)
+            try keychain.removeOrError(forKey: key)
             return defaultValue
         }
     }
