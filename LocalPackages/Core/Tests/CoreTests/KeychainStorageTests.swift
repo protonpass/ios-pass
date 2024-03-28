@@ -26,23 +26,23 @@ import XCTest
 final class KeychainMainkeyProviderMock: KeychainProtocol, MainKeyProvider {
     var dict: [String: Data] = [:]
 
-    func data(forKey key: String) -> Data? {
+    func dataOrError(forKey key: String, attributes: [CFString : Any]?) throws -> Data? {
         dict[key]
     }
 
-    func string(forKey key: String) -> String? {
+    func stringOrError(forKey key: String, attributes: [CFString : Any]?) throws -> String? {
         fatalError("Not applicable")
     }
 
-    func set(_ data: Data, forKey key: String) {
+    func setOrError(_ data: Data, forKey key: String, attributes: [CFString : Any]?) throws {
         dict[key] = data
     }
 
-    func set(_ string: String, forKey key: String) {
+    func setOrError(_ string: String, forKey key: String, attributes: [CFString : Any]?) throws {
         fatalError("Not applicable")
     }
 
-    func remove(forKey key: String) {
+    func removeOrError(forKey key: String) throws {
         dict[key] = nil
     }
 
