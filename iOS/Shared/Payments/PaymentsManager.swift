@@ -34,6 +34,10 @@ final class PaymentsManager {
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let payments: Payments
+
+    // Strongly reference to make the payment page responsive during payment flow
+    // periphery:ignore
+    private var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let inMemoryTokenStorage: PaymentTokenStorage
@@ -54,13 +58,15 @@ final class PaymentsManager {
     }
 
     func createPaymentsUI() -> PaymentsUI {
-        PaymentsUI(payments: payments,
-                   clientApp: PaymentsConstants.clientApp,
-                   shownPlanNames: PaymentsConstants.shownPlanNames,
-                   customization: .init(inAppTheme: { [weak self] in
-                       guard let self else { return .default }
-                       return preferences.theme.inAppTheme
-                   }))
+        let ui = PaymentsUI(payments: payments,
+                            clientApp: PaymentsConstants.clientApp,
+                            shownPlanNames: PaymentsConstants.shownPlanNames,
+                            customization: .init(inAppTheme: { [weak self] in
+                                guard let self else { return .default }
+                                return preferences.theme.inAppTheme
+                            }))
+        paymentsUI = ui
+        return ui
     }
 
     private func initializePaymentsStack() {
