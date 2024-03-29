@@ -1,7 +1,7 @@
 //
-// LocalAuthenticationMethod.swift
-// Proton Pass - Created on 31/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// CaseIterable+Random.swift
+// Proton Pass - Created on 29/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,9 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import LocalAuthentication
+import Foundation
 
-public enum LocalAuthenticationMethod: Codable, CaseIterable {
-    case none, biometric, pin
+public extension CaseIterable {
+    // periphery:ignore
+    static func random() -> AllCases.Element? {
+        guard !allCases.isEmpty else {
+            assertionFailure("\(Self.self) has no cases")
+            return nil
+        }
+        return allCases.randomElement()
+    }
 }
