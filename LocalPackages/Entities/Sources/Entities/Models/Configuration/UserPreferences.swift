@@ -22,7 +22,7 @@
 import Foundation
 
 /// Preferences bound to a specific user
-public struct UserPreferences: Codable {
+public struct UserPreferences: Codable, Equatable {
     /// AutoFill suggestions above the keyboard
     public var quickTypeBar = true
 
@@ -67,4 +67,36 @@ public struct UserPreferences: Codable {
 
     /// Spotlight indexable vaults
     public var spotlightSearchableVaults: SpotlightSearchableVaults = .all
+
+    public init(quickTypeBar: Bool,
+                automaticallyCopyTotpCode: Bool,
+                theme: Theme,
+                browser: Browser,
+                displayFavIcons: Bool,
+                failedAttemptCount: Int,
+                localAuthenticationMethod: LocalAuthenticationMethod,
+                pinCode: String?,
+                fallbackToPasscode: Bool,
+                appLockTime: AppLockTime,
+                clipboardExpiration: ClipboardExpiration,
+                shareClipboard: Bool,
+                spotlightEnabled: Bool,
+                spotlightSearchableContent: SpotlightSearchableContent,
+                spotlightSearchableVaults: SpotlightSearchableVaults) {
+        self.quickTypeBar = quickTypeBar
+        self.automaticallyCopyTotpCode = automaticallyCopyTotpCode
+        self.theme = theme
+        self.browser = browser
+        self.displayFavIcons = displayFavIcons
+        self.failedAttemptCount = failedAttemptCount
+        self.localAuthenticationMethod = localAuthenticationMethod
+        self.pinCode = pinCode
+        self.fallbackToPasscode = fallbackToPasscode
+        self.appLockTime = appLockTime
+        self.clipboardExpiration = clipboardExpiration
+        self.shareClipboard = shareClipboard
+        self.spotlightEnabled = spotlightEnabled
+        self.spotlightSearchableContent = spotlightSearchableContent
+        self.spotlightSearchableVaults = spotlightSearchableVaults
+    }
 }
