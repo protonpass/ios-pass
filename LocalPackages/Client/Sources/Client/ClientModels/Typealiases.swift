@@ -28,3 +28,4 @@ public typealias AppDataProtocol = CredentialProvider & Resettable & UserDataSym
 public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
 public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
 public typealias ShareID = String
+public typealias UserID = String
