@@ -41,6 +41,7 @@ final class LocalUserPreferencesDatasourceTests: XCTestCase {
     }
 
     override func tearDown() {
+        symmetricKeyProvider = nil
         sut = nil
         super.tearDown()
     }
@@ -108,25 +109,5 @@ private extension LocalUserPreferencesDatasource {
             fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
         }
         return try await count(fetchRequest: fetchRequest, context: taskContext)
-    }
-}
-
-private extension UserPreferences {
-    static func random() -> Self {
-        .init(quickTypeBar: .random(),
-              automaticallyCopyTotpCode: .random(),
-              theme: .random()!,
-              browser: .random()!,
-              displayFavIcons: .random(),
-              failedAttemptCount: .random(in: 1...100),
-              localAuthenticationMethod: .random()!,
-              pinCode: .random(),
-              fallbackToPasscode: .random(),
-              appLockTime: .random()!,
-              clipboardExpiration: .random()!,
-              shareClipboard: .random(),
-              spotlightEnabled: .random(),
-              spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!)
     }
 }

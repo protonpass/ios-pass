@@ -23,8 +23,6 @@ import CoreData
 import Entities
 import Foundation
 
-// Remove after multi accounts support
-// periphery:igore:all
 protocol LocalUserPreferencesDatasourceProtocol: Sendable {
     func getPreferences(for userId: String) async throws -> UserPreferences?
     func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws
