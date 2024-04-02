@@ -81,3 +81,22 @@ public extension PreferencesManager {
         try await userPreferencesDatasource.getPreferences(for: userId)
     }
 }
+
+public extension CurrentValueSubject where Output == UserPreferencesUpdateEvent, Failure == Never {
+    /// Filter update events of a given property for a given `userID`
+    /// Return the updated value of the property
+    func filterUserPreferencesUpdate<T>(_ keyPath: KeyPath<UserPreferences, T>,
+                                        userId: String) -> AnyPublisher<T, Failure> {
+        compactMap { event in
+            guard case let .update(currentUserId, partialKeyPath, anyValue) = event,
+                  currentUserId == userId,
+                  let currentKeyPath = partialKeyPath as? KeyPath<UserPreferences, T>,
+                  keyPath == currentKeyPath,
+                  let value = anyValue as? T else {
+                return nil
+            }
+            return value
+        }
+        .eraseToAnyPublisher()
+    }
+}

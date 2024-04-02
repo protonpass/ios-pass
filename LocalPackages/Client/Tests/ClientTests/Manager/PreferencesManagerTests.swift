@@ -67,6 +67,28 @@ extension PreferencesManagerTest {
         // Then
         let pref = try await XCTUnwrapAsync(await sut.getPreferences(for: userId))
         XCTAssertEqual(pref, givenPref)
-        await fulfillment(of: [expectation])
+        await fulfillment(of: [expectation], timeout: 1)
+    }
+
+    func testReceiveEventWhenUpdating() async throws {
+        // Given
+        let userId = String.random()
+        let givenPref = UserPreferences.random()
+        let expectation = XCTestExpectation(description: "Should receive update event")
+        try await sut.create(preferences: givenPref, for: userId)
+        cancellable = sut.userPreferencesUpdates
+            .filterUserPreferencesUpdate(\.quickTypeBar, userId: userId)
+            .sink { _ in
+                expectation.fulfill()
+            }
+
+        // When
+        let newValue = !givenPref.quickTypeBar
+        try await sut.updatePreferences(\.quickTypeBar, value: newValue, for: userId)
+
+        // Then
+        let pref = try await XCTUnwrapAsync(await sut.getPreferences(for: userId))
+        XCTAssertEqual(pref.quickTypeBar, newValue)
+        await fulfillment(of: [expectation], timeout: 1)
     }
 }
