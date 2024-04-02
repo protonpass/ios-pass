@@ -21,7 +21,7 @@
 
 import Foundation
 
-public enum Browser: Int, CaseIterable, Codable {
+public enum Browser: Int, CaseIterable, Codable, Sendable {
     case safari = 0
     case inAppSafari = 1
     case systemDefault = 2

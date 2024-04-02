@@ -21,7 +21,7 @@
 
 import Foundation
 
-public enum AppLockTime: Int, Codable, CaseIterable {
+public enum AppLockTime: Int, Codable, CaseIterable, Sendable {
     case immediately = 0
     case oneMinute = 1
     case twoMinutes = 2
