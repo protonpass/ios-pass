@@ -24,14 +24,26 @@ import Foundation
 /// Application-wide preferences
 public struct AppPreferences: Codable {
     /// The user is onboarded or not
-    public var onboarded = false
+    public var onboarded: Bool
 
     /// The time of the next telemetry event batch
     public var telemetryThreshold: TimeInterval?
 
     /// Number of created items from this device. Used to ask for review when appropriate.
-    public var createdItemsCount = 0
+    public var createdItemsCount: Int
 
     /// Keep track of dismissed banners so we don't show them again
     public var dismissedBannerIds: [String]
+
+    public static var `default`: Self { .init() }
+
+    public init(onboarded: Bool = false,
+                telemetryThreshold: TimeInterval? = nil,
+                createdItemsCount: Int = 0,
+                dismissedBannerIds: [String] = []) {
+        self.onboarded = onboarded
+        self.telemetryThreshold = telemetryThreshold
+        self.createdItemsCount = createdItemsCount
+        self.dismissedBannerIds = dismissedBannerIds
+    }
 }
