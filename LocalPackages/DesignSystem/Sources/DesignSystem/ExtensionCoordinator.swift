@@ -61,10 +61,10 @@ public extension ExtensionCoordinator {
     }
 
     func alert(error: Error, onCancel: @escaping () -> Void) {
-        let alert = UIAlertController(title: #localized("Error occured"),
+        let alert = UIAlertController(title: #localized("Error occured", bundle: .module),
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: #localized("Cancel"), style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: #localized("Cancel", bundle: .module), style: .cancel) { _ in
             onCancel()
         }
         alert.addAction(cancelAction)
