@@ -35,31 +35,59 @@ import SwiftSyntaxMacros
 public struct LocalizedMacro: ExpressionMacro {
     public static func expansion(of node: some FreestandingMacroExpansionSyntax,
                                  in context: some MacroExpansionContext) throws -> ExprSyntax {
-        guard let firstArgument = node.argumentList.first?.expression else {
+        guard !node.argumentList.isEmpty else {
             throw MacroError.noArguments
         }
 
-        // First argument always has to be a string
-        guard let firstArgumentSegments = firstArgument.as(StringLiteralExprSyntax.self)?.segments,
-              firstArgumentSegments.count == 1,
-              case let .stringSegment(firstArgumentStringSegment) = firstArgumentSegments.first else {
-            throw MacroError.message(LocalizedMacroError.firstArgumentMustBeAString)
-        }
+        let localizeKey = try getLocalizeKeyValue(from: node)
+        let bundle = try getBundleValue(from: node)
+        let formatArgs = try getFormatArgs(from: node)
 
-        guard !firstArgumentStringSegment.content.text.isEmpty else {
-            throw MacroError.message(LocalizedMacroError.emptyLocalizedKey)
+        if formatArgs.isEmpty {
+            if let bundle {
+                return "String(localized: \(localizeKey), bundle: \(bundle))"
+            } else {
+                return "String(localized: \(localizeKey))"
+            }
+        } else {
+            if let bundle {
+                return "String(format: String(localized: \(localizeKey), bundle: \(bundle)), \(formatArgs))"
+            } else {
+                return "String(format: String(localized: \(localizeKey)), \(formatArgs))"
+            }
         }
-
-        if node.argumentList.count == 1 {
-            return "String(localized: \(firstArgument))"
-        }
-
-        let lastArguments = node.argumentList.filter { $0.expression != firstArgument }
-        return "String(format: String(localized: \(firstArgument)), \(lastArguments))"
     }
 }
 
-enum LocalizedMacroError {
-    static let firstArgumentMustBeAString = "The first argument has to be a static string literal"
-    static let emptyLocalizedKey = "Localized key can not be empty"
+private func getLocalizeKeyValue(from node: some FreestandingMacroExpansionSyntax) throws -> ExprSyntax {
+    // Localize key as the first argument
+    guard let firstArgument = node.argumentList.first?.expression,
+          let segments = firstArgument.as(StringLiteralExprSyntax.self)?.segments,
+          segments.count == 1,
+          case let .stringSegment(stringSegment) = segments.first else {
+        throw MacroError.message(LocalizedMacro.Error.firstArgumentMustBeAString)
+    }
+
+    guard !stringSegment.content.text.isEmpty else {
+        throw MacroError.message(LocalizedMacro.Error.emptyLocalizedKey)
+    }
+    return firstArgument
+}
+
+private func getBundleValue(from node: some FreestandingMacroExpansionSyntax) throws -> ExprSyntax? {
+    node.argumentList.first(where: { $0.label?.text == "bundle" })?.expression
+}
+
+private func getFormatArgs(from node: some FreestandingMacroExpansionSyntax) throws -> LabeledExprListSyntax {
+    let localizekey = node.argumentList.first
+    let bundle = node.argumentList.first { $0.label?.text == "bundle" }
+    return node.argumentList.filter { $0 != localizekey && $0 != bundle }
+}
+
+private extension LocalizedMacro {
+    enum Error: Swift.Error {
+        static let firstArgumentMustBeAString = "The first argument has to be a static string literal"
+        static let emptyLocalizedKey = "Localized key can not be empty"
+        static let noBundleArgument = "No bundle argument"
+    }
 }

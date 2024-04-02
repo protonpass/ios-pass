@@ -34,7 +34,7 @@ public struct RetryableErrorView: View {
         VStack {
             Text(errorMessage)
             Button(action: onRetry) {
-                Text("Retry")
+                Text("Retry", bundle: .module)
             }
             .foregroundColor(Color(uiColor: PassColor.interactionNorm))
         }
