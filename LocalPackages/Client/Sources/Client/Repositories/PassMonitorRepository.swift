@@ -29,6 +29,11 @@ public enum ItemFlag: Sendable, Hashable {
     case skipHealthCheck(Bool)
 }
 
+private struct InternalPassMonitorItem {
+    let encrypted: SymmetricallyEncryptedItem
+    let loginData: LogInItemData
+}
+
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
@@ -73,8 +78,23 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     }
 
     public func refreshSecurityChecks() async throws {
+        var reusedPasswords = [String: Int]()
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let encryptedItems = try await itemRepository.getActiveLogInItems()
+        let loginItems = try await itemRepository.getActiveLogInItems()
+            .compactMap { encryptedItem -> InternalPassMonitorItem? in
+                guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+                      let loginItem = item.loginItem else {
+                    return nil
+                }
+
+                if !encryptedItem.item.isFlagActive(ItemFlags.skipHealthCheck), !loginItem.password.isEmpty {
+                    reusedPasswords[loginItem.password, default: 0] += 1
+                }
+                return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
+            }
+
+        // Filter out unique passwords
+        reusedPasswords = reusedPasswords.filter { $0.value > 1 }
 
         var numberOfWeakPassword = 0
         var numberOfReusedPassword = 0
@@ -83,34 +103,26 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
         var securityAffectedItems = [SecurityAffectedItem]()
 
-        // Filter out unique passwords and prepare the result
-        let reusedPasswords = getPasswords(encryptedItems: encryptedItems, symmetricKey: symmetricKey)
-
-        for encryptedItem in encryptedItems {
-            guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  let loginItem = item.loginItem else {
-                continue
-            }
-
+        for item in loginItems {
             var weaknesses = [SecurityWeakness]()
 
-            if encryptedItem.item
+            if item.encrypted.item
                 .isFlagActive(ItemFlags.skipHealthCheck) {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
-                if reusedPasswords[loginItem.password] != nil {
+                if reusedPasswords[item.loginData.password] != nil {
                     weaknesses.append(.reusedPasswords)
                     numberOfReusedPassword += 1
                 }
 
-                if !loginItem.password.isEmpty,
-                   passwordScorer.checkScore(password: loginItem.password) != .strong {
+                if !item.loginData.password.isEmpty,
+                   passwordScorer.checkScore(password: item.loginData.password) != .strong {
                     weaknesses.append(.weakPasswords)
                     numberOfWeakPassword += 1
                 }
 
-                if loginItem.totpUri.isEmpty, contains2faDomains(urls: loginItem.urls) {
+                if item.loginData.totpUri.isEmpty, contains2faDomains(urls: item.loginData.urls) {
                     weaknesses.append(.missing2FA)
                     numberOfMissing2fa += 1
                 }
@@ -120,7 +132,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             // TODO: check breached passwords /emails
 
             if !weaknesses.isEmpty {
-                securityAffectedItems.append(SecurityAffectedItem(item: encryptedItem, weaknesses: weaknesses))
+                securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
             }
         }
         weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
@@ -152,24 +164,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 }
 
 private extension PassMonitorRepository {
-    func getPasswords(encryptedItems: [SymmetricallyEncryptedItem], symmetricKey: SymmetricKey) -> [String: Int] {
-        var passwordCounts = [String: Int]()
-
-        // Count occurrences of each password
-        for encryptedItem in encryptedItems
-            where !encryptedItem.item.isFlagActive(ItemFlags.skipHealthCheck) {
-            guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  let loginItem = item.loginItem,
-                  !loginItem.password.isEmpty else {
-                continue
-            }
-            passwordCounts[loginItem.password, default: 0] += 1
-        }
-
-        // Filter out unique passwords and prepare the result
-        return passwordCounts.filter { $0.value > 1 }
-    }
-
     func contains2faDomains(urls: [String]) -> Bool {
         urls
             .compactMap { domainParser?.parse(host: $0)?.domain }

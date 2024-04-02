@@ -3633,22 +3633,24 @@
         }
       }
     },
-    "%lld other logins" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld other logins"
-          }
-        }
-      }
-    },
     "%lld other logins use this password" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld other logins use this password"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld other login use this password"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld other logins use this password"
+                }
+              }
+            }
           }
         }
       }
@@ -82786,16 +82788,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sử dụng mật khẩu thiết bị khi Touch ID thất bại"
-          }
-        }
-      }
-    },
-    "use this password." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "use this password."
           }
         }
       }
