@@ -26,12 +26,16 @@ import SwiftSyntaxMacros
 /// localized one. For example:
 ///
 ///     #localized("Hello world")
+///     #localized("Hello world", bundle: .main)
 ///     #localized("Hello %@", "world")
+///     #localized("Hello %@", bundle: .module, "world")
 ///
 /// will expand to
 ///
 ///     String(localized: "Hello world")
+///     String(localized: "Hello world", bundle: .main)
 ///     String(format: String(localized: "Hello %@"), "world")
+///     String(format: String(localized: "Hello %@", bundle: .module), "world")
 public struct LocalizedMacro: ExpressionMacro {
     public static func expansion(of node: some FreestandingMacroExpansionSyntax,
                                  in context: some MacroExpansionContext) throws -> ExprSyntax {
@@ -40,8 +44,8 @@ public struct LocalizedMacro: ExpressionMacro {
         }
 
         let localizeKey = try getLocalizeKeyValue(from: node)
-        let bundle = try getBundleValue(from: node)
-        let formatArgs = try getFormatArgs(from: node)
+        let bundle = getBundleValue(from: node)
+        let formatArgs = getFormatArgs(from: node)
 
         if formatArgs.isEmpty {
             if let bundle {
@@ -74,11 +78,11 @@ private func getLocalizeKeyValue(from node: some FreestandingMacroExpansionSynta
     return firstArgument
 }
 
-private func getBundleValue(from node: some FreestandingMacroExpansionSyntax) throws -> ExprSyntax? {
+private func getBundleValue(from node: some FreestandingMacroExpansionSyntax) -> ExprSyntax? {
     node.argumentList.first(where: { $0.label?.text == "bundle" })?.expression
 }
 
-private func getFormatArgs(from node: some FreestandingMacroExpansionSyntax) throws -> LabeledExprListSyntax {
+private func getFormatArgs(from node: some FreestandingMacroExpansionSyntax) -> LabeledExprListSyntax {
     let localizekey = node.argumentList.first
     let bundle = node.argumentList.first { $0.label?.text == "bundle" }
     return node.argumentList.filter { $0 != localizekey && $0 != bundle }
