@@ -18,17 +18,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+
 /// A macro that converts a static literal string with optional arguments into a localized one
 /// - Parameters:
 ///   - key: the localized key
 ///   - arguments: the list of arguments if the key contains format specifiers
 @freestanding(expression)
-public macro localized<each T>(_ key: StaticString, _ arguments: repeat each T)
+public macro localized<each T>(_ key: StaticString, bundle: Bundle? = nil, _ arguments: repeat each T)
     -> String = #externalMacro(module: "MacroImplementation", type: "LocalizedMacro")
 
 /// A macro that converts a static literal string with optional arguments into a localized one
 /// - Parameters:
 ///   - key: the localized key
 @freestanding(expression)
-public macro localized(_ key: StaticString) -> String = #externalMacro(module: "MacroImplementation",
-                                                                       type: "LocalizedMacro")
+public macro localized(_ key: StaticString, bundle: Bundle? = nil)
+    -> String = #externalMacro(module: "MacroImplementation", type: "LocalizedMacro")

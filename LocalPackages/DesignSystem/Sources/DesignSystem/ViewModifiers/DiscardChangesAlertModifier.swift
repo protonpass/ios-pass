@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Macro
 import SwiftUI
 
 struct DiscardChangesAlertModifier: ViewModifier {
@@ -31,14 +32,19 @@ struct DiscardChangesAlertModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .alert("Discard changes?",
+            .alert(#localized("Discard changes?", bundle: .module),
                    isPresented: $isPresented,
                    actions: {
-                       Button("Keep Editing", role: .cancel, action: {})
-                       Button("Discard", role: .destructive, action: onDiscard)
+                       Button(#localized("Keep Editing", bundle: .module),
+                              role: .cancel,
+                              action: {})
+                       Button(#localized("Discard", bundle: .module),
+                              role: .destructive,
+                              action: onDiscard)
                    },
                    message: {
-                       Text("You have unsaved changes, are you sure you want to discard them?")
+                       Text("You have unsaved changes, are you sure you want to discard them?",
+                            bundle: .module)
                    })
     }
 }

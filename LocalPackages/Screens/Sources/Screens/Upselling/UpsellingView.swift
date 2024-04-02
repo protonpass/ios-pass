@@ -57,12 +57,13 @@ private extension UpsellingView {
                 .scaledToFit()
                 .frame(maxWidth: .infinity)
 
-            Text("Pass Plus")
+            Text("Pass Plus", bundle: .module)
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
 
-            Text("Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus.")
+            Text("Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus.",
+                 bundle: .module)
                 .padding(.bottom)
                 .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
