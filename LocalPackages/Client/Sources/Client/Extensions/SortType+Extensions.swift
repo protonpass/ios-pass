@@ -25,15 +25,15 @@ public extension SortType {
     var title: String {
         switch self {
         case .mostRecent:
-            #localized("Most recent")
+            #localized("Most recent", bundle: .module)
         case .alphabeticalAsc:
-            #localized("Title (A-Z)")
+            #localized("Title (A-Z)", bundle: .module)
         case .alphabeticalDesc:
-            #localized("Title (Z-A)")
+            #localized("Title (Z-A)", bundle: .module)
         case .newestToOldest:
-            #localized("Newest to oldest")
+            #localized("Newest to oldest", bundle: .module)
         case .oldestToNewest:
-            #localized("Oldest to newest")
+            #localized("Oldest to newest", bundle: .module)
         }
     }
 }

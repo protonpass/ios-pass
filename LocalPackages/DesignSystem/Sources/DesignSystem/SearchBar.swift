@@ -78,7 +78,7 @@ public struct SearchBar: View {
             .containerShape(Rectangle())
             if !hideCancel || (hideCancel && !query.isEmpty) {
                 Button(action: onCancel) {
-                    Text("Cancel")
+                    Text("Cancel", bundle: .module)
                         .fontWeight(.semibold)
                         .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                 }

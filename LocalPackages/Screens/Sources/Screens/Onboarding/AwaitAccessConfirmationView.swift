@@ -41,18 +41,18 @@ public struct AwaitAccessConfirmationView: View {
                 .playing(loopMode: .loop)
                 .frame(maxWidth: 160, maxHeight: 160)
 
-            Text("Pending access to the shared data")
+            Text("Pending access to the shared data", bundle: .module)
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
                 .padding(.top, 32)
 
-            Text("For security reasons, your access needs to be confirmed")
+            Text("For security reasons, your access needs to be confirmed", bundle: .module)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .multilineTextAlignment(.center)
                 .padding(.top, 2)
 
-            CapsuleTextButton(title: #localized("Learn more about Pass"),
+            CapsuleTextButton(title: #localized("Learn more about Pass", bundle: .module),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               height: 52,

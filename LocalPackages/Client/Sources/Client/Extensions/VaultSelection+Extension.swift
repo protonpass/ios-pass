@@ -25,11 +25,11 @@ public extension VaultSelection {
     var searchBarPlacehoder: String {
         switch self {
         case .all:
-            #localized("Search in all vaults...")
+            #localized("Search in all vaults...", bundle: .module)
         case let .precise(vault):
-            #localized("Search in %@...", vault.name)
+            #localized("Search in %@...", bundle: .module, vault.name)
         case .trash:
-            #localized("Search in Trash...")
+            #localized("Search in Trash...", bundle: .module)
         }
     }
 }

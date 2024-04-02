@@ -141,7 +141,7 @@ private extension LoginItemsView {
     }
 
     var createButton: some View {
-        CapsuleTextButton(title: #localized("Create login"),
+        CapsuleTextButton(title: #localized("Create login", bundle: .module),
                           titleColor: PassColor.loginInteractionNormMajor2,
                           backgroundColor: PassColor.loginInteractionNormMinor1,
                           height: 52,
