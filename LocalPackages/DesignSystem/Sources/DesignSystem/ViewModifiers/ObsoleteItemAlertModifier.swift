@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Macro
 import SwiftUI
 
 struct ObsoleteItemAlertModifier: ViewModifier {
@@ -31,12 +32,13 @@ struct ObsoleteItemAlertModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .alert("This item is obsolete",
+            .alert(#localized("This item is obsolete", bundle: .module),
                    isPresented: $isPresented,
                    actions: {
-                       Button("OK", role: .cancel, action: onAction)
+                       Button(#localized("OK", bundle: .module), role: .cancel, action: onAction)
                    }, message: {
-                       Text("Some changes happened to this item, heading back to the previous page.")
+                       Text("Some changes happened to this item, heading back to the previous page.",
+                            bundle: .module)
                    })
     }
 }
