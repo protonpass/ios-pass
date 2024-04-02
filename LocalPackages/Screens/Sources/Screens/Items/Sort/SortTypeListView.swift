@@ -81,7 +81,7 @@ public struct SortTypeListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Sort By")
+                    Text("Sort By", bundle: .module)
                         .navigationTitleText()
                 }
             }

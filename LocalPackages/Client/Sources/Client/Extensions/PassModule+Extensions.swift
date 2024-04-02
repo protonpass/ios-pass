@@ -26,13 +26,13 @@ public extension PassModule {
     var logTitle: String {
         switch self {
         case .hostApp:
-            #localized("Application logs")
+            #localized("Application logs", bundle: .module)
         case .autoFillExtension:
-            #localized("AutoFill extension logs")
+            #localized("AutoFill extension logs", bundle: .module)
         case .keyboardExtension:
             "Keyboard extension logs"
         case .shareExtension:
-            #localized("Share extension logs")
+            #localized("Share extension logs", bundle: .module)
         }
     }
 

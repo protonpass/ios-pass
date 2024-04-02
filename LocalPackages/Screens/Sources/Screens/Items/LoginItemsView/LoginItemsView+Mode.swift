@@ -32,19 +32,19 @@ extension LoginItemsView.Mode {
     var title: String {
         switch self {
         case .passkeyCreation:
-            #localized("Create passkey")
+            #localized("Create passkey", bundle: .module)
         }
     }
 
     var description: String {
         switch self {
         case .passkeyCreation:
-            #localized("Select an existing login or create a new one.")
+            #localized("Select an existing login or create a new one.", bundle: .module)
         }
     }
 
     var searchBarPlaceholder: String {
-        #localized("Search")
+        #localized("Search", bundle: .module)
     }
 
     var allowCreation: Bool {
