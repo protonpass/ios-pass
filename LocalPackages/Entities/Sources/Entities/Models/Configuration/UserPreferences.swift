@@ -22,67 +22,69 @@
 import Foundation
 
 /// Preferences bound to a specific user
-public struct UserPreferences: Codable, Equatable {
+public struct UserPreferences: Codable, Equatable, Sendable {
     /// AutoFill suggestions above the keyboard
-    public var quickTypeBar = true
+    public var quickTypeBar: Bool
 
     /// Automatically copy TOTP code to clipboard after autofilling
-    public var automaticallyCopyTotpCode = true
+    public var automaticallyCopyTotpCode: Bool
 
     /// Choosen theme
-    public var theme: Theme = .dark
+    public var theme: Theme
 
     /// Choosen browser to open URLs
-    public var browser: Browser = .systemDefault
+    public var browser: Browser
 
     /// Display or not favicon of login items
-    public var displayFavIcons = true
+    public var displayFavIcons: Bool
 
     /// Number of failed local authentication attempts
-    public var failedAttemptCount = 0
+    public var failedAttemptCount: Int
 
     /// Face ID/Touch ID/Optic ID or PIN code authentication
-    public var localAuthenticationMethod: LocalAuthenticationMethod = .none
+    public var localAuthenticationMethod: LocalAuthenticationMethod
 
     /// PIN code if local authentication method is PIN
     public var pinCode: String?
 
     /// Fallback to device's passcode when biometric authentication (Face ID/Touch ID/Optic ID) fails
-    public var fallbackToPasscode = true
+    public var fallbackToPasscode: Bool
 
     /// Automatic app lock timeout
-    public var appLockTime: AppLockTime = .twoMinutes
+    public var appLockTime: AppLockTime
 
     /// Timeout for content copied to clipboard
-    public var clipboardExpiration: ClipboardExpiration = .twoMinutes
+    public var clipboardExpiration: ClipboardExpiration
 
     /// Share clipboard's content to devices logged in with same Apple ID
-    public var shareClipboard = false
+    public var shareClipboard: Bool
 
     /// Searchable items via Spotlight
-    public var spotlightEnabled = false
+    public var spotlightEnabled: Bool
 
     /// Spotlight indexable item content type
-    public var spotlightSearchableContent: SpotlightSearchableContent = .title
+    public var spotlightSearchableContent: SpotlightSearchableContent
 
     /// Spotlight indexable vaults
-    public var spotlightSearchableVaults: SpotlightSearchableVaults = .all
+    public var spotlightSearchableVaults: SpotlightSearchableVaults
 
-    public init(quickTypeBar: Bool,
-                automaticallyCopyTotpCode: Bool,
-                theme: Theme,
-                browser: Browser,
-                displayFavIcons: Bool,
-                failedAttemptCount: Int,
-                localAuthenticationMethod: LocalAuthenticationMethod,
-                pinCode: String?,
-                fallbackToPasscode: Bool,
-                appLockTime: AppLockTime,
-                clipboardExpiration: ClipboardExpiration,
-                shareClipboard: Bool,
-                spotlightEnabled: Bool,
-                spotlightSearchableContent: SpotlightSearchableContent,
-                spotlightSearchableVaults: SpotlightSearchableVaults) {
+    public static var `default`: Self { .init() }
+
+    public init(quickTypeBar: Bool = true,
+                automaticallyCopyTotpCode: Bool = true,
+                theme: Theme = .dark,
+                browser: Browser = .systemDefault,
+                displayFavIcons: Bool = true,
+                failedAttemptCount: Int = 0,
+                localAuthenticationMethod: LocalAuthenticationMethod = .none,
+                pinCode: String? = nil,
+                fallbackToPasscode: Bool = true,
+                appLockTime: AppLockTime = .twoMinutes,
+                clipboardExpiration: ClipboardExpiration = .twoMinutes,
+                shareClipboard: Bool = false,
+                spotlightEnabled: Bool = false,
+                spotlightSearchableContent: SpotlightSearchableContent = .title,
+                spotlightSearchableVaults: SpotlightSearchableVaults = .all) {
         self.quickTypeBar = quickTypeBar
         self.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         self.theme = theme

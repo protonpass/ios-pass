@@ -36,8 +36,6 @@ final class PreferencesManagerTest: XCTestCase {
         super.setUp()
         symmetricKeyProvider = SymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
-        sut = PreferencesManager(symmetricKeyProvider: symmetricKeyProvider,
-                                 databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {
@@ -46,49 +44,39 @@ final class PreferencesManagerTest: XCTestCase {
         cancellable = nil
         super.tearDown()
     }
+
+    func initSut() async throws {
+        sut = try await PreferencesManager(symmetricKeyProvider: symmetricKeyProvider,
+                                            databaseService: DatabaseService(inMemory: true),
+                                            userId: .random())
+    }
 }
 
 extension PreferencesManagerTest {
-    func testCreateAndThenReceiveCreationEvent() async throws {
+    func testCreateDefaultUserPreferences() async throws {
+        try await initSut()
+        XCTAssertEqual(sut.userPreferences.value, UserPreferences.default)
+    }
+
+    func testReceiveEventWhenUpdatingUserPreferences() async throws {
         // Given
-        let userId = String.random()
-        let givenPref = UserPreferences.random()
-        let expectation = XCTestExpectation(description: "Should receive creation event")
+        try await initSut()
+        let expectation = XCTestExpectation(description: "Should receive update event")
+        let givenPrefs = sut.userPreferences.value
+        let newValue = !givenPrefs.quickTypeBar
         cancellable = sut.userPreferencesUpdates
-            .sink { event in
-                if case .creation = event {
+            .filterUserPreferencesUpdate(\.quickTypeBar)
+            .sink { value in
+                if value == newValue {
                     expectation.fulfill()
                 }
             }
 
         // When
-        try await sut.create(preferences: givenPref, for: userId)
+        try await sut.updateUserPreferences(\.quickTypeBar, value: newValue)
 
         // Then
-        let pref = try await XCTUnwrapAsync(await sut.getPreferences(for: userId))
-        XCTAssertEqual(pref, givenPref)
-        await fulfillment(of: [expectation], timeout: 1)
-    }
-
-    func testReceiveEventWhenUpdating() async throws {
-        // Given
-        let userId = String.random()
-        let givenPref = UserPreferences.random()
-        let expectation = XCTestExpectation(description: "Should receive update event")
-        try await sut.create(preferences: givenPref, for: userId)
-        cancellable = sut.userPreferencesUpdates
-            .filterUserPreferencesUpdate(\.quickTypeBar, userId: userId)
-            .sink { _ in
-                expectation.fulfill()
-            }
-
-        // When
-        let newValue = !givenPref.quickTypeBar
-        try await sut.updatePreferences(\.quickTypeBar, value: newValue, for: userId)
-
-        // Then
-        let pref = try await XCTUnwrapAsync(await sut.getPreferences(for: userId))
-        XCTAssertEqual(pref.quickTypeBar, newValue)
+        XCTAssertEqual(sut.userPreferences.value.quickTypeBar, newValue)
         await fulfillment(of: [expectation], timeout: 1)
     }
 }

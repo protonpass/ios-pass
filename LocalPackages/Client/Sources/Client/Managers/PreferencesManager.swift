@@ -20,79 +20,77 @@
 //
 
 // periphery:ignore:all
-import Combine
+@preconcurrency import Combine
 import Core
 import Entities
 import Foundation
 
-public enum UserPreferencesUpdateEvent {
-    case none
-    case creation(UserID, UserPreferences)
-    case removal(UserID)
-    case update(UserID, PartialKeyPath<UserPreferences>, Any)
+/// Should not deal with this object directly from the outside
+/// but use `filterUserPreferencesUpdate` operator to parse and filter updates
+public struct UserPreferencesUpdate: @unchecked Sendable {
+    public let keyPath: PartialKeyPath<UserPreferences>
+    public let value: any Sendable
 }
 
+/// Manage app-wide preferences and current user's ones
 public protocol PreferencesManagerProtocol {
-    var userPreferencesUpdates: CurrentValueSubject<UserPreferencesUpdateEvent, Never> { get }
+    var userPreferences: CurrentValueSubject<UserPreferences, Never> { get }
+    var userPreferencesUpdates: PassthroughSubject<UserPreferencesUpdate, Never> { get }
 
-    func create(preferences: UserPreferences, for userId: String) async throws
-    func remove(preferences: UserPreferences, for userId: String) async throws
-    func updatePreferences<T>(_ keyPath: WritableKeyPath<UserPreferences, T>,
-                              value: T,
-                              for userId: String) async throws
-    func getPreferences(for userId: String) async throws -> UserPreferences?
+    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
+                                            value: T) async throws
+    func remove(userPreferences: UserPreferences) async throws
 }
 
-public final class PreferencesManager: PreferencesManagerProtocol {
-    public let userPreferencesUpdates = CurrentValueSubject<UserPreferencesUpdateEvent, Never>(.none)
+public actor PreferencesManager: PreferencesManagerProtocol {
+    public nonisolated let userPreferences: CurrentValueSubject<UserPreferences, Never>
+    public nonisolated let userPreferencesUpdates = PassthroughSubject<UserPreferencesUpdate, Never>()
 
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
+    private let userId: String
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,
-                databaseService: any DatabaseServiceProtocol) {
-        userPreferencesDatasource = LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
-                                                                   databaseService: databaseService)
+                databaseService: any DatabaseServiceProtocol,
+                userId: String = "") async throws {
+        let userPreferencesDatasource = LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
+                                                                       databaseService: databaseService)
+
+        // Load user's preferences from the database and create default ones if not exist
+        if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
+            userPreferences = .init(preferences)
+        } else {
+            // Create default preferences
+            let preferences = UserPreferences.default
+            try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
+            userPreferences = .init(preferences)
+        }
+        self.userPreferencesDatasource = userPreferencesDatasource
+        self.userId = userId
     }
 }
 
 public extension PreferencesManager {
-    func create(preferences: UserPreferences, for userId: String) async throws {
-        try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-        userPreferencesUpdates.send(.creation(userId, preferences))
-    }
-
-    func remove(preferences: UserPreferences, for userId: String) async throws {
-        try await userPreferencesDatasource.removePreferences(for: userId)
-        userPreferencesUpdates.send(.removal(userId))
-    }
-
-    func updatePreferences<T>(_ keyPath: WritableKeyPath<UserPreferences, T>,
-                              value: T,
-                              for userId: String) async throws {
-        guard var preferences = try await userPreferencesDatasource.getPreferences(for: userId) else {
-            throw PassError.userPreferencesNotFound(userId)
-        }
+    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
+                                            value: T) async throws {
+        var preferences = userPreferences.value
         preferences[keyPath: keyPath] = value
         try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-        userPreferencesUpdates.send(.update(userId, keyPath, value))
+        userPreferences.send(preferences)
+        userPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
     }
 
-    func getPreferences(for userId: String) async throws -> UserPreferences? {
-        try await userPreferencesDatasource.getPreferences(for: userId)
+    func remove(userPreferences: UserPreferences) async throws {
+        try await userPreferencesDatasource.removePreferences(for: userId)
     }
 }
 
-public extension CurrentValueSubject where Output == UserPreferencesUpdateEvent, Failure == Never {
-    /// Filter update events of a given property for a given `userID`
-    /// Return the updated value of the property
-    func filterUserPreferencesUpdate<T>(_ keyPath: KeyPath<UserPreferences, T>,
-                                        userId: String) -> AnyPublisher<T, Failure> {
-        compactMap { event in
-            guard case let .update(currentUserId, partialKeyPath, anyValue) = event,
-                  currentUserId == userId,
-                  let currentKeyPath = partialKeyPath as? KeyPath<UserPreferences, T>,
-                  keyPath == currentKeyPath,
-                  let value = anyValue as? T else {
+public extension PassthroughSubject<UserPreferencesUpdate, Never> {
+    /// Filter update events of a given property and return the updated value of the property
+    func filterUserPreferencesUpdate<T: Sendable>(_ keyPath: KeyPath<UserPreferences, T>)
+        -> AnyPublisher<T, Failure> {
+        compactMap { update in
+            guard keyPath == update.keyPath as? KeyPath<UserPreferences, T>,
+                  let value = update.value as? T else {
                 return nil
             }
             return value
