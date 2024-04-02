@@ -53,6 +53,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published private(set) var securityIssues: [SecurityWeakness]?
     @Published private(set) var reusedItems: [ItemContent]?
+    @Published private(set) var loading = false
 
     var isAlias: Bool { aliasItem != nil }
     let showSecurityIssues: Bool
@@ -136,8 +137,7 @@ private extension LogInDetailViewModel {
             do {
                 aliasItem = try await itemRepository.getAliasItem(email: username)
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                logAndDisplay(error: error)
             }
         }
     }
@@ -152,8 +152,7 @@ private extension LogInDetailViewModel {
                     totpTokenState = .notAllowed
                 }
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                logAndDisplay(error: error)
             }
         }
     }
@@ -189,7 +188,7 @@ extension LogInDetailViewModel {
             let itemContent = try aliasItem.getItemContent(symmetricKey: getSymmetricKey())
             logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
         } catch {
-            router.display(element: .displayErrorBanner(error))
+            logAndDisplay(error: error)
         }
     }
 
@@ -210,13 +209,15 @@ extension LogInDetailViewModel {
             guard let self else {
                 return
             }
+            defer { loading = false }
             do {
                 if let securityIssues {
+                    loading = true
                     try await toggleItemMonitoring(item: itemContent,
                                                    shouldNotMonitor: !securityIssues.contains(.excludedItems))
                 }
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                logAndDisplay(error: error)
             }
         }
     }
@@ -229,9 +230,16 @@ extension LogInDetailViewModel {
             do {
                 reusedItems = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                logAndDisplay(error: error)
             }
         }
+    }
+}
+
+private extension LogInDetailViewModel {
+    func logAndDisplay(error: Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 

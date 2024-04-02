@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import Entities
 import Factory
 import Foundation
@@ -30,11 +31,12 @@ final class PasswordReusedViewModel: ObservableObject, Sendable {
     @Published private(set) var loading = false
 
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemContent: ItemContent
 
     var title: String {
-        itemContent.loginItem?.password.transformString(withChar: "•") ?? "Unknown"
+        itemContent.loginItem?.password.replaceAllCharsExceptFirstAndLast(withChar: "•") ?? "Unknown"
     }
 
     init(itemContent: ItemContent) {
@@ -43,7 +45,7 @@ final class PasswordReusedViewModel: ObservableObject, Sendable {
         fetchSimilarPasswordItems()
     }
 
-    func itemAction(item: ItemContent) {
+    func viewDetail(of item: ItemContent) {
         router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
     }
 }
@@ -61,23 +63,9 @@ private extension PasswordReusedViewModel {
                 loading = true
                 reusedItems = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
             } catch {
+                logger.error(error)
                 router.display(element: .displayErrorBanner(error))
             }
         }
-    }
-}
-
-extension String {
-    func transformString(withChar newChar: Character) -> String {
-        guard count > 2,
-              let firstChar = first,
-              let lastChar = last else { return self } // Return the original string if it's too short
-
-        let startIndex = index(after: startIndex)
-        let endIndex = index(before: endIndex)
-        let middleCount = distance(from: startIndex, to: endIndex)
-
-        let middleReplacement = String(repeating: newChar, count: middleCount)
-        return "\(firstChar)\(middleReplacement)\(lastChar)"
     }
 }

@@ -34,14 +34,6 @@ struct PasswordReusedView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            mainContainer
-        }
-    }
-}
-
-private extension PasswordReusedView {
-    var mainContainer: some View {
         VStack {
             Text("List of all other items from your vaults that use this password.")
                 .foregroundStyle(PassColor.textNorm.toColor)
@@ -49,28 +41,32 @@ private extension PasswordReusedView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
 
-            LazyVStack(spacing: 0) {
-                itemsList(items: viewModel.reusedItems)
-                Spacer()
-            }
-        }.padding(.horizontal, DesignConstant.sectionPadding)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .toolbar { toolbarContent }
-            .scrollViewEmbeded(maxWidth: .infinity)
-            .background(PassColor.backgroundNorm.toColor)
-            .showSpinner(viewModel.loading)
-            .navigationTitle(viewModel.title)
+            itemsList(items: viewModel.reusedItems)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .toolbar { toolbarContent }
+        .scrollViewEmbeded(maxWidth: .infinity)
+        .background(PassColor.backgroundNorm.toColor)
+        .showSpinner(viewModel.loading)
+        .navigationTitle(viewModel.title)
+        .navigationStackEmbeded()
     }
+}
 
+private extension PasswordReusedView {
     func itemsList(items: [ItemContent]) -> some View {
-        ForEach(items) { item in
-            itemRow(for: item)
+        LazyVStack(spacing: 0) {
+            ForEach(items) { item in
+                itemRow(for: item)
+            }
+            Spacer()
         }
     }
 
     func itemRow(for item: ItemContent) -> some View {
         Button {
-            viewModel.itemAction(item: item)
+            viewModel.viewDetail(of: item)
         } label: {
             GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                            title: item.title,
