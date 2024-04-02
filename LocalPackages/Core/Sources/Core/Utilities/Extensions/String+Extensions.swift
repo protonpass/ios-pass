@@ -154,6 +154,19 @@ public extension String {
             return self
         }
     }
+
+    func replaceAllCharsExceptFirstAndLast(withChar newChar: Character) -> String {
+        guard count > 2,
+              let firstChar = first,
+              let lastChar = last else { return self } // Return the original string if it's too short
+
+        let startIndex = index(after: startIndex)
+        let endIndex = index(before: endIndex)
+        let middleCount = distance(from: startIndex, to: endIndex)
+
+        let middleReplacement = String(repeating: newChar, count: middleCount)
+        return "\(firstChar)\(middleReplacement)\(lastChar)"
+    }
 }
 
 // MARK: Computed Extensions

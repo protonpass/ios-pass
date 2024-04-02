@@ -56,39 +56,39 @@ final class PassMonitorRepositoryTests: XCTestCase {
         for weakness in weakness {
             switch weakness {
             case .reusedPasswords:
-                let loginData2 = LogInItemData.mock(password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdfasdsad")
+                let loginData = LogInItemData.mock(password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdfasdsad")
                 let reused1Login = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
                                                                                         note: "This is a note.",
                                                                                         itemUuid: UUID().uuidString,
-                                                                                        data: .login(loginData2),
+                                                                                        data: .login(loginData),
                                                                                         customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
                                                                encryptedContent: try! reused1Login.encrypt(symmetricKey: symmetricKey)))
                 
             case .weakPasswords:
-                let loginData4 = LogInItemData.mock(username: "test", password: "aaaaa")
+                let loginData = LogInItemData.mock(username: "test", password: "aaaaa")
                 let weakpassLogin = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
                                                                                          note: "This is a note.",
                                                                                          itemUuid: UUID().uuidString,
-                                                                                         data: .login(loginData4),
+                                                                                         data: .login(loginData),
                                                                                          customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
                                                                encryptedContent: try! weakpassLogin.encrypt(symmetricKey: symmetricKey)))
             case .excludedItems:
-                let loginData5 = LogInItemData.mock(totpUri: "", urls: ["google.com"])
+                let loginData = LogInItemData.mock(totpUri: "", urls: ["google.com"])
                 let nonMonitorLogin = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
                                                                                            note: "This is a note.",
                                                                                            itemUuid: UUID().uuidString,
-                                                                                           data: .login(loginData5),
+                                                                                           data: .login(loginData),
                                                                                            customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.notMonitoredMock,
                                                                encryptedContent: try! nonMonitorLogin.encrypt(symmetricKey: symmetricKey)))
             case .missing2FA:
-                let loginData6 = LogInItemData.mock(username: "test", password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdf", totpUri: "", urls: ["google.com"])
+                let loginData = LogInItemData.mock(username: "test", password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdf", totpUri: "", urls: ["google.com"])
                 let no2FALogin = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
                                                                                       note: "This is a note.",
                                                                                       itemUuid: UUID().uuidString,
-                                                                                      data: .login(loginData6),
+                                                                                      data: .login(loginData),
                                                                                       customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
                                                                encryptedContent: try! no2FALogin.encrypt(symmetricKey: symmetricKey)))

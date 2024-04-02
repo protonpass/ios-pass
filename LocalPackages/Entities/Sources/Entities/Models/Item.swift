@@ -98,14 +98,14 @@ public extension Item {
         (Int(flags) & flag) != 0
     }
 
-    func areAllFlagsSet(_ flagsToCheck: [Int]) -> Bool {
+    func areAllFlagsActive(_ flagsToCheck: [Int]) -> Bool {
         for flag in flagsToCheck where (Int(flags) & flag) == 0 {
             return false // If any flag is not set, return false
         }
         return true // All flags are set
     }
 
-    func isAnyFlagSet(_ flagsToCheck: [Int]) -> Bool {
+    func isAnyFlagActive(_ flagsToCheck: [Int]) -> Bool {
         for flag in flagsToCheck where (Int(flags) & flag) != 0 {
             return true // If any flag is set, return true
         }
