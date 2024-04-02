@@ -33,9 +33,9 @@ public extension NotLoggedInView {
         var message: String {
             switch self {
             case .autoFillExtension:
-                #localized("Please sign in to use Proton Pass AutoFill extension")
+                #localized("Please sign in to use Proton Pass AutoFill extension", bundle: .module)
             case .shareExtension:
-                #localized("Please sign in to use Proton Pass Share extension")
+                #localized("Please sign in to use Proton Pass Share extension", bundle: .module)
             }
         }
     }
@@ -59,7 +59,7 @@ public struct NotLoggedInView: View {
                 .padding(.bottom)
 
             Group {
-                Text("Signed out")
+                Text("Signed out", bundle: .module)
                     .font(.title2.bold())
                 Text(variant.message)
             }

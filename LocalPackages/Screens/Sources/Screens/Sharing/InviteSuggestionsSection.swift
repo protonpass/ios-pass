@@ -46,13 +46,13 @@ public struct InviteSuggestionsSection: View {
 
     public var body: some View {
         LazyVStack {
-            Text("Suggestions")
+            Text("Suggestions", bundle: .module)
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .font(.body.weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             if let planName = recommendations.groupDisplayName ?? recommendations.planInternalName {
-                let recentTabTitle = #localized("Recents") +
+                let recentTabTitle = #localized("Recents", bundle: .module) +
                     (displayCounts ? " (\(recommendations.recommendedEmails.count))" : "")
                 let planTabTitle = planName +
                     (displayCounts ? " (\(recommendations.planRecommendedEmails.count))" : "")

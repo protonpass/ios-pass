@@ -31,7 +31,7 @@ public struct NoSearchResultsInAllVaultView: View {
 
     public var body: some View {
         VStack {
-            Text("Couldn't find \"\(query)\"")
+            Text("Couldn't find \"\(query)\"", bundle: .module)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -58,7 +58,7 @@ public struct NoSearchResultsInPreciseVaultView: View {
 
     public var body: some View {
         VStack {
-            Text(#localized("Couldn't find \"%1$@\" in %2$@", query, vaultName))
+            Text(#localized("Couldn't find \"%1$@\" in %2$@", bundle: .module, query, vaultName))
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -68,7 +68,7 @@ public struct NoSearchResultsInPreciseVaultView: View {
             TrySearchAgainText()
 
             Button(action: action) {
-                Label("Search in all vaults", systemImage: "magnifyingglass")
+                Label(#localized("Search in all vaults", bundle: .module), systemImage: "magnifyingglass")
                     .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
                     .padding()
                     .background(Color(uiColor: PassColor.interactionNormMinor2))
@@ -90,7 +90,7 @@ public struct NoSearchResultsInTrashView: View {
 
     public var body: some View {
         VStack {
-            Text("Couldn't find \"\(query)\" in Trash")
+            Text("Couldn't find \"\(query)\" in Trash", bundle: .module)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -106,7 +106,7 @@ public struct NoSearchResultsInTrashView: View {
 
 private struct TrySearchAgainText: View {
     var body: some View {
-        Text("Try searching using different spelling or keywords")
+        Text("Try searching using different spelling or keywords", bundle: .module)
             .font(.callout)
             .foregroundColor(Color(uiColor: PassColor.textWeak))
             .multilineTextAlignment(.center)
