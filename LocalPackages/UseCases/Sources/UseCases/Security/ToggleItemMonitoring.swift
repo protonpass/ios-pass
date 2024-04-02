@@ -1,6 +1,6 @@
 //
 //
-// RemoveItemMonitoring.swift
+// ToggleItemMonitoring.swift
 // Proton Pass - Created on 14/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -35,12 +35,9 @@ public extension ToggleItemMonitoringUseCase {
 }
 
 public final class ToggleItemMonitoring: ToggleItemMonitoringUseCase {
-    private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
 
-    public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
-                itemRepository: any ItemRepositoryProtocol) {
-        self.passMonitorRepository = passMonitorRepository
+    public init(itemRepository: any ItemRepositoryProtocol) {
         self.itemRepository = itemRepository
     }
 

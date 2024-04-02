@@ -417,8 +417,7 @@ extension UseCasesContainer {
 
     var toggleItemMonitoring: Factory<ToggleItemMonitoringUseCase> {
         self {
-            ToggleItemMonitoring(passMonitorRepository: self.passMonitorRepository,
-                                 itemRepository: self.itemRepository)
+            ToggleItemMonitoring(itemRepository: self.itemRepository)
         }
     }
 }

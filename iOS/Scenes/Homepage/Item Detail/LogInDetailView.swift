@@ -114,6 +114,7 @@ private extension LogInDetailView {
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
+        .showSpinner(viewModel.loading)
     }
 }
 
@@ -383,7 +384,6 @@ private extension LogInDetailView {
                 Text(weakness.infos)
                     .font(.callout)
                     .foregroundColor(rowType.iconColor.toColor)
-                Spacer()
             }
             .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
             .contentShape(Rectangle())
@@ -423,25 +423,19 @@ private extension LogInDetailView {
     func reusedList(rowType: SecureRowType) -> some View {
         if let reusedItems = viewModel.reusedItems, !reusedItems.isEmpty {
             if reusedItems.count > 5 {
-                HStack {
-                    Button { viewModel.showItemList() } label: {
-                        Text("\(reusedItems.count) other logins")
-                            .underline()
-                            .font(.callout)
-                            .fontWeight(.medium)
-                            .foregroundColor(rowType.iconColor.toColor)
-                    }
-                    .buttonStyle(.plain)
-                    .padding(4)
-                    .background(PassColor.noteInteractionNormMinor1.toColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
-
-                    Text("use this password.")
+                Button { viewModel.showItemList() } label: {
+                    Text("\(reusedItems.count) other logins use this password")
+                        .underline()
                         .font(.callout)
-                        .foregroundColor(rowType.iconColor.toColor)
+                        .fontWeight(.medium)
                         .minimumScaleFactor(0.75)
+                        .foregroundColor(rowType.iconColor.toColor)
                         .lineLimit(1)
                 }
+                .buttonStyle(.plain)
+                .padding(4)
+                .background(PassColor.noteInteractionNormMinor1.toColor)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
             } else {
                 VStack(alignment: .leading) {
                     Text("\(reusedItems.count) other logins use this password")
