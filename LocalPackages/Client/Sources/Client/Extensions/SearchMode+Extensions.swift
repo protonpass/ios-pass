@@ -25,7 +25,7 @@ public extension SearchMode {
     var searchBarPlacehoder: String {
         switch self {
         case .pinned:
-            #localized("Search pinned items")
+            #localized("Search pinned items", bundle: .module)
         case let .all(selection):
             selection.searchBarPlacehoder
         }
