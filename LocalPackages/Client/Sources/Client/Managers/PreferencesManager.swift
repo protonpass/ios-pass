@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+// swiftlint:disable:next todo
+// TODO: remove periphery ignore
 // periphery:ignore:all
 @preconcurrency import Combine
 import Core
