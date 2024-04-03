@@ -23,13 +23,13 @@ import CoreData
 import Entities
 import Foundation
 
-protocol LocalUserPreferencesDatasourceProtocol: Sendable {
+public protocol LocalUserPreferencesDatasourceProtocol: Sendable {
     func getPreferences(for userId: String) async throws -> UserPreferences?
     func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws
     func removePreferences(for userId: String) async throws
 }
 
-final class LocalUserPreferencesDatasource: LocalDatasource, LocalUserPreferencesDatasourceProtocol {
+public final class LocalUserPreferencesDatasource: LocalDatasource, LocalUserPreferencesDatasourceProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
     init(symmetricKeyProvider: any SymmetricKeyProvider,
@@ -39,7 +39,7 @@ final class LocalUserPreferencesDatasource: LocalDatasource, LocalUserPreference
     }
 }
 
-extension LocalUserPreferencesDatasource {
+public extension LocalUserPreferencesDatasource {
     func getPreferences(for userId: String) async throws -> UserPreferences? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = UserPreferencesEntity.fetchRequest()

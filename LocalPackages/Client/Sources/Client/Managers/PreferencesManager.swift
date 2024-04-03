@@ -32,49 +32,68 @@ public struct UserPreferencesUpdate: @unchecked Sendable {
     public let value: any Sendable
 }
 
+public struct SharedPreferencesUpdate: @unchecked Sendable {
+    public let keyPath: PartialKeyPath<SharedPreferences>
+    public let value: any Sendable
+}
+
 /// Manage app-wide preferences and current user's ones
 public protocol PreferencesManagerProtocol {
-    var userPreferences: CurrentValueSubject<UserPreferences, Never> { get }
+    var userPreferences: CurrentValueSubject<UserPreferences?, Never> { get }
     var userPreferencesUpdates: PassthroughSubject<UserPreferencesUpdate, Never> { get }
 
+    var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> { get }
+    var sharedPreferencesUpdates: PassthroughSubject<SharedPreferencesUpdate, Never> { get }
+
+    /// Load preferences or create with default values if not exist
+    func setUp() async throws
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws
     func remove(userPreferences: UserPreferences) async throws
 }
 
 public actor PreferencesManager: PreferencesManagerProtocol {
-    public nonisolated let userPreferences: CurrentValueSubject<UserPreferences, Never>
+    public nonisolated let userPreferences = CurrentValueSubject<UserPreferences?, Never>(nil)
     public nonisolated let userPreferencesUpdates = PassthroughSubject<UserPreferencesUpdate, Never>()
+
+    public nonisolated let sharedPreferences = CurrentValueSubject<SharedPreferences?, Never>(nil)
+    public nonisolated let sharedPreferencesUpdates = PassthroughSubject<SharedPreferencesUpdate, Never>()
 
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
     // swiftlint:disable:next todo
     // TODO: Inject via a protocol
     private let userId: String
 
-    public init(symmetricKeyProvider: any SymmetricKeyProvider,
-                databaseService: any DatabaseServiceProtocol,
-                userId: String = "") async throws {
-        let userPreferencesDatasource = LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
-                                                                       databaseService: databaseService)
+    private var didSetUp = false
 
-        // Load user's preferences from the database and create default ones if not exist
-        if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
-            userPreferences = .init(preferences)
-        } else {
-            // Create default preferences
-            let preferences = UserPreferences.default
-            try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-            userPreferences = .init(preferences)
-        }
+    public init(userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
+                userId: String = "") {
         self.userPreferencesDatasource = userPreferencesDatasource
         self.userId = userId
     }
 }
 
 public extension PreferencesManager {
+    func setUp() async throws {
+        // Shared preferences
+
+        // User's preferences
+        if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
+            userPreferences.send(preferences)
+        } else {
+            // Create default preferences
+            let preferences = UserPreferences.default
+            try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
+            userPreferences.send(preferences)
+        }
+
+        didSetUp = true
+    }
+
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws {
-        var preferences = userPreferences.value
+        guard assertDidSetUp() else { return }
+        guard var preferences = userPreferences.value else { return }
         preferences[keyPath: keyPath] = value
         try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
         userPreferences.send(preferences)
@@ -83,6 +102,13 @@ public extension PreferencesManager {
 
     func remove(userPreferences: UserPreferences) async throws {
         try await userPreferencesDatasource.removePreferences(for: userId)
+    }
+}
+
+private extension PreferencesManager {
+    func assertDidSetUp() -> Bool {
+        assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
+        return didSetUp
     }
 }
 
