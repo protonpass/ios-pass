@@ -32,10 +32,16 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
     @Published private(set) var lastUpdate: String?
+    @Published var isSentinelActive = false
+    @Published private(set) var updatingSentinel = false
+    @Published var showSentinelSheet = false
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -53,6 +59,55 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
             router.display(element: .displayErrorBanner(error))
         }
     }
+
+    func sentinelSheetAction() {
+        if isFreeUser {
+            upsell()
+        } else {
+            toggleSentinelState()
+        }
+    }
+
+    func upsell() {
+        router.present(for: .upselling)
+    }
+}
+
+// MARK: - Sentinel
+
+extension PassMonitorViewModel {
+    @MainActor
+    func checkSentinel() async {
+        guard let userId = try? userDataProvider.getUserId() else {
+            return
+        }
+        let settings = await userSettingsRepository.getSettings(for: userId)
+//        isSentinelEligible = settings.highSecurity.eligible
+        isSentinelActive = settings.highSecurity.value
+    }
+
+    func toggleSentinelState() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                updatingSentinel = false
+            }
+            do {
+                updatingSentinel = true
+                let userId = try userDataProvider.getUserId()
+                try await userSettingsRepository.toggleSentinel(for: userId)
+                await checkSentinel()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func showSentinelInformation() {
+        router.navigate(to: .urlPage(urlString: "https://proton.me/support/proton-sentinel"))
+    }
 }
 
 private extension PassMonitorViewModel {
@@ -63,6 +118,7 @@ private extension PassMonitorViewModel {
             }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
+                await checkSentinel()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }

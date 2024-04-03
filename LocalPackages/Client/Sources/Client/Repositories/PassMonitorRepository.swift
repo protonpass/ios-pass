@@ -97,7 +97,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         reusedPasswords = reusedPasswords.filter { $0.value > 1 }
 
         var numberOfWeakPassword = 0
-        var numberOfReusedPassword = 0
         var numberOfMissing2fa = 0
         var numberOfExcludedItems = 0
 
@@ -113,7 +112,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             } else {
                 if reusedPasswords[item.loginData.password] != nil {
                     weaknesses.append(.reusedPasswords)
-                    numberOfReusedPassword += 1
                 }
 
                 if !item.loginData.password.isEmpty,
@@ -136,7 +134,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             }
         }
         weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
-                                         reusedPasswords: numberOfReusedPassword,
+                                         reusedPasswords: reusedPasswords.count,
                                          missing2FA: numberOfMissing2fa,
                                          excludedItems: numberOfExcludedItems,
                                          exposedPasswords: 0))
