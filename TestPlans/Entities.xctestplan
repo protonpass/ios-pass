@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "0FDF3C9F-A58D-466E-9473-8F6ACC7A4F83",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/Entities",
+        "identifier" : "EntitiesTests",
+        "name" : "EntitiesTests"
+      }
+    }
+  ],
+  "version" : 1
+}

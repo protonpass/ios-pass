@@ -52,6 +52,26 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
             return stubbedCurrentlyPinnedItems
         }
     }
+    // MARK: - itemsWereUpdated
+    public var invokedItemsWereUpdatedSetter = false
+    public var invokedItemsWereUpdatedSetterCount = 0
+    public var invokedItemsWereUpdated: CurrentValueSubject<Void, Never>?
+    public var invokedItemsWereUpdatedList = [CurrentValueSubject<Void, Never>?]()
+    public var invokedItemsWereUpdatedGetter = false
+    public var invokedItemsWereUpdatedGetterCount = 0
+    public var stubbedItemsWereUpdated: CurrentValueSubject<Void, Never>!
+    public var itemsWereUpdated: CurrentValueSubject<Void, Never> {
+        set {
+            invokedItemsWereUpdatedSetter = true
+            invokedItemsWereUpdatedSetterCount += 1
+            invokedItemsWereUpdated = newValue
+            invokedItemsWereUpdatedList.append(newValue)
+        } get {
+            invokedItemsWereUpdatedGetter = true
+            invokedItemsWereUpdatedGetterCount += 1
+            return stubbedItemsWereUpdated
+        }
+    }
     // MARK: - getAllItems
     public var getAllItemsThrowableError1: Error?
     public var closureGetAllItems: () -> () = {}
@@ -642,8 +662,26 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllPinnedItems()
         return stubbedGetAllPinnedItemsResult
     }
+    // MARK: - updateItemFlags
+    public var updateItemFlagsFlagsShareIdItemIdThrowableError33: Error?
+    public var closureUpdateItemFlags: () -> () = {}
+    public var invokedUpdateItemFlagsfunction = false
+    public var invokedUpdateItemFlagsCount = 0
+    public var invokedUpdateItemFlagsParameters: (flags: [ItemFlag], shareId: String, itemId: String)?
+    public var invokedUpdateItemFlagsParametersList = [(flags: [ItemFlag], shareId: String, itemId: String)]()
+
+    public func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws {
+        invokedUpdateItemFlagsfunction = true
+        invokedUpdateItemFlagsCount += 1
+        invokedUpdateItemFlagsParameters = (flags, shareId, itemId)
+        invokedUpdateItemFlagsParametersList.append((flags, shareId, itemId))
+        if let error = updateItemFlagsFlagsShareIdItemIdThrowableError33 {
+            throw error
+        }
+        closureUpdateItemFlags()
+    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError33: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError34: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -656,7 +694,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError33 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError34 {
             throw error
         }
         closureTotpCreationDateThreshold()

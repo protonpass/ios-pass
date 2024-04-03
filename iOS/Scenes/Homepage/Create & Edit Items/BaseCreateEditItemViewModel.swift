@@ -99,8 +99,6 @@ class BaseCreateEditItemViewModel {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     var hasEmptyCustomField: Bool {
@@ -328,7 +326,6 @@ extension BaseCreateEditItemViewModel {
                 case let .edit(oldItemContent):
                     logger.trace("Editing \(oldItemContent.debugDescription)")
                     let updated = try await editItem(oldItemContent: oldItemContent)
-                    try await passMonitorRepository.refreshSecurityChecks()
                     logger.info("Edited \(oldItemContent.debugDescription)")
                     router.present(for: .updateItem(type: itemContentType(), updated: updated))
                 }
