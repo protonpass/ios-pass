@@ -298,18 +298,6 @@ private extension PassMonitorView {
     }
 }
 
-private extension PassMonitorView {
-    func lastUpdateInfo(date: String?) -> some View {
-        VStack {
-            if let date {
-                Text("Last Data Breach Protection Sync:")
-                Text(date)
-            }
-        }.font(.caption)
-            .foregroundStyle(PassColor.textWeak.toColor)
-    }
-}
-
 // MARK: - Rows
 
 private extension PassMonitorView {

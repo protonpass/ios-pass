@@ -31,7 +31,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
-    @Published private(set) var lastUpdate: String?
     @Published var isSentinelActive = false
     @Published private(set) var updatingSentinel = false
     @Published var showSentinelSheet = false
