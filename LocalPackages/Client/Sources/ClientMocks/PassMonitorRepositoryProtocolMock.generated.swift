@@ -84,4 +84,24 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         }
         closureRefreshSecurityChecks()
     }
+    // MARK: - getItemsWithSamePassword
+    public var getItemsWithSamePasswordItemThrowableError2: Error?
+    public var closureGetItemsWithSamePassword: () -> () = {}
+    public var invokedGetItemsWithSamePasswordfunction = false
+    public var invokedGetItemsWithSamePasswordCount = 0
+    public var invokedGetItemsWithSamePasswordParameters: (item: ItemContent, Void)?
+    public var invokedGetItemsWithSamePasswordParametersList = [(item: ItemContent, Void)]()
+    public var stubbedGetItemsWithSamePasswordResult: [ItemContent]!
+
+    public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
+        invokedGetItemsWithSamePasswordfunction = true
+        invokedGetItemsWithSamePasswordCount += 1
+        invokedGetItemsWithSamePasswordParameters = (item, ())
+        invokedGetItemsWithSamePasswordParametersList.append((item, ()))
+        if let error = getItemsWithSamePasswordItemThrowableError2 {
+            throw error
+        }
+        closureGetItemsWithSamePassword()
+        return stubbedGetItemsWithSamePasswordResult
+    }
 }

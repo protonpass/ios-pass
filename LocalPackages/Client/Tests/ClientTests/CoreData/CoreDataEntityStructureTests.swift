@@ -107,6 +107,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "state", on: sut, hasType: .integer64)
         verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
+        verifyAttribute(named: "flags", on: sut, hasType: .integer64)
     }
 
     func testShareEventIDEntity() {

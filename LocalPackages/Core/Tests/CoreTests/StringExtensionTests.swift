@@ -64,4 +64,10 @@ final class StringExtensionTests: XCTestCase {
         XCTAssertEqual("67193494632903247021".toMaskedCreditCardNumber(),
                        "6719 •••• •••• •••• 7021")
     }
+    
+    func testReplaceAllCharsExceptFirstAndLast() {
+        XCTAssertEqual("ABBBB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AzzzB")
+        XCTAssertEqual("AB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AB")
+        XCTAssertEqual("AB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AB")
+    }
 }

@@ -114,6 +114,7 @@ private extension LogInDetailView {
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
+        .showSpinner(viewModel.loading)
     }
 }
 
@@ -346,7 +347,7 @@ private extension LogInDetailView {
         VStack {
             ForEach(issues, id: \.self) { issue in
                 securityWeaknessRow(weakness: issue,
-                                    action: {})
+                                    action: { viewModel.toggleFromSecurityMonitoring() })
             }
         }
     }
@@ -357,45 +358,125 @@ private extension LogInDetailView {
         let rowType = weakness.secureRowType
         HStack(spacing: DesignConstant.sectionPadding) {
             if let iconName = rowType.icon {
-                Image(systemName: iconName)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .foregroundColor(rowType.iconColor.toColor)
-                    .frame(width: 20)
+                VStack {
+                    Image(systemName: iconName)
+                        .resizable()
+                        .renderingMode(.template)
+                        .scaledToFit()
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(rowType.iconColor.toColor)
+                        .frame(width: 25)
+                    Spacer()
+                }
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(weakness.title)
                     .font(.body)
+                    .fontWeight(.medium)
                     .foregroundStyle(rowType.iconColor.toColor)
+                if weakness == .reusedPasswords {
+                    reusedList(rowType: rowType)
+                        .padding(.top, 6)
+                } else {
+                    Spacer()
+                }
                 Text(weakness.infos)
-                    .font(.footnote)
+                    .font(.callout)
                     .foregroundColor(rowType.iconColor.toColor)
             }
             .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
             .contentShape(Rectangle())
-
-            // swiftlint:disable:next todo
-            // TODO: remove item from security monitoring
-            Menu(content: {
-                Button { action() }
-                    label: {
-                        Label(title: { Text("Exclude from monitoring") },
-                              icon: { Image(uiImage: IconProvider.eyeSlash) })
-                    }
-            }, label: {
-                Image(uiImage: IconProvider.threeDotsVertical)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .foregroundColor(rowType.iconColor.toColor)
-                    .frame(width: DesignConstant.Icons.defaultIconSize,
-                           height: DesignConstant.Icons.defaultIconSize)
-            })
+            VStack {
+                Menu(content: {
+                    Button { action() }
+                        label: {
+                            Label(title: {
+                                      Text(weakness != .excludedItems ? "Exclude from monitoring" :
+                                          "Add to monitoring")
+                                  },
+                                  icon: {
+                                      Image(uiImage: weakness != .excludedItems ? IconProvider
+                                          .eyeSlash : IconProvider
+                                          .eye)
+                                  })
+                        }
+                }, label: {
+                    Image(uiImage: IconProvider.threeDotsVertical)
+                        .resizable()
+                        .renderingMode(.template)
+                        .scaledToFit()
+                        .foregroundColor(rowType.iconColor.toColor)
+                        .frame(width: DesignConstant.Icons.defaultIconSize,
+                               height: DesignConstant.Icons.defaultIconSize)
+                })
+                Spacer()
+            }
         }
-        .padding(DesignConstant.sectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection(backgroundColor: rowType.background,
                               borderColor: rowType.border)
+    }
+
+    @ViewBuilder
+    func reusedList(rowType: SecureRowType) -> some View {
+        if let reusedItems = viewModel.reusedItems, !reusedItems.isEmpty {
+            if reusedItems.count > 5 {
+                Button { viewModel.showItemList() } label: {
+                    Text("\(reusedItems.count) other logins use this password")
+                        .underline()
+                        .font(.callout)
+                        .fontWeight(.medium)
+                        .minimumScaleFactor(0.75)
+                        .foregroundColor(rowType.iconColor.toColor)
+                        .lineLimit(1)
+                }
+                .buttonStyle(.plain)
+                .padding(4)
+                .background(PassColor.noteInteractionNormMinor1.toColor)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+            } else {
+                VStack(alignment: .leading) {
+                    Text("\(reusedItems.count) other logins use this password")
+                        .font(.callout)
+                        .foregroundColor(rowType.iconColor.toColor)
+                    ReusedItemsPassListView(reusedPasswordItems: reusedItems,
+                                            action: { viewModel.showDetail(for: $0) })
+                }
+            }
+        }
+    }
+}
+
+struct ReusedItemsPassListView: View {
+    let reusedPasswordItems: [ItemContent]
+    let action: (ItemContent) -> Void
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 8) {
+                ForEach(reusedPasswordItems) { item in
+                    Button {
+                        action(item)
+                    } label: {
+                        HStack(alignment: .center, spacing: 8) {
+                            ItemSquircleThumbnail(data: item.thumbnailData(),
+                                                  size: .small,
+                                                  alternativeBackground: true)
+                            Text(item.title)
+                                .font(.body)
+                                .lineLimit(1)
+                                .foregroundColor(PassColor.textNorm.toColor)
+                                .padding(.trailing, 8)
+                        }
+                        .padding(8)
+                        .frame(maxWidth: 165, alignment: .leading)
+                        .background(item.type.normMinor1Color.toColor)
+                        .cornerRadius(16)
+                    }
+                }
+            }
+        }
     }
 }
