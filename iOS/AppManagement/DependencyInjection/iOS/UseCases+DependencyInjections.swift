@@ -414,6 +414,12 @@ extension UseCasesContainer {
             GetLoginSecurityIssues(passMonitorRepository: self.passMonitorRepository)
         }
     }
+
+    var toggleItemMonitoring: Factory<ToggleItemMonitoringUseCase> {
+        self {
+            ToggleItemMonitoring(itemRepository: self.itemRepository)
+        }
+    }
 }
 
 // MARK: - Organization

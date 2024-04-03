@@ -63,6 +63,8 @@ public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUse
                 return try filterReusedPasswords(items: items, type: type, key: key)
             case .missing2FA:
                 return try filterMissing2fa(items: items, type: type, key: key)
+            case .excludedItems:
+                return try filterExcludedItems(items: items, type: type, key: key)
             default:
                 return [:]
             }
@@ -135,5 +137,18 @@ private extension GetAllSecurityAffectedLogins {
             missing2fas[section]?.append(itemContent)
         }
         return missing2fas
+    }
+
+    func filterExcludedItems(items: [SecurityAffectedItem],
+                             type: SecurityWeakness,
+                             key: SymmetricKey) throws -> SecurityIssuesContent {
+        let section = SecuritySection.excludedItems
+        var excludedItems: [SecuritySection: [ItemContent]] = [section: []]
+
+        for item in items where item.weaknesses.contains(type) {
+            let itemContent = try item.item.getItemContent(symmetricKey: key)
+            excludedItems[section]?.append(itemContent)
+        }
+        return excludedItems
     }
 }

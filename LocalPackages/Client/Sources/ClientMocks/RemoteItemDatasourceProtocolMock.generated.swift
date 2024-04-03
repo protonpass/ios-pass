@@ -305,4 +305,24 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureUnpin()
         return stubbedUnpinResult
     }
+    // MARK: - updateItemFlags
+    public var updateItemFlagsItemIdShareIdRequestThrowableError15: Error?
+    public var closureUpdateItemFlags: () -> () = {}
+    public var invokedUpdateItemFlagsfunction = false
+    public var invokedUpdateItemFlagsCount = 0
+    public var invokedUpdateItemFlagsParameters: (itemId: String, shareId: String, request: UpdateItemFlagsRequest)?
+    public var invokedUpdateItemFlagsParametersList = [(itemId: String, shareId: String, request: UpdateItemFlagsRequest)]()
+    public var stubbedUpdateItemFlagsResult: Item!
+
+    public func updateItemFlags(itemId: String, shareId: String, request: UpdateItemFlagsRequest) async throws -> Item {
+        invokedUpdateItemFlagsfunction = true
+        invokedUpdateItemFlagsCount += 1
+        invokedUpdateItemFlagsParameters = (itemId, shareId, request)
+        invokedUpdateItemFlagsParametersList.append((itemId, shareId, request))
+        if let error = updateItemFlagsItemIdShareIdRequestThrowableError15 {
+            throw error
+        }
+        closureUpdateItemFlags()
+        return stubbedUpdateItemFlagsResult
+    }
 }
