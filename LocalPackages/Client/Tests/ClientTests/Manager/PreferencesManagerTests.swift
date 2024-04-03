@@ -62,10 +62,9 @@ extension PreferencesManagerTest {
         // Given
         try await initSut()
         let expectation = XCTestExpectation(description: "Should receive update event")
-        let givenPrefs = sut.userPreferences.value
-        let newValue = !givenPrefs.quickTypeBar
+        let newValue = try XCTUnwrap(SpotlightSearchableContent.random())
         cancellable = sut.userPreferencesUpdates
-            .filterUserPreferencesUpdate(\.quickTypeBar)
+            .filter(\.spotlightSearchableContent)
             .sink { value in
                 if value == newValue {
                     expectation.fulfill()
@@ -73,10 +72,10 @@ extension PreferencesManagerTest {
             }
 
         // When
-        try await sut.updateUserPreferences(\.quickTypeBar, value: newValue)
+        try await sut.updateUserPreferences(\.spotlightSearchableContent, value: newValue)
 
         // Then
-        XCTAssertEqual(sut.userPreferences.value.quickTypeBar, newValue)
+        XCTAssertEqual(sut.userPreferences.value.spotlightSearchableContent, newValue)
         await fulfillment(of: [expectation], timeout: 1)
     }
 }
