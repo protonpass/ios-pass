@@ -20,6 +20,7 @@
 //
 
 @testable import Client
+import CoreMocks
 import Combine
 import CryptoKit
 import Entities
@@ -27,30 +28,102 @@ import XCTest
 import ClientMocks
 
 final class PreferencesManagerTest: XCTestCase {
+    var keychainData: [String: Data] = [:]
+    var keychain: KeychainProtocolMock!
     let symmetricKey = SymmetricKey.random()
     var symmetricKeyProvider: SymmetricKeyProviderMock!
+    var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
+    var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
+    var userId: String!
     var sut: PreferencesManagerProtocol!
     var cancellable: AnyCancellable!
 
     override func setUp() {
         super.setUp()
+        keychain = KeychainProtocolMock()
+
+        keychain.closureSetOrErrorDataKeyAttributes3 = {
+            if let data = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.0,
+               let key = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.1 {
+                self.keychainData[key] = data
+            }
+        }
+
+        keychain.closureDataOrError = {
+            if let key = self.keychain.invokedDataOrErrorParameters?.0 {
+                self.keychain.stubbedDataOrErrorResult = self.keychainData[key]
+            }
+        }
+
+        keychain.closureRemoveOrError = {
+            if let key = self.keychain.invokedRemoveOrErrorParameters?.0 {
+                self.keychainData[key] = nil
+            }
+        }
+
         symmetricKeyProvider = SymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
-        let localUserPreferencesDatasource =
+        userPreferencesDatasource =
         LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
                                        databaseService: DatabaseService(inMemory: true))
-        sut = PreferencesManager(userPreferencesDatasource: localUserPreferencesDatasource,
-                                 userId: .random())
+        sharedPreferencesDatasource =
+        LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
+                                         keychain: keychain)
+        userId = .random()
+        sut = PreferencesManager(userPreferencesDatasource: userPreferencesDatasource,
+                                 sharedPreferencesDatasource: sharedPreferencesDatasource,
+                                 userId: userId)
     }
 
     override func tearDown() {
+        keychain = nil
         symmetricKeyProvider = nil
+        userPreferencesDatasource = nil
+        sharedPreferencesDatasource = nil
+        userId = nil
         sut = nil
         cancellable = nil
         super.tearDown()
     }
 }
 
+// MARK: - SharedPreferences
+extension PreferencesManagerTest {
+    func testCreateDefaultSharedPreferences() async throws {
+        try await sut.setUp()
+        XCTAssertEqual(sut.sharedPreferences.value, SharedPreferences.default)
+    }
+
+    func testReceiveEventWhenUpdatingSharedPreferences() async throws {
+        // Given
+        try await sut.setUp()
+        let expectation = XCTestExpectation(description: "Should receive update event")
+        let newValue = try XCTUnwrap(AppLockTime.random())
+        cancellable = sut.sharedPreferencesUpdates
+            .filter(\.appLockTime)
+            .sink { value in
+                if value == newValue {
+                    expectation.fulfill()
+                }
+            }
+
+        // When
+        try await sut.updateSharedPreferences(\.appLockTime, value: newValue)
+
+        // Then
+        XCTAssertEqual(sut.sharedPreferences.value?.appLockTime, newValue)
+        await fulfillment(of: [expectation], timeout: 1)
+    }
+
+    func testRemoveSharedPreferences() async throws {
+        try await sut.setUp()
+        try await sut.removeSharedPreferences()
+        let preferences = try sharedPreferencesDatasource.getPreferences()
+        XCTAssertNil(preferences)
+    }
+}
+
+// MARK: - UserPreferences
 extension PreferencesManagerTest {
     func testCreateDefaultUserPreferences() async throws {
         try await sut.setUp()
@@ -76,5 +149,12 @@ extension PreferencesManagerTest {
         // Then
         XCTAssertEqual(sut.userPreferences.value?.spotlightSearchableContent, newValue)
         await fulfillment(of: [expectation], timeout: 1)
+    }
+
+    func testRemoveUserPreferences() async throws {
+        try await sut.setUp()
+        try await sut.removeUserPreferences()
+        let preferences = try await userPreferencesDatasource.getPreferences(for: userId)
+        XCTAssertNil(preferences)
     }
 }

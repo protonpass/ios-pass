@@ -29,15 +29,13 @@ import Foundation
 
 /// Should not deal with this object directly from the outside
 /// but use `filter` operator to parse and filter updates
-public struct UserPreferencesUpdate: @unchecked Sendable {
-    public let keyPath: PartialKeyPath<UserPreferences>
+public struct PreferencesUpdate<T>: @unchecked Sendable {
+    public let keyPath: PartialKeyPath<T>
     public let value: any Sendable
 }
 
-public struct SharedPreferencesUpdate: @unchecked Sendable {
-    public let keyPath: PartialKeyPath<SharedPreferences>
-    public let value: any Sendable
-}
+public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
+public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 
 /// Manage app-wide preferences and current user's ones
 public protocol PreferencesManagerProtocol {
@@ -49,9 +47,14 @@ public protocol PreferencesManagerProtocol {
 
     /// Load preferences or create with default values if not exist
     func setUp() async throws
+
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws
-    func remove(userPreferences: UserPreferences) async throws
+    func removeUserPreferences() async throws
+
+    func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
+                                              value: T) async throws
+    func removeSharedPreferences() async throws
 }
 
 public actor PreferencesManager: PreferencesManagerProtocol {
@@ -62,6 +65,7 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     public nonisolated let sharedPreferencesUpdates = PassthroughSubject<SharedPreferencesUpdate, Never>()
 
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
+    private let sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol
     // swiftlint:disable:next todo
     // TODO: Inject via a protocol
     private let userId: String
@@ -69,8 +73,10 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     private var didSetUp = false
 
     public init(userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
+                sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
                 userId: String = "") {
         self.userPreferencesDatasource = userPreferencesDatasource
+        self.sharedPreferencesDatasource = sharedPreferencesDatasource
         self.userId = userId
     }
 }
@@ -78,12 +84,18 @@ public actor PreferencesManager: PreferencesManagerProtocol {
 public extension PreferencesManager {
     func setUp() async throws {
         // Shared preferences
+        if let preferences = try sharedPreferencesDatasource.getPreferences() {
+            sharedPreferences.send(preferences)
+        } else {
+            let preferences = SharedPreferences.default
+            try sharedPreferencesDatasource.upsertPreferences(preferences)
+            sharedPreferences.send(preferences)
+        }
 
         // User's preferences
         if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
             userPreferences.send(preferences)
         } else {
-            // Create default preferences
             let preferences = UserPreferences.default
             try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
             userPreferences.send(preferences)
@@ -94,16 +106,34 @@ public extension PreferencesManager {
 
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws {
-        guard assertDidSetUp() else { return }
-        guard var preferences = userPreferences.value else { return }
+        guard assertDidSetUp(),
+              var preferences = userPreferences.value else {
+            return
+        }
         preferences[keyPath: keyPath] = value
         try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
         userPreferences.send(preferences)
         userPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
     }
 
-    func remove(userPreferences: UserPreferences) async throws {
+    func removeUserPreferences() async throws {
         try await userPreferencesDatasource.removePreferences(for: userId)
+    }
+
+    func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
+                                              value: T) async throws {
+        guard assertDidSetUp(),
+              var preferences = sharedPreferences.value else {
+            return
+        }
+        preferences[keyPath: keyPath] = value
+        try sharedPreferencesDatasource.upsertPreferences(preferences)
+        sharedPreferences.send(preferences)
+        sharedPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
+    }
+
+    func removeSharedPreferences() async throws {
+        try sharedPreferencesDatasource.removePreferences()
     }
 }
 
@@ -114,13 +144,14 @@ private extension PreferencesManager {
     }
 }
 
-public extension PassthroughSubject<UserPreferencesUpdate, Never> {
+public extension Publisher {
     /// Filter update events of a given property and return the updated value of the property
-    func filter<T: Sendable>(_ keyPath: KeyPath<UserPreferences, T>)
-        -> AnyPublisher<T, Failure> {
+    func filter<T, V>(_ keyPath: KeyPath<T, V>) -> AnyPublisher<V, Failure>
+        where Output == PreferencesUpdate<T> {
         compactMap { update in
-            guard keyPath == update.keyPath as? KeyPath<UserPreferences, T>,
-                  let value = update.value as? T else {
+            guard keyPath == update.keyPath as? KeyPath<T, V>,
+                  let value = update.value as? V else {
+                assertionFailure("keyPath and value type should be matched")
                 return nil
             }
             return value
