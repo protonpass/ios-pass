@@ -26,7 +26,7 @@ import Entities
 import Foundation
 
 /// Should not deal with this object directly from the outside
-/// but use `filterUserPreferencesUpdate` operator to parse and filter updates
+/// but use `filter` operator to parse and filter updates
 public struct UserPreferencesUpdate: @unchecked Sendable {
     public let keyPath: PartialKeyPath<UserPreferences>
     public let value: any Sendable
@@ -47,6 +47,8 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     public nonisolated let userPreferencesUpdates = PassthroughSubject<UserPreferencesUpdate, Never>()
 
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
+    // swiftlint:disable:next todo
+    // TODO: Inject via a protocol
     private let userId: String
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,
@@ -86,7 +88,7 @@ public extension PreferencesManager {
 
 public extension PassthroughSubject<UserPreferencesUpdate, Never> {
     /// Filter update events of a given property and return the updated value of the property
-    func filterUserPreferencesUpdate<T: Sendable>(_ keyPath: KeyPath<UserPreferences, T>)
+    func filter<T: Sendable>(_ keyPath: KeyPath<UserPreferences, T>)
         -> AnyPublisher<T, Failure> {
         compactMap { update in
             guard keyPath == update.keyPath as? KeyPath<UserPreferences, T>,
