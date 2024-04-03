@@ -35,6 +35,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "35E5063A286F819F00A3F6EA"
+            BuildableName = "Proton Pass.app"
+            BlueprintName = "iOS"
+            ReferencedContainer = "container:../../ProtonPass.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

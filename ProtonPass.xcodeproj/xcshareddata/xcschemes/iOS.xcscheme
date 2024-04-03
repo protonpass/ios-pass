@@ -105,6 +105,9 @@
          <TestPlanReference
             reference = "container:TestPlans/iOSUIPayments.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlans/Entities.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
