@@ -64,8 +64,8 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     public nonisolated let sharedPreferences = CurrentValueSubject<SharedPreferences?, Never>(nil)
     public nonisolated let sharedPreferencesUpdates = PassthroughSubject<SharedPreferencesUpdate, Never>()
 
-    private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
     private let sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol
+    private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
     // swiftlint:disable:next todo
     // TODO: Inject via a protocol
     private let userId: String
