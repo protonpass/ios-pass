@@ -23,19 +23,7 @@ import Entities
 
 extension UserPreferences {
     static func random() -> Self {
-        .init(quickTypeBar: .random(),
-              automaticallyCopyTotpCode: .random(),
-              theme: .random()!,
-              browser: .random()!,
-              displayFavIcons: .random(),
-              failedAttemptCount: .random(in: 1...100),
-              localAuthenticationMethod: .random()!,
-              pinCode: .random(),
-              fallbackToPasscode: .random(),
-              appLockTime: .random()!,
-              clipboardExpiration: .random()!,
-              shareClipboard: .random(),
-              spotlightEnabled: .random(),
+        .init(spotlightEnabled: .random(),
               spotlightSearchableContent: .random()!,
               spotlightSearchableVaults: .random()!)
     }
