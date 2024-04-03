@@ -1,6 +1,6 @@
 //
-// SecuritySection.swift
-// Proton Pass - Created on 08/03/2024.
+// ItemFlags.swift
+// Proton Pass - Created on 27/03/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,9 +20,7 @@
 
 import Foundation
 
-public enum SecuritySection: Hashable, Sendable {
-    case weakPasswords(PasswordStrength)
-    case reusedPasswords(Int)
-    case missing2fa
-    case excludedItems
+public enum ItemFlags {
+    public static let skipHealthCheck = 1 << 0 // Equals 1
+    // Define other flags with different bits, e.g., `static let anotherFlag = 1 << 1`
 }
