@@ -21,7 +21,7 @@
 
 import Foundation
 
-/// Preferences bound to a specific user
+/// Shared preferences between all users
 public struct SharedPreferences: Codable, Equatable, Sendable {
     /// AutoFill suggestions above the keyboard
     public var quickTypeBar: Bool

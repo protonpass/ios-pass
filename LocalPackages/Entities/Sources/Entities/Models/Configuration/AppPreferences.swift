@@ -22,7 +22,7 @@
 import Foundation
 
 /// Application-wide preferences
-public struct AppPreferences: Codable {
+public struct AppPreferences: Codable, Equatable, Sendable {
     /// The user is onboarded or not
     public var onboarded: Bool
 
