@@ -119,6 +119,15 @@ struct PassMonitorView: View {
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .showSpinner(viewModel.loading)
+            .sheet(isPresented: $viewModel.showSentinelSheet) {
+                SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
+                                  sentinelActive: viewModel.isSentinelActive,
+                                  mainAction: {
+                                      viewModel.sentinelSheetAction()
+                                      viewModel.showSentinelSheet = false
+                                  }, secondaryAction: { viewModel.showSentinelInformation() })
+                    .presentationDetents([.height(570)])
+            }
             .navigationStackEmbeded()
             .task {
                 await viewModel.refresh()
@@ -131,12 +140,29 @@ private extension PassMonitorView {
         LazyVStack {
             if let weaknessStats = viewModel.weaknessStats {
                 breachedDataRows(weaknessStats: weaknessStats)
-                weakPasswordsRow(weaknessStats.weakPasswords)
-                reusedPasswordsRow(weaknessStats.reusedPasswords)
-                missing2FARow(weaknessStats.missing2FA)
-                excludedItemsRow(weaknessStats.excludedItems)
-                Spacer(minLength: 24)
-                lastUpdateInfo(date: viewModel.lastUpdate)
+
+                sentinelRow(rowType: .info,
+                            title: "Proton Sentinel",
+                            subTitle: "Advanced account protection program",
+                            action: { viewModel.showSentinelSheet = true })
+                    .showSpinner(viewModel.updatingSentinel)
+                Section {
+                    VStack(spacing: DesignConstant.sectionPadding) {
+                        weakPasswordsRow(weaknessStats.weakPasswords)
+                        reusedPasswordsRow(weaknessStats.reusedPasswords)
+                        missing2FARow(weaknessStats.missing2FA)
+                            .padding(.top, 16)
+                        excludedItemsRow(weaknessStats.excludedItems)
+                    }
+                } header: {
+                    HStack {
+                        Text("Passwords Health")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(PassColor.textNorm.toColor)
+                        Spacer()
+                    }.padding(.top, DesignConstant.sectionPadding)
+                }
             }
         }
         .padding(DesignConstant.sectionPadding)
@@ -153,6 +179,38 @@ private extension PassMonitorView {
                 breachedPasswordsRow(weaknessStats.exposedPasswords, showAdvice: true)
             }
         }
+    }
+
+    func sentinelRow(rowType: SecureRowType,
+                     title: String,
+                     subTitle: String?,
+                     action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text(title)
+                        .font(.body)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    if let subTitle {
+                        Text(subTitle)
+                            .font(.footnote)
+                            .foregroundColor(PassColor.textWeak.toColor)
+                            .lineLimit(1)
+                    }
+                }
+                .contentShape(Rectangle())
+                .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
+                .layoutPriority(1)
+
+                Toggle(isOn: $viewModel.isSentinelActive) {
+                    EmptyView()
+                }.disabled(true)
+            }
+            .padding(.horizontal, DesignConstant.sectionPadding)
+            .roundedDetailSection(backgroundColor: rowType.background,
+                                  borderColor: rowType.border)
+        }
+        .buttonStyle(.plain)
     }
 
     func upsellRow(weaknessStats: WeaknessStats) -> some View {

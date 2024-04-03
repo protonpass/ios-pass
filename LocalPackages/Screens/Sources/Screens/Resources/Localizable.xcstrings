@@ -164,6 +164,7 @@
     },
     "Close" : {
       "comment" : "Accessibility label",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1123,6 +1124,16 @@
         }
       }
     },
+    "Dark Web monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web monitoring"
+          }
+        }
+      }
+    },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "localizations" : {
@@ -1284,8 +1295,19 @@
         }
       }
     },
+    "Get Pass Plus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Pass Plus"
+          }
+        }
+      }
+    },
     "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus." : {
       "comment" : "Used in the upselling screen to explain benefits",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1441,6 +1463,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nhận không giới hạn bí danh, tận hưởng các tính năng độc quyền, vầ hỗ trợ chúng tôi bằng việc đăng ký gói Pass Plus."
+          }
+        }
+      }
+    },
+    "Integrated 2FA authenticator" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integrated 2FA authenticator"
           }
         }
       }
@@ -1607,6 +1639,7 @@
     },
     "Multiple Vaults" : {
       "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1768,6 +1801,7 @@
     },
     "Pass Plus" : {
       "comment" : "Title on upselling screen",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -2404,6 +2438,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Please sign in to use Proton Pass Share extension"
+          }
+        }
+      }
+    },
+    "Proton sentinel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton sentinel"
           }
         }
       }
@@ -3051,6 +3095,7 @@
     },
     "Sharing with up to 10 people" : {
       "comment" : "Used in the upselling screen to explain benefits",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -3530,6 +3575,16 @@
         }
       }
     },
+    "Stay safer online" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay safer online"
+          }
+        }
+      }
+    },
     "Suggestions" : {
       "comment" : "Title of suggested emails section when sharing",
       "localizations" : {
@@ -3853,6 +3908,7 @@
     },
     "Unlimited 2FA Autofill" : {
       "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -4014,6 +4070,7 @@
     },
     "Unlimited email aliases" : {
       "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -4173,8 +4230,29 @@
         }
       }
     },
+    "Unlimited hide-my-email aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited hide-my-email aliases"
+          }
+        }
+      }
+    },
+    "Unlock advanced security features and detailed logs to safeguard your online presence." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock advanced security features and detailed logs to safeguard your online presence."
+          }
+        }
+      }
+    },
     "Upgrade" : {
       "comment" : "Button on the upselling screen",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -4330,6 +4408,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nâng cấp"
+          }
+        }
+      }
+    },
+    "Vault sharing (up to 10 people)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault sharing (up to 10 people)"
           }
         }
       }

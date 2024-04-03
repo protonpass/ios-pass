@@ -31,68 +31,68 @@ public struct UpsellingView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .topLeading) {
-            mainContainer
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .padding()
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                .background(Color(uiColor: PassColor.backgroundNorm))
-                .edgesIgnoringSafeArea(.top)
-
-            CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Close",
-                         action: dismiss.callAsFunction)
-                .padding()
-        }
+        mainContainer
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .padding()
+            .foregroundColor(PassColor.textNorm.toColor)
+            .background(PassColor.backgroundNorm.toColor)
+            .edgesIgnoringSafeArea(.top)
     }
 }
 
 private extension UpsellingView {
     var mainContainer: some View {
         VStack(alignment: .center) {
-            Image(uiImage: PassIcon.trialDetail)
+            Image(uiImage: PassIcon.passPlus)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: .infinity)
 
-            Text("Pass Plus", bundle: .module)
+            Text("Stay safer online", bundle: .module)
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
 
-            Text("Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus.",
+            Text("Unlock advanced security features and detailed logs to safeguard your online presence.",
                  bundle: .module)
                 .padding(.bottom)
                 .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
 
             VStack {
-                perkRow(title: "Unlimited email aliases",
+                perkRow(title: "Proton sentinel",
+                        icon: IconProvider.user,
+                        iconTintColor: PassColor.interactionNormMajor2)
+                perkRow(title: "Dark Web monitoring",
+                        icon: PassIcon.shield2,
+                        iconTintColor: PassColor.interactionNormMajor2)
+                perkRow(title: "Integrated 2FA authenticator",
+                        icon: IconProvider.lock,
+                        iconTintColor: PassColor.interactionNormMajor2)
+                perkRow(title: "Unlimited hide-my-email aliases",
                         icon: IconProvider.alias,
-                        iconTintColor: PassColor.aliasInteractionNorm)
-                PassDivider()
-                perkRow(title: "Unlimited 2FA Autofill", icon: PassIcon.trial2FA)
-                PassDivider()
-                perkRow(title: "Sharing with up to 10 people",
+                        iconTintColor: PassColor.interactionNormMajor2)
+                perkRow(title: "Vault sharing (up to 10 people)",
                         icon: IconProvider.userPlus,
-                        iconTintColor: PassColor.noteInteractionNormMajor1)
-                PassDivider()
-                perkRow(title: "Multiple Vaults", icon: PassIcon.trialVaults)
+                        iconTintColor: PassColor.interactionNormMajor2)
             }
-            .padding()
-            .background(PassColor.inputBackgroundNorm.toColor)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .padding(.horizontal)
-            .padding(.vertical, 32)
+            .padding(.vertical, DesignConstant.sectionPadding)
+            .padding(.horizontal, DesignConstant.sectionPadding * 2)
+            .roundedDetailSection()
 
             Spacer()
 
-            GradientRoundedButton(title: "Upgrade",
-                                  leadingBackgroundColor: .init(red: 174 / 255, green: 80 / 255, blue: 96 / 255),
-                                  endingBackgroundColor: .init(red: 113 / 255, green: 77 / 255, blue: 255 / 255),
-                                  action: onUpgrade)
+            CapsuleTextButton(title: "Get Pass Plus",
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNormMajor2,
+                              action: onUpgrade)
+                .padding(.horizontal, DesignConstant.sectionPadding)
+
+            CapsuleTextButton(title: "Not Now",
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: .clear,
+                              action: dismiss.callAsFunction)
+                .padding(.horizontal, DesignConstant.sectionPadding)
         }
     }
 
