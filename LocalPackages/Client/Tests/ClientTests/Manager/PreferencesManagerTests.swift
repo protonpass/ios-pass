@@ -36,6 +36,11 @@ final class PreferencesManagerTest: XCTestCase {
         super.setUp()
         symmetricKeyProvider = SymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
+        let localUserPreferencesDatasource =
+        LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
+                                       databaseService: DatabaseService(inMemory: true))
+        sut = PreferencesManager(userPreferencesDatasource: localUserPreferencesDatasource,
+                                 userId: .random())
     }
 
     override func tearDown() {
@@ -44,23 +49,17 @@ final class PreferencesManagerTest: XCTestCase {
         cancellable = nil
         super.tearDown()
     }
-
-    func initSut() async throws {
-        sut = try await PreferencesManager(symmetricKeyProvider: symmetricKeyProvider,
-                                            databaseService: DatabaseService(inMemory: true),
-                                            userId: .random())
-    }
 }
 
 extension PreferencesManagerTest {
     func testCreateDefaultUserPreferences() async throws {
-        try await initSut()
+        try await sut.setUp()
         XCTAssertEqual(sut.userPreferences.value, UserPreferences.default)
     }
 
     func testReceiveEventWhenUpdatingUserPreferences() async throws {
         // Given
-        try await initSut()
+        try await sut.setUp()
         let expectation = XCTestExpectation(description: "Should receive update event")
         let newValue = try XCTUnwrap(SpotlightSearchableContent.random())
         cancellable = sut.userPreferencesUpdates
@@ -75,7 +74,7 @@ extension PreferencesManagerTest {
         try await sut.updateUserPreferences(\.spotlightSearchableContent, value: newValue)
 
         // Then
-        XCTAssertEqual(sut.userPreferences.value.spotlightSearchableContent, newValue)
+        XCTAssertEqual(sut.userPreferences.value?.spotlightSearchableContent, newValue)
         await fulfillment(of: [expectation], timeout: 1)
     }
 }
