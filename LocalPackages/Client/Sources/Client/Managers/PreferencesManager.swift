@@ -23,7 +23,6 @@
 // TODO: remove periphery ignore
 // periphery:ignore:all
 @preconcurrency import Combine
-import Core
 import Entities
 import Foundation
 
@@ -34,36 +33,51 @@ public struct PreferencesUpdate<T>: @unchecked Sendable {
     public let value: any Sendable
 }
 
-public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
+public typealias AppPreferencesUpdate = PreferencesUpdate<AppPreferences>
 public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
+public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
 /// Manage app-wide preferences and current user's ones
 public protocol PreferencesManagerProtocol {
-    var userPreferences: CurrentValueSubject<UserPreferences?, Never> { get }
-    var userPreferencesUpdates: PassthroughSubject<UserPreferencesUpdate, Never> { get }
-
-    var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> { get }
-    var sharedPreferencesUpdates: PassthroughSubject<SharedPreferencesUpdate, Never> { get }
-
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 
-    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
-                                            value: T) async throws
-    func removeUserPreferences() async throws
+    // App preferences
+    var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
+    var appPreferencesUpdates: PassthroughSubject<AppPreferencesUpdate, Never> { get }
+
+    func updateAppPreferences<T: Sendable>(_ keyPath: WritableKeyPath<AppPreferences, T>,
+                                           value: T) async throws
+    func removeAppPreferences() async
+
+    // Shared preferences
+    var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> { get }
+    var sharedPreferencesUpdates: PassthroughSubject<SharedPreferencesUpdate, Never> { get }
 
     func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
                                               value: T) async throws
     func removeSharedPreferences() async throws
+
+    // User's preferences
+    var userPreferences: CurrentValueSubject<UserPreferences?, Never> { get }
+    var userPreferencesUpdates: PassthroughSubject<UserPreferencesUpdate, Never> { get }
+
+    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
+                                            value: T) async throws
+    func removeUserPreferences() async throws
 }
 
 public actor PreferencesManager: PreferencesManagerProtocol {
-    public nonisolated let userPreferences = CurrentValueSubject<UserPreferences?, Never>(nil)
-    public nonisolated let userPreferencesUpdates = PassthroughSubject<UserPreferencesUpdate, Never>()
+    public nonisolated let appPreferences = CurrentValueSubject<AppPreferences?, Never>(nil)
+    public nonisolated let appPreferencesUpdates = PassthroughSubject<AppPreferencesUpdate, Never>()
 
     public nonisolated let sharedPreferences = CurrentValueSubject<SharedPreferences?, Never>(nil)
     public nonisolated let sharedPreferencesUpdates = PassthroughSubject<SharedPreferencesUpdate, Never>()
 
+    public nonisolated let userPreferences = CurrentValueSubject<UserPreferences?, Never>(nil)
+    public nonisolated let userPreferencesUpdates = PassthroughSubject<UserPreferencesUpdate, Never>()
+
+    private let appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol
     private let sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
     // swiftlint:disable:next todo
@@ -72,17 +86,35 @@ public actor PreferencesManager: PreferencesManagerProtocol {
 
     private var didSetUp = false
 
-    public init(userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
+    public init(appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
                 sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
+                userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
                 userId: String = "") {
+        self.appPreferencesDatasource = appPreferencesDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.sharedPreferencesDatasource = sharedPreferencesDatasource
         self.userId = userId
     }
 }
 
+private extension PreferencesManager {
+    func assertDidSetUp() -> Bool {
+        assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
+        return didSetUp
+    }
+}
+
 public extension PreferencesManager {
     func setUp() async throws {
+        // App preferences
+        if let preferences = try appPreferencesDatasource.getPreferences() {
+            appPreferences.send(preferences)
+        } else {
+            let preferences = AppPreferences.default
+            try appPreferencesDatasource.upsertPreferences(preferences)
+            appPreferences.send(preferences)
+        }
+
         // Shared preferences
         if let preferences = try sharedPreferencesDatasource.getPreferences() {
             sharedPreferences.send(preferences)
@@ -103,23 +135,31 @@ public extension PreferencesManager {
 
         didSetUp = true
     }
+}
 
-    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
-                                            value: T) async throws {
+// MARK: - App preferences
+
+public extension PreferencesManager {
+    func updateAppPreferences<T: Sendable>(_ keyPath: WritableKeyPath<AppPreferences, T>,
+                                           value: T) async throws {
         guard assertDidSetUp(),
-              var preferences = userPreferences.value else {
+              var preferences = appPreferences.value else {
             return
         }
         preferences[keyPath: keyPath] = value
-        try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-        userPreferences.send(preferences)
-        userPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
+        try appPreferencesDatasource.upsertPreferences(preferences)
+        appPreferences.send(preferences)
+        appPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
     }
 
-    func removeUserPreferences() async throws {
-        try await userPreferencesDatasource.removePreferences(for: userId)
+    func removeAppPreferences() async {
+        appPreferencesDatasource.removePreferences()
     }
+}
 
+// MARK: - Shared preferences
+
+public extension PreferencesManager {
     func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
                                               value: T) async throws {
         guard assertDidSetUp(),
@@ -137,10 +177,23 @@ public extension PreferencesManager {
     }
 }
 
-private extension PreferencesManager {
-    func assertDidSetUp() -> Bool {
-        assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
-        return didSetUp
+// MARK: - User's preferences
+
+public extension PreferencesManager {
+    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
+                                            value: T) async throws {
+        guard assertDidSetUp(),
+              var preferences = userPreferences.value else {
+            return
+        }
+        preferences[keyPath: keyPath] = value
+        try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
+        userPreferences.send(preferences)
+        userPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
+    }
+
+    func removeUserPreferences() async throws {
+        try await userPreferencesDatasource.removePreferences(for: userId)
     }
 }
 

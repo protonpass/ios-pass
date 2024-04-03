@@ -32,8 +32,9 @@ final class PreferencesManagerTest: XCTestCase {
     var keychain: KeychainProtocolMock!
     let symmetricKey = SymmetricKey.random()
     var symmetricKeyProvider: SymmetricKeyProviderMock!
-    var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
+    var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocol!
     var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
+    var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
     var userId: String!
     var sut: PreferencesManagerProtocol!
     var cancellable: AnyCancellable!
@@ -63,15 +64,21 @@ final class PreferencesManagerTest: XCTestCase {
 
         symmetricKeyProvider = SymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
-        userPreferencesDatasource =
-        LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
-                                       databaseService: DatabaseService(inMemory: true))
+
+        appPreferencesDatasource = LocalAppPreferencesDatasource(userDefault: .standard)
+
         sharedPreferencesDatasource =
         LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
                                          keychain: keychain)
+
+        userPreferencesDatasource =
+        LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
+                                       databaseService: DatabaseService(inMemory: true))
+
         userId = .random()
-        sut = PreferencesManager(userPreferencesDatasource: userPreferencesDatasource,
-                                 sharedPreferencesDatasource: sharedPreferencesDatasource,
+        sut = PreferencesManager(appPreferencesDatasource: appPreferencesDatasource,
+                                 sharedPreferencesDatasource: sharedPreferencesDatasource, 
+                                 userPreferencesDatasource: userPreferencesDatasource,
                                  userId: userId)
     }
 
@@ -87,7 +94,43 @@ final class PreferencesManagerTest: XCTestCase {
     }
 }
 
-// MARK: - SharedPreferences
+// MARK: - App preferences
+extension PreferencesManagerTest {
+    func testCreateDefaultAppPreferences() async throws {
+        try await sut.setUp()
+        XCTAssertEqual(sut.appPreferences.value, AppPreferences.default)
+    }
+
+    func testReceiveEventWhenUpdatingAppPreferences() async throws {
+        // Given
+        try await sut.setUp()
+        let expectation = XCTestExpectation(description: "Should receive update event")
+        let newValue = Int.random(in: 1...100)
+        cancellable = sut.appPreferencesUpdates
+            .filter(\.createdItemsCount)
+            .sink { value in
+                if value == newValue {
+                    expectation.fulfill()
+                }
+            }
+
+        // When
+        try await sut.updateAppPreferences(\.createdItemsCount, value: newValue)
+
+        // Then
+        XCTAssertEqual(sut.appPreferences.value?.createdItemsCount, newValue)
+        await fulfillment(of: [expectation], timeout: 1)
+    }
+
+    func testRemoveAppPreferences() async throws {
+        try await sut.setUp()
+        await sut.removeAppPreferences()
+        let preferences = try appPreferencesDatasource.getPreferences()
+        XCTAssertNil(preferences)
+    }
+}
+
+// MARK: - Shared preferences
 extension PreferencesManagerTest {
     func testCreateDefaultSharedPreferences() async throws {
         try await sut.setUp()
@@ -123,7 +166,7 @@ extension PreferencesManagerTest {
     }
 }
 
-// MARK: - UserPreferences
+// MARK: - User's preferences
 extension PreferencesManagerTest {
     func testCreateDefaultUserPreferences() async throws {
         try await sut.setUp()
