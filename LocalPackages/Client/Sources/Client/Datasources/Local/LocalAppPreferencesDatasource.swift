@@ -28,6 +28,7 @@ import Foundation
 
 private let kAppPreferencesKey = "AppPreferences"
 
+/// Store `AppPreferences` as-is in `UserDefaults`
 public protocol LocalAppPreferencesDatasourceProtocol: Sendable {
     func getPreferences() throws -> AppPreferences?
     func upsertPreferences(_ preferences: AppPreferences) throws

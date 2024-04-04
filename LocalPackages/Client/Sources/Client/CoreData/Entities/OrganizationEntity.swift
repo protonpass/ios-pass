@@ -23,7 +23,7 @@ import CoreData
 import Entities
 
 @objc(OrganizationEntity)
-public final class OrganizationEntity: NSManagedObject {}
+final class OrganizationEntity: NSManagedObject {}
 
 extension OrganizationEntity: Identifiable {}
 
