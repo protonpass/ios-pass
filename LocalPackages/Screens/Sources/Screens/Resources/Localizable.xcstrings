@@ -3446,8 +3446,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "並べ替え"
           }
         },
         "ka" : {
@@ -3518,8 +3518,8 @@
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "Сортувати"
           }
         },
         "vi" : {
@@ -4078,7 +4078,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tanpa batasan alias surel"
+            "value" : "Tanpa batasan alias email"
           }
         },
         "it" : {
