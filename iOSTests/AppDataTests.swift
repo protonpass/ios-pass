@@ -61,7 +61,7 @@ final class AppDataTests: XCTestCase {
 
 extension AppDataTests {
     func testSeparatedCredentialsMigration() throws {
-
+        let keychain = keychainMockProvider.getKeychain()
         // Given
         let givenUserData = UserData.mock
         let data = try JSONEncoder().encode(givenUserData)
