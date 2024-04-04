@@ -22,7 +22,7 @@ import CoreData
 import Entities
 
 @objc(AccessEntity)
-public class AccessEntity: NSManagedObject {}
+final class AccessEntity: NSManagedObject {}
 
 extension AccessEntity: Identifiable {}
 

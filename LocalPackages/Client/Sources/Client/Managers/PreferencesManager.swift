@@ -37,11 +37,8 @@ public typealias AppPreferencesUpdate = PreferencesUpdate<AppPreferences>
 public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
-/// Manage app-wide preferences and current user's ones
+/// Manage all types of preferences: app-wide, shared between users and user's specific
 public protocol PreferencesManagerProtocol {
-    /// Load preferences or create with default values if not exist
-    func setUp() async throws
-
     // App preferences
     var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
     var appPreferencesUpdates: PassthroughSubject<AppPreferencesUpdate, Never> { get }
@@ -97,14 +94,8 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     }
 }
 
-private extension PreferencesManager {
-    func assertDidSetUp() -> Bool {
-        assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
-        return didSetUp
-    }
-}
-
 public extension PreferencesManager {
+    /// Load preferences or create with default values if not exist
     func setUp() async throws {
         // App preferences
         if let preferences = try appPreferencesDatasource.getPreferences() {
@@ -135,6 +126,10 @@ public extension PreferencesManager {
 
         didSetUp = true
     }
+
+    func assertDidSetUp() {
+        assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
+    }
 }
 
 // MARK: - App preferences
@@ -142,9 +137,9 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateAppPreferences<T: Sendable>(_ keyPath: WritableKeyPath<AppPreferences, T>,
                                            value: T) async throws {
-        guard assertDidSetUp(),
-              var preferences = appPreferences.value else {
-            return
+        assertDidSetUp()
+        guard var preferences = appPreferences.value else {
+            throw PassError.preferences(.appPreferencesNotInitialized)
         }
         preferences[keyPath: keyPath] = value
         try appPreferencesDatasource.upsertPreferences(preferences)
@@ -162,9 +157,9 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
                                               value: T) async throws {
-        guard assertDidSetUp(),
-              var preferences = sharedPreferences.value else {
-            return
+        assertDidSetUp()
+        guard var preferences = sharedPreferences.value else {
+            throw PassError.preferences(.sharedPreferencesNotInitialized)
         }
         preferences[keyPath: keyPath] = value
         try sharedPreferencesDatasource.upsertPreferences(preferences)
@@ -182,9 +177,9 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws {
-        guard assertDidSetUp(),
-              var preferences = userPreferences.value else {
-            return
+        assertDidSetUp()
+        guard var preferences = userPreferences.value else {
+            throw PassError.preferences(.userPreferencesNotInitialized)
         }
         preferences[keyPath: keyPath] = value
         try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
