@@ -32,13 +32,45 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// Spotlight indexable vaults
     public var spotlightSearchableVaults: SpotlightSearchableVaults
 
-    public static var `default`: Self { .init() }
-
-    public init(spotlightEnabled: Bool = false,
-                spotlightSearchableContent: SpotlightSearchableContent = .title,
-                spotlightSearchableVaults: SpotlightSearchableVaults = .all) {
+    public init(spotlightEnabled: Bool,
+                spotlightSearchableContent: SpotlightSearchableContent,
+                spotlightSearchableVaults: SpotlightSearchableVaults) {
         self.spotlightEnabled = spotlightEnabled
         self.spotlightSearchableContent = spotlightSearchableContent
         self.spotlightSearchableVaults = spotlightSearchableVaults
+    }
+}
+
+private extension UserPreferences {
+    enum Default {
+        static let spotlightEnabled = false
+        static let spotlightSearchableContent: SpotlightSearchableContent = .title
+        static let spotlightSearchableVaults: SpotlightSearchableVaults = .all
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case spotlightEnabled
+        case spotlightSearchableContent
+        case spotlightSearchableVaults
+    }
+}
+
+public extension UserPreferences {
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let spotlightEnabled = try container.decodeIfPresent(Bool.self, forKey: .spotlightEnabled)
+        let spotlightSearchableContent = try container.decodeIfPresent(SpotlightSearchableContent.self,
+                                                                       forKey: .spotlightSearchableContent)
+        let spotlightSearchableVaults = try container.decodeIfPresent(SpotlightSearchableVaults.self,
+                                                                      forKey: .spotlightSearchableVaults)
+        self.init(spotlightEnabled: spotlightEnabled ?? Default.spotlightEnabled,
+                  spotlightSearchableContent: spotlightSearchableContent ?? Default.spotlightSearchableContent,
+                  spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults)
+    }
+
+    static var `default`: Self {
+        .init(spotlightEnabled: Default.spotlightEnabled,
+              spotlightSearchableContent: Default.spotlightSearchableContent,
+              spotlightSearchableVaults: Default.spotlightSearchableVaults)
     }
 }

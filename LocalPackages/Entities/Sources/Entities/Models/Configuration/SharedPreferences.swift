@@ -59,20 +59,18 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
     /// Share clipboard's content to devices logged in with same Apple ID
     public var shareClipboard: Bool
 
-    public static var `default`: Self { .init() }
-
-    public init(quickTypeBar: Bool = true,
-                automaticallyCopyTotpCode: Bool = true,
-                theme: Theme = .dark,
-                browser: Browser = .systemDefault,
-                displayFavIcons: Bool = true,
-                failedAttemptCount: Int = 0,
-                localAuthenticationMethod: LocalAuthenticationMethod = .none,
-                pinCode: String? = nil,
-                fallbackToPasscode: Bool = true,
-                appLockTime: AppLockTime = .twoMinutes,
-                clipboardExpiration: ClipboardExpiration = .twoMinutes,
-                shareClipboard: Bool = false) {
+    public init(quickTypeBar: Bool,
+                automaticallyCopyTotpCode: Bool,
+                theme: Theme,
+                browser: Browser,
+                displayFavIcons: Bool,
+                failedAttemptCount: Int,
+                localAuthenticationMethod: LocalAuthenticationMethod,
+                pinCode: String?,
+                fallbackToPasscode: Bool,
+                appLockTime: AppLockTime,
+                clipboardExpiration: ClipboardExpiration,
+                shareClipboard: Bool) {
         self.quickTypeBar = quickTypeBar
         self.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         self.theme = theme
@@ -85,5 +83,87 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
         self.appLockTime = appLockTime
         self.clipboardExpiration = clipboardExpiration
         self.shareClipboard = shareClipboard
+    }
+}
+
+private extension SharedPreferences {
+    enum Default {
+        static let quickTypeBar = true
+        static let automaticallyCopyTotpCode = true
+        static let theme: Theme = .dark
+        static let browser: Browser = .systemDefault
+        static let displayFavIcons = true
+        static let failedAttemptCount = 0
+        static let localAuthenticationMethod: LocalAuthenticationMethod = .none
+        static let pinCode: String? = nil
+        static let fallbackToPasscode = true
+        static let appLockTime: AppLockTime = .twoMinutes
+        static let clipboardExpiration: ClipboardExpiration = .twoMinutes
+        static let shareClipboard = false
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case quickTypeBar
+        case automaticallyCopyTotpCode
+        case theme
+        case browser
+        case displayFavIcons
+        case failedAttemptCount
+        case localAuthenticationMethod
+        case pinCode
+        case fallbackToPasscode
+        case appLockTime
+        case clipboardExpiration
+        case shareClipboard
+    }
+}
+
+public extension SharedPreferences {
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let quickTypeBar = try container.decodeIfPresent(Bool.self, forKey: .quickTypeBar)
+        let automaticallyCopyTotpCode = try container.decodeIfPresent(Bool.self,
+                                                                      forKey: .automaticallyCopyTotpCode)
+        let theme = try container.decodeIfPresent(Theme.self, forKey: .theme)
+        let browser = try container.decodeIfPresent(Browser.self, forKey: .browser)
+        let displayFavIcons = try container.decodeIfPresent(Bool.self, forKey: .displayFavIcons)
+        let failedAttemptCount = try container.decodeIfPresent(Int.self, forKey: .failedAttemptCount)
+        let localAuthenticationMethod = try container.decodeIfPresent(LocalAuthenticationMethod.self,
+                                                                      forKey: .localAuthenticationMethod)
+        let pinCode = try container.decodeIfPresent(String.self, forKey: .pinCode)
+        let fallbackToPasscode = try container.decodeIfPresent(Bool.self, forKey: .fallbackToPasscode)
+        let appLockTime = try container.decodeIfPresent(AppLockTime.self, forKey: .appLockTime)
+        let clipboardExpiration = try container.decodeIfPresent(ClipboardExpiration.self,
+                                                                forKey: .clipboardExpiration)
+        let shareClipboard = try container.decodeIfPresent(Bool.self, forKey: .shareClipboard)
+        self.init(quickTypeBar: quickTypeBar ?? Default.quickTypeBar,
+                  automaticallyCopyTotpCode: automaticallyCopyTotpCode ?? Default.automaticallyCopyTotpCode,
+                  theme: theme ?? Default.theme,
+                  browser: browser ?? Default.browser,
+                  displayFavIcons: displayFavIcons ?? Default.displayFavIcons,
+                  failedAttemptCount: failedAttemptCount ?? Default.failedAttemptCount,
+                  localAuthenticationMethod: localAuthenticationMethod ?? Default.localAuthenticationMethod,
+                  pinCode: pinCode ?? Default.pinCode,
+                  fallbackToPasscode: fallbackToPasscode ?? Default.fallbackToPasscode,
+                  appLockTime: appLockTime ?? Default.appLockTime,
+                  clipboardExpiration: clipboardExpiration ?? Default.clipboardExpiration,
+                  shareClipboard: shareClipboard ?? Default.shareClipboard)
+    }
+}
+
+public extension SharedPreferences {
+    static var `default`: Self {
+        .init(quickTypeBar: Default.quickTypeBar,
+              automaticallyCopyTotpCode: Default.automaticallyCopyTotpCode,
+              theme: Default.theme,
+              browser: Default.browser,
+              displayFavIcons: Default.displayFavIcons,
+              failedAttemptCount: Default.failedAttemptCount,
+              localAuthenticationMethod: Default.localAuthenticationMethod,
+              pinCode: Default.pinCode,
+              fallbackToPasscode: Default.fallbackToPasscode,
+              appLockTime: Default.appLockTime,
+              clipboardExpiration: Default.clipboardExpiration,
+              shareClipboard: Default.shareClipboard)
     }
 }
