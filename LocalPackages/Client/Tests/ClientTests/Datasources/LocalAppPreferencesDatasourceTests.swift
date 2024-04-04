@@ -29,7 +29,11 @@ final class LocalAppPreferencesDatasourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = LocalAppPreferencesDatasource(userDefault: .standard)
+        let userDefaults = UserDefaults.standard
+        for key in userDefaults.dictionaryRepresentation().keys {
+            userDefaults.removeObject(forKey: key)
+        }
+        sut = LocalAppPreferencesDatasource(userDefault: userDefaults)
     }
 
     override func tearDown() {
