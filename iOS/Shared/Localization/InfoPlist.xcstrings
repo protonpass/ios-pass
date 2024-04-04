@@ -95,15 +95,15 @@
             "value" : "Proton Pass"
           }
         },
-        "nl" : {
+        "nb" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Proton Pass"
           }
         },
-        "no" : {
+        "nl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "new",
             "value" : "Proton Pass"
           }
         },
@@ -257,16 +257,16 @@
             "value" : "2FA 코드, 신용카드, 직접 작성한 메모 스캔"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skann 2FA-kode, kredittkort og håndskrevet notat"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scan 2FA-code, kredietkaart en handgeschreven notitie"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skann 2FA-kode, kredittkort og håndskrevet notat"
           }
         },
         "pl" : {
@@ -308,13 +308,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA kodunu, kredi kartını ve elle yazılmış notu tarayın"
+            "value" : "İki adımlı doğrulama kodunu, kredi kartını ve elle yazılmış notu tarayın"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan 2FA code, credit card and hand-written note"
+            "state" : "translated",
+            "value" : "Сканувати код 2ЕП, кредитну картку та рукописну нотатку"
           }
         },
         "vi" : {
@@ -419,16 +419,16 @@
             "value" : "이 기기에서 원치 않는 사용자의 Proton Pass 계정 접근을 제한하세요"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begrens uønsket tilgang til Proton Pass-kontoen din på denne enheten"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beperk ongewenste toegang tot uw Proton Pass account op dit apparaat"
-          }
-        },
-        "no" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Begrens uønsket tilgang til Proton Pass-kontoen din på denne enheten"
           }
         },
         "pl" : {
@@ -470,13 +470,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu cihazda Proton Pass hesabınıza istenmeyen erişimi kısıtlayın"
+            "value" : "Bu aygıttan Proton Pass hesabınıza istenmeyen erişimi kısıtlayın"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Restrict unwelcome access to your Proton Pass account on this device"
+            "state" : "translated",
+            "value" : "Обмежте небажаний доступ до вашого облікового запису Proton Pass на цьому пристрої"
           }
         },
         "vi" : {
