@@ -30,19 +30,19 @@ import ProtonCoreServices
 import XCTest
 
 final class PassMonitorRepositoryTests: XCTestCase {
-    var symmetricKeyProvider: SymmetricKeyProviderMock!
+    var symmetricKeyMockProvider: SymmetricKeyProviderMockProvider!
     var itemRepository: ItemRepositoryProtocolMock!
     var sut: PassMonitorRepositoryProtocol!
-    let symmetricKey = SymmetricKey.random()
-    
+
     override func setUp() {
         super.setUp()
-        symmetricKeyProvider = SymmetricKeyProviderMock()
-        symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
+        symmetricKeyMockProvider = .init()
+        symmetricKeyMockProvider.setUp()
         itemRepository = ItemRepositoryProtocolMock()
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
-        sut = PassMonitorRepository(itemRepository: itemRepository, symmetricKeyProvider: symmetricKeyProvider)
+        sut = PassMonitorRepository(itemRepository: itemRepository, 
+                                    symmetricKeyProvider: symmetricKeyMockProvider.getProvider())
     }
 
     override func tearDown() {
@@ -52,7 +52,8 @@ final class PassMonitorRepositoryTests: XCTestCase {
     
     func createEncryptedLoginItems(weakness: [SecurityWeakness], addStrong: Bool = true) -> [SymmetricallyEncryptedItem] {
         var items = [SymmetricallyEncryptedItem]()
-        
+        let key = symmetricKeyMockProvider.key
+
         for weakness in weakness {
             switch weakness {
             case .reusedPasswords:
@@ -63,8 +64,8 @@ final class PassMonitorRepositoryTests: XCTestCase {
                                                                                         data: .login(loginData),
                                                                                         customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
-                                                               encryptedContent: try! reused1Login.encrypt(symmetricKey: symmetricKey)))
-                
+                                                               encryptedContent: try! reused1Login.encrypt(symmetricKey: key)))
+
             case .weakPasswords:
                 let loginData = LogInItemData.mock(username: "test", password: "aaaaa")
                 let weakpassLogin = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
@@ -73,7 +74,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
                                                                                          data: .login(loginData),
                                                                                          customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
-                                                               encryptedContent: try! weakpassLogin.encrypt(symmetricKey: symmetricKey)))
+                                                               encryptedContent: try! weakpassLogin.encrypt(symmetricKey: key)))
             case .excludedItems:
                 let loginData = LogInItemData.mock(totpUri: "", urls: ["google.com"])
                 let nonMonitorLogin = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
@@ -82,7 +83,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
                                                                                            data: .login(loginData),
                                                                                            customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.notMonitoredMock,
-                                                               encryptedContent: try! nonMonitorLogin.encrypt(symmetricKey: symmetricKey)))
+                                                               encryptedContent: try! nonMonitorLogin.encrypt(symmetricKey: key)))
             case .missing2FA:
                 let loginData = LogInItemData.mock(username: "test", password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdf", totpUri: "", urls: ["google.com"])
                 let no2FALogin = ItemContentProtobufFactory.createItemContentProtobuf(name: "Example Login",
@@ -91,7 +92,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
                                                                                       data: .login(loginData),
                                                                                       customFields: [])
                 items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
-                                                               encryptedContent: try! no2FALogin.encrypt(symmetricKey: symmetricKey)))
+                                                               encryptedContent: try! no2FALogin.encrypt(symmetricKey: key)))
             default:
                 continue
             }
@@ -105,7 +106,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
                                                                                        data: .login(loginData),
                                                                                        customFields: [])
             items.append(SymmetricallyEncryptedItem.random(item: Item.monitoredMock,
-                                                           encryptedContent: try! noWeaknessLogin.encrypt(symmetricKey: symmetricKey)))
+                                                           encryptedContent: try! noWeaknessLogin.encrypt(symmetricKey: key)))
         }
         
         return items
@@ -158,10 +159,11 @@ final class PassMonitorRepositoryTests: XCTestCase {
         let items = createEncryptedLoginItems(weakness: [.reusedPasswords, .reusedPasswords], addStrong: false)
         let item = items.first!
         itemRepository.stubbedGetActiveLogInItemsResult = items
-        
-        let reusedItems = try await sut.getItemsWithSamePassword(item: item.getItemContent(symmetricKey: symmetricKey))
+        let key = symmetricKeyMockProvider.key
+
+        let reusedItems = try await sut.getItemsWithSamePassword(item: item.getItemContent(symmetricKey: key))
         XCTAssertEqual(reusedItems.count, 1)
-        XCTAssertEqual(reusedItems.first!, try! items.last!.getItemContent(symmetricKey: symmetricKey))
+        XCTAssertEqual(reusedItems.first!, try! items.last!.getItemContent(symmetricKey: key))
     }
 }
 
@@ -174,5 +176,3 @@ extension Item {
         .random(flags: 1)
     }
 }
-
-

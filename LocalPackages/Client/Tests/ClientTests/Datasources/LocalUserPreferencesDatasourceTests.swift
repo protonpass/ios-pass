@@ -28,20 +28,19 @@ import XCTest
 
 final class LocalUserPreferencesDatasourceTests: XCTestCase {
     let symmetricKey = SymmetricKey.random()
-    var symmetricKeyProvider: SymmetricKeyProvider!
+    var symmetricKeyMockProvider: SymmetricKeyProviderMockProvider!
     var sut: LocalUserPreferencesDatasource!
 
     override func setUp() {
         super.setUp()
-        let symmetricKeyProvider = SymmetricKeyProviderMock()
-        symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
-        self.symmetricKeyProvider = symmetricKeyProvider
-        sut = LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
+        symmetricKeyMockProvider = .init()
+        symmetricKeyMockProvider.setUp()
+        sut = LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyMockProvider.getProvider(),
                                              databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {
-        symmetricKeyProvider = nil
+        symmetricKeyMockProvider = nil
         sut = nil
         super.tearDown()
     }
