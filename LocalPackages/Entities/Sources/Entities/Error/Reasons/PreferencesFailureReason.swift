@@ -1,6 +1,6 @@
 //
-// SpotlightVaultEntity.swift
-// Proton Pass - Created on 31/01/2024.
+// PreferencesFailureReason.swift
+// Proton Pass - Created on 04/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,19 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import CoreData
+import Foundation
 
-@objc(SpotlightVaultEntity)
-final class SpotlightVaultEntity: NSManagedObject {}
+public extension PassError {
+    enum PreferencesFailureReason: CustomDebugStringConvertible, LocalizedError, Equatable {
+        case appPreferencesNotInitialized
+        case sharedPreferencesNotInitialized
+        case userPreferencesNotInitialized
 
-extension SpotlightVaultEntity: Identifiable {}
-
-extension SpotlightVaultEntity {
-    @nonobjc
-    class func fetchRequest() -> NSFetchRequest<SpotlightVaultEntity> {
-        NSFetchRequest<SpotlightVaultEntity>(entityName: "SpotlightVaultEntity")
+        public var debugDescription: String {
+            switch self {
+            case .appPreferencesNotInitialized:
+                "AppPreferences not initialized"
+            case .sharedPreferencesNotInitialized:
+                "SharedPreferences not initialized"
+            case .userPreferencesNotInitialized:
+                "UserPreferences not initialized"
+            }
+        }
     }
-
-    @NSManaged var userID: String
-    @NSManaged var shareID: String
 }
