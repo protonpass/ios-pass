@@ -632,12 +632,6 @@
             "state" : "translated",
             "value" : "Сталася помилка"
           }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Error occured"
-          }
         }
       }
     },
@@ -1129,12 +1123,6 @@
             "value" : "У гэтым элеменце адбыліся змены. Вяртанне на папярэднюю старонку."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Some changes happened to this item, heading back to the previous page."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1265,18 +1253,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu ögede bazı değişiklikler yapılmış. Önceki sayfaya dönülüyor."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Some changes happened to this item, heading back to the previous page."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Some changes happened to this item, heading back to the previous page."
           }
         }
       }
@@ -1425,18 +1401,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu öge eskimiş"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This item is obsolete"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This item is obsolete"
           }
         }
       }
