@@ -29,45 +29,24 @@ import Foundation
 import XCTest
 
 final class LocalSharedPreferencesDatasourceTests: XCTestCase {
-    var keychainData: [String: Data] = [:]
-    var keychain: KeychainProtocolMock!
+    var keychainMockProvider: KeychainProtocolMockProvider!
     var symmetricKey = SymmetricKey.random()
     var symmetricKeyProvider: SymmetricKeyProvider!
     var sut: LocalSharedPreferencesDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
-        keychain = KeychainProtocolMock()
-
-        keychain.closureSetOrErrorDataKeyAttributes3 = {
-            if let data = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.0,
-               let key = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.1 {
-                self.keychainData[key] = data
-            }
-        }
-
-        keychain.closureDataOrError = {
-            if let key = self.keychain.invokedDataOrErrorParameters?.0 {
-                self.keychain.stubbedDataOrErrorResult = self.keychainData[key]
-            }
-        }
-
-        keychain.closureRemoveOrError = {
-            if let key = self.keychain.invokedRemoveOrErrorParameters?.0 {
-                self.keychainData[key] = nil
-            }
-        }
-
+        keychainMockProvider = .init()
+        keychainMockProvider.setUp()
         let symmetricKeyProvider = SymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
         self.symmetricKeyProvider = symmetricKeyProvider
         sut = LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
-                                               keychain: keychain)
+                                               keychain: keychainMockProvider.getKeychain())
     }
 
     override func tearDown() {
-        keychainData = [:]
-        keychain = nil
+        keychainMockProvider = nil
         symmetricKeyProvider = nil
         symmetricKey = .random()
         sut = nil
