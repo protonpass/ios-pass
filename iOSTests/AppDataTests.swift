@@ -27,34 +27,15 @@ import ProtonCoreNetworking
 import XCTest
 
 final class AppDataTests: XCTestCase {
-    var keychainData: [String: Data] = [:]
-    var keychain: KeychainProtocolMock!
+    var keychainMockProvider: KeychainProtocolMockProvider!
     var mainKeyProvider: MainKeyProviderMock!
     var migrationStateProvider: CredentialsMigrationStateProviderMock!
     var sut: AppData!
 
     override func setUp() {
         super.setUp()
-        keychain = KeychainProtocolMock()
-
-        keychain.closureSetOrErrorDataKeyAttributes3 = {
-            if let data = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.0,
-               let key = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.1 {
-                self.keychainData[key] = data
-            }
-        }
-
-        keychain.closureDataOrError = {
-            if let key = self.keychain.invokedDataOrErrorParameters?.0 {
-                self.keychain.stubbedDataOrErrorResult = self.keychainData[key]
-            }
-        }
-
-        keychain.closureRemoveOrError = {
-            if let key = self.keychain.invokedRemoveOrErrorParameters?.0 {
-                self.keychainData[key] = nil
-            }
-        }
+        keychainMockProvider = .init()
+        keychainMockProvider.setUp()
 
         mainKeyProvider = MainKeyProviderMock()
         mainKeyProvider.mainKeyStub.fixture = Array(repeating: .zero, count: 32)
@@ -64,13 +45,13 @@ final class AppDataTests: XCTestCase {
         migrationStateProviderMock.stubbedShouldMigrateCredentialsToShareExtensionResult = false
         migrationStateProvider = migrationStateProviderMock
         Scope.singleton.reset()
-        SharedToolingContainer.shared.keychain.register { self.keychain }
+        SharedToolingContainer.shared.keychain.register { self.keychainMockProvider.getKeychain() }
         SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
         sut = AppData(module: .hostApp, migrationStateProvider: migrationStateProvider)
     }
 
     override func tearDown() {
-        keychain = nil
+        keychainMockProvider = nil
         mainKeyProvider = nil
         migrationStateProvider = nil
         sut = nil
