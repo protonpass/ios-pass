@@ -29,8 +29,7 @@ import ClientMocks
 
 final class PreferencesManagerTest: XCTestCase {
     var keychainMockProvider: KeychainProtocolMockProvider!
-    let symmetricKey = SymmetricKey.random()
-    var symmetricKeyProvider: SymmetricKeyProviderMock!
+    var symmetricKeyMockProvider: SymmetricKeyProviderMockProvider!
     var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocol!
     var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
     var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
@@ -43,17 +42,17 @@ final class PreferencesManagerTest: XCTestCase {
         keychainMockProvider = .init()
         keychainMockProvider.setUp()
 
-        symmetricKeyProvider = SymmetricKeyProviderMock()
-        symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
+        symmetricKeyMockProvider = .init()
+        symmetricKeyMockProvider.setUp()
 
         appPreferencesDatasource = LocalAppPreferencesDatasource(userDefault: .standard)
 
         sharedPreferencesDatasource =
-        LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
+        LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyMockProvider.getProvider(),
                                          keychain: keychainMockProvider.getKeychain())
 
         userPreferencesDatasource =
-        LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
+        LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyMockProvider.getProvider(),
                                        databaseService: DatabaseService(inMemory: true))
 
         userId = .random()
@@ -65,7 +64,7 @@ final class PreferencesManagerTest: XCTestCase {
 
     override func tearDown() {
         keychainMockProvider = nil
-        symmetricKeyProvider = nil
+        symmetricKeyMockProvider = nil
         userPreferencesDatasource = nil
         sharedPreferencesDatasource = nil
         userId = nil
