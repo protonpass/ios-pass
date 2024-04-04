@@ -28,8 +28,7 @@ import XCTest
 import ClientMocks
 
 final class PreferencesManagerTest: XCTestCase {
-    var keychainData: [String: Data] = [:]
-    var keychain: KeychainProtocolMock!
+    var keychainMockProvider: KeychainProtocolMockProvider!
     let symmetricKey = SymmetricKey.random()
     var symmetricKeyProvider: SymmetricKeyProviderMock!
     var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocol!
@@ -41,26 +40,8 @@ final class PreferencesManagerTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        keychain = KeychainProtocolMock()
-
-        keychain.closureSetOrErrorDataKeyAttributes3 = {
-            if let data = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.0,
-               let key = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.1 {
-                self.keychainData[key] = data
-            }
-        }
-
-        keychain.closureDataOrError = {
-            if let key = self.keychain.invokedDataOrErrorParameters?.0 {
-                self.keychain.stubbedDataOrErrorResult = self.keychainData[key]
-            }
-        }
-
-        keychain.closureRemoveOrError = {
-            if let key = self.keychain.invokedRemoveOrErrorParameters?.0 {
-                self.keychainData[key] = nil
-            }
-        }
+        keychainMockProvider = .init()
+        keychainMockProvider.setUp()
 
         symmetricKeyProvider = SymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = symmetricKey
@@ -69,7 +50,7 @@ final class PreferencesManagerTest: XCTestCase {
 
         sharedPreferencesDatasource =
         LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
-                                         keychain: keychain)
+                                         keychain: keychainMockProvider.getKeychain())
 
         userPreferencesDatasource =
         LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProvider,
@@ -83,7 +64,7 @@ final class PreferencesManagerTest: XCTestCase {
     }
 
     override func tearDown() {
-        keychain = nil
+        keychainMockProvider = nil
         symmetricKeyProvider = nil
         userPreferencesDatasource = nil
         sharedPreferencesDatasource = nil
