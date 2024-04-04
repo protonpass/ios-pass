@@ -238,7 +238,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自動入力拡張機能ログ"
+            "value" : "自動入力拡張機能のログ"
           }
         },
         "ka" : {
@@ -772,7 +772,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V REDU"
+            "value" : "V redu"
           }
         },
         "sv" : {
@@ -1038,7 +1038,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ で検索..."
+            "value" : "%@ 内を検索..."
           }
         },
         "ka" : {

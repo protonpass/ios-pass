@@ -932,7 +932,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V REDU"
+            "value" : "V redu"
           }
         },
         "sv" : {
@@ -1518,7 +1518,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "未保存の変更があります。それらを破棄してもよろしいですか?"
+            "value" : "未保存の変更があります。破棄してよろしいですか？"
           }
         },
         "ka" : {
