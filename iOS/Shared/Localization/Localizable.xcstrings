@@ -9039,7 +9039,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tambahkan nama pengguna atau alamat surel"
+            "value" : "Tambahkan nama pengguna atau alamat email"
           }
         },
         "it" : {
@@ -11053,7 +11053,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" akan berhenti meneruskan surel ke kotak masuk Anda"
+            "value" : "Alias \"%@\" akan berhenti meneruskan email ke kotak masuk Anda"
           }
         },
         "it" : {
@@ -11232,7 +11232,7 @@
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ფსევდონიმს ქმედების მენიუ"
+            "value" : "ფსევდონიმის ქმედების მენიუ"
           }
         },
         "ko" : {
@@ -11292,7 +11292,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Takma ad eylem menüsü"
+            "value" : "Takma ad işlem menüsü"
           }
         },
         "uk" : {
@@ -13356,7 +13356,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Všetky okrem citlivých údajov"
+            "value" : "Všetko okrem citlivých údajov"
           }
         },
         "sl" : {
@@ -15383,7 +15383,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autenticatore"
+            "value" : "Autenticazione"
           }
         },
         "ja" : {
@@ -15448,14 +15448,14 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Authenticator"
+            "state" : "translated",
+            "value" : "Autentiserare"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kimlik doğrulayıcısı"
+            "value" : "Kimlik doğrulayıcı"
           }
         },
         "uk" : {
@@ -15870,7 +15870,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロトンパスの自動入力を有効にすることで、アプリやウェブサイトで自動入力が可能です。"
+            "value" : "Proton Pass の自動入力を有効にすることで、アプリやウェブサイトで自動入力が可能です"
           }
         },
         "ka" : {
@@ -15955,9 +15955,159 @@
     },
     "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для аўтаматычнага капіявання кода 2ФА, вам неабходна біяметрычная блакіроўка або наладжванне PIN-кода"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisk kopi af 2FA-koden kræver opsætning af biometrisk lås eller pinkode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το αυτόματο αντίγραφο του κωδικού 2FA απαιτεί τη ρύθμιση βιομετρικού κλειδώματος ή κωδικού PIN"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia automática del código 2FA requiere que se configure el bloqueo biométrico o el código PIN."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia automática del código 2FA requiere que se configure el bloqueo biométrico o el código PIN."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA-koodin automaattinen kopiointi vaatii biometrisen lukituksen tai PIN-koodin määrittämistä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copie automatique du code A2F nécessite la configuration du verrouillage biométrique ou du code PIN."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salinan otomatis kode 2FA memerlukan kunci biometrik atau kode PIN untuk dipasang terlebih dahulu"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia automatica del codice 2FA richiede l'impostazione del codice PIN o del blocco biometrico"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA კოდის ავტომატური ასლი მოითხოვს ბიომეტრიული საკეტის ან PIN კოდის დაყენებას"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA 코드 자동 복사를 설정하려면 생체 인증 및 PIN 코드가 필요합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisk kopi av 2FA-koden krever biometrisk lås eller PIN-kode for å være satt opp"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische kopie van de 2FA-code vereist dat de biometrische vergrendeling of pincode wordt ingesteld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatyczne kopiowanie kodu uwierzytelniającego wymaga ustawienia blokady za pomocą biometrii lub kodu PIN"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cópia automática do código 2FA requer bloqueio biométrico ou código PIN a ser configurado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copierea automată a codului de A2F necesită configurarea pentru blocarea biometrică sau codul PIN"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatická kópia 2FA kódu na vytvorenie vyžaduje biometrický zámok alebo PIN kód"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za samodejno kopiranje kode 2FA je treba nastaviti biometrično zaklepanje ali kodo PIN"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İki adımlı doğrulama kodunun otomatik olarak kopyalanması için biyometrik kilit ya da PIN kodu ayarlanmış olmalıdır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
             "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
           }
         }
@@ -16040,7 +16190,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "オートロック"
+            "value" : "自動ロック"
           }
         },
         "ka" : {
@@ -17483,7 +17633,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "大文字にする"
+            "value" : "先頭を大文字にする"
           }
         },
         "ka" : {
@@ -18112,7 +18262,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nama pemilik kartu"
+            "value" : "Nama pemegang kartu"
           }
         },
         "it" : {
@@ -18124,7 +18274,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カードの名義人名"
+            "value" : "カード名義人"
           }
         },
         "ka" : {
@@ -21796,7 +21946,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salin nama pemilik kartu"
+            "value" : "Salin nama pemegang kartu"
           }
         },
         "it" : {
@@ -27882,7 +28032,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unduh semua item Anda lagi supaya Anda tersinkron"
+            "value" : "Unduh kembali seluruh item Anda untuk memastikan agar Anda tersinkron"
           }
         },
         "it" : {
@@ -29167,7 +29317,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alamat surel"
+            "value" : "Alamat email"
           }
         },
         "it" : {
@@ -32862,7 +33012,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "顔認証が有効になっている"
+            "value" : "Face ID が有効になりました"
           }
         },
         "ka" : {
@@ -34933,7 +35083,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dapatkan alamat surel samaran untuk digunakan pada aplikasi baru"
+            "value" : "Dapatkan alamat email samaran untuk digunakan pada aplikasi baru"
           }
         },
         "it" : {
@@ -36933,7 +37083,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pin gizle"
+            "value" : "Pin kodunu gizle"
           }
         },
         "uk" : {
@@ -37816,7 +37966,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saya ingin melaporkan masalah tentang..."
+            "value" : "Saya ingin melaporkan masalah dengan..."
           }
         },
         "it" : {
@@ -37916,7 +38066,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адразу"
+            "value" : "Неадкладна"
           }
         },
         "cs" : {
@@ -38936,7 +39086,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alamat surel tidak valid"
+            "value" : "Alamat email tidak valid"
           }
         },
         "it" : {
@@ -39109,7 +39259,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無効な接頭辞"
+            "value" : "無効なプレフィックスです"
           }
         },
         "ka" : {
@@ -39269,7 +39419,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無効な TOTP URI"
+            "value" : "無効な TOTP URI です"
           }
         },
         "ka" : {
@@ -40718,7 +40868,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menu azioni dell'elemento"
+            "value" : "Menu azioni elemento"
           }
         },
         "ja" : {
@@ -40777,8 +40927,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Item's action Menu"
+            "state" : "translated",
+            "value" : "Meni za dejanja predmetov"
           }
         },
         "sv" : {
@@ -40790,7 +40940,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğenin eylem Menüsü"
+            "value" : "Ögenin işlem menüsü"
           }
         },
         "uk" : {
@@ -41097,8 +41247,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filter Menus"
+            "state" : "translated",
+            "value" : "Meni za filtriranje predmetov"
           }
         },
         "sv" : {
@@ -41110,7 +41260,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğeler filtre Menüleri"
+            "value" : "Ögeleri süzme menüleri"
           }
         },
         "uk" : {
@@ -41258,8 +41408,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filtering and sort menu"
+            "state" : "translated",
+            "value" : "Meni za filtriranje in urejanje predmetov"
           }
         },
         "sv" : {
@@ -41271,7 +41421,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğeleri filtreleme ve sıralama menüsü"
+            "value" : "Ögeleri süzme ve sıralama menüsü"
           }
         },
         "uk" : {
@@ -43127,7 +43277,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最終更新"
+            "value" : "最終更新日時"
           }
         },
         "ka" : {
@@ -44405,7 +44555,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login"
+            "value" : "Entri masuk"
           }
         },
         "it" : {
@@ -44566,7 +44716,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entri masuk dihasilkan"
+            "value" : "Entri masuk dibuat"
           }
         },
         "it" : {
@@ -49595,7 +49745,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bez odomykania"
+            "value" : "Bez zámku"
           }
         },
         "sl" : {
@@ -51467,7 +51617,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "必要なときだけプロトン パスのロックを解除できるようになりました⏤迅速かつ安全に"
+            "value" : "必要な時に、迅速かつ安全に Proton Pass のロックを解除できるようになりました"
           }
         },
         "ka" : {
@@ -52001,7 +52151,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V REDU"
+            "value" : "V redu"
           }
         },
         "sv" : {
@@ -53922,8 +54072,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Monitor"
+            "state" : "translated",
+            "value" : "Nadzor nad Proton Pass"
           }
         },
         "sv" : {
@@ -53935,7 +54085,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass İzleyicisi"
+            "value" : "Pass izleyicisi"
           }
         },
         "uk" : {
@@ -57598,7 +57748,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix"
+            "value" : "プレフィックス"
           }
         },
         "ka" : {
@@ -59028,7 +59178,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pilih entri masuk secara cepat dari saran yang tersedia di atas keyboard"
+            "value" : "Pilih item entri masuk secara cepat dari saran yang tertera di atas keyboard"
           }
         },
         "it" : {
@@ -59188,7 +59338,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saran bilah QuickType?"
+            "value" : "Saran bilah QuickType"
           }
         },
         "it" : {
@@ -59674,7 +59824,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rigenera la password"
+            "value" : "Genera nuovamente la password"
           }
         },
         "ja" : {
@@ -62691,25 +62841,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld razy"
+                  "value" : "Użyte %lld razy"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld razy"
+                  "value" : "Użyte %lld razy"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld raz"
+                  "value" : "Użyte %lld raz"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld razy"
+                  "value" : "Użyte %lld razy"
                 }
               }
             }
@@ -63759,7 +63909,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Analyse %@"
+            "value" : "Analyser %@"
           }
         },
         "id" : {
@@ -63843,7 +63993,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tara %@"
+            "value" : "%@ tara"
           }
         },
         "uk" : {
@@ -66231,7 +66381,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vybrať Obsah"
+            "value" : "Vybrať obsah"
           }
         },
         "sl" : {
@@ -66362,7 +66512,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Velg gjenstander"
+            "value" : "Velg elementer"
           }
         },
         "nl" : {
@@ -66819,7 +66969,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invia una segnalazione di errori"
+            "value" : "Invia segnalazione di errore"
           }
         },
         "ja" : {
@@ -66891,7 +67041,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hata raporu gönder"
+            "value" : "Hata bildirimi gönder"
           }
         },
         "uk" : {
@@ -68417,7 +68567,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bagikan papan klip antara perangkat"
+            "value" : "Bagikan papan klip antar perangkat"
           }
         },
         "it" : {
@@ -69619,7 +69769,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Göster %@ kasa"
+            "value" : "%@ kasasını görüntüle"
           }
         },
         "uk" : {
@@ -69779,7 +69929,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tüm kasaları göster"
+            "value" : "Tüm kasaları görüntüle"
           }
         },
         "uk" : {
@@ -69939,7 +70089,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kart numarasını göster"
+            "value" : "Kart numarasını görüntüle"
           }
         },
         "uk" : {
@@ -70259,7 +70409,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Özel alanı göster"
+            "value" : "Özel alanı görüntüle"
           }
         },
         "uk" : {
@@ -70739,7 +70889,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parolayı göster"
+            "value" : "Parolayı görüntüle"
           }
         },
         "uk" : {
@@ -70899,7 +71049,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pin göster"
+            "value" : "Pin kodunu görüntüle"
           }
         },
         "uk" : {
@@ -71059,7 +71209,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Güvenlik kodunu göster"
+            "value" : "Güvenlik kodunu görüntüle"
           }
         },
         "uk" : {
@@ -71219,7 +71369,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Çöp kutusunu göster"
+            "value" : "Çöp kutusunu görüntüle"
           }
         },
         "uk" : {
@@ -71633,8 +71783,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "並べ替え"
           }
         },
         "ka" : {
@@ -71705,8 +71855,8 @@
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "Сортувати"
           }
         },
         "vi" : {
@@ -72262,7 +72412,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mulai menggunakan Proton Pass"
+            "value" : "Mulai gunakan Proton Pass"
           }
         },
         "it" : {
@@ -72274,7 +72424,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Passの使用開始"
+            "value" : "Proton Pass を使用開始"
           }
         },
         "ka" : {
@@ -72422,7 +72572,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Berhenti membagikan alamat surel asli Anda. Sebaliknya, sembunyikan dengan alias surel⏤sebuah fitur eksklusif dalam Proton Pass."
+            "value" : "Berhenti membagikan alamat email asli Anda. Sebaliknya, sembunyikan dengan alias email⏤sebuah fitur eksklusif dalam Proton Pass."
           }
         },
         "it" : {
@@ -75725,165 +75875,165 @@
       }
     },
     "This account is vulnerable, visit the service and change your password" : {
-       "localizations" : {
-         "be" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Гэты ўліковы запіс з'яўляецца ўразлівым. Наведайце сэрвіс і змяніце пароль"
-           }
-         },
-         "cs" : {
-           "stringUnit" : {
-             "state" : "new",
-             "value" : "This account is vulnerable, visit the service and change your password"
-           }
-         },
-         "da" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Denne konto er sårbar, besøg tjenesten og skift din adgangskode"
-           }
-         },
-         "de" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Dieses Konto ist angreifbar, besuche den Dienst und ändere dein Passwort"
-           }
-         },
-         "el" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Αυτός ο λογαριασμός είναι ευάλωτος, επισκεφθείτε την υπηρεσία και αλλάξτε τον κωδικό πρόσβασής σας"
-           }
-         },
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "This account is vulnerable, visit the service and change your password"
-           }
-         },
-         "es" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Esta cuenta es vulnerable. Visita el servicio y cambia tu contraseña"
-           }
-         },
-         "es-419" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Esta cuenta es vulnerable, visite el servicio y cambie su contraseña"
-           }
-         },
-         "fi" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Tämä tili on vaarassa, käy palvelussa ja vaihda salasanasi"
-           }
-         },
-         "fr" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Ce compte est vulnérable. Visitez le service et changez votre mot de passe"
-           }
-         },
-         "id" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Akun ini terindikasi rentan. Kunjungi layanan keamanan kami dan ubah kata sandi Anda"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Questo account è vulnerabile, visita il servizio e cambia la password"
-           }
-         },
-         "ja" : {
-           "stringUnit" : {
-             "state" : "new",
-             "value" : "This account is vulnerable, visit the service and change your password"
-           }
-         },
-         "ka" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "ეს ანგარიში მოწყვლადია. მიმართეთ სერვისს და შეცვალეთ თქვენი პაროლი"
-           }
-         },
-         "ko" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "이 계정은 취약합니다. 서비스를 방문하여 비밀번호를 변경하십시오"
-           }
-         },
-         "nb" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Denne kontoen er sårbar, besøk tjenesten og endre passordet ditt"
-           }
-         },
-         "nl" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Dit account is kwetsbaar, bezoek de service en wijzig uw wachtwoord"
-           }
-         },
-         "pl" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "To konto jest zagrożone, odwiedź serwis i zmień swoje hasło"
-           }
-         },
-         "pt-BR" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Esta conta está vulnerável, visite o serviço e altere sua senha"
-           }
-         },
-         "ro" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Acest cont este vulnerabil, accesați serviciul și schimbați-vă parola"
-           }
-         },
-         "sk" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Tento účet je zraniteľný. Navštívte službu a zmeňte si heslo"
-           }
-         },
-         "sl" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Vaš račun je ranljiv, pojdite v nastavitve in spremenite geslo"
-           }
-         },
-         "sv" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Detta konto är sårbart, besök tjänsten och ändra ditt lösenord"
-           }
-         },
-         "tr" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Bu hesapta güvenlik açığı var. Hizmeti ziyaret edin ve parolanızı değiştirin"
-           }
-         },
-         "uk" : {
-           "stringUnit" : {
-             "state" : "new",
-             "value" : "This account is vulnerable, visit the service and change your password"
-           }
-         },
-         "vi" : {
-           "stringUnit" : {
-             "state" : "new",
-             "value" : "This account is vulnerable, visit the service and change your password"
-           }
-         }
-       }
-     },
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэты ўліковы запіс з'яўляецца ўразлівым. Наведайце сэрвіс і змяніце пароль"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This account is vulnerable, visit the service and change your password"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne konto er sårbar, besøg tjenesten og skift din adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Konto ist angreifbar, besuche den Dienst und ändere dein Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτός ο λογαριασμός είναι ευάλωτος, επισκεφθείτε την υπηρεσία και αλλάξτε τον κωδικό πρόσβασής σας"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account is vulnerable, visit the service and change your password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta cuenta es vulnerable. Visita el servicio y cambia tu contraseña"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta cuenta es vulnerable, visite el servicio y cambie su contraseña"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä tili on vaarassa, käy palvelussa ja vaihda salasanasi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce compte est vulnérable. Visitez le service et changez votre mot de passe"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akun ini terindikasi rentan. Kunjungi layanan keamanan kami dan ubah kata sandi Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo account è vulnerabile, visita il servizio e cambia la password"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This account is vulnerable, visit the service and change your password"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ანგარიში მოწყვლადია. მიმართეთ სერვისს და შეცვალეთ თქვენი პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 계정은 취약합니다. 서비스를 방문하여 비밀번호를 변경하십시오"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne kontoen er sårbar, besøk tjenesten og endre passordet ditt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit account is kwetsbaar, bezoek de service en wijzig uw wachtwoord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To konto jest zagrożone, odwiedź serwis i zmień swoje hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta conta está vulnerável, visite o serviço e altere sua senha"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest cont este vulnerabil, accesați serviciul și schimbați-vă parola"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento účet je zraniteľný. Navštívte službu a zmeňte si heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaš račun je ranljiv, pojdite v nastavitve in spremenite geslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta konto är sårbart, besök tjänsten och ändra ditt lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu hesapta güvenlik açığı var. Hizmeti ziyaret edin ve parolanızı değiştirin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This account is vulnerable, visit the service and change your password"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This account is vulnerable, visit the service and change your password"
+          }
+        }
+      }
+    },
     "This is your last attempt. You will be logged out after failing to authenticate again." : {
       "comment" : "Local authentication",
       "localizations" : {
@@ -75950,7 +76100,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ini upaya Anda yang terakhir. Anda akan dikeluarkan setelah gagal mengautentikasi lagi."
+            "value" : "Ini adalah upaya Anda yang terakhir. Anda akan dikeluarkan dari akun apabila Anda kembali gagal untuk mengautentikasi."
           }
         },
         "it" : {
@@ -76600,7 +76750,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ini akan menghapus akun Proton dan semua data Anda yang ada, termasuk surel, kalender, dan data yang tersimpan di Drive. Anda tidak akan dapat mengaktifkan ulang akun ini."
+            "value" : "Tindakan ini akan menghapus akun Proton Anda dan seluruh data yang terkandung di dalamnya, termasuk email, kalender, dan data yang tersimpan di Drive. Anda tidak akan dapat mengaktifkan ulang akun ini."
           }
         },
         "it" : {
@@ -76772,7 +76922,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "肩書き"
+            "value" : "タイトル"
           }
         },
         "ka" : {
@@ -77732,7 +77882,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Touch ID が有効になっている"
+            "value" : "Touch ID が有効になりました"
           }
         },
         "ka" : {
@@ -79964,7 +80114,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tanpa batasan alias surel"
+            "value" : "Tanpa batasan alias email"
           }
         },
         "it" : {
@@ -82367,7 +82517,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gunakan alias surel untuk melindungi kotak masuk dan identitas Anda"
+            "value" : "Gunakan alias email untuk melindungi kotak masuk dan identitas Anda"
           }
         },
         "it" : {
@@ -83489,7 +83639,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nama pengguna atau alamat surel"
+            "value" : "Nama pengguna atau alamat email"
           }
         },
         "it" : {
@@ -84770,7 +84920,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brankas yang dibagikan dengan Anda"
+            "value" : "Terdapat brankas yang dibagikan dengan Anda"
           }
         },
         "it" : {
@@ -86875,8 +87025,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Watch a short video on how to use Proton Pass"
+            "state" : "translated",
+            "value" : "短い動画で Proton Pass の使い方を確認"
           }
         },
         "ka" : {
@@ -88322,8 +88472,8 @@
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
+            "state" : "translated",
+            "value" : "სათავსოებს შორის ნივთების გადაადგილებისას ჩვენ შევინარჩუნებთ თითოეულ ნივთზე შესრულებულ ბოლო 50 მოდიფიკაციას"
           }
         },
         "ko" : {
@@ -88370,8 +88520,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
+            "state" : "translated",
+            "value" : "Pri premikanju predmetov med trezorji bomo ohranili do zadnjih 50 sprememb, izvedenih na vsakem predmetu"
           }
         },
         "sv" : {
@@ -88383,7 +88533,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğeleri kasalar arasında taşırken, her öğe üzerinde yapılan son 50 değişikliğe kadar koruyacağız"
+            "value" : "Ögeleri kasalar arasında taşırken, her öge üzerinde yapılmış son 50 değişikliği koruruz"
           }
         },
         "uk" : {
@@ -89438,7 +89588,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "作成しようとしています"
+            "value" : "作成されるメールアドレス"
           }
         },
         "ka" : {
@@ -91073,7 +91223,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anda akan keluar"
+            "value" : "Anda akan keluar dari akun"
           }
         },
         "it" : {
@@ -91554,7 +91704,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Versi aplikasi saat ini tidak lagi didukung. Silakan perbarui ke versi terbaru."
+            "value" : "Versi aplikasi Anda saat ini sudah tidak lagi didukung. Silakan perbarui aplikasi ke versi terbaru."
           }
         },
         "it" : {
@@ -92035,7 +92185,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sesi Anda telah berakhir"
+            "value" : "Sesi Anda telah kedaluwarsa"
           }
         },
         "it" : {
