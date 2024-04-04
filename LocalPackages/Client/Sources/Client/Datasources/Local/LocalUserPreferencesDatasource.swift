@@ -26,6 +26,7 @@ import CoreData
 import Entities
 import Foundation
 
+/// Store symmetrically encrypted `UserPreferences` in core data
 public protocol LocalUserPreferencesDatasourceProtocol: Sendable {
     func getPreferences(for userId: String) async throws -> UserPreferences?
     func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws
@@ -35,8 +36,8 @@ public protocol LocalUserPreferencesDatasourceProtocol: Sendable {
 public final class LocalUserPreferencesDatasource: LocalDatasource, LocalUserPreferencesDatasourceProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
-    init(symmetricKeyProvider: any SymmetricKeyProvider,
-         databaseService: any DatabaseServiceProtocol) {
+    public init(symmetricKeyProvider: any SymmetricKeyProvider,
+                databaseService: any DatabaseServiceProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         super.init(databaseService: databaseService)
     }

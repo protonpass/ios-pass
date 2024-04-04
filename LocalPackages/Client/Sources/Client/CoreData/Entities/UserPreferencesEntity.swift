@@ -25,7 +25,7 @@ import Entities
 import Foundation
 
 @objc(UserPreferencesEntity)
-public class UserPreferencesEntity: NSManagedObject {}
+final class UserPreferencesEntity: NSManagedObject {}
 
 extension UserPreferencesEntity: Identifiable {}
 

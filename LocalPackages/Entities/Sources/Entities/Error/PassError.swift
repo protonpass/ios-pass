@@ -50,6 +50,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case failedToConvertBase64StringToData(String)
     case passkey(PasskeyFailureReason)
     case organizationNotFound
+    case preferences(PreferencesFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -107,6 +108,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             reason.debugDescription
         case .organizationNotFound:
             "Organization not found"
+        case let .preferences(reason):
+            reason.debugDescription
         }
     }
 }

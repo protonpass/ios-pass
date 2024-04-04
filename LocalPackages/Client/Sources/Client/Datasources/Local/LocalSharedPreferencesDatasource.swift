@@ -28,6 +28,7 @@ import Foundation
 
 private let kSharedPreferencesKey = "SharedPreferences"
 
+/// Store symmetrically encrypted `SharedPreferences` in keychain
 public protocol LocalSharedPreferencesDatasourceProtocol: Sendable {
     func getPreferences() throws -> SharedPreferences?
     func upsertPreferences(_ preferences: SharedPreferences) throws
