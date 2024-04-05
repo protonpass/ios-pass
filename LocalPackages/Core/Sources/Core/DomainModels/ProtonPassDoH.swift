@@ -34,6 +34,7 @@ public final class ProtonPassDoH: DoH, ServerConfig {
     // periphery:ignore
     public let apiHost: String
     public let defaultPath: String
+    public let proxyToken: String?
 
     public init(bundle: Bundle = .main, userDefaults: UserDefaults = kSharedUserDefaults) {
         let environment: ProtonPassEnvironment
@@ -54,13 +55,15 @@ public final class ProtonPassDoH: DoH, ServerConfig {
                 let defaultHost = userDefaults.string(forKey: "pref_custom_env_default_host")
                 let apiHost = userDefaults.string(forKey: "pref_custom_env_api_host")
                 let defaultPath = userDefaults.string(forKey: "pref_custom_env_default_path")
+                let proxyToken = userDefaults.string(forKey: "pref_custom_env_proxy_token")
                 environment = .custom(DoHParameters(signupDomain: signupDomain ?? "proton.me",
                                                     captchaHost: captchaHost ?? "https://pass-api.proton.me",
                                                     humanVerificationV3Host: hvHost ?? "https://verify.proton.me",
                                                     accountHost: accountHost ?? "https://account.proton.me",
                                                     defaultHost: defaultHost ?? "https://pass-api.proton.me",
                                                     apiHost: apiHost ?? "pass-api.proton.me",
-                                                    defaultPath: defaultPath ?? "/api"))
+                                                    defaultPath: defaultPath ?? "/api",
+                                                    proxyToken: proxyToken))
             default:
                 // Fallback to "Automatic" mode
                 #if DEBUG
@@ -83,5 +86,6 @@ public final class ProtonPassDoH: DoH, ServerConfig {
         defaultHost = params.defaultHost
         apiHost = params.apiHost
         defaultPath = params.defaultPath
+        proxyToken = params.proxyToken
     }
 }
