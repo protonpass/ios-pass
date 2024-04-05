@@ -19,10 +19,48 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+// periphery:ignore:all
+import Core
 import CryptoKit
+import Entities
+import Foundation
+import ProtonCoreKeymaker
+
+private let kSymmetricKey = "SymmetricKey"
 
 // sourcery: AutoMockable
 public protocol SymmetricKeyProvider: Sendable {
+    /// Return an application-wide symmetric key
+    /// Generate a random one if not any, encrypt with the main key and save to keychain
     func getSymmetricKey() throws -> SymmetricKey
-//    func removeSymmetricKey()
+}
+
+public final class SymmetricKeyProviderImpl: SymmetricKeyProvider {
+    private let keychain: any KeychainProtocol
+    private let mainKeyProvider: any MainKeyProvider
+
+    init(keychain: any KeychainProtocol,
+         mainKeyProvider: any MainKeyProvider) {
+        self.keychain = keychain
+        self.mainKeyProvider = mainKeyProvider
+    }
+}
+
+public extension SymmetricKeyProviderImpl {
+    func getSymmetricKey() throws -> SymmetricKey {
+        guard let mainKey = mainKeyProvider.mainKey else {
+            throw PassError.mainKeyNotFound
+        }
+
+        if let lockedData = try keychain.dataOrError(forKey: kSymmetricKey) {
+            let lockedData = Locked<Data>(encryptedValue: lockedData)
+            let unlockedData = try lockedData.unlock(with: mainKey)
+            return .init(data: unlockedData)
+        } else {
+            let randomData = try Data.random()
+            let lockedData = try Locked<Data>(clearValue: randomData, with: mainKey).encryptedValue
+            try keychain.setOrError(lockedData, forKey: kSymmetricKey)
+            return .init(data: randomData)
+        }
+    }
 }

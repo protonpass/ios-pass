@@ -19,7 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import CryptoKit
+import Entities
+import Foundation
+import ProtonCoreKeymaker
 
 public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider {
 
