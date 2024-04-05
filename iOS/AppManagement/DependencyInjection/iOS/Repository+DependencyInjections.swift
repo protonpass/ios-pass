@@ -22,6 +22,7 @@ import Client
 import Core
 import Factory
 import Foundation
+
 @preconcurrency import ProtonCoreServices
 
 final class RepositoryContainer: SharedContainer, AutoRegistering, Sendable {

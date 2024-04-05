@@ -30,6 +30,8 @@ import Factory
 import Macro
 import MBProgressHUD
 import ProtonCoreAccountDeletion
+import ProtonCoreAccountRecovery
+import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUIFoundations
@@ -63,6 +65,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let accountRepository = resolve(\SharedRepositoryContainer.accountRepository)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -1242,6 +1245,18 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                                }
                                                            }
                                                        })
+    }
+
+    func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void) {
+        let asSheet = shouldShowAsSheet()
+        let viewModel = AccountRecoveryView
+            .ViewModel(accountRepository: AccountRecoveryRepository(apiService: apiManager.apiService))
+        viewModel.externalAccountRecoverySetter = { accountRecovery in
+            completion(accountRecovery)
+        }
+
+        let view = AccountRecoveryView(viewModel: viewModel)
+        showView(view: view, asSheet: asSheet)
     }
 }
 
