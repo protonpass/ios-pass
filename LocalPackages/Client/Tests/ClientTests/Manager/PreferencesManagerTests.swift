@@ -34,7 +34,7 @@ final class PreferencesManagerTest: XCTestCase {
     var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
     var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
     var userId: String!
-    var sut: PreferencesManager!
+    var sut: PreferencesManagerProtocol!
     var cancellable: AnyCancellable!
 
     override func setUp() {
