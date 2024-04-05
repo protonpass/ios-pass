@@ -53,6 +53,7 @@ final class AppCoordinator {
     private var cancellables = Set<AnyCancellable>()
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let appData = resolve(\SharedDataContainer.appData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -142,12 +143,20 @@ final class AppCoordinator {
     }
 
     func start() {
-        if appData.isAuthenticated {
-            appStateObserver.updateAppState(.alreadyLoggedIn)
-        } else if appData.getCredential() != nil {
-            appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
-        } else {
-            appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.setUp()
+                if appData.isAuthenticated {
+                    appStateObserver.updateAppState(.alreadyLoggedIn)
+                } else if appData.getCredential() != nil {
+                    appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
+                } else {
+                    appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
+                }
+            } catch {
+                alert(title: #localized("Error occured"), message: error.localizedDescription)
+            }
         }
     }
 
