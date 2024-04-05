@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Macro
+import ProtonCoreAccountRecovery
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -92,6 +93,28 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
                 .padding(.top)
+
+                if viewModel.isAccountRecoveryVisible,
+                   let accountRecovery = viewModel.accountRecovery {
+                    OptionRow(action: { viewModel.openAccountRecovery() },
+                              height: .tall,
+                              content: {
+                                  HStack {
+                                      Text(AccountRecoveryModule.settingsItem)
+                                      Spacer()
+                                      Text(accountRecovery.valueForSettingsItem)
+                                  }.foregroundColor(PassColor.interactionNormMajor2.toColor)
+                              },
+                              trailing: {
+                                  if let image = accountRecovery.imageForSettingsItem {
+                                      CircleButton(icon: image,
+                                                   iconColor: PassColor.interactionNormMajor2,
+                                                   backgroundColor: PassColor.interactionNormMinor1)
+                                  }
+                              })
+                              .roundedEditableSection()
+                              .padding(.vertical)
+                }
 
                 OptionRow(action: { isShowingSignOutConfirmation.toggle() },
                           height: .tall,

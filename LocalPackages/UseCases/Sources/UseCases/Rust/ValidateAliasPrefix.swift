@@ -21,6 +21,7 @@
 //
 
 import Entities
+
 @preconcurrency import PassRustCore
 
 public protocol ValidateAliasPrefixUseCase: Sendable {
