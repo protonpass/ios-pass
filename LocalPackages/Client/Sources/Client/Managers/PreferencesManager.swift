@@ -39,6 +39,9 @@ public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
 /// Manage all types of preferences: app-wide, shared between users and user's specific
 public protocol PreferencesManagerProtocol {
+    /// Load preferences or create with default values if not exist
+    func setUp() async throws
+
     // App preferences
     var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
     var appPreferencesUpdates: PassthroughSubject<AppPreferencesUpdate, Never> { get }
@@ -95,7 +98,6 @@ public actor PreferencesManager: PreferencesManagerProtocol {
 }
 
 public extension PreferencesManager {
-    /// Load preferences or create with default values if not exist
     func setUp() async throws {
         // App preferences
         if let preferences = try appPreferencesDatasource.getPreferences() {
