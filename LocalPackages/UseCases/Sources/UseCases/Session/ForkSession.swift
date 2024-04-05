@@ -21,6 +21,7 @@
 
 import Client
 import Foundation
+@preconcurrency import ProtonCoreServices
 
 /// Fork the session and return the `selector`
 public protocol ForkSessionUseCase: Sendable {
