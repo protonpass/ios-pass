@@ -15,7 +15,7 @@
 - Account host: https://account.proton.me
 - Default host: https://pass-api.proton.me
 - API host: pass-api.proton.me
-- Default path: /api</string>
+- Default path: /api - Proxy token: nil</string>
 			<key>Title</key>
 			<string>Custom environment values</string>
 		</dict>
@@ -100,6 +100,16 @@
 			<string>Default path</string>
 			<key>Key</key>
 			<string>pref_custom_env_default_path</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>Title</key>
+			<string>Proxy token</string>
+			<key>Key</key>
+			<string>pref_custom_env_proxy_token</string>
 		</dict>
 	</array>
 </dict>
