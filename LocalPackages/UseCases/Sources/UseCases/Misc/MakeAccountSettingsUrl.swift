@@ -21,6 +21,7 @@
 
 import Entities
 import Foundation
+
 @preconcurrency import ProtonCoreDoh
 
 public protocol MakeAccountSettingsUrlUseCase: Sendable {
