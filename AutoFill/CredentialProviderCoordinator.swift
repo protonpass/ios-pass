@@ -46,6 +46,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
 
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -117,22 +118,30 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func start(mode: AutoFillMode) {
-        switch mode {
-        case let .showAllLogins(identifiers, requestParams):
-            handleShowAllLoginsMode(identifiers: identifiers,
-                                    passkeyRequestParams: requestParams)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.setUp()
+                switch mode {
+                case let .showAllLogins(identifiers, requestParams):
+                    handleShowAllLoginsMode(identifiers: identifiers,
+                                            passkeyRequestParams: requestParams)
 
-        case let .checkAndAutoFill(request):
-            handleCheckAndAutoFill(request)
+                case let .checkAndAutoFill(request):
+                    handleCheckAndAutoFill(request)
 
-        case let .authenticateAndAutofill(request):
-            handleAuthenticateAndAutofill(request)
+                case let .authenticateAndAutofill(request):
+                    handleAuthenticateAndAutofill(request)
 
-        case .configuration:
-            configureExtension()
+                case .configuration:
+                    configureExtension()
 
-        case let .passkeyRegistration(request):
-            handlePasskeyRegistration(request)
+                case let .passkeyRegistration(request):
+                    handlePasskeyRegistration(request)
+                }
+            } catch {
+                handle(error: error)
+            }
         }
     }
 }

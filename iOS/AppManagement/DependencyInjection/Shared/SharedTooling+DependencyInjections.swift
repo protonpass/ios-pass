@@ -118,6 +118,15 @@ extension SharedToolingContainer {
     var spotlightSettingsProvider: Factory<SpotlightSettingsProvider> {
         self { self.preferences() }
     }
+
+    var preferencesManager: Factory<PreferencesManagerProtocol> {
+        self {
+            let cont = SharedRepositoryContainer.shared
+            return PreferencesManager(appPreferencesDatasource: cont.appPreferencesDatasource(),
+                                      sharedPreferencesDatasource: cont.sharedPreferencesDatasource(),
+                                      userPreferencesDatasource: cont.userPreferencesDatasource())
+        }
+    }
 }
 
 // MARK: Keychain tools
