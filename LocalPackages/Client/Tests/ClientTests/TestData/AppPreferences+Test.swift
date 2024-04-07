@@ -26,6 +26,7 @@ extension AppPreferences {
         .init(onboarded: .random(),
               telemetryThreshold: .random(in: 1...1_000_000),
               createdItemsCount: .random(in: 1...100),
-              dismissedBannerIds: .random(randomElement: .random()))
+              dismissedBannerIds: .random(randomElement: .random()),
+              didMigratePreferences: .random())
     }
 }

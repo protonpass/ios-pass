@@ -121,10 +121,14 @@ extension SharedToolingContainer {
 
     var preferencesManager: Factory<PreferencesManagerProtocol> {
         self {
+            let currentUserIdProvider = SharedDataContainer.shared.currentUserIdProvider()
             let cont = SharedRepositoryContainer.shared
-            return PreferencesManager(appPreferencesDatasource: cont.appPreferencesDatasource(),
+            return PreferencesManager(currentUserIdProvider: currentUserIdProvider,
+                                      appPreferencesDatasource: cont.appPreferencesDatasource(),
                                       sharedPreferencesDatasource: cont.sharedPreferencesDatasource(),
-                                      userPreferencesDatasource: cont.userPreferencesDatasource())
+                                      userPreferencesDatasource: cont.userPreferencesDatasource(),
+                                      logManager: self.logManager(),
+                                      preferencesMigrator: self.preferences())
         }
     }
 }
