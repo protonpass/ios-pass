@@ -56,7 +56,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -96,6 +96,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     private var authenticated = false
 
+    private var theme: Theme {
+        preferencesManager.sharedPreferences.value?.theme ?? .default
+    }
+
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegate: HomepageTabDelegate?
 
@@ -126,7 +130,8 @@ private extension HomepageCoordinator {
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                           task: refreshInvitations.callAsFunction))
 
-        authenticated = preferences.localAuthenticationMethod == .none
+        authenticated = preferencesManager.sharedPreferences.value?
+            .localAuthenticationMethod == LocalAuthenticationMethod.none
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
@@ -137,12 +142,13 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        preferences.objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .filter(\.theme)
+            .sink { [weak self] theme in
                 guard let self else { return }
-                rootViewController.setUserInterfaceStyle(preferences
-                    .theme.userInterfaceStyle)
+                rootViewController.setUserInterfaceStyle(theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
 
@@ -249,7 +255,7 @@ private extension HomepageCoordinator {
                                  })
 
         start(with: homeView, secondaryView: placeholderView)
-        rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
 
     func synchroniseData() {
@@ -326,12 +332,22 @@ private extension HomepageCoordinator {
     }
 
     func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
-        preferences.createdItemsCount += 1
-        // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
-        if !ProcessInfo.processInfo.isiOSAppOnMac,
-           preferences.createdItemsCount >= 10,
-           let windowScene = rootViewController.view.window?.windowScene {
-            SKStoreReviewController.requestReview(in: windowScene)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let currentCount = preferencesManager.appPreferences.value?.createdItemsCount ?? 0
+                try await preferencesManager.updateAppPreferences(\.createdItemsCount,
+                                                                  value: currentCount + 1)
+                // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
+                if !ProcessInfo.processInfo.isiOSAppOnMac,
+                   currentCount >= 10,
+                   let windowScene = rootViewController.view.window?.windowScene {
+                    SKStoreReviewController.requestReview(in: windowScene)
+                }
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 }
@@ -821,16 +837,28 @@ extension HomepageCoordinator {
 
     func present(_ view: some View, animated: Bool = true, dismissible: Bool = true) {
         present(UIHostingController(rootView: view),
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                userInterfaceStyle: theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible)
     }
 
     func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
         present(viewController,
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                userInterfaceStyle: theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible)
+    }
+
+    func updateSharedPreferences<T>(_ keyPath: WritableKeyPath<SharedPreferences, T>, value: T) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateSharedPreferences(keyPath, value: value)
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
     }
 }
 
@@ -956,7 +984,7 @@ private extension HomepageCoordinator {
                 presentOnboardView(forced: true)
             }
         }
-        .theme(preferences.theme)
+        .theme(theme)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
@@ -964,7 +992,7 @@ private extension HomepageCoordinator {
     }
 
     func presentOnboardView(forced: Bool) {
-        guard forced || !preferences.onboarded else { return }
+        guard forced || preferencesManager.appPreferences.value?.onboarded == false else { return }
         let view = OnboardingView { [weak self] in
             guard let self else { return }
             openTutorialVideo()
@@ -1278,7 +1306,10 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditTheme() {
-        let view = EditThemeView(preferences: preferences)
+        let view = EditThemeView(currentTheme: theme) { [weak self] newTheme in
+            guard let self else { return }
+            updateSharedPreferences(\.theme, value: newTheme)
+        }
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.short.value) * Theme.allCases.count + 60
@@ -1290,7 +1321,11 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditClipboardExpiration() {
-        let view = EditClipboardExpirationView(preferences: preferences)
+        let currentExpiration = preferencesManager.sharedPreferences.value?.clipboardExpiration ?? .default
+        let view = EditClipboardExpirationView(currentExpiration: currentExpiration) { [weak self] newExpiration in
+            guard let self else { return }
+            updateSharedPreferences(\.clipboardExpiration, value: newExpiration)
+        }
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.compact.value) * ClipboardExpiration.allCases.count + 60
@@ -1452,7 +1487,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
-        showFullScreen(data: data, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        showFullScreen(data: data, userInterfaceStyle: theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable) {
