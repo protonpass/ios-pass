@@ -134,12 +134,13 @@ final class AppCoordinator {
             }
             .store(in: &cancellables)
 
-        preferences
-            .objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
+            .filter(\.theme)
+            .sink { [weak self] theme in
                 guard let self else { return }
-                window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
             }
             .store(in: &cancellables)
     }
