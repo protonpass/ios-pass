@@ -32,7 +32,6 @@ final class SecuritySettingsCoordinator {
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-    private var authenticatingPolicy: LAPolicy { preferences.localAuthenticationPolicy }
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ChildCoordinatorDelegate?
@@ -85,6 +84,8 @@ private extension SecuritySettingsCoordinator {
     @MainActor
     func updateMethod(_ newMethod: LocalAuthenticationMethod) {
         let currentMethod = preferences.localAuthenticationMethod
+        let authenticatingPolicy: LAPolicy = preferences.fallbackToPasscode ?
+            .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
         switch (currentMethod, newMethod) {
         case (.biometric, .biometric),
              (.none, .none),
