@@ -24,20 +24,21 @@ import SwiftUI
 
 struct EditClipboardExpirationView: View {
     @Environment(\.dismiss) private var dismiss
-    let preferences: Preferences
+    let currentExpiration: ClipboardExpiration
+    let onSelect: (ClipboardExpiration) -> Void
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
-                        SelectableOptionRow(action: { preferences.clipboardExpiration = expiration; dismiss() },
+                        SelectableOptionRow(action: { onSelect(expiration); dismiss() },
                                             height: .compact,
                                             content: {
                                                 Text(expiration.description)
                                                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                                             },
-                                            isSelected: expiration == preferences.clipboardExpiration)
+                                            isSelected: expiration == currentExpiration)
 
                         PassDivider()
                     }
