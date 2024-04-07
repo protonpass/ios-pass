@@ -1,7 +1,7 @@
 //
-// Typealiases.swift
-// Proton Pass - Created on 22/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PreferencesManager+Migrations.swift
+// Proton Pass - Created on 07/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,12 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
 import Entities
+import Foundation
 
-public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
-public typealias AppDataProtocol =
-    CredentialProvider & CurrentUserIdProvider & Resettable & UserDataSymmetricKeyProvider
-public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
-public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
-public typealias ShareID = String
+// swiftlint:disable:next todo
+// TODO: Introduced in april 2024, can be removed several months later
+// sourcery: AutoMockable
+public protocol PreferencesMigrator: Sendable {
+    // swiftlint:disable:next large_tuple
+    func migratePreferences() -> (AppPreferences, SharedPreferences, UserPreferences)
+}
