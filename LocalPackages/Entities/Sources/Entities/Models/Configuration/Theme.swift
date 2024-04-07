@@ -25,4 +25,6 @@ public enum Theme: Int, Codable, CaseIterable, Sendable {
     case light = 0
     case dark = 1
     case matchSystem = 2
+
+    public static var `default`: Self { .dark }
 }
