@@ -23,6 +23,7 @@
 // TODO: remove periphery ignore
 // periphery:ignore:all
 @preconcurrency import Combine
+import Core
 import Entities
 import Foundation
 
@@ -83,22 +84,26 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     // swiftlint:disable:next todo
     // TODO: Inject via a protocol
     private let userId: String
+    private let logger: Logger
 
     private var didSetUp = false
 
     public init(appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
                 sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
-                userId: String = "") {
+                userId: String,
+                logManager: any LogManagerProtocol) {
         self.appPreferencesDatasource = appPreferencesDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.sharedPreferencesDatasource = sharedPreferencesDatasource
         self.userId = userId
+        logger = .init(manager: logManager)
     }
 }
 
 public extension PreferencesManager {
     func setUp() async throws {
+        logger.trace("Setting up preferences manager")
         // App preferences
         if let preferences = try appPreferencesDatasource.getPreferences() {
             appPreferences.send(preferences)
@@ -126,11 +131,15 @@ public extension PreferencesManager {
             userPreferences.send(preferences)
         }
 
+        logger.info("Set up preferences manager")
         didSetUp = true
     }
 
     func assertDidSetUp() {
         assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
+        if !didSetUp {
+            logger.error("PreferencesManager not set up")
+        }
     }
 }
 
@@ -139,6 +148,7 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateAppPreferences<T: Sendable>(_ keyPath: WritableKeyPath<AppPreferences, T>,
                                            value: T) async throws {
+        logger.trace("Updating app preferences \(keyPath)")
         assertDidSetUp()
         guard var preferences = appPreferences.value else {
             throw PassError.preferences(.appPreferencesNotInitialized)
@@ -147,10 +157,13 @@ public extension PreferencesManager {
         try appPreferencesDatasource.upsertPreferences(preferences)
         appPreferences.send(preferences)
         appPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
+        logger.info("Updated app preferences \(keyPath)")
     }
 
     func removeAppPreferences() async {
+        logger.trace("Removing app preferences")
         appPreferencesDatasource.removePreferences()
+        logger.info("Removed app preferences")
     }
 }
 
@@ -159,6 +172,7 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
                                               value: T) async throws {
+        logger.trace("Updating shared preferences \(keyPath)")
         assertDidSetUp()
         guard var preferences = sharedPreferences.value else {
             throw PassError.preferences(.sharedPreferencesNotInitialized)
@@ -167,10 +181,13 @@ public extension PreferencesManager {
         try sharedPreferencesDatasource.upsertPreferences(preferences)
         sharedPreferences.send(preferences)
         sharedPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
+        logger.info("Updated shared preferences \(keyPath)")
     }
 
     func removeSharedPreferences() async throws {
+        logger.trace("Removing shared preferences")
         try sharedPreferencesDatasource.removePreferences()
+        logger.info("Removed app preferences")
     }
 }
 
@@ -179,6 +196,7 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws {
+        logger.trace("Updating user preferences \(keyPath) for user \(userId)")
         assertDidSetUp()
         guard var preferences = userPreferences.value else {
             throw PassError.preferences(.userPreferencesNotInitialized)
@@ -187,10 +205,13 @@ public extension PreferencesManager {
         try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
         userPreferences.send(preferences)
         userPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
+        logger.info("Updated user preferences \(keyPath) for user \(userId)")
     }
 
     func removeUserPreferences() async throws {
+        logger.trace("Removing user preferences for user \(userId)")
         try await userPreferencesDatasource.removePreferences(for: userId)
+        logger.info("Removed user preferences for user \(userId)")
     }
 }
 
