@@ -26,6 +26,8 @@ public enum ClipboardExpiration: Int, Codable, CaseIterable, Sendable {
     case twoMinutes = 2
     case never = 3
 
+    public static var `default`: Self { .twoMinutes }
+
     public var expirationDate: Date? {
         switch self {
         case .fifteenSeconds:
