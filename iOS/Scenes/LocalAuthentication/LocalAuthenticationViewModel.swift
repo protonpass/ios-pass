@@ -38,7 +38,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let delayed: Bool
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
@@ -57,6 +57,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         case biometric, pin
     }
 
+    private var failedAttemptCount: Int {
+        preferencesManager.sharedPreferences.value?.failedAttemptCount ?? kMaxAttemptCount
+    }
+
     init(mode: Mode,
          delayed: Bool,
          onAuth: @escaping () -> Void,
@@ -69,8 +73,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         self.onFailure = onFailure
         updateStateBasedOnFailedAttemptCount()
 
-        preferences.objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
+            .filter(\.failedAttemptCount)
             .sink { [weak self] _ in
                 guard let self else { return }
                 updateStateBasedOnFailedAttemptCount()
@@ -82,7 +88,9 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let authenticated = try await authenticate(policy: preferences.localAuthenticationPolicy,
+                let policy = preferencesManager.sharedPreferences.value?
+                    .localAuthenticationPolicy ?? .deviceOwnerAuthentication
+                let authenticated = try await authenticate(policy: policy,
                                                            reason: #localized("Please authenticate"))
                 if authenticated {
                     recordSuccess()
@@ -99,7 +107,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func checkPinCode(_ enteredPinCode: String) {
-        guard let currentPIN = preferences.pinCode else {
+        guard let currentPIN = preferencesManager.sharedPreferences.value?.pinCode else {
             // No PIN code is set before, can't do anything but logging out
             let message = "Can not check PIN code. No PIN code set."
             assertionFailure(message)
@@ -122,13 +130,13 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
 private extension LocalAuthenticationViewModel {
     func updateStateBasedOnFailedAttemptCount() {
-        switch preferences.failedAttemptCount {
+        switch failedAttemptCount {
         case 0:
             state = .noAttempts
         case kMaxAttemptCount - 1:
             state = .lastAttempt
         default:
-            let remainingAttempts = kMaxAttemptCount - preferences.failedAttemptCount
+            let remainingAttempts = kMaxAttemptCount - failedAttemptCount
             if remainingAttempts >= 1 {
                 state = .remainingAttempts(remainingAttempts)
             } else {
@@ -138,18 +146,35 @@ private extension LocalAuthenticationViewModel {
     }
 
     func recordFailure(_ error: Error?) {
-        preferences.failedAttemptCount += 1
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateSharedPreferences(\.failedAttemptCount,
+                                                                     value: failedAttemptCount + 1)
 
-        let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
-        if let error {
-            logger.error(logMessage + " Reason \(error)")
-        } else {
-            logger.error(logMessage)
+                let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
+                if let error {
+                    logger.error(logMessage + " Reason \(error)")
+                } else {
+                    logger.error(logMessage)
+                }
+            } catch {
+                // Failed to even record error, something's very wrong. Just log out.
+                onFailure()
+            }
         }
     }
 
     func recordSuccess() {
-        preferences.failedAttemptCount = 0
-        onSuccess()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateSharedPreferences(\.failedAttemptCount,
+                                                                     value: 0)
+                onSuccess()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }
