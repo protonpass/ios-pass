@@ -31,6 +31,8 @@ public enum AppLockTime: Int, Codable, CaseIterable, Sendable {
     case fourHours = 6
     case never = 7
 
+    public static var `default`: Self { .twoMinutes }
+
     public var intervalInMinutes: Int? {
         switch self {
         case .immediately:
