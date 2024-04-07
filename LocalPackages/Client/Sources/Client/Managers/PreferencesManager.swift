@@ -78,25 +78,23 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     public nonisolated let userPreferences = CurrentValueSubject<UserPreferences?, Never>(nil)
     public nonisolated let userPreferencesUpdates = PassthroughSubject<UserPreferencesUpdate, Never>()
 
+    private let currentUserIdProvider: any CurrentUserIdProvider
     private let appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol
     private let sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
-    // swiftlint:disable:next todo
-    // TODO: Inject via a protocol
-    private let userId: String
     private let logger: Logger
 
     private var didSetUp = false
 
-    public init(appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
+    public init(currentUserIdProvider: any CurrentUserIdProvider,
+                appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
                 sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
-                userId: String,
                 logManager: any LogManagerProtocol) {
+        self.currentUserIdProvider = currentUserIdProvider
         self.appPreferencesDatasource = appPreferencesDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.sharedPreferencesDatasource = sharedPreferencesDatasource
-        self.userId = userId
         logger = .init(manager: logManager)
     }
 }
@@ -123,12 +121,14 @@ public extension PreferencesManager {
         }
 
         // User's preferences
-        if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
-            userPreferences.send(preferences)
-        } else {
-            let preferences = UserPreferences.default
-            try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-            userPreferences.send(preferences)
+        if let userId = try await currentUserIdProvider.getCurrentUserId() {
+            if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
+                userPreferences.send(preferences)
+            } else {
+                let preferences = UserPreferences.default
+                try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
+                userPreferences.send(preferences)
+            }
         }
 
         logger.info("Set up preferences manager")
@@ -196,6 +196,12 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws {
+        guard let userId = try await currentUserIdProvider.getCurrentUserId() else {
+            let errorMessage = "Failed to upsert user's preferences. No current user ID found."
+            assertionFailure(errorMessage)
+            logger.error(errorMessage)
+            return
+        }
         logger.trace("Updating user preferences \(keyPath) for user \(userId)")
         assertDidSetUp()
         guard var preferences = userPreferences.value else {
@@ -209,6 +215,12 @@ public extension PreferencesManager {
     }
 
     func removeUserPreferences() async throws {
+        guard let userId = try await currentUserIdProvider.getCurrentUserId() else {
+            let errorMessage = "Failed to remove user's preferences. No current user ID found."
+            assertionFailure(errorMessage)
+            logger.error(errorMessage)
+            return
+        }
         logger.trace("Removing user preferences for user \(userId)")
         try await userPreferencesDatasource.removePreferences(for: userId)
         logger.info("Removed user preferences for user \(userId)")
