@@ -28,17 +28,20 @@ import XCTest
 import ClientMocks
 
 final class PreferencesManagerTest: XCTestCase {
+    var currentUserIdProvider: CurrentUserIdProviderMock!
     var keychainMockProvider: KeychainProtocolMockProvider!
     var symmetricKeyMockProvider: SymmetricKeyProviderMockProvider!
     var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocol!
     var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
     var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
-    var userId: String!
     var sut: PreferencesManagerProtocol!
     var cancellable: AnyCancellable!
 
     override func setUp() {
         super.setUp()
+        currentUserIdProvider = .init()
+        currentUserIdProvider.stubbedGetCurrentUserIdResult = .random()
+
         keychainMockProvider = .init()
         keychainMockProvider.setUp()
 
@@ -55,11 +58,11 @@ final class PreferencesManagerTest: XCTestCase {
         LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyMockProvider.getProvider(),
                                        databaseService: DatabaseService(inMemory: true))
 
-        userId = .random()
-        sut = PreferencesManager(appPreferencesDatasource: appPreferencesDatasource,
-                                 sharedPreferencesDatasource: sharedPreferencesDatasource, 
-                                 userPreferencesDatasource: userPreferencesDatasource,
-                                 userId: userId)
+        sut = PreferencesManager(currentUserIdProvider: currentUserIdProvider,
+                                 appPreferencesDatasource: appPreferencesDatasource,
+                                 sharedPreferencesDatasource: sharedPreferencesDatasource,
+                                 userPreferencesDatasource: userPreferencesDatasource, 
+                                 logManager: LogManagerProtocolMock())
     }
 
     override func tearDown() {
@@ -67,7 +70,6 @@ final class PreferencesManagerTest: XCTestCase {
         symmetricKeyMockProvider = nil
         userPreferencesDatasource = nil
         sharedPreferencesDatasource = nil
-        userId = nil
         sut = nil
         cancellable = nil
         super.tearDown()
@@ -177,7 +179,9 @@ extension PreferencesManagerTest {
     func testRemoveUserPreferences() async throws {
         try await sut.setUp()
         try await sut.removeUserPreferences()
-        let preferences = try await userPreferencesDatasource.getPreferences(for: userId)
-        XCTAssertNil(preferences)
+        if let userId = try await currentUserIdProvider.getCurrentUserId() {
+            let preferences = try await userPreferencesDatasource.getPreferences(for: userId)
+            XCTAssertNil(preferences)
+        }
     }
 }
