@@ -68,7 +68,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     struct AppCoverView: View {
-        private let preferences = resolve(\SharedToolingContainer.preferences)
+        private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
         let windowSize: CGSize
 
         var body: some View {
@@ -83,7 +83,7 @@ private extension SceneDelegate {
                     .frame(width: min(windowSize.width, windowSize.height) * 2 / 3)
                     .frame(maxWidth: 245)
             }
-            .theme(preferences.theme)
+            .theme(preferencesManager.sharedPreferences.value?.theme ?? .default)
         }
     }
 

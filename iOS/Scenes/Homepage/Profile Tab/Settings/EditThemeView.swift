@@ -24,14 +24,15 @@ import SwiftUI
 
 struct EditThemeView: View {
     @Environment(\.dismiss) private var dismiss
-    let preferences: Preferences
+    let currentTheme: Theme
+    let onSelect: (Theme) -> Void
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
-                        SelectableOptionRow(action: { preferences.theme = theme; dismiss() },
+                        SelectableOptionRow(action: { onSelect(theme); dismiss() },
                                             height: .short,
                                             content: {
                                                 Label(title: {
@@ -44,7 +45,7 @@ struct EditThemeView: View {
                                                 })
                                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                                             },
-                                            isSelected: theme == preferences.theme)
+                                            isSelected: theme == currentTheme)
 
                         PassDivider()
                     }
