@@ -64,7 +64,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
@@ -322,8 +322,10 @@ private extension SearchViewModel {
             }
             .store(in: &cancellables)
 
-        if #available(iOS 17, *) {
-            SpotlightTip.spotlightEnabled = preferences.spotlightEnabled
+        Task { @MainActor [weak self] in
+            guard #available(iOS 17, *), let self else { return }
+            let preferences = preferencesManager.userPreferences.value
+            SpotlightTip.spotlightEnabled = preferences?.spotlightEnabled == true
         }
     }
 }
