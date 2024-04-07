@@ -199,3 +199,30 @@ extension Preferences: SpotlightSettingsProvider {}
 // MARK: - SecuritySettingsProvider
 
 extension Preferences: SecuritySettingsProvider {}
+
+extension Preferences: PreferencesMigrator {
+    // swiftlint:disable:next large_tuple
+    func migratePreferences() -> (AppPreferences, SharedPreferences, UserPreferences) {
+        let app = AppPreferences(onboarded: onboarded,
+                                 telemetryThreshold: telemetryThreshold,
+                                 createdItemsCount: createdItemsCount,
+                                 dismissedBannerIds: dismissedBannerIds,
+                                 didMigratePreferences: true)
+        let shared = SharedPreferences(quickTypeBar: quickTypeBar,
+                                       automaticallyCopyTotpCode: automaticallyCopyTotpCode,
+                                       theme: theme,
+                                       browser: browser,
+                                       displayFavIcons: displayFavIcons,
+                                       failedAttemptCount: failedAttemptCount,
+                                       localAuthenticationMethod: localAuthenticationMethod,
+                                       pinCode: pinCode,
+                                       fallbackToPasscode: fallbackToPasscode,
+                                       appLockTime: appLockTime,
+                                       clipboardExpiration: clipboardExpiration,
+                                       shareClipboard: shareClipboard)
+        let user = UserPreferences(spotlightEnabled: spotlightEnabled,
+                                   spotlightSearchableContent: spotlightSearchableContent,
+                                   spotlightSearchableVaults: spotlightSearchableVaults)
+        return (app, shared, user)
+    }
+}

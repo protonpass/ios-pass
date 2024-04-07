@@ -86,22 +86,27 @@ public actor PreferencesManager: PreferencesManagerProtocol {
 
     private var didSetUp = false
 
+    private let preferencesMigrator: any PreferencesMigrator
+
     public init(currentUserIdProvider: any CurrentUserIdProvider,
                 appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
                 sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
-                logManager: any LogManagerProtocol) {
+                logManager: any LogManagerProtocol,
+                preferencesMigrator: any PreferencesMigrator) {
         self.currentUserIdProvider = currentUserIdProvider
         self.appPreferencesDatasource = appPreferencesDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.sharedPreferencesDatasource = sharedPreferencesDatasource
         logger = .init(manager: logManager)
+        self.preferencesMigrator = preferencesMigrator
     }
 }
 
 public extension PreferencesManager {
     func setUp() async throws {
         logger.trace("Setting up preferences manager")
+
         // App preferences
         if let preferences = try appPreferencesDatasource.getPreferences() {
             appPreferences.send(preferences)
@@ -129,6 +134,26 @@ public extension PreferencesManager {
                 try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
                 userPreferences.send(preferences)
             }
+        }
+
+        // Migrations
+        if appPreferences.value?.didMigratePreferences == false {
+            logger.trace("Migrating preferences")
+            var (app, shared, user) = preferencesMigrator.migratePreferences()
+
+            app.didMigratePreferences = true
+            try appPreferencesDatasource.upsertPreferences(app)
+            appPreferences.send(app)
+
+            try sharedPreferencesDatasource.upsertPreferences(shared)
+            sharedPreferences.send(shared)
+
+            if let userId = try await currentUserIdProvider.getCurrentUserId() {
+                try await userPreferencesDatasource.upsertPreferences(user, for: userId)
+                userPreferences.send(user)
+            }
+
+            logger.trace("Migrated preferences")
         }
 
         logger.info("Set up preferences manager")
