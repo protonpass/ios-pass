@@ -26,6 +26,8 @@ public enum Browser: Int, CaseIterable, Codable, Sendable {
     case inAppSafari = 1
     case systemDefault = 2
 
+    public static var `default`: Self { .systemDefault }
+
     public var appScheme: String? {
         switch self {
         case .safari:

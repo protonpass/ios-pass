@@ -90,15 +90,15 @@ private extension SharedPreferences {
     enum Default {
         static let quickTypeBar = true
         static let automaticallyCopyTotpCode = true
-        static let theme: Theme = .dark
-        static let browser: Browser = .systemDefault
+        static let theme: Theme = .default
+        static let browser: Browser = .default
         static let displayFavIcons = true
         static let failedAttemptCount = 0
-        static let localAuthenticationMethod: LocalAuthenticationMethod = .none
+        static let localAuthenticationMethod: LocalAuthenticationMethod = .default
         static let pinCode: String? = nil
         static let fallbackToPasscode = true
-        static let appLockTime: AppLockTime = .twoMinutes
-        static let clipboardExpiration: ClipboardExpiration = .twoMinutes
+        static let appLockTime: AppLockTime = .default
+        static let clipboardExpiration: ClipboardExpiration = .default
         static let shareClipboard = false
     }
 
