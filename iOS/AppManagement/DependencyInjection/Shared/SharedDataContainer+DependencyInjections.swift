@@ -70,4 +70,8 @@ extension SharedDataContainer {
     var symmetricKeyProvider: Factory<SymmetricKeyProvider> {
         self { self.appData() }
     }
+
+    var currentUserIdProvider: Factory<CurrentUserIdProvider> {
+        self { self.appData() }
+    }
 }
