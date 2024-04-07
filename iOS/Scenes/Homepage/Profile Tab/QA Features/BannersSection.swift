@@ -29,14 +29,16 @@ struct BannersSection: View {
 }
 
 private struct ManageBannersView: View {
-    @StateObject private var preferences = resolve(\SharedToolingContainer.preferences)
+    private var manager = resolve(\SharedToolingContainer.preferencesManager)
 
     var body: some View {
         Form {
             Section {
                 Text(verbatim: "In order for changes to take effect, either move app to background or close app")
                 Button(action: {
-                    preferences.dismissedBannerIds.removeAll()
+                    Task { @MainActor in
+                        try? await manager.updateAppPreferences(\.dismissedBannerIds, value: [])
+                    }
                 }, label: {
                     Text(verbatim: "Undismiss all banners")
                 })
@@ -47,12 +49,17 @@ private struct ManageBannersView: View {
                     InfoBannerView(banner: banner, dismiss: {}, action: {})
 
                     let binding = Binding<Bool>(get: {
-                        preferences.dismissedBannerIds.contains(banner.id)
+                        let dismissedIds = manager.appPreferences.value?.dismissedBannerIds ?? []
+                        return dismissedIds.contains(banner.id)
                     }, set: { newValue in
+                        var ids = manager.appPreferences.value?.dismissedBannerIds ?? []
                         if newValue {
-                            preferences.dismissedBannerIds.append(banner.id)
+                            ids.append(banner.id)
                         } else {
-                            preferences.dismissedBannerIds.removeAll(where: { $0 == banner.id })
+                            ids.removeAll(where: { $0 == banner.id })
+                        }
+                        Task { @MainActor in
+                            try? await manager.updateAppPreferences(\.dismissedBannerIds, value: ids)
                         }
                     })
 
