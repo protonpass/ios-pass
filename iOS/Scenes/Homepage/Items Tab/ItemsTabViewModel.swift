@@ -61,7 +61,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
@@ -191,9 +191,10 @@ private extension ItemsTabViewModel {
 
     func localBanners() async -> [InfoBanner] {
         do {
+            let dismissedIds = preferencesManager.appPreferences.value?.dismissedBannerIds ?? []
             var banners = [InfoBanner]()
             for banner in InfoBanner.allCases {
-                if preferences.dismissedBannerIds.contains(where: { $0 == banner.id }) {
+                if dismissedIds.contains(where: { $0 == banner.id }) {
                     continue
                 }
 
@@ -216,8 +217,7 @@ private extension ItemsTabViewModel {
             }
             return banners
         } catch {
-            logger.error(error)
-            router.display(element: .displayErrorBanner(error))
+            handle(error: error)
             return []
         }
     }
@@ -233,6 +233,11 @@ private extension ItemsTabViewModel {
         if items.isEmpty {
             isEditMode = false
         }
+    }
+
+    func handle(error: Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
@@ -279,8 +284,7 @@ extension ItemsTabViewModel {
                 let message = #localized("%lld items moved to trash", items.count)
                 router.display(element: .infosMessage(message, config: .dismissAndRefresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -297,8 +301,7 @@ extension ItemsTabViewModel {
                 let message = #localized("Restored %lld items", items.count)
                 router.display(element: .successMessage(message, config: .dismissAndRefresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -315,8 +318,7 @@ extension ItemsTabViewModel {
                 let message = #localized("Permanently deleted %lld items", items.count)
                 router.display(element: .infosMessage(message, config: .dismissAndRefresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -339,7 +341,17 @@ extension ItemsTabViewModel {
             return
         }
         banners.removeAll(where: { $0 == banner })
-        preferences.dismissedBannerIds.append(banner.id)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                var dismissedIds = preferencesManager.appPreferences.value?.dismissedBannerIds ?? []
+                dismissedIds.append(banner.id)
+                try await preferencesManager.updateAppPreferences(\.dismissedBannerIds,
+                                                                  value: dismissedIds)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     func handleAction(banner: InfoBanner) {

@@ -25,7 +25,7 @@ import UIKit
 
 @MainActor
 final class UrlOpener {
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     weak var rootViewController: UIViewController?
 
     init() {}
@@ -42,7 +42,8 @@ final class UrlOpener {
             return
         }
 
-        switch preferences.browser {
+        let browser = preferencesManager.sharedPreferences.value?.browser ?? .default
+        switch browser {
         case .inAppSafari:
             let safariViewController = SFSafariViewController(url: url, configuration: .init())
             safariViewController.preferredControlTintColor = PassColor.interactionNorm
@@ -53,7 +54,7 @@ final class UrlOpener {
             }
 
         default:
-            if let appScheme = preferences.browser.appScheme {
+            if let appScheme = browser.appScheme {
                 let completeUrl = appScheme + (url.host ?? "") + url.path
                 if let newUrl = URL(string: completeUrl), UIApplication.shared.canOpenURL(newUrl) {
                     UIApplication.shared.open(newUrl)
