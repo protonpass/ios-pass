@@ -39,7 +39,7 @@ public final class ProtonPassDoH: DoH, ServerConfig {
     public init(bundle: Bundle = .main, userDefaults: UserDefaults = kSharedUserDefaults) {
         let environment: ProtonPassEnvironment
         if bundle.isQaBuild {
-            switch kSharedUserDefaults.string(forKey: "pref_environment") {
+            switch userDefaults.string(forKey: "pref_environment") {
             case "black":
                 environment = .black
             case "prod":
