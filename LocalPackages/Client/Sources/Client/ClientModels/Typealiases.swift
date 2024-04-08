@@ -22,7 +22,6 @@
 import Combine
 import Entities
 
-// sourcery: AutoMockable
 public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
 public typealias AppDataProtocol = CredentialProvider & Resettable & UserDataSymmetricKeyProvider
 public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>

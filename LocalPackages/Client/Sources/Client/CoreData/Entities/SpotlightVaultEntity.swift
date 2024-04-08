@@ -22,7 +22,7 @@
 import CoreData
 
 @objc(SpotlightVaultEntity)
-public final class SpotlightVaultEntity: NSManagedObject {}
+final class SpotlightVaultEntity: NSManagedObject {}
 
 extension SpotlightVaultEntity: Identifiable {}
 

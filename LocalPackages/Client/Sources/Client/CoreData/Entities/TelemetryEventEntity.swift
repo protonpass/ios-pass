@@ -22,7 +22,7 @@ import CoreData
 import Entities
 
 @objc(TelemetryEventEntity)
-public final class TelemetryEventEntity: NSManagedObject {}
+final class TelemetryEventEntity: NSManagedObject {}
 
 extension TelemetryEventEntity: Identifiable {}
 

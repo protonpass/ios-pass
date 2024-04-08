@@ -19,30 +19,26 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Core
-import CryptoKit
-import Entities
 import Foundation
-import ProtonCoreKeymaker
 
-public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider {
+public final class CurrentUserIdProviderMock: @unchecked Sendable, CurrentUserIdProvider {
 
     public init() {}
 
-    // MARK: - getSymmetricKey
-    public var getSymmetricKeyThrowableError1: Error?
-    public var closureGetSymmetricKey: () -> () = {}
-    public var invokedGetSymmetricKeyfunction = false
-    public var invokedGetSymmetricKeyCount = 0
-    public var stubbedGetSymmetricKeyResult: SymmetricKey!
+    // MARK: - getCurrentUserId
+    public var getCurrentUserIdThrowableError1: Error?
+    public var closureGetCurrentUserId: () -> () = {}
+    public var invokedGetCurrentUserIdfunction = false
+    public var invokedGetCurrentUserIdCount = 0
+    public var stubbedGetCurrentUserIdResult: String?
 
-    public func getSymmetricKey() throws -> SymmetricKey {
-        invokedGetSymmetricKeyfunction = true
-        invokedGetSymmetricKeyCount += 1
-        if let error = getSymmetricKeyThrowableError1 {
+    public func getCurrentUserId() async throws -> String? {
+        invokedGetCurrentUserIdfunction = true
+        invokedGetCurrentUserIdCount += 1
+        if let error = getCurrentUserIdThrowableError1 {
             throw error
         }
-        closureGetSymmetricKey()
-        return stubbedGetSymmetricKeyResult
+        closureGetCurrentUserId()
+        return stubbedGetCurrentUserIdResult
     }
 }

@@ -21,7 +21,7 @@
 
 import Foundation
 
-public enum AppLockTime: Int, Codable, CaseIterable {
+public enum AppLockTime: Int, Codable, CaseIterable, Sendable {
     case immediately = 0
     case oneMinute = 1
     case twoMinutes = 2
@@ -30,6 +30,8 @@ public enum AppLockTime: Int, Codable, CaseIterable {
     case oneHour = 5
     case fourHours = 6
     case never = 7
+
+    public static var `default`: Self { .twoMinutes }
 
     public var intervalInMinutes: Int? {
         switch self {
