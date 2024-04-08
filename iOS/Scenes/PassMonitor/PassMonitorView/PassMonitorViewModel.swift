@@ -22,9 +22,33 @@
 
 import Client
 import Combine
+import Core
+import DesignSystem
 import Entities
 import Factory
 import Foundation
+import Macro
+import Screens
+
+enum UpsellEntry {
+    case generic
+    case missing2fa
+    case sentinel
+    case darkWebMonitorNoBreach
+    case darkWebMonitorBreach
+
+    var description: String {
+        switch self {
+        case .generic, .missing2fa, .sentinel:
+            #localized("Unlock advanced security features and detailed logs to safeguard your online presence.")
+        case .darkWebMonitorNoBreach:
+            #localized("Dark Web Monitoring is available with a paid plan. Upgrade for immediate access.")
+        case .darkWebMonitorBreach:
+            // swiftlint:disable:next line_length
+            #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
+        }
+    }
+}
 
 @MainActor
 final class PassMonitorViewModel: ObservableObject, Sendable {
@@ -40,6 +64,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let userDefaults: UserDefaults = .standard
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -61,14 +86,26 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func sentinelSheetAction() {
         if isFreeUser {
-            upsell()
+            upsell(entryPoint: .sentinel)
         } else {
             toggleSentinelState()
         }
     }
 
-    func upsell() {
-        router.present(for: .upselling)
+    func upsell(entryPoint: UpsellEntry) {
+        var upsellElements = [UpsellElement]()
+        if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
+            upsellElements.append(UpsellElement(icon: PassIcon.shield2,
+                                                title: #localized("Dark Web monitoring"),
+                                                color: PassColor.interactionNormMajor2))
+        }
+        upsellElements.append(contentsOf: UpsellElement.baseCurrentUpsells)
+
+        let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                       title: #localized("Stay safer online"),
+                                                       description: entryPoint.description,
+                                                       upsellElements: upsellElements)
+        router.present(for: .upselling(configuration: configuration))
     }
 }
 

@@ -48,7 +48,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
             }
             do {
                 if try await reachedVaultLimit() {
-                    router.present(for: .upselling)
+                    router.present(for: .upselling(configuration: .default))
                 } else {
                     complete(with: .new(.defaultNewSharedVault, itemContent))
                 }
