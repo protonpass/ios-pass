@@ -65,8 +65,12 @@ struct LocalAuthenticationModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         ZStack {
+            let authenticationRequired = preferences.localAuthenticationMethod != .none && !authenticated
             content
-            if preferences.localAuthenticationMethod != .none, !authenticated {
+                .opacity(authenticationRequired ? 0 : 1)
+                .disabled(authenticationRequired)
+                .accessibilityHidden(authenticationRequired)
+            if authenticationRequired {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
