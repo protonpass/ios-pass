@@ -3455,6 +3455,24 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld otro inicio de sesión usa esta contraseña"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld otros inicios de sesión usan esta contraseña"
+                }
+              }
+            }
+          }
+        },
         "es-419" : {
           "variations" : {
             "plural" : {
@@ -3473,6 +3491,54 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kirjautumistieto käyttää jo tätä salasanaa"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld muuta kirjautumistietoa käyttää jo tätä salasanaa"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld autre identifiant utilise ce mot de passe."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld autres identifiants utilisent ce mot de passe."
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld entri masuk lainnya menggunakan kata sandi ini"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -3486,6 +3552,66 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld altri login utilizzano questa password"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개의 다른 로그인에 이 비밀번호가 쓰이고 있습니다"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld annen pålogging bruker dette passordet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andre pålogginger bruker dette passordet"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używają %lld dane logowania"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używa %lld danych logowania"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używa %lld dane logowania"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używają %lld dane logowania"
                 }
               }
             }
@@ -6668,7 +6794,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avainkoodi luodaan kirjautumistiedolle \"%@\"."
+            "value" : "Suojausavain luodaan kirjautumistiedolle \"%@\"."
           }
         },
         "fr" : {
@@ -8653,10 +8779,22 @@
             "value" : "Add to monitoring"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir al monitoreo"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Añadir al monitoreo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää valvontaan"
           }
         },
         "fr" : {
@@ -8665,10 +8803,40 @@
             "value" : "Ajouter à la surveillance"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambahkan ke pemantauan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi al monitoraggio"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모니터링에 추가하기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til overvåking"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj do monitoringu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar aos monitorados"
           }
         },
         "sv" : {
@@ -15496,7 +15664,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для аўтаматычнага капіявання кода 2ФА, вам неабходна біяметрычная блакіроўка або наладжванне PIN-кода"
+            "value" : "Для аўтаматычнага капіявання кода 2ФА, вам неабходна біяметрычная блакіроўка або наладжаны PIN-код"
           }
         },
         "da" : {
@@ -21506,7 +21674,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kopioi voimassaoloaika"
+            "value" : "Kopioi voimassaolon päättyminen"
           }
         },
         "fr" : {
@@ -23559,7 +23727,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Luo avainkoodi"
+            "value" : "Luo suojausavain"
           }
         },
         "fr" : {
@@ -31546,7 +31714,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voimassaoloaika kopioitiin"
+            "value" : "Voimassaolon päättyminen kopioitiin"
           }
         },
         "fr" : {
@@ -38783,16 +38951,34 @@
             "value" : "It would be more secure to set up 2FA for this item"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podría mejorar tu seguridad al configurar 2FA para este elemento."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Podría mejorar su seguridad al configurar 2FA para este elemento"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohteelle olisi turvallisempaa määrittää kaksivaiheinen tunnistautuminen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il serait plus sécuritaire d'activer le F2A pour cet élément"
+            "value" : "Il serait plus sûr d'activer l'A2F pour cet élément."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ini akan lebih aman dengan pengaturan 2FA"
           }
         },
         "it" : {
@@ -38801,10 +38987,40 @@
             "value" : "Sarebbe più sicuro impostare la 2FA per questo elemento"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목은 2FA를 설정하는 것이 더욱 안전합니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det ville være sikrere å sette opp 2FA for dette elementet"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zalecamy skonfigurowanie uwierzytelniania dwustopniowego"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seria mais seguro configurar A2F para este item"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Det skulle vara säkrare att ställa in 2FA för detta objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu öğe için 2 adımlı doğrulama ayarlamak daha güvenli olacaktır"
           }
         }
       }
@@ -42832,22 +43048,64 @@
             "value" : "List of all other items from your vaults that use this password."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de todos los demás elementos de tus cajas fuertes que usan esta contraseña."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lista de todos los demás elementos de sus bóvedas que usan esta contraseña."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listaa holviesi kaikki muut tätä salasanaa käyttävät kohteet."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Liste de tous les objets de vos coffres-forts utilisant le même mot de passe."
+            "value" : "Liste de tous les éléments de vos coffres-forts qui utilisent le même mot de passe."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daftar seluruh item pada brankas Anda yang menggunakan kata sandi ini."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elenco di tutti gli altri elementi delle tue casseforti che utilizzano questa password."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 비밀번호를 사용하는 금고 내 다른 모든 항목의 목록입니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste over alle andre elementer fra hvelvene dine som bruker dette passordet."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista innych danych logowania w sejfie, które używają tego hasła."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de todos os outros itens dos seus cofres que usam esta senha."
           }
         },
         "sv" : {
@@ -52443,7 +52701,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avainkoodi"
+            "value" : "Suojausavain"
           }
         },
         "fr" : {
@@ -64326,7 +64584,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Valitse avainkoodi"
+            "value" : "Valitse suojausavain"
           }
         },
         "fr" : {
@@ -68965,7 +69223,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disconnetti"
+            "value" : "Esci dall'account"
           }
         },
         "ja" : {
@@ -73081,7 +73339,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэты ўліковы запіс з'яўляецца ўразлівым. Наведайце сэрвіс і змяніце пароль"
+            "value" : "Гэты ўліковы запіс з'яўляецца ўразлівым. Наведайце сэрвіс і змяніце свой пароль"
           }
         },
         "en" : {
@@ -73090,22 +73348,64 @@
             "value" : "This account is vulnerable, visit the service and change your password"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta cuenta es vulnerable. Visita el servicio y cambia tu contraseña."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta cuenta es vulnerable, visite el servicio y cambie su contraseña"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä tili on vaarassa. Käy vaihtamassa salasanasi palvelun tiliasetuksista."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ce compte est vulnérable. Visitez le service et changez votre mot de passe"
+            "value" : "Ce compte est vulnérable. Visitez le service et changez votre mot de passe."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akun ini terindikasi rentan. Kunjungi layanan keamanan dan ubah kata sandi Anda"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Questo account è vulnerabile, visita il servizio e cambia la tua password"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 계정은 취약합니다. 서비스를 방문하여 비밀번호를 변경하십시오"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne kontoen er sårbar, besøk tjenesten og endre passordet ditt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konto jest zagrożone. Przejdź do usługi i zmień hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essa conta está vulnerável, visite o serviço e mude sua senha"
           }
         },
         "sv" : {
@@ -73282,7 +73582,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэта элемент не адсочваецца"
+            "value" : "Адсутнічае назіранне за гэтым элементам"
           }
         },
         "en" : {
@@ -73291,10 +73591,22 @@
             "value" : "This item is not being monitored"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este elemento no está siendo monitoreado."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este elemento no está siendo monitoreado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohdetta ei valvota"
           }
         },
         "fr" : {
@@ -73303,10 +73615,40 @@
             "value" : "Cet élément n'est pas surveillé"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ini tidak dipantau"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Questo elemento non è monitorato"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목은 모니터링중이 아닙니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette elementet er ikke under overvåking"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element nie będzie monitorowany"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este item não está sendo monitorado"
           }
         },
         "sv" : {
@@ -73992,7 +74334,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Titteli"
+            "value" : "Nimike"
           }
         },
         "fr" : {
@@ -83408,10 +83750,22 @@
             "value" : "Visit the website and generate a unique password for this item"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visita el sitio web y genera una contraseña única para este elemento."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visite el sitio web y genere una contraseña única para este elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa verkkosivusto ja luo kohteelle ainutlaatuinen salasana"
           }
         },
         "fr" : {
@@ -83420,10 +83774,40 @@
             "value" : "Visitez le site internet et générez un mot de passe unique pour cet élément"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunjungi situs web terkait dan hasilkan kata sandi yang unik untuk item ini"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visita il sito web e genera una password univoca per questo elemento"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "웹사이트를 방문하여 이 항목을 위한 고유한 비밀번호를 생성하세요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Besøk nettstedet og generer et unikt passord for dette elementet"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejdź do strony i wygeneruj unikalne hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visite o site e gere uma senha exclusiva para este item"
           }
         },
         "sv" : {
@@ -85793,7 +86177,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sì, disconnettimi"
+            "value" : "Sì, esci"
           }
         },
         "ja" : {
@@ -87801,7 +88185,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verrai disconnesso"
+            "value" : "Uscirai dall'account"
           }
         },
         "ja" : {
