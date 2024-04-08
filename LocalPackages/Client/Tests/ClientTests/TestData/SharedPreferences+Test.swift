@@ -1,6 +1,6 @@
 //
-// Browser.swift
-// Proton Pass - Created on 19/03/2024.
+// SharedPreferences+Test.swift
+// Proton Pass - Created on 03/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,21 +19,21 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
+import Entities
 
-public enum Browser: Int, CaseIterable, Codable, Sendable {
-    case safari = 0
-    case inAppSafari = 1
-    case systemDefault = 2
-
-    public static var `default`: Self { .systemDefault }
-
-    public var appScheme: String? {
-        switch self {
-        case .safari:
-            "com-apple-mobilesafari-tab://"
-        default:
-            nil
-        }
+extension SharedPreferences {
+    static func random() -> Self {
+        .init(quickTypeBar: .random(),
+              automaticallyCopyTotpCode: .random(),
+              theme: Theme.random()!,
+              browser: Browser.random()!,
+              displayFavIcons: .random(),
+              failedAttemptCount: .random(in: 1...100),
+              localAuthenticationMethod: LocalAuthenticationMethod.random()!,
+              pinCode: .random(),
+              fallbackToPasscode: .random(),
+              appLockTime: AppLockTime.random()!,
+              clipboardExpiration: ClipboardExpiration.random()!,
+              shareClipboard: .random())
     }
 }
