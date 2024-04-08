@@ -795,7 +795,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Luo avainkoodi"
+            "value" : "Luo suojausavain"
           }
         },
         "fr" : {
