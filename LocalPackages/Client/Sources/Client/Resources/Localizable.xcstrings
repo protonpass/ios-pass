@@ -238,7 +238,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自動入力拡張機能ログ"
+            "value" : "自動入力拡張機能のログ"
           }
         },
         "ka" : {
@@ -772,7 +772,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V REDU"
+            "value" : "V redu"
           }
         },
         "sv" : {
@@ -1038,7 +1038,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ で検索..."
+            "value" : "%@ 内を検索..."
           }
         },
         "ka" : {
@@ -1516,12 +1516,6 @@
             "value" : "Cerca tra gli elementi fissati"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1587,18 +1581,6 @@
             "state" : "translated",
             "value" : "Sabitlenmiş ögeleri ara"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search pinned items"
-          }
         }
       }
     },
@@ -1608,12 +1590,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Абагуліць журнал пашырэння"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Share extension logs"
           }
         },
         "da" : {
@@ -1674,12 +1650,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Condividi i log dell'estensione"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Share extension logs"
           }
         },
         "ka" : {
@@ -1746,18 +1716,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eklenti günlüklerini paylaş"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Share extension logs"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Share extension logs"
           }
         }
       }

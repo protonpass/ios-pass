@@ -632,12 +632,6 @@
             "state" : "translated",
             "value" : "Сталася помилка"
           }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Error occured"
-          }
         }
       }
     },
@@ -932,7 +926,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V REDU"
+            "value" : "V redu"
           }
         },
         "sv" : {
@@ -1129,12 +1123,6 @@
             "value" : "У гэтым элеменце адбыліся змены. Вяртанне на папярэднюю старонку."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Some changes happened to this item, heading back to the previous page."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1265,18 +1253,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu ögede bazı değişiklikler yapılmış. Önceki sayfaya dönülüyor."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Some changes happened to this item, heading back to the previous page."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Some changes happened to this item, heading back to the previous page."
           }
         }
       }
@@ -1426,18 +1402,6 @@
             "state" : "translated",
             "value" : "Bu öge eskimiş"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This item is obsolete"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This item is obsolete"
-          }
         }
       }
     },
@@ -1518,7 +1482,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "未保存の変更があります。それらを破棄してもよろしいですか?"
+            "value" : "未保存の変更があります。破棄してよろしいですか？"
           }
         },
         "ka" : {
