@@ -307,18 +307,6 @@
             "state" : "translated",
             "value" : "\"%@\" bulunamadı"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\""
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\""
-          }
         }
       }
     },
@@ -328,12 +316,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Немагчыма знайсці \"%@\" у сметніцы"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
           }
         },
         "da" : {
@@ -467,18 +449,6 @@
             "state" : "translated",
             "value" : "\"%@\" çöp kutusunda bulunamadı"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%@\" in Trash"
-          }
         }
       }
     },
@@ -488,12 +458,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Немагчыма знайсці \"%1$@\" у %2$@"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
           }
         },
         "da" : {
@@ -554,12 +518,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossibile trovare \"%1$@\" in %2$@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
           }
         },
         "ka" : {
@@ -626,18 +584,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%1$@\", %2$@ içinde bulunamadı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't find \"%1$@\" in %2$@"
           }
         }
       }
@@ -810,12 +756,6 @@
             "value" : "Стварыць ключ доступу"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -874,12 +814,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea passkey"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
           }
         },
         "ka" : {
@@ -947,30 +881,11 @@
             "state" : "translated",
             "value" : "Geçiş anahtarı oluştur"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
-          }
         }
       }
     },
     "Dark Web monitoring" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dark Web monitoring"
-          }
-        }
-      }
+
     },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
@@ -1133,25 +1048,8 @@
         }
       }
     },
-    "Get Pass Plus" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Get Pass Plus"
-          }
-        }
-      }
-    },
     "Integrated 2FA authenticator" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Integrated 2FA authenticator"
-          }
-        }
-      }
+
     },
     "Learn more about Pass" : {
       "localizations" : {
@@ -1227,12 +1125,6 @@
             "value" : "Scopri di più su Pass"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Learn more about Pass"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1297,12 +1189,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass hakkında ayrıntılı bilgi alın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Learn more about Pass"
           }
         },
         "vi" : {
@@ -1482,12 +1368,6 @@
             "value" : "Увайдзіце, каб скарыстацца пашырэннем для аўтазапаўнення Proton Pass"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass AutoFill extension"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1546,12 +1426,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Effettua l'accesso per usare l'estensione di compilazione automatica di Proton Pass"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass AutoFill extension"
           }
         },
         "ka" : {
@@ -1619,18 +1493,6 @@
             "state" : "translated",
             "value" : "Proton Pass Otomatik Doldurma eklentisini kullanabilmek için oturum açın"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass AutoFill extension"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass AutoFill extension"
-          }
         }
       }
     },
@@ -1640,12 +1502,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Увайдзіце, каб скарыстацца пашырэннем Proton Pass Share"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass Share extension"
           }
         },
         "da" : {
@@ -1706,12 +1562,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Effettua l'accesso per usare l'estensione di condivisione di Proton Pass"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass Share extension"
           }
         },
         "ka" : {
@@ -1779,30 +1629,11 @@
             "state" : "translated",
             "value" : "Proton Pass Paylaşma eklentisini kullanabilmek için oturum açın"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass Share extension"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please sign in to use Proton Pass Share extension"
-          }
         }
       }
     },
     "Proton sentinel" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton sentinel"
-          }
-        }
-      }
+
     },
     "Recents" : {
       "comment" : "Title of recently invited emails section",
@@ -2293,12 +2124,6 @@
             "value" : "Выберыце бягучы запіс уваходу або стварыце новы."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select an existing login or create a new one."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2357,12 +2182,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seleziona un login esistente o creane uno nuovo."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select an existing login or create a new one."
           }
         },
         "ka" : {
@@ -2429,18 +2248,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Var olan bir oturum açma kaydı seçin ya da yeni bir tane oluşturun."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select an existing login or create a new one."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select an existing login or create a new one."
           }
         }
       }
@@ -2519,12 +2326,6 @@
             "value" : "Disconnesso"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Signed out"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2589,18 +2390,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oturum kapatıldı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Signed out"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Signed out"
           }
         }
       }
@@ -2681,8 +2470,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "並べ替え"
           }
         },
         "ka" : {
@@ -2753,27 +2542,14 @@
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "Сортувати"
           }
         }
       }
     },
     "Stay safer online" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stay safer online"
-          }
-        }
-      }
+
     },
     "Suggestions" : {
       "comment" : "Title of suggested emails section when sharing",
@@ -2850,12 +2626,6 @@
             "value" : "Suggerimenti"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggestions"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2920,18 +2690,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öneriler"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggestions"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggestions"
           }
         }
       }
@@ -3097,34 +2855,13 @@
       }
     },
     "Unlimited hide-my-email aliases" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlimited hide-my-email aliases"
-          }
-        }
-      }
+
     },
     "Unlock advanced security features and detailed logs to safeguard your online presence." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlock advanced security features and detailed logs to safeguard your online presence."
-          }
-        }
-      }
+
     },
     "Vault sharing (up to 10 people)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault sharing (up to 10 people)"
-          }
-        }
-      }
+
     }
   },
   "version" : "1.0"

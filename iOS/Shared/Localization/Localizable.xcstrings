@@ -879,36 +879,6 @@
             }
           }
         },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invite remaining"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
-                }
-              }
-            }
-          }
-        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -1078,18 +1048,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld inviti rimanenti"
-                }
-              }
-            }
-          }
-        },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
                 }
               }
             }
@@ -1324,36 +1282,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld davet hakkı kaldı"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invite remaining"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld invites remaining"
                 }
               }
             }
@@ -2087,36 +2015,6 @@
             }
           }
         },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld item moved to trash"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              }
-            }
-          }
-        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -2536,48 +2434,6 @@
               }
             }
           }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld item moved to trash"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld items moved to trash"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -2608,36 +2464,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld элементаў перамешчаны ў сховішча « %2$@ »"
-                }
-              }
-            }
-          }
-        },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld item moved to vault « %2$@ »"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
                 }
               }
             }
@@ -2812,18 +2638,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld elementi spostati nella cassaforte « %2$@ »"
-                }
-              }
-            }
-          }
-        },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
                 }
               }
             }
@@ -3058,48 +2872,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld öge « %2$@ » kasasına taşındı"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld item moved to vault « %2$@ »"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%1$lld items moved to vault « %2$@ »"
                 }
               }
             }
@@ -3635,6 +3407,36 @@
     },
     "%lld other logins use this password" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Яшчэ %lld запісы ўваходу выкарыстоўваюць гэты пароль"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Яшчэ %lld запісаў уваходу выкарыстоўваюць гэты пароль"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Яшчэ %lld запіс уваходу выкарыстоўвае гэты пароль"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Яшчэ %lld запісаў уваходу выкарыстоўваюць гэты пароль"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -3648,6 +3450,60 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld other logins use this password"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld otro inicio de sesión usa esta contraseña"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld otros inicio de sesión usan esta contraseña"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld altro login utilizza questa password"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld altri login utilizzano questa password"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld annan inloggning använd detta lösenord"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andra inloggningar använder detta lösenord"
                 }
               }
             }
@@ -4132,36 +3988,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld deneme hakkı kaldı"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Залишилось %lld спроби"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Залишилось %lld спроб"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld remaining attempt"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Залишилось %lld спроб"
                 }
               }
             }
@@ -4663,36 +4489,6 @@
             }
           }
         },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld результатів"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld результатів"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld result"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld результатів"
-                }
-              }
-            }
-          }
-        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -5184,36 +4980,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Ücretli özellikleri denemek için %lld gün süreniz kaldı"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "У вас залишилося %lld дні, щоб спробувати преміальні функції"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "У вас залишилося %lld днів, щоб спробувати преміальні функції"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld day left to try premium features"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "У вас залишилося %lld днів, щоб спробувати преміальні функції"
                 }
               }
             }
@@ -6065,12 +5831,6 @@
             "value" : "İki adımlı doğrulama gizli anahtarı (tek kullanımlık)"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA secret key (TOTP)"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6085,12 +5845,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Карыстальніцкае поле сакрэтнага ключа 2ФА (TOTP)"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA secret key (TOTP) custom field"
           }
         },
         "da" : {
@@ -6223,18 +5977,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İki adımlı doğrulama anahtarı (tek kullanımlık) özel alanı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA secret key (TOTP) custom field"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "2FA secret key (TOTP) custom field"
           }
         }
       }
@@ -6887,12 +6629,6 @@
             "value" : "Ключ доступу будзе створаны для запісу ўваходу \"%@\"."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "A passkey will be created for the \"%@\" login."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6951,12 +6687,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verrà creata una passkey per il login \"%@\"."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "A passkey will be created for the \"%@\" login."
           }
         },
         "ka" : {
@@ -7023,18 +6753,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%@\" oturum açma kaydı için bir geçiş anahtarı oluşturulacak."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "A passkey will be created for the \"%@\" login."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "A passkey will be created for the \"%@\" login."
           }
         }
       }
@@ -7506,18 +7224,6 @@
             "state" : "translated",
             "value" : "Kullanımda"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Active"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Active"
-          }
         }
       }
     },
@@ -7986,18 +7692,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dosya ekle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add a file"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add a file"
           }
         }
       }
@@ -8811,12 +8505,6 @@
             "value" : "Дадаць адпаведныя файлы і відарысы да справаздачы"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add relevant files or images to the report"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8948,27 +8636,45 @@
             "state" : "translated",
             "value" : "Bildirimle ilgili dosya veya görselleri ekleyin"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add relevant files or images to the report"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add relevant files or images to the report"
-          }
         }
       }
     },
     "Add to monitoring" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадаць у назіранне"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add to monitoring"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir al monitoreo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter à la surveillance"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi al monitoraggio"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lägg till att övervaka"
           }
         }
       }
@@ -9039,7 +8745,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tambahkan nama pengguna atau alamat surel"
+            "value" : "Tambahkan nama pengguna atau alamat email"
           }
         },
         "it" : {
@@ -9279,18 +8985,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ekli dosyalar"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Added files"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Added files"
           }
         }
       }
@@ -11053,7 +10747,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" akan berhenti meneruskan surel ke kotak masuk Anda"
+            "value" : "Alias \"%@\" akan berhenti meneruskan email ke kotak masuk Anda"
           }
         },
         "it" : {
@@ -11157,12 +10851,6 @@
             "value" : "Меню дзеяння псеўданіма"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias action menu"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11223,16 +10911,10 @@
             "value" : "Menu azioni alias"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias action menu"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ფსევდონიმს ქმედების მენიუ"
+            "value" : "ფსევდონიმის ქმედების მენიუ"
           }
         },
         "ko" : {
@@ -11292,19 +10974,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Takma ad eylem menüsü"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias action menu"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias action menu"
+            "value" : "Takma ad işlem menüsü"
           }
         }
       }
@@ -11799,12 +11469,6 @@
             "value" : "Псеўданім не можа пачынацца з кропкі (.)"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias can not start with a dot (.)"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11935,18 +11599,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma ad nokta (.) ile başlayamaz"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias can not start with a dot (.)"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Alias can not start with a dot (.)"
           }
         }
       }
@@ -13239,12 +12891,6 @@
             "value" : "Усё акрамя канфідэнцыяльных даных"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "All except sensitive data"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13356,7 +13002,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Všetky okrem citlivých údajov"
+            "value" : "Všetko okrem citlivých údajov"
           }
         },
         "sl" : {
@@ -13375,18 +13021,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hassas veriler dışındakilerin tümü"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "All except sensitive data"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "All except sensitive data"
           }
         }
       }
@@ -14200,12 +13834,6 @@
             "value" : "Дазваляць элементам з'яўляцца ў радку Пошук"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Allow items to appear in Search"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14336,18 +13964,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ögeler aramada görüntülensin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Allow items to appear in Search"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Allow items to appear in Search"
           }
         }
       }
@@ -14520,12 +14136,6 @@
             "value" : "Вы сапраўды хочаце дадаць сакрэт 2ФА для \"%@\"?"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Are you sure you want to add a 2FA secret to \"%@\"?"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14657,18 +14267,6 @@
             "state" : "translated",
             "value" : "\"%@\" için bir iki adımlı doğrulama parolası eklemek istediğinize emin misiniz?"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Are you sure you want to add a 2FA secret to \"%@\"?"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Are you sure you want to add a 2FA secret to \"%@\"?"
-          }
         }
       }
     },
@@ -14678,12 +14276,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Асацыяваць 2ФА?"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate 2FA?"
           }
         },
         "da" : {
@@ -14816,18 +14408,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İki adımlı doğrulama ilişkilendirilsin mi?"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate 2FA?"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate 2FA?"
           }
         }
       }
@@ -15000,12 +14580,6 @@
             "value" : "Асацыяваць і захаваць"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate and save"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15136,18 +14710,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İlişkilendirip kaydet"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate and save"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Associate and save"
           }
         }
       }
@@ -15320,12 +14882,6 @@
             "value" : "Аўтэнтыфікацыя"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Authenticator"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15383,13 +14939,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autenticatore"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Authenticator"
+            "value" : "Autenticazione"
           }
         },
         "ka" : {
@@ -15448,26 +14998,14 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Authenticator"
+            "state" : "translated",
+            "value" : "Autentiserare"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kimlik doğrulayıcısı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Authenticator"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Authenticator"
+            "value" : "Kimlik doğrulayıcı"
           }
         }
       }
@@ -15870,7 +15408,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロトンパスの自動入力を有効にすることで、アプリやウェブサイトで自動入力が可能です。"
+            "value" : "Proton Pass の自動入力を有効にすることで、アプリやウェブサイトで自動入力が可能です"
           }
         },
         "ka" : {
@@ -15955,10 +15493,130 @@
     },
     "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для аўтаматычнага капіявання кода 2ФА, вам неабходна біяметрычная блакіроўка або наладжванне PIN-кода"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisk kopi af 2FA-koden kræver opsætning af biometrisk lås eller pinkode"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το αυτόματο αντίγραφο του κωδικού 2FA απαιτεί τη ρύθμιση βιομετρικού κλειδώματος ή κωδικού PIN"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatic copy of the 2FA code requires biometric lock or PIN code to be set up"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia automática del código 2FA requiere que se configure el bloqueo biométrico o el código PIN."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia automática del código 2FA requiere que se configure el bloqueo biométrico o el código PIN."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA-koodin automaattinen kopiointi vaatii biometrisen lukituksen tai PIN-koodin määrittämistä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copie automatique du code A2F nécessite la configuration du verrouillage biométrique ou du code PIN."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salinan otomatis kode 2FA memerlukan kunci biometrik atau kode PIN untuk dipasang terlebih dahulu"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia automatica del codice 2FA richiede l'impostazione del codice PIN o del blocco biometrico"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA კოდის ავტომატური ასლი მოითხოვს ბიომეტრიული საკეტის ან PIN კოდის დაყენებას"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA 코드 자동 복사를 설정하려면 생체 인증 및 PIN 코드가 필요합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisk kopi av 2FA-koden krever biometrisk lås eller PIN-kode for å være satt opp"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische kopie van de 2FA-code vereist dat de biometrische vergrendeling of pincode wordt ingesteld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatyczne kopiowanie kodu uwierzytelniającego wymaga ustawienia blokady za pomocą biometrii lub kodu PIN"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cópia automática do código 2FA requer bloqueio biométrico ou código PIN a ser configurado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copierea automată a codului de A2F necesită configurarea pentru blocarea biometrică sau codul PIN"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatická kópia 2FA kódu na vytvorenie vyžaduje biometrický zámok alebo PIN kód"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za samodejno kopiranje kode 2FA je treba nastaviti biometrično zaklepanje ali kodo PIN"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisk kopiering av 2FA-koden kräver biometriskt lås eller PIN-kod för att ställas in"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İki adımlı doğrulama kodunun otomatik olarak kopyalanması için biyometrik kilit ya da PIN kodu ayarlanmış olmalıdır"
           }
         }
       }
@@ -16040,7 +15698,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "オートロック"
+            "value" : "自動ロック"
           }
         },
         "ka" : {
@@ -17483,7 +17141,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "大文字にする"
+            "value" : "先頭を大文字にする"
           }
         },
         "ka" : {
@@ -18112,7 +17770,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nama pemilik kartu"
+            "value" : "Nama pemegang kartu"
           }
         },
         "it" : {
@@ -18124,7 +17782,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カードの名義人名"
+            "value" : "カード名義人"
           }
         },
         "ka" : {
@@ -18993,18 +18651,6 @@
             "state" : "translated",
             "value" : "Tüm dosyaları temizle"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Clear all files"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Clear all files"
-          }
         }
       }
     },
@@ -19497,12 +19143,6 @@
             "value" : "Кланіраваць"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19561,12 +19201,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clona"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
           }
         },
         "ka" : {
@@ -19633,18 +19267,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopyala"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Clone"
           }
         }
       }
@@ -20459,12 +20081,6 @@
             "value" : "Віншуем! \n Ваш доступ пацверджаны"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Congratulations,\n your access has been confirmed"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20595,12 +20211,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tebrikler,\n erişiminiz onaylandı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Congratulations,\n your access has been confirmed"
           }
         },
         "vi" : {
@@ -21579,12 +21189,6 @@
             "value" : "Скапіяваць нумар карткі"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy card number"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21716,18 +21320,6 @@
             "state" : "translated",
             "value" : "Kart numarasını kopyala"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy card number"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy card number"
-          }
         }
       }
     },
@@ -21737,12 +21329,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скапіяваць імя трымальніка карткі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy cardholder name"
           }
         },
         "da" : {
@@ -21796,19 +21382,13 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salin nama pemilik kartu"
+            "value" : "Salin nama pemegang kartu"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copia il nome del titolare della carta"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy cardholder name"
           }
         },
         "ka" : {
@@ -21876,18 +21456,6 @@
             "state" : "translated",
             "value" : "Kart sahibinin adını kopyala"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy cardholder name"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy cardholder name"
-          }
         }
       }
     },
@@ -21897,12 +21465,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скапіяваць тэрмін дзеяння"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy expiration date"
           }
         },
         "da" : {
@@ -21963,12 +21525,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copia la data di scadenza"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy expiration date"
           }
         },
         "ka" : {
@@ -22035,18 +21591,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Son kullanma tarihini kopyala"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy expiration date"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copy expiration date"
           }
         }
       }
@@ -23639,12 +23183,6 @@
             "value" : "Paylaşılacak yeni bir kasa oluştur"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create a new vault to share"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23982,12 +23520,6 @@
             "value" : "Стварыць ключ доступу"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24046,12 +23578,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea passkey"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
           }
         },
         "ka" : {
@@ -24118,18 +23644,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçiş anahtarı oluştur"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Create passkey"
           }
         }
       }
@@ -25559,18 +25073,6 @@
             "state" : "translated",
             "value" : "Geçerli"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Current"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Current"
-          }
         }
       }
     },
@@ -25743,12 +25245,6 @@
             "value" : "Карыстальніцкае поле меню"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Custom field menu"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25807,12 +25303,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Menu campo personalizzato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Custom field menu"
           }
         },
         "ka" : {
@@ -25879,18 +25369,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özel alan menüsü"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Custom field menu"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Custom field menu"
           }
         }
       }
@@ -26045,12 +25523,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Власні поля"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Custom fields"
           }
         }
       }
@@ -26223,12 +25695,6 @@
             "value" : "Абарона ад уцечкі даных"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26287,12 +25753,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Protezione dalla violazione dei dati"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
           }
         },
         "ka" : {
@@ -26359,18 +25819,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Veri sızıntısı koruması"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Data Breach Protection"
           }
         }
       }
@@ -27504,12 +26952,6 @@
             "value" : "Адключыць Proton Sentinel"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Disable Proton Sentinel"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27640,18 +27082,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel kullanılmasın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Disable Proton Sentinel"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Disable Proton Sentinel"
           }
         }
       }
@@ -27882,7 +27312,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unduh semua item Anda lagi supaya Anda tersinkron"
+            "value" : "Unduh kembali seluruh item Anda untuk memastikan agar Anda tersinkron"
           }
         },
         "it" : {
@@ -28124,12 +27554,6 @@
             "value" : "Örnek olarak, kurtarma anahtarı, PIN"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "E.g, Recovery key, PIN"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28145,12 +27569,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Напрыклад, ідэнтыфікатар карыстальніка або нумар рахунка"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "E.g., User ID, Acct number"
           }
         },
         "da" : {
@@ -28283,12 +27701,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Örnek olarak, kullanıcı kimliği, hesap numarası"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "E.g., User ID, Acct number"
           }
         },
         "vi" : {
@@ -29167,7 +28579,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alamat surel"
+            "value" : "Alamat email"
           }
         },
         "it" : {
@@ -29407,18 +28819,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta adresi kopyalandı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Email address copied"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Email address copied"
           }
         }
       }
@@ -30368,18 +29768,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel kullanılsın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Enable Proton Sentinel"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Enable Proton Sentinel"
           }
         }
       }
@@ -31656,12 +31044,6 @@
             "state" : "translated",
             "value" : "Сталася помилка"
           }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Error occured"
-          }
         }
       }
     },
@@ -31671,12 +31053,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выключыць з назірання"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
           }
         },
         "da" : {
@@ -31737,12 +31113,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escludi dal monitoraggio"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
           }
         },
         "ka" : {
@@ -31810,18 +31180,6 @@
             "state" : "translated",
             "value" : "İzlemeye katmama"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exclude from monitoring"
-          }
         }
       }
     },
@@ -31831,12 +31189,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выключаныя элементы"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
           }
         },
         "da" : {
@@ -31897,12 +31249,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elementi esclusi"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
           }
         },
         "ka" : {
@@ -31969,18 +31315,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Katılmayacak ögeler"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Excluded Items"
           }
         }
       }
@@ -32153,12 +31487,6 @@
             "value" : "Тэрмін дзеяння скапіяваны"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Expiration date copied"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32217,12 +31545,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data di scadenza copiata"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Expiration date copied"
           }
         },
         "ka" : {
@@ -32290,18 +31612,6 @@
             "state" : "translated",
             "value" : "Son kullanma tarihi kopyalandı"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Expiration date copied"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Expiration date copied"
-          }
         }
       }
     },
@@ -32311,12 +31621,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скампраметаваныя лісты"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
           }
         },
         "da" : {
@@ -32377,12 +31681,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email esposte"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
           }
         },
         "ka" : {
@@ -32450,18 +31748,6 @@
             "state" : "translated",
             "value" : "Açığa çıkmış e-postalar"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed emails"
-          }
         }
       }
     },
@@ -32471,12 +31757,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скампраметаваныя паролі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
           }
         },
         "da" : {
@@ -32537,12 +31817,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password esposte"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
           }
         },
         "ka" : {
@@ -32610,122 +31884,20 @@
             "state" : "translated",
             "value" : "Açığa çıkmış parolalar"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exposed passwords"
-          }
         }
       }
     },
     "Face ID" : {
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Face ID"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Face ID"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Face ID"
           }
         },
@@ -32741,24 +31913,6 @@
             "value" : "Face ID"
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32768,18 +31922,6 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Face ID"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Face ID"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Face ID"
           }
         }
@@ -32862,7 +32004,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "顔認証が有効になっている"
+            "value" : "Face ID が有効になりました"
           }
         },
         "ka" : {
@@ -34716,12 +33858,6 @@
             "value" : "Генерыраваць унікальныя паролі для павелічэння вашай бяспекі."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34780,12 +33916,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Genera password univoche per aumentare la tua sicurezza."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
           }
         },
         "ka" : {
@@ -34852,18 +33982,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Güvenliğinizi artırmak için benzersiz parolalar oluşturun."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Generate unique passwords to increase your security."
           }
         }
       }
@@ -34933,7 +34051,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dapatkan alamat surel samaran untuk digunakan pada aplikasi baru"
+            "value" : "Dapatkan alamat email samaran untuk digunakan pada aplikasi baru"
           }
         },
         "it" : {
@@ -35037,12 +34155,6 @@
             "value" : "Вярнуцца"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Go back"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35101,12 +34213,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indietro"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Go back"
           }
         },
         "ka" : {
@@ -35173,18 +34279,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geri dön"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Go back"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Go back"
           }
         }
       }
@@ -36158,12 +35252,6 @@
             "value" : "Схаваць нумар карткі"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide card number"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36222,12 +35310,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nascondi il numero della carta"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide card number"
           }
         },
         "ka" : {
@@ -36295,18 +35377,6 @@
             "state" : "translated",
             "value" : "Kart numarasını gizle"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide card number"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide card number"
-          }
         }
       }
     },
@@ -36316,12 +35386,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Схаваць карыстальніцкае поле"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide custom field"
           }
         },
         "da" : {
@@ -36382,12 +35446,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nascondi il campo personalizzato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide custom field"
           }
         },
         "ka" : {
@@ -36454,18 +35512,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özel alanı gizle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide custom field"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide custom field"
           }
         }
       }
@@ -36638,12 +35684,6 @@
             "value" : "Схаваць пароль"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide password"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36702,12 +35742,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nascondi la password"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide password"
           }
         },
         "ka" : {
@@ -36775,18 +35809,6 @@
             "state" : "translated",
             "value" : "Parolayı gizle"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide password"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide password"
-          }
         }
       }
     },
@@ -36796,12 +35818,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Схаваць замацаванне"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide pin"
           }
         },
         "da" : {
@@ -36862,12 +35878,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nascondi il PIN"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide pin"
           }
         },
         "ka" : {
@@ -36933,19 +35943,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pin gizle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide pin"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide pin"
+            "value" : "Pin kodunu gizle"
           }
         }
       }
@@ -36956,12 +35954,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Схаваць код бяспекі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide security code"
           }
         },
         "da" : {
@@ -37022,12 +36014,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nascondi il codice di sicurezza"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide security code"
           }
         },
         "ka" : {
@@ -37094,18 +36080,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Güvenlik kodunu gizle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide security code"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Hide security code"
           }
         }
       }
@@ -37260,12 +36234,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Історія"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "History"
           }
         }
       }
@@ -37575,18 +36543,6 @@
             "state" : "translated",
             "value" : "Proton Pass nasıl kullanılır"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "How to use Proton Pass"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "How to use Proton Pass"
-          }
         }
       }
     },
@@ -37816,7 +36772,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saya ingin melaporkan masalah tentang..."
+            "value" : "Saya ingin melaporkan masalah dengan..."
           }
         },
         "it" : {
@@ -37916,7 +36872,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адразу"
+            "value" : "Неадкладна"
           }
         },
         "cs" : {
@@ -38215,18 +37171,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullanım dışı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Inactive"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Inactive"
           }
         }
       }
@@ -38559,12 +37503,6 @@
             "value" : "Павялічце сваю бяспеку"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Increase your security"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -38695,18 +37633,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Güvenliğinizi artırın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Increase your security"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Increase your security"
           }
         }
       }
@@ -38936,7 +37862,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alamat surel tidak valid"
+            "value" : "Alamat email tidak valid"
           }
         },
         "it" : {
@@ -39109,7 +38035,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無効な接頭辞"
+            "value" : "無効なプレフィックスです"
           }
         },
         "ka" : {
@@ -39176,18 +38102,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ön ek geçersiz"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Invalid prefix"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Invalid prefix"
           }
         }
       }
@@ -39269,7 +38183,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無効な TOTP URI"
+            "value" : "無効な TOTP URI です"
           }
         },
         "ka" : {
@@ -39837,10 +38751,40 @@
     },
     "It would be more secure to set up 2FA for this item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будзе больш бяспечна наладзіць 2ФА для гэтага элемента"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "It would be more secure to set up 2FA for this item"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podría mejorar su seguridad al configurar 2FA para este elemento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il serait plus sécuritaire d'activer le F2A pour cet élément"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sarebbe più sicuro impostare la 2FA per questo elemento"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det skulle vara säkrare att ställa in 2FA för detta objekt"
           }
         }
       }
@@ -39919,12 +38863,6 @@
             "value" : "ID elemento"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39989,18 +38927,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge kimliği"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID"
           }
         }
       }
@@ -40079,12 +39005,6 @@
             "value" : "ID dell'elemento copiato"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID copied"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40149,18 +39069,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge kimliği kopyalandı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID copied"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item ID copied"
           }
         }
       }
@@ -40471,18 +39379,6 @@
             "state" : "translated",
             "value" : "Öge sabitlendi"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item successfully pinned"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item successfully pinned"
-          }
         }
       }
     },
@@ -40632,18 +39528,6 @@
             "state" : "translated",
             "value" : "Ögenin sabitlemesi kaldırıldı"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item successfully unpinned"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item successfully unpinned"
-          }
         }
       }
     },
@@ -40653,12 +39537,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Меню дзеяння элемента"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item's action Menu"
           }
         },
         "da" : {
@@ -40718,13 +39596,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menu azioni dell'elemento"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item's action Menu"
+            "value" : "Menu azioni elemento"
           }
         },
         "ka" : {
@@ -40777,8 +39649,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Item's action Menu"
+            "state" : "translated",
+            "value" : "Meni za dejanja predmetov"
           }
         },
         "sv" : {
@@ -40790,19 +39662,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğenin eylem Menüsü"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item's action Menu"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Item's action Menu"
+            "value" : "Ögenin işlem menüsü"
           }
         }
       }
@@ -40975,12 +39835,6 @@
             "value" : "Меню фільтра элементаў"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filter Menus"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41041,12 +39895,6 @@
             "value" : "Menu filtro elementi"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filter Menus"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41097,8 +39945,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filter Menus"
+            "state" : "translated",
+            "value" : "Meni za filtriranje predmetov"
           }
         },
         "sv" : {
@@ -41110,19 +39958,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğeler filtre Menüleri"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filter Menus"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filter Menus"
+            "value" : "Ögeleri süzme menüleri"
           }
         }
       }
@@ -41134,12 +39970,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Фільтрацыя і сартаванне элементаў меню"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filtering and sort menu"
           }
         },
         "da" : {
@@ -41202,12 +40032,6 @@
             "value" : "Filtraggio degli elementi e menu di ordinamento"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filtering and sort menu"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41258,8 +40082,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filtering and sort menu"
+            "state" : "translated",
+            "value" : "Meni za filtriranje in urejanje predmetov"
           }
         },
         "sv" : {
@@ -41271,19 +40095,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğeleri filtreleme ve sıralama menüsü"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filtering and sort menu"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Items filtering and sort menu"
+            "value" : "Ögeleri süzme ve sıralama menüsü"
           }
         }
       }
@@ -42098,12 +40910,6 @@
             "value" : "Ключ"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Key"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42162,12 +40968,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chiave"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Key"
           }
         },
         "ka" : {
@@ -42234,18 +41034,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anahtar"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Key"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Key"
           }
         }
       }
@@ -42890,166 +41678,6 @@
         }
       }
     },
-    "Last Data Breach Protection Sync:" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Апошняя сінхранізацыя абароны ад уцечкі даных:"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seneste synkronisering af databeskyttelse:"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Letzte Synchronisierung zum Schutz vor Datenmissbrauch:"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Τελευταίος Συγχρονισμός Προστασίας από Παραβίαση Δεδομένων:"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last Data Breach Protection Sync:"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última sincronización de vulneración de datos:"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última sincronización de vulneración de datos:"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viimeisin Tietomurtosuojauksen synkronointi:"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernière synchronisation pour la protection contre les fuites de données :"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Waktu Sinkronisasi Perlindungan Kebocoran Data Terakhir:"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima sincronizzazione della Protezione dalla violazione dei dati:"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ბოლო მონაცემების გაჟონვისგან დაცვის სინქი:"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "마지막 데이터 침해 보호 동기화"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Siste synkronisering av beskyttelse mot datainnbrudd:"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laatste synchronisatie bescherming tegen datalekken:"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ostatnia synchronizacja ochrony przed wyciekiem danych:"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última sincronização da proteção de vulnerabilidade de dados:"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima sincronizare a protecției împotriva divulgării datelor:"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Posledná synchronizácia ochrany pri úniku údajov:"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zadnja sinhronizacija zaščite pred vdori v podatke:"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Senaste synkronisering av skydd mot dataintrång:"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Son veri sızıntısından koruma eşitlemesi:"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Data Breach Protection Sync:"
-          }
-        }
-      }
-    },
     "Last modified" : {
       "localizations" : {
         "be" : {
@@ -43127,7 +41755,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最終更新"
+            "value" : "最終更新日時"
           }
         },
         "ka" : {
@@ -44172,10 +42800,40 @@
     },
     "List of all other items from your vaults that use this password." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спіс усіх іншых элементаў з вашага сховішча, якія выкарыстоўваць гэты пароль."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "List of all other items from your vaults that use this password."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de todos los demás elementos de sus bóvedas que usan esta contraseña."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste de tous les objets de vos coffres-forts utilisant le même mot de passe."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elenco di tutti gli altri elementi delle tue casseforti che utilizzano questa password."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista över alla andra objekt från dina valv som använder detta lösenord."
           }
         }
       }
@@ -44405,7 +43063,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login"
+            "value" : "Entri masuk"
           }
         },
         "it" : {
@@ -44566,7 +43224,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entri masuk dihasilkan"
+            "value" : "Entri masuk dibuat"
           }
         },
         "it" : {
@@ -44669,12 +43327,6 @@
             "value" : "Уваход для %@"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Login for %@"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44709,12 +43361,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inicio de sesión para %@"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Login for %@"
           }
         },
         "fr" : {
@@ -44806,18 +43452,6 @@
             "state" : "translated",
             "value" : "%@ hesabı"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Login for %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Login for %@"
-          }
         }
       }
     },
@@ -44828,12 +43462,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Элементы запісу ўваходу"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Login items"
           }
         },
         "da" : {
@@ -44966,18 +43594,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oturum açma ögeleri"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Login items"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Login items"
           }
         }
       }
@@ -45794,12 +44410,6 @@
             "value" : "Запісы ўваходу з сайтаў, якія маюць двухфактарную аўтэнтыфікацыю даступны, але вы іх пакуль не наладзілі."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45858,12 +44468,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Login che supportano l'autenticazione a due fattori ma in cui non la hai ancora impostata."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
           }
         },
         "ka" : {
@@ -45930,18 +44534,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İki adımlı kimlik doğrulaması bulunan ancak henüz ayarlamadığınız sitelerdeki oturumlar."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
           }
         }
       }
@@ -46410,18 +45002,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesap yönetimi"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Manage account"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Manage account"
           }
         }
       }
@@ -46893,12 +45473,6 @@
             "value" : "Üye sayısı sınırı"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Member Limit"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47236,12 +45810,6 @@
             "value" : "Адсутнічае двухфактарная аўтэнтыфікацыя"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47300,12 +45868,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autenticazione a due fattori mancante"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
           }
         },
         "ka" : {
@@ -47372,18 +45934,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İki adımlı kimlik doğrulama eksik"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Missing two-factor authentication"
           }
         }
       }
@@ -47532,18 +46082,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "AA / YY"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "MM / YY"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "MM / YY"
           }
         }
       }
@@ -49224,12 +47762,6 @@
             "value" : "Nessun log per %@"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No logs for %@"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49294,12 +47826,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ için bir günlük kaydı bulunamadı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No logs for %@"
           }
         },
         "vi" : {
@@ -49595,7 +48121,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bez odomykania"
+            "value" : "Bez zámku"
           }
         },
         "sl" : {
@@ -49638,12 +48164,6 @@
             "value" : "Няма сховішчаў"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No vaults"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49654,12 +48174,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keine Tresore"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No vaults"
           }
         },
         "en" : {
@@ -49702,12 +48216,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessuna cassaforte"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No vaults"
           }
         },
         "ka" : {
@@ -49774,18 +48282,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Henüz bir kasa yok"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No vaults"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No vaults"
           }
         }
       }
@@ -50480,12 +48976,6 @@
             "value" : "Nota para %@"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Note for %@"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50502,12 +48992,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nota per %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Note for %@"
           }
         },
         "ka" : {
@@ -50574,18 +49058,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ notu"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Note for %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Note for %@"
           }
         }
       }
@@ -51467,7 +49939,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "必要なときだけプロトン パスのロックを解除できるようになりました⏤迅速かつ安全に"
+            "value" : "必要な時に、迅速かつ安全に Proton Pass のロックを解除できるようになりました"
           }
         },
         "ka" : {
@@ -52001,7 +50473,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V REDU"
+            "value" : "V redu"
           }
         },
         "sv" : {
@@ -52999,12 +51471,6 @@
             "value" : "Optic ID"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Optic ID"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53062,12 +51528,6 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Optic ID"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Optic ID"
           }
         },
@@ -53135,18 +51595,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optik kimlik"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Optic ID"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Optic ID"
           }
         }
       }
@@ -53800,12 +52248,6 @@
             "value" : "Pass Monitor"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Monitor"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53866,12 +52308,6 @@
             "value" : "Monitor di Pass"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Monitor"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53922,8 +52358,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Monitor"
+            "state" : "translated",
+            "value" : "Nadzor nad Proton Pass"
           }
         },
         "sv" : {
@@ -53935,19 +52371,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass İzleyicisi"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Monitor"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pass Monitor"
+            "value" : "Pass izleyicisi"
           }
         }
       }
@@ -53958,12 +52382,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ключ доступу"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Passkey"
           }
         },
         "da" : {
@@ -54096,18 +52514,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçiş anahtarı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Passkey"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Passkey"
           }
         }
       }
@@ -54450,12 +52856,6 @@
             "value" : "Уставіць"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Paste"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54586,18 +52986,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yapıştır"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Paste"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Paste"
           }
         }
       }
@@ -55069,12 +53457,6 @@
             "value" : "Kalıcı olarak sil"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Permanently delete"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55319,18 +53701,6 @@
             }
           }
         },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
-                }
-              }
-            }
-          }
-        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -55560,48 +53930,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld öge kalıcı olarak silindi"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld item"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Permanently deleted %lld items"
                 }
               }
             }
@@ -55915,18 +54243,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sabitle "
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pin "
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pin "
           }
         }
       }
@@ -56899,12 +55215,6 @@
             "value" : "Звяжыцеся з намі для даследавання праблемы"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please contact us to investigate the issue"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56963,12 +55273,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contattaci per indagare sul problema"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please contact us to investigate the issue"
           }
         },
         "ka" : {
@@ -57035,18 +55339,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorunu araştırmamız için lütfen bizimle görüşün"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please contact us to investigate the issue"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please contact us to investigate the issue"
           }
         }
       }
@@ -57445,12 +55737,6 @@
             "value" : "Effettua nuovamente l'accesso"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please log in again"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57515,12 +55801,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen yeniden oturum açın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Please log in again"
           }
         },
         "vi" : {
@@ -57608,7 +55888,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix"
+            "value" : "プレフィックス"
           }
         },
         "ka" : {
@@ -58815,33 +57095,9 @@
     "Proton Sentinel" : {
       "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Proton Sentinel"
           }
         },
@@ -58851,33 +57107,9 @@
             "value" : "Proton Sentinel"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Proton Sentinel"
           }
         },
@@ -58887,87 +57119,15 @@
             "value" : "Proton Sentinel"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel"
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Proton Sentinel"
           }
         }
@@ -59038,7 +57198,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pilih entri masuk secara cepat dari saran yang tersedia di atas keyboard"
+            "value" : "Pilih item entri masuk secara cepat dari saran yang tertera di atas keyboard"
           }
         },
         "it" : {
@@ -59198,7 +57358,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saran bilah QuickType?"
+            "value" : "Saran bilah QuickType"
           }
         },
         "it" : {
@@ -59621,12 +57781,6 @@
             "value" : "Генерыраваць пароль паўторна"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Regenerate password"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59684,13 +57838,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rigenera la password"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Regenerate password"
+            "value" : "Genera nuovamente la password"
           }
         },
         "ka" : {
@@ -59757,18 +57905,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parolayı yeniden oluştur"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Regenerate password"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Regenerate password"
           }
         }
       }
@@ -60969,12 +59105,6 @@
             "value" : "Reimposta i filtri"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Reset filters"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61039,18 +59169,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Süzgeçleri sıfırla"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Reset filters"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Reset filters"
           }
         }
       }
@@ -61686,12 +59804,6 @@
             "state" : "translated",
             "value" : "Відновити цю версію?"
           }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Restore this version?"
-          }
         }
       }
     },
@@ -61931,18 +60043,6 @@
             }
           }
         },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
-                }
-              }
-            }
-          }
-        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -62176,48 +60276,6 @@
               }
             }
           }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld item"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Restored %lld items"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -62413,36 +60471,6 @@
             }
           }
         },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld time"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              }
-            }
-          }
-        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -62617,18 +60645,6 @@
             }
           }
         },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              }
-            }
-          }
-        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -62701,25 +60717,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld razy"
+                  "value" : "Użyte %lld razy"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld razy"
+                  "value" : "Użyte %lld razy"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld raz"
+                  "value" : "Użyte %lld raz"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ponownie użyty %lld razy"
+                  "value" : "Użyte %lld razy"
                 }
               }
             }
@@ -62862,48 +60878,6 @@
               }
             }
           }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld time"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Reused %lld times"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -62913,12 +60887,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паўторна выкарыстаныя паролі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
           }
         },
         "da" : {
@@ -62979,12 +60947,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password riutilizzate"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
           }
         },
         "ka" : {
@@ -63051,18 +61013,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeniden kullanılan parolalar"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Reused passwords"
           }
         }
       }
@@ -63718,12 +61668,6 @@
             "value" : "Сканіраваць %@"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan %@"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63769,7 +61713,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Analyse %@"
+            "value" : "Analyser %@"
           }
         },
         "id" : {
@@ -63782,12 +61726,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scansiona %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan %@"
           }
         },
         "ka" : {
@@ -63853,19 +61791,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tara %@"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Scan %@"
+            "value" : "%@ tara"
           }
         }
       }
@@ -64199,12 +62125,6 @@
             "value" : "Пошук у 2 самых старых сховішчах"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in oldest 2 vaults"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64263,12 +62183,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerca nelle 2 casseforti più vecchie"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in oldest 2 vaults"
           }
         },
         "ka" : {
@@ -64337,12 +62251,6 @@
             "value" : "En eski 2 kasanızda arayın"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Search in oldest 2 vaults"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64357,12 +62265,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Змесціва з пошукам"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable content"
           }
         },
         "da" : {
@@ -64423,12 +62325,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contenuti ricercabili"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable content"
           }
         },
         "ka" : {
@@ -64496,18 +62392,6 @@
             "state" : "translated",
             "value" : "Aranabilir içerik"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable content"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable content"
-          }
         }
       }
     },
@@ -64517,12 +62401,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сховішчы з пошукам"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable vaults"
           }
         },
         "da" : {
@@ -64583,12 +62461,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Casseforti ricercabili"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable vaults"
           }
         },
         "ka" : {
@@ -64655,18 +62527,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aranabilir kasalar"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable vaults"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Searchable vaults"
           }
         }
       }
@@ -65548,12 +63408,6 @@
             "value" : "Visualizza tutto"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "See all"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65618,18 +63472,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tümünü görüntüle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "See all"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "See all"
           }
         }
       }
@@ -65779,12 +63621,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşılan kasaya bakın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "See the shared vault"
           }
         },
         "vi" : {
@@ -66190,12 +64026,6 @@
             "value" : "Seleziona il contenuto"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Content"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66241,7 +64071,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vybrať Obsah"
+            "value" : "Vybrať obsah"
           }
         },
         "sl" : {
@@ -66260,18 +64090,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İçeriği seçin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Content"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Content"
           }
         }
       }
@@ -66372,7 +64190,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Velg gjenstander"
+            "value" : "Velg elementer"
           }
         },
         "nl" : {
@@ -66423,12 +64241,6 @@
             "value" : "Ögeleri seçin"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select items"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66443,12 +64255,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выбраць ключ доступу"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Passkey"
           }
         },
         "da" : {
@@ -66582,18 +64388,6 @@
             "state" : "translated",
             "value" : "Geçiş anahtarı seçin"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Passkey"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select Passkey"
-          }
         }
       }
     },
@@ -66603,12 +64397,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выбраныя сховішчы"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Selected vaults"
           }
         },
         "da" : {
@@ -66669,12 +64457,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Casseforti selezionate"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Selected vaults"
           }
         },
         "ka" : {
@@ -66742,18 +64524,6 @@
             "state" : "translated",
             "value" : "Seçilmiş kasalar"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Selected vaults"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Selected vaults"
-          }
         }
       }
     },
@@ -66764,12 +64534,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адправіць справаздачу пра памылкі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Send bug report"
           }
         },
         "da" : {
@@ -66829,13 +64593,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invia una segnalazione di errori"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Send bug report"
+            "value" : "Invia segnalazione di errore"
           }
         },
         "ka" : {
@@ -66901,19 +64659,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hata raporu gönder"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Send bug report"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Send bug report"
+            "value" : "Hata bildirimi gönder"
           }
         }
       }
@@ -67087,12 +64833,6 @@
             "value" : "Proton Sentinel - гэта ўдасканаленая праграма абароны ўліковых запісаў, якая падтрымліваецца складанымі сістэмамі штучнага інтэлекту і спецыялістамі, што працуюць дзень і ноч, каб абараніць вас ад зламыснікаў і пагроз бяспекі."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel is an advanced account protection program powered by sophisticated AI systems and specialists working around the clock to protect you from bad actors and security threats."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67151,12 +64891,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel è un programma di protezione avanzata degli account, basato su una sofisticata intelligenza artificiale e specialisti pronti a proteggerti dai malintenzionati in rete e da tutte le minacce alla sicurezza."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel is an advanced account protection program powered by sophisticated AI systems and specialists working around the clock to protect you from bad actors and security threats."
           }
         },
         "ka" : {
@@ -67223,18 +64957,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel, sizi kötü niyetli kişilerden ve güvenlik tehditlerinden korumak için günün her saati çalışan, karmaşık yapay zeka sistemleri ile uzmanlar tarafından desteklenen gelişmiş bir hesap koruma programıdır."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel is an advanced account protection program powered by sophisticated AI systems and specialists working around the clock to protect you from bad actors and security threats."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Proton Sentinel is an advanced account protection program powered by sophisticated AI systems and specialists working around the clock to protect you from bad actors and security threats."
           }
         }
       }
@@ -67475,12 +65197,6 @@
             "value" : "Imposta il livello di accesso per tutti i membri"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Set access level for all members"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67545,18 +65261,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tüm üyelerin erişim düzeyini ayarla"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Set access level for all members"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Set access level for all members"
           }
         }
       }
@@ -67890,12 +65594,6 @@
             "value" : "Наладзіць 2ФА"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Set up 2FA"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68026,18 +65724,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İki adımlı doğrulama kurulumu"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Set up 2FA"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Set up 2FA"
           }
         }
       }
@@ -68427,7 +66113,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bagikan papan klip antara perangkat"
+            "value" : "Bagikan papan klip antar perangkat"
           }
         },
         "it" : {
@@ -68666,12 +66352,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu kasayı paylaş"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Share this vault"
           }
         },
         "vi" : {
@@ -69311,12 +66991,6 @@
             "value" : "Paylaşılmış kasa"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Shared vault"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69494,12 +67168,6 @@
             "value" : "Паказаць сховішча %@"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show %@ vault"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69558,12 +67226,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra la cassaforte %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show %@ vault"
           }
         },
         "ka" : {
@@ -69629,19 +67291,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Göster %@ kasa"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show %@ vault"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show %@ vault"
+            "value" : "%@ kasasını görüntüle"
           }
         }
       }
@@ -69652,12 +67302,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паказаць усе сховішчы"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show all vaults"
           }
         },
         "da" : {
@@ -69718,12 +67362,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra tutte le casseforti"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show all vaults"
           }
         },
         "ka" : {
@@ -69789,19 +67427,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tüm kasaları göster"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show all vaults"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show all vaults"
+            "value" : "Tüm kasaları görüntüle"
           }
         }
       }
@@ -69812,12 +67438,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паказаць нумар карткі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show card number"
           }
         },
         "da" : {
@@ -69878,12 +67498,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra il numero della carta"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show card number"
           }
         },
         "ka" : {
@@ -69949,19 +67563,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kart numarasını göster"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show card number"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show card number"
+            "value" : "Kart numarasını görüntüle"
           }
         }
       }
@@ -69972,12 +67574,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паказаць змесціва ў пошуку"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show content in search"
           }
         },
         "da" : {
@@ -70038,12 +67634,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra il contenuto nella ricerca"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show content in search"
           }
         },
         "ka" : {
@@ -70111,18 +67701,6 @@
             "state" : "translated",
             "value" : "İçerik aramada görüntülensin"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show content in search"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show content in search"
-          }
         }
       }
     },
@@ -70132,12 +67710,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паказаць карыстальніцкае поле"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show custom filed"
           }
         },
         "da" : {
@@ -70198,12 +67770,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra il campo personalizzato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show custom filed"
           }
         },
         "ka" : {
@@ -70269,19 +67835,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Özel alanı göster"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show custom filed"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show custom filed"
+            "value" : "Özel alanı görüntüle"
           }
         }
       }
@@ -70614,12 +68168,6 @@
             "value" : "Паказаць пароль"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show password"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70678,12 +68226,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra la password"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show password"
           }
         },
         "ka" : {
@@ -70749,19 +68291,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parolayı göster"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show password"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show password"
+            "value" : "Parolayı görüntüle"
           }
         }
       }
@@ -70772,12 +68302,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паказаць PIN"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show pin"
           }
         },
         "da" : {
@@ -70838,12 +68362,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra il PIN"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show pin"
           }
         },
         "ka" : {
@@ -70909,19 +68427,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pin göster"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show pin"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show pin"
+            "value" : "Pin kodunu görüntüle"
           }
         }
       }
@@ -70932,12 +68438,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паказаць код бяспекі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show security code"
           }
         },
         "da" : {
@@ -70998,12 +68498,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra il codice di sicurezza"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show security code"
           }
         },
         "ka" : {
@@ -71069,19 +68563,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Güvenlik kodunu göster"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show security code"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show security code"
+            "value" : "Güvenlik kodunu görüntüle"
           }
         }
       }
@@ -71092,12 +68574,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паказаць сметніцу"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show trash"
           }
         },
         "da" : {
@@ -71158,12 +68634,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra il cestino"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show trash"
           }
         },
         "ka" : {
@@ -71229,19 +68699,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Çöp kutusunu göster"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show trash"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Show trash"
+            "value" : "Çöp kutusunu görüntüle"
           }
         }
       }
@@ -71643,8 +69101,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "並べ替え"
           }
         },
         "ka" : {
@@ -71715,14 +69173,8 @@
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "Сортувати"
           }
         }
       }
@@ -72055,12 +69507,6 @@
             "value" : "Падсвяціць"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Spotlight"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -72118,12 +69564,6 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spotlight"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Spotlight"
           }
         },
@@ -72191,18 +69631,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öne çıkanlar"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Spotlight"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Spotlight"
           }
         }
       }
@@ -72272,7 +69700,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mulai menggunakan Proton Pass"
+            "value" : "Mulai gunakan Proton Pass"
           }
         },
         "it" : {
@@ -72284,7 +69712,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Passの使用開始"
+            "value" : "Proton Pass を使用開始"
           }
         },
         "ka" : {
@@ -72432,7 +69860,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Berhenti membagikan alamat surel asli Anda. Sebaliknya, sembunyikan dengan alias surel⏤sebuah fitur eksklusif dalam Proton Pass."
+            "value" : "Berhenti membagikan alamat email asli Anda. Sebaliknya, sembunyikan dengan alias email⏤sebuah fitur eksklusif dalam Proton Pass."
           }
         },
         "it" : {
@@ -72602,12 +70030,6 @@
             "value" : "Sicura"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Strong"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -72672,12 +70094,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Güçlü"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Strong"
           }
         },
         "vi" : {
@@ -74621,12 +72037,6 @@
             "value" : "У псеўданіма занадта доўгі прэфікс"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The alias prefix is too long"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74685,12 +72095,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il prefisso dell'alias è troppo lungo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The alias prefix is too long"
           }
         },
         "ka" : {
@@ -74757,18 +72161,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma ad ön eki çok uzun"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The alias prefix is too long"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The alias prefix is too long"
           }
         }
       }
@@ -74941,12 +72333,6 @@
             "value" : "Наступныя элементы выключаны з"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75005,12 +72391,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I seguenti elementi sono esclusi da"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
           }
         },
         "ka" : {
@@ -75078,18 +72458,6 @@
             "state" : "translated",
             "value" : "Aşağıdaki ögeler şuna katılmayacak"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The following items are excluded from"
-          }
         }
       }
     },
@@ -75100,12 +72468,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Элемент будзе перамешчаны ў новае сховішча"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The item will be moved to the new vault"
           }
         },
         "da" : {
@@ -75166,12 +72528,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'elemento verrà spostato nella nuova cassaforte"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The item will be moved to the new vault"
           }
         },
         "ka" : {
@@ -75238,12 +72594,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge yeni kasaya taşınacak"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The item will be moved to the new vault"
           }
         },
         "vi" : {
@@ -75422,12 +72772,6 @@
             "value" : "Гэтыя ўліковыя запісы з'явяцца ва ўцечцы даных. Неадкладна абнавіце свае ўліковыя даныя."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75486,12 +72830,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Questi account sono stati rilevati in violazioni di dati. Aggiorna immediatamente le tue credenziali."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
           }
         },
         "ka" : {
@@ -75559,18 +72897,6 @@
             "state" : "translated",
             "value" : "Bu hesaplar veri sızıntılarında açığa çıkmış. Kimlik doğrulama bilgilerinizi hemen güncelleyin."
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These accounts appear in data breaches. Update your credentials immediately."
-          }
         }
       }
     },
@@ -75580,12 +72906,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Гэтыя паролі з'явяцца ва ўцечцы даных. Неадкладна абнавіце свае ўліковыя даныя."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
           }
         },
         "da" : {
@@ -75646,12 +72966,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Queste password sono state rilevate in violazioni di dati. Aggiorna immediatamente le tue credenziali."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
           }
         },
         "ka" : {
@@ -75719,18 +73033,6 @@
             "state" : "translated",
             "value" : "Bu parolalar veri sızıntılarında açığa çıkmıış. Kimlik doğrulama bilgilerinizi hemen güncelleyin."
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "These password appear in data breaches. Update your credentials immediately."
-          }
         }
       }
     },
@@ -75742,40 +73044,10 @@
             "value" : "Гэты ўліковы запіс з'яўляецца ўразлівым. Наведайце сэрвіс і змяніце пароль"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denne konto er sårbar, besøg tjenesten og skift din adgangskode"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dieses Konto ist angreifbar, besuche den Dienst und ändere dein Passwort"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αυτός ο λογαριασμός είναι ευάλωτος, επισκεφθείτε την υπηρεσία και αλλάξτε τον κωδικό πρόσβασής σας"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This account is vulnerable, visit the service and change your password"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta cuenta es vulnerable. Visita el servicio y cambia tu contraseña"
           }
         },
         "es-419" : {
@@ -75784,112 +73056,22 @@
             "value" : "Esta cuenta es vulnerable, visite el servicio y cambie su contraseña"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tämä tili on vaarassa, käy palvelussa ja vaihda salasanasi"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce compte est vulnérable. Visitez le service et changez votre mot de passe"
           }
         },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Akun ini terindikasi rentan. Kunjungi layanan keamanan kami dan ubah kata sandi Anda"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Questo account è vulnerabile, visita il servizio e cambia la password"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ეს ანგარიში მოწყვლადია. მიმართეთ სერვისს და შეცვალეთ თქვენი პაროლი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 계정은 취약합니다. 서비스를 방문하여 비밀번호를 변경하십시오"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denne kontoen er sårbar, besøk tjenesten og endre passordet ditt"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dit account is kwetsbaar, bezoek de service en wijzig uw wachtwoord"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To konto jest zagrożone, odwiedź serwis i zmień swoje hasło"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta conta está vulnerável, visite o serviço e altere sua senha"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acest cont este vulnerabil, accesați serviciul și schimbați-vă parola"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tento účet je zraniteľný. Navštívte službu a zmeňte si heslo"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vaš račun je ranljiv, pojdite v nastavitve in spremenite geslo"
+            "value" : "Questo account è vulnerabile, visita il servizio e cambia la tua password"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Detta konto är sårbart, besök tjänsten och ändra ditt lösenord"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu hesapta güvenlik açığı var. Hizmeti ziyaret edin ve parolanızı değiştirin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This account is vulnerable, visit the service and change your password"
           }
         }
       }
@@ -75960,7 +73142,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ini upaya Anda yang terakhir. Anda akan dikeluarkan setelah gagal mengautentikasi lagi."
+            "value" : "Ini adalah upaya Anda yang terakhir. Anda akan dikeluarkan dari akun apabila Anda kembali gagal untuk mengautentikasi."
           }
         },
         "it" : {
@@ -76057,10 +73239,40 @@
     },
     "This item is not being monitored" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэта элемент не адсочваецца"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This item is not being monitored"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este elemento no está siendo monitoreado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cet élément n'est pas surveillé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo elemento non è monitorato"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta objekt övervakas inte"
           }
         }
       }
@@ -76071,12 +73283,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Гэты элемент уваходу ўжо змяшчае сакрэт 2ФА"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This login item already contains a 2FA secret"
           }
         },
         "da" : {
@@ -76209,18 +73415,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu oturum açma ögesinde zaten bir iki adımlı doğrulama parolası var"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This login item already contains a 2FA secret"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This login item already contains a 2FA secret"
           }
         }
       }
@@ -76610,7 +73804,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ini akan menghapus akun Proton dan semua data Anda yang ada, termasuk surel, kalender, dan data yang tersimpan di Drive. Anda tidak akan dapat mengaktifkan ulang akun ini."
+            "value" : "Tindakan ini akan menghapus akun Proton Anda dan seluruh data yang terkandung di dalamnya, termasuk email, kalender, dan data yang tersimpan di Drive. Anda tidak akan dapat mengaktifkan ulang akun ini."
           }
         },
         "it" : {
@@ -76782,7 +73976,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "肩書き"
+            "value" : "タイトル"
           }
         },
         "ka" : {
@@ -76873,12 +74067,6 @@
             "value" : "Загаловак і нататка"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Title and note"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76937,12 +74125,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Titolo e nota"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Title and note"
           }
         },
         "ka" : {
@@ -77009,18 +74191,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Başlık ve not"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Title and note"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Title and note"
           }
         }
       }
@@ -77507,105 +74677,15 @@
     },
     "Touch ID" : {
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Touch ID"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Touch ID"
           }
         },
@@ -77621,24 +74701,6 @@
             "value" : "Touch ID"
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77648,18 +74710,6 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Touch ID"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Touch ID"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Touch ID"
           }
         }
@@ -77742,7 +74792,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Touch ID が有効になっている"
+            "value" : "Touch ID が有効になりました"
           }
         },
         "ka" : {
@@ -79974,7 +77024,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tanpa batasan alias surel"
+            "value" : "Tanpa batasan alias email"
           }
         },
         "it" : {
@@ -80624,12 +77674,6 @@
             "value" : "Non fissare"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Unpin"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -80694,18 +77738,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sabitlemeyi kaldır"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Unpin"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Unpin"
           }
         }
       }
@@ -81015,12 +78047,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasayı güncelle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Update vault"
           }
         },
         "vi" : {
@@ -81359,12 +78385,6 @@
             "value" : "Палепшыце свой тарыфны план, каб выкарыстоўваць больш паштовых скрынь"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade for more mailboxes"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81423,12 +78443,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Effettua l'upgrade per avere più caselle di posta"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade for more mailboxes"
           }
         },
         "ka" : {
@@ -81495,12 +78509,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Daha fazla e-posta kutusu kullanabilmek için tarifenizi yükseltin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade for more mailboxes"
           }
         },
         "vi" : {
@@ -81818,12 +78826,6 @@
             "value" : "Daha fazla kişiyle paylaşmak için tarifenizi yükseltin"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade now to share with more people"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82066,12 +79068,6 @@
             "value" : "Effettua l'upgrade per creare le carte di credito"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade to create credit cards"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82136,12 +79132,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kredi kartı ekleyebilmek için tarifenizi yükseltin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Upgrade to create credit cards"
           }
         },
         "vi" : {
@@ -82377,7 +79367,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gunakan alias surel untuk melindungi kotak masuk dan identitas Anda"
+            "value" : "Gunakan alias email untuk melindungi kotak masuk dan identitas Anda"
           }
         },
         "it" : {
@@ -82640,12 +79630,6 @@
             "value" : "Выкарыстоўваць сістэмны код доступу пры збоі Optic ID"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82704,12 +79688,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usa il codice di accesso di sistema quando Optic ID non funziona"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
           }
         },
         "ka" : {
@@ -82776,18 +79754,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optik kimlik kullanılamadığında sistem parolasını kullanın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Use system passcode when Optic ID fails"
           }
         }
       }
@@ -82960,12 +79926,6 @@
             "value" : "Выкарыстанне сховішча для абагулення гэтага элемента з іншай асобай."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Use vaults to share this item with another person"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83024,12 +79984,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Use le casseforti per condividere questo elemento con un'altra persona"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Use vaults to share this item with another person"
           }
         },
         "ka" : {
@@ -83096,12 +80050,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu ögeyi başka biri ile paylaşmak için kasaları kullanın."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Use vaults to share this item with another person"
           }
         },
         "vi" : {
@@ -83499,7 +80447,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nama pengguna atau alamat surel"
+            "value" : "Nama pengguna atau alamat email"
           }
         },
         "it" : {
@@ -84148,12 +81096,6 @@
             "value" : "La cassaforte è stata trasferita"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault has been transferred"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84218,12 +81160,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasa aktarıldı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault has been transferred"
           }
         },
         "vi" : {
@@ -84308,12 +81244,6 @@
             "value" : "ID cassaforte"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84378,18 +81308,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasa kimliği"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID"
           }
         }
       }
@@ -84468,12 +81386,6 @@
             "value" : "ID della cassforte copiato"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID copied"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84538,18 +81450,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasa kimliği kopyalandı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID copied"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault ID copied"
           }
         }
       }
@@ -84780,7 +81680,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brankas yang dibagikan dengan Anda"
+            "value" : "Terdapat brankas yang dibagikan dengan Anda"
           }
         },
         "it" : {
@@ -85044,12 +81944,6 @@
             "value" : "Сховішчы не могуць змяшчаць больш за 3 карыстальнікі з бясплатным тарыфным планам."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vaults can’t contain more than 3 users with a free plan."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85108,12 +82002,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le casseforti non possono contenere più di 3 utenti con un piano gratuito."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vaults can’t contain more than 3 users with a free plan."
           }
         },
         "ka" : {
@@ -85180,12 +82068,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ücretsiz tarifede kasalara en fazla 3 kişi eklenebilir."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vaults can’t contain more than 3 users with a free plan."
           }
         },
         "vi" : {
@@ -85271,12 +82153,6 @@
             "value" : "Le casseforti non possono contenere più di 10 utenti."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vaults can’t contain more than 10 users."
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85341,12 +82217,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasalara en fazla 10 kullanıcı eklenebilir."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vaults can’t contain more than 10 users."
           }
         },
         "vi" : {
@@ -86005,12 +82875,6 @@
             "value" : "Паглядзець гісторыю"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "View history"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86069,12 +82933,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza la cronologia"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "View history"
           }
         },
         "ka" : {
@@ -86141,18 +82999,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçmişi görüntüle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "View history"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "View history"
           }
         }
       }
@@ -86480,10 +83326,40 @@
     },
     "Visit the website and generate a unique password for this item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наведайце вэб-сайт і згенерыруйце ўнікальны пароль для гэтага элемента"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visit the website and generate a unique password for this item"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visite el sitio web y genere una contraseña única para este elemento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visitez le site internet et générez un mot de passe unique pour cet élément"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visita il sito web e genera una password univoca per questo elemento"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Besök webbplatsen och generera ett unikt lösenord för detta objekt"
           }
         }
       }
@@ -86723,12 +83599,6 @@
             "value" : "Vulnerabile"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vulnerable"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86795,12 +83665,6 @@
             "value" : "Çok zayıf"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vulnerable"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86815,12 +83679,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паглядзець кароткае відэа пра тое, як карыстацца Proton Pass"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Watch a short video on how to use Proton Pass"
           }
         },
         "da" : {
@@ -86885,8 +83743,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Watch a short video on how to use Proton Pass"
+            "state" : "translated",
+            "value" : "短い動画で Proton Pass の使い方を確認"
           }
         },
         "ka" : {
@@ -86953,18 +83811,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass kullanımı ile ilgili kısa bir videoyu izleyin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Watch a short video on how to use Proton Pass"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Watch a short video on how to use Proton Pass"
           }
         }
       }
@@ -87204,12 +84050,6 @@
             "value" : "Debole"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -87276,12 +84116,6 @@
             "value" : "Zayıf"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak"
-          }
-        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -87296,12 +84130,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ненадзейны пароль"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
           }
         },
         "da" : {
@@ -87362,12 +84190,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password deboli"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
           }
         },
         "ka" : {
@@ -87435,18 +84257,6 @@
             "state" : "translated",
             "value" : "Zayıf parolalar"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords"
-          }
         }
       }
     },
@@ -87456,12 +84266,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ненадзейныя паролі лёгка падабраць. Згенерыруйце надзейны пароль, каб абараніць свой уліковы запіс."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
           }
         },
         "da" : {
@@ -87522,12 +84326,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le password deboli sono più facili da indovinare. Genera password complesse per mantenere i tuoi account al sicuro."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
           }
         },
         "ka" : {
@@ -87594,18 +84392,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zayıf parolaların öngörülmesi daha kolaydır. Hesaplarınızı güvende tutmak için güçlü parolalar oluşturun."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe."
           }
         }
       }
@@ -88258,12 +85044,6 @@
             "value" : "Калі элементы перамяшчаюцца паміж сховішчамі, то сістэма захавае да 50 змяненняў, якія выкананы для кожнага элемента"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88324,16 +85104,10 @@
             "value" : "Spostando gli elementi tra le casseforti, conserveremo fino alle ultime 50 modifiche apportate a ciascun elemento"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
-          }
-        },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
+            "state" : "translated",
+            "value" : "სათავსოებს შორის ნივთების გადაადგილებისას ჩვენ შევინარჩუნებთ თითოეულ ნივთზე შესრულებულ ბოლო 50 მოდიფიკაციას"
           }
         },
         "ko" : {
@@ -88380,8 +85154,8 @@
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
+            "state" : "translated",
+            "value" : "Pri premikanju predmetov med trezorji bomo ohranili do zadnjih 50 sprememb, izvedenih na vsakem predmetu"
           }
         },
         "sv" : {
@@ -88393,19 +85167,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğeleri kasalar arasında taşırken, her öğe üzerinde yapılan son 50 değişikliğe kadar koruyacağız"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "When moving items between vaults we will preserve up to the last 50 modifications performed to each item"
+            "value" : "Ögeleri kasalar arasında taşırken, her öge üzerinde yapılmış son 50 değişikliği koruruz"
           }
         }
       }
@@ -89448,7 +86210,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "作成しようとしています"
+            "value" : "作成されるメールアドレス"
           }
         },
         "ka" : {
@@ -89558,36 +86320,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Вы збіраецеся незваротна выдаліць %lld элементаў. Вы сапраўды хочаце гэта зрабіць?"
-                }
-              }
-            }
-          }
-        },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld item irreversibly, are you sure?"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
                 }
               }
             }
@@ -89762,18 +86494,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Stai per eliminare definitivamente %lld elementi. Sei sicuro?"
-                }
-              }
-            }
-          }
-        },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
                 }
               }
             }
@@ -90012,48 +86732,6 @@
               }
             }
           }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld item irreversibly, are you sure?"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -90225,12 +86903,6 @@
             "value" : "У вас няма магчымасці запрашаць людзей па-за межамі вашай арганізацыі. Звяжыцеся з адміністратарам, каб атрымаць дадатковыя звесткі."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90289,12 +86961,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Non puoi invitare persone esterne alla tua organizzazione. Contatta l'amministratore per maggiori informazioni."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
           }
         },
         "ka" : {
@@ -90361,18 +87027,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kuruluşunuz dışındaki kişileri davet edemezsiniz. Ayrıntılı bilgi almak için yönetici ile görüşün."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You can't invite people outside of your organization, contact admin for more info."
           }
         }
       }
@@ -90772,12 +87426,6 @@
             "value" : "Hai raggiunto il limite di utenti in questa cassaforte."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You have reached the limit of users in this vault."
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90842,12 +87490,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu kasada olabilecek en fazla kullanıcı sayısı sınırına ulaştınız."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You have reached the limit of users in this vault."
           }
         },
         "vi" : {
@@ -91083,7 +87725,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anda akan keluar"
+            "value" : "Anda akan keluar dari akun"
           }
         },
         "it" : {
@@ -91347,12 +87989,6 @@
             "value" : "Ваш бягучы дакумент будзе вернуты да версіі ад %@"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current document will revert to the version from %@"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91411,12 +88047,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il tuo documento attuale verrà ripristinato alla versione del %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current document will revert to the version from %@"
           }
         },
         "ka" : {
@@ -91484,18 +88114,6 @@
             "state" : "translated",
             "value" : "Geçerli belgeniz %@ sürümüne döndürülecek"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current document will revert to the version from %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current document will revert to the version from %@"
-          }
         }
       }
     },
@@ -91505,12 +88123,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Бягучая версія вашай праграмы больш не падтрымліваецца. Абнавіце праграму да апошняй версіі."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current version of the app is no longer supported. Please update to the latest version."
           }
         },
         "da" : {
@@ -91564,19 +88176,13 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Versi aplikasi saat ini tidak lagi didukung. Silakan perbarui ke versi terbaru."
+            "value" : "Versi aplikasi Anda saat ini sudah tidak lagi didukung. Silakan perbarui aplikasi ke versi terbaru."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Questa versione dell'app non è più supportata. Aggiornala alla versione più recente."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current version of the app is no longer supported. Please update to the latest version."
           }
         },
         "ka" : {
@@ -91644,18 +88250,6 @@
             "state" : "translated",
             "value" : "Kullandığınız uygulama sürümü artık desteklenmiyor. Lütfen son sürüme güncelleyin."
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current version of the app is no longer supported. Please update to the latest version."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your current version of the app is no longer supported. Please update to the latest version."
-          }
         }
       }
     },
@@ -91665,12 +88259,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вашы даныя з'явяцца ва ўцечцы даных. Палепшыце свой уліковы запіс, каб убачыць якія іменна."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
           }
         },
         "da" : {
@@ -91731,12 +88319,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I tuoi dati sono stati rilevati in violazioni di dati, effettua l'upgrade per vedere quali."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
           }
         },
         "ka" : {
@@ -91804,18 +88386,6 @@
             "state" : "translated",
             "value" : "Verileriniz veri sızıntılarında görünüyor. Hangileri olduğunu görmek için tarifenizi yükseltin."
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your data appears in data breaches, upgrade to see which ones."
-          }
         }
       }
     },
@@ -91826,12 +88396,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваш тарыфны план дазваляе выкарыстоўваць элементы з вашага першага сховішча ў якасці аўтазапаўнення."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
           }
         },
         "da" : {
@@ -91892,12 +88456,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il tuo piano consente di usare la compilazione automatica solamente con gli elementi nelle prime casseforti."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
           }
         },
         "ka" : {
@@ -91964,12 +88522,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tarifeniz otomatik doldurma için yalnızca ilk kasanızdaki ögelerin kullanılmasına izin veriyor."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
           }
         },
         "vi" : {
@@ -92045,19 +88597,13 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sesi Anda telah berakhir"
+            "value" : "Sesi Anda telah kedaluwarsa"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "La tua sessione è scaduta"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your session is expired"
           }
         },
         "ka" : {
@@ -92124,12 +88670,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oturumunuzun süresi dolmuş"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your session is expired"
           }
         },
         "vi" : {
