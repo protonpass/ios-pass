@@ -30,22 +30,22 @@ import XCTest
 
 final class LocalSharedPreferencesDatasourceTests: XCTestCase {
     var keychainMockProvider: KeychainProtocolMockProvider!
-    var symmetricKeyMockProvider: SymmetricKeyProviderMockProvider!
+    var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
     var sut: LocalSharedPreferencesDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
         keychainMockProvider = .init()
         keychainMockProvider.setUp()
-        symmetricKeyMockProvider = .init()
-        symmetricKeyMockProvider.setUp()
-        sut = LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyMockProvider.getProvider(),
+        symmetricKeyProviderMockFactory = .init()
+        symmetricKeyProviderMockFactory.setUp()
+        sut = LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                                keychain: keychainMockProvider.getKeychain())
     }
 
     override func tearDown() {
         keychainMockProvider = nil
-        symmetricKeyMockProvider = nil
+        symmetricKeyProviderMockFactory = nil
         sut = nil
         super.tearDown()
     }
