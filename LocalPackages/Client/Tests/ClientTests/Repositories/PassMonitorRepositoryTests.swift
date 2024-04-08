@@ -30,29 +30,31 @@ import ProtonCoreServices
 import XCTest
 
 final class PassMonitorRepositoryTests: XCTestCase {
-    var symmetricKeyMockProvider: SymmetricKeyProviderMockProvider!
+    var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
     var itemRepository: ItemRepositoryProtocolMock!
     var sut: PassMonitorRepositoryProtocol!
 
     override func setUp() {
         super.setUp()
-        symmetricKeyMockProvider = .init()
-        symmetricKeyMockProvider.setUp()
+        symmetricKeyProviderMockFactory = .init()
+        symmetricKeyProviderMockFactory.setUp()
         itemRepository = ItemRepositoryProtocolMock()
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
         sut = PassMonitorRepository(itemRepository: itemRepository, 
-                                    symmetricKeyProvider: symmetricKeyMockProvider.getProvider())
+                                    symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider())
     }
 
     override func tearDown() {
+        symmetricKeyProviderMockFactory = nil
+        itemRepository = nil
         sut = nil
         super.tearDown()
     }
     
     func createEncryptedLoginItems(weakness: [SecurityWeakness], addStrong: Bool = true) -> [SymmetricallyEncryptedItem] {
         var items = [SymmetricallyEncryptedItem]()
-        let key = symmetricKeyMockProvider.key
+        let key = symmetricKeyProviderMockFactory.key
 
         for weakness in weakness {
             switch weakness {
@@ -159,7 +161,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
         let items = createEncryptedLoginItems(weakness: [.reusedPasswords, .reusedPasswords], addStrong: false)
         let item = items.first!
         itemRepository.stubbedGetActiveLogInItemsResult = items
-        let key = symmetricKeyMockProvider.key
+        let key = symmetricKeyProviderMockFactory.key
 
         let reusedItems = try await sut.getItemsWithSamePassword(item: item.getItemContent(symmetricKey: key))
         XCTAssertEqual(reusedItems.count, 1)
