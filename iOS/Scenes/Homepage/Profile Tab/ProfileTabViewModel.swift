@@ -285,7 +285,9 @@ private extension ProfileTabViewModel {
         switch preferences.localAuthenticationMethod {
         case .none:
             localAuthenticationMethod = .none
-            automaticallyCopyTotpCode = false
+            if automaticallyCopyTotpCode {
+                automaticallyCopyTotpCode = false
+            }
         case .biometric:
             do {
                 let biometryType = try checkBiometryType(policy: policy)
