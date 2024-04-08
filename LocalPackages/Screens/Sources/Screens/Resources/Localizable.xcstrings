@@ -885,7 +885,14 @@
       }
     },
     "Dark Web monitoring" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web monitoring"
+          }
+        }
+      }
     },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
@@ -1049,7 +1056,14 @@
       }
     },
     "Integrated 2FA authenticator" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integrated 2FA authenticator"
+          }
+        }
+      }
     },
     "Learn more about Pass" : {
       "localizations" : {
@@ -1633,7 +1647,14 @@
       }
     },
     "Proton sentinel" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton sentinel"
+          }
+        }
+      }
     },
     "Recents" : {
       "comment" : "Title of recently invited emails section",
@@ -2549,7 +2570,14 @@
       }
     },
     "Stay safer online" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay safer online"
+          }
+        }
+      }
     },
     "Suggestions" : {
       "comment" : "Title of suggested emails section when sharing",
@@ -2855,13 +2883,34 @@
       }
     },
     "Unlimited hide-my-email aliases" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited hide-my-email aliases"
+          }
+        }
+      }
     },
     "Unlock advanced security features and detailed logs to safeguard your online presence." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock advanced security features and detailed logs to safeguard your online presence."
+          }
+        }
+      }
     },
     "Vault sharing (up to 10 people)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault sharing (up to 10 people)"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
