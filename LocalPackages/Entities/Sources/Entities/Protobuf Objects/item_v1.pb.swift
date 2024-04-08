@@ -83,6 +83,24 @@ public struct ProtonPassItemV1_ItemNote {
   public init() {}
 }
 
+public struct ProtonPassItemV1_PasskeyCreationData {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var osName: String = String()
+
+  public var osVersion: String = String()
+
+  public var deviceName: String = String()
+
+  public var appVersion: String = String()
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
 public struct ProtonPassItemV1_Passkey {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -112,9 +130,20 @@ public struct ProtonPassItemV1_Passkey {
 
   public var userHandle: Data = Data()
 
+  public var creationData: ProtonPassItemV1_PasskeyCreationData {
+    get {return _creationData ?? ProtonPassItemV1_PasskeyCreationData()}
+    set {_creationData = newValue}
+  }
+  /// Returns true if `creationData` has been explicitly set.
+  public var hasCreationData: Bool {return self._creationData != nil}
+  /// Clears the value of `creationData`. Subsequent reads from it will return its default value.
+  public mutating func clearCreationData() {self._creationData = nil}
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
+
+  fileprivate var _creationData: ProtonPassItemV1_PasskeyCreationData? = nil
 }
 
 public struct ProtonPassItemV1_ItemLogin {
@@ -465,6 +494,7 @@ public struct ProtonPassItemV1_Item {
 #if swift(>=5.5) && canImport(_Concurrency)
 extension ProtonPassItemV1_CardType: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemNote: @unchecked Sendable {}
+extension ProtonPassItemV1_PasskeyCreationData: @unchecked Sendable {}
 extension ProtonPassItemV1_Passkey: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemLogin: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemAlias: @unchecked Sendable {}
@@ -516,6 +546,56 @@ extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._Messa
   }
 }
 
+extension ProtonPassItemV1_PasskeyCreationData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".PasskeyCreationData"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "os_name"),
+    2: .standard(proto: "os_version"),
+    3: .standard(proto: "device_name"),
+    4: .standard(proto: "app_version"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.osName) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.osVersion) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.deviceName) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.appVersion) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.osName.isEmpty {
+      try visitor.visitSingularStringField(value: self.osName, fieldNumber: 1)
+    }
+    if !self.osVersion.isEmpty {
+      try visitor.visitSingularStringField(value: self.osVersion, fieldNumber: 2)
+    }
+    if !self.deviceName.isEmpty {
+      try visitor.visitSingularStringField(value: self.deviceName, fieldNumber: 3)
+    }
+    if !self.appVersion.isEmpty {
+      try visitor.visitSingularStringField(value: self.appVersion, fieldNumber: 4)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_PasskeyCreationData, rhs: ProtonPassItemV1_PasskeyCreationData) -> Bool {
+    if lhs.osName != rhs.osName {return false}
+    if lhs.osVersion != rhs.osVersion {return false}
+    if lhs.deviceName != rhs.deviceName {return false}
+    if lhs.appVersion != rhs.appVersion {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Passkey"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -531,6 +611,7 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     10: .same(proto: "note"),
     11: .standard(proto: "credential_id"),
     12: .standard(proto: "user_handle"),
+    13: .standard(proto: "creation_data"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -551,12 +632,17 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
       case 10: try { try decoder.decodeSingularStringField(value: &self.note) }()
       case 11: try { try decoder.decodeSingularBytesField(value: &self.credentialID) }()
       case 12: try { try decoder.decodeSingularBytesField(value: &self.userHandle) }()
+      case 13: try { try decoder.decodeSingularMessageField(value: &self._creationData) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.keyID.isEmpty {
       try visitor.visitSingularStringField(value: self.keyID, fieldNumber: 1)
     }
@@ -593,6 +679,9 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     if !self.userHandle.isEmpty {
       try visitor.visitSingularBytesField(value: self.userHandle, fieldNumber: 12)
     }
+    try { if let v = self._creationData {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 13)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -609,6 +698,7 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
     if lhs.note != rhs.note {return false}
     if lhs.credentialID != rhs.credentialID {return false}
     if lhs.userHandle != rhs.userHandle {return false}
+    if lhs._creationData != rhs._creationData {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
