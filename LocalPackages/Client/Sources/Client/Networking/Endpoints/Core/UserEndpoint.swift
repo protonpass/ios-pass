@@ -29,11 +29,11 @@ public struct GetUserResponse: Decodable, Sendable {
 
 extension User: @unchecked Sendable {}
 
-public struct GetUserEndpoint: Endpoint {
-    public typealias Response = GetUserResponse
+struct GetUserEndpoint: Endpoint {
+    typealias Response = GetUserResponse
 
-    public typealias Body = EmptyRequest
+    typealias Body = EmptyRequest
 
-    public let debugDescription = "Get user info"
-    public let path = "/users"
+    let debugDescription = "Get user info"
+    let path = "/users"
 }
