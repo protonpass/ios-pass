@@ -1,5 +1,5 @@
 //
-// SymmetricKeyProviderMockProvider.swift
+// SymmetricKeyProviderMockFactory.swift
 // Proton Pass - Created on 04/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,7 +23,7 @@ import Client
 import ClientMocks
 import CryptoKit
 
-final class SymmetricKeyProviderMockProvider {
+final class SymmetricKeyProviderMockFactory {
     let key = SymmetricKey.random()
     private var provider: (any SymmetricKeyProvider)?
 
