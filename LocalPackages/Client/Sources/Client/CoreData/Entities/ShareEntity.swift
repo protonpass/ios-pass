@@ -22,7 +22,7 @@ import CoreData
 import Foundation
 
 @objc(ShareEntity)
-public final class ShareEntity: NSManagedObject {}
+final class ShareEntity: NSManagedObject {}
 
 extension ShareEntity: Identifiable {}
 

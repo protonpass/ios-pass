@@ -80,6 +80,7 @@ let package = Package(name: "Client",
                                       dependencies: ["Client",
                                                      .product(name: "CoreMocks", package: "Core"),
                                                      .product(name: "EntitiesMocks", package: "Entities"),
-                                                     "ClientMocks"
+                                                     "ClientMocks",
+                                                     .product(name: "ProtonCoreCryptoGoImplementation", package: "protoncore_ios"),
                                                     ])
                       ])

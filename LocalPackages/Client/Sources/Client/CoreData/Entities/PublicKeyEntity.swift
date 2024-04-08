@@ -23,7 +23,7 @@ import Entities
 import Foundation
 
 @objc(PublicKeyEntity)
-public class PublicKeyEntity: NSManagedObject {}
+final class PublicKeyEntity: NSManagedObject {}
 
 extension PublicKeyEntity: Identifiable {}
 
