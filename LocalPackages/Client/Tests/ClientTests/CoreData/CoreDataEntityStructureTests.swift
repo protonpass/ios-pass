@@ -162,4 +162,10 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "shareMode", on: sut, hasType: .integer64)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
+
+    func testUserPreferencesEntity() {
+        let sut = entity(byName: "UserPreferencesEntity")
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
+        verifyAttribute(named: "encryptedContent", on: sut, hasType: .binaryData)
+    }
 }

@@ -22,7 +22,7 @@ import CoreData
 import Entities
 
 @objc(ItemEntity)
-public class ItemEntity: NSManagedObject {}
+final class ItemEntity: NSManagedObject {}
 
 extension ItemEntity: Identifiable {}
 
