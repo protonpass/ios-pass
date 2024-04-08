@@ -884,16 +884,6 @@
         }
       }
     },
-    "Dark Web monitoring" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dark Web monitoring"
-          }
-        }
-      }
-    },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "localizations" : {
@@ -1051,16 +1041,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vì lý do bảo mật, truy cập của bạn cần được xác nhận"
-          }
-        }
-      }
-    },
-    "Integrated 2FA authenticator" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Integrated 2FA authenticator"
           }
         }
       }
@@ -1642,16 +1622,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass Paylaşma eklentisini kullanabilmek için oturum açın"
-          }
-        }
-      }
-    },
-    "Proton sentinel" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton sentinel"
           }
         }
       }
@@ -2569,16 +2539,6 @@
         }
       }
     },
-    "Stay safer online" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stay safer online"
-          }
-        }
-      }
-    },
     "Suggestions" : {
       "comment" : "Title of suggested emails section when sharing",
       "localizations" : {
@@ -2878,36 +2838,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thử tìm kiếm bằng cách sử dụng cách viết hoặc từ khóa khác"
-          }
-        }
-      }
-    },
-    "Unlimited hide-my-email aliases" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlimited hide-my-email aliases"
-          }
-        }
-      }
-    },
-    "Unlock advanced security features and detailed logs to safeguard your online presence." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlock advanced security features and detailed logs to safeguard your online presence."
-          }
-        }
-      }
-    },
-    "Vault sharing (up to 10 people)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault sharing (up to 10 people)"
           }
         }
       }

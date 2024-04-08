@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Entities
+import Screens
 import SwiftUI
 
 struct NavigationConfiguration {
@@ -62,7 +63,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case acceptRejectInvite(UserInvite)
     case vaultCreateEdit(vault: Vault?)
     case upgradeFlow
-    case upselling
+    case upselling(configuration: UpsellingViewConfiguration)
     case logView(module: PassModule)
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
