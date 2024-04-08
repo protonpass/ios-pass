@@ -97,7 +97,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     }
 
     @AppStorage("wordCount", store: kSharedUserDefaults)
-    var wordCount: Double = 4 { didSet { if wordCount != oldValue { regenerate() } } }
+    var wordCount: Double = 5 { didSet { if wordCount != oldValue { regenerate() } } }
 
     @AppStorage("capitalizingWords", store: kSharedUserDefaults)
     var capitalizingWords = true { didSet { regenerate(forceRefresh: false) } }
