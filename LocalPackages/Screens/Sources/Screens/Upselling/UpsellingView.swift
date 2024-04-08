@@ -22,12 +22,44 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
+public struct UpsellElement: Sendable, Hashable, Identifiable {
+    public let id = UUID().uuidString
+    let icon: UIImage
+    let title: String
+    let color: UIColor
+
+    public init(icon: UIImage, title: String, color: UIColor) {
+        self.icon = icon
+        self.title = title
+        self.color = color
+    }
+}
+
+public struct UpsellingViewConfiguration: Sendable, Hashable {
+    let icon: UIImage
+    let title: String
+    let description: String
+    let upsellElements: [UpsellElement]
+
+    public init(icon: UIImage,
+                title: String,
+                description: String,
+                upsellElements: [UpsellElement]) {
+        self.icon = icon
+        self.title = title
+        self.description = description
+        self.upsellElements = upsellElements
+    }
+}
+
 public struct UpsellingView: View {
     @Environment(\.dismiss) private var dismiss
     private let onUpgrade: () -> Void
+    private let configuration: UpsellingViewConfiguration
 
-    public init(onUpgrade: @escaping () -> Void) {
+    public init(configuration: UpsellingViewConfiguration, onUpgrade: @escaping () -> Void) {
         self.onUpgrade = onUpgrade
+        self.configuration = configuration
     }
 
     public var body: some View {
@@ -43,43 +75,31 @@ public struct UpsellingView: View {
 private extension UpsellingView {
     var mainContainer: some View {
         VStack(alignment: .center) {
-            Image(uiImage: PassIcon.passPlus)
+            Image(uiImage: configuration.icon)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: .infinity)
 
-            Text("Stay safer online", bundle: .module)
+            Text(configuration.title)
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
 
-            Text("Unlock advanced security features and detailed logs to safeguard your online presence.",
-                 bundle: .module)
+            Text(configuration.description)
                 .padding(.bottom)
                 .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
 
             VStack {
-                perkRow(title: "Proton sentinel",
-                        icon: IconProvider.user,
-                        iconTintColor: PassColor.interactionNormMajor2)
-                perkRow(title: "Dark Web monitoring",
-                        icon: PassIcon.shield2,
-                        iconTintColor: PassColor.interactionNormMajor2)
-                perkRow(title: "Integrated 2FA authenticator",
-                        icon: IconProvider.lock,
-                        iconTintColor: PassColor.interactionNormMajor2)
-                perkRow(title: "Unlimited hide-my-email aliases",
-                        icon: IconProvider.alias,
-                        iconTintColor: PassColor.interactionNormMajor2)
-                perkRow(title: "Vault sharing (up to 10 people)",
-                        icon: IconProvider.userPlus,
-                        iconTintColor: PassColor.interactionNormMajor2)
+                ForEach(configuration.upsellElements) { element in
+                    perkRow(title: element.title,
+                            icon: element.icon,
+                            iconTintColor: element.color)
+                }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
             .padding(.horizontal, DesignConstant.sectionPadding * 2)
             .roundedDetailSection()
-
             Spacer()
 
             CapsuleTextButton(title: "Get Pass Plus",
@@ -96,7 +116,7 @@ private extension UpsellingView {
         }
     }
 
-    private func perkRow(title: LocalizedStringKey, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {
+    private func perkRow(title: String, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {
         Label(title: {
             Text(title)
                 .minimumScaleFactor(0.75)
@@ -110,8 +130,4 @@ private extension UpsellingView {
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
-
-#Preview {
-    UpsellingView(onUpgrade: {})
 }

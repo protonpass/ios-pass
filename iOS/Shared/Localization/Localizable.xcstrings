@@ -25687,6 +25687,26 @@
         }
       }
     },
+    "Dark Web monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web monitoring"
+          }
+        }
+      }
+    },
+    "Dark Web Monitoring is available with a paid plan. Upgrade for immediate access." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring is available with a paid plan. Upgrade for immediate access."
+          }
+        }
+      }
+    },
     "Data Breach Protection" : {
       "localizations" : {
         "be" : {
@@ -57092,6 +57112,16 @@
         }
       }
     },
+    "Proton sentinel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web monitoring"
+          }
+        }
+      }
+    },
     "Proton Sentinel" : {
       "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
       "localizations" : {
@@ -69795,6 +69825,16 @@
         }
       }
     },
+    "Stay safer online" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay safer online"
+          }
+        }
+      }
+    },
     "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." : {
       "localizations" : {
         "be" : {
@@ -77119,6 +77159,16 @@
         }
       }
     },
+    "Unlimited hide-my-email aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web monitoring"
+          }
+        }
+      }
+    },
     "Unlock" : {
       "localizations" : {
         "be" : {
@@ -77275,6 +77325,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mở khóa"
+          }
+        }
+      }
+    },
+    "Unlock advanced security features and detailed logs to safeguard your online presence." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock advanced security features and detailed logs to safeguard your online presence."
           }
         }
       }
@@ -81771,6 +81831,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kho lưu trữ được chia sẽ với bạn"
+          }
+        }
+      }
+    },
+    "Vault sharing (up to 10 people)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault sharing (up to 10 people)"
           }
         }
       }
@@ -88385,6 +88455,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verileriniz veri sızıntılarında görünüyor. Hangileri olduğunu görmek için tarifenizi yükseltin."
+          }
+        }
+      }
+    },
+    "Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions."
           }
         }
       }

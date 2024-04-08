@@ -369,8 +369,8 @@ extension HomepageCoordinator {
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
                     startUpgradeFlow()
-                case .upselling:
-                    startUpsellingFlow()
+                case let .upselling(configuration):
+                    startUpsellingFlow(configuration: configuration)
                 case let .vaultCreateEdit(vault: vault):
                     createEditVaultView(vault: vault)
                 case let .logView(module: module):
@@ -720,10 +720,10 @@ extension HomepageCoordinator {
         }
     }
 
-    func startUpsellingFlow() {
+    func startUpsellingFlow(configuration: UpsellingViewConfiguration) {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            let view = UpsellingView { [weak self] in
+            let view = UpsellingView(configuration: configuration) { [weak self] in
                 guard let self else {
                     return
                 }
@@ -855,7 +855,7 @@ extension HomepageCoordinator {
             do {
                 let plan = try await accessRepository.getPlan()
                 if plan.isFreeUser {
-                    startUpsellingFlow()
+                    startUpsellingFlow(configuration: .default)
                 } else {
                     let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
                     present(view)
