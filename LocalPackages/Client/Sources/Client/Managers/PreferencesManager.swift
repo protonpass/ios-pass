@@ -231,13 +231,16 @@ public extension Publisher {
     /// Filter update events of a given property and return the updated value of the property
     func filter<T, V>(_ keyPath: KeyPath<T, V>) -> AnyPublisher<V, Failure>
         where Output == PreferencesUpdate<T> {
-        compactMap { update in
-            guard keyPath == update.keyPath as? KeyPath<T, V>,
-                  let value = update.value as? V else {
-                assertionFailure("keyPath and value type should be matched")
+        compactMap { update -> V? in
+            guard keyPath == update.keyPath as? KeyPath<T, V> else {
                 return nil
             }
-            return value
+
+            if let optional = update.value as? (any AnyOptional), optional.isNil {
+                return optional as? V
+            }
+
+            return update.value as? V
         }
         .eraseToAnyPublisher()
     }

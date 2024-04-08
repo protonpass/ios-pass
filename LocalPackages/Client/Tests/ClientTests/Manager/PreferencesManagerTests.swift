@@ -20,22 +20,23 @@
 //
 
 @testable import Client
+import ClientMocks
 import CoreMocks
 import Combine
 import CryptoKit
 import Entities
 import XCTest
-import ClientMocks
 
 final class PreferencesManagerTest: XCTestCase {
     var currentUserIdProvider: CurrentUserIdProviderMock!
     var keychainMockProvider: KeychainProtocolMockProvider!
     var symmetricKeyMockProvider: SymmetricKeyProviderMockProvider!
     var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocol!
+    var lastAppPreferences: AppPreferences!
     var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
     var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
     var sut: PreferencesManagerProtocol!
-    var cancellable: AnyCancellable!
+    var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
@@ -58,6 +59,8 @@ final class PreferencesManagerTest: XCTestCase {
         LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyMockProvider.getProvider(),
                                        databaseService: DatabaseService(inMemory: true))
 
+        cancellables = .init()
+
         sut = PreferencesManager(currentUserIdProvider: currentUserIdProvider,
                                  appPreferencesDatasource: appPreferencesDatasource,
                                  sharedPreferencesDatasource: sharedPreferencesDatasource,
@@ -71,7 +74,7 @@ final class PreferencesManagerTest: XCTestCase {
         userPreferencesDatasource = nil
         sharedPreferencesDatasource = nil
         sut = nil
-        cancellable = nil
+        cancellables = nil
         super.tearDown()
     }
 }
@@ -88,13 +91,14 @@ extension PreferencesManagerTest {
         try await sut.setUp()
         let expectation = XCTestExpectation(description: "Should receive update event")
         let newValue = Int.random(in: 1...100)
-        cancellable = sut.appPreferencesUpdates
+        sut.appPreferencesUpdates
             .filter(\.createdItemsCount)
             .sink { value in
                 if value == newValue {
                     expectation.fulfill()
                 }
             }
+            .store(in: &cancellables)
 
         // When
         try await sut.updateAppPreferences(\.createdItemsCount, value: newValue)
@@ -122,22 +126,38 @@ extension PreferencesManagerTest {
     func testReceiveEventWhenUpdatingSharedPreferences() async throws {
         // Given
         try await sut.setUp()
-        let expectation = XCTestExpectation(description: "Should receive update event")
-        let newValue = try XCTUnwrap(AppLockTime.random())
-        cancellable = sut.sharedPreferencesUpdates
+
+        let expectationAppLockTime = XCTestExpectation(description: "Should receive update event")
+        let newAppLockTime = try XCTUnwrap(AppLockTime.random())
+        sut.sharedPreferencesUpdates
             .filter(\.appLockTime)
             .sink { value in
-                if value == newValue {
-                    expectation.fulfill()
+                if value == newAppLockTime {
+                    expectationAppLockTime.fulfill()
                 }
             }
+            .store(in: &cancellables)
+
+        let expectationPinCode = XCTestExpectation(description: "Should receive update event")
+        // Explicitly test nil to see if we can receive events for nullable values
+        let newPinCode: String? = nil
+        sut.sharedPreferencesUpdates
+            .filter(\.pinCode)
+            .sink { value in
+                if value == newPinCode {
+                    expectationPinCode.fulfill()
+                }
+            }
+            .store(in: &cancellables)
 
         // When
-        try await sut.updateSharedPreferences(\.appLockTime, value: newValue)
+        try await sut.updateSharedPreferences(\.appLockTime, value: newAppLockTime)
+        try await sut.updateSharedPreferences(\.pinCode, value: newPinCode)
 
         // Then
-        XCTAssertEqual(sut.sharedPreferences.value?.appLockTime, newValue)
-        await fulfillment(of: [expectation], timeout: 1)
+        XCTAssertEqual(sut.sharedPreferences.value?.appLockTime, newAppLockTime)
+        XCTAssertEqual(sut.sharedPreferences.value?.pinCode, newPinCode)
+        await fulfillment(of: [expectationAppLockTime, expectationPinCode], timeout: 1)
     }
 
     func testRemoveSharedPreferences() async throws {
@@ -160,13 +180,14 @@ extension PreferencesManagerTest {
         try await sut.setUp()
         let expectation = XCTestExpectation(description: "Should receive update event")
         let newValue = try XCTUnwrap(SpotlightSearchableContent.random())
-        cancellable = sut.userPreferencesUpdates
+        sut.userPreferencesUpdates
             .filter(\.spotlightSearchableContent)
             .sink { value in
                 if value == newValue {
                     expectation.fulfill()
                 }
             }
+            .store(in: &cancellables)
 
         // When
         try await sut.updateUserPreferences(\.spotlightSearchableContent, value: newValue)
