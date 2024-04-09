@@ -23668,6 +23668,26 @@
         }
       }
     },
+    "Create strong passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create strong passwords"
+          }
+        }
+      }
+    },
+    "Create unique passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create unique passwords"
+          }
+        }
+      }
+    },
     "Create vault" : {
       "localizations" : {
         "be" : {
@@ -31223,6 +31243,16 @@
         }
       }
     },
+    "Excluded items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded items"
+          }
+        }
+      }
+    },
     "Excluded Items" : {
       "localizations" : {
         "be" : {
@@ -37383,6 +37413,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mã PIN không chính xác."
+          }
+        }
+      }
+    },
+    "Increase your security" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increase your security"
           }
         }
       }
@@ -58710,6 +58750,16 @@
         }
       }
     },
+    "Requires immediate action" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requires immediate action"
+          }
+        }
+      }
+    },
     "Resend invitation" : {
       "localizations" : {
         "be" : {
@@ -72750,6 +72800,16 @@
         }
       }
     },
+    "These items remain at risk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These items remain at risk"
+          }
+        }
+      }
+    },
     "These password appear in data breaches. Update your credentials immediately." : {
       "localizations" : {
         "be" : {
@@ -84266,6 +84326,16 @@
         }
       }
     },
+    "Weak Passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak Passwords"
+          }
+        }
+      }
+    },
     "Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe." : {
       "localizations" : {
         "be" : {
@@ -87197,6 +87267,16 @@
         }
       }
     },
+    "You don't have any weak passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any weak passwords"
+          }
+        }
+      }
+    },
     "You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription." : {
       "localizations" : {
         "be" : {
@@ -87983,6 +88063,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn được mời vào một kho lưu trữ. Chạm vào để biết thêm thông tin."
+          }
+        }
+      }
+    },
+    "You're security is on point" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're security is on point"
           }
         }
       }
