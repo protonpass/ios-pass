@@ -128,7 +128,7 @@ extension EditableVaultListViewModel {
             setShareInviteVault(with: .existing(vault))
             router.present(for: .sharingFlow(.none))
         } else {
-            router.present(for: .upselling(configuration: .default))
+            router.present(for: .upselling(.default))
         }
     }
 
