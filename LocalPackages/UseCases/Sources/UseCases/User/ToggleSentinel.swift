@@ -23,23 +23,27 @@
 import Client
 
 public protocol ToggleSentinelUseCase: Sendable {
-    func execute(for id: String) async throws
+    func execute() async throws -> Bool
 }
 
 public extension ToggleSentinelUseCase {
-    func callAsFunction(for id: String) async throws {
-        try await execute(for: id)
+    func callAsFunction() async throws -> Bool {
+        try await execute()
     }
 }
 
 public final class ToggleSentinel: ToggleSentinelUseCase {
     private let settingsService: any UserSettingsRepositoryProtocol
+    private let userDataProvider: any UserDataProvider
 
-    public init(userSettingsProtocol: any UserSettingsRepositoryProtocol) {
+    public init(userSettingsProtocol: any UserSettingsRepositoryProtocol,
+                userDataProvider: any UserDataProvider) {
         settingsService = userSettingsProtocol
+        self.userDataProvider = userDataProvider
     }
 
-    public func execute(for id: String) async throws {
-        try await settingsService.toggleSentinel(for: id)
+    public func execute() async throws -> Bool {
+        let userId = try userDataProvider.getUserId()
+        return try await settingsService.toggleSentinel(for: userId)
     }
 }

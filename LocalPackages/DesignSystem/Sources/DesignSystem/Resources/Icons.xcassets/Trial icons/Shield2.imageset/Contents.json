@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-shield-2.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

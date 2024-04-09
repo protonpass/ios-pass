@@ -22,20 +22,51 @@
 
 import Client
 import Combine
+import Core
+import DesignSystem
 import Entities
 import Factory
 import Foundation
+import Macro
+import Screens
+
+enum UpsellEntry {
+    case generic
+    case missing2fa
+    case sentinel
+    case darkWebMonitorNoBreach
+    case darkWebMonitorBreach
+
+    var description: String {
+        switch self {
+        case .generic, .missing2fa, .sentinel:
+            #localized("Unlock advanced security features and detailed logs to safeguard your online presence.")
+        case .darkWebMonitorNoBreach:
+            #localized("Dark Web Monitoring is available with a paid plan. Upgrade for immediate access.")
+        case .darkWebMonitorBreach:
+            // swiftlint:disable:next line_length
+            #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
+        }
+    }
+}
 
 @MainActor
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
-    @Published private(set) var lastUpdate: String?
+    @Published var isSentinelActive = false
+    @Published private(set) var updatingSentinel = false
+    @Published var showSentinelSheet = false
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
+    private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
+
+    private let userDefaults: UserDefaults = .standard
+
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -53,6 +84,55 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
             router.display(element: .displayErrorBanner(error))
         }
     }
+
+    func sentinelSheetAction() {
+        if isFreeUser {
+            upsell(entryPoint: .sentinel)
+        } else {
+            toggleSentinelState()
+        }
+    }
+
+    func upsell(entryPoint: UpsellEntry) {
+        var upsellElements = [UpsellElement]()
+        if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
+            upsellElements.append(UpsellElement(icon: PassIcon.shield2,
+                                                title: #localized("Dark Web Monitoring"),
+                                                color: PassColor.interactionNormMajor2))
+        }
+        upsellElements.append(contentsOf: UpsellElement.baseCurrentUpsells)
+
+        let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                       title: #localized("Stay safer online"),
+                                                       description: entryPoint.description,
+                                                       upsellElements: upsellElements)
+        router.present(for: .upselling(configuration))
+    }
+}
+
+// MARK: - Sentinel
+
+extension PassMonitorViewModel {
+    func toggleSentinelState() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                updatingSentinel = false
+            }
+            do {
+                updatingSentinel = true
+                isSentinelActive = try await toggleSentinel()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func showSentinelInformation() {
+        router.navigate(to: .urlPage(urlString: "https://proton.me/support/proton-sentinel"))
+    }
 }
 
 private extension PassMonitorViewModel {
@@ -63,6 +143,7 @@ private extension PassMonitorViewModel {
             }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
+                isSentinelActive = await getSentinelStatus()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }

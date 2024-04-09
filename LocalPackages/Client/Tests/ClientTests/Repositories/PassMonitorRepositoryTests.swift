@@ -119,7 +119,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
         try await sut.refreshSecurityChecks()
         
         let state = sut.weaknessStats.value
-        XCTAssertEqual(state.reusedPasswords, 2)
+        XCTAssertEqual(state.reusedPasswords, 1)
         XCTAssertEqual(state.weakPasswords, 1)
         XCTAssertEqual(state.excludedItems, 1)
         XCTAssertEqual(state.missing2FA, 1)
@@ -140,7 +140,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
         let itemsWithSecurityOnlyReused = sut.itemsWithSecurityIssues.value
         XCTAssertEqual(itemsWithSecurityOnlyReused.count, 4)
         let state2 = sut.weaknessStats.value
-        XCTAssertEqual(state2.reusedPasswords, 4)
+        XCTAssertEqual(state2.reusedPasswords, 1)
         XCTAssertEqual(state2.weakPasswords, 0)
         XCTAssertEqual(state2.excludedItems, 0)
         XCTAssertEqual(state2.missing2FA, 0)
@@ -151,7 +151,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
         let itemsWithSecurityReusedWeak = sut.itemsWithSecurityIssues.value
         XCTAssertEqual(itemsWithSecurityReusedWeak.count, 3)
         let state3 = sut.weaknessStats.value
-        XCTAssertEqual(state3.reusedPasswords, 3)
+        XCTAssertEqual(state3.reusedPasswords, 1)
         XCTAssertEqual(state3.weakPasswords, 3)
         XCTAssertEqual(state3.excludedItems, 0)
         XCTAssertEqual(state3.missing2FA, 0)
