@@ -26504,6 +26504,7 @@
       }
     },
     "Data Breach Protection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -32556,6 +32557,7 @@
       }
     },
     "Exposed emails" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -32692,6 +32694,7 @@
       }
     },
     "Exposed passwords" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35085,6 +35088,9 @@
           }
         }
       }
+    },
+    "Get notified if your email, password or other personal data was leaked." : {
+
     },
     "Go back" : {
       "comment" : "accessibility",
@@ -48487,6 +48493,9 @@
           }
         }
       }
+    },
+    "No breaches detected" : {
+
     },
     "No logs" : {
       "localizations" : {
@@ -74069,6 +74078,7 @@
       }
     },
     "These accounts appear in data breaches. Update your credentials immediately." : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -74305,6 +74315,7 @@
       }
     },
     "These password appear in data breaches. Update your credentials immediately." : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -77908,6 +77919,9 @@
           }
         }
       }
+    },
+    "Two-factor authentication" : {
+
     },
     "Type" : {
       "localizations" : {
@@ -90648,6 +90662,7 @@
       }
     },
     "Your data appears in data breaches, upgrade to see which ones." : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
