@@ -30,7 +30,7 @@ public struct StaticToggleView: View {
     public var body: some View {
         HStack {
             Rectangle()
-                .foregroundColor(isOn ? PassColor.interactionNorm.toColor : .gray)
+                .foregroundStyle(isOn ? PassColor.interactionNorm.toColor : UIColor.secondarySystemFill.toColor)
                 .frame(width: 50, height: 30)
                 .cornerRadius(15)
                 .overlay(Circle()

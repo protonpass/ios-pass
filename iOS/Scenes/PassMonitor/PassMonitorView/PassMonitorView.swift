@@ -22,6 +22,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import SwiftUI
 
 enum SecureRowType {
@@ -118,7 +119,7 @@ struct PassMonitorView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
-            .showSpinner(viewModel.loading)
+            .showSpinner(viewModel.loading || viewModel.updatingSentinel)
             .sheet(isPresented: $viewModel.showSentinelSheet) {
                 SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
                                   sentinelActive: viewModel.isSentinelActive,
@@ -145,7 +146,6 @@ private extension PassMonitorView {
                             title: "Proton Sentinel",
                             subTitle: "Advanced account protection program",
                             action: { viewModel.showSentinelSheet = true })
-                    .showSpinner(viewModel.updatingSentinel)
                 Section {
                     VStack(spacing: DesignConstant.sectionPadding) {
                         weakPasswordsRow(weaknessStats.weakPasswords)
@@ -260,7 +260,7 @@ private extension PassMonitorView {
         passMonitorRow(rowType: weakPasswords > 0 ? .warning : .success,
                        title: "Weak Passwords",
                        subTitle: weakPasswords > 0 ? "Create strong passwords" :
-                           "you don't have any weak passwords",
+                           "You don't have any weak passwords",
                        info: "\(weakPasswords)",
                        action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
     }
@@ -300,8 +300,8 @@ private extension PassMonitorView {
 
 private extension PassMonitorView {
     func passMonitorRow(rowType: SecureRowType,
-                        title: String,
-                        subTitle: String?,
+                        title: LocalizedStringKey,
+                        subTitle: LocalizedStringKey?,
                         info: String,
                         action: @escaping () -> Void) -> some View {
         Button(action: action) {
