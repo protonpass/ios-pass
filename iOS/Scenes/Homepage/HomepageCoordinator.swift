@@ -30,6 +30,8 @@ import Factory
 import Macro
 import MBProgressHUD
 import ProtonCoreAccountDeletion
+import ProtonCoreAccountRecovery
+import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUIFoundations
@@ -1242,6 +1244,18 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                                }
                                                            }
                                                        })
+    }
+
+    func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void) {
+        let asSheet = shouldShowAsSheet()
+        let viewModel = AccountRecoveryView
+            .ViewModel(accountRepository: AccountRecoveryRepository(apiService: apiManager.apiService))
+        viewModel.externalAccountRecoverySetter = { accountRecovery in
+            completion(accountRecovery)
+        }
+
+        let view = AccountRecoveryView(viewModel: viewModel)
+        showView(view: view, asSheet: asSheet)
     }
 }
 
