@@ -90,6 +90,7 @@ struct CreateEditNoteView: View {
                 CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
                                       isSaveable: viewModel.isSaveable,
                                       isSaving: viewModel.isSaving,
+                                      canScanDocuments: viewModel.canScanDocuments,
                                       itemContentType: viewModel.itemContentType(),
                                       shouldUpgrade: false,
                                       onGoBack: {
