@@ -7205,154 +7205,6 @@
         }
       }
     },
-    "Active" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Актыўны"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktivní"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiv"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiv"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ενεργό"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activa"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Käytössä"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Actif"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktif"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Attivo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アクティブ"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "აქტიური"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "활성"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiv"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Actief"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Włączony"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ativa"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activ"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktívny"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktivno"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiv"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kullanımda"
-          }
-        }
-      }
-    },
     "Add" : {
       "localizations" : {
         "be" : {
@@ -23816,6 +23668,26 @@
         }
       }
     },
+    "Create strong passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create strong passwords"
+          }
+        }
+      }
+    },
+    "Create unique passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create unique passwords"
+          }
+        }
+      }
+    },
     "Create vault" : {
       "localizations" : {
         "be" : {
@@ -25851,6 +25723,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tối"
+          }
+        }
+      }
+    },
+    "Dark Web Monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring"
+          }
+        }
+      }
+    },
+    "Dark Web Monitoring is available with a paid plan. Upgrade for immediate access." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring is available with a paid plan. Upgrade for immediate access."
           }
         }
       }
@@ -31347,6 +31239,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İzlemeye katmama"
+          }
+        }
+      }
+    },
+    "Excluded items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded items"
           }
         }
       }
@@ -37195,154 +37097,6 @@
         }
       }
     },
-    "Inactive" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Неактыўны"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neaktivní"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inaktiv"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inaktiv"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ανενεργό"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inactive"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inactivo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inactiva"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pois käytöstä"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inactif"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nonaktif"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non attivo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "非アクティブ"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "არააქტიური"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "비활성화"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inaktiv"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inactief"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wyłączony"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inativa"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inactiv"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neaktívny"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neaktivno"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inaktiv"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kullanım dışı"
-          }
-        }
-      }
-    },
     "Include numbers" : {
       "localizations" : {
         "be" : {
@@ -37665,142 +37419,10 @@
     },
     "Increase your security" : {
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Павялічце сваю бяспеку"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Forøg din sikkerhed"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erhöhe deine Sicherheit"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αυξήστε την ασφάλειά σας"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Increase your security"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mejora tu seguridad"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aumente su seguridad"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vahvista suojaustasi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Améliorez votre sécurité"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tingkatkan keamanan Anda"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aumenta la tua sicurezza"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セキュリティを強化する"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გაზარდეთ თქვენი უსაფრთხოების დონე"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "보안 향상하기"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Øk sikkerheten din"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verhoog uw veiligheid"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zwiększ swoje bezpieczeństwo"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aumente sua segurança"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Măriți-vă securitatea"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zvýšte svoju bezpečnosť"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Povečajte svojo varnost"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öka din säkerhet"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Güvenliğinizi artırın"
           }
         }
       }
@@ -41890,142 +41512,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tự động điền mới nhất"
-          }
-        }
-      }
-    },
-    "Last Data Breach Protection Sync:" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Апошняя сінхранізацыя абароны ад уцечкі даных:"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seneste synkronisering af databeskyttelse:"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Letzte Synchronisierung zum Schutz vor Datenmissbrauch:"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Τελευταίος Συγχρονισμός Προστασίας από Παραβίαση Δεδομένων:"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last Data Breach Protection Sync:"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última sincronización de vulneración de datos:"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última sincronización de vulneración de datos:"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viimeisin Tietomurtosuojauksen synkronointi:"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernière synchronisation pour la protection contre les fuites de données :"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Waktu Sinkronisasi Perlindungan Kebocoran Data Terakhir:"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima sincronizzazione della Protezione dalla violazione dei dati:"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ბოლო მონაცემების გაჟონვისგან დაცვის სინქი:"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "마지막 데이터 침해 보호 동기화"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Siste synkronisering av beskyttelse mot datainnbrudd:"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laatste synchronisatie bescherming tegen datalekken:"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ostatnia synchronizacja ochrony przed wyciekiem danych:"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última sincronização da proteção de vulnerabilidade de dados:"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima sincronizare a protecției împotriva divulgării datelor:"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Posledná synchronizácia ochrany pri úniku údajov:"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zadnja sinhronizacija zaščite pred vdori v podatke:"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Senaste synkronisering av skydd mot dataintrång:"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Son veri sızıntısından koruma eşitlemesi:"
           }
         }
       }
@@ -53232,6 +52718,16 @@
         }
       }
     },
+    "Passwords Health" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwords Health"
+          }
+        }
+      }
+    },
     "Paste" : {
       "localizations" : {
         "be" : {
@@ -59250,6 +58746,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã gửi báo cáo thành công"
+          }
+        }
+      }
+    },
+    "Requires immediate action" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requires immediate action"
           }
         }
       }
@@ -70179,6 +69685,16 @@
         }
       }
     },
+    "Stay safer online" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay safer online"
+          }
+        }
+      }
+    },
     "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." : {
       "localizations" : {
         "be" : {
@@ -73280,6 +72796,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu hesaplar veri sızıntılarında açığa çıkmış. Kimlik doğrulama bilgilerinizi hemen güncelleyin."
+          }
+        }
+      }
+    },
+    "These items remain at risk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These items remain at risk"
           }
         }
       }
@@ -77587,6 +77113,16 @@
         }
       }
     },
+    "Unlimited hide-my-email aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited hide-my-email aliases"
+          }
+        }
+      }
+    },
     "Unlock" : {
       "localizations" : {
         "be" : {
@@ -77743,6 +77279,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mở khóa"
+          }
+        }
+      }
+    },
+    "Unlock advanced security features and detailed logs to safeguard your online presence." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock advanced security features and detailed logs to safeguard your online presence."
           }
         }
       }
@@ -82243,6 +81789,16 @@
         }
       }
     },
+    "Vault sharing (up to 10 people)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault sharing (up to 10 people)"
+          }
+        }
+      }
+    },
     "Vault updated" : {
       "localizations" : {
         "be" : {
@@ -84766,6 +84322,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zayıf parolalar"
+          }
+        }
+      }
+    },
+    "Weak Passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak Passwords"
           }
         }
       }
@@ -87701,6 +87267,16 @@
         }
       }
     },
+    "You don't have any weak passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any weak passwords"
+          }
+        }
+      }
+    },
     "You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription." : {
       "localizations" : {
         "be" : {
@@ -88491,6 +88067,16 @@
         }
       }
     },
+    "You're security is on point" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're security is on point"
+          }
+        }
+      }
+    },
     "Your current document will revert to the version from %@" : {
       "localizations" : {
         "be" : {
@@ -88895,6 +88481,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verileriniz veri sızıntılarında görünüyor. Hangileri olduğunu görmek için tarifenizi yükseltin."
+          }
+        }
+      }
+    },
+    "Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions."
           }
         }
       }

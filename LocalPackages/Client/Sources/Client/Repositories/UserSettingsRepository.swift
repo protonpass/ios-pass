@@ -23,7 +23,7 @@ import Foundation
 public protocol UserSettingsRepositoryProtocol: Sendable {
     func getSettings(for id: String) async -> UserSettings
     func refreshSettings(for id: String) async throws
-    func toggleSentinel(for id: String) async throws
+    func toggleSentinel(for id: String) async throws -> Bool
 }
 
 public actor UserSettingsRepository: UserSettingsRepositoryProtocol {
@@ -49,14 +49,18 @@ public actor UserSettingsRepository: UserSettingsRepositoryProtocol {
         updateSettings(settings: settings, and: id)
     }
 
-    public func toggleSentinel(for id: String) async throws {
+    public func toggleSentinel(for id: String) async throws -> Bool {
+        var isActive = false
         let settings = try await remoteDatasource.getUserSettings()
         if settings.highSecurity.value {
             try await remoteDatasource.desactivateSentinel()
+            isActive = false
         } else {
             try await remoteDatasource.activateSentinel()
+            isActive = true
         }
         try await refreshSettings(for: id)
+        return isActive
     }
 }
 
