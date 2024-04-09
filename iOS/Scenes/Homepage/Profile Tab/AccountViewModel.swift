@@ -49,7 +49,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
-    var accountRecovery: AccountRecovery? { accountRepository.currentAccountRecovery.value }
+    private(set) var accountRecovery: AccountRecovery?
 
     weak var delegate: AccountViewModelDelegate?
 
@@ -85,10 +85,9 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                try await accountRepository.refreshAccountRecovery()
+                accountRecovery = try await accountRepository.accountRecovery()
 
-                isAccountRecoveryVisible =
-                    accountRepository.currentAccountRecovery.value?.shouldShowSettingsItem ?? false
+                isAccountRecoveryVisible = accountRecovery?.shouldShowSettingsItem ?? false
             } catch {
                 logger.error(error)
             }
