@@ -21,9 +21,12 @@
 import BackgroundTasks
 import Core
 import Factory
+import ProtonCoreAccountRecovery
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreCryptoGoInterface
+import ProtonCoreFeatureFlags
 import ProtonCoreLog
+import ProtonCorePushNotifications
 import TipKit
 import UIKit
 
@@ -33,6 +36,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
+    @LazyInjected(\ServiceContainer
+        .pushNotificationService) private var pushNotificationService: PushNotificationServiceProtocol
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -52,6 +57,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    // MARK: - Push Notifications
+
+    func application(_ application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        pushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        pushNotificationService.didFailToRegisterForRemoteNotifications(withError: error)
     }
 }
 

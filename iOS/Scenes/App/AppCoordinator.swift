@@ -27,10 +27,13 @@ import Entities
 import Factory
 import Macro
 import MBProgressHUD
+import ProtonCoreAccountRecovery
 import ProtonCoreAuthentication
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreLogin
 import ProtonCoreNetworking
+import ProtonCorePushNotifications
 import ProtonCoreServices
 import ProtonCoreUtilities
 import Sentry
@@ -55,6 +58,8 @@ final class AppCoordinator {
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
     private var corruptedSessionStream: AnyCancellable?
+    private var featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
+    private var pushNotificationService = resolve(\ServiceContainer.pushNotificationService)
 
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
@@ -113,11 +118,13 @@ final class AppCoordinator {
                     logger.info("Already logged in")
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: false)
+                    registerForPushNotificationsIfNeededAndAddHandlers()
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: true)
+                    registerForPushNotificationsIfNeededAndAddHandlers()
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
@@ -214,6 +221,29 @@ private extension AppCoordinator {
         corruptedSessionEventStream.send(nil)
         corruptedSessionStream?.cancel()
         corruptedSessionStream = nil
+    }
+}
+
+private extension AppCoordinator {
+    func registerForPushNotificationsIfNeededAndAddHandlers() {
+        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.pushNotifications, reloadValue: true)
+        else { return }
+
+        pushNotificationService.setup()
+
+        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true)
+        else { return }
+
+        let passHandler = AccountRecoveryHandler()
+        passHandler.handler = { [weak self] _ in
+            guard let self else { return .failure(.couldNotOpenAccountRecoveryURL) }
+            homepageCoordinator?.accountViewModelWantsToShowAccountRecovery { _ in }
+            return .success
+        }
+
+        NotificationType.allAccountRecoveryTypes.forEach {
+            pushNotificationService.registerHandler(passHandler, forType: $0)
+        }
     }
 }
 

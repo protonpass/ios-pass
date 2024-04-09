@@ -446,6 +446,7 @@
 		5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */; };
 		575D3C252AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C242AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore */; };
 		575D3C272AE9154A0012434B /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C262AE9154A0012434B /* TrustKit */; };
+		578AA8792BB1DC85003FA50B /* ProtonCoreAccountRecovery in Frameworks */ = {isa = PBXBuildFile; productRef = 578AA8782BB1DC85003FA50B /* ProtonCoreAccountRecovery */; };
 		578B8BA22AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 578B8BA12AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation */; };
 		578B8BA42AE5AB6600719DA6 /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 578B8BA32AE5AB6600719DA6 /* ProtonCoreForceUpgrade */; };
 		57CCEC082AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 57CCEC072AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin */; };
@@ -1130,6 +1131,7 @@
 				57D3314B2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion in Frameworks */,
 				5B1453672A6033F60048B022 /* Entities in Frameworks */,
 				5B8D209D2AA748ED00457CA3 /* Client in Frameworks */,
+				578AA8792BB1DC85003FA50B /* ProtonCoreAccountRecovery in Frameworks */,
 				57F59FB02AE5C3EB002EFDFD /* ProtonCoreForceUpgrade in Frameworks */,
 				35ABE12A2AA08275001E20F9 /* DocScanner in Frameworks */,
 				5B0C74F82A2F4B1200272CE8 /* Factory in Frameworks */,
@@ -2526,6 +2528,7 @@
 				5B0783702B1A301C0006424C /* UseCasesMocks */,
 				5B0783722B1A33F90006424C /* ClientMocks */,
 				359A229A2BA3702D0005C750 /* CoreMocks */,
+				578AA8782BB1DC85003FA50B /* ProtonCoreAccountRecovery */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -5733,6 +5736,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */;
 			productName = TrustKit;
+		};
+		578AA8782BB1DC85003FA50B /* ProtonCoreAccountRecovery */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			productName = ProtonCoreAccountRecovery;
 		};
 		578B8BA12AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation */ = {
 			isa = XCSwiftPackageProductDependency;

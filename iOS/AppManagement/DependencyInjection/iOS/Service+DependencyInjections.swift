@@ -24,6 +24,7 @@ import Factory
 import ProtonCoreAuthentication
 import ProtonCorePayments
 import ProtonCorePaymentsUI
+import ProtonCorePushNotifications
 
 final class ServiceContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = ServiceContainer()
@@ -45,5 +46,9 @@ extension ServiceContainer {
 
     var authenticator: Factory<AuthenticatorInterface> {
         self { Authenticator(api: SharedToolingContainer.shared.apiManager().apiService) }
+    }
+
+    var pushNotificationService: Factory<PushNotificationServiceProtocol> {
+        self { PushNotificationService(apiService: SharedToolingContainer.shared.apiManager().apiService) }
     }
 }

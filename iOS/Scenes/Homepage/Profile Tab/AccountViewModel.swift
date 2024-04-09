@@ -22,12 +22,16 @@ import Combine
 import Core
 import Entities
 import Factory
+import ProtonCoreAccountRecovery
+import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
     func accountViewModelWantsToSignOut()
     func accountViewModelWantsToDeleteAccount()
+    func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void)
 }
 
 @MainActor
@@ -35,6 +39,8 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let accountRepository = resolve(\SharedRepositoryContainer.accountRepository)
+    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
@@ -43,6 +49,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
+    private(set) var accountRecovery: AccountRecovery?
 
     weak var delegate: AccountViewModelDelegate?
 
@@ -51,6 +58,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
         refreshUserPlan()
+        refreshAccountRecovery()
     }
 
     private func refreshUserPlan() {
@@ -63,6 +71,20 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
                 plan = try await accessRepository.refreshAccess().plan
             } catch {
                 logger.error(error)
+            }
+        }
+    }
+
+    private func refreshAccountRecovery() {
+        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true) else {
+            return
+        }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                accountRecovery = try await accountRepository.accountRecovery()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -103,6 +125,12 @@ extension AccountViewModel {
 
     func deleteAccount() {
         delegate?.accountViewModelWantsToDeleteAccount()
+    }
+
+    func openAccountRecovery() {
+        delegate?.accountViewModelWantsToShowAccountRecovery { _ in
+            self.refreshAccountRecovery()
+        }
     }
 }
 
