@@ -26,9 +26,9 @@ public struct UpsellElement: Sendable, Hashable, Identifiable {
     public let id = UUID().uuidString
     let icon: UIImage
     let title: String
-    let color: UIColor
+    let color: UIColor?
 
-    public init(icon: UIImage, title: String, color: UIColor) {
+    public init(icon: UIImage, title: String, color: UIColor? = nil) {
         self.icon = icon
         self.title = title
         self.color = color
@@ -74,59 +74,60 @@ public struct UpsellingView: View {
 
 private extension UpsellingView {
     var mainContainer: some View {
-        VStack(alignment: .center) {
-            Image(uiImage: configuration.icon)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
+        GeometryReader { proxy in
+            VStack(alignment: .center) {
+                Spacer()
+                Image(uiImage: configuration.icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: proxy.size.width * 0.75)
 
-            Text(configuration.title)
-                .font(.title.bold())
-                .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                Text(configuration.title)
+                    .font(.title.bold())
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
-            Text(configuration.description)
-                .padding(.bottom)
-                .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                Text(configuration.description)
+                    .padding(.bottom)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(PassColor.textWeak.toColor)
 
-            VStack {
-                ForEach(configuration.upsellElements) { element in
-                    perkRow(title: element.title,
-                            icon: element.icon,
-                            iconTintColor: element.color)
+                VStack {
+                    ForEach(configuration.upsellElements) { element in
+                        perkRow(element: element)
+                    }
                 }
+                .padding(.vertical, DesignConstant.sectionPadding)
+                .padding(.horizontal, DesignConstant.sectionPadding * 2)
+                .roundedDetailSection()
+                Spacer()
+
+                CapsuleTextButton(title: "Get Pass Plus",
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: PassColor.interactionNormMajor2,
+                                  action: onUpgrade)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
+
+                CapsuleTextButton(title: "Not Now",
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: .clear,
+                                  action: dismiss.callAsFunction)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
             }
-            .padding(.vertical, DesignConstant.sectionPadding)
-            .padding(.horizontal, DesignConstant.sectionPadding * 2)
-            .roundedDetailSection()
-            Spacer()
-
-            CapsuleTextButton(title: "Get Pass Plus",
-                              titleColor: PassColor.textInvert,
-                              backgroundColor: PassColor.interactionNormMajor2,
-                              action: onUpgrade)
-                .padding(.horizontal, DesignConstant.sectionPadding)
-
-            CapsuleTextButton(title: "Not Now",
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: .clear,
-                              action: dismiss.callAsFunction)
-                .padding(.horizontal, DesignConstant.sectionPadding)
         }
     }
 
-    private func perkRow(title: String, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {
+    func perkRow(element: UpsellElement) -> some View {
         Label(title: {
-            Text(title)
+            Text(element.title)
                 .minimumScaleFactor(0.75)
         }, icon: {
-            Image(uiImage: icon)
-                .renderingMode(iconTintColor != nil ? .template : .original)
+            Image(uiImage: element.icon)
+                .renderingMode(element.color != nil ? .template : .original)
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: 32)
-                .foregroundColor(iconTintColor?.toColor)
+                .frame(maxWidth: 20)
+                .foregroundColor(element.color?.toColor)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }

@@ -37,7 +37,7 @@ extension UpsellElement {
         var upsellElements = [UpsellElement]()
 
         upsellElements.append(UpsellElement(icon: IconProvider.user,
-                                            title: #localized("Proton sentinel"),
+                                            title: #localized("Proton Sentinel"),
                                             color: PassColor.interactionNormMajor2))
         upsellElements.append(UpsellElement(icon: IconProvider.lock,
                                             title: #localized("Integrated 2FA authenticator"),

@@ -25855,7 +25855,7 @@
         }
       }
     },
-    "Dark Web monitoring" : {
+    "Dark Web Monitoring" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -57370,16 +57370,6 @@
         }
       }
     },
-    "Proton sentinel" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dark Web monitoring"
-          }
-        }
-      }
-    },
     "Proton Sentinel" : {
       "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
       "localizations" : {
@@ -77506,7 +77496,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dark Web monitoring"
+            "value" : "Unlimited hide-my-email aliases"
           }
         }
       }
