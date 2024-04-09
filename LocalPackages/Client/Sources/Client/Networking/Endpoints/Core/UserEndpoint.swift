@@ -23,7 +23,7 @@ import ProtonCoreAuthentication
 import ProtonCoreDataModel
 import ProtonCoreServices
 
-public struct GetUserResponse: Decodable, Sendable {
+struct GetUserResponse: Decodable, Sendable {
     let user: User
 }
 
