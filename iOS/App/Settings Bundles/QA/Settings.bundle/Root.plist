@@ -94,6 +94,20 @@
 			<key>File</key>
 			<string>ScientistEnvironmentValues</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Proxy token</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Proxy token</string>
+			<key>Key</key>
+			<string>pref_custom_env_proxy_token</string>
+		</dict>
 	</array>
 </dict>
 </plist>

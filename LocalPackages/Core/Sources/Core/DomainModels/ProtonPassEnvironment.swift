@@ -32,8 +32,7 @@ public enum ProtonPassEnvironment {
                          accountHost: Bundle.main.plistString(for: .accountHost, in: .black),
                          defaultHost: Bundle.main.plistString(for: .defaultHost, in: .black),
                          apiHost: Bundle.main.plistString(for: .apiHost, in: .black),
-                         defaultPath: Bundle.main.plistString(for: .defaultPath, in: .black),
-                         proxyToken: nil)
+                         defaultPath: Bundle.main.plistString(for: .defaultPath, in: .black))
 
         case .prod:
             return .init(signupDomain: Bundle.main.plistString(for: .signupDomain, in: .prod),
@@ -42,8 +41,7 @@ public enum ProtonPassEnvironment {
                          accountHost: Bundle.main.plistString(for: .accountHost, in: .prod),
                          defaultHost: Bundle.main.plistString(for: .defaultHost, in: .prod),
                          apiHost: Bundle.main.plistString(for: .apiHost, in: .prod),
-                         defaultPath: Bundle.main.plistString(for: .defaultPath, in: .prod),
-                         proxyToken: nil)
+                         defaultPath: Bundle.main.plistString(for: .defaultPath, in: .prod))
 
         case let .scientist(name):
             let placeholder = "<ENV_NAME>"
@@ -61,8 +59,7 @@ public enum ProtonPassEnvironment {
                          accountHost: accountHost.replacingOccurrences(of: placeholder, with: name),
                          defaultHost: defaultHost.replacingOccurrences(of: placeholder, with: name),
                          apiHost: apiHost.replacingOccurrences(of: placeholder, with: name),
-                         defaultPath: defaultPath,
-                         proxyToken: nil)
+                         defaultPath: defaultPath)
 
         case let .custom(customParams):
             return customParams
@@ -92,7 +89,6 @@ public struct DoHParameters {
     public let defaultHost: String
     public let apiHost: String
     public let defaultPath: String
-    public let proxyToken: String?
 
     public init(signupDomain: String,
                 captchaHost: String,
@@ -100,8 +96,7 @@ public struct DoHParameters {
                 accountHost: String,
                 defaultHost: String,
                 apiHost: String,
-                defaultPath: String,
-                proxyToken: String?) {
+                defaultPath: String) {
         self.signupDomain = signupDomain
         self.captchaHost = captchaHost
         self.humanVerificationV3Host = humanVerificationV3Host
@@ -109,6 +104,5 @@ public struct DoHParameters {
         self.defaultHost = defaultHost
         self.apiHost = apiHost
         self.defaultPath = defaultPath
-        self.proxyToken = proxyToken
     }
 }
