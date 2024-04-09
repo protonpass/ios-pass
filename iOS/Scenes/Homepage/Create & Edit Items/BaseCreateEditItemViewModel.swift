@@ -82,6 +82,7 @@ class BaseCreateEditItemViewModel {
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
+    @Published private(set) var canScanDocuments = false
     @Published private(set) var recentlyAddedOrEditedField: CustomFieldUiModel?
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
@@ -192,6 +193,7 @@ private extension BaseCreateEditItemViewModel {
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
                 canAddMoreCustomFields = !isFreeUser
+                canScanDocuments = DocScanner.isSupported
                 if isFreeUser,
                    case .create = mode, vaults.count > 1,
                    let mainVault = await getMainVault() {
