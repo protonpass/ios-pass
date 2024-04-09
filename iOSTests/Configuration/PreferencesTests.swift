@@ -27,44 +27,26 @@ import ProtonCoreNetworking
 import XCTest
 
 final class PreferencesTests: XCTestCase {
-    var keychainData: [String: Data] = [:]
-    var keychain: KeychainProtocolMock!
+    var keychainMockProvider: KeychainProtocolMockProvider!
     var mainKeyProvider: MainKeyProviderMock!
     var sut: Preferences!
 
     override func setUp() {
         super.setUp()
-        keychain = KeychainProtocolMock()
-
-        keychain.closureSetOrErrorDataKeyAttributes3 = {
-            if let data = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.0,
-               let key = self.keychain.invokedSetOrErrorDataKeyAttributesParameters3?.1 {
-                self.keychainData[key] = data
-            }
-        }
-
-        keychain.closureDataOrError = {
-            if let key = self.keychain.invokedDataOrErrorParameters?.0 {
-                self.keychain.stubbedDataOrErrorResult = self.keychainData[key]
-            }
-        }
-
-        keychain.closureRemoveOrError = {
-            if let key = self.keychain.invokedRemoveOrErrorParameters?.0 {
-                self.keychainData[key] = nil
-            }
-        }
-
+        keychainMockProvider = .init()
+        keychainMockProvider.setUp()
         mainKeyProvider = MainKeyProviderMock()
         mainKeyProvider.mainKeyStub.fixture = Array(repeating: .zero, count: 32)
         Scope.singleton.reset()
-        SharedToolingContainer.shared.keychain.register { self.keychain }
+        SharedToolingContainer.shared.keychain.register { self.keychainMockProvider.getKeychain() }
         SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
         sut = Preferences()
     }
 
     override func tearDown() async throws {
         await sut.reset(isTests: true)
+        keychainMockProvider = nil
+        mainKeyProvider = nil
         sut = nil
         try await super.tearDown()
     }

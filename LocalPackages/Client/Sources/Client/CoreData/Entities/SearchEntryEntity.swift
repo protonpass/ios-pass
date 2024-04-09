@@ -22,7 +22,7 @@ import CoreData
 import Entities
 
 @objc(SearchEntryEntity)
-public class SearchEntryEntity: NSManagedObject {}
+final class SearchEntryEntity: NSManagedObject {}
 
 extension SearchEntryEntity: Identifiable {}
 

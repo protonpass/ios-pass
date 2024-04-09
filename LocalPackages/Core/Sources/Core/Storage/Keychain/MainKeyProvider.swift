@@ -21,13 +21,14 @@
 import ProtonCoreKeymaker
 import ProtonCoreSettings
 
-public protocol MainKeyProvider: AnyObject {
+// sourcery: AutoMockable
+public protocol MainKeyProvider: Sendable, AnyObject {
     var mainKey: MainKey? { get }
 
     func wipeMainKey()
 }
 
-extension Keymaker: MainKeyProvider {}
+extension Keymaker: @unchecked Sendable, MainKeyProvider {}
 
 extension Keymaker: AutoLocker {
     public var autolockerTimeout: LockTime {

@@ -26,10 +26,10 @@ import Foundation
 // protocol to enable us to cast any assigned value into a type
 // that we can compare against nil
 // https://www.swiftbysundell.com/articles/property-wrappers-in-swift/
-protocol AnyOptional {
+public protocol AnyOptional {
     var isNil: Bool { get }
 }
 
 extension Optional: AnyOptional {
-    var isNil: Bool { self == nil }
+    public var isNil: Bool { self == nil }
 }

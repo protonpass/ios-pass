@@ -20,6 +20,8 @@
 
 import LocalAuthentication
 
-public enum LocalAuthenticationMethod: Codable {
+public enum LocalAuthenticationMethod: Codable, CaseIterable, Sendable {
     case none, biometric, pin
+
+    public static var `default`: Self { .none }
 }
