@@ -25,9 +25,6 @@ import TipKit
 
 @available(iOS 17, *)
 struct TipKitSection: View {
-    @AppStorage(Constants.QA.enableTips)
-    private var enableTips = false
-
     @AppStorage(Constants.QA.resetTipsStateOnLaunch)
     private var resetTipsStateOnLaunch = false
 
@@ -36,28 +33,22 @@ struct TipKitSection: View {
 
     var body: some View {
         Section(content: {
-            Toggle(isOn: $enableTips) {
-                Text(verbatim: "Enable tips")
+            Toggle(isOn: $resetTipsStateOnLaunch) {
+                Text(verbatim: "Reset tips' state on launch")
+                Text(verbatim: "Test tips' eligibilities.")
             }
 
-            if enableTips {
-                Toggle(isOn: $resetTipsStateOnLaunch) {
-                    Text(verbatim: "Reset tips' state on launch")
-                    Text(verbatim: "Test tips' eligibilities.")
-                }
-
-                Toggle(isOn: $forceShowTips) {
-                    Text(verbatim: "Force show tips")
-                    Text(verbatim: "Show tips regardless of their state. Test how tips look like.")
-                }
-
-                tipDetail(title: "Force touch",
-                          // swiftlint:disable:next line_length
-                          description: "Performed >= 10 times eligible actions via item detail pages (pin/unpin/copy username...)")
-
-                tipDetail(title: "Spotlight",
-                          description: "Picked search result/history >= 10 times & Spotlight is not yet enabled.")
+            Toggle(isOn: $forceShowTips) {
+                Text(verbatim: "Force show tips")
+                Text(verbatim: "Show tips regardless of their state. Test how tips look like.")
             }
+
+            tipDetail(title: "Force touch",
+                      // swiftlint:disable:next line_length
+                      description: "Performed >= 10 times eligible actions via item detail pages (pin/unpin/copy username...)")
+
+            tipDetail(title: "Spotlight",
+                      description: "Picked search result/history >= 10 times & Spotlight is not yet enabled.")
         }, header: {
             Text(verbatim: "Tips")
         })
