@@ -6,21 +6,6 @@
 	<array>
 		<dict>
 			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>FooterText</key>
-			<string>Default values for prod (with or without &quot;https://&quot; does matter)
-- Sign up domain: proton.me
-- Captcha host: https://pass-api.proton.me
-- HV (human verification) host: https://verify.proton.me
-- Account host: https://account.proton.me
-- Default host: https://pass-api.proton.me
-- API host: pass-api.proton.me
-- Default path: /api</string>
-			<key>Title</key>
-			<string>Custom environment values</string>
-		</dict>
-		<dict>
-			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>DefaultValue</key>
 			<string>proton.me</string>
@@ -100,6 +85,32 @@
 			<string>Default path</string>
 			<key>Key</key>
 			<string>pref_custom_env_default_path</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>Title</key>
+			<string>Proxy token</string>
+			<key>Key</key>
+			<string>pref_custom_env_proxy_token</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>Default values for prod (with or without &quot;https://&quot; does matter)
+- Sign up domain: proton.me
+- Captcha host: https://pass-api.proton.me
+- HV (human verification) host: https://verify.proton.me
+- Account host: https://account.proton.me
+- Default host: https://pass-api.proton.me
+- API host: pass-api.proton.me
+- Default path: /api
+- Proxy token: nil</string>
+			<key>Title</key>
+			<string>Custom environment values</string>
 		</dict>
 	</array>
 </dict>
