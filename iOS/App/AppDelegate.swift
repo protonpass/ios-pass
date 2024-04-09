@@ -36,17 +36,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
-    private let pushNotificationService: PushNotificationServiceProtocol
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-
-    override init() {
-        injectDefaultCryptoImplementation()
-        pushNotificationService = resolve(\ServiceContainer.pushNotificationService)
-        featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    }
+    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService: PushNotificationServiceProtocol
+    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        injectDefaultCryptoImplementation()
         setUpSentry(bundle: .main)
         setUpDefaultValuesForSettingsBundle()
         configureCoreLogger()
