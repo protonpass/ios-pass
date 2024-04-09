@@ -55,9 +55,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     var username: String { userDataProvider.getUserData()?.user.email ?? "" }
 
-    @Published
-    var isAccountRecoveryVisible = false
-
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
         refreshUserPlan()
@@ -86,8 +83,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             guard let self else { return }
             do {
                 accountRecovery = try await accountRepository.accountRecovery()
-
-                isAccountRecoveryVisible = accountRecovery?.shouldShowSettingsItem ?? false
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
