@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 public protocol AccountRepositoryProtocol: Sendable {
     var currentAccountRecovery: CurrentValueSubject<AccountRecovery?, Never> { get }
 
-    func refreshAccountRecovery() async throws
+    func accountRecovery() async throws -> AccountRecovery?
 }
 
 public actor AccountRepository: AccountRepositoryProtocol {
@@ -36,13 +36,7 @@ public actor AccountRepository: AccountRepositoryProtocol {
         self.remoteAccountDatasource = remoteAccountDatasource
     }
 
-    public func refreshAccountRecovery() async throws {
-        try await currentAccountRecovery.send(accountRecovery())
-    }
-}
-
-private extension AccountRepository {
-    func accountRecovery() async throws -> AccountRecovery? {
+    public func accountRecovery() async throws -> AccountRecovery? {
         try await remoteAccountDatasource.getAccountRecoveryInfo()
     }
 }
