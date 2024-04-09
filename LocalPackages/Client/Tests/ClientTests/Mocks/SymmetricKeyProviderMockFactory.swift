@@ -1,7 +1,7 @@
 //
-// LocalAuthenticationMethod.swift
-// Proton Pass - Created on 31/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// SymmetricKeyProviderMockFactory.swift
+// Proton Pass - Created on 04/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,11 +17,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import LocalAuthentication
+import Client
+import ClientMocks
+import CryptoKit
 
-public enum LocalAuthenticationMethod: Codable, CaseIterable, Sendable {
-    case none, biometric, pin
+final class SymmetricKeyProviderMockFactory {
+    let key = SymmetricKey.random()
+    private var provider: (any SymmetricKeyProvider)?
 
-    public static var `default`: Self { .none }
+    init() {}
+
+    func setUp() {
+        let mock = SymmetricKeyProviderMock()
+        mock.stubbedGetSymmetricKeyResult = key
+        self.provider = mock
+    }
+
+    func getProvider() -> any SymmetricKeyProvider {
+        guard let provider else {
+            fatalError("Provider not initialized")
+        }
+        return provider
+    }
 }

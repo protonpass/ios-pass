@@ -22,7 +22,7 @@ import CoreData
 import Foundation
 
 @objc(ShareEventIDEntity)
-public final class ShareEventIDEntity: NSManagedObject {}
+final class ShareEventIDEntity: NSManagedObject {}
 
 extension ShareEventIDEntity: Identifiable {}
 
