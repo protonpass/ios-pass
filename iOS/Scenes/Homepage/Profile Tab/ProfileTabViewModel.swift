@@ -42,11 +42,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
 
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
@@ -56,8 +54,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
-    private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
@@ -82,16 +78,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var loading = false
     @Published private(set) var plan: Plan?
-    @Published private(set) var isSentinelEligible = false
-    @Published private(set) var isSentinelActive = false
-    @Published private(set) var updatingSentinel = false
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
-
-    var sentinelEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1)
-    }
 
     var automaticallyCopyTotpCodeDisabled: Bool {
         localAuthenticationMethod == .none
@@ -131,39 +120,6 @@ extension ProfileTabViewModel {
             logger.error(error)
             router.display(element: .displayErrorBanner(error))
         }
-    }
-
-    @MainActor
-    func checkSentinel() async {
-        guard sentinelEnabled, let userId = try? userDataProvider.getUserId() else {
-            return
-        }
-        let settings = await userSettingsRepository.getSettings(for: userId)
-        isSentinelEligible = settings.highSecurity.eligible
-        isSentinelActive = settings.highSecurity.value
-    }
-
-    func toggleSentinelState() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer {
-                updatingSentinel = false
-            }
-            do {
-                updatingSentinel = true
-                let userId = try userDataProvider.getUserId()
-                try await toggleSentinel(for: userId)
-                await checkSentinel()
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-
-    func showSentinelInformation() {
-        router.navigate(to: .urlPage(urlString: "https://proton.me/support/proton-sentinel"))
     }
 
     func editLocalAuthenticationMethod() {
@@ -239,13 +195,6 @@ extension ProfileTabViewModel {
 
 private extension ProfileTabViewModel {
     func setUp() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            await checkSentinel()
-        }
-
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in

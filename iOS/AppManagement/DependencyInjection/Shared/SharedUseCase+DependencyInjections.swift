@@ -287,7 +287,13 @@ extension SharedUseCasesContainer {
     }
 
     var toggleSentinel: Factory<ToggleSentinelUseCase> {
-        self { ToggleSentinel(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository()) }
+        self { ToggleSentinel(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository(),
+                              userDataProvider: self.userDataProvider) }
+    }
+
+    var getSentinelStatus: Factory<GetSentinelStatusUseCase> {
+        self { GetSentinelStatus(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository(),
+                                 userDataProvider: self.userDataProvider) }
     }
 
     var getUserPlan: Factory<GetUserPlanUseCase> {
