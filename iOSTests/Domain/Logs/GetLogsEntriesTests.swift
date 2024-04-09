@@ -66,31 +66,24 @@ class GetLogEntriesTests: XCTestCase {
         // Create mock dependencies
         let mainAppLogManager = LogManagerMock()
         let autofillLogManager = LogManagerMock()
-        let keyboardLogManager = LogManagerMock()
         let shareLogManager = LogManagerMock()
 
         // Create an instance of GetLogEntries with mock dependencies
         let getLogEntries = GetLogEntries(mainAppLogManager: mainAppLogManager,
                                           autofillLogManager: autofillLogManager,
-                                          keyboardLogManager: keyboardLogManager,
                                           shareLogManager: shareLogManager)
 
         // Set up the expected behavior for the mock dependencies
         await mainAppLogManager.log(entry: LogEntryFactory.createMock())
         await autofillLogManager.log(entry: LogEntryFactory.createMock())
         await autofillLogManager.log(entry: LogEntryFactory.createMock())
-        await keyboardLogManager.log(entry: LogEntryFactory.createMock())
-        await keyboardLogManager.log(entry: LogEntryFactory.createMock())
-        await keyboardLogManager.log(entry: LogEntryFactory.createMock())
 
         // Call the execute function and await the result
         let hostAppLogEntries = try await getLogEntries.execute(for: .hostApp)
         let autoFillLogEntries = try await getLogEntries.execute(for: .autoFillExtension)
-        let keyboardLogEntries = try await getLogEntries.execute(for: .keyboardExtension)
 
         // Assert the expected results
         XCTAssertEqual(hostAppLogEntries.count, 1)
         XCTAssertEqual(autoFillLogEntries.count, 2)
-        XCTAssertEqual(keyboardLogEntries.count, 3)
     }
 }

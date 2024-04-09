@@ -113,8 +113,6 @@ final class AppData: AppDataProtocol {
             return hostAppCredential ?? mainCredential
         case .autoFillExtension:
             return autofillExtensionCredential ?? mainCredential
-        case .keyboardExtension:
-            fatalError("Not applicable")
         case .shareExtension:
             return shareExtensionCredential ?? mainCredential
         }
@@ -137,9 +135,6 @@ final class AppData: AppDataProtocol {
             hostAppCredential = credential
             mainCredential = credential
             shareExtensionCredential = credential
-
-        case .keyboardExtension:
-            fatalError("Not applicable")
 
         case .shareExtension:
             shareExtensionCredential = credential

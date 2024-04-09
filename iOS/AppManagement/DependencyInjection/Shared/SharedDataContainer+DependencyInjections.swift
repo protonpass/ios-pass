@@ -55,8 +55,6 @@ extension SharedDataContainer {
                        migrationStateProvider: self.migrationStateProvider) }
             .onArg(PassModule.autoFillExtension) { AppData(module: .autoFillExtension,
                                                            migrationStateProvider: self.migrationStateProvider) }
-            .onArg(PassModule.keyboardExtension) { AppData(module: .keyboardExtension,
-                                                           migrationStateProvider: self.migrationStateProvider) }
             .onArg(PassModule.shareExtension) { AppData(module: .shareExtension,
                                                         migrationStateProvider: self.migrationStateProvider) }
     }
