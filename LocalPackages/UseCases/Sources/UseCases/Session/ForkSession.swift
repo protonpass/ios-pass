@@ -22,6 +22,8 @@
 import Client
 import Foundation
 
+@preconcurrency import ProtonCoreServices
+
 /// Fork the session and return the `selector`
 public protocol ForkSessionUseCase: Sendable {
     func execute(payload: String?, childClientId: String, independent: Int) async throws -> String
