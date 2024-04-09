@@ -60,6 +60,10 @@ private extension SharedUseCasesContainer {
     var symmetricKeyProvider: any SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
+
+    var userSettingsRepository: any UserSettingsRepositoryProtocol {
+        SharedRepositoryContainer.shared.userSettingsRepository()
+    }
 }
 
 // MARK: Permission
@@ -282,17 +286,17 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var refreshUserSettings: Factory<RefreshUserSettingsUseCase> {
-        self { RefreshUserSettings(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository())
+        self { RefreshUserSettings(userSettingsProtocol: self.userSettingsRepository)
         }
     }
 
     var toggleSentinel: Factory<ToggleSentinelUseCase> {
-        self { ToggleSentinel(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository(),
+        self { ToggleSentinel(userSettingsProtocol: self.userSettingsRepository,
                               userDataProvider: self.userDataProvider) }
     }
 
     var getSentinelStatus: Factory<GetSentinelStatusUseCase> {
-        self { GetSentinelStatus(userSettingsProtocol: SharedRepositoryContainer.shared.userSettingsRepository(),
+        self { GetSentinelStatus(userSettingsProtocol: self.userSettingsRepository,
                                  userDataProvider: self.userDataProvider) }
     }
 
