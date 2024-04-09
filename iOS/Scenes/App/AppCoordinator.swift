@@ -118,13 +118,13 @@ final class AppCoordinator {
                     logger.info("Already logged in")
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: false)
-                    registerForPushNotificationsIfNeeded()
+                    registerForPushNotificationsIfNeededAndAddHandlers()
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: true)
-                    registerForPushNotificationsIfNeeded()
+                    registerForPushNotificationsIfNeededAndAddHandlers()
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
@@ -225,7 +225,7 @@ private extension AppCoordinator {
 }
 
 private extension AppCoordinator {
-    func registerForPushNotificationsIfNeeded() {
+    func registerForPushNotificationsIfNeededAndAddHandlers() {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.pushNotifications, reloadValue: true)
         else { return }
 
