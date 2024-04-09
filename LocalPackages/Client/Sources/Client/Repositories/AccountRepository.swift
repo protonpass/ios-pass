@@ -29,7 +29,7 @@ public protocol AccountRepositoryProtocol: Sendable {
 }
 
 public actor AccountRepository: AccountRepositoryProtocol {
-    public let remoteAccountDatasource: any RemoteAccountDatasourceProtocol
+    private let remoteAccountDatasource: any RemoteAccountDatasourceProtocol
     public let currentAccountRecovery: CurrentValueSubject<AccountRecovery?, Never> = .init(nil)
 
     public init(remoteAccountDatasource: any RemoteAccountDatasourceProtocol) {
@@ -41,7 +41,7 @@ public actor AccountRepository: AccountRepositoryProtocol {
     }
 }
 
-public extension AccountRepository {
+private extension AccountRepository {
     func accountRecovery() async throws -> AccountRecovery? {
         try await remoteAccountDatasource.getAccountRecoveryInfo()
     }
