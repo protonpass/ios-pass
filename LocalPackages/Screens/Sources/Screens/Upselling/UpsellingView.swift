@@ -105,12 +105,14 @@ private extension UpsellingView {
                 CapsuleTextButton(title: "Get Pass Plus",
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNormMajor2,
+                                  height: 48,
                                   action: onUpgrade)
                     .padding(.horizontal, DesignConstant.sectionPadding)
 
                 CapsuleTextButton(title: "Not Now",
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: .clear,
+                                  height: 48,
                                   action: dismiss.callAsFunction)
                     .padding(.horizontal, DesignConstant.sectionPadding)
             }
@@ -127,7 +129,7 @@ private extension UpsellingView {
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 20)
-                .foregroundColor(element.color?.toColor)
+                .foregroundColor(element.color?.toColor ?? PassColor.interactionNormMajor2.toColor)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }
