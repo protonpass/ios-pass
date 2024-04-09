@@ -1,6 +1,6 @@
 //
-// Browser.swift
-// Proton Pass - Created on 19/03/2024.
+// PreferencesFailureReason.swift
+// Proton Pass - Created on 04/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,19 +21,21 @@
 
 import Foundation
 
-public enum Browser: Int, CaseIterable, Codable, Sendable {
-    case safari = 0
-    case inAppSafari = 1
-    case systemDefault = 2
+public extension PassError {
+    enum PreferencesFailureReason: CustomDebugStringConvertible, LocalizedError, Equatable {
+        case appPreferencesNotInitialized
+        case sharedPreferencesNotInitialized
+        case userPreferencesNotInitialized
 
-    public static var `default`: Self { .systemDefault }
-
-    public var appScheme: String? {
-        switch self {
-        case .safari:
-            "com-apple-mobilesafari-tab://"
-        default:
-            nil
+        public var debugDescription: String {
+            switch self {
+            case .appPreferencesNotInitialized:
+                "AppPreferences not initialized"
+            case .sharedPreferencesNotInitialized:
+                "SharedPreferences not initialized"
+            case .userPreferencesNotInitialized:
+                "UserPreferences not initialized"
+            }
         }
     }
 }

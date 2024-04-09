@@ -1,7 +1,7 @@
-//
-// LocalAuthenticationMethod.swift
-// Proton Pass - Created on 31/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// UserPreferences+Test.swift
+// Proton Pass - Created on 29/03/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,11 +17,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import LocalAuthentication
+import Entities
 
-public enum LocalAuthenticationMethod: Codable, CaseIterable, Sendable {
-    case none, biometric, pin
-
-    public static var `default`: Self { .none }
+extension UserPreferences {
+    static func random() -> Self {
+        .init(spotlightEnabled: .random(),
+              spotlightSearchableContent: .random()!,
+              spotlightSearchableVaults: .random()!)
+    }
 }
