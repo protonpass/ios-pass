@@ -89,7 +89,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
                 isAccountRecoveryVisible = accountRecovery?.shouldShowSettingsItem ?? false
             } catch {
-                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
