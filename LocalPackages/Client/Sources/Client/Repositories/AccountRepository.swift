@@ -18,19 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@preconcurrency import Combine
+import Combine
 import Foundation
 import ProtonCoreDataModel
 
 public protocol AccountRepositoryProtocol: Sendable {
-    var currentAccountRecovery: CurrentValueSubject<AccountRecovery?, Never> { get }
-
     func accountRecovery() async throws -> AccountRecovery?
 }
 
 public actor AccountRepository: AccountRepositoryProtocol {
     private let remoteAccountDatasource: any RemoteAccountDatasourceProtocol
-    public let currentAccountRecovery: CurrentValueSubject<AccountRecovery?, Never> = .init(nil)
 
     public init(remoteAccountDatasource: any RemoteAccountDatasourceProtocol) {
         self.remoteAccountDatasource = remoteAccountDatasource
