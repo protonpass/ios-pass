@@ -62,8 +62,9 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
+    private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
+
     private let userDefaults: UserDefaults = .standard
 
     private var cancellables = Set<AnyCancellable>()
@@ -112,15 +113,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 // MARK: - Sentinel
 
 extension PassMonitorViewModel {
-    func checkSentinel() async {
-        guard let userId = try? userDataProvider.getUserId() else {
-            return
-        }
-        let settings = await userSettingsRepository.getSettings(for: userId)
-//        isSentinelEligible = settings.highSecurity.eligible
-        isSentinelActive = settings.highSecurity.value
-    }
-
     func toggleSentinelState() {
         Task { [weak self] in
             guard let self else {
@@ -131,8 +123,7 @@ extension PassMonitorViewModel {
             }
             do {
                 updatingSentinel = true
-                let userId = try userDataProvider.getUserId()
-                isSentinelActive = try await userSettingsRepository.toggleSentinel(for: userId)
+                isSentinelActive = try await toggleSentinel()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
@@ -152,7 +143,7 @@ private extension PassMonitorViewModel {
             }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
-                await checkSentinel()
+                isSentinelActive = await getSentinelStatus()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
