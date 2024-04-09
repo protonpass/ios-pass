@@ -162,6 +162,7 @@ struct CreateEditAliasView: View {
             CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
                                   isSaveable: viewModel.isSaveable,
                                   isSaving: viewModel.isSaving,
+                                  canScanDocuments: viewModel.canScanDocuments,
                                   itemContentType: viewModel.itemContentType(),
                                   shouldUpgrade: viewModel.shouldUpgrade,
                                   onGoBack: {
