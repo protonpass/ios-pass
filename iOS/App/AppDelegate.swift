@@ -36,8 +36,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
-    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService: PushNotificationServiceProtocol
-    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    @LazyInjected(\ServiceContainer
+        .pushNotificationService) private var pushNotificationService: PushNotificationServiceProtocol
+    @LazyInjected(\SharedRepositoryContainer
+        .featureFlagsRepository) private var featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
