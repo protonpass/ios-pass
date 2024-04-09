@@ -1,7 +1,7 @@
 //
 //
-// ToggleSentinel.swift
-// Proton Pass - Created on 23/01/2024.
+// GetSentinelStatus.swift
+// Proton Pass - Created on 09/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,17 +22,17 @@
 
 import Client
 
-public protocol ToggleSentinelUseCase: Sendable {
-    func execute() async throws -> Bool
+public protocol GetSentinelStatusUseCase: Sendable {
+    func execute() async -> Bool
 }
 
-public extension ToggleSentinelUseCase {
-    func callAsFunction() async throws -> Bool {
-        try await execute()
+public extension GetSentinelStatusUseCase {
+    func callAsFunction() async -> Bool {
+        await execute()
     }
 }
 
-public final class ToggleSentinel: ToggleSentinelUseCase {
+public final class GetSentinelStatus: GetSentinelStatusUseCase {
     private let settingsService: any UserSettingsRepositoryProtocol
     private let userDataProvider: any UserDataProvider
 
@@ -42,8 +42,11 @@ public final class ToggleSentinel: ToggleSentinelUseCase {
         self.userDataProvider = userDataProvider
     }
 
-    public func execute() async throws -> Bool {
-        let userId = try userDataProvider.getUserId()
-        return try await settingsService.toggleSentinel(for: userId)
+    public func execute() async -> Bool {
+        guard let userId = try? userDataProvider.getUserId() else {
+            return false
+        }
+        let settings = await settingsService.getSettings(for: userId)
+        return settings.highSecurity.value
     }
 }
