@@ -151,7 +151,9 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.sentinelLogo
         
         _ = PassIcon.tabAuthenticator
-        
+        _ = PassIcon.shield2
+        _ = PassIcon.passPlus
+
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
     }

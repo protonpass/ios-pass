@@ -22,6 +22,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import SwiftUI
 
 enum SecureRowType {
@@ -118,7 +119,16 @@ struct PassMonitorView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
-            .showSpinner(viewModel.loading)
+            .showSpinner(viewModel.loading || viewModel.updatingSentinel)
+            .sheet(isPresented: $viewModel.showSentinelSheet) {
+                SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
+                                  sentinelActive: viewModel.isSentinelActive,
+                                  mainAction: {
+                                      viewModel.sentinelSheetAction()
+                                      viewModel.showSentinelSheet = false
+                                  }, secondaryAction: { viewModel.showSentinelInformation() })
+                    .presentationDetents([.height(570)])
+            }
             .navigationStackEmbeded()
             .task {
                 await viewModel.refresh()
@@ -131,12 +141,28 @@ private extension PassMonitorView {
         LazyVStack {
             if let weaknessStats = viewModel.weaknessStats {
                 breachedDataRows(weaknessStats: weaknessStats)
-                weakPasswordsRow(weaknessStats.weakPasswords)
-                reusedPasswordsRow(weaknessStats.reusedPasswords)
-                missing2FARow(weaknessStats.missing2FA)
-                excludedItemsRow(weaknessStats.excludedItems)
-                Spacer(minLength: 24)
-                lastUpdateInfo(date: viewModel.lastUpdate)
+
+                sentinelRow(rowType: .info,
+                            title: "Proton Sentinel",
+                            subTitle: "Advanced account protection program",
+                            action: { viewModel.showSentinelSheet = true })
+                Section {
+                    VStack(spacing: DesignConstant.sectionPadding) {
+                        weakPasswordsRow(weaknessStats.weakPasswords)
+                        reusedPasswordsRow(weaknessStats.reusedPasswords)
+                        missing2FARow(weaknessStats.missing2FA)
+                            .padding(.top, 16)
+                        excludedItemsRow(weaknessStats.excludedItems)
+                    }
+                } header: {
+                    HStack {
+                        Text("Passwords Health")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(PassColor.textNorm.toColor)
+                        Spacer()
+                    }.padding(.top, DesignConstant.sectionPadding)
+                }
             }
         }
         .padding(DesignConstant.sectionPadding)
@@ -153,6 +179,36 @@ private extension PassMonitorView {
                 breachedPasswordsRow(weaknessStats.exposedPasswords, showAdvice: true)
             }
         }
+    }
+
+    func sentinelRow(rowType: SecureRowType,
+                     title: String,
+                     subTitle: String?,
+                     action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text(title)
+                        .font(.body)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    if let subTitle {
+                        Text(subTitle)
+                            .font(.footnote)
+                            .foregroundColor(PassColor.textWeak.toColor)
+                            .lineLimit(1)
+                    }
+                }
+                .contentShape(Rectangle())
+                .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
+                .layoutPriority(1)
+
+                StaticToggleView(isOn: viewModel.isSentinelActive)
+            }
+            .padding(.horizontal, DesignConstant.sectionPadding)
+            .roundedDetailSection(backgroundColor: rowType.background,
+                                  borderColor: rowType.border)
+        }
+        .buttonStyle(.plain)
     }
 
     func upsellRow(weaknessStats: WeaknessStats) -> some View {
@@ -204,7 +260,7 @@ private extension PassMonitorView {
         passMonitorRow(rowType: weakPasswords > 0 ? .warning : .success,
                        title: "Weak Passwords",
                        subTitle: weakPasswords > 0 ? "Create strong passwords" :
-                           "you don't have any weak passwords",
+                           "You don't have any weak passwords",
                        info: "\(weakPasswords)",
                        action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
     }
@@ -240,24 +296,12 @@ private extension PassMonitorView {
     }
 }
 
-private extension PassMonitorView {
-    func lastUpdateInfo(date: String?) -> some View {
-        VStack {
-            if let date {
-                Text("Last Data Breach Protection Sync:")
-                Text(date)
-            }
-        }.font(.caption)
-            .foregroundStyle(PassColor.textWeak.toColor)
-    }
-}
-
 // MARK: - Rows
 
 private extension PassMonitorView {
     func passMonitorRow(rowType: SecureRowType,
-                        title: String,
-                        subTitle: String?,
+                        title: LocalizedStringKey,
+                        subTitle: LocalizedStringKey?,
                         info: String,
                         action: @escaping () -> Void) -> some View {
         Button(action: action) {

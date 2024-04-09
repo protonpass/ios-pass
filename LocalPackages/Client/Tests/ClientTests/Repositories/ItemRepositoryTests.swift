@@ -35,6 +35,7 @@ final class ItemRepositoryTests: XCTestCase {
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
     var sut: ItemRepositoryProtocol!
+    var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
@@ -45,6 +46,8 @@ final class ItemRepositoryTests: XCTestCase {
          shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
          passKeyManager = PassKeyManagerProtocolMock()
          logManager = LogManagerProtocolMock()
+        cancellables = .init()
+
     }
 
     override func tearDown() {
@@ -55,6 +58,8 @@ final class ItemRepositoryTests: XCTestCase {
         passKeyManager = nil
         logManager = nil
         sut = nil
+        cancellables = nil
+
         super.tearDown()
     }
 }
@@ -71,12 +76,21 @@ extension ItemRepositoryTests {
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)
-        
+        let expectation = XCTestExpectation(description: "Should receive currentlyPinnedItems")
         let pinnedItems = try await sut.getAllPinnedItems()
+
+        sut.currentlyPinnedItems
+            .compactMap { $0 }
+            .sink { _ in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
         XCTAssertFalse(pinnedItems.isEmpty)
         XCTAssertEqual(pinnedItems.count, 10)
         XCTAssertEqual(sut.currentlyPinnedItems.value?.count, 10)
         XCTAssertTrue((localDatasource as? LocalItemDatasourceProtocolMock)!.invokedGetAllPinnedItemsfunction)
         XCTAssertEqual((localDatasource as? LocalItemDatasourceProtocolMock)?.invokedGetAllPinnedItemsCount, 2)
+        await fulfillment(of: [expectation], timeout: 1)
     }
 }
