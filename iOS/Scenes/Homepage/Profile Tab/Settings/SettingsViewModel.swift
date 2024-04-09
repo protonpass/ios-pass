@@ -74,7 +74,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         didSet {
             if spotlightEnabled, plan?.isFreeUser == true {
                 spotlightEnabled = false
-                router.present(for: .upselling(configuration: .default))
+                router.present(for: .upselling(.default))
             } else {
                 preferences.spotlightEnabled = spotlightEnabled
             }

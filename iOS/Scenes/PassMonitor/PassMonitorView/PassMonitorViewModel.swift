@@ -96,7 +96,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
         var upsellElements = [UpsellElement]()
         if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
             upsellElements.append(UpsellElement(icon: PassIcon.shield2,
-                                                title: #localized("Dark Web monitoring"),
+                                                title: #localized("Dark Web Monitoring"),
                                                 color: PassColor.interactionNormMajor2))
         }
         upsellElements.append(contentsOf: UpsellElement.baseCurrentUpsells)
@@ -105,7 +105,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
                                                        title: #localized("Stay safer online"),
                                                        description: entryPoint.description,
                                                        upsellElements: upsellElements)
-        router.present(for: .upselling(configuration: configuration))
+        router.present(for: .upselling(configuration))
     }
 }
 
