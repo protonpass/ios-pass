@@ -137,7 +137,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                                          reusedPasswords: reusedPasswords.count,
                                          missing2FA: numberOfMissing2fa,
                                          excludedItems: numberOfExcludedItems,
-                                         exposedPasswords: 0))
+                                         breaches: 0))
         itemsWithSecurityIssues.send(securityAffectedItems)
     }
 
