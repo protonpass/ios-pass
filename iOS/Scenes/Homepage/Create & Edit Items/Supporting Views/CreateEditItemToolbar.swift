@@ -27,6 +27,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let saveButtonTitle: String
     let isSaveable: Bool
     let isSaving: Bool
+    let canScanDocuments: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
     let onGoBack: () -> Void
@@ -61,7 +62,7 @@ struct CreateEditItemToolbar: ToolbarContent {
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
-            if !ProcessInfo.processInfo.isiOSAppOnMac {
+            if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
                 case .creditCard, .note:
                     CircleButton(icon: PassIcon.scanner,
