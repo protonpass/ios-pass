@@ -136,6 +136,11 @@ private extension SharedRepositoryContainer {
                                       eventStream: self.corruptedSessionEventStream) }
     }
 
+    var remoteAccountDatasource: Factory<RemoteAccountDatasourceProtocol> {
+        self { RemoteAccountDatasource(apiService: self.apiService,
+                                       eventStream: self.corruptedSessionEventStream) }
+    }
+
     var localShareDatasource: Factory<LocalShareDatasourceProtocol> {
         self { LocalShareDatasource(databaseService: self.databaseService) }
     }
@@ -251,6 +256,12 @@ extension SharedRepositoryContainer {
                              remoteDatasource: self.remoteAccessDatasource(),
                              userDataProvider: self.userDataProvider,
                              logManager: self.logManager)
+        }
+    }
+
+    var accountRepository: Factory<AccountRepositoryProtocol> {
+        self {
+            AccountRepository(remoteAccountDatasource: self.remoteAccountDatasource())
         }
     }
 
