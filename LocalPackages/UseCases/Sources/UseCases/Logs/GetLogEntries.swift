@@ -59,7 +59,6 @@ public extension GetLogEntriesUseCase {
 public final class GetLogEntries: GetLogEntriesUseCase {
     private let mainAppLogManager: any LogManagerProtocol
     private let autofillLogManager: any LogManagerProtocol
-    private let keyboardLogManager: any LogManagerProtocol
     private let shareLogManager: any LogManagerProtocol
 
     /**
@@ -68,15 +67,12 @@ public final class GetLogEntries: GetLogEntriesUseCase {
      - Parameters:
        - mainAppLogManager: The log manager responsible for retrieving log entries for the main app.
        - autofillLogManager: The log manager responsible for retrieving log entries for the autofill extension.
-       - keyboardLogManager: The log manager responsible for retrieving log entries for the keyboard extension.
      */
     public init(mainAppLogManager: any LogManagerProtocol,
                 autofillLogManager: any LogManagerProtocol,
-                keyboardLogManager: any LogManagerProtocol,
                 shareLogManager: any LogManagerProtocol) {
         self.mainAppLogManager = mainAppLogManager
         self.autofillLogManager = autofillLogManager
-        self.keyboardLogManager = keyboardLogManager
         self.shareLogManager = shareLogManager
     }
 
@@ -95,8 +91,6 @@ public final class GetLogEntries: GetLogEntriesUseCase {
             try await mainAppLogManager.getLogEntries()
         case .autoFillExtension:
             try await autofillLogManager.getLogEntries()
-        case .keyboardExtension:
-            try await keyboardLogManager.getLogEntries()
         case .shareExtension:
             try await shareLogManager.getLogEntries()
         }

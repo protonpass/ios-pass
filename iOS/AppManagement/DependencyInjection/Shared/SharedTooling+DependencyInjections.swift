@@ -55,7 +55,6 @@ extension SharedToolingContainer {
     var logManager: Factory<LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
-            .onArg(PassModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
             .onArg(PassModule.shareExtension) { LogManager(module: .shareExtension) }
     }
 
@@ -82,7 +81,6 @@ extension SharedToolingContainer {
     var module: Factory<PassModule> {
         self { .hostApp }
             .onArg(PassModule.autoFillExtension) { .autoFillExtension }
-            .onArg(PassModule.keyboardExtension) { .keyboardExtension }
             .onArg(PassModule.shareExtension) { .shareExtension }
     }
 
