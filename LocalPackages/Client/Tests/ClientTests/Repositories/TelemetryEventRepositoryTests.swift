@@ -56,8 +56,8 @@ private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepository
         
     }
     
-    func toggleSentinel(for id: String) async throws {
-        
+    func toggleSentinel(for id: String) async throws -> Bool {
+        return true
     }
 }
 

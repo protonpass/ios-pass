@@ -22,96 +22,115 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
+public struct UpsellElement: Sendable, Hashable, Identifiable {
+    public let id = UUID().uuidString
+    let icon: UIImage
+    let title: String
+    let color: UIColor?
+
+    public init(icon: UIImage, title: String, color: UIColor? = nil) {
+        self.icon = icon
+        self.title = title
+        self.color = color
+    }
+}
+
+public struct UpsellingViewConfiguration: Sendable, Hashable {
+    let icon: UIImage
+    let title: String
+    let description: String
+    let upsellElements: [UpsellElement]
+
+    public init(icon: UIImage,
+                title: String,
+                description: String,
+                upsellElements: [UpsellElement]) {
+        self.icon = icon
+        self.title = title
+        self.description = description
+        self.upsellElements = upsellElements
+    }
+}
+
 public struct UpsellingView: View {
     @Environment(\.dismiss) private var dismiss
     private let onUpgrade: () -> Void
+    private let configuration: UpsellingViewConfiguration
 
-    public init(onUpgrade: @escaping () -> Void) {
+    public init(configuration: UpsellingViewConfiguration, onUpgrade: @escaping () -> Void) {
         self.onUpgrade = onUpgrade
+        self.configuration = configuration
     }
 
     public var body: some View {
-        ZStack(alignment: .topLeading) {
-            mainContainer
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .padding()
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                .background(Color(uiColor: PassColor.backgroundNorm))
-                .edgesIgnoringSafeArea(.top)
-
-            CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Close",
-                         action: dismiss.callAsFunction)
-                .padding()
-        }
+        mainContainer
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .padding()
+            .foregroundColor(PassColor.textNorm.toColor)
+            .background(PassColor.backgroundNorm.toColor)
+            .edgesIgnoringSafeArea(.top)
     }
 }
 
 private extension UpsellingView {
     var mainContainer: some View {
-        VStack(alignment: .center) {
-            Image(uiImage: PassIcon.trialDetail)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
+        GeometryReader { proxy in
+            VStack(alignment: .center) {
+                Spacer()
+                Image(uiImage: configuration.icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: proxy.size.width * 0.75)
 
-            Text("Pass Plus", bundle: .module)
-                .font(.title.bold())
-                .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                Text(configuration.title)
+                    .font(.title.bold())
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
-            Text("Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus.",
-                 bundle: .module)
-                .padding(.bottom)
-                .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                Text(configuration.description)
+                    .padding(.bottom)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(PassColor.textWeak.toColor)
 
-            VStack {
-                perkRow(title: "Unlimited email aliases",
-                        icon: IconProvider.alias,
-                        iconTintColor: PassColor.aliasInteractionNorm)
-                PassDivider()
-                perkRow(title: "Unlimited 2FA Autofill", icon: PassIcon.trial2FA)
-                PassDivider()
-                perkRow(title: "Sharing with up to 10 people",
-                        icon: IconProvider.userPlus,
-                        iconTintColor: PassColor.noteInteractionNormMajor1)
-                PassDivider()
-                perkRow(title: "Multiple Vaults", icon: PassIcon.trialVaults)
-            }
-            .padding()
-            .background(PassColor.inputBackgroundNorm.toColor)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .padding(.horizontal)
-            .padding(.vertical, 32)
+                VStack(spacing: 16) {
+                    ForEach(configuration.upsellElements) { element in
+                        perkRow(element: element)
+                    }
+                }
+                .padding(.vertical, DesignConstant.sectionPadding)
+                .padding(.horizontal, DesignConstant.sectionPadding * 2)
+                .roundedDetailSection()
+                Spacer()
 
-            Spacer()
-
-            GradientRoundedButton(title: "Upgrade",
-                                  leadingBackgroundColor: .init(red: 174 / 255, green: 80 / 255, blue: 96 / 255),
-                                  endingBackgroundColor: .init(red: 113 / 255, green: 77 / 255, blue: 255 / 255),
+                CapsuleTextButton(title: "Get Pass Plus",
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: PassColor.interactionNormMajor2,
+                                  height: 48,
                                   action: onUpgrade)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
+
+                CapsuleTextButton(title: "Not Now",
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: .clear,
+                                  height: 48,
+                                  action: dismiss.callAsFunction)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
+            }
         }
     }
 
-    private func perkRow(title: LocalizedStringKey, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {
+    func perkRow(element: UpsellElement) -> some View {
         Label(title: {
-            Text(title)
+            Text(element.title)
                 .minimumScaleFactor(0.75)
         }, icon: {
-            Image(uiImage: icon)
-                .renderingMode(iconTintColor != nil ? .template : .original)
+            Image(uiImage: element.icon)
+                .renderingMode(element.color != nil ? .template : .original)
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: 32)
-                .foregroundColor(iconTintColor?.toColor)
+                .frame(maxWidth: 20)
+                .foregroundColor(element.color?.toColor ?? PassColor.interactionNormMajor2.toColor)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
-
-#Preview {
-    UpsellingView(onUpgrade: {})
 }
