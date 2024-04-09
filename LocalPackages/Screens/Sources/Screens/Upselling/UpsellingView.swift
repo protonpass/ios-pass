@@ -92,7 +92,7 @@ private extension UpsellingView {
                     .multilineTextAlignment(.center)
                     .foregroundStyle(PassColor.textWeak.toColor)
 
-                VStack {
+                VStack(spacing: 16) {
                     ForEach(configuration.upsellElements) { element in
                         perkRow(element: element)
                     }

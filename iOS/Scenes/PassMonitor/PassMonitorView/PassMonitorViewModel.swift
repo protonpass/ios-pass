@@ -112,7 +112,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 // MARK: - Sentinel
 
 extension PassMonitorViewModel {
-    @MainActor
     func checkSentinel() async {
         guard let userId = try? userDataProvider.getUserId() else {
             return
@@ -133,8 +132,7 @@ extension PassMonitorViewModel {
             do {
                 updatingSentinel = true
                 let userId = try userDataProvider.getUserId()
-                try await userSettingsRepository.toggleSentinel(for: userId)
-                await checkSentinel()
+                isSentinelActive = try await userSettingsRepository.toggleSentinel(for: userId)
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
