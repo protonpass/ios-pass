@@ -94,8 +94,7 @@ struct AccountView: View {
                 .roundedEditableSection()
                 .padding(.top)
 
-                if viewModel.isAccountRecoveryVisible,
-                   let accountRecovery = viewModel.accountRecovery {
+                if let accountRecovery = viewModel.accountRecovery, accountRecovery.shouldShowSettingsItem {
                     OptionRow(action: { viewModel.openAccountRecovery() },
                               height: .tall,
                               content: {
