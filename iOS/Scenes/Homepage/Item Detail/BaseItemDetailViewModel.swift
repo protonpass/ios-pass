@@ -125,7 +125,7 @@ class BaseItemDetailViewModel: ObservableObject {
         if getUserShareStatus(for: vault.vault) == .canShare {
             router.present(for: .shareVaultFromItemDetail(vault, itemContent))
         } else {
-            router.present(for: .upselling(configuration: .default))
+            router.present(for: .upselling(.default))
         }
     }
 
