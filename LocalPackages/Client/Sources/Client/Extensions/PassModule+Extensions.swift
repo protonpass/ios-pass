@@ -29,8 +29,6 @@ public extension PassModule {
             #localized("Application logs", bundle: .module)
         case .autoFillExtension:
             #localized("AutoFill extension logs", bundle: .module)
-        case .keyboardExtension:
-            "Keyboard extension logs"
         case .shareExtension:
             #localized("Share extension logs", bundle: .module)
         }
@@ -42,8 +40,6 @@ public extension PassModule {
             "pass_host_application.log"
         case .autoFillExtension:
             "pass_autofill_extension.log"
-        case .keyboardExtension:
-            "pass_keyboard_extension.log"
         case .shareExtension:
             "pass_share_extension.log"
         }
@@ -56,8 +52,6 @@ public extension PassModule {
             "pass_host_application_\(hash).log"
         case .autoFillExtension:
             "pass_autofill_extension\(hash).log"
-        case .keyboardExtension:
-            "pass_keyboard_extension\(hash).log"
         case .shareExtension:
             "pass_share_extension\(hash).log"
         }
