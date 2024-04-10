@@ -148,7 +148,6 @@ final class AppData: AppDataProtocol {
 
     func resetData() {
         userData = nil
-        symmetricKey = nil
         mainCredential = nil
         hostAppCredential = nil
         autofillExtensionCredential = nil
