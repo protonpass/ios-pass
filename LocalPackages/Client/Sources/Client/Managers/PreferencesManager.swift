@@ -114,6 +114,9 @@ public extension PreferencesManager {
             let preferences = AppPreferences.default
             try appPreferencesDatasource.upsertPreferences(preferences)
             appPreferences.send(preferences)
+            // When enterring this code path, the app might be reinstalled
+            // so we remove shared preferences which survives because it's stored in Keychain
+            try sharedPreferencesDatasource.removePreferences()
         }
 
         // Shared preferences
