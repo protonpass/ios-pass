@@ -254,8 +254,10 @@ private extension PassMonitorView {
                 .padding(.bottom, DesignConstant.sectionPadding)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: SecureRowType.danger.background,
-                              borderColor: SecureRowType.danger.border)
+        .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor2,
+                              borderColor: PassColor.interactionNormMinor1)
+//        .roundedDetailSection(backgroundColor: SecureRowType.danger.background,
+//                              borderColor: SecureRowType.danger.border)
     }
 
     func breachedRow(_ breaches: Int, showAdvice: Bool) -> some View {
