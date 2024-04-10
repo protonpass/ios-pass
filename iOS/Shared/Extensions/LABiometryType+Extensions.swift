@@ -19,20 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import LocalAuthentication
-import Macro
+import SwiftUI
 
 public extension LABiometryType {
-    var fallbackToPasscodeMessage: String {
+    var fallbackToPasscodeMessage: LocalizedStringKey? {
         switch self {
         case .faceID:
-            return #localized("Use system passcode when Face ID fails")
+            return "Use system passcode when Face ID fails"
         case .touchID:
-            return #localized("Use system passcode when Touch ID fails")
+            return "Use system passcode when Touch ID fails"
         case .opticID:
-            return #localized("Use system passcode when Optic ID fails")
+            return "Use system passcode when Optic ID fails"
         default:
             assertionFailure("Not applicable")
-            return ""
+            return nil
         }
     }
 }
