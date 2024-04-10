@@ -31,7 +31,7 @@ struct LocalAuthenticationView: View {
     init(mode: LocalAuthenticationViewModel.Mode,
          delayed: Bool,
          onAuth: @escaping () -> Void,
-         onSuccess: @escaping () -> Void,
+         onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
