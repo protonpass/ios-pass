@@ -24,8 +24,6 @@ import ProtonCoreSettings
 // sourcery: AutoMockable
 public protocol MainKeyProvider: Sendable, AnyObject {
     var mainKey: MainKey? { get }
-
-    func wipeMainKey()
 }
 
 extension Keymaker: @unchecked Sendable, MainKeyProvider {}

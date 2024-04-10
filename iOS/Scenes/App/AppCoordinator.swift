@@ -158,7 +158,7 @@ final class AppCoordinator {
                     appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
                 }
             } catch {
-                alert(title: #localized("Error occured"), message: error.localizedDescription)
+                appStateObserver.updateAppState(.loggedOut(.failedToInitializePreferences(error)))
             }
         }
     }
@@ -276,6 +276,8 @@ private extension AppCoordinator {
         case .failedBiometricAuthentication:
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
+        case let .failedToInitializePreferences(error):
+            alert(title: #localized("Error occured"), message: error.localizedDescription)
         default:
             break
         }
