@@ -272,4 +272,14 @@ public extension Publisher {
         }
         .eraseToAnyPublisher()
     }
+
+    /// Filter by multiple keypaths and return `Void` to indicate positive result
+    func filter<T>(_ keyPaths: [PartialKeyPath<T>]) -> AnyPublisher<Void, Failure>
+        where Output == PreferencesUpdate<T> {
+        filter { update in
+            keyPaths.contains { type(of: update.keyPath) == type(of: $0) }
+        }
+        .map { _ in () }
+        .eraseToAnyPublisher()
+    }
 }
