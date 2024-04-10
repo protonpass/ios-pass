@@ -64,6 +64,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     private let userDefaults: UserDefaults = .standard
 
@@ -95,7 +96,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func upsell(entryPoint: UpsellEntry) {
         var upsellElements = [UpsellElement]()
-        if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
+        if getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1) {
             upsellElements.append(UpsellElement(icon: PassIcon.shield2,
                                                 title: #localized("Dark Web Monitoring"),
                                                 color: PassColor.interactionNormMajor2))
