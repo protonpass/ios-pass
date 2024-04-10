@@ -21,13 +21,32 @@
 import ProtonCoreLogin
 import SwiftUI
 
-public enum LogOutReason {
+public enum LogOutReason: Equatable {
     case noSessionDataAtAll
     case noAuthSessionButUnauthSessionAvailable
     case expiredRefreshToken
     case failedBiometricAuthentication
     case sessionInvalidated
     case userInitiated
+    case failedToInitializePreferences(any Error)
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.expiredRefreshToken, .expiredRefreshToken),
+             (.failedBiometricAuthentication, .failedBiometricAuthentication),
+             (.noAuthSessionButUnauthSessionAvailable, .noAuthSessionButUnauthSessionAvailable),
+             (.noSessionDataAtAll, .noSessionDataAtAll),
+             (.sessionInvalidated, .sessionInvalidated),
+             (.userInitiated, .userInitiated):
+            true
+
+        case let (.failedToInitializePreferences(lError), .failedToInitializePreferences(rError)):
+            lError.localizedDescription == rError.localizedDescription
+
+        default:
+            false
+        }
+    }
 }
 
 public enum AppState {
