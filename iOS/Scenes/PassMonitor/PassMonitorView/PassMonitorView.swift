@@ -27,7 +27,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 enum SecureRowType {
-    case info, warning, danger, success
+    case info, warning, danger, success, upsell
 
     var icon: String? {
         switch self {
@@ -63,6 +63,8 @@ enum SecureRowType {
             PassColor.cardInteractionNormMinor2
         case .info:
             PassColor.backgroundNorm
+        case .upsell:
+            PassColor.interactionNormMinor2
         }
     }
 
@@ -76,6 +78,8 @@ enum SecureRowType {
             PassColor.cardInteractionNormMinor1
         case .info:
             PassColor.inputBorderNorm
+        case .upsell:
+            PassColor.interactionNormMinor1
         }
     }
 
@@ -87,7 +91,7 @@ enum SecureRowType {
             PassColor.noteInteractionNormMajor2
         case .success:
             PassColor.cardInteractionNormMajor2
-        case .info:
+        case .info, .upsell:
             PassColor.textNorm
         }
     }
@@ -100,7 +104,7 @@ enum SecureRowType {
             PassColor.noteInteractionNormMinor1
         case .success:
             PassColor.cardInteractionNormMinor1
-        case .info:
+        case .info, .upsell:
             PassColor.backgroundMedium
         }
     }
@@ -256,8 +260,6 @@ private extension PassMonitorView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor2,
                               borderColor: PassColor.interactionNormMinor1)
-//        .roundedDetailSection(backgroundColor: SecureRowType.danger.background,
-//                              borderColor: SecureRowType.danger.border)
     }
 
     func breachedRow(_ breaches: Int, showAdvice: Bool) -> some View {
@@ -310,7 +312,7 @@ private extension PassMonitorView {
     @ViewBuilder
     func missing2FARow(_ missing2FA: Int) -> some View {
         if viewModel.isFreeUser {
-            passMonitorRow(rowType: .info,
+            passMonitorRow(rowType: .upsell,
                            title: "Two-factor authentication",
                            subTitle: "Increase your security",
                            badge: PassIcon.passSubscriptionBadge,
