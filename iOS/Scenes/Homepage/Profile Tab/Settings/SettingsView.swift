@@ -168,11 +168,9 @@ private extension SettingsView {
 
             VStack(spacing: 0) {
                 OptionRow(height: .tall) {
-                    Toggle(isOn: $viewModel.spotlightEnabled) {
-                        Text("Show content in search")
-                            .foregroundColor(PassColor.textNorm.toColor)
-                    }
-                    .tint(PassColor.interactionNorm.toColor)
+                    StaticToggle("Show content in search",
+                                 isOn: viewModel.spotlightEnabled,
+                                 action: { viewModel.toggleSpotlight() })
                 }
 
                 if viewModel.spotlightEnabled {
