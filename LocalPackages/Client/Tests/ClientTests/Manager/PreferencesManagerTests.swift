@@ -255,3 +255,54 @@ extension PreferencesManagerTest {
         XCTAssertEqual(sut.userPreferences.value, expectedUserPrefs)
     }
 }
+
+extension PreferencesManagerTest {
+    func testFilterMultipleKeysPath() async throws {
+        try await sut.setUp()
+        let expectation1 = XCTestExpectation(description: "Should receive 1 update event")
+        expectation1.expectedFulfillmentCount = 1
+
+        let expectation2 = XCTestExpectation(description: "Should receive 1 update event")
+        expectation2.expectedFulfillmentCount = 1
+
+        let expectation3 = XCTestExpectation(description: "Should receive 2 update events")
+        expectation3.expectedFulfillmentCount = 2
+
+        let expectation4 = XCTestExpectation(description: "Should receive 3 update events")
+        expectation4.expectedFulfillmentCount = 3
+
+        sut.appPreferencesUpdates
+            .filter([\.onboarded])
+            .sink { _ in
+                expectation1.fulfill()
+            }
+            .store(in: &cancellables)
+
+        sut.appPreferencesUpdates
+            .filter([\.telemetryThreshold])
+            .sink { _ in
+                expectation2.fulfill()
+            }
+            .store(in: &cancellables)
+
+        sut.appPreferencesUpdates
+            .filter([\.onboarded, \.telemetryThreshold])
+            .sink { _ in
+                expectation3.fulfill()
+            }
+            .store(in: &cancellables)
+
+        sut.appPreferencesUpdates
+            .filter([\.onboarded, \.telemetryThreshold, \.createdItemsCount])
+            .sink { _ in
+                expectation4.fulfill()
+            }
+            .store(in: &cancellables)
+
+        try await sut.updateAppPreferences(\.onboarded, value: .random())
+        try await sut.updateAppPreferences(\.telemetryThreshold, value: .random(in: 1...10))
+        try await sut.updateAppPreferences(\.createdItemsCount, value: .random(in: 1...10))
+        await fulfillment(of: [expectation1, expectation2, expectation3, expectation4],
+                          timeout: 1)
+    }
+}
