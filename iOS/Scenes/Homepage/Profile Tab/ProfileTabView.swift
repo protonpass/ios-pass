@@ -63,9 +63,7 @@ struct ProfileTabView: View {
                 .padding(.top)
                 .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
                 .animation(.default, value: viewModel.localAuthenticationMethod)
-                .showSpinner(viewModel.loading)
             }
-
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
@@ -76,6 +74,7 @@ struct ProfileTabView: View {
             await viewModel.refreshPlan()
         }
         .navigationViewStyle(.stack)
+        .showSpinner(viewModel.loading)
     }
 
     @ToolbarContentBuilder
@@ -152,11 +151,9 @@ struct ProfileTabView: View {
                     PassDivider()
 
                     OptionRow(height: .tall) {
-                        Toggle(isOn: $viewModel.fallbackToPasscode) {
-                            Text(type.fallbackToPasscodeMessage)
-                                .foregroundColor(PassColor.textNorm.toColor)
-                        }
-                        .tint(PassColor.interactionNorm.toColor)
+                        StaticToggle(type.fallbackToPasscodeMessage,
+                                     isOn: viewModel.fallbackToPasscode,
+                                     action: { viewModel.toggleFallbackToPasscode() })
                     }
 
                 case .pin:
@@ -213,11 +210,9 @@ struct ProfileTabView: View {
         VStack {
             VStack(spacing: 0) {
                 OptionRow(height: .medium) {
-                    Toggle(isOn: $viewModel.quickTypeBar) {
-                        Text("QuickType bar suggestions")
-                            .foregroundColor(PassColor.textNorm.toColor)
-                    }
-                    .tint(PassColor.interactionNorm.toColor)
+                    StaticToggle("QuickType bar suggestions",
+                                 isOn: viewModel.quickTypeBar,
+                                 action: { viewModel.toggleQuickTypeBar() })
                 }
 
                 PassSectionDivider()
