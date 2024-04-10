@@ -110,8 +110,6 @@ extension UseCasesContainer {
         self { GetLogEntries(mainAppLogManager: SharedToolingContainer.shared.specificLogManager(.hostApp),
                              autofillLogManager: SharedToolingContainer.shared
                                  .specificLogManager(.autoFillExtension),
-                             keyboardLogManager: SharedToolingContainer.shared
-                                 .specificLogManager(.keyboardExtension),
                              shareLogManager: SharedToolingContainer.shared
                                  .specificLogManager(.shareExtension)) }
     }
