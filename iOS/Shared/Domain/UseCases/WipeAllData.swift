@@ -37,7 +37,6 @@ extension WipeAllDataUseCase {
 final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
     private let appData: AppDataProtocol
-    private let mainKeyProvider: MainKeyProvider
     private let apiManager: APIManager
     private let preferences: Preferences
     private let databaseService: DatabaseServiceProtocol
@@ -50,7 +49,6 @@ final class WipeAllData: WipeAllDataUseCase {
 
     init(logManager: LogManagerProtocol,
          appData: AppDataProtocol,
-         mainKeyProvider: MainKeyProvider,
          apiManager: APIManager,
          preferences: Preferences,
          databaseService: DatabaseServiceProtocol,
@@ -62,7 +60,6 @@ final class WipeAllData: WipeAllDataUseCase {
          featureFlagsRepository: FeatureFlagsRepositoryProtocol) {
         logger = .init(manager: logManager)
         self.appData = appData
-        self.mainKeyProvider = mainKeyProvider
         self.apiManager = apiManager
         self.preferences = preferences
         self.databaseService = databaseService
@@ -83,7 +80,6 @@ final class WipeAllData: WipeAllDataUseCase {
         featureFlagsRepository.clearUserId()
 
         appData.resetData()
-        mainKeyProvider.wipeMainKey()
         apiManager.clearCredentials()
         await preferences.reset(isTests: isTests)
         databaseService.resetContainer()
