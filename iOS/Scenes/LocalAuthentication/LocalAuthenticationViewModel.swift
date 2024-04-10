@@ -40,7 +40,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let delayed: Bool
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let onSuccess: () -> Void
+    private let onSuccess: () async throws -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
@@ -64,7 +64,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     init(mode: Mode,
          delayed: Bool,
          onAuth: @escaping () -> Void,
-         onSuccess: @escaping () -> Void,
+         onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
         self.mode = mode
         self.delayed = delayed
@@ -171,7 +171,7 @@ private extension LocalAuthenticationViewModel {
             do {
                 try await preferencesManager.updateSharedPreferences(\.failedAttemptCount,
                                                                      value: 0)
-                onSuccess()
+                try await onSuccess()
             } catch {
                 logger.error(error)
             }

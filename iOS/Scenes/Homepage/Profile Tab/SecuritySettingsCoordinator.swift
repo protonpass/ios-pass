@@ -27,7 +27,7 @@ import Macro
 
 @MainActor
 final class SecuritySettingsCoordinator {
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
@@ -36,23 +36,24 @@ final class SecuritySettingsCoordinator {
 
     weak var delegate: ChildCoordinatorDelegate?
 
+    private var preferences: SharedPreferences {
+        preferencesManager.sharedPreferences.value ?? .default
+    }
+
     init() {}
 }
 
 // MARK: - Public APIs
 
 extension SecuritySettingsCoordinator {
-    @MainActor
     func editMethod() {
         showListOfAvailableMethods()
     }
 
-    @MainActor
     func editAppLockTime() {
         showListOfAppLockTimes()
     }
 
-    @MainActor
     func editPINCode() {
         verifyAndThenUpdatePIN()
     }
@@ -61,28 +62,34 @@ extension SecuritySettingsCoordinator {
 // MARK: - Private APIs
 
 private extension SecuritySettingsCoordinator {
-    @MainActor
     func showListOfAvailableMethods() {
         do {
+            let update: (LocalAuthenticationMethod) -> Void = { [weak self] newMethod in
+                guard let self else { return }
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    do {
+                        try await updateMethod(newMethod)
+                    } catch {
+                        handle(error: error)
+                    }
+                }
+            }
             let methods = try getMethods(policy: enablingPolicy)
-            let view = LocalAuthenticationMethodsView(supportedMethods: methods,
-                                                      onSelect: { [weak self] newMethod in
-                                                          guard let self else { return }
-                                                          updateMethod(newMethod.method)
-                                                      })
+            let view = LocalAuthenticationMethodsView(selectedMethod: preferences.localAuthenticationMethod,
+                                                      supportedMethods: methods,
+                                                      onSelect: { update($0.method) })
             let height = OptionRowHeight.compact.value * CGFloat(methods.count) + 60
 
             delegate?.childCoordinatorWantsToPresent(view: view,
                                                      viewOption: .customSheetWithGrabber(CGFloat(height)),
                                                      presentationOption: .none)
         } catch {
-            logger.error(error)
-            router.display(element: .displayErrorBanner(error))
+            handle(error: error)
         }
     }
 
-    @MainActor
-    func updateMethod(_ newMethod: LocalAuthenticationMethod) {
+    func updateMethod(_ newMethod: LocalAuthenticationMethod) async throws {
         let currentMethod = preferences.localAuthenticationMethod
         let authenticatingPolicy: LAPolicy = preferences.fallbackToPasscode ?
             .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
@@ -96,18 +103,18 @@ private extension SecuritySettingsCoordinator {
         case (.none, .biometric):
             // Enable biometric authentication
             // Failure is allowed because biometric authentication is not yet turned on
-            biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                     policy: enablingPolicy,
-                                                     allowFailure: true)
+            try await biometricallyAuthenticateAndUpdateMethod(newMethod,
+                                                               policy: enablingPolicy,
+                                                               allowFailure: true)
 
         case (.biometric, .none),
              (.biometric, .pin):
             // Disable biometric authentication or change from biometric to PIN
             // Failure is not allowed because biometric authentication is already turned on
             // Log out if too many failures
-            biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                     policy: authenticatingPolicy,
-                                                     allowFailure: false)
+            try await biometricallyAuthenticateAndUpdateMethod(newMethod,
+                                                               policy: authenticatingPolicy,
+                                                               allowFailure: false)
 
         case (.none, .pin):
             // Enable PIN authentication
@@ -116,31 +123,33 @@ private extension SecuritySettingsCoordinator {
         case (.pin, .biometric),
              (.pin, .none):
             // Disable PIN authentication or change from PIN to biometric
-            verifyPINCodeAndUpdateMethod(newMethod)
+            try await verifyPINCodeAndUpdateMethod(newMethod)
         }
     }
 
-    @MainActor
     func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod,
                                                   policy: LAPolicy,
-                                                  allowFailure: Bool) {
-        let succesHandler: () -> Void = { [weak self] in
+                                                  allowFailure: Bool) async throws {
+        let succesHandler: () async throws -> Void = { [weak self] in
             guard let self else { return }
             delegate?.childCoordinatorWantsToDismissTopViewController()
 
             if newMethod != .biometric {
-                preferences.fallbackToPasscode = true
+                try await preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
+                                                                     value: true)
             }
 
             if newMethod == .pin {
-                // Delay a bit to wait for cover/uncover app animation to finish before presenting new sheet
+                // Delay a bit to wait for cover/uncover app animation to finish before presenting new
+                // sheet
                 // (see "sceneWillResignActive" & "sceneDidBecomeActive" in SceneDelegate)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
                     guard let self else { return }
                     definePINCodeAndChangeToPINMethod()
                 }
             } else {
-                preferences.localAuthenticationMethod = newMethod
+                try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                                     value: newMethod)
             }
         }
 
@@ -151,18 +160,10 @@ private extension SecuritySettingsCoordinator {
 
         if allowFailure {
             delegate?.childCoordinatorWantsToDismissTopViewController()
-
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                do {
-                    let authenticate = try await authenticate(policy: policy,
-                                                              reason: #localized("Please authenticate"))
-                    if authenticate {
-                        succesHandler()
-                    }
-                } catch {
-                    router.display(element: .displayErrorBanner(error))
-                }
+            let authenticate = try await authenticate(policy: policy,
+                                                      reason: #localized("Please authenticate"))
+            if authenticate {
+                try await succesHandler()
             }
         } else {
             let view = LocalAuthenticationView(mode: .biometric,
@@ -176,7 +177,6 @@ private extension SecuritySettingsCoordinator {
         }
     }
 
-    @MainActor
     func showListOfAppLockTimes() {
         let view = EditAppLockTimeView(selectedAppLockTime: preferences.appLockTime,
                                        onSelect: { [weak self] newTime in
@@ -189,27 +189,35 @@ private extension SecuritySettingsCoordinator {
                                                  presentationOption: .none)
     }
 
-    func updateAppLockTime(_ newAppLockTime: AppLockTime) {
-        preferences.appLockTime = newAppLockTime
-        delegate?.childCoordinatorWantsToDismissTopViewController()
+    func updateAppLockTime(_ newValue: AppLockTime) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateSharedPreferences(\.appLockTime,
+                                                                     value: newValue)
+                delegate?.childCoordinatorWantsToDismissTopViewController()
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     func definePINCodeAndChangeToPINMethod() {
         router.present(for: .setPINCode)
     }
 
-    @MainActor
-    func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {
-        let successHandler: () -> Void = { [weak self] in
+    func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) async throws {
+        let successHandler: () async throws -> Void = { [weak self] in
             guard let self else { return }
             delegate?.childCoordinatorWantsToDismissTopViewController()
 
             if newMethod == .biometric {
-                biometricallyAuthenticateAndUpdateMethod(.biometric,
-                                                         policy: enablingPolicy,
-                                                         allowFailure: true)
+                try await biometricallyAuthenticateAndUpdateMethod(.biometric,
+                                                                   policy: enablingPolicy,
+                                                                   allowFailure: true)
             } else {
-                preferences.localAuthenticationMethod = newMethod
+                try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                                     value: newMethod)
             }
         }
 
@@ -228,7 +236,6 @@ private extension SecuritySettingsCoordinator {
                                                  presentationOption: .dismissTopViewController)
     }
 
-    @MainActor
     func verifyAndThenUpdatePIN() {
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
@@ -248,5 +255,10 @@ private extension SecuritySettingsCoordinator {
         delegate?.childCoordinatorWantsToPresent(view: view,
                                                  viewOption: .fullScreen,
                                                  presentationOption: .dismissTopViewController)
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
