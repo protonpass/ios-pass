@@ -20,11 +20,11 @@
 
 import ProtonCoreFeatureFlags
 
+// periphery:ignore
 /// Should be activated when new feature flags are added to the project
 /// following is how a flag should be added:
 /// Example:
 ///    case passSharingV1 = "PassSharingV1"
 public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
     case passSentinelV1 = "PassSentinelV1"
-    case passSpotlight = "PassSpotlight"
 }

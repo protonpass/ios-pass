@@ -42,16 +42,10 @@ private extension SettingsView {
         ScrollView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 untitledSection
-
                 clipboardSection
                     .padding(.vertical)
-
-                if viewModel.spotlightFlagAvailable {
-                    spotlightSection
-                }
-
+                spotlightSection
                 logsSection
-
                 applicationSection
                     .padding(.top)
             }
@@ -115,11 +109,9 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                Toggle(isOn: $viewModel.displayFavIcons) {
-                    Text("Show website thumbnails")
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                }
-                .tint(Color(uiColor: PassColor.interactionNorm))
+                StaticToggle("Show website thumbnails",
+                             isOn: viewModel.displayFavIcons,
+                             action: { viewModel.toggleDisplayFavIcons() })
             }
         }
         .roundedEditableSection()
@@ -146,11 +138,9 @@ private extension SettingsView {
                 PassSectionDivider()
 
                 OptionRow(height: .tall) {
-                    Toggle(isOn: $viewModel.shareClipboard) {
-                        Text("Share clipboard between devices")
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    }
-                    .tint(Color(uiColor: PassColor.interactionNorm))
+                    StaticToggle("Share clipboard between devices",
+                                 isOn: viewModel.shareClipboard,
+                                 action: { viewModel.toggleShareClipboard() })
                 }
             }
             .roundedEditableSection()
