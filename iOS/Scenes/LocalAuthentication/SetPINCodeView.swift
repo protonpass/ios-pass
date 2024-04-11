@@ -27,6 +27,7 @@ struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
     @StateObject private var viewModel: SetPINCodeViewModel = .init()
+    private let theme = resolve(\SharedToolingContainer.theme)
 
     init() {}
 
@@ -69,7 +70,7 @@ struct SetPINCodeView: View {
         .navigationViewStyle(.stack)
         .accentColor(PassColor.interactionNormMajor1.toColor)
         .tint(PassColor.interactionNormMajor1.toColor)
-        .theme(viewModel.theme)
+        .theme(theme)
     }
 }
 
