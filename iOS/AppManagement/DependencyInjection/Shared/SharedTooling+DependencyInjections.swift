@@ -115,10 +115,6 @@ extension SharedToolingContainer {
         self { CurrentDateProvider() }
     }
 
-    var spotlightSettingsProvider: Factory<SpotlightSettingsProvider> {
-        self { self.preferences() }
-    }
-
     var preferencesManager: Factory<PreferencesManagerProtocol> {
         self {
             let currentUserIdProvider = SharedDataContainer.shared.currentUserIdProvider()

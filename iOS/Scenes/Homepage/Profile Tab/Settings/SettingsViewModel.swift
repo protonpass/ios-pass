@@ -302,7 +302,7 @@ private extension SettingsViewModel {
                         try await updateSpotlightVaults(for: spotlightVaults)
                     }
                 }
-                try await indexItemsForSpotlight()
+                try await indexItemsForSpotlight(preferences)
             } catch {
                 handle(error)
             }

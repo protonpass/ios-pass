@@ -142,7 +142,6 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var indexItemsForSpotlight: Factory<IndexItemsForSpotlightUseCase> {
         self { IndexItemsForSpotlight(userDataProvider: self.userDataProvider,
-                                      settingsProvider: SharedToolingContainer.shared.spotlightSettingsProvider(),
                                       itemRepository: self.itemRepository,
                                       datasource: SharedRepositoryContainer.shared
                                           .localSpotlightVaultDatasource(),

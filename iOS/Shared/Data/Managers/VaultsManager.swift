@@ -45,6 +45,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private var isRefreshing = false
 
     // Use cases
@@ -168,7 +169,7 @@ private extension VaultsManager {
             }
 
             do {
-                try await indexItemsForSpotlight()
+                try await indexItemsForSpotlight(preferencesManager.userPreferences.value ?? .default)
             } catch {
                 logger.error(error)
             }
