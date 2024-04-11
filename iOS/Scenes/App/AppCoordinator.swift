@@ -77,7 +77,6 @@ final class AppCoordinator {
 
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
-            isUITest = true
             resetAllData()
         }
 
@@ -205,7 +204,7 @@ final class AppCoordinator {
     private func resetAllData() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            await wipeAllData(isTests: isUITest)
+            await wipeAllData()
             SharedViewContainer.shared.reset()
         }
     }

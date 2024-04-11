@@ -122,6 +122,8 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     var dismissedBannerIds: [String]
 
     @MainActor
+    // Still used in tests
+    // periphery:ignore
     func reset(isTests: Bool = false) {
         quickTypeBar = true
         automaticallyCopyTotpCode = true
