@@ -1,6 +1,6 @@
 //
-// EditSpotlightSearchableContentViewModel.swift
-// Proton Pass - Created on 07/04/2024.
+// EditSpotlightSearchableVaultsViewModel.swift
+// Proton Pass - Created on 11/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -23,21 +23,22 @@ import Factory
 import Foundation
 
 @MainActor
-final class EditSpotlightSearchableContentViewModel: ObservableObject {
-    @Published private(set) var selection: SpotlightSearchableContent
+final class EditSpotlightSearchableVaultsViewModel: ObservableObject {
+    @Published private(set) var selection: SpotlightSearchableVaults
+
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
         let preferences = preferencesManager.userPreferences.value ?? .default
-        selection = preferences.spotlightSearchableContent
+        selection = preferences.spotlightSearchableVaults
     }
 
-    func updateSearchableContent(_ newValue: SpotlightSearchableContent) {
+    func update(_ newValue: SpotlightSearchableVaults) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                try await preferencesManager.updateUserPreferences(\.spotlightSearchableContent,
+                try await preferencesManager.updateUserPreferences(\.spotlightSearchableVaults,
                                                                    value: newValue)
                 selection = newValue
             } catch {
