@@ -29,7 +29,6 @@ import Entities
 import Factory
 import MBProgressHUD
 import ProtonCoreAuthentication
-import ProtonCoreLog
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
@@ -48,6 +47,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
 
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -92,12 +92,9 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
         self.context = context
 
-        // Set logger environment
-        let environment = ProtonPassDoH(bundle: .main).environment.name
-        PMLog.setEnvironment(environment: environment)
-
         // Post init
-        setUpSentry(bundle: .main)
+        setUpSentry()
+        setCoreLoggerEnvironment()
         AppearanceSettings.apply()
         setUpRouting()
 
