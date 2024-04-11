@@ -25,12 +25,12 @@ import ProtonCoreFeatureFlags
 import UIKit
 
 protocol WipeAllDataUseCase {
-    func execute(isTests: Bool) async
+    func execute() async
 }
 
 extension WipeAllDataUseCase {
-    func callAsFunction(isTests: Bool) async {
-        await execute(isTests: isTests)
+    func callAsFunction() async {
+        await execute()
     }
 }
 
@@ -71,7 +71,7 @@ final class WipeAllData: WipeAllDataUseCase {
         self.featureFlagsRepository = featureFlagsRepository
     }
 
-    func execute(isTests: Bool) async {
+    func execute() async {
         logger.info("Wiping all data")
 
         if let userID = try? userDataProvider.getUserId(), !userID.isEmpty {
