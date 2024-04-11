@@ -354,7 +354,7 @@ private extension CredentialProviderCoordinator {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
             await revokeCurrentSession()
-            await wipeAllData(isTests: false)
+            await wipeAllData()
             showNotLoggedInView()
             completion?()
         }
