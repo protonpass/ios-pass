@@ -107,7 +107,7 @@ extension SharedToolingContainer {
     }
 
     var theme: Factory<Theme> {
-        self { self.preferencesManager().sharedPreferences.value?.theme ?? .default }
+        self { self.preferencesManager().sharedPreferences.unwrapped().theme }
             .unique
     }
 

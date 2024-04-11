@@ -48,14 +48,14 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let onFailure: () -> Void
 
     private var preferences: SharedPreferences {
-        preferencesManager.sharedPreferences.value ?? .default
+        preferencesManager.sharedPreferences.unwrapped()
     }
 
     init(delayed: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        let preferences = preferencesManager.sharedPreferences.value ?? .default
+        let preferences = preferencesManager.sharedPreferences.unwrapped()
         _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
