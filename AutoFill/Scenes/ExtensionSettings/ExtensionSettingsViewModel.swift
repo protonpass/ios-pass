@@ -37,7 +37,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     init() {
-        let preferences = preferencesManager.sharedPreferences.value ?? .default
+        let preferences = preferencesManager.sharedPreferences.unwrapped()
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
@@ -64,7 +64,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let preferences = preferencesManager.sharedPreferences.value ?? .default
+                let preferences = preferencesManager.sharedPreferences.unwrapped()
                 if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
                     showAutomaticCopyTotpCodeExplication = true
                     return
@@ -77,8 +77,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
                 try await preferencesManager.updateSharedPreferences(\.automaticallyCopyTotpCode,
                                                                      value: newValue)
                 automaticallyCopyTotpCode = newValue
-
-                try await reindexCredentials(newValue)
             } catch {
                 handle(error)
             }

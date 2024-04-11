@@ -88,8 +88,8 @@ public extension AppPreferences {
     }
 }
 
-public extension AppPreferences {
-    static var `default`: Self {
+extension AppPreferences: Defaultable {
+    public static var `default`: Self {
         .init(onboarded: Default.onboarded,
               telemetryThreshold: Default.telemetryThreshold,
               createdItemsCount: Default.createdItemsCount,

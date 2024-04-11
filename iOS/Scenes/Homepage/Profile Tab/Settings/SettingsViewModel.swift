@@ -69,8 +69,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
 
-        let sharedPreferences = preferencesManager.sharedPreferences.value ?? .default
-        let userPreferences = preferencesManager.userPreferences.value ?? .default
+        let sharedPreferences = preferencesManager.sharedPreferences.unwrapped()
+        let userPreferences = preferencesManager.userPreferences.unwrapped()
 
         selectedBrowser = sharedPreferences.browser
         selectedTheme = sharedPreferences.theme
@@ -296,7 +296,7 @@ private extension SettingsViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let preferences = preferencesManager.userPreferences.value ?? .default
+                let preferences = preferencesManager.userPreferences.unwrapped()
                 if preferences.spotlightEnabled {
                     if let spotlightVaults {
                         try await updateSpotlightVaults(for: spotlightVaults)
