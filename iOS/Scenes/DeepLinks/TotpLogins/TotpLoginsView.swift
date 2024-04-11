@@ -32,7 +32,7 @@ struct TotpLoginsView: View {
     @FocusState private var isFocusedOnSearchBar
     @Environment(\.dismiss) private var dismiss
 
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let theme = resolve(\SharedToolingContainer.theme)
 
     var body: some View {
         ZStack {
@@ -45,7 +45,7 @@ struct TotpLoginsView: View {
         .task {
             await viewModel.loadLogins()
         }
-        .theme(preferencesManager.sharedPreferences.value?.theme ?? .default)
+        .theme(theme)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Set up 2FA")
         .toolbarBackground(PassColor.backgroundNorm.toColor,
