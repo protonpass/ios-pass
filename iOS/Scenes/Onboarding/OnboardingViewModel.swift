@@ -150,7 +150,7 @@ private extension OnboardingViewModel {
 
     func showAppropriateBiometricAuthenticationStep() {
         do {
-            let preferences = preferencesManager.sharedPreferences.value ?? .default
+            let preferences = preferencesManager.sharedPreferences.unwrapped()
             let biometryType = try checkBiometryType(policy: policy)
             switch biometryType {
             case .faceID:

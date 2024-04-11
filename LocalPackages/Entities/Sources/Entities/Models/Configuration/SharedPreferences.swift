@@ -156,8 +156,8 @@ public extension SharedPreferences {
     }
 }
 
-public extension SharedPreferences {
-    static var `default`: Self {
+extension SharedPreferences: Defaultable {
+    public static var `default`: Self {
         .init(quickTypeBar: Default.quickTypeBar,
               automaticallyCopyTotpCode: Default.automaticallyCopyTotpCode,
               theme: Default.theme,

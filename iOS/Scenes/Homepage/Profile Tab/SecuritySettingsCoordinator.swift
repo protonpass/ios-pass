@@ -37,7 +37,7 @@ final class SecuritySettingsCoordinator {
     weak var delegate: ChildCoordinatorDelegate?
 
     private var preferences: SharedPreferences {
-        preferencesManager.sharedPreferences.value ?? .default
+        preferencesManager.sharedPreferences.unwrapped()
     }
 
     init() {}
