@@ -27,7 +27,6 @@ import SwiftUI
 /// Note section of item detail pages
 struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
-    private let theme = resolve(\SharedToolingContainer.theme)
     let itemContent: ItemContent
     let vault: Vault?
 
@@ -57,16 +56,16 @@ struct NoteDetailSection: View {
         .tint(tintColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
-            FullNoteView(itemContent: itemContent, vault: vault, theme: theme)
+            FullNoteView(itemContent: itemContent, vault: vault)
         }
     }
 }
 
 private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
+    private let theme = resolve(\SharedToolingContainer.theme)
     let itemContent: ItemContent
     let vault: Vault?
-    let theme: Theme
 
     var body: some View {
         let tintColor = Color(uiColor: itemContent.type.normMajor2Color)

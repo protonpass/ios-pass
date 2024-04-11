@@ -1305,7 +1305,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditTheme() {
-        let view = EditThemeView(currentTheme: theme) { [weak self] newTheme in
+        let view = EditThemeView { [weak self] newTheme in
             guard let self else { return }
             updateSharedPreferences(\.theme, value: newTheme)
         }
