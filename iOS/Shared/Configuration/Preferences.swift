@@ -120,34 +120,6 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     /// Not really sensitive but `@AppStorage` does not support array so we rely on `@KeychainStorage`
     @KeychainStorage(key: Key.dismissedBannerIds, defaultValue: [])
     var dismissedBannerIds: [String]
-
-    @MainActor
-    // Still used in tests
-    // periphery:ignore
-    func reset(isTests: Bool = false) {
-        quickTypeBar = true
-        automaticallyCopyTotpCode = true
-        failedAttemptCount = 0
-        localAuthenticationMethod = .none
-        fallbackToPasscode = true
-        pinCode = nil
-        appLockTime = .twoMinutes
-        theme = .dark
-        browser = .systemDefault
-        clipboardExpiration = .twoMinutes
-        shareClipboard = false
-        spotlightEnabled = false
-        spotlightSearchableContent = .title
-        spotlightSearchableVaults = .all
-        telemetryThreshold = nil
-        displayFavIcons = true
-        dismissedBannerIds = []
-        if isTests {
-            isFirstRun = true
-            onboarded = false
-            createdItemsCount = 0
-        }
-    }
 }
 
 private extension Preferences {
