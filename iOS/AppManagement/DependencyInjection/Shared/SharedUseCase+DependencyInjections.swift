@@ -113,6 +113,10 @@ extension SharedUseCasesContainer {
     var sendErrorToSentry: Factory<SendErrorToSentryUseCase> {
         self { SendErrorToSentry(userDataProvider: self.userDataProvider) }
     }
+
+    var setCoreLoggerEnvironment: Factory<SetCoreLoggerEnvironmentUseCase> {
+        self { SetCoreLoggerEnvironment() }
+    }
 }
 
 // MARK: AutoFill
