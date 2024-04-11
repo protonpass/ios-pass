@@ -217,6 +217,7 @@
 		3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */; };
 		3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */; };
 		3570E05C2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */; };
+		3570FFCF2BC7BDDE00AC9ADC /* EditDefaultBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570FFCE2BC7BDDE00AC9ADC /* EditDefaultBrowserViewModel.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
@@ -781,6 +782,7 @@
 		3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsViewModel.swift; sourceTree = "<group>"; };
 		3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletePasskeyRegistration.swift; sourceTree = "<group>"; };
 		3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsForPasskeyCreation.swift; sourceTree = "<group>"; };
+		3570FFCE2BC7BDDE00AC9ADC /* EditDefaultBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDefaultBrowserViewModel.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3571B5A029BF7225008D4350 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -1418,6 +1420,7 @@
 			children = (
 				356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */,
 				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
+				3570FFCE2BC7BDDE00AC9ADC /* EditDefaultBrowserViewModel.swift */,
 				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
 				3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */,
 				35ACB94B2BC32CAF001710A7 /* EditSpotlightSearchableContentViewModel.swift */,
@@ -3057,6 +3060,7 @@
 				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
+				3570FFCF2BC7BDDE00AC9ADC /* EditDefaultBrowserViewModel.swift in Sources */,
 				3559BA9D2A5B32550020E172 /* Browser+Extensions.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
