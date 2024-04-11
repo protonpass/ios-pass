@@ -22,20 +22,21 @@ import AuthenticationServices
 import Client
 import DesignSystem
 import Entities
-import Factory
 import Screens
 import SwiftUI
 
 struct PasskeyCredentialsView: View {
     @StateObject private var viewModel: PasskeyCredentialsViewModel
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let theme: Theme
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
-    init(request: PasskeyCredentialRequest,
+    init(theme: Theme,
+         request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext,
          onCreate: @escaping () -> Void,
          onCancel: @escaping () -> Void) {
+        self.theme = theme
         _viewModel = .init(wrappedValue: .init(request: request, context: context))
         self.onCreate = onCreate
         self.onCancel = onCancel
@@ -63,7 +64,7 @@ struct PasskeyCredentialsView: View {
                                    onRetry: { Task { await viewModel.loadCredentials() } })
             }
         }
-        .theme(preferences.theme)
+        .theme(theme)
         .showSpinner(viewModel.isCreatingPasskey)
         .alert("Create passkey",
                isPresented: $viewModel.isShowingAssociationConfirmation,
