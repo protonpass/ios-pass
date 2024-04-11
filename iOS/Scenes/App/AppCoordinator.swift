@@ -94,6 +94,8 @@ final class AppCoordinator {
         corruptedSessionStream = nil
     }
 
+    // swiftlint:disable:next todo
+    // TODO: Remove preferences and this function once session migration is done
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
