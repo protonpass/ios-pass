@@ -25,20 +25,20 @@ import SwiftUI
 
 struct EditDefaultBrowserView: View {
     @Environment(\.dismiss) private var dismiss
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    @StateObject private var viewModel = EditDefaultBrowserViewModel()
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Browser.allCases, id: \.rawValue) { browser in
-                        SelectableOptionRow(action: { preferences.browser = browser; dismiss() },
+                        SelectableOptionRow(action: { viewModel.select(browser) },
                                             height: .compact,
                                             content: {
                                                 Text(browser.description)
-                                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                                    .foregroundColor(PassColor.textNorm.toColor)
                                             },
-                                            isSelected: browser == preferences.browser)
+                                            isSelected: browser == viewModel.selection)
 
                         PassDivider()
                     }
@@ -46,7 +46,7 @@ struct EditDefaultBrowserView: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -56,5 +56,8 @@ struct EditDefaultBrowserView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .onChange(of: viewModel.selection) { _ in
+            dismiss()
+        }
     }
 }
