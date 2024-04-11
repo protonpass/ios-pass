@@ -25,7 +25,7 @@ import SwiftUI
 
 struct EditSpotlightSearchableVaultsView: View {
     @Environment(\.dismiss) private var dismiss
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    @StateObject private var viewModel = EditSpotlightSearchableVaultsViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -46,20 +46,20 @@ struct EditSpotlightSearchableVaultsView: View {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundWeak.toColor)
         .navigationStackEmbeded()
+        .onChange(of: viewModel.selection) { _ in
+            dismiss()
+        }
     }
 }
 
 private extension EditSpotlightSearchableVaultsView {
     func row(for vaults: SpotlightSearchableVaults) -> some View {
-        SelectableOptionRow(action: {
-                                preferences.spotlightSearchableVaults = vaults
-                                dismiss()
-                            },
+        SelectableOptionRow(action: { viewModel.update(vaults) },
                             height: .compact,
                             content: {
                                 Text(vaults.title)
-                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                    .foregroundColor(PassColor.textNorm.toColor)
                             },
-                            isSelected: vaults == preferences.spotlightSearchableVaults)
+                            isSelected: vaults == viewModel.selection)
     }
 }

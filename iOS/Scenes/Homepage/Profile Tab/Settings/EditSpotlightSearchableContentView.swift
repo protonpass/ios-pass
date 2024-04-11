@@ -46,22 +46,20 @@ struct EditSpotlightSearchableContentView: View {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundWeak.toColor)
         .navigationStackEmbeded()
+        .onChange(of: viewModel.selection) { _ in
+            dismiss()
+        }
     }
 }
 
 private extension EditSpotlightSearchableContentView {
     func row(for content: SpotlightSearchableContent) -> some View {
-        SelectableOptionRow(action: {
-                                Task { @MainActor in
-                                    await viewModel.updateSearchableContent(content)
-                                    dismiss()
-                                }
-                            },
+        SelectableOptionRow(action: { viewModel.updateSearchableContent(content) },
                             height: .compact,
                             content: {
                                 Text(content.title)
                                     .foregroundColor(PassColor.textNorm.toColor)
                             },
-                            isSelected: content == viewModel.selectedSearchableContent)
+                            isSelected: content == viewModel.selection)
     }
 }
