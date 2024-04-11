@@ -38,7 +38,7 @@ final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
     private let appData: AppDataProtocol
     private let apiManager: APIManager
-    private let preferences: Preferences
+    private let preferencesManager: PreferencesManagerProtocol
     private let databaseService: DatabaseServiceProtocol
     private let syncEventLoop: SyncEventLoopProtocol
     private let vaultsManager: VaultsManager
@@ -50,7 +50,7 @@ final class WipeAllData: WipeAllDataUseCase {
     init(logManager: LogManagerProtocol,
          appData: AppDataProtocol,
          apiManager: APIManager,
-         preferences: Preferences,
+         preferencesManager: PreferencesManagerProtocol,
          databaseService: DatabaseServiceProtocol,
          syncEventLoop: SyncEventLoopProtocol,
          vaultsManager: VaultsManager,
@@ -61,7 +61,7 @@ final class WipeAllData: WipeAllDataUseCase {
         logger = .init(manager: logManager)
         self.appData = appData
         self.apiManager = apiManager
-        self.preferences = preferences
+        self.preferencesManager = preferencesManager
         self.databaseService = databaseService
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
@@ -81,7 +81,7 @@ final class WipeAllData: WipeAllDataUseCase {
 
         appData.resetData()
         apiManager.clearCredentials()
-        await preferences.reset(isTests: isTests)
+        try? await preferencesManager.reset()
         databaseService.resetContainer()
         UIPasteboard.general.items = []
         syncEventLoop.reset()

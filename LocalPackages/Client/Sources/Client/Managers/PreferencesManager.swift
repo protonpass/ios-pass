@@ -43,6 +43,10 @@ public protocol PreferencesManagerProtocol {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 
+    /// Remove user preferences and some shared preferences like PIN code & biometric
+    /// (e.g user is logged out because of failed local authentication)
+    func reset() async throws
+
     // App preferences
     var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
     var appPreferencesUpdates: PassthroughSubject<AppPreferencesUpdate, Never> { get }
@@ -163,6 +167,13 @@ public extension PreferencesManager {
         didSetUp = true
     }
 
+    func reset() async throws {
+        try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
+        try await updateSharedPreferences(\.pinCode, value: nil)
+        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+        try await removeUserPreferences()
+    }
+
     func assertDidSetUp() {
         assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
         if !didSetUp {
@@ -245,7 +256,6 @@ public extension PreferencesManager {
     func removeUserPreferences() async throws {
         guard let userId = try await currentUserIdProvider.getCurrentUserId() else {
             let errorMessage = "Failed to remove user's preferences. No current user ID found."
-            assertionFailure(errorMessage)
             logger.error(errorMessage)
             return
         }
