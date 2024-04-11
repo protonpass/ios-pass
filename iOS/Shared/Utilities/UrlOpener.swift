@@ -42,7 +42,7 @@ final class UrlOpener {
             return
         }
 
-        let browser = preferencesManager.sharedPreferences.value?.browser ?? .default
+        let browser = preferencesManager.sharedPreferences.unwrapped().browser
         switch browser {
         case .inAppSafari:
             let safariViewController = SFSafariViewController(url: url, configuration: .init())

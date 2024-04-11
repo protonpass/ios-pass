@@ -191,7 +191,7 @@ private extension ItemsTabViewModel {
 
     func localBanners() async -> [InfoBanner] {
         do {
-            let dismissedIds = preferencesManager.appPreferences.value?.dismissedBannerIds ?? []
+            let dismissedIds = preferencesManager.appPreferences.unwrapped().dismissedBannerIds
             var banners = [InfoBanner]()
             for banner in InfoBanner.allCases {
                 if dismissedIds.contains(where: { $0 == banner.id }) {
@@ -344,7 +344,7 @@ extension ItemsTabViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                var dismissedIds = preferencesManager.appPreferences.value?.dismissedBannerIds ?? []
+                var dismissedIds = preferencesManager.appPreferences.unwrapped().dismissedBannerIds
                 dismissedIds.append(banner.id)
                 try await preferencesManager.updateAppPreferences(\.dismissedBannerIds,
                                                                   value: dismissedIds)

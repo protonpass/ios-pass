@@ -72,7 +72,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: ProfileTabViewModelDelegate?
 
     private var preferences: SharedPreferences {
-        preferencesManager.sharedPreferences.value ?? .default
+        preferencesManager.sharedPreferences.unwrapped()
     }
 
     init(childCoordinatorDelegate: ChildCoordinatorDelegate) {
@@ -80,7 +80,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
 
-        let preferences = preferencesManager.sharedPreferences.value ?? .default
+        let preferences = preferencesManager.sharedPreferences.unwrapped()
         appLockTime = preferences.appLockTime
         fallbackToPasscode = preferences.fallbackToPasscode
         quickTypeBar = preferences.quickTypeBar

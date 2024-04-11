@@ -31,7 +31,7 @@ final class EditDefaultBrowserViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
-        selection = preferencesManager.sharedPreferences.value?.browser ?? .default
+        selection = preferencesManager.sharedPreferences.unwrapped().browser
     }
 
     func select(_ browser: Browser) {

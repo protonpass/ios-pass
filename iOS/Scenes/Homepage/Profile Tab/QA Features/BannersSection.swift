@@ -49,10 +49,10 @@ private struct ManageBannersView: View {
                     InfoBannerView(banner: banner, dismiss: {}, action: {})
 
                     let binding = Binding<Bool>(get: {
-                        let dismissedIds = manager.appPreferences.value?.dismissedBannerIds ?? []
+                        let dismissedIds = manager.appPreferences.unwrapped().dismissedBannerIds
                         return dismissedIds.contains(banner.id)
                     }, set: { newValue in
-                        var ids = manager.appPreferences.value?.dismissedBannerIds ?? []
+                        var ids = manager.appPreferences.unwrapped().dismissedBannerIds
                         if newValue {
                             ids.append(banner.id)
                         } else {
