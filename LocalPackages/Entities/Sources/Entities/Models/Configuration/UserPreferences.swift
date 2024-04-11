@@ -74,3 +74,5 @@ public extension UserPreferences {
               spotlightSearchableVaults: Default.spotlightSearchableVaults)
     }
 }
+
+extension UserPreferences: SpotlightSettingsProvider {}
