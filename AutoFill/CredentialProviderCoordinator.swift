@@ -29,6 +29,7 @@ import Entities
 import Factory
 import MBProgressHUD
 import ProtonCoreAuthentication
+import ProtonCoreLog
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
@@ -91,6 +92,10 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         self.context = context
+
+        // Set logger environment
+        let environment = ProtonPassDoH(bundle: .main).environment.name
+        PMLog.setEnvironment(environment: environment)
 
         // Post init
         rootViewController.view.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle

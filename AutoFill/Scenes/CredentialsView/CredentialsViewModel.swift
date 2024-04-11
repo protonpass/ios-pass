@@ -102,6 +102,8 @@ final class CredentialsViewModel: ObservableObject {
         .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
 
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
     private let urls: [URL]
@@ -121,6 +123,10 @@ final class CredentialsViewModel: ObservableObject {
         } else {
             urls.first?.host() ?? ""
         }
+    }
+
+    var theme: Theme {
+        preferencesManager.sharedPreferences.value?.theme ?? .default
     }
 
     init(serviceIdentifiers: [ASCredentialServiceIdentifier],

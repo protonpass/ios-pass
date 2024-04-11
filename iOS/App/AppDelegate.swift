@@ -72,7 +72,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 private extension AppDelegate {
-    private func configureCoreLogger() {
+    func configureCoreLogger() {
         let environment = ProtonPassDoH(bundle: .main).environment.name
         PMLog.setEnvironment(environment: environment)
     }
