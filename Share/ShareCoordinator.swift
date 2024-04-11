@@ -73,6 +73,7 @@ final class ShareCoordinator {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
@@ -100,8 +101,9 @@ final class ShareCoordinator {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         AppearanceSettings.apply()
-        setUpSentry(bundle: .main)
+        setUpSentry()
         setUpRouter()
+        setCoreLoggerEnvironment()
 
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
