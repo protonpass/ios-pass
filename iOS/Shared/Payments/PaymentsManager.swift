@@ -58,7 +58,7 @@ final class PaymentsManager {
     }
 
     func createPaymentsUI() -> PaymentsUI {
-        let theme = preferencesManager.sharedPreferences.value?.theme ?? .default
+        let theme = preferencesManager.sharedPreferences.unwrapped().theme
         let ui = PaymentsUI(payments: payments,
                             clientApp: PaymentsConstants.clientApp,
                             shownPlanNames: PaymentsConstants.shownPlanNames,

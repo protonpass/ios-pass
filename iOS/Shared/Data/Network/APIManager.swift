@@ -79,7 +79,7 @@ final class APIManager {
         self.apiService.serviceDelegate = self
         apiService.loggingDelegate = self
 
-        let theme = preferencesManager.sharedPreferences.value?.theme ?? .default
+        let theme = preferencesManager.sharedPreferences.unwrapped().theme
         humanHelper = HumanCheckHelper(apiService: apiService,
                                        inAppTheme: { theme.inAppTheme },
                                        clientApp: .pass)

@@ -169,7 +169,7 @@ private extension VaultsManager {
             }
 
             do {
-                try await indexItemsForSpotlight(preferencesManager.userPreferences.value ?? .default)
+                try await indexItemsForSpotlight(preferencesManager.userPreferences.unwrapped())
             } catch {
                 logger.error(error)
             }

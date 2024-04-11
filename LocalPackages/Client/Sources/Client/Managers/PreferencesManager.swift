@@ -144,7 +144,7 @@ public extension PreferencesManager {
         }
 
         // Migrations
-        if appPreferences.value?.didMigratePreferences == false {
+        if !appPreferences.unwrapped().didMigratePreferences {
             logger.trace("Migrating preferences")
             var (app, shared, user) = preferencesMigrator.migratePreferences()
 

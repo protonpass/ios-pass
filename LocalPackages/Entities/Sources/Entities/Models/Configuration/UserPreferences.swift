@@ -67,8 +67,10 @@ public extension UserPreferences {
                   spotlightSearchableContent: spotlightSearchableContent ?? Default.spotlightSearchableContent,
                   spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults)
     }
+}
 
-    static var `default`: Self {
+extension UserPreferences: Defaultable {
+    public static var `default`: Self {
         .init(spotlightEnabled: Default.spotlightEnabled,
               spotlightSearchableContent: Default.spotlightSearchableContent,
               spotlightSearchableVaults: Default.spotlightSearchableVaults)

@@ -30,7 +30,7 @@ final class EditSpotlightSearchableVaultsViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
-        let preferences = preferencesManager.userPreferences.value ?? .default
+        let preferences = preferencesManager.userPreferences.unwrapped()
         selection = preferences.spotlightSearchableVaults
     }
 

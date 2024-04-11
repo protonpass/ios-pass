@@ -88,8 +88,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let policy = preferencesManager.sharedPreferences.value?
-                    .localAuthenticationPolicy ?? .deviceOwnerAuthentication
+                let policy = preferencesManager.sharedPreferences.unwrapped().localAuthenticationPolicy
                 let authenticated = try await authenticate(policy: policy,
                                                            reason: #localized("Please authenticate"))
                 if authenticated {
@@ -107,7 +106,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func checkPinCode(_ enteredPinCode: String) {
-        guard let currentPIN = preferencesManager.sharedPreferences.value?.pinCode else {
+        guard let currentPIN = preferencesManager.sharedPreferences.unwrapped().pinCode else {
             // No PIN code is set before, can't do anything but logging out
             let message = "Can not check PIN code. No PIN code set."
             assertionFailure(message)
