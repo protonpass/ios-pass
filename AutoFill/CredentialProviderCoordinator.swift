@@ -46,7 +46,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
 
@@ -98,7 +97,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         PMLog.setEnvironment(environment: environment)
 
         // Post init
-        rootViewController.view.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         setUpSentry(bundle: .main)
         AppearanceSettings.apply()
         setUpRouting()
@@ -127,6 +125,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
+                rootViewController?.view.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 switch mode {
                 case let .showAllLogins(identifiers, requestParams):
                     handleShowAllLoginsMode(identifiers: identifiers,
@@ -203,7 +202,7 @@ private extension CredentialProviderCoordinator {
                 handle(error: error)
             }
         }
-        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
+        showView(LockedCredentialView(theme: theme, viewModel: viewModel))
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
@@ -429,7 +428,7 @@ private extension CredentialProviderCoordinator {
 
     func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
-        viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
         topMostViewController?.present(viewController, animated: animated)
     }
 
