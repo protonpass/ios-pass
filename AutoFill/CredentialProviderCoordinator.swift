@@ -202,13 +202,12 @@ private extension CredentialProviderCoordinator {
                 handle(error: error)
             }
         }
-        showView(LockedCredentialView(theme: theme, viewModel: viewModel))
+        showView(LockedCredentialView(viewModel: viewModel))
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
         guard let context else { return }
-        let view = PasskeyCredentialsView(theme: theme,
-                                          request: request,
+        let view = PasskeyCredentialsView(request: request,
                                           context: context,
                                           onCreate: { [weak self] in
                                               guard let self else { return }

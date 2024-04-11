@@ -20,11 +20,12 @@
 
 import DesignSystem
 import Entities
+import Factory
 import SwiftUI
 
 struct EditThemeView: View {
     @Environment(\.dismiss) private var dismiss
-    let currentTheme: Theme
+    private let currentTheme = resolve(\SharedToolingContainer.theme)
     let onSelect: (Theme) -> Void
 
     var body: some View {
