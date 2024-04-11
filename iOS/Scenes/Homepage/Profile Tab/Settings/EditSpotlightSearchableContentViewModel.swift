@@ -24,18 +24,25 @@ import Foundation
 
 @MainActor
 final class EditSpotlightSearchableContentViewModel: ObservableObject {
-    @Published private(set) var selectedSearchableContent: SpotlightSearchableContent?
+    @Published private(set) var selection: SpotlightSearchableContent
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    init() {}
+    init() {
+        let preferences = preferencesManager.userPreferences.value ?? .default
+        selection = preferences.spotlightSearchableContent
+    }
 
-    func updateSearchableContent(_ newValue: SpotlightSearchableContent) async {
-        do {
-            try await preferencesManager.updateUserPreferences(\.spotlightSearchableContent, value: newValue)
-            selectedSearchableContent = newValue
-        } catch {
-            router.display(element: .displayErrorBanner(error))
+    func updateSearchableContent(_ newValue: SpotlightSearchableContent) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateUserPreferences(\.spotlightSearchableContent,
+                                                                   value: newValue)
+                selection = newValue
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
         }
     }
 }
