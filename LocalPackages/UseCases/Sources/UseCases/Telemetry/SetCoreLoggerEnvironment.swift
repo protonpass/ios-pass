@@ -1,7 +1,7 @@
 //
-// SetUpSentry.swift
-// Proton Pass - Created on 22/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// SetCoreLoggerEnvironment.swift
+// Proton Pass - Created on 11/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,31 +20,24 @@
 //
 
 import Core
-import Sentry
+import Foundation
+import ProtonCoreLog
 
-public protocol SetUpSentryUseCase {
+public protocol SetCoreLoggerEnvironmentUseCase: Sendable {
     func execute(bundle: Bundle)
 }
 
-public extension SetUpSentryUseCase {
+public extension SetCoreLoggerEnvironmentUseCase {
     func callAsFunction(bundle: Bundle = .main) {
         execute(bundle: bundle)
     }
 }
 
-public final class SetUpSentry: SetUpSentryUseCase {
+public final class SetCoreLoggerEnvironment: SetCoreLoggerEnvironmentUseCase {
     public init() {}
 
     public func execute(bundle: Bundle) {
-        SentrySDK.start { options in
-            options.dsn = bundle.plistString(for: .sentryDSN, in: .prod)
-            if ProcessInfo.processInfo.environment["me.proton.pass.SentryDebug"] == "1" {
-                options.debug = true
-            }
-            options.enableFileIOTracing = true
-            options.enableCoreDataTracing = true
-            options.attachViewHierarchy = true // EXPERIMENTAL
-            options.environment = ProtonPassDoH(bundle: bundle).environment.name
-        }
+        let environment = ProtonPassDoH(bundle: bundle).environment.name
+        PMLog.setEnvironment(environment: environment)
     }
 }
