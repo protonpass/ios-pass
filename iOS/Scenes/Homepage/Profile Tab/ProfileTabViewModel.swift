@@ -149,6 +149,7 @@ extension ProfileTabViewModel {
                 let newValue = !fallbackToPasscode
                 try await preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
                                                                      value: newValue)
+                fallbackToPasscode = newValue
             } catch {
                 handle(error: error)
             }
@@ -162,6 +163,7 @@ extension ProfileTabViewModel {
                 let newValue = !quickTypeBar
                 try await preferencesManager.updateSharedPreferences(\.quickTypeBar,
                                                                      value: newValue)
+                quickTypeBar = newValue
                 try await reindexCredentials(newValue)
             } catch {
                 handle(error: error)
@@ -173,7 +175,8 @@ extension ProfileTabViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
+                let localAuthenticationMethod = preferences.localAuthenticationMethod
+                if !automaticallyCopyTotpCode, localAuthenticationMethod == .none {
                     showAutomaticCopyTotpCodeExplanation = true
                     return
                 }
@@ -183,6 +186,7 @@ extension ProfileTabViewModel {
                 }
                 try await preferencesManager.updateSharedPreferences(\.automaticallyCopyTotpCode,
                                                                      value: newValue)
+                automaticallyCopyTotpCode = newValue && localAuthenticationMethod != .none
             } catch {
                 handle(error: error)
             }
@@ -245,36 +249,6 @@ private extension ProfileTabViewModel {
             .sink { [weak self] newValue in
                 guard let self else { return }
                 appLockTime = newValue
-            }
-            .store(in: &cancellables)
-
-        preferencesManager
-            .sharedPreferencesUpdates
-            .receive(on: DispatchQueue.main)
-            .filter(\.fallbackToPasscode)
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                fallbackToPasscode = newValue
-            }
-            .store(in: &cancellables)
-
-        preferencesManager
-            .sharedPreferencesUpdates
-            .receive(on: DispatchQueue.main)
-            .filter(\.quickTypeBar)
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                quickTypeBar = newValue
-            }
-            .store(in: &cancellables)
-
-        preferencesManager
-            .sharedPreferencesUpdates
-            .receive(on: DispatchQueue.main)
-            .filter(\.automaticallyCopyTotpCode)
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                automaticallyCopyTotpCode = newValue && preferences.localAuthenticationMethod != .none
             }
             .store(in: &cancellables)
 
