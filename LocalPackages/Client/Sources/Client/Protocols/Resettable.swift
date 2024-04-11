@@ -21,6 +21,6 @@
 
 import Foundation
 
-public protocol Resettable: Sendable {
+protocol Resettable: Sendable {
     func resetData()
 }

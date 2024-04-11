@@ -41,14 +41,13 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     let isShownAsSheet: Bool
     private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let currentSpotlightVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)
     private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
     private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
@@ -57,19 +56,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var selectedTheme: Theme
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
     @Published private(set) var plan: Plan?
-
-    @Published var displayFavIcons: Bool {
-        didSet {
-            preferences.displayFavIcons = displayFavIcons
-            if !displayFavIcons {
-                emptyFavIconCache()
-            }
-        }
-    }
-
-    @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
-
-    @Published private(set) var spotlightFlagAvailable = false
+    @Published private(set) var displayFavIcons: Bool
+    @Published private(set) var shareClipboard: Bool
     @Published private(set) var spotlightEnabled: Bool
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
@@ -80,15 +68,18 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
-        selectedBrowser = preferences.browser
-        selectedTheme = preferences.theme
-        selectedClipboardExpiration = preferences.clipboardExpiration
-        displayFavIcons = preferences.displayFavIcons
-        shareClipboard = preferences.shareClipboard
-        spotlightFlagAvailable = getFeatureFlagStatus(with: FeatureFlagType.passSpotlight)
-        spotlightEnabled = preferences.spotlightEnabled
-        spotlightSearchableContent = preferences.spotlightSearchableContent
-        spotlightSearchableVaults = preferences.spotlightSearchableVaults
+
+        let sharedPreferences = preferencesManager.sharedPreferences.value ?? .default
+        let userPreferences = preferencesManager.userPreferences.value ?? .default
+
+        selectedBrowser = sharedPreferences.browser
+        selectedTheme = sharedPreferences.theme
+        selectedClipboardExpiration = sharedPreferences.clipboardExpiration
+        displayFavIcons = sharedPreferences.displayFavIcons
+        shareClipboard = sharedPreferences.shareClipboard
+        spotlightEnabled = userPreferences.spotlightEnabled
+        spotlightSearchableContent = userPreferences.spotlightSearchableContent
+        spotlightSearchableVaults = userPreferences.spotlightSearchableVaults
 
         setup()
     }
@@ -113,14 +104,56 @@ extension SettingsViewModel {
         delegate?.settingsViewModelWantsToEditClipboardExpiration()
     }
 
-    func toggleSpotlight() {
-        if !spotlightEnabled, plan?.isFreeUser == true {
-            router.present(for: .upselling(.default))
-            return
+    func toggleDisplayFavIcons() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let newValue = !displayFavIcons
+                try await preferencesManager.updateSharedPreferences(\.displayFavIcons,
+                                                                     value: newValue)
+                if !newValue {
+                    logger.trace("Fav icons are disabled. Removing all cached fav icons")
+                    try await favIconRepository.emptyCache()
+                    logger.info("Removed all cached fav icons")
+                }
+                displayFavIcons = newValue
+            } catch {
+                handle(error)
+            }
         }
-        spotlightEnabled.toggle()
-        preferences.spotlightEnabled = spotlightEnabled
-        reindexItemsForSpotlight()
+    }
+
+    func toggleShareClipboard() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let newValue = !shareClipboard
+                try await preferencesManager.updateSharedPreferences(\.shareClipboard,
+                                                                     value: newValue)
+                shareClipboard = newValue
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func toggleSpotlight() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                if !spotlightEnabled, plan?.isFreeUser == true {
+                    router.present(for: .upselling(.default))
+                    return
+                }
+                let newValue = !spotlightEnabled
+                try await preferencesManager.updateUserPreferences(\.spotlightEnabled,
+                                                                   value: newValue)
+                spotlightEnabled = newValue
+                reindexItemsForSpotlight()
+            } catch {
+                handle(error)
+            }
+        }
     }
 
     func editSpotlightSearchableContent() {
@@ -171,27 +204,59 @@ extension SettingsViewModel {
 
 private extension SettingsViewModel {
     func setup() {
-        preferences
-            .objectWillChange
-            .sink { [weak self] in
-                guard let self else {
-                    return
-                }
-                // These options are changed in other pages by passing a references
-                // of Preferences. So we listen to changes and update here.
-                selectedBrowser = preferences.browser
-                selectedTheme = preferences.theme
-                selectedClipboardExpiration = preferences.clipboardExpiration
+        preferencesManager
+            .sharedPreferencesUpdates
+            .filter(\.browser)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                selectedBrowser = newValue
+            }
+            .store(in: &cancellables)
 
-                if preferences.spotlightSearchableContent != spotlightSearchableContent {
-                    spotlightSearchableContent = preferences.spotlightSearchableContent
+        preferencesManager
+            .sharedPreferencesUpdates
+            .filter(\.theme)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                selectedTheme = newValue
+            }
+            .store(in: &cancellables)
+
+        preferencesManager
+            .sharedPreferencesUpdates
+            .filter(\.clipboardExpiration)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                selectedClipboardExpiration = newValue
+            }
+            .store(in: &cancellables)
+
+        preferencesManager
+            .userPreferencesUpdates
+            .filter(\.spotlightSearchableContent)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                if spotlightSearchableContent != newValue {
                     reindexItemsForSpotlight()
                 }
+                spotlightSearchableContent = newValue
+            }
+            .store(in: &cancellables)
 
-                if preferences.spotlightSearchableVaults != spotlightSearchableVaults {
-                    spotlightSearchableVaults = preferences.spotlightSearchableVaults
+        preferencesManager
+            .userPreferencesUpdates
+            .filter(\.spotlightSearchableVaults)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                if spotlightSearchableVaults != newValue {
                     reindexItemsForSpotlight()
                 }
+                spotlightSearchableVaults = newValue
             }
             .store(in: &cancellables)
 
@@ -227,23 +292,11 @@ private extension SettingsViewModel {
         refreshSpotlightVaults()
     }
 
-    func emptyFavIconCache() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                logger.trace("Fav icons are disabled. Removing all cached fav icons")
-                try await favIconRepository.emptyCache()
-                logger.info("Removed all cached fav icons")
-            } catch {
-                handle(error)
-            }
-        }
-    }
-
     func reindexItemsForSpotlight() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
+                let preferences = preferencesManager.userPreferences.value ?? .default
                 if preferences.spotlightEnabled {
                     if let spotlightVaults {
                         try await updateSpotlightVaults(for: spotlightVaults)
