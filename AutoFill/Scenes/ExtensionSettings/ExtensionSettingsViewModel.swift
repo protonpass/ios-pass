@@ -24,11 +24,11 @@ import UserNotifications
 
 @MainActor
 final class ExtensionSettingsViewModel: ObservableObject {
-    @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
+    @Published private(set) var quickTypeBar: Bool
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplication = false
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -37,46 +37,70 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     init() {
+        let preferences = preferencesManager.sharedPreferences.value ?? .default
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
     }
 
+    func toggleQuickTypeBar() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                let newValue = !quickTypeBar
+                try await preferencesManager.updateSharedPreferences(\.quickTypeBar,
+                                                                     value: newValue)
+                quickTypeBar = newValue
+                router.display(element: .globalLoading(shouldShow: true))
+                try await reindexCredentials(newValue)
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
     func toggleAutomaticCopy2FACode() {
-        if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
-            showAutomaticCopyTotpCodeExplication = true
-            return
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let preferences = preferencesManager.sharedPreferences.value ?? .default
+                if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
+                    showAutomaticCopyTotpCodeExplication = true
+                    return
+                }
+
+                let newValue = !automaticallyCopyTotpCode
+                if newValue {
+                    notificationService.requestNotificationPermission()
+                }
+                try await preferencesManager.updateSharedPreferences(\.automaticallyCopyTotpCode,
+                                                                     value: newValue)
+                automaticallyCopyTotpCode = newValue
+
+                try await reindexCredentials(newValue)
+            } catch {
+                handle(error)
+            }
         }
-        automaticallyCopyTotpCode.toggle()
-        if automaticallyCopyTotpCode {
-            notificationService.requestNotificationPermission()
-        }
-        preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
     }
 }
 
 // MARK: - Private APIs
 
 private extension ExtensionSettingsViewModel {
-    func populateOrRemoveCredentials() {
-        guard quickTypeBar != preferences.quickTypeBar else { return }
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
-                router.display(element: .globalLoading(shouldShow: true))
-                if quickTypeBar {
-                    try await indexAllLoginItems(ignorePreferences: true)
-                } else {
-                    try await unindexAllLoginItems()
-                }
-                preferences.quickTypeBar = quickTypeBar
-            } catch {
-                logger.error(error)
-                quickTypeBar.toggle() // rollback to previous value
-                router.display(element: .displayErrorBanner(error))
-            }
+    func reindexCredentials(_ indexable: Bool) async throws {
+        logger.trace("Reindexing credentials")
+        if indexable {
+            try await indexAllLoginItems(ignorePreferences: true)
+        } else {
+            try await unindexAllLoginItems()
         }
+        logger.info("Reindexed credentials")
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
