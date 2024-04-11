@@ -166,10 +166,6 @@ extension Preferences: FavIconSettings {
     var shouldDisplayFavIcons: Bool { displayFavIcons }
 }
 
-// MARK: - SpotlightSettingsProvider
-
-extension Preferences: SpotlightSettingsProvider {}
-
 // MARK: - SecuritySettingsProvider
 
 extension Preferences: SecuritySettingsProvider {}
