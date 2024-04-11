@@ -22,21 +22,20 @@ import AuthenticationServices
 import Client
 import DesignSystem
 import Entities
+import Factory
 import Screens
 import SwiftUI
 
 struct PasskeyCredentialsView: View {
     @StateObject private var viewModel: PasskeyCredentialsViewModel
-    private let theme: Theme
+    private let theme = resolve(\SharedToolingContainer.theme)
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
-    init(theme: Theme,
-         request: PasskeyCredentialRequest,
+    init(request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext,
          onCreate: @escaping () -> Void,
          onCancel: @escaping () -> Void) {
-        self.theme = theme
         _viewModel = .init(wrappedValue: .init(request: request, context: context))
         self.onCreate = onCreate
         self.onCancel = onCancel
