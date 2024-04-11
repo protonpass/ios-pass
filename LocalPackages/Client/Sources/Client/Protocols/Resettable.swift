@@ -21,6 +21,7 @@
 
 import Foundation
 
-protocol Resettable: Sendable {
+// periphery:ignore
+public protocol Resettable: Sendable {
     func resetData()
 }
