@@ -46,8 +46,6 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private var cancellables = Set<AnyCancellable>()
 
-    var theme: Theme { preferencesManager.sharedPreferences.value?.theme ?? .default }
-
     var actionNotAllowed: Bool {
         // Always disallow when error occurs
         guard error == nil else { return true }
