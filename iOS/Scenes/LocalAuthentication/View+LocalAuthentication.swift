@@ -26,13 +26,13 @@ import ProtonCoreKeymaker
 import SwiftUI
 
 struct LocalAuthenticationModifier: ViewModifier {
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+
     @State private var authenticated: Bool
 
     // autolocker as @State because it needs to be updated
     // when user changes appLockTime in setting
     @State private var autolocker: Autolocker
-
-    @ObservedObject private var preferences: Preferences
 
     // When autofill from QuickType bar, we need to wait a bit for the view to be fully loaded
     // Otherwise we would receive error -1004 when calling biometricallyAuthenticate function
@@ -47,14 +47,17 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
+    private var preferences: SharedPreferences {
+        preferencesManager.sharedPreferences.value ?? .default
+    }
+
     init(delayed: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        let preferences = resolve(\SharedToolingContainer.preferences)
-        authenticated = preferences.localAuthenticationMethod == .none
+        let preferences = preferencesManager.sharedPreferences.value ?? .default
+        _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
-        _preferences = .init(initialValue: preferences)
         self.delayed = delayed
         self.onAuth = onAuth
         self.onSuccess = onSuccess
@@ -88,10 +91,13 @@ struct LocalAuthenticationModifier: ViewModifier {
             }
         }
         .animation(.default, value: authenticated)
-        .onChange(of: preferences.appLockTime) { newAppLockTime in
-            // Take into account right away appLockTime when user updates it
-            autolocker = .init(appLockTime: newAppLockTime)
-            autolocker.startCountdown()
+        .onReceive(preferencesManager.sharedPreferencesUpdates) { update in
+            let appLockTimeKeyPath = \SharedPreferences.appLockTime
+            if update.keyPath == appLockTimeKeyPath {
+                // Take into account right away appLockTime when user updates it
+                autolocker = .init(appLockTime: preferences[keyPath: appLockTimeKeyPath])
+                autolocker.startCountdown()
+            }
         }
         .onReceive(UIApplication.willResignActiveNotification,
                    perform: autolocker.startCountdown)

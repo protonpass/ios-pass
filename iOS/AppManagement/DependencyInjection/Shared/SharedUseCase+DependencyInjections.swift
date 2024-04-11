@@ -45,6 +45,10 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.preferences()
     }
 
+    var preferencesManager: PreferencesManagerProtocol {
+        SharedToolingContainer.shared.preferencesManager()
+    }
+
     var credentialManager: CredentialManagerProtocol {
         SharedServiceContainer.shared.credentialManager()
     }
@@ -232,7 +236,7 @@ extension SharedUseCasesContainer {
         self { WipeAllData(logManager: self.logManager,
                            appData: SharedDataContainer.shared.appData(),
                            apiManager: SharedToolingContainer.shared.apiManager(),
-                           preferences: self.preferences,
+                           preferencesManager: self.preferencesManager,
                            databaseService: SharedServiceContainer.shared.databaseService(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
