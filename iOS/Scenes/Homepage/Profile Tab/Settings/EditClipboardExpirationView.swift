@@ -24,7 +24,7 @@ import SwiftUI
 
 struct EditClipboardExpirationView: View {
     @Environment(\.dismiss) private var dismiss
-    let currentExpiration: ClipboardExpiration
+    let selection: ClipboardExpiration
     let onSelect: (ClipboardExpiration) -> Void
 
     var body: some View {
@@ -38,7 +38,7 @@ struct EditClipboardExpirationView: View {
                                                 Text(expiration.description)
                                                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                                             },
-                                            isSelected: expiration == currentExpiration)
+                                            isSelected: expiration == selection)
 
                         PassDivider()
                     }

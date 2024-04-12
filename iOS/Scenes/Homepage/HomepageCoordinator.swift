@@ -848,7 +848,7 @@ extension HomepageCoordinator {
                 dismissible: dismissible)
     }
 
-    func updateSharedPreferences<T>(_ keyPath: WritableKeyPath<SharedPreferences, T>, value: T) {
+    func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>, value: T) {
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -1294,7 +1294,12 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditDefaultBrowser() {
-        let viewController = UIHostingController(rootView: EditDefaultBrowserView())
+        let currentValue = preferencesManager.sharedPreferences.unwrapped().browser
+        let view = EditDefaultBrowserView(selection: currentValue) { [weak self] newValue in
+            guard let self else { return }
+            updateSharedPreferences(\.browser, value: newValue)
+        }
+        let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.compact.value) * Browser.allCases.count + 100
         viewController.setDetentType(.custom(CGFloat(customHeight)),
@@ -1320,10 +1325,10 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditClipboardExpiration() {
-        let currentExpiration = preferencesManager.sharedPreferences.unwrapped().clipboardExpiration
-        let view = EditClipboardExpirationView(currentExpiration: currentExpiration) { [weak self] newExpiration in
+        let currentValue = preferencesManager.sharedPreferences.unwrapped().clipboardExpiration
+        let view = EditClipboardExpirationView(selection: currentValue) { [weak self] newValue in
             guard let self else { return }
-            updateSharedPreferences(\.clipboardExpiration, value: newExpiration)
+            updateSharedPreferences(\.clipboardExpiration, value: newValue)
         }
         let viewController = UIHostingController(rootView: view)
 
