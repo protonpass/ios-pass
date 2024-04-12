@@ -20,25 +20,25 @@
 
 import DesignSystem
 import Entities
-import Factory
 import SwiftUI
 
 struct EditDefaultBrowserView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = EditDefaultBrowserViewModel()
+    let selection: Browser
+    let onSelect: (Browser) -> Void
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Browser.allCases, id: \.rawValue) { browser in
-                        SelectableOptionRow(action: { viewModel.select(browser) },
+                        SelectableOptionRow(action: { onSelect(browser); dismiss() },
                                             height: .compact,
                                             content: {
                                                 Text(browser.description)
                                                     .foregroundColor(PassColor.textNorm.toColor)
                                             },
-                                            isSelected: browser == viewModel.selection)
+                                            isSelected: browser == selection)
 
                         PassDivider()
                     }
@@ -56,8 +56,5 @@ struct EditDefaultBrowserView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .onChange(of: viewModel.selection) { _ in
-            dismiss()
-        }
     }
 }
