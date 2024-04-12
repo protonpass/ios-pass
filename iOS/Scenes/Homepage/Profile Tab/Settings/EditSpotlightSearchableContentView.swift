@@ -20,12 +20,12 @@
 
 import DesignSystem
 import Entities
-import Factory
 import SwiftUI
 
 struct EditSpotlightSearchableContentView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = EditSpotlightSearchableContentViewModel()
+    let selection: SpotlightSearchableContent
+    let onSelect: (SpotlightSearchableContent) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -46,20 +46,17 @@ struct EditSpotlightSearchableContentView: View {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundWeak.toColor)
         .navigationStackEmbeded()
-        .onChange(of: viewModel.selection) { _ in
-            dismiss()
-        }
     }
 }
 
 private extension EditSpotlightSearchableContentView {
     func row(for content: SpotlightSearchableContent) -> some View {
-        SelectableOptionRow(action: { viewModel.updateSearchableContent(content) },
+        SelectableOptionRow(action: { onSelect(content); dismiss() },
                             height: .compact,
                             content: {
                                 Text(content.title)
                                     .foregroundColor(PassColor.textNorm.toColor)
                             },
-                            isSelected: content == viewModel.selection)
+                            isSelected: content == selection)
     }
 }
