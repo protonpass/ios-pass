@@ -54,6 +54,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -71,16 +73,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
 
-    private var preferences: SharedPreferences {
-        preferencesManager.sharedPreferences.unwrapped()
-    }
-
     init(childCoordinatorDelegate: ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
 
-        let preferences = preferencesManager.sharedPreferences.unwrapped()
+        let preferences = getSharedPreferences()
         appLockTime = preferences.appLockTime
         fallbackToPasscode = preferences.fallbackToPasscode
         quickTypeBar = preferences.quickTypeBar
@@ -147,8 +145,7 @@ extension ProfileTabViewModel {
             guard let self else { return }
             do {
                 let newValue = !fallbackToPasscode
-                try await preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.fallbackToPasscode, value: newValue)
                 fallbackToPasscode = newValue
             } catch {
                 handle(error: error)
@@ -161,8 +158,7 @@ extension ProfileTabViewModel {
             guard let self else { return }
             do {
                 let newValue = !quickTypeBar
-                try await preferencesManager.updateSharedPreferences(\.quickTypeBar,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.quickTypeBar, value: newValue)
                 quickTypeBar = newValue
                 try await reindexCredentials(newValue)
             } catch {
@@ -175,7 +171,7 @@ extension ProfileTabViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let localAuthenticationMethod = preferences.localAuthenticationMethod
+                let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod
                 if !automaticallyCopyTotpCode, localAuthenticationMethod == .none {
                     showAutomaticCopyTotpCodeExplanation = true
                     return
@@ -184,8 +180,7 @@ extension ProfileTabViewModel {
                 if newValue {
                     notificationService.requestNotificationPermission()
                 }
-                try await preferencesManager.updateSharedPreferences(\.automaticallyCopyTotpCode,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.automaticallyCopyTotpCode, value: newValue)
                 automaticallyCopyTotpCode = newValue && localAuthenticationMethod != .none
             } catch {
                 handle(error: error)
@@ -285,7 +280,7 @@ private extension ProfileTabViewModel {
     }
 
     func refreshLocalAuthenticationMethod() {
-        switch preferences.localAuthenticationMethod {
+        switch getSharedPreferences().localAuthenticationMethod {
         case .none:
             localAuthenticationMethod = .none
             automaticallyCopyTotpCode = false
