@@ -97,9 +97,7 @@ final class PreferencesManagerTest: XCTestCase {
 extension PreferencesManagerTest {
     func testCreateDefaultAppPreferences() async throws {
         try await sut.setUp()
-        var expectation = AppPreferences.default
-        expectation.didMigratePreferences = true
-        XCTAssertEqual(sut.appPreferences.value, expectation)
+        XCTAssertEqual(sut.appPreferences.value, .default)
     }
 
     func testReceiveEventWhenUpdatingAppPreferences() async throws {
