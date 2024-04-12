@@ -144,25 +144,32 @@ final class AppCoordinator {
             .store(in: &cancellables)
     }
 
-    func start() {
+    /// Necessary set up like initializing preferences before starting user flow
+    func setUpAndStart() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
-                if appData.isAuthenticated {
-                    appStateObserver.updateAppState(.alreadyLoggedIn)
-                } else if appData.getCredential() != nil {
-                    appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
-                } else {
-                    appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
-                }
+                start()
             } catch {
                 appStateObserver.updateAppState(.loggedOut(.failedToInitializePreferences(error)))
             }
         }
     }
+}
 
-    private func showWelcomeScene(reason: LogOutReason) {
+private extension AppCoordinator {
+    func start() {
+        if appData.isAuthenticated {
+            appStateObserver.updateAppState(.alreadyLoggedIn)
+        } else if appData.getCredential() != nil {
+            appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
+        } else {
+            appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
+        }
+    }
+
+    func showWelcomeScene(reason: LogOutReason) {
         let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
                                                     preferences: preferences)
         welcomeCoordinator.delegate = self
@@ -175,7 +182,7 @@ final class AppCoordinator {
         }
     }
 
-    private func showHomeScene(manualLogIn: Bool) {
+    func showHomeScene(manualLogIn: Bool) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -191,8 +198,8 @@ final class AppCoordinator {
         }
     }
 
-    private func animateUpdateRootViewController(_ newRootViewController: UIViewController,
-                                                 completion: (() -> Void)? = nil) {
+    func animateUpdateRootViewController(_ newRootViewController: UIViewController,
+                                         completion: (() -> Void)? = nil) {
         window.rootViewController = newRootViewController
         window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         UIView.transition(with: window,
@@ -201,7 +208,7 @@ final class AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    private func resetAllData() {
+    func resetAllData() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             await wipeAllData()
