@@ -28,16 +28,17 @@ final class ExtensionSettingsViewModel: ObservableObject {
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplication = false
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
 
     init() {
-        let preferences = preferencesManager.sharedPreferences.unwrapped()
+        let preferences = getSharedPreferences()
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
@@ -49,8 +50,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 let newValue = !quickTypeBar
-                try await preferencesManager.updateSharedPreferences(\.quickTypeBar,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.quickTypeBar, value: newValue)
                 quickTypeBar = newValue
                 router.display(element: .globalLoading(shouldShow: true))
                 try await reindexCredentials(newValue)
@@ -64,8 +64,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let preferences = preferencesManager.sharedPreferences.unwrapped()
-                if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
+                if !automaticallyCopyTotpCode, getSharedPreferences().localAuthenticationMethod == .none {
                     showAutomaticCopyTotpCodeExplication = true
                     return
                 }
@@ -74,8 +73,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
                 if newValue {
                     notificationService.requestNotificationPermission()
                 }
-                try await preferencesManager.updateSharedPreferences(\.automaticallyCopyTotpCode,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.automaticallyCopyTotpCode, value: newValue)
                 automaticallyCopyTotpCode = newValue
             } catch {
                 handle(error)

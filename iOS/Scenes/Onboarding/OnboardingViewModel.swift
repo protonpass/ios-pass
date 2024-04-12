@@ -37,6 +37,9 @@ final class OnboardingViewModel: ObservableObject {
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -91,8 +94,7 @@ extension OnboardingViewModel {
                     let authenticated = try await authenticate(policy: policy,
                                                                reason: #localized("Please authenticate"))
                     if authenticated {
-                        try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
-                                                                             value: .biometric)
+                        try await updateSharedPreferences(\.localAuthenticationMethod, value: .biometric)
                         showAppropriateBiometricAuthenticationStep()
                     }
                 } catch {
@@ -143,14 +145,14 @@ private extension OnboardingViewModel {
             guard let self else { return }
             // Optionally update "onboarded" to not block users from using the app
             // in case errors happens
-            try? await preferencesManager.updateAppPreferences(\.onboarded, value: true)
+            try? await updateAppPreferences(\.onboarded, value: true)
             finished = true
         }
     }
 
     func showAppropriateBiometricAuthenticationStep() {
         do {
-            let preferences = preferencesManager.sharedPreferences.unwrapped()
+            let preferences = getSharedPreferences()
             let biometryType = try checkBiometryType(policy: policy)
             switch biometryType {
             case .faceID:

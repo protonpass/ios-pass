@@ -49,6 +49,10 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
     private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
     private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
@@ -69,8 +73,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
 
-        let sharedPreferences = preferencesManager.sharedPreferences.unwrapped()
-        let userPreferences = preferencesManager.userPreferences.unwrapped()
+        let sharedPreferences = getSharedPreferences()
+        let userPreferences = getUserPreferences()
 
         selectedBrowser = sharedPreferences.browser
         selectedTheme = sharedPreferences.theme
@@ -109,8 +113,7 @@ extension SettingsViewModel {
             guard let self else { return }
             do {
                 let newValue = !displayFavIcons
-                try await preferencesManager.updateSharedPreferences(\.displayFavIcons,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.displayFavIcons, value: newValue)
                 if !newValue {
                     logger.trace("Fav icons are disabled. Removing all cached fav icons")
                     try await favIconRepository.emptyCache()
@@ -128,8 +131,7 @@ extension SettingsViewModel {
             guard let self else { return }
             do {
                 let newValue = !shareClipboard
-                try await preferencesManager.updateSharedPreferences(\.shareClipboard,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.shareClipboard, value: newValue)
                 shareClipboard = newValue
             } catch {
                 handle(error)
@@ -146,8 +148,7 @@ extension SettingsViewModel {
                     return
                 }
                 let newValue = !spotlightEnabled
-                try await preferencesManager.updateUserPreferences(\.spotlightEnabled,
-                                                                   value: newValue)
+                try await updateUserPreferences(\.spotlightEnabled, value: newValue)
                 spotlightEnabled = newValue
                 reindexItemsForSpotlight()
             } catch {
@@ -296,7 +297,7 @@ private extension SettingsViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let preferences = preferencesManager.userPreferences.unwrapped()
+                let preferences = getUserPreferences()
                 if preferences.spotlightEnabled {
                     if let spotlightVaults {
                         try await updateSpotlightVaults(for: spotlightVaults)

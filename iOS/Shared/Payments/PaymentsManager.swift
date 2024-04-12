@@ -39,7 +39,7 @@ final class PaymentsManager {
     // periphery:ignore
     private var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let theme = resolve(\SharedToolingContainer.theme)
     private let inMemoryTokenStorage: PaymentTokenStorage
 
     // swiftlint:disable:next todo
@@ -58,11 +58,10 @@ final class PaymentsManager {
     }
 
     func createPaymentsUI() -> PaymentsUI {
-        let theme = preferencesManager.sharedPreferences.unwrapped().theme
         let ui = PaymentsUI(payments: payments,
                             clientApp: PaymentsConstants.clientApp,
                             shownPlanNames: PaymentsConstants.shownPlanNames,
-                            customization: .init(inAppTheme: { theme.inAppTheme }))
+                            customization: .init(inAppTheme: { [theme] in theme.inAppTheme }))
         paymentsUI = ui
         return ui
     }

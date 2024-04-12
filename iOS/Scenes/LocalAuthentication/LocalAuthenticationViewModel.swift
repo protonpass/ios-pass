@@ -44,6 +44,8 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     let mode: Mode
     let onAuth: () -> Void
 
@@ -88,7 +90,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let policy = preferencesManager.sharedPreferences.unwrapped().localAuthenticationPolicy
+                let policy = getSharedPreferences().localAuthenticationPolicy
                 let authenticated = try await authenticate(policy: policy,
                                                            reason: #localized("Please authenticate"))
                 if authenticated {
@@ -106,7 +108,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func checkPinCode(_ enteredPinCode: String) {
-        guard let currentPIN = preferencesManager.sharedPreferences.unwrapped().pinCode else {
+        guard let currentPIN = getSharedPreferences().pinCode else {
             // No PIN code is set before, can't do anything but logging out
             let message = "Can not check PIN code. No PIN code set."
             assertionFailure(message)
@@ -148,8 +150,7 @@ private extension LocalAuthenticationViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                try await preferencesManager.updateSharedPreferences(\.failedAttemptCount,
-                                                                     value: failedAttemptCount + 1)
+                try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
 
                 let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
                 if let error {
@@ -168,8 +169,7 @@ private extension LocalAuthenticationViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                try await preferencesManager.updateSharedPreferences(\.failedAttemptCount,
-                                                                     value: 0)
+                try await updateSharedPreferences(\.failedAttemptCount, value: 0)
                 try await onSuccess()
             } catch {
                 logger.error(error)

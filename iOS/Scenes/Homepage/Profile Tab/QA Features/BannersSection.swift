@@ -29,7 +29,8 @@ struct BannersSection: View {
 }
 
 private struct ManageBannersView: View {
-    private let manager = resolve(\SharedToolingContainer.preferencesManager)
+    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
+    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
 
     var body: some View {
         Form {
@@ -37,7 +38,7 @@ private struct ManageBannersView: View {
                 Text(verbatim: "In order for changes to take effect, either move app to background or close app")
                 Button(action: {
                     Task { @MainActor in
-                        try? await manager.updateAppPreferences(\.dismissedBannerIds, value: [])
+                        try? await updateAppPreferences(\.dismissedBannerIds, value: [])
                     }
                 }, label: {
                     Text(verbatim: "Undismiss all banners")
@@ -49,17 +50,17 @@ private struct ManageBannersView: View {
                     InfoBannerView(banner: banner, dismiss: {}, action: {})
 
                     let binding = Binding<Bool>(get: {
-                        let dismissedIds = manager.appPreferences.unwrapped().dismissedBannerIds
+                        let dismissedIds = getAppPreferences().dismissedBannerIds
                         return dismissedIds.contains(banner.id)
                     }, set: { newValue in
-                        var ids = manager.appPreferences.unwrapped().dismissedBannerIds
+                        var ids = getAppPreferences().dismissedBannerIds
                         if newValue {
                             ids.append(banner.id)
                         } else {
                             ids.removeAll(where: { $0 == banner.id })
                         }
                         Task { @MainActor in
-                            try? await manager.updateAppPreferences(\.dismissedBannerIds, value: ids)
+                            try? await updateAppPreferences(\.dismissedBannerIds, value: ids)
                         }
                     })
 
