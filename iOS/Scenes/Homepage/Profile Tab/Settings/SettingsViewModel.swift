@@ -241,9 +241,6 @@ private extension SettingsViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
-                if spotlightSearchableContent != newValue {
-                    reindexItemsForSpotlight()
-                }
                 spotlightSearchableContent = newValue
             }
             .store(in: &cancellables)
@@ -254,10 +251,17 @@ private extension SettingsViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
-                if spotlightSearchableVaults != newValue {
-                    reindexItemsForSpotlight()
-                }
                 spotlightSearchableVaults = newValue
+            }
+            .store(in: &cancellables)
+
+        preferencesManager
+            .userPreferencesUpdates
+            .filter([\.spotlightSearchableContent, \.spotlightSearchableVaults])
+            .debounce(for: .seconds(1.5), scheduler: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                reindexItemsForSpotlight()
             }
             .store(in: &cancellables)
 

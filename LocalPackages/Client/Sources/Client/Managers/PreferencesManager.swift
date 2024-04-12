@@ -146,9 +146,8 @@ public extension PreferencesManager {
         // Migrations
         if !appPreferences.unwrapped().didMigratePreferences {
             logger.trace("Migrating preferences")
-            var (app, shared, user) = preferencesMigrator.migratePreferences()
+            let (app, shared, user) = preferencesMigrator.migratePreferences()
 
-            app.didMigratePreferences = true
             try appPreferencesDatasource.upsertPreferences(app)
             appPreferences.send(app)
 
