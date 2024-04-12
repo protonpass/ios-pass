@@ -24,7 +24,12 @@ import SwiftUI
 
 extension HomepageCoordinator {
     func presentEditSpotlightSearchableContentView() {
-        let viewController = UIHostingController(rootView: EditSpotlightSearchableContentView())
+        let currentValue = getUserPreferences().spotlightSearchableContent
+        let view = EditSpotlightSearchableContentView(selection: currentValue) { [weak self] newValue in
+            guard let self else { return }
+            updateUserPreferences(\.spotlightSearchableContent, value: newValue)
+        }
+        let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableContent.allCases.count + 60
         viewController.setDetentType(.custom(CGFloat(customHeight)),
@@ -35,7 +40,12 @@ extension HomepageCoordinator {
     }
 
     func presentEditSpotlightSearchableVaultsView() {
-        let viewController = UIHostingController(rootView: EditSpotlightSearchableVaultsView())
+        let currentValue = getUserPreferences().spotlightSearchableVaults
+        let view = EditSpotlightSearchableVaultsView(selection: currentValue) { [weak self] newValue in
+            guard let self else { return }
+            updateUserPreferences(\.spotlightSearchableVaults, value: newValue)
+        }
+        let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.short.value) * SpotlightSearchableVaults.allCases.count + 60
         viewController.setDetentType(.custom(CGFloat(customHeight)),

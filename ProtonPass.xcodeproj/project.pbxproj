@@ -216,7 +216,6 @@
 		3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */; };
 		3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */; };
 		3570E05C2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */; };
-		3570FFD12BC7DC1000AC9ADC /* EditSpotlightSearchableVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570FFD02BC7DC1000AC9ADC /* EditSpotlightSearchableVaultsViewModel.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
@@ -372,7 +371,6 @@
 		35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */; };
 		35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
-		35ACB94C2BC32CAF001710A7 /* EditSpotlightSearchableContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35ACB94B2BC32CAF001710A7 /* EditSpotlightSearchableContentViewModel.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */; };
 		35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
@@ -780,7 +778,6 @@
 		3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsViewModel.swift; sourceTree = "<group>"; };
 		3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletePasskeyRegistration.swift; sourceTree = "<group>"; };
 		3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsForPasskeyCreation.swift; sourceTree = "<group>"; };
-		3570FFD02BC7DC1000AC9ADC /* EditSpotlightSearchableVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightSearchableVaultsViewModel.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3571B5A029BF7225008D4350 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -837,7 +834,6 @@
 		35AC9A642A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldAdditionCoordinator.swift; sourceTree = "<group>"; };
 		35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCustomFieldView.swift; sourceTree = "<group>"; };
 		35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldEditionCoordinator.swift; sourceTree = "<group>"; };
-		35ACB94B2BC32CAF001710A7 /* EditSpotlightSearchableContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightSearchableContentViewModel.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSyncProgressView.swift; sourceTree = "<group>"; };
 		35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRepository+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1411,9 +1407,7 @@
 				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
 				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
 				3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */,
-				35ACB94B2BC32CAF001710A7 /* EditSpotlightSearchableContentViewModel.swift */,
 				35AC8E372B6A29CB00B06CF4 /* EditSpotlightSearchableVaultsView.swift */,
-				3570FFD02BC7DC1000AC9ADC /* EditSpotlightSearchableVaultsViewModel.swift */,
 				35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */,
 				35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */,
 				355895AE29D76E67001E2207 /* LogsView.swift */,
@@ -2991,7 +2985,6 @@
 				5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */,
 				3541C0792B68C337006B35D9 /* Spotlight+Extensions.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
-				3570FFD12BC7DC1000AC9ADC /* EditSpotlightSearchableVaultsViewModel.swift in Sources */,
 				5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */,
 				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
@@ -3238,7 +3231,6 @@
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 				354F1F1A29D8C2A200A6B1E8 /* AppData.swift in Sources */,
 				356A1EFE2B889D9900561950 /* PasskeyDetailView.swift in Sources */,
-				35ACB94C2BC32CAF001710A7 /* EditSpotlightSearchableContentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -85,6 +85,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -854,6 +855,18 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await preferencesManager.updateSharedPreferences(keyPath, value: value)
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
+    }
+
+    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>, value: T) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateUserPreferences(keyPath, value: value)
             } catch {
                 logger.error(error)
                 bannerManager.displayTopErrorMessage(error)
