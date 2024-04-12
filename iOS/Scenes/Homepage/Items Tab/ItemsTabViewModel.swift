@@ -345,9 +345,8 @@ extension ItemsTabViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                var dismissedIds = getAppPreferences().dismissedBannerIds
-                dismissedIds.append(banner.id)
-                try await updateAppPreferences(\.dismissedBannerIds, value: dismissedIds)
+                let newIds = getAppPreferences().dismissedBannerIds.appending(banner.id)
+                try await updateAppPreferences(\.dismissedBannerIds, value: newIds)
             } catch {
                 handle(error: error)
             }
