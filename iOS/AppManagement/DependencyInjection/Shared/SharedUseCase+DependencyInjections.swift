@@ -327,3 +327,31 @@ extension SharedUseCasesContainer {
         self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
     }
 }
+
+// MARK: Preferences
+
+extension SharedUseCasesContainer {
+    var getAppPreferences: Factory<GetAppPreferencesUseCase> {
+        self { GetAppPreferences(manager: self.preferencesManager) }
+    }
+
+    var getSharedPreferences: Factory<GetSharedPreferencesUseCase> {
+        self { GetSharedPreferences(manager: self.preferencesManager) }
+    }
+
+    var getUserPreferences: Factory<GetUserPreferencesUseCase> {
+        self { GetUserPreferences(manager: self.preferencesManager) }
+    }
+
+    var updateAppPreferences: Factory<UpdateAppPreferencesUseCase> {
+        self { UpdateAppPreferences(manager: self.preferencesManager) }
+    }
+
+    var updateSharedPreferences: Factory<UpdateSharedPreferencesUseCase> {
+        self { UpdateSharedPreferences(manager: self.preferencesManager) }
+    }
+
+    var updateUserPreferences: Factory<UpdateUserPreferencesUseCase> {
+        self { UpdateUserPreferences(manager: self.preferencesManager) }
+    }
+}
