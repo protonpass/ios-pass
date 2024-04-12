@@ -82,6 +82,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
 
+    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
+    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
     private weak var searchViewModel: SearchViewModel?
@@ -96,9 +100,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     private var authenticated = false
 
-    private var theme: Theme {
-        preferencesManager.sharedPreferences.unwrapped().theme
-    }
+    private var theme: Theme { getSharedPreferences().theme }
 
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegate: HomepageTabDelegate?
@@ -130,7 +132,7 @@ private extension HomepageCoordinator {
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                           task: refreshInvitations.callAsFunction))
 
-        authenticated = preferencesManager.sharedPreferences.unwrapped().localAuthenticationMethod == .none
+        authenticated = getSharedPreferences().localAuthenticationMethod == .none
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
@@ -334,9 +336,8 @@ private extension HomepageCoordinator {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let currentCount = preferencesManager.appPreferences.unwrapped().createdItemsCount
-                try await preferencesManager.updateAppPreferences(\.createdItemsCount,
-                                                                  value: currentCount + 1)
+                let currentCount = getAppPreferences().createdItemsCount
+                try await updateAppPreferences(\.createdItemsCount, value: currentCount + 1)
                 // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
                 if !ProcessInfo.processInfo.isiOSAppOnMac,
                    currentCount >= 10,
@@ -991,7 +992,7 @@ private extension HomepageCoordinator {
     }
 
     func presentOnboardView(forced: Bool) {
-        guard forced || preferencesManager.appPreferences.unwrapped().onboarded == false else { return }
+        guard forced || !getAppPreferences().onboarded else { return }
         let view = OnboardingView { [weak self] in
             guard let self else { return }
             openTutorialVideo()
@@ -1294,7 +1295,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditDefaultBrowser() {
-        let currentValue = preferencesManager.sharedPreferences.unwrapped().browser
+        let currentValue = getSharedPreferences().browser
         let view = EditDefaultBrowserView(selection: currentValue) { [weak self] newValue in
             guard let self else { return }
             updateSharedPreferences(\.browser, value: newValue)
@@ -1325,7 +1326,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditClipboardExpiration() {
-        let currentValue = preferencesManager.sharedPreferences.unwrapped().clipboardExpiration
+        let currentValue = getSharedPreferences().clipboardExpiration
         let view = EditClipboardExpirationView(selection: currentValue) { [weak self] newValue in
             guard let self else { return }
             updateSharedPreferences(\.clipboardExpiration, value: newValue)

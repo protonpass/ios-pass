@@ -25,7 +25,7 @@ import UIKit
 
 @MainActor
 final class UrlOpener {
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     weak var rootViewController: UIViewController?
 
     init() {}
@@ -42,7 +42,7 @@ final class UrlOpener {
             return
         }
 
-        let browser = preferencesManager.sharedPreferences.unwrapped().browser
+        let browser = getSharedPreferences().browser
         switch browser {
         case .inAppSafari:
             let safariViewController = SFSafariViewController(url: url, configuration: .init())

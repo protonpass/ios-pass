@@ -43,7 +43,7 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     @Published var confirmedPIN = ""
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private var cancellables = Set<AnyCancellable>()
 
     var actionNotAllowed: Bool {
@@ -97,9 +97,8 @@ private extension SetPINCodeViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
-                                                                     value: .pin)
-                try await preferencesManager.updateSharedPreferences(\.pinCode, value: pinCode)
+                try await updateSharedPreferences(\.localAuthenticationMethod, value: .pin)
+                try await updateSharedPreferences(\.pinCode, value: pinCode)
                 router.display(element: .successMessage(#localized("PIN code set"),
                                                         config: .init(dismissBeforeShowing: true)))
             } catch {

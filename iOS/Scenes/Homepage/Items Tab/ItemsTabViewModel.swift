@@ -61,7 +61,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
@@ -73,6 +72,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
+    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
+    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -191,7 +192,7 @@ private extension ItemsTabViewModel {
 
     func localBanners() async -> [InfoBanner] {
         do {
-            let dismissedIds = preferencesManager.appPreferences.unwrapped().dismissedBannerIds
+            let dismissedIds = getAppPreferences().dismissedBannerIds
             var banners = [InfoBanner]()
             for banner in InfoBanner.allCases {
                 if dismissedIds.contains(where: { $0 == banner.id }) {
@@ -344,10 +345,9 @@ extension ItemsTabViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                var dismissedIds = preferencesManager.appPreferences.unwrapped().dismissedBannerIds
+                var dismissedIds = getAppPreferences().dismissedBannerIds
                 dismissedIds.append(banner.id)
-                try await preferencesManager.updateAppPreferences(\.dismissedBannerIds,
-                                                                  value: dismissedIds)
+                try await updateAppPreferences(\.dismissedBannerIds, value: dismissedIds)
             } catch {
                 handle(error: error)
             }

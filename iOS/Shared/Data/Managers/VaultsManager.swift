@@ -45,13 +45,13 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private var isRefreshing = false
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
+    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -169,7 +169,7 @@ private extension VaultsManager {
             }
 
             do {
-                try await indexItemsForSpotlight(preferencesManager.userPreferences.unwrapped())
+                try await indexItemsForSpotlight(getUserPreferences())
             } catch {
                 logger.error(error)
             }
