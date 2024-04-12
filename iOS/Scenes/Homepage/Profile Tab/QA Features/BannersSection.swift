@@ -29,7 +29,7 @@ struct BannersSection: View {
 }
 
 private struct ManageBannersView: View {
-    private var manager = resolve(\SharedToolingContainer.preferencesManager)
+    private let manager = resolve(\SharedToolingContainer.preferencesManager)
 
     var body: some View {
         Form {

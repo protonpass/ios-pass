@@ -322,10 +322,9 @@ private extension SearchViewModel {
             }
             .store(in: &cancellables)
 
-        Task { @MainActor [weak self] in
-            guard #available(iOS 17, *), let self else { return }
-            let preferences = preferencesManager.userPreferences.value
-            SpotlightTip.spotlightEnabled = preferences?.spotlightEnabled == true
+        if #available(iOS 17, *) {
+            let preferences = preferencesManager.userPreferences.unwrapped()
+            SpotlightTip.spotlightEnabled = preferences.spotlightEnabled == true
         }
     }
 }
