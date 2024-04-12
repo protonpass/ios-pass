@@ -27,18 +27,18 @@ import Macro
 
 @MainActor
 final class SecuritySettingsCoordinator {
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+
     weak var delegate: ChildCoordinatorDelegate?
 
-    private var preferences: SharedPreferences {
-        preferencesManager.sharedPreferences.unwrapped()
-    }
+    private var preferences: SharedPreferences { getSharedPreferences() }
 
     init() {}
 }
@@ -91,8 +91,7 @@ private extension SecuritySettingsCoordinator {
 
     func updateMethod(_ newMethod: LocalAuthenticationMethod) async throws {
         let currentMethod = preferences.localAuthenticationMethod
-        let authenticatingPolicy: LAPolicy = preferences.fallbackToPasscode ?
-            .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
+        let authenticatingPolicy = preferences.localAuthenticationPolicy
         switch (currentMethod, newMethod) {
         case (.biometric, .biometric),
              (.none, .none),
@@ -135,8 +134,7 @@ private extension SecuritySettingsCoordinator {
             delegate?.childCoordinatorWantsToDismissTopViewController()
 
             if newMethod != .biometric {
-                try await preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
-                                                                     value: true)
+                try await updateSharedPreferences(\.fallbackToPasscode, value: true)
             }
 
             if newMethod == .pin {
@@ -148,8 +146,7 @@ private extension SecuritySettingsCoordinator {
                     definePINCodeAndChangeToPINMethod()
                 }
             } else {
-                try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
-                                                                     value: newMethod)
+                try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
             }
         }
 
@@ -193,8 +190,7 @@ private extension SecuritySettingsCoordinator {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                try await preferencesManager.updateSharedPreferences(\.appLockTime,
-                                                                     value: newValue)
+                try await updateSharedPreferences(\.appLockTime, value: newValue)
                 delegate?.childCoordinatorWantsToDismissTopViewController()
             } catch {
                 handle(error: error)
@@ -216,8 +212,7 @@ private extension SecuritySettingsCoordinator {
                                                                    policy: enablingPolicy,
                                                                    allowFailure: true)
             } else {
-                try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
-                                                                     value: newMethod)
+                try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
             }
         }
 
