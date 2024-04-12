@@ -336,6 +336,7 @@ private extension CredentialProviderCoordinator {
         case .userCancelled:
             cancelAutoFill(reason: .userCanceled, context: context)
             return
+
         case .failedToAuthenticate:
             logOut { [weak self] in
                 guard let self else { return }
