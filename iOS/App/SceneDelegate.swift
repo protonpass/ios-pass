@@ -40,7 +40,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
         AppearanceSettings.apply()
-        appCoordinator.start()
+        appCoordinator.setUpAndStart()
 
         deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
         deepLinkRoutingService.handle(userActivities: connectionOptions.userActivities)
