@@ -117,29 +117,14 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             .store(in: &cancellables)
     }
 
-    func start(mode: AutoFillMode) {
+    /// Necessary set up like initializing preferences and theme before starting user flow
+    func setUpAndStart(mode: AutoFillMode) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
                 rootViewController?.view.overrideUserInterfaceStyle = theme.userInterfaceStyle
-                switch mode {
-                case let .showAllLogins(identifiers, requestParams):
-                    handleShowAllLoginsMode(identifiers: identifiers,
-                                            passkeyRequestParams: requestParams)
-
-                case let .checkAndAutoFill(request):
-                    handleCheckAndAutoFill(request)
-
-                case let .authenticateAndAutofill(request):
-                    handleAuthenticateAndAutofill(request)
-
-                case .configuration:
-                    configureExtension()
-
-                case let .passkeyRegistration(request):
-                    handlePasskeyRegistration(request)
-                }
+                start(mode: mode)
             } catch {
                 handle(error: error)
             }
@@ -148,6 +133,26 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 }
 
 private extension CredentialProviderCoordinator {
+    func start(mode: AutoFillMode) {
+        switch mode {
+        case let .showAllLogins(identifiers, requestParams):
+            handleShowAllLoginsMode(identifiers: identifiers,
+                                    passkeyRequestParams: requestParams)
+
+        case let .checkAndAutoFill(request):
+            handleCheckAndAutoFill(request)
+
+        case let .authenticateAndAutofill(request):
+            handleAuthenticateAndAutofill(request)
+
+        case .configuration:
+            configureExtension()
+
+        case let .passkeyRegistration(request):
+            handlePasskeyRegistration(request)
+        }
+    }
+
     func handleShowAllLoginsMode(identifiers: [ASCredentialServiceIdentifier],
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
