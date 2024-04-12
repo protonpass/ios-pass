@@ -346,10 +346,14 @@ private extension HomepageCoordinator {
                     SKStoreReviewController.requestReview(in: windowScene)
                 }
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -602,8 +606,7 @@ extension HomepageCoordinator {
             let coordinator = makeCreateEditItemCoordinator()
             try coordinator.presentEditItemView(for: itemContent)
         } catch {
-            logger.error(error)
-            bannerManager.displayTopErrorMessage(error)
+            handle(error: error)
         }
     }
 
@@ -614,8 +617,7 @@ extension HomepageCoordinator {
                 let coordinator = makeCreateEditItemCoordinator()
                 try coordinator.presentCloneItemView(for: itemContent)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -629,8 +631,7 @@ extension HomepageCoordinator {
                 let coordinator = makeCreateEditItemCoordinator()
                 try await coordinator.presentCreateItemView(for: itemType)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -733,7 +734,7 @@ extension HomepageCoordinator {
                         logger.debug("Payment is done but no plan is purchased")
                     }
                 case let .failure(error):
-                    bannerManager.displayTopErrorMessage(error)
+                    handle(error: error)
                 }
             }
         }
@@ -856,8 +857,7 @@ extension HomepageCoordinator {
             do {
                 try await preferencesManager.updateSharedPreferences(keyPath, value: value)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -868,8 +868,7 @@ extension HomepageCoordinator {
             do {
                 try await preferencesManager.updateUserPreferences(keyPath, value: value)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -904,8 +903,7 @@ extension HomepageCoordinator {
                     present(view)
                 }
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -930,7 +928,7 @@ extension HomepageCoordinator {
                 presentImportExportView(url: url)
             } catch {
                 hideLoadingHud()
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -948,7 +946,7 @@ extension HomepageCoordinator {
             let url = try makeAccountSettingsUrl()
             urlOpener.open(urlString: url)
         } catch {
-            bannerManager.displayTopErrorMessage(error)
+            handle(error: error)
         }
     }
 
@@ -1147,8 +1145,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                                            onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
                 present(view)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -1225,7 +1222,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func presentBugReportView() {
         let errorHandler: (Error) -> Void = { [weak self] error in
             guard let self else { return }
-            bannerManager.displayTopErrorMessage(error)
+            handle(error: error)
         }
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
