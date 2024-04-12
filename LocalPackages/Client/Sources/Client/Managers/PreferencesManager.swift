@@ -39,7 +39,7 @@ public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
 /// Manage all types of preferences: app-wide, shared between users and user's specific
-public protocol PreferencesManagerProtocol {
+public protocol PreferencesManagerProtocol: Sendable {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 
