@@ -32,9 +32,4 @@ public struct BreachDetails: Decodable, Equatable, Sendable {
         self.breaches = breaches
         self.samples = samples
     }
-//    enum CodingKeys: String, CodingKey {
-//        case isEligible = "IsEligible"
-//        case breaches = "Breaches"
-//        case samples = "Samples"
-//    }
 }
