@@ -884,6 +884,16 @@
         }
       }
     },
+    "Enable Spotlight search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Spotlight search"
+          }
+        }
+      }
+    },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "localizations" : {
@@ -1189,6 +1199,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm hiểu thêm về Pass"
+          }
+        }
+      }
+    },
+    "Open Settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
           }
         }
       }
@@ -1626,6 +1646,26 @@
         }
       }
     },
+    "Press and hold an item to reveal extra options." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press and hold an item to reveal extra options."
+          }
+        }
+      }
+    },
+    "Quick actions on items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick actions on items"
+          }
+        }
+      }
+    },
     "Recents" : {
       "comment" : "Title of recently invited emails section",
       "localizations" : {
@@ -1783,6 +1823,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mới dùng"
+          }
+        }
+      }
+    },
+    "Seamlessly search for items via your home screen. Open Settings → Spotlight to enable." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seamlessly search for items via your home screen. Open Settings → Spotlight to enable."
           }
         }
       }
