@@ -54,7 +54,7 @@ public struct Breach: Decodable, Equatable, Sendable {
         self.passwordLastChars = passwordLastChars
         self.actions = actions
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id = "ID"
         case email = "Email"

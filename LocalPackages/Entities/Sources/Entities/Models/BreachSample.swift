@@ -27,7 +27,12 @@ public struct BreachSample: Decodable, Equatable, Sendable {
     public let createdAt: String
     public let source: BreachSource
 
-    public init(id: String, email: String, severity: Double, name: String, createdAt: String, source: BreachSource) {
+    public init(id: String,
+                email: String,
+                severity: Double,
+                name: String,
+                createdAt: String,
+                source: BreachSource) {
         self.id = id
         self.email = email
         self.severity = severity
