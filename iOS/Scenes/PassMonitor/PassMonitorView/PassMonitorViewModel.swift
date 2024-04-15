@@ -52,7 +52,7 @@ enum UpsellEntry {
 @MainActor
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
-    @Published private(set) var breaches: GeneralBreaches? // = .default
+    @Published private(set) var breaches: UserBreaches?
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false

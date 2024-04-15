@@ -202,7 +202,7 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
-    func breachedDataRows(breaches: GeneralBreaches) -> some View {
+    func breachedDataRows(breaches: UserBreaches) -> some View {
         VStack {
             if viewModel.isFreeUser {
                 upsellRow(breaches: breaches)
@@ -242,7 +242,7 @@ private extension PassMonitorView {
         .buttonStyle(.plain)
     }
 
-    func upsellRow(breaches: GeneralBreaches) -> some View {
+    func upsellRow(breaches: UserBreaches) -> some View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: breaches.breached ? .leading : .center, spacing: DesignConstant.sectionPadding) {
                 Text(breaches.breached ? "Breached Detected" : "Dark Web Monitoring")
