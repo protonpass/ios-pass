@@ -79,10 +79,11 @@ private extension SecurityWeaknessDetailView {
                     } else {
                         Text(key.title)
                     }
-                }.font(.callout)
-                    .foregroundColor(key.color)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, DesignConstant.sectionPadding)
+                }
+                .font(.callout)
+                .foregroundColor(key.color)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, DesignConstant.sectionPadding)
             })
         }
     }
