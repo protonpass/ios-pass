@@ -11,7 +11,7 @@ Others:
 - Upgraded core version to 21.0.0
 - Utilized throwing functions of Keychain
 - Updated content format to version 4, including passkey metadata
-- Enhanced password scorer with Rust library version 0.7.5
+- Enhanced password scorer with Rust library version 0.7.7
 - Set default to 5-word passphrases
 - Cleanup of unused code
 - Fixed issue where 2FA codes were sometimes not automatically copied
