@@ -20,8 +20,6 @@
 
 import Foundation
 
-// MARK: - ExposedDatum
-
 public struct BreachExposedData: Decodable, Equatable, Sendable {
     public let code, name: String
 
@@ -29,8 +27,4 @@ public struct BreachExposedData: Decodable, Equatable, Sendable {
         self.code = code
         self.name = name
     }
-//    enum CodingKeys: String, CodingKey {
-//        case code = "Code"
-//        case name = "Name"
-//    }
 }
