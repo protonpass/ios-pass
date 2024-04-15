@@ -53,6 +53,8 @@ enum UpsellEntry {
 @MainActor
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
+    @Published private(set) var breaches: GeneralBreaches? // = .default
+
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
     @Published var isSentinelActive = false
@@ -62,6 +64,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let breachRepository = resolve(\RepositoryContainer.breachRepository)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
@@ -78,12 +81,21 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
         router.present(for: .securityDetail(type))
     }
 
+//    func refreshLocalMonitoredData() async {
+//        do {
+//            async let fetchBreaches = breachRepository.getAllBreachesForUser()
+//            async let refresh: () = passMonitorRepository.refreshSecurityChecks()
+//            let results = try await (fetchBreaches, refresh)
+//            breaches = results.0
+//        } catch {
+//            router.display(element: .displayErrorBanner(error))
+//        }
+//    }
+
     func refresh() async {
-        do {
-            try await passMonitorRepository.refreshSecurityChecks()
-        } catch {
-            router.display(element: .displayErrorBanner(error))
-        }
+        async let fetchBreaches: () = refreshRemoteMonitoredData()
+        async let refresh: () = refreshLocalMonitoredData()
+        _ = await (fetchBreaches, refresh)
     }
 
     func sentinelSheetAction() {
@@ -157,7 +169,25 @@ private extension PassMonitorViewModel {
                 guard let self else {
                     return
                 }
-                weaknessStats = newWeaknessStats
+                if newWeaknessStats != weaknessStats {
+                    weaknessStats = newWeaknessStats
+                }
             }.store(in: &cancellables)
+    }
+
+    func refreshLocalMonitoredData() async {
+        do {
+            try await passMonitorRepository.refreshSecurityChecks()
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+        }
+    }
+
+    func refreshRemoteMonitoredData() async {
+        do {
+            breaches = .default // try await breachRepository.getAllBreachesForUser()
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+        }
     }
 }

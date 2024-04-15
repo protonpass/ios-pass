@@ -19,10 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Foundation
 
 /// Take care of fetching and caching behind the scenes
-public protocol BreachRepositoryProtocol: Sendable {}
+public protocol BreachRepositoryProtocol: Sendable {
+    func getAllBreachesForUser() async throws -> GeneralBreaches
+}
 
 public actor BreachRepository: BreachRepositoryProtocol {
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
@@ -32,5 +35,10 @@ public actor BreachRepository: BreachRepositoryProtocol {
                 logManager: any LogManagerProtocol) {
         self.remoteDataSource = remoteDataSource
         logger = .init(manager: logManager)
+    }
+
+    public func getAllBreachesForUser() async throws -> GeneralBreaches {
+        let breaches = try await remoteDataSource.getAllBreachesForUser()
+        return breaches
     }
 }

@@ -116,12 +116,8 @@ private extension GetAllSecurityAffectedLogins {
         // Filter to keep only reused passwords
         intermediatePasswords.filter { $0.value.count > 1 }
             .forEach {
-                if reusedPasswords[SecuritySection.reusedPasswords($0.value.count)] != nil {
-                    reusedPasswords[SecuritySection.reusedPasswords($0.value.count)]?
-                        .append(contentsOf: $0.value)
-                } else {
-                    reusedPasswords[SecuritySection.reusedPasswords($0.value.count)] = Array($0.value)
-                }
+                let reusedKey = ReusedPasswordsKey(numberOfTimeReused: $0.value.count)
+                reusedPasswords[SecuritySection.reusedPasswords(reusedKey)] = Array($0.value)
             }
         return reusedPasswords
     }

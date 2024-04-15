@@ -55,6 +55,11 @@ private extension RepositoryContainer {
         self { RemoteInviteDatasource(apiService: self.apiService,
                                       eventStream: self.corruptedSessionEventStream) }
     }
+
+    var remoteBreachDataSource: Factory<RemoteBreachDataSourceProtocol> {
+        self { RemoteBreachDataSource(apiService: self.apiService,
+                                      eventStream: self.corruptedSessionEventStream) }
+    }
 }
 
 extension RepositoryContainer {
@@ -65,6 +70,11 @@ extension RepositoryContainer {
 
     var inviteRepository: Factory<InviteRepositoryProtocol> {
         self { InviteRepository(remoteInviteDatasource: self.remoteInviteDatasource(),
+                                logManager: self.logManager) }
+    }
+
+    var breachRepository: Factory<BreachRepositoryProtocol> {
+        self { BreachRepository(remoteDataSource: self.remoteBreachDataSource(),
                                 logManager: self.logManager) }
     }
 }
