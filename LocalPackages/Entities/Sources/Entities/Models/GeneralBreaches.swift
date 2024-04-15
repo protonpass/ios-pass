@@ -28,17 +28,21 @@ public struct GeneralBreaches: Decodable, Equatable, Sendable {
     public let addresses: [BreachedAddress]
     public let customEmails: [CustomEmail]
 
-    public init(emailsCount: Int, domainsPeek: [String], addresses: [BreachedAddress],
+    public init(emailsCount: Int,
+                domainsPeek: [String],
+                addresses: [BreachedAddress],
                 customEmails: [CustomEmail]) {
         self.emailsCount = emailsCount
         self.domainsPeek = domainsPeek
         self.addresses = addresses
         self.customEmails = customEmails
     }
-//    enum CodingKeys: String, CodingKey {
-//        case emailsCount = "EmailsCount"
-//        case domainsPeek = "DomainsPeek"
-//        case addresses = "Addresses"
-//        case customEmails = "CustomEmails"
-//    }
+
+    public static var `default`: GeneralBreaches {
+        GeneralBreaches(emailsCount: 1, domainsPeek: ["test.com"], addresses: [], customEmails: [])
+    }
+
+    public var breached: Bool {
+        emailsCount > 0
+    }
 }

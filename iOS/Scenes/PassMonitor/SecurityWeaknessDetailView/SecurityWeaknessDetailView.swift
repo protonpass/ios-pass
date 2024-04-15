@@ -69,7 +69,7 @@ private extension SecurityWeaknessDetailView {
 
 private extension SecurityWeaknessDetailView {
     func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
-        ForEach(sections.keys.sorted(), id: \.self) { key in
+        ForEach(sections.keys.sorted(by: >), id: \.self) { key in
             Section(content: {
                 itemsList(items: sections[key] ?? [])
             }, header: {
@@ -82,6 +82,7 @@ private extension SecurityWeaknessDetailView {
                 }.font(.callout)
                     .foregroundColor(key.color)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, DesignConstant.sectionPadding)
             })
         }
     }
@@ -100,6 +101,7 @@ private extension SecurityWeaknessDetailView {
                            title: item.title,
                            description: item.toItemUiModel.description)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 3)
         }
         .buttonStyle(.plain)
     }

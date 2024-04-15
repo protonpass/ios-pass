@@ -153,6 +153,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.tabAuthenticator
         _ = PassIcon.shield2
         _ = PassIcon.passPlus
+        _ = PassIcon.lightning
 
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)

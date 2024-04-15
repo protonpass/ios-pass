@@ -126,9 +126,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                 }
             }
 
-            // swiftlint:disable:next todo
-            // TODO: check breached passwords /emails
-
             if !weaknesses.isEmpty {
                 securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
             }
@@ -136,8 +133,9 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
                                          reusedPasswords: reusedPasswords.count,
                                          missing2FA: numberOfMissing2fa,
-                                         excludedItems: numberOfExcludedItems,
-                                         breaches: 0))
+                                         excludedItems: numberOfExcludedItems))
+//                                         ,
+//                                         breaches: breaches.numberOfBreachesForEmailAndDomains))
         itemsWithSecurityIssues.send(securityAffectedItems)
     }
 

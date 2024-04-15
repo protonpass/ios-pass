@@ -9374,6 +9374,16 @@
         }
       }
     },
+    "Advanced account protection program" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced account protection program"
+          }
+        }
+      }
+    },
     "Advanced options" : {
       "localizations" : {
         "be" : {
@@ -16167,6 +16177,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tự động lưu"
+          }
+        }
+      }
+    },
+    "Breached Detected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breached Detected"
           }
         }
       }
@@ -77920,9 +77940,6 @@
         }
       }
     },
-    "Two-factor authentication" : {
-
-    },
     "Type" : {
       "localizations" : {
         "be" : {
@@ -90794,6 +90811,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verileriniz veri sızıntılarında görünüyor. Hangileri olduğunu görmek için tarifenizi yükseltin."
+          }
+        }
+      }
+    },
+    "Your email addresses were leaked in at least 1 data breach." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your email addresses were leaked in at least 1 data breach."
           }
         }
       }

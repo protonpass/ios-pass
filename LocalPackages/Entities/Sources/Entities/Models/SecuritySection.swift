@@ -20,9 +20,18 @@
 
 import Foundation
 
+public struct ReusedPasswordsKey: Hashable, Sendable {
+    public let id: String = UUID().uuidString
+    public let numberOfTimeReused: Int
+
+    public init(numberOfTimeReused: Int) {
+        self.numberOfTimeReused = numberOfTimeReused
+    }
+}
+
 public enum SecuritySection: Hashable, Sendable {
     case weakPasswords(PasswordStrength)
-    case reusedPasswords(Int)
+    case reusedPasswords(ReusedPasswordsKey)
     case missing2fa
     case excludedItems
 }
