@@ -38,12 +38,12 @@ public struct SpotlightTip: Tip {
     }
 
     public var title: Text {
-        Text(verbatim: "Enable Spotlight search")
+        Text("Enable Spotlight search")
             .foregroundStyle(PassColor.textNorm.toColor)
     }
 
     public var message: Text? {
-        Text(verbatim: "Seamlessly search for items via your home screen. Open Settings → Spotlight to enable.")
+        Text("Seamlessly search for items via your home screen. Open Settings → Spotlight to enable.")
             .foregroundStyle(PassColor.textWeak.toColor)
     }
 
