@@ -20,8 +20,6 @@
 
 import Foundation
 
-// MARK: - Action
-
 public struct BreachAction: Decodable, Equatable, Sendable {
     public let code, name, desc: String
     public let urls: [String]

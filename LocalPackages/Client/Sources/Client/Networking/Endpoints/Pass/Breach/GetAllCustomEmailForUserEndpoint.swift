@@ -22,13 +22,9 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-// MARK: - CustomEmailResponse
-
 struct GetAllCustomEmailForUserResponse: Decodable, Equatable, Sendable {
     let emails: Emails
 }
-
-// MARK: - Emails
 
 struct Emails: Decodable, Equatable, Sendable {
     let customEmails: [CustomEmail]

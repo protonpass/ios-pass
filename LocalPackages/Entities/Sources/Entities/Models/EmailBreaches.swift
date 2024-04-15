@@ -1,5 +1,5 @@
 //
-// BreachDetails.swift
+// EmailBreaches.swift
 // Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,9 +20,7 @@
 
 import Foundation
 
-// MARK: - Breaches
-
-public struct BreachDetails: Decodable, Equatable, Sendable {
+public struct EmailBreaches: Decodable, Equatable, Sendable {
     public let isEligible: Bool
     public let breaches: [Breach]
     public let samples: [BreachSample]

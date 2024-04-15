@@ -24,7 +24,7 @@ import Foundation
 
 /// Take care of fetching and caching behind the scenes
 public protocol BreachRepositoryProtocol: Sendable {
-    func getAllBreachesForUser() async throws -> GeneralBreaches
+    func getAllBreachesForUser() async throws -> UserBreaches
 }
 
 public actor BreachRepository: BreachRepositoryProtocol {
@@ -37,7 +37,7 @@ public actor BreachRepository: BreachRepositoryProtocol {
         logger = .init(manager: logManager)
     }
 
-    public func getAllBreachesForUser() async throws -> GeneralBreaches {
+    public func getAllBreachesForUser() async throws -> UserBreaches {
         let breaches = try await remoteDataSource.getAllBreachesForUser()
         return breaches
     }
