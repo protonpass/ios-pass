@@ -24,9 +24,9 @@ public struct Breach: Decodable, Equatable, Sendable {
     public let id, email: String
     public let severity: Double
     public let name: String
-    public let createdAt, publishedAt: Date
+    public let createdAt, publishedAt: String
     public let source: BreachSource
-    public let size: Int
+    public let size: Int?
     public let exposedData: [BreachExposedData]
     public let passwordLastChars: String
     public let actions: [BreachAction]
@@ -35,10 +35,10 @@ public struct Breach: Decodable, Equatable, Sendable {
                 email: String,
                 severity: Double,
                 name: String,
-                createdAt: Date,
-                publishedAt: Date,
+                createdAt: String,
+                publishedAt: String,
                 source: BreachSource,
-                size: Int,
+                size: Int?,
                 exposedData: [BreachExposedData],
                 passwordLastChars: String,
                 actions: [BreachAction]) {
@@ -53,5 +53,19 @@ public struct Breach: Decodable, Equatable, Sendable {
         self.exposedData = exposedData
         self.passwordLastChars = passwordLastChars
         self.actions = actions
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "ID"
+        case email = "Email"
+        case severity = "Severity"
+        case name = "Name"
+        case createdAt = "CreatedAt"
+        case publishedAt = "PublishedAt"
+        case source = "Source"
+        case size = "Size"
+        case exposedData = "ExposedData"
+        case passwordLastChars = "PasswordLastChars"
+        case actions = "Actions"
     }
 }

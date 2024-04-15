@@ -22,11 +22,11 @@ import Foundation
 
 public struct BreachSource: Decodable, Equatable, Sendable {
     public let isAggregated: Bool
-    public let domain: String
-    public let category: BreachSourceCategory
-    public let country: Country
+    public let domain: String?
+    public let category: BreachSourceCategory?
+    public let country: Country?
 
-    public init(isAggregated: Bool, domain: String, category: BreachSourceCategory, country: Country) {
+    public init(isAggregated: Bool, domain: String?, category: BreachSourceCategory?, country: Country?) {
         self.isAggregated = isAggregated
         self.domain = domain
         self.category = category

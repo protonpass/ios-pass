@@ -22,9 +22,9 @@ import Foundation
 
 public struct BreachAction: Decodable, Equatable, Sendable {
     public let code, name, desc: String
-    public let urls: [String]
+    public let urls: [String]?
 
-    public init(code: String, name: String, desc: String, urls: [String]) {
+    public init(code: String, name: String, desc: String, urls: [String]?) {
         self.code = code
         self.name = name
         self.desc = desc
