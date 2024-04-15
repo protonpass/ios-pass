@@ -38,7 +38,6 @@ private struct InternalPassMonitorItem {
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
-//    var hasBreachedItems: CurrentValueSubject<Bool, Never> { get }
 
     func refreshSecurityChecks() async throws
     func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent]
@@ -53,7 +52,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
-//    public let hasBreachedItems: CurrentValueSubject<Bool, Never> = .init(false)
 
     private var cancellable = Set<AnyCancellable>()
     private var refreshTask: Task<Void, Never>?
@@ -134,8 +132,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                                          reusedPasswords: reusedPasswords.count,
                                          missing2FA: numberOfMissing2fa,
                                          excludedItems: numberOfExcludedItems))
-//                                         ,
-//                                         breaches: breaches.numberOfBreachesForEmailAndDomains))
         itemsWithSecurityIssues.send(securityAffectedItems)
     }
 

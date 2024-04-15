@@ -20,8 +20,6 @@
 
 import Foundation
 
-// MARK: - Source
-
 public struct BreachSource: Decodable, Equatable, Sendable {
     public let isAggregated: Bool
     public let domain: String
@@ -34,12 +32,6 @@ public struct BreachSource: Decodable, Equatable, Sendable {
         self.category = category
         self.country = country
     }
-//    enum CodingKeys: String, CodingKey {
-//        case isAggregated = "IsAggregated"
-//        case domain = "Domain"
-//        case category = "Category"
-//        case country = "Country"
-//    }
 }
 
 // MARK: - Breach Source Category
@@ -51,11 +43,6 @@ public struct BreachSourceCategory: Decodable, Equatable, Sendable {
         self.code = code
         self.name = name
     }
-//    enum CodingKeys: String, CodingKey {
-//        case code = "Code"
-//        case name = "Name"
-//        case flagEmoji = "FlagEmoji"
-//    }
 }
 
 // MARK: - Country
@@ -68,9 +55,4 @@ public struct Country: Decodable, Equatable, Sendable {
         self.name = name
         self.flagEmoji = flagEmoji
     }
-//    enum CodingKeys: String, CodingKey {
-//        case code = "Code"
-//        case name = "Name"
-//        case flagEmoji = "FlagEmoji"
-//    }
 }

@@ -32,10 +32,4 @@ public struct BreachAction: Decodable, Equatable, Sendable {
         self.desc = desc
         self.urls = urls
     }
-//    enum CodingKeys: String, CodingKey {
-//        case code = "Code"
-//        case name = "Name"
-//        case desc = "Desc"
-//        case urls = "Urls"
-//    }
 }

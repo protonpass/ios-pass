@@ -20,8 +20,6 @@
 
 import Foundation
 
-// MARK: - Sample
-
 public struct BreachSample: Decodable, Equatable, Sendable {
     public let id, email: String
     public let severity: Double
@@ -37,12 +35,4 @@ public struct BreachSample: Decodable, Equatable, Sendable {
         self.createdAt = createdAt
         self.source = source
     }
-//    enum CodingKeys: String, CodingKey {
-//        case id = "ID"
-//        case email = "Email"
-//        case severity = "Severity"
-//        case name = "Name"
-//        case createdAt = "CreatedAt"
-//        case source = "Source"
-//    }
 }

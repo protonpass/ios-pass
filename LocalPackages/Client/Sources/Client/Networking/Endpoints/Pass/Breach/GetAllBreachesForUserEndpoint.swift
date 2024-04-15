@@ -26,10 +26,6 @@ import ProtonCoreServices
 
 struct GetAllBreachesForUserResponse: Decodable, Equatable, Sendable {
     let breaches: GeneralBreaches
-
-//    enum CodingKeys: String, CodingKey {
-//        case breaches = "Breaches"
-//    }
 }
 
 struct GetAllBreachesForUserEndpoint: Endpoint {

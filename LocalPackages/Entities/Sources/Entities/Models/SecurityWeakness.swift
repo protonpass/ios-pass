@@ -24,8 +24,6 @@ public enum SecurityWeakness: Equatable, Sendable {
     case weakPasswords
     case reusedPasswords
     case breaches
-//    case exposedEmail
-//    case exposedPassword
     case missing2FA
     case excludedItems
 }
