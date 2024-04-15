@@ -126,8 +126,6 @@ enum SecureRowType {
     }
 }
 
-struct PassMonitorRowConfiguration {}
-
 struct PassMonitorView: View {
     @StateObject var viewModel: PassMonitorViewModel
 
@@ -209,7 +207,7 @@ private extension PassMonitorView {
             if viewModel.isFreeUser {
                 upsellRow(breaches: breaches)
             } else {
-                breachedRow(breaches.emailsCount, showAdvice: true)
+                breachedRow(breaches.emailsCount)
             }
         }
     }
@@ -264,26 +262,27 @@ private extension PassMonitorView {
                     .multilineTextAlignment(breaches.breached ? .leading : .center)
 
                 if breaches.breached {
-                    HStack {
-                        Image(uiImage: PassIcon.lightning)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 24)
-                            .padding(10)
-                            .roundedDetailSection(backgroundColor: PassColor
-                                .passwordInteractionNormMinor1,
-                                borderColor: .clear)
+                    if let latestBreach = breaches.latestBreach {
+                        HStack {
+                            Image(uiImage: PassIcon.lightning)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 24)
+                                .padding(10)
+                                .roundedDetailSection(backgroundColor: PassColor
+                                    .passwordInteractionNormMinor1,
+                                    borderColor: .clear)
 
-                        VStack(alignment: .leading) {
-                            Text(breaches.domainsPeek.first ?? "")
-                                .font(.body)
-                                .foregroundStyle(PassColor.textNorm.toColor)
-                            Text(breaches.domainsPeek.first ?? "")
-                                .font(.footnote)
-                                .foregroundStyle(PassColor.textWeak.toColor)
+                            VStack(alignment: .leading) {
+                                Text(latestBreach.domain)
+                                    .font(.body)
+                                    .foregroundStyle(PassColor.textNorm.toColor)
+                                Text(latestBreach.formattedDateDescription)
+                                    .font(.footnote)
+                                    .foregroundStyle(PassColor.textWeak.toColor)
+                            }
                         }
                     }
-
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
                         VStack(alignment: .leading) {
                             HStack {
@@ -349,29 +348,13 @@ private extension PassMonitorView {
                 .interactionNormMinor1)
     }
 
-    func breachedRow(_ breaches: Int, showAdvice: Bool) -> some View {
+    func breachedRow(_ breaches: Int) -> some View {
         passMonitorRow(rowType: breaches > 0 ? .warning : .success,
                        title: "Dark Web Monitoring",
                        subTitle: breaches > 0 ? "Requires immediate action" : "No breaches detected",
                        info: "\(breaches)",
                        action: { viewModel.showSecurityWeakness(type: .breaches) })
     }
-
-//    func breachedPasswordsRow(_ breachedPasswords: Int, showAdvice: Bool) -> some View {
-//        passMonitorRow(rowType: breachedPasswords > 0 ? .warning : .success,
-//                       title: "Exposed passwords",
-//                       subTitle: showAdvice ? "Requires immediate action" : nil,
-//                       info: "\(breachedPasswords)",
-//                       action: { viewModel.showSecurityWeakness(type: .exposedPassword) })
-//    }
-//
-//    func breachedEmailsRow(_ breachedEmails: Int, showAdvice: Bool) -> some View {
-//        passMonitorRow(rowType: breachedEmails > 0 ? .warning : .success,
-//                       title: "Exposed emails",
-//                       subTitle: showAdvice ? "Requires immediate action" : nil,
-//                       info: "\(breachedEmails)",
-//                       action: { viewModel.showSecurityWeakness(type: .exposedEmail) })
-//    }
 }
 
 private extension PassMonitorView {
