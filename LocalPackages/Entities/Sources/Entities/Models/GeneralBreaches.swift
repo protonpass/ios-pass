@@ -39,7 +39,7 @@ public struct GeneralBreaches: Decodable, Equatable, Sendable {
     public static var `default`: GeneralBreaches {
         GeneralBreaches(emailsCount: 1,
                         domainsPeek: [],
-                        addresses: [], 
+                        addresses: [],
                         customEmails: [])
     }
 
