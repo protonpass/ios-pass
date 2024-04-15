@@ -41,7 +41,8 @@ public struct GeneralBreaches: Decodable, Equatable, Sendable {
     public static var `default`: GeneralBreaches {
         GeneralBreaches(emailsCount: 1,
                         domainsPeek: [],
-                        addresses: [], customEmails: [])
+                        addresses: [], 
+                        customEmails: [])
     }
 
     public var breached: Bool {
