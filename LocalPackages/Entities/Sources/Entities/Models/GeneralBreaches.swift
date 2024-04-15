@@ -24,12 +24,12 @@ import Foundation
 
 public struct GeneralBreaches: Decodable, Equatable, Sendable {
     public let emailsCount: Int
-    public let domainsPeek: [String]
+    public let domainsPeek: [BreachedDomain]
     public let addresses: [BreachedAddress]
     public let customEmails: [CustomEmail]
 
     public init(emailsCount: Int,
-                domainsPeek: [String],
+                domainsPeek: [BreachedDomain],
                 addresses: [BreachedAddress],
                 customEmails: [CustomEmail]) {
         self.emailsCount = emailsCount
@@ -39,10 +39,16 @@ public struct GeneralBreaches: Decodable, Equatable, Sendable {
     }
 
     public static var `default`: GeneralBreaches {
-        GeneralBreaches(emailsCount: 1, domainsPeek: ["test.com"], addresses: [], customEmails: [])
+        GeneralBreaches(emailsCount: 1,
+                        domainsPeek: [],
+                        addresses: [], customEmails: [])
     }
 
     public var breached: Bool {
         emailsCount > 0
+    }
+
+    public var latestBreach: BreachedDomain? {
+        domainsPeek.max()
     }
 }

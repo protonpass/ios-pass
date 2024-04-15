@@ -33,8 +33,16 @@ public struct Breach: Decodable, Equatable, Sendable {
     public let passwordLastChars: String
     public let actions: [BreachAction]
 
-    public init(id: String, email: String, severity: Double, name: String, createdAt: Date, publishedAt: Date,
-                source: BreachSource, size: Int, exposedData: [BreachExposedData], passwordLastChars: String,
+    public init(id: String,
+                email: String,
+                severity: Double,
+                name: String,
+                createdAt: Date,
+                publishedAt: Date,
+                source: BreachSource,
+                size: Int,
+                exposedData: [BreachExposedData],
+                passwordLastChars: String,
                 actions: [BreachAction]) {
         self.id = id
         self.email = email

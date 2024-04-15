@@ -22,7 +22,6 @@
 
 import Client
 import Combine
-import Core
 import DesignSystem
 import Entities
 import Factory
@@ -68,8 +67,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-
-    private let userDefaults: UserDefaults = .standard
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -185,7 +182,7 @@ private extension PassMonitorViewModel {
 
     func refreshRemoteMonitoredData() async {
         do {
-            breaches = .default // try await breachRepository.getAllBreachesForUser()
+            breaches = try await breachRepository.getAllBreachesForUser()
         } catch {
             router.display(element: .displayErrorBanner(error))
         }
