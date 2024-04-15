@@ -23,15 +23,15 @@ import ProtonCoreServices
 
 struct GetBreachesForAliasEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = BreachesForCustomEmailsResponse
+    typealias Response = BreachesForCustomEmailResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
 
     init(shareId: String, itemId: String) {
-        debugDescription = "Get all custom emails for current user"
-        path = "pass/v1/share/\(shareId)}/alias/\(itemId)/breaches"
+        debugDescription = "Get breaches for an alias"
+        path = "pass/v1/share/\(shareId)/alias/\(itemId)/breaches"
         method = .get
     }
 }

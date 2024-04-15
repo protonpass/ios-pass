@@ -30,7 +30,7 @@ struct RemoveEmailFromBreachMonitoringEndpoint: Endpoint {
     var method: HTTPMethod
 
     init(emailId: String) {
-        debugDescription = "Get all custom emails for current user"
+        debugDescription = "Remove an email for breach monitoring"
         path = "/pass/v1/breach/custom_email/\(emailId)"
         method = .delete
     }

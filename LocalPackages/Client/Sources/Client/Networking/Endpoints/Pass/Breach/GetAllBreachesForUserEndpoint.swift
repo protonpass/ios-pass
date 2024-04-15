@@ -22,10 +22,8 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-// MARK: - BreachesResponse
-
 struct GetAllBreachesForUserResponse: Decodable, Equatable, Sendable {
-    let breaches: GeneralBreaches
+    let breaches: UserBreaches
 }
 
 struct GetAllBreachesForUserEndpoint: Endpoint {

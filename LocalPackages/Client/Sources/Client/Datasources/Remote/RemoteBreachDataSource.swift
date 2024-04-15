@@ -18,24 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable:next todo
+// TODO: removed this once the endpoints are access
 // periphery:ignore:all
 
 import Entities
 
 public protocol RemoteBreachDataSourceProtocol: Sendable {
-    func getAllBreachesForUser() async throws -> GeneralBreaches
+    func getAllBreachesForUser() async throws -> UserBreaches
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
     func verifyCustomEmail(emailId: String, code: String) async throws
-    func getAllBreachesForEmail(emailId: String) async throws -> BreachDetails
+    func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches
     func removeEmailFromBreachMonitoring(emailId: String) async throws
-    func getBreachesForAlias(sharedId: String, itemId: String) async throws -> BreachDetails
+    func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
 }
 
 public final class RemoteBreachDataSource: RemoteDatasource, RemoteBreachDataSourceProtocol {}
 
 public extension RemoteBreachDataSource {
-    func getAllBreachesForUser() async throws -> GeneralBreaches {
+    func getAllBreachesForUser() async throws -> UserBreaches {
         let endpoint = GetAllBreachesForUserEndpoint()
         let response = try await exec(endpoint: endpoint)
         return response.breaches
@@ -60,8 +62,8 @@ public extension RemoteBreachDataSource {
         _ = try await exec(endpoint: endpoint)
     }
 
-    func getAllBreachesForEmail(emailId: String) async throws -> BreachDetails {
-        let endpoint = GetAllBreachesForEmailEndpoint(emailId: emailId)
+    func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches {
+        let endpoint = GetBreachesForCustomEmailEndpoint(emailId: emailId)
         let response = try await exec(endpoint: endpoint)
         return response.breaches
     }
@@ -71,7 +73,7 @@ public extension RemoteBreachDataSource {
         _ = try await exec(endpoint: endpoint)
     }
 
-    func getBreachesForAlias(sharedId: String, itemId: String) async throws -> BreachDetails {
+    func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
         let endpoint = GetBreachesForAliasEndpoint(shareId: sharedId, itemId: itemId)
         let response = try await exec(endpoint: endpoint)
         return response.breaches

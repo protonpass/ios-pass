@@ -22,22 +22,20 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-// MARK: - BreachesForCustomEmailsResponse
-
-struct BreachesForCustomEmailsResponse: Decodable, Equatable, Sendable {
-    let breaches: BreachDetails
+struct BreachesForCustomEmailResponse: Decodable, Equatable, Sendable {
+    let breaches: EmailBreaches
 }
 
-struct GetAllBreachesForEmailEndpoint: Endpoint {
+struct GetBreachesForCustomEmailEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = BreachesForCustomEmailsResponse
+    typealias Response = BreachesForCustomEmailResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
 
     init(emailId: String) {
-        debugDescription = "Get all custom emails for current user"
+        debugDescription = "Get breaches for a custom email"
         path = "/pass/v1/breach/custom_email/\(emailId)/breaches"
         method = .get
     }
