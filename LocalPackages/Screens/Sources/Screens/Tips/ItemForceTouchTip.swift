@@ -35,12 +35,12 @@ public struct ItemForceTouchTip: Tip {
     }
 
     public var title: Text {
-        Text(verbatim: "Quick actions on items")
+        Text("Quick actions on items")
             .foregroundStyle(PassColor.textNorm.toColor)
     }
 
     public var message: Text? {
-        Text(verbatim: "Press and hold an item to reveal extra options.")
+        Text("Press and hold an item to reveal extra options.")
             .foregroundStyle(PassColor.textWeak.toColor)
     }
 

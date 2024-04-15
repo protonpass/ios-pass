@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Macro
 import TipKit
 
 enum PassTip: String {
@@ -37,7 +38,7 @@ public enum PassTipAction: String {
     public var title: String {
         switch self {
         case .openSettings:
-            "Open Settings"
+            #localized("Open Settings")
         }
     }
 
