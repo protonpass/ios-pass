@@ -39,7 +39,7 @@ struct VerifyCustomEmailEndpoint: Endpoint {
     var body: VerifyCustomEmailRequest?
 
     init(customEmailId: String, request: VerifyCustomEmailRequest) {
-        debugDescription = "Add an email to monitor for breaches"
+        debugDescription = "Verify a custom email"
         path = "/pass/v1/breach/custom_email/\(customEmailId)/verify"
         method = .put
         body = request

@@ -1,5 +1,5 @@
 //
-// GeneralBreaches.swift
+// UserBreaches.swift
 // Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct GeneralBreaches: Decodable, Equatable, Sendable {
+public struct UserBreaches: Decodable, Equatable, Sendable {
     public let emailsCount: Int
     public let domainsPeek: [BreachedDomain]
     public let addresses: [BreachedAddress]
@@ -36,11 +36,11 @@ public struct GeneralBreaches: Decodable, Equatable, Sendable {
         self.customEmails = customEmails
     }
 
-    public static var `default`: GeneralBreaches {
-        GeneralBreaches(emailsCount: 1,
-                        domainsPeek: [],
-                        addresses: [],
-                        customEmails: [])
+    public static var `default`: UserBreaches {
+        UserBreaches(emailsCount: 0,
+                     domainsPeek: [],
+                     addresses: [],
+                     customEmails: [])
     }
 
     public var breached: Bool {
