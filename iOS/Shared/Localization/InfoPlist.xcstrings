@@ -212,7 +212,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skeniranje 2FA kode, kreditne kartice ali ročno napisane opombe"
+            "value" : "Skeniranje 2FA kode, plačilne kartice ali ročno napisane opombe"
           }
         },
         "sv" : {
