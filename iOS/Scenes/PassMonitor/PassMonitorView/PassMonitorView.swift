@@ -110,10 +110,7 @@ enum SecureRowType {
     }
 
     var titleColor: UIColor {
-        switch self {
-        default:
-            PassColor.textNorm
-        }
+        PassColor.textNorm
     }
 
     var subtitleColor: UIColor {
@@ -261,65 +258,59 @@ private extension PassMonitorView {
                         .toColor : PassColor.textNorm.toColor)
                     .multilineTextAlignment(breaches.breached ? .leading : .center)
 
-                if breaches.breached {
-                    if let latestBreach = breaches.latestBreach {
-                        HStack {
-                            Image(uiImage: PassIcon.lightning)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 24)
-                                .padding(10)
-                                .roundedDetailSection(backgroundColor: PassColor
-                                    .passwordInteractionNormMinor1,
-                                    borderColor: .clear)
+                if breaches.breached, let latestBreach = breaches.latestBreach {
+                    HStack {
+                        Image(uiImage: PassIcon.lightning)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 24)
+                            .padding(10)
+                            .roundedDetailSection(backgroundColor: PassColor
+                                .passwordInteractionNormMinor1,
+                                borderColor: .clear)
 
-                            VStack(alignment: .leading) {
-                                Text(latestBreach.domain)
-                                    .font(.body)
-                                    .foregroundStyle(PassColor.textNorm.toColor)
-                                Text(latestBreach.formattedDateDescription)
-                                    .font(.footnote)
-                                    .foregroundStyle(PassColor.textWeak.toColor)
-                            }
+                        VStack(alignment: .leading) {
+                            Text(latestBreach.domain)
+                                .font(.body)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                            Text(latestBreach.formattedDateDescription)
+                                .font(.footnote)
+                                .foregroundStyle(PassColor.textWeak.toColor)
                         }
                     }
+
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
                         VStack(alignment: .leading) {
-                            HStack {
-                                Text("Email address")
-                                    .font(.body)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                                Spacer()
-                            }.frame(maxWidth: .infinity)
+                            Text("Email address")
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .frame(maxWidth: .infinity, alignment: .leading)
 
-                            HStack {
-                                Text(verbatim: "Thisisafakeemail@gmail.com")
-                                    .font(.body)
-                                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                                    .blur(radius: 5)
-                                Spacer()
-                            }.frame(maxWidth: .infinity)
-                        }.frame(maxWidth: .infinity)
-                            .padding(.top, DesignConstant.sectionPadding)
+                            Text(verbatim: "Thisisafakeemail@gmail.com")
+                                .font(.body)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .blur(radius: 5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, DesignConstant.sectionPadding)
 
                         VStack(alignment: .leading) {
-                            HStack {
-                                Text("Password")
-                                    .font(.body)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                                Spacer()
-                            }.frame(maxWidth: .infinity)
-                            HStack {
-                                Text(verbatim: "Thisisafakepassword")
-                                    .font(.body)
-                                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                                    .blur(radius: 5)
-                                Spacer()
-                            }.frame(maxWidth: .infinity)
-                        }.frame(maxWidth: .infinity)
-                            .padding(.bottom, DesignConstant.sectionPadding)
+                            Text("Password")
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Text(verbatim: "Thisisafakepassword")
+                                .font(.body)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .blur(radius: 5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, DesignConstant.sectionPadding)
                     }
                     .padding(DesignConstant.sectionPadding)
                     .frame(maxWidth: .infinity)
