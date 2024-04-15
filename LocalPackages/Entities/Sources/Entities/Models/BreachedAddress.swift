@@ -20,8 +20,6 @@
 
 import Foundation
 
-// MARK: - Address
-
 public struct BreachedAddress: Decodable, Equatable, Sendable {
     public let addressID, email: String
     public let breachCounter: Int
@@ -31,9 +29,4 @@ public struct BreachedAddress: Decodable, Equatable, Sendable {
         self.email = email
         self.breachCounter = breachCounter
     }
-//    enum CodingKeys: String, CodingKey {
-//        case addressID = "AddressID"
-//        case email = "Email"
-//        case breachCounter = "BreachCounter"
-//    }
 }

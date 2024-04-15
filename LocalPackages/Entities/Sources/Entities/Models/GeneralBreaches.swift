@@ -20,8 +20,6 @@
 
 import Foundation
 
-// MARK: - General Breaches
-
 public struct GeneralBreaches: Decodable, Equatable, Sendable {
     public let emailsCount: Int
     public let domainsPeek: [BreachedDomain]

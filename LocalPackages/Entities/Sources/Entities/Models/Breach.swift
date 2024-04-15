@@ -56,17 +56,4 @@ public struct Breach: Decodable, Equatable, Sendable {
         self.passwordLastChars = passwordLastChars
         self.actions = actions
     }
-//    enum CodingKeys: String, CodingKey {
-//        case id = "ID"
-//        case email = "Email"
-//        case severity = "Severity"
-//        case name = "Name"
-//        case createdAt = "CreatedAt"
-//        case publishedAt = "PublishedAt"
-//        case source = "Source"
-//        case size = "Size"
-//        case exposedData = "ExposedData"
-//        case passwordLastChars = "PasswordLastChars"
-//        case actions = "Actions"
-//    }
 }

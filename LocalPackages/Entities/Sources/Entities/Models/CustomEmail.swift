@@ -20,8 +20,6 @@
 
 import Foundation
 
-// MARK: - CustomEmail
-
 public struct CustomEmail: Decodable, Equatable, Sendable {
     public let customEmailID, email: String
     public let verified: Bool
@@ -33,11 +31,4 @@ public struct CustomEmail: Decodable, Equatable, Sendable {
         self.verified = verified
         self.breachCounter = breachCounter
     }
-//
-//    enum CodingKeys: String, CodingKey {
-//        case customEmailID = "CustomEmailID"
-//        case email = "Email"
-//        case verified = "Verified"
-//        case breachCounter = "BreachCounter"
-//    }
 }
