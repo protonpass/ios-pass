@@ -87,7 +87,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func biometricallyAuthenticate() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let policy = getSharedPreferences().localAuthenticationPolicy
@@ -147,7 +147,7 @@ private extension LocalAuthenticationViewModel {
     }
 
     func recordFailure(_ error: Error?) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
@@ -166,7 +166,7 @@ private extension LocalAuthenticationViewModel {
     }
 
     func recordSuccess() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await updateSharedPreferences(\.failedAttemptCount, value: 0)
