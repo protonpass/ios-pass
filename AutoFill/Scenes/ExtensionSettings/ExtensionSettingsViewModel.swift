@@ -54,8 +54,8 @@ final class ExtensionSettingsViewModel: ObservableObject {
                 async let updateSharedPreferences: () = updateSharedPreferences(\.quickTypeBar,
                                                                                 value: newValue)
                 async let reindex: () = reindexCredentials(newValue)
-                quickTypeBar = newValue
                 _ = try await (updateSharedPreferences, reindex)
+                quickTypeBar = newValue
             } catch {
                 handle(error)
             }

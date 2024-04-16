@@ -25,8 +25,6 @@ import Factory
 import Foundation
 import Macro
 
-private let kMaxAttemptCount = 3
-
 enum LocalAuthenticationState: Equatable {
     case noAttempts
     case remainingAttempts(Int)
@@ -59,8 +57,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         case biometric, pin
     }
 
+    private let maxAttemptCount = 3
+
     private var failedAttemptCount: Int {
-        preferencesManager.sharedPreferences.value?.failedAttemptCount ?? kMaxAttemptCount
+        preferencesManager.sharedPreferences.value?.failedAttemptCount ?? maxAttemptCount
     }
 
     init(mode: Mode,
@@ -134,10 +134,10 @@ private extension LocalAuthenticationViewModel {
         switch failedAttemptCount {
         case 0:
             state = .noAttempts
-        case kMaxAttemptCount - 1:
+        case maxAttemptCount - 1:
             state = .lastAttempt
         default:
-            let remainingAttempts = kMaxAttemptCount - failedAttemptCount
+            let remainingAttempts = maxAttemptCount - failedAttemptCount
             if remainingAttempts >= 1 {
                 state = .remainingAttempts(remainingAttempts)
             } else {
