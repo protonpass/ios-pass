@@ -60,7 +60,7 @@ struct ItemsTabView: View {
         }
         .animation(.default, value: vaultsManager.state)
         .animation(.default, value: viewModel.shouldShowSyncProgress)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundNorm.toColor)
         .navigationBarHidden(true)
     }
 
@@ -221,7 +221,7 @@ struct ItemsTabView: View {
             }, header: {
                 Text(headerTitle)
                     .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    .foregroundStyle(PassColor.textWeak.toColor)
             })
         }
     }

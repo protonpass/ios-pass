@@ -53,7 +53,7 @@ struct FeedbackChannelsView: View {
                                               .scaledToFit()
                                               .frame(maxWidth: 20, maxHeight: 20)
                                       })
-                                      .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                      .foregroundStyle(PassColor.textNorm.toColor)
                                   })
 
                         PassDivider()
@@ -62,7 +62,7 @@ struct FeedbackChannelsView: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

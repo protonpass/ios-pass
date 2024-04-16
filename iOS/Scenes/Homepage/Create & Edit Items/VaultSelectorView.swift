@@ -47,7 +47,7 @@ struct VaultSelectorView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .animation(.default, value: viewModel.isFreeUser)
             .toolbar {
                 ToolbarItem(placement: .principal) {

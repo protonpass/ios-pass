@@ -48,7 +48,7 @@ struct ItemCountView: View {
             }
         case let .error(error):
             Text(error.localizedDescription)
-                .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                .foregroundStyle(PassColor.signalDanger.toColor)
         }
     }
 
@@ -83,13 +83,13 @@ private struct ItemContentTypeCountView: View {
 
             Text(verbatim: "\(count)")
                 .fontWeight(.bold)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
 
             Spacer()
         }
         .padding(10)
         .frame(height: kChipHeight)
         .frame(minWidth: 103)
-        .overlay(Capsule().strokeBorder(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1))
+        .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm.toColor, lineWidth: 1))
     }
 }
