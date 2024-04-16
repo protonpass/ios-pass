@@ -90,13 +90,13 @@ struct LocalAuthenticationModifier: ViewModifier {
             }
         }
         .animation(.default, value: authenticated)
-        .onReceive(preferencesManager.sharedPreferencesUpdates.receive(on: DispatchQueue.main)) { update in
-            let appLockTimeKeyPath = \SharedPreferences.appLockTime
-            if update.keyPath == appLockTimeKeyPath {
+        .onReceive(preferencesManager
+            .sharedPreferencesUpdates
+            .receive(on: DispatchQueue.main)
+            .filter(\.appLockTime)) { newValue in
                 // Take into account right away appLockTime when user updates it
-                autolocker = .init(appLockTime: preferences[keyPath: appLockTimeKeyPath])
+                autolocker = .init(appLockTime: newValue)
                 autolocker.startCountdown()
-            }
         }
         .onReceive(UIApplication.willResignActiveNotification,
                    perform: autolocker.startCountdown)
