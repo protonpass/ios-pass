@@ -40,7 +40,7 @@ final class CachedFavIconsViewModel: ObservableObject {
     init() {}
 
     func loadIcons() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 error = nil
@@ -52,7 +52,7 @@ final class CachedFavIconsViewModel: ObservableObject {
     }
 
     func emptyCache() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 error = nil

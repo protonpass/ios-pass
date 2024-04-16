@@ -273,7 +273,7 @@ private extension ProfileTabViewModel {
     }
 
     func refresh() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             autoFillEnabled = await credentialManager.isAutoFillEnabled
             refreshLocalAuthenticationMethod()
@@ -301,7 +301,7 @@ private extension ProfileTabViewModel {
     }
 
     func applyOrganizationSettings() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if let organization = try await organizationRepository.getOrganization() {

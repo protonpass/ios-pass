@@ -39,7 +39,7 @@ final class SelectPasskeyViewModel: ObservableObject {
     }
 
     func autoFill(with passkey: Passkey) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self, let context else { return }
             do {
                 logger.debug("Autofilling with selected passkey \(passkey.keyID)")

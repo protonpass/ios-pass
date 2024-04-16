@@ -148,7 +148,7 @@ final class AppCoordinator {
 
     /// Necessary set up like initializing preferences before starting user flow
     func setUpAndStart() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
@@ -185,7 +185,7 @@ private extension AppCoordinator {
     }
 
     func showHomeScene(manualLogIn: Bool) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -211,7 +211,7 @@ private extension AppCoordinator {
     }
 
     func resetAllData() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             await wipeAllData()
             SharedViewContainer.shared.reset()

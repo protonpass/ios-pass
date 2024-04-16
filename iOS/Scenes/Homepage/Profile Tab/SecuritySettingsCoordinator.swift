@@ -66,7 +66,7 @@ private extension SecuritySettingsCoordinator {
         do {
             let update: (LocalAuthenticationMethod) -> Void = { [weak self] newMethod in
                 guard let self else { return }
-                Task { @MainActor [weak self] in
+                Task { [weak self] in
                     guard let self else { return }
                     do {
                         try await updateMethod(newMethod)
@@ -187,7 +187,7 @@ private extension SecuritySettingsCoordinator {
     }
 
     func updateAppLockTime(_ newValue: AppLockTime) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await updateSharedPreferences(\.appLockTime, value: newValue)
