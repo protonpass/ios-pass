@@ -25,15 +25,8 @@ import UserNotifications
 @MainActor
 final class ExtensionSettingsViewModel: ObservableObject {
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
-    @Published var automaticallyCopyTotpCode: Bool {
-        didSet {
-            if automaticallyCopyTotpCode {
-                notificationService.requestNotificationPermission()
-            }
-            preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
-        }
-    }
-
+    @Published private(set) var automaticallyCopyTotpCode: Bool
+    @Published private(set) var showAutomaticCopyTotpCodeExplication = false
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
@@ -43,14 +36,22 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
-    var automaticallyCopyTotpCodeDisabled: Bool {
-        preferences.localAuthenticationMethod == .none
-    }
-
     init() {
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
+    }
+
+    func toggleAutomaticCopy2FACode() {
+        if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
+            showAutomaticCopyTotpCodeExplication = true
+            return
+        }
+        automaticallyCopyTotpCode.toggle()
+        if automaticallyCopyTotpCode {
+            notificationService.requestNotificationPermission()
+        }
+        preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
     }
 }
 
