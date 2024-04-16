@@ -75,6 +75,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
+    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -540,7 +541,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
-                    try await indexAllLoginItems(ignorePreferences: false)
+                    if getSharedPreferences().quickTypeBar {
+                        try await indexAllLoginItems()
+                    }
                     if let response {
                         completePasskeyRegistration(response, context: context)
                     } else {
