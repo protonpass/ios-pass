@@ -61,7 +61,7 @@ struct ProfileTabView: View {
                     Spacer()
                 }
                 .padding(.top)
-                .animation(.default, value: viewModel.automaticallyCopyTotpCode)
+                .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
                 .animation(.default, value: viewModel.localAuthenticationMethod)
                 .showSpinner(viewModel.loading)
             }
@@ -223,17 +223,14 @@ struct ProfileTabView: View {
                 PassSectionDivider()
 
                 OptionRow(height: .medium) {
-                    Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
-                        Text("Copy 2FA code")
-                            .foregroundColor(PassColor.textNorm.toColor)
-                    }
-                    .tint(PassColor.interactionNorm.toColor)
+                    StaticToggle("Copy 2FA code",
+                                 isOn: viewModel.automaticallyCopyTotpCode,
+                                 action: { viewModel.toggleAutomaticCopyTotpCode() })
                 }
-                .disabled(viewModel.automaticallyCopyTotpCodeDisabled)
             }
             .roundedEditableSection()
 
-            if viewModel.automaticallyCopyTotpCodeDisabled {
+            if viewModel.showAutomaticCopyTotpCodeExplanation {
                 Text("Automatic copy of the 2FA code requires biometric lock or PIN code to be set up")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)

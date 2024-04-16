@@ -229,7 +229,7 @@ private extension PassMonitorView {
                 .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
                 .layoutPriority(1)
 
-                StaticToggleView(isOn: viewModel.isSentinelActive)
+                StaticToggle(isOn: viewModel.isSentinelActive, action: action)
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
             .roundedDetailSection(backgroundColor: rowType.background,
