@@ -1459,6 +1459,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         refresh()
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
+            // swiftformat:disable:next redundantParens
             let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
                 guard let self else { return }
                 Task { @MainActor [weak self] in

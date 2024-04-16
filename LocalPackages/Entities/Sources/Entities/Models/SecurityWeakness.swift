@@ -23,8 +23,7 @@ import Foundation
 public enum SecurityWeakness: Equatable, Sendable {
     case weakPasswords
     case reusedPasswords
-    case exposedEmail
-    case exposedPassword
+    case breaches
     case missing2FA
     case excludedItems
 }
