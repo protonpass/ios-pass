@@ -41,10 +41,6 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var preferences: Preferences {
-        SharedToolingContainer.shared.preferences()
-    }
-
     var preferencesManager: PreferencesManagerProtocol {
         SharedToolingContainer.shared.preferencesManager()
     }
