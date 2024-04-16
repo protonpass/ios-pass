@@ -1,6 +1,6 @@
 //
-// SecuritySection.swift
-// Proton Pass - Created on 08/03/2024.
+// BreachSample.swift
+// Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,18 +20,24 @@
 
 import Foundation
 
-public struct ReusedPasswordsKey: Hashable, Sendable {
-    public let id: String = UUID().uuidString
-    public let numberOfTimeReused: Int
+public struct BreachSample: Decodable, Equatable, Sendable {
+    public let id, email: String
+    public let severity: Double
+    public let name: String
+    public let createdAt: String
+    public let source: BreachSource
 
-    public init(numberOfTimeReused: Int) {
-        self.numberOfTimeReused = numberOfTimeReused
+    public init(id: String,
+                email: String,
+                severity: Double,
+                name: String,
+                createdAt: String,
+                source: BreachSource) {
+        self.id = id
+        self.email = email
+        self.severity = severity
+        self.name = name
+        self.createdAt = createdAt
+        self.source = source
     }
-}
-
-public enum SecuritySection: Hashable, Sendable {
-    case weakPasswords(PasswordStrength)
-    case reusedPasswords(ReusedPasswordsKey)
-    case missing2fa
-    case excludedItems
 }

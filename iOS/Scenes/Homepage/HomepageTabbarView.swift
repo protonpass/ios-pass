@@ -149,7 +149,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
-
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
     private var tabIndexes = [HomepageTab: Int]()
@@ -198,7 +198,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
 
-        if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
+        if getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1) {
             let passMonitor = UIHostingController(rootView: passMonitorView)
             passMonitor.tabBarItem.image = HomepageTab.securityCenter.image
             passMonitor.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
