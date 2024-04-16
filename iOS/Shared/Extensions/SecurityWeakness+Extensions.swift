@@ -30,10 +30,8 @@ public extension SecurityWeakness {
             #localized("Weak passwords")
         case .reusedPasswords:
             #localized("Reused passwords")
-        case .exposedEmail:
-            #localized("Exposed emails")
-        case .exposedPassword:
-            #localized("Exposed passwords")
+        case .breaches:
+            #localized("Dark Web Monitoring")
         case .missing2FA:
             #localized("Missing two-factor authentication")
         }
@@ -47,12 +45,10 @@ public extension SecurityWeakness {
             #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
         case .reusedPasswords:
             #localized("Generate unique passwords to increase your security.")
-        case .exposedEmail:
-            #localized("These accounts appear in data breaches. Update your credentials immediately.")
-        case .exposedPassword:
-            #localized("These password appear in data breaches. Update your credentials immediately.")
         case .missing2FA:
             #localized("Logins with sites that have two-factor authentication available but you haven’t set it up yet.")
+        default:
+            ""
         }
     }
 
@@ -64,12 +60,11 @@ public extension SecurityWeakness {
             #localized("This account is vulnerable, visit the service and change your password")
         case .reusedPasswords:
             #localized("Visit the website and generate a unique password for this item")
-        case .exposedEmail:
-            ""
-        case .exposedPassword:
-            ""
         case .missing2FA:
             #localized("It would be more secure to set up 2FA for this item")
+
+        default:
+            ""
         }
     }
 }
