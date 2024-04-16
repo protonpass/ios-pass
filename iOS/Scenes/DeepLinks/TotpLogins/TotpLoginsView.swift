@@ -210,7 +210,7 @@ private extension TotpLoginsView {
                 Text(headerTitle)
                     .font(.callout)
                     .fontWeight(headerFontWeight)
-                    .foregroundColor(Color(uiColor: headerColor))
+                    .foregroundStyle(headerColor.toColor)
             })
         }
     }

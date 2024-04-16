@@ -70,7 +70,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .font(.callout)
                         .lineLimit(descriptionLineLimit)
                         .minimumScaleFactor(descriptionLineLimit > 1 ? 0.75 : 1.0)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .foregroundStyle(PassColor.textWeak.toColor)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxHeight: .infinity)
                 }
