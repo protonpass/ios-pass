@@ -26,13 +26,12 @@ import UseCases
 import UserNotifications
 
 protocol CopyTotpTokenAndNotifyUseCase: Sendable {
-    func execute(itemContent: ItemContent, clipboardManager: ClipboardManagerProtocol) async throws
+    func execute(itemContent: ItemContent) async throws
 }
 
 extension CopyTotpTokenAndNotifyUseCase {
-    func callAsFunction(itemContent: ItemContent,
-                        clipboardManager: ClipboardManagerProtocol) async throws {
-        try await execute(itemContent: itemContent, clipboardManager: clipboardManager)
+    func callAsFunction(itemContent: ItemContent) async throws {
+        try await execute(itemContent: itemContent)
     }
 }
 
@@ -40,23 +39,26 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
     private let preferences: Preferences
     private let logger: Logger
     private let generateTotpToken: GenerateTotpTokenUseCase
+    private let copyToClipboard: CopyToClipboardUseCase
     private let notificationService: LocalNotificationServiceProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
 
     init(preferences: Preferences,
          logManager: LogManagerProtocol,
          generateTotpToken: GenerateTotpTokenUseCase,
+         copyToClipboard: CopyToClipboardUseCase,
          notificationService: LocalNotificationServiceProtocol,
          upgradeChecker: UpgradeCheckerProtocol) {
         self.preferences = preferences
         logger = .init(manager: logManager)
         self.generateTotpToken = generateTotpToken
+        self.copyToClipboard = copyToClipboard
         self.notificationService = notificationService
         self.upgradeChecker = upgradeChecker
     }
 
     @MainActor
-    func execute(itemContent: ItemContent, clipboardManager: ClipboardManagerProtocol) async throws {
+    func execute(itemContent: ItemContent) async throws {
         guard preferences.automaticallyCopyTotpCode else {
             // Not opted in
             return
@@ -79,16 +81,15 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
             return
         }
         let totpData = try generateTotpToken(uri: data.totpUri)
-        clipboardManager.copy(text: totpData.code, bannerMessage: "")
+        copyToClipboard(totpData.code)
         logger.trace("Copied TOTP token \(itemContent.debugDescription)")
 
         let content = UNMutableNotificationContent()
         content.title = #localized("TOTP copied")
         content.subtitle = itemContent.name
-        content.body = """
-        "\(totpData.code)" is copied to clipboard.
-        Expiring in \(totpData.timerData.remaining) seconds.
-        """
+        content.body = #localized("\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds.",
+                                  totpData.code,
+                                  totpData.timerData.remaining)
 
         let request = UNNotificationRequest(identifier: UUID().uuidString,
                                             content: content,

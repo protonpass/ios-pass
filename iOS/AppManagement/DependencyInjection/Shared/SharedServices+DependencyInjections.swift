@@ -68,11 +68,6 @@ extension SharedServiceContainer {
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
     }
 
-    var clipboardManager: Factory<ClipboardManagerProtocol> {
-        self { ClipboardManager(bannerManager: SharedViewContainer.shared.bannerManager(),
-                                settingsProvider: SharedToolingContainer.shared.preferencesManager()) }
-    }
-
     @MainActor
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
         self { ItemContextMenuHandler() }
