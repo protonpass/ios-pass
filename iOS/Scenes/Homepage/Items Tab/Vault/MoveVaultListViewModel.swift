@@ -59,7 +59,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
             selectedVault = getVaultContentForVault(for: fromShareId)
         }
 
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
@@ -79,7 +79,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
             assertionFailure("Should have a selected vault")
             return
         }
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {

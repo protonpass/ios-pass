@@ -25,6 +25,7 @@ import Entities
 import Factory
 import Macro
 
+@MainActor
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -47,7 +48,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func getAlias() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let alias =
