@@ -36,22 +36,22 @@ extension CopyTotpTokenAndNotifyUseCase {
 }
 
 final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyUseCase {
-    private let preferences: Preferences
     private let logger: Logger
     private let generateTotpToken: GenerateTotpTokenUseCase
+    private let getSharedPreferences: GetSharedPreferencesUseCase
     private let copyToClipboard: CopyToClipboardUseCase
     private let notificationService: LocalNotificationServiceProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
 
-    init(preferences: Preferences,
-         logManager: LogManagerProtocol,
+    init(logManager: LogManagerProtocol,
          generateTotpToken: GenerateTotpTokenUseCase,
+         getSharedPreferences: GetSharedPreferencesUseCase,
          copyToClipboard: CopyToClipboardUseCase,
          notificationService: LocalNotificationServiceProtocol,
          upgradeChecker: UpgradeCheckerProtocol) {
-        self.preferences = preferences
         logger = .init(manager: logManager)
         self.generateTotpToken = generateTotpToken
+        self.getSharedPreferences = getSharedPreferences
         self.copyToClipboard = copyToClipboard
         self.notificationService = notificationService
         self.upgradeChecker = upgradeChecker
@@ -59,7 +59,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
 
     @MainActor
     func execute(itemContent: ItemContent) async throws {
-        guard preferences.automaticallyCopyTotpCode else {
+        guard getSharedPreferences().automaticallyCopyTotpCode else {
             // Not opted in
             return
         }

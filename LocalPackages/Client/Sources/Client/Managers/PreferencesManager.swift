@@ -39,7 +39,7 @@ public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
 /// Manage all types of preferences: app-wide, shared between users and user's specific
-public protocol PreferencesManagerProtocol: Sendable {
+public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProviderProtocol {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 
@@ -70,6 +70,16 @@ public protocol PreferencesManagerProtocol: Sendable {
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws
     func removeUserPreferences() async throws
+}
+
+public extension PreferencesManagerProtocol {
+    func getThreshold() -> TimeInterval? {
+        appPreferences.unwrapped().telemetryThreshold
+    }
+
+    func setThreshold(_ threshold: TimeInterval?) async throws {
+        try await updateAppPreferences(\.telemetryThreshold, value: threshold)
+    }
 }
 
 public actor PreferencesManager: PreferencesManagerProtocol {
