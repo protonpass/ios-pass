@@ -37,10 +37,17 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
 }
 
 private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepositoryProtocol {
-    
-    var settings = UserSettings(telemetry: true, highSecurity: HighSecurity.default)
-    
-    init(settings: UserSettings = UserSettings(telemetry: true, highSecurity: HighSecurity.default)) {
+
+    static let defaultSettings = UserSettings(
+        telemetry: true,
+        highSecurity: HighSecurity.default,
+        password: .init(mode: 1),
+        twoFactor: .init(enabled: 0)
+    )
+
+    var settings = defaultSettings
+
+    init(settings: UserSettings = defaultSettings) {
         self.settings = settings
     }
    
@@ -236,7 +243,8 @@ extension TelemetryEventRepositoryTests {
         thresholdProvider.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
                                                     thresholdProvider: thresholdProvider)
-        let settingsService = MockedUserSettingsRepositoryProtocol(settings: UserSettings(telemetry: false, highSecurity: .default))
+        let settings = UserSettings(telemetry: false, highSecurity: .default, password: .init(mode: 1), twoFactor: .init(enabled: 0))
+        let settingsService = MockedUserSettingsRepositoryProtocol(settings: settings)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        userSettingsRepository: settingsService,

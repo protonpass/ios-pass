@@ -64,6 +64,32 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
+                if viewModel.showChangePassword {
+                    VStack(spacing: 0) {
+                        OptionRow(action: { viewModel.openChangeUserPassword() },
+                                  height: .tall,
+                                  content: {
+                                      Text("Change password")
+                                          .foregroundColor(PassColor.textNorm.toColor)
+                                  },
+                                  trailing: { ChevronRight() })
+
+                        if viewModel.showChangeMailboxPassword {
+                            PassSectionDivider()
+
+                            OptionRow(action: { viewModel.openChangeMailboxPassword() },
+                                      height: .tall,
+                                      content: {
+                                          Text("Change mailbox password")
+                                              .foregroundColor(PassColor.textNorm.toColor)
+                                      },
+                                      trailing: { ChevronRight() })
+                        }
+                    }
+                    .roundedEditableSection()
+                    .padding(.top)
+                }
+
                 VStack(spacing: 0) {
                     OptionRow(action: { viewModel.openAccountSettings() },
                               height: .tall,
