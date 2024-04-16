@@ -57,7 +57,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
     }
 
     func refresh() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let formatter = RelativeDateTimeFormatter()

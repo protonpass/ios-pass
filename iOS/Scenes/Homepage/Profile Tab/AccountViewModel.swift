@@ -62,7 +62,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     }
 
     private func refreshUserPlan() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 // First get local plan to optimistically display it
@@ -79,7 +79,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true) else {
             return
         }
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 accountRecovery = try await accountRepository.accountRecovery()
@@ -114,7 +114,7 @@ extension AccountViewModel {
     }
 
     func signOut() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             isLoading = true
             await revokeCurrentSession()

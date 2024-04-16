@@ -61,7 +61,7 @@ final class ItemTypeListViewModel: ObservableObject {
     weak var delegate: ItemTypeListViewModelDelegate?
 
     init() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
