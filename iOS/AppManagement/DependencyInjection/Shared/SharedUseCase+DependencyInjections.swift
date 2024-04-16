@@ -131,7 +131,6 @@ extension SharedUseCasesContainer {
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                   accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                   credentialManager: self.credentialManager,
-                                  preferences: self.preferences,
                                   mapLoginItem: self.mapLoginItem(),
                                   logManager: self.logManager) }
     }
