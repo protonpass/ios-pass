@@ -88,7 +88,7 @@ private struct TelemetryEventsView: View {
             if viewModel.uiModels.isEmpty {
                 Form {
                     Text(verbatim: "No events")
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 }
             } else {
                 eventsList
@@ -118,11 +118,11 @@ private struct EventView: View {
         Label(title: {
             VStack(alignment: .leading) {
                 Text(uiModel.event.type.emoji)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 Text(uiModel.relativeDate)
                     .font(.footnote)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    .foregroundStyle(PassColor.textWeak.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }, icon: {

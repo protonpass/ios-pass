@@ -48,7 +48,7 @@ struct AccountView: View {
                               height: .tall,
                               content: {
                                   Text(viewModel.username)
-                                      .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                      .foregroundStyle(PassColor.textNorm.toColor)
                               })
 
                     if let plan = viewModel.plan {

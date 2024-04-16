@@ -126,7 +126,7 @@ struct HiddenCustomFieldSection: View {
                             .isEditable(false)
                     } else {
                         Text(String(repeating: "•", count: min(20, content.count)))
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            .foregroundStyle(PassColor.textNorm.toColor)
                     }
                 }
             }
@@ -229,7 +229,7 @@ struct TotpCustomFieldSection: View {
                     case .invalid:
                         Text("Invalid TOTP URI")
                             .font(.caption)
-                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                            .foregroundStyle(PassColor.signalDanger.toColor)
                     }
                 }
             }

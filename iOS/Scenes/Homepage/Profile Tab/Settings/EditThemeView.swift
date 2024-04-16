@@ -54,7 +54,7 @@ struct EditThemeView: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

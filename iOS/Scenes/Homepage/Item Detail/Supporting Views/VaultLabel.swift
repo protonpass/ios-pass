@@ -35,7 +35,7 @@ struct VaultLabel: View {
                 .scaledToFit()
                 .frame(width: 12, height: 12)
         })
-        .foregroundColor(Color(uiColor: PassColor.textWeak))
+        .foregroundStyle(PassColor.textWeak.toColor)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

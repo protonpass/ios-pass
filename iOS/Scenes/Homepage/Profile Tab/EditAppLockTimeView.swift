@@ -35,7 +35,7 @@ struct EditAppLockTimeView: View {
                                             height: .compact,
                                             content: {
                                                 Text(time.description)
-                                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                                    .foregroundStyle(PassColor.textNorm.toColor)
                                             },
                                             isSelected: time == selectedAppLockTime)
 
@@ -45,7 +45,7 @@ struct EditAppLockTimeView: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
