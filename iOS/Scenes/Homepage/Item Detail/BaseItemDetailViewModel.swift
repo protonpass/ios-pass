@@ -130,7 +130,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func refresh() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let shareId = itemContent.shareId
@@ -194,7 +194,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToTrash() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -214,7 +214,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func restore() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -235,7 +235,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func permanentlyDelete() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -272,7 +272,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
 private extension BaseItemDetailViewModel {
     func checkIfFreeUser() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()

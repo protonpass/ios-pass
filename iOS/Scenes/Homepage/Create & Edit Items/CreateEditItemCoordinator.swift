@@ -169,7 +169,7 @@ private extension CreateEditItemCoordinator {
                                      generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?) {
         assert(delegate != nil, "delegate is not set")
         guard delegate != nil else { return }
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             let coordinator =
                 GeneratePasswordCoordinator(generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
