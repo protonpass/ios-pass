@@ -45,7 +45,7 @@ private extension KeychainStorage {
 /// Use `@AppStorage` for trivial data that do not need to survive reinstallations
 /// Consider using this property wrapper for data that can be lost without any security impacts
 /// (theme settings, selected browser...)
-final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol {
+final class Preferences: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     init() {}
