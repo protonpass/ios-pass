@@ -36,7 +36,7 @@ struct EditClipboardExpirationView: View {
                                             height: .compact,
                                             content: {
                                                 Text(expiration.description)
-                                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                                    .foregroundStyle(PassColor.textNorm.toColor)
                                             },
                                             isSelected: expiration == selection)
 
