@@ -90,7 +90,7 @@ struct LocalAuthenticationModifier: ViewModifier {
             }
         }
         .animation(.default, value: authenticated)
-        .onReceive(preferencesManager.sharedPreferencesUpdates) { update in
+        .onReceive(preferencesManager.sharedPreferencesUpdates.receive(on: DispatchQueue.main)) { update in
             let appLockTimeKeyPath = \SharedPreferences.appLockTime
             if update.keyPath == appLockTimeKeyPath {
                 // Take into account right away appLockTime when user updates it
