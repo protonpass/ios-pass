@@ -94,7 +94,6 @@ extension ProfileTabViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    @MainActor
     func refreshPlan() async {
         do {
             // First get local plan to optimistically display it
@@ -107,7 +106,7 @@ extension ProfileTabViewModel {
     }
 
     func editLocalAuthenticationMethod() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -117,7 +116,7 @@ extension ProfileTabViewModel {
 
     func editAppLockTime() {
         guard canUpdateAppLockTime else { return }
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -126,7 +125,7 @@ extension ProfileTabViewModel {
     }
 
     func editPINCode() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -139,7 +138,7 @@ extension ProfileTabViewModel {
     }
 
     func toggleFallbackToPasscode() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let newValue = !fallbackToPasscode
@@ -152,7 +151,7 @@ extension ProfileTabViewModel {
     }
 
     func toggleQuickTypeBar() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -170,7 +169,7 @@ extension ProfileTabViewModel {
     }
 
     func toggleAutomaticCopyTotpCode() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod

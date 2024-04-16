@@ -37,7 +37,7 @@ private struct ManageBannersView: View {
             Section {
                 Text(verbatim: "In order for changes to take effect, either move app to background or close app")
                 Button(action: {
-                    Task { @MainActor in
+                    Task {
                         try? await updateAppPreferences(\.dismissedBannerIds, value: [])
                     }
                 }, label: {
@@ -58,7 +58,7 @@ private struct ManageBannersView: View {
                         } else {
                             ids.removeAll(where: { $0 == banner.id })
                         }
-                        Task { @MainActor in
+                        Task {
                             try? await updateAppPreferences(\.dismissedBannerIds, value: ids)
                         }
                     })
