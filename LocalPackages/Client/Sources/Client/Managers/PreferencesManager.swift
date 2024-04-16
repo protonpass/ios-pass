@@ -39,7 +39,7 @@ public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
 /// Manage all types of preferences: app-wide, shared between users and user's specific
-public protocol PreferencesManagerProtocol: Sendable, ClipboardSettingsProvider {
+public protocol PreferencesManagerProtocol: Sendable {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 
@@ -70,16 +70,6 @@ public protocol PreferencesManagerProtocol: Sendable, ClipboardSettingsProvider 
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws
     func removeUserPreferences() async throws
-}
-
-public extension PreferencesManagerProtocol {
-    var shareClipboard: Bool {
-        sharedPreferences.unwrapped().shareClipboard
-    }
-
-    var clipboardExpiration: ClipboardExpiration {
-        sharedPreferences.unwrapped().clipboardExpiration
-    }
 }
 
 public actor PreferencesManager: PreferencesManagerProtocol {

@@ -70,7 +70,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     // Lazily initialised properties
-    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
@@ -84,6 +83,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
+    private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -516,7 +516,7 @@ extension HomepageCoordinator {
                 guard let self else { return }
                 switch destination {
                 case let .copyToClipboard(text, message):
-                    clipboardManager.copy(text: text, bannerMessage: message)
+                    copyToClipboard(text, bannerMessage: message, bannerDisplay: bannerManager)
                 case let .back(isShownAsSheet):
                     itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
                 }
@@ -1520,7 +1520,9 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
-            clipboardManager.copy(text: password, bannerMessage: #localized("Password copied"))
+            copyToClipboard(password,
+                            bannerMessage: #localized("Password copied"),
+                            bannerDisplay: bannerManager)
         }
     }
 }

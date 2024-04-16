@@ -77,6 +77,7 @@ extension AutoFillUseCaseContainer {
         self { CopyTotpTokenAndNotify(preferences: self.preferences,
                                       logManager: self.logManager,
                                       generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
+                                      copyToClipboard: SharedUseCasesContainer.shared.copyToClipboard(),
                                       notificationService: SharedServiceContainer.shared.notificationService(),
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
@@ -145,7 +146,6 @@ extension AutoFillUseCaseContainer {
     var completeAutoFill: Factory<CompleteAutoFillUseCase> {
         self { CompleteAutoFill(logManager: self.logManager,
                                 telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
-                                clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                 resetFactory: self.resetFactory()) }
