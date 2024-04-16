@@ -274,7 +274,7 @@ extension ItemsTabViewModel {
     }
 
     func trashSelectedItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -291,7 +291,7 @@ extension ItemsTabViewModel {
     }
 
     func restoreSelectedItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -308,7 +308,7 @@ extension ItemsTabViewModel {
     }
 
     func permanentlyDeleteSelectedItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -342,7 +342,7 @@ extension ItemsTabViewModel {
             return
         }
         banners.removeAll(where: { $0 == banner })
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let newIds = getAppPreferences().dismissedBannerIds.appending(banner.id)
@@ -378,7 +378,7 @@ extension ItemsTabViewModel {
     }
 
     func viewDetail(of item: any ItemIdentifiable) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
