@@ -199,13 +199,12 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
+    @ViewBuilder
     func breachedDataRows(breaches: UserBreaches) -> some View {
-        VStack {
-            if viewModel.isFreeUser {
-                upsellRow(breaches: breaches)
-            } else {
-                breachedRow(breaches.emailsCount)
-            }
+        if viewModel.isFreeUser {
+            upsellRow(breaches: breaches)
+        } else {
+            breachedRow(breaches.emailsCount)
         }
     }
 
@@ -287,7 +286,7 @@ private extension PassMonitorView {
                                 .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                            Text(verbatim: "Thisisafakeemail@gmail.com")
+                            Text(verbatim: "Thisisafakeemail@proton.me")
                                 .font(.body)
                                 .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                                 .blur(radius: 5)
@@ -372,7 +371,6 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
-    @ViewBuilder
     func missing2FARow(_ missing2FA: Int) -> some View {
         passMonitorRow(rowType: missing2FA > 0 ? .warning : .success,
                        title: "Missing two-factor authentication",

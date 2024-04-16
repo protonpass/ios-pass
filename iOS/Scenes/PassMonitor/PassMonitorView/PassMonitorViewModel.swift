@@ -78,17 +78,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
         router.present(for: .securityDetail(type))
     }
 
-//    func refreshLocalMonitoredData() async {
-//        do {
-//            async let fetchBreaches = breachRepository.getAllBreachesForUser()
-//            async let refresh: () = passMonitorRepository.refreshSecurityChecks()
-//            let results = try await (fetchBreaches, refresh)
-//            breaches = results.0
-//        } catch {
-//            router.display(element: .displayErrorBanner(error))
-//        }
-//    }
-
     func refresh() async {
         async let fetchBreaches: () = refreshRemoteMonitoredData()
         async let refresh: () = refreshLocalMonitoredData()
