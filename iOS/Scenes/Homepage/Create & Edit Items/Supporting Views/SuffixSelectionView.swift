@@ -47,13 +47,13 @@ struct SuffixSelectionView: View {
                         ForEach(selection.suffixes, id: \.suffix) { suffix in
                             HStack {
                                 Text(suffix.suffix)
-                                    .foregroundColor(Color(uiColor: isSelected(suffix) ?
-                                            tintColor : PassColor.textNorm))
+                                    .foregroundStyle((isSelected(suffix) ?
+                                            tintColor : PassColor.textNorm).toColor)
                                 Spacer()
 
                                 if isSelected(suffix) {
                                     Image(uiImage: IconProvider.checkmark)
-                                        .foregroundColor(Color(uiColor: tintColor))
+                                        .foregroundStyle(tintColor.toColor)
                                 }
                             }
                             .contentShape(Rectangle())
@@ -75,7 +75,7 @@ struct SuffixSelectionView: View {
                     }
                 }
             }
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -102,7 +102,7 @@ struct SuffixSelectionView: View {
                     .frame(maxWidth: 20)
             }
             .contentShape(Rectangle())
-            .foregroundColor(Color(uiColor: tintColor))
+            .foregroundStyle(tintColor.toColor)
         }
         .frame(height: OptionRowHeight.compact.value)
     }

@@ -90,9 +90,9 @@ struct CreateAliasLiteView: View {
 
                 buttons
                     .padding()
-                    .background(Color(uiColor: PassColor.backgroundWeak))
+                    .background(PassColor.backgroundWeak.toColor)
             }
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -110,16 +110,16 @@ struct CreateAliasLiteView: View {
         if viewModel.prefixError != nil {
             Text(viewModel.prefix + viewModel.suffixSelection.selectedSuffixString)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                .foregroundStyle(PassColor.signalDanger.toColor)
         } else {
             Text(viewModel.prefix)
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                .foregroundColor(PassColor.textNorm.toColor) +
                 Text(viewModel.suffixSelection.selectedSuffixString)
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+                .foregroundColor(PassColor.loginInteractionNormMajor1.toColor)
         }
     }
 

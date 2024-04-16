@@ -67,7 +67,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
                     Text("Vault")
                         .sectionTitleText()
                     Text(selectedVault.name)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .foregroundStyle(PassColor.textNorm.toColor)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 

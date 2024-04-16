@@ -47,11 +47,11 @@ public struct CapsuleTextButton: View {
         Button(action: action) {
             Text(title)
                 .font(.callout)
-                .foregroundColor(Color(uiColor: titleColor))
+                .foregroundStyle(titleColor.toColor)
                 .frame(height: height)
                 .frame(maxWidth: maxWidth)
                 .padding(.horizontal, 16)
-                .background(Color(uiColor: backgroundColor))
+                .background(backgroundColor.toColor)
                 .clipShape(Capsule())
         }
     }
@@ -92,11 +92,11 @@ public struct DisablableCapsuleTextButton: View {
         Button(action: action) {
             Text(title)
                 .font(.callout)
-                .foregroundColor(Color(uiColor: disabled ? disableTitleColor : titleColor))
+                .foregroundStyle((disabled ? disableTitleColor : titleColor).toColor)
                 .frame(height: height)
                 .frame(maxWidth: maxWidth)
                 .padding(.horizontal, 16)
-                .background(Color(uiColor: disabled ? disableBackgroundColor : backgroundColor))
+                .background((disabled ? disableBackgroundColor : backgroundColor).toColor)
                 .clipShape(Capsule())
         }
         .disabled(disabled)
