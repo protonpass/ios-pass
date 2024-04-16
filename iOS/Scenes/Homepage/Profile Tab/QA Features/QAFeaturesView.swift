@@ -29,9 +29,6 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.forceDisplayUpgradeAppBanner)
     private var displayUpgradeAppBanner = false
 
-    @AppStorage(Constants.QA.displaySecurityCenter)
-    private var displaySecurityCenter = false
-
     @AppStorage(Constants.QA.displayAuthenticator)
     private var displayAuthenticator = false
 
@@ -48,9 +45,6 @@ struct QAFeaturesView: View {
                     BannersSection()
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
-                    }
-                    Toggle(isOn: $displaySecurityCenter) {
-                        Text(verbatim: "Display the security centre")
                     }
                     Toggle(isOn: $displayAuthenticator) {
                         Text(verbatim: "Display Authenticator")

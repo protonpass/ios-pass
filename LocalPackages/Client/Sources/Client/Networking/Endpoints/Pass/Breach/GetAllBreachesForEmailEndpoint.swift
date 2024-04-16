@@ -1,6 +1,6 @@
 //
-// SecuritySection.swift
-// Proton Pass - Created on 08/03/2024.
+// GetAllBreachesForEmailEndpoint.swift
+// Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,20 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public struct ReusedPasswordsKey: Hashable, Sendable {
-    public let id: String = UUID().uuidString
-    public let numberOfTimeReused: Int
-
-    public init(numberOfTimeReused: Int) {
-        self.numberOfTimeReused = numberOfTimeReused
-    }
+struct BreachesForCustomEmailResponse: Decodable, Equatable, Sendable {
+    let breaches: EmailBreaches
 }
 
-public enum SecuritySection: Hashable, Sendable {
-    case weakPasswords(PasswordStrength)
-    case reusedPasswords(ReusedPasswordsKey)
-    case missing2fa
-    case excludedItems
+struct GetBreachesForCustomEmailEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = BreachesForCustomEmailResponse
+
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+
+    init(emailId: String) {
+        debugDescription = "Get breaches for a custom email"
+        path = "/pass/v1/breach/custom_email/\(emailId)/breaches"
+        method = .get
+    }
 }
