@@ -35,7 +35,7 @@ final class TelemetryThresholdProviderMock: TelemetryThresholdProviderProtocol {
         telemetryThreshold
     }
 
-    func setThreshold(_ threshold: TimeInterval?) {
+    func setThreshold(_ threshold: TimeInterval?) async throws {
         telemetryThreshold = threshold
     }
 }
@@ -53,6 +53,7 @@ final class TelemetrySchedulerTests: XCTestCase {
 
     override func tearDown() {
         sut = nil
+        thresholdProvider = nil
         super.tearDown()
     }
 }
@@ -71,21 +72,21 @@ extension TelemetrySchedulerTests {
         XCTAssertEqual(thresholdProvider.telemetryThreshold, date.timeIntervalSince1970)
     }
 
-    func testShouldSendEventsWhenCurrentDateIsAfterThresholdDate() async {
+    func testShouldSendEventsWhenCurrentDateIsAfterThresholdDate() async throws {
         // Given
         thresholdProvider.telemetryThreshold = kMockedDate.adding(component: .minute, value: -1).timeIntervalSince1970
 
         // Then
-        let result = await sut.shouldSendEvents()
+        let result = try await sut.shouldSendEvents()
         XCTAssertTrue(result)
     }
 
-    func testShouldNotSendEventsWhenCurrentDateIsBeforeThresholdDate() async {
+    func testShouldNotSendEventsWhenCurrentDateIsBeforeThresholdDate() async throws {
         // Given
         thresholdProvider.telemetryThreshold = kMockedDate.adding(component: .minute, value: 1).timeIntervalSince1970
 
         // Then
-        let result = await sut.shouldSendEvents()
+        let result = try await sut.shouldSendEvents()
 
         XCTAssertFalse(result)
     }
@@ -96,7 +97,7 @@ extension TelemetrySchedulerTests {
         thresholdProvider.telemetryThreshold = givenThreshold.timeIntervalSince1970
 
         // When
-        await sut.randomNextThreshold()
+        try await sut.randomNextThreshold()
         let threshhold = await sut.getThreshold()
         let newThreshhold = try XCTUnwrap(threshhold)
         let difference = Calendar.current.dateComponents([.hour],
