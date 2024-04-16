@@ -74,7 +74,6 @@ struct ProfileTabView: View {
             await viewModel.refreshPlan()
         }
         .navigationViewStyle(.stack)
-        .showSpinner(viewModel.loading)
     }
 
     @ToolbarContentBuilder
