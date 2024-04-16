@@ -25,13 +25,17 @@ import Foundation
 
 protocol CheckAndAutoFillUseCase: Sendable {
     func execute(_ request: AutoFillRequest,
-                 context: ASCredentialProviderExtensionContext) async throws
+                 context: ASCredentialProviderExtensionContext,
+                 localAuthenticationMethod: LocalAuthenticationMethod) async throws
 }
 
 extension CheckAndAutoFillUseCase {
     func callAsFunction(_ request: AutoFillRequest,
-                        context: ASCredentialProviderExtensionContext) async throws {
-        try await execute(request, context: context)
+                        context: ASCredentialProviderExtensionContext,
+                        localAuthenticationMethod: LocalAuthenticationMethod) async throws {
+        try await execute(request,
+                          context: context,
+                          localAuthenticationMethod: localAuthenticationMethod)
     }
 }
 
@@ -40,24 +44,21 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     private let generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
-    private let securitySettingsProvider: any SecuritySettingsProvider
 
     init(credentialProvider: any CredentialProvider,
          generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
-         completeAutoFill: any CompleteAutoFillUseCase,
-         securitySettingsProvider: any SecuritySettingsProvider) {
+         completeAutoFill: any CompleteAutoFillUseCase) {
         self.credentialProvider = credentialProvider
         self.generateAuthorizationCredential = generateAuthorizationCredential
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
-        self.securitySettingsProvider = securitySettingsProvider
     }
 
     func execute(_ request: AutoFillRequest,
-                 context: ASCredentialProviderExtensionContext) async throws {
-        guard credentialProvider.isAuthenticated,
-              securitySettingsProvider.localAuthenticationMethod == .none else {
+                 context: ASCredentialProviderExtensionContext,
+                 localAuthenticationMethod: LocalAuthenticationMethod) async throws {
+        guard credentialProvider.isAuthenticated, localAuthenticationMethod == .none else {
             cancelAutoFill(reason: .userInteractionRequired, context: context)
             return
         }

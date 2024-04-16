@@ -292,7 +292,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 if let organization = try await organizationRepository.refreshOrganization() {
-                    overrideSecuritySettings(with: organization)
+                    try await overrideSecuritySettings(with: organization)
                 }
             } catch {
                 logger.error(error)

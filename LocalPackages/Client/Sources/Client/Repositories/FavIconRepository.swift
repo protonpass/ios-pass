@@ -30,14 +30,8 @@ public struct FavIcon: Hashable, Sendable {
     public let isFromCache: Bool
 }
 
-public protocol FavIconSettings: Sendable {
-    var shouldDisplayFavIcons: Bool { get }
-}
-
 /// Take care of fetching and caching behind the scenes
 public protocol FavIconRepositoryProtocol: Sendable {
-    var settings: any FavIconSettings { get }
-
     /// Always return `nil` if fav icons are disabled in `Preferences`
     /// Check if the icon is cached on disk and decryptable. Otherwise go fetch a new icon.
     func getIcon(for domain: String) async throws -> FavIcon?
@@ -60,19 +54,16 @@ public actor FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
     /// URL to the folder that contains cached fav icons
     private let containerUrl: URL
     private let cacheExpirationDays: Int
-    public let settings: any FavIconSettings
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private var activeTasks = [String: Task<FavIcon?, any Error>]()
 
     public init(datasource: any RemoteFavIconDatasourceProtocol,
                 containerUrl: URL,
-                settings: any FavIconSettings,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 cacheExpirationDays: Int = 14) {
         self.datasource = datasource
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays
-        self.settings = settings
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 }
@@ -86,7 +77,7 @@ public extension FavIconRepository {
     ///   - domain: The domain for which to fetch the favicon.
     /// Returns: The fetched `FavIcon` object, or `nil` if the operation fails or is cancelled.
     func getIcon(for domain: String) async throws -> FavIcon? {
-        guard settings.shouldDisplayFavIcons, !domain.isEmpty else { return nil }
+        guard !domain.isEmpty else { return nil }
 
         if let existingTask = activeTasks[domain] {
             if checkAndHandleCancellation(for: domain) { return nil }
