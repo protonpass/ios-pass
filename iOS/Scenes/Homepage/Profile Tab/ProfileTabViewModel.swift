@@ -66,8 +66,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var quickTypeBar: Bool
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
-
-    @Published private(set) var loading = false
     @Published private(set) var plan: Plan?
 
     private var cancellables = Set<AnyCancellable>()
@@ -156,11 +154,15 @@ extension ProfileTabViewModel {
     func toggleQuickTypeBar() {
         Task { @MainActor [weak self] in
             guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
+                router.display(element: .globalLoading(shouldShow: true))
                 let newValue = !quickTypeBar
-                try await updateSharedPreferences(\.quickTypeBar, value: newValue)
+                async let updateSharedPreferences: () = updateSharedPreferences(\.quickTypeBar,
+                                                                                value: newValue)
+                async let reindex: () = reindexCredentials(newValue)
                 quickTypeBar = newValue
-                try await reindexCredentials(newValue)
+                _ = try await (updateSharedPreferences, reindex)
             } catch {
                 handle(error: error)
             }
@@ -317,14 +319,12 @@ private extension ProfileTabViewModel {
         // Atempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
         logger.trace("Reindexing credentials")
-        loading = true
         if indexable {
-            try await indexAllLoginItems(ignorePreferences: true)
+            try await indexAllLoginItems()
         } else {
             try await unindexAllLoginItems()
         }
         logger.info("Reindexed credentials")
-        loading = false
     }
 
     func handle(error: Error) {

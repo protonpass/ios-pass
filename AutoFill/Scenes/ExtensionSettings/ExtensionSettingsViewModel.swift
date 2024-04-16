@@ -49,11 +49,13 @@ final class ExtensionSettingsViewModel: ObservableObject {
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                let newValue = !quickTypeBar
-                try await updateSharedPreferences(\.quickTypeBar, value: newValue)
-                quickTypeBar = newValue
                 router.display(element: .globalLoading(shouldShow: true))
-                try await reindexCredentials(newValue)
+                let newValue = !quickTypeBar
+                async let updateSharedPreferences: () = updateSharedPreferences(\.quickTypeBar,
+                                                                                value: newValue)
+                async let reindex: () = reindexCredentials(newValue)
+                quickTypeBar = newValue
+                _ = try await (updateSharedPreferences, reindex)
             } catch {
                 handle(error)
             }
@@ -88,7 +90,7 @@ private extension ExtensionSettingsViewModel {
     func reindexCredentials(_ indexable: Bool) async throws {
         logger.trace("Reindexing credentials")
         if indexable {
-            try await indexAllLoginItems(ignorePreferences: true)
+            try await indexAllLoginItems()
         } else {
             try await unindexAllLoginItems()
         }
