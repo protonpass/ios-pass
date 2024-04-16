@@ -34,7 +34,7 @@ public struct NoSearchResultsInAllVaultView: View {
             Text("Couldn't find \"\(query)\"", bundle: .module)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.bottom)
                 .animationsDisabled()
 
@@ -61,7 +61,7 @@ public struct NoSearchResultsInPreciseVaultView: View {
             Text(#localized("Couldn't find \"%1$@\" in %2$@", bundle: .module, query, vaultName))
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.bottom)
                 .animationsDisabled()
 
@@ -69,9 +69,9 @@ public struct NoSearchResultsInPreciseVaultView: View {
 
             Button(action: action) {
                 Label(#localized("Search in all vaults", bundle: .module), systemImage: "magnifyingglass")
-                    .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                     .padding()
-                    .background(Color(uiColor: PassColor.interactionNormMinor2))
+                    .background(PassColor.interactionNormMinor2.toColor)
                     .clipShape(Capsule())
             }
             .padding(.top, 50)
@@ -93,7 +93,7 @@ public struct NoSearchResultsInTrashView: View {
             Text("Couldn't find \"\(query)\" in Trash", bundle: .module)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.bottom)
                 .animationsDisabled()
 
@@ -108,7 +108,7 @@ private struct TrySearchAgainText: View {
     var body: some View {
         Text("Try searching using different spelling or keywords", bundle: .module)
             .font(.callout)
-            .foregroundColor(Color(uiColor: PassColor.textWeak))
+            .foregroundStyle(PassColor.textWeak.toColor)
             .multilineTextAlignment(.center)
     }
 }

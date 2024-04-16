@@ -169,8 +169,8 @@ private extension LogInDetailView {
                         Button { viewModel.showAliasDetail() } label: {
                             Text("View alias")
                                 .font(.callout)
-                                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
-                                .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor2Color))
+                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
+                                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
                         }
                         .padding(.top, 8)
                     }
@@ -286,7 +286,7 @@ private extension LogInDetailView {
                             viewModel.openUrl(url)
                         }, label: {
                             Text(url)
-                                .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
+                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         })

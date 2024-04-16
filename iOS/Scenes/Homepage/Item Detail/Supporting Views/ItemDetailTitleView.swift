@@ -41,7 +41,7 @@ struct ItemDetailTitleView: View {
                     .fontWeight(.bold)
                     .textSelection(.enabled)
                     .lineLimit(1)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 if let vault {
                     if vault.shared {

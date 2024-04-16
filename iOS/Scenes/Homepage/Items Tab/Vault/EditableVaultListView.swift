@@ -66,7 +66,7 @@ struct EditableVaultListView: View {
             }
             .padding([.bottom, .horizontal])
         }
-        .background(Color(uiColor: PassColor.backgroundWeak))
+        .background(PassColor.backgroundWeak.toColor)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -111,7 +111,7 @@ struct EditableVaultListView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundColor(Color(uiColor: PassColor.textWeak))
+            .foregroundStyle(PassColor.textWeak.toColor)
     }
 
     @ViewBuilder
@@ -126,7 +126,7 @@ struct EditableVaultListView: View {
                     }, icon: {
                         Image(uiImage: IconProvider.pencil)
                             .renderingMode(.template)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .foregroundStyle(PassColor.textWeak.toColor)
                     })
                 })
             }

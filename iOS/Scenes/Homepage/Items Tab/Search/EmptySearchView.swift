@@ -27,7 +27,7 @@ struct EmptySearchView: View {
             Image(uiImage: PassIcon.magnifyingGlass)
             Text("Find an alias, login, or note")
                 .fontWeight(.semibold)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
             Spacer()
         }
         .padding()

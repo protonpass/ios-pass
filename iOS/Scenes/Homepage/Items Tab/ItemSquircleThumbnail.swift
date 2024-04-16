@@ -107,7 +107,7 @@ private extension ItemSquircleThumbnail {
                             .scaledToFit()
                             .padding(size.height / 5)
                         RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
-                            .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: size.strokeWidth)
+                            .stroke(PassColor.inputBorderNorm.toColor, lineWidth: size.strokeWidth)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
                 } else {
