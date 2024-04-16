@@ -25,6 +25,7 @@ import Factory
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
+import ProtonCorePasswordChange
 
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
@@ -46,9 +47,11 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
+    @Published private(set) var passwordMode: Int = 1
     private(set) var accountRecovery: AccountRecovery?
 
     weak var delegate: AccountViewModelDelegate?
@@ -59,6 +62,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         self.isShownAsSheet = isShownAsSheet
         refreshUserPlan()
         refreshAccountRecovery()
+        refreshAccountPasswordMode()
     }
 
     private func refreshUserPlan() {
@@ -88,6 +92,19 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             }
         }
     }
+
+    private func refreshAccountPasswordMode() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try userDataProvider.getUserId()
+                let settings = await userSettingsRepository.getSettings(for: userId)
+                passwordMode = settings.password.mode
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
 }
 
 extension AccountViewModel {
@@ -107,6 +124,24 @@ extension AccountViewModel {
             guard let self else { return }
             handlePaymentsResult(result: result)
         }
+    }
+
+    var showChangePassword: Bool {
+        featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
+    }
+
+    var showChangeMailboxPassword: Bool {
+        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
+        else { return false }
+        return passwordMode != 1
+    }
+
+    func openChangeUserPassword() {
+        router.present(for: .changePassword(passwordMode == 1 ? .singlePassword : .loginPassword))
+    }
+
+    func openChangeMailboxPassword() {
+        router.present(for: .changePassword(.mailboxPassword))
     }
 
     func openAccountSettings() {

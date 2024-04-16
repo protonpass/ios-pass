@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Entities
+import ProtonCorePasswordChange
 import Screens
 import SwiftUI
 
@@ -99,6 +100,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case passkeyDetail(Passkey)
     case securityDetail(SecurityWeakness)
     case passwordReusedItemList(ItemContent)
+    case changePassword(PasswordChangeModule.PasswordChangeMode)
 }
 
 enum UIElementDisplay: Sendable {

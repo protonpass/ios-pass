@@ -23,14 +23,24 @@ import Foundation
 public struct UserSettings: Sendable {
     public let telemetry: Bool
     public let highSecurity: HighSecurity
+    public let password: PasswordMode
+    public let twoFactor: TwoFactorVerify
 
-    public init(telemetry: Bool, highSecurity: HighSecurity) {
+    public init(telemetry: Bool,
+                highSecurity: HighSecurity,
+                password: PasswordMode,
+                twoFactor: TwoFactorVerify) {
         self.telemetry = telemetry
         self.highSecurity = highSecurity
+        self.password = password
+        self.twoFactor = twoFactor
     }
 
     static var `default`: UserSettings {
-        UserSettings(telemetry: false, highSecurity: HighSecurity.default)
+        UserSettings(telemetry: false,
+                     highSecurity: HighSecurity.default,
+                     password: .init(mode: 1),
+                     twoFactor: .init(enabled: 0))
     }
 }
 
@@ -38,6 +48,8 @@ extension UserSettings: Codable {
     enum CodingKeys: String, CodingKey {
         case telemetry
         case highSecurity
+        case password
+        case twoFactor = "_2FA"
     }
 
     public init(from decoder: any Decoder) throws {
@@ -47,6 +59,8 @@ extension UserSettings: Codable {
         let telemetry = try container.decode(Int.self, forKey: .telemetry)
         self.telemetry = telemetry.codableBoolValue
         highSecurity = try container.decode(HighSecurity.self, forKey: .highSecurity)
+        password = try container.decode(PasswordMode.self, forKey: .password)
+        twoFactor = try container.decode(TwoFactorVerify.self, forKey: .twoFactor)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -57,6 +71,12 @@ extension UserSettings: Codable {
 
         // Encode `highSecurity` as it is (it handles its own encoding logic)
         try container.encode(highSecurity, forKey: .highSecurity)
+
+        // Encode `password` as it is (it handles its own encoding logic)
+        try container.encode(password, forKey: .password)
+
+        // Encode `twoFactorVerify` as it is (it handles its own encoding logic)
+        try container.encode(twoFactor, forKey: .twoFactor)
     }
 }
 
@@ -99,5 +119,39 @@ extension HighSecurity: Codable {
 
         // Encode `value` as 1 if true, else 0
         try container.encode(value.codableIntValue, forKey: .value)
+    }
+}
+
+public struct PasswordMode: Sendable {
+    public let mode: Int
+}
+
+extension PasswordMode: Codable {
+    enum CodingKeys: String, CodingKey {
+        case mode
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        // 1 means single password, 2 means login + mailbox password
+        mode = try container.decode(Int.self, forKey: .mode)
+    }
+}
+
+public struct TwoFactorVerify: Sendable {
+    public let enabled: Int
+}
+
+extension TwoFactorVerify: Codable {
+    enum CodingKeys: String, CodingKey {
+        case enabled
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        // 0 means not enabled
+        enabled = try container.decode(Int.self, forKey: .enabled)
     }
 }
