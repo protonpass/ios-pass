@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct UserBreaches: Decodable, Equatable, Sendable {
+public struct UserBreaches: Decodable, Equatable, Sendable, Hashable {
     public let emailsCount: Int
     public let domainsPeek: [BreachedDomain]
     public let addresses: [BreachedAddress]
