@@ -28,6 +28,7 @@ import Foundation
 @MainActor
 final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     @Published private(set) var userBreaches: UserBreaches
+    // periphery:ignore
     @Published private(set) var customEmails: [CustomEmail]?
 
     private let breachRepository = resolve(\RepositoryContainer.breachRepository)
