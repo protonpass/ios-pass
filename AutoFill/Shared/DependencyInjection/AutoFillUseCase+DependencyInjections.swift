@@ -35,10 +35,6 @@ final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
 }
 
 private extension AutoFillUseCaseContainer {
-    var preferences: Preferences {
-        SharedToolingContainer.shared.preferences()
-    }
-
     var logManager: LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
