@@ -204,7 +204,7 @@ private extension PassMonitorView {
         if viewModel.isFreeUser {
             upsellRow(breaches: breaches)
         } else {
-            breachedRow(breaches.emailsCount)
+            breachedRow(breaches)
         }
     }
 
@@ -338,12 +338,12 @@ private extension PassMonitorView {
                 .interactionNormMinor1)
     }
 
-    func breachedRow(_ breaches: Int) -> some View {
-        passMonitorRow(rowType: breaches > 0 ? .warning : .success,
+    func breachedRow(_ breaches: UserBreaches) -> some View {
+        passMonitorRow(rowType: breaches.emailsCount > 0 ? .warning : .success,
                        title: "Dark Web Monitoring",
-                       subTitle: breaches > 0 ? "Requires immediate action" : "No breaches detected",
-                       info: "\(breaches)",
-                       action: { viewModel.showSecurityWeakness(type: .breaches) })
+                       subTitle: breaches.emailsCount > 0 ? "Requires immediate action" : "No breaches detected",
+                       info: breaches.emailsCount > 0 ? "\(breaches.emailsCount)" : nil,
+                       action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
     }
 }
 
