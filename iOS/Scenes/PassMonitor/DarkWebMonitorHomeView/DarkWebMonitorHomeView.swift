@@ -48,6 +48,7 @@ private extension DarkWebMonitorHomeView {
                 .padding(.vertical)
 
             LazyVStack(spacing: 0) {
+                customEmails
 //                if viewModel.showSections {
 //                    itemsSections(sections: viewModel.sectionedData)
 //                } else {
