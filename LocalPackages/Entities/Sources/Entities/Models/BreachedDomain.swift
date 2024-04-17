@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct BreachedDomain: Decodable, Equatable, Sendable, Comparable {
+public struct BreachedDomain: Decodable, Equatable, Sendable, Comparable, Hashable {
     public let domain: String
     public let breachTime: Int
 
