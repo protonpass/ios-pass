@@ -40,7 +40,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
@@ -54,23 +54,18 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
-    @Published private(set) var appLockTime: AppLockTime = .twoMinutes
+    @Published private(set) var appLockTime: AppLockTime
     @Published private(set) var canUpdateAppLockTime = true
-    @Published var fallbackToPasscode = true {
-        didSet {
-            preferences.fallbackToPasscode = fallbackToPasscode
-        }
-    }
-
+    @Published private(set) var fallbackToPasscode: Bool
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
-    @Published private(set) var autoFillEnabled: Bool
-    @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
+    @Published private(set) var autoFillEnabled = false
+    @Published private(set) var quickTypeBar: Bool
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
-
-    @Published private(set) var loading = false
     @Published private(set) var plan: Plan?
 
     private var cancellables = Set<AnyCancellable>()
@@ -81,13 +76,13 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
 
-        autoFillEnabled = false
+        let preferences = getSharedPreferences()
+        appLockTime = preferences.appLockTime
+        fallbackToPasscode = preferences.fallbackToPasscode
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
-
         refresh()
-
         setUp()
     }
 }
@@ -99,7 +94,6 @@ extension ProfileTabViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    @MainActor
     func refreshPlan() async {
         do {
             // First get local plan to optimistically display it
@@ -107,13 +101,12 @@ extension ProfileTabViewModel {
             plan = try await accessRepository.getPlan()
             plan = try await accessRepository.refreshAccess().plan
         } catch {
-            logger.error(error)
-            router.display(element: .displayErrorBanner(error))
+            handle(error: error)
         }
     }
 
     func editLocalAuthenticationMethod() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -123,7 +116,7 @@ extension ProfileTabViewModel {
 
     func editAppLockTime() {
         guard canUpdateAppLockTime else { return }
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -132,7 +125,7 @@ extension ProfileTabViewModel {
     }
 
     func editPINCode() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -144,16 +137,56 @@ extension ProfileTabViewModel {
         openAutoFillSettings()
     }
 
+    func toggleFallbackToPasscode() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let newValue = !fallbackToPasscode
+                try await updateSharedPreferences(\.fallbackToPasscode, value: newValue)
+                fallbackToPasscode = newValue
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func toggleQuickTypeBar() {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let newValue = !quickTypeBar
+                async let updateSharedPreferences: () = updateSharedPreferences(\.quickTypeBar,
+                                                                                value: newValue)
+                async let reindex: () = reindexCredentials(newValue)
+                _ = try await (updateSharedPreferences, reindex)
+                quickTypeBar = newValue
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
     func toggleAutomaticCopyTotpCode() {
-        if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
-            showAutomaticCopyTotpCodeExplanation = true
-            return
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod
+                if !automaticallyCopyTotpCode, localAuthenticationMethod == .none {
+                    showAutomaticCopyTotpCodeExplanation = true
+                    return
+                }
+                let newValue = !automaticallyCopyTotpCode
+                if newValue {
+                    notificationService.requestNotificationPermission()
+                }
+                try await updateSharedPreferences(\.automaticallyCopyTotpCode, value: newValue)
+                automaticallyCopyTotpCode = newValue && localAuthenticationMethod != .none
+            } catch {
+                handle(error: error)
+            }
         }
-        automaticallyCopyTotpCode.toggle()
-        if automaticallyCopyTotpCode {
-            notificationService.requestNotificationPermission()
-        }
-        preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
     }
 
     func showAccountMenu() {
@@ -205,12 +238,23 @@ private extension ProfileTabViewModel {
             }
             .store(in: &cancellables)
 
-        preferences.objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
+            .filter(\.appLockTime)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                appLockTime = newValue
+            }
+            .store(in: &cancellables)
+
+        preferencesManager
+            .sharedPreferencesUpdates
+            .receive(on: DispatchQueue.main)
+            .filter(\.localAuthenticationMethod)
             .sink { [weak self] _ in
                 guard let self else { return }
-                updateAutoFillAvalability()
-                updateSecuritySettings()
+                refreshLocalAuthenticationMethod()
                 showAutomaticCopyTotpCodeExplanation = false
             }
             .store(in: &cancellables)
@@ -229,12 +273,15 @@ private extension ProfileTabViewModel {
     }
 
     func refresh() {
-        updateAutoFillAvalability()
-        updateSecuritySettings()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            autoFillEnabled = await credentialManager.isAutoFillEnabled
+            refreshLocalAuthenticationMethod()
+        }
     }
 
-    func updateSecuritySettings() {
-        switch preferences.localAuthenticationMethod {
+    func refreshLocalAuthenticationMethod() {
+        switch getSharedPreferences().localAuthenticationMethod {
         case .none:
             localAuthenticationMethod = .none
             automaticallyCopyTotpCode = false
@@ -251,21 +298,6 @@ private extension ProfileTabViewModel {
         case .pin:
             localAuthenticationMethod = .pin
         }
-
-        appLockTime = preferences.appLockTime
-
-        if preferences.fallbackToPasscode != fallbackToPasscode {
-            // Check before assigning because `fallbackToPasscode` has a `didSet` block
-            // that updates preferences hence trigger an infinitely loop
-            fallbackToPasscode = preferences.fallbackToPasscode
-        }
-    }
-
-    func updateAutoFillAvalability() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            autoFillEnabled = await credentialManager.isAutoFillEnabled
-        }
     }
 
     func applyOrganizationSettings() {
@@ -281,29 +313,17 @@ private extension ProfileTabViewModel {
         }
     }
 
-    func populateOrRemoveCredentials() {
+    func reindexCredentials(_ indexable: Bool) async throws {
         // When not enabled, iOS already deleted the credential database.
         // Atempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
-
-        guard quickTypeBar != preferences.quickTypeBar else { return }
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            defer { self.loading = false }
-            do {
-                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
-                loading = true
-                if quickTypeBar {
-                    try await indexAllLoginItems(ignorePreferences: true)
-                } else {
-                    try await unindexAllLoginItems()
-                }
-                preferences.quickTypeBar = quickTypeBar
-            } catch {
-                quickTypeBar.toggle() // rollback to previous value
-                handle(error: error)
-            }
+        logger.trace("Reindexing credentials")
+        if indexable {
+            try await indexAllLoginItems()
+        } else {
+            try await unindexAllLoginItems()
         }
+        logger.info("Reindexed credentials")
     }
 
     func handle(error: Error) {

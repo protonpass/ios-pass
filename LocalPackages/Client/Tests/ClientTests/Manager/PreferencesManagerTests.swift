@@ -31,10 +31,11 @@ final class PreferencesManagerTest: XCTestCase {
     var currentUserIdProvider: CurrentUserIdProviderMock!
     var keychainMockProvider: KeychainProtocolMockProvider!
     var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
-    var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocol!
+    var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocolMock!
     var lastAppPreferences: AppPreferences!
     var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
     var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
+    var preferencesMigrator: PreferencesMigratorMock!
     var sut: PreferencesManagerProtocol!
     var cancellables: Set<AnyCancellable>!
 
@@ -49,7 +50,16 @@ final class PreferencesManagerTest: XCTestCase {
         symmetricKeyProviderMockFactory = .init()
         symmetricKeyProviderMockFactory.setUp()
 
-        appPreferencesDatasource = LocalAppPreferencesDatasource(userDefault: .standard)
+        appPreferencesDatasource = .init()
+        appPreferencesDatasource.stubbedGetPreferencesResult = lastAppPreferences
+        appPreferencesDatasource.closureUpsertPreferences = {
+            if let prefs = self.appPreferencesDatasource.invokedUpsertPreferencesParameters?.0 {
+                self.lastAppPreferences = prefs
+            }
+        }
+        appPreferencesDatasource.closureRemovePreferences = {
+            self.lastAppPreferences = nil
+        }
 
         sharedPreferencesDatasource =
         LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
@@ -59,13 +69,17 @@ final class PreferencesManagerTest: XCTestCase {
         LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                        databaseService: DatabaseService(inMemory: true))
 
+        preferencesMigrator = .init()
+        preferencesMigrator.stubbedMigratePreferencesResult = (.default, .default, .default)
+
         cancellables = .init()
 
         sut = PreferencesManager(currentUserIdProvider: currentUserIdProvider,
                                  appPreferencesDatasource: appPreferencesDatasource,
                                  sharedPreferencesDatasource: sharedPreferencesDatasource,
                                  userPreferencesDatasource: userPreferencesDatasource, 
-                                 logManager: LogManagerProtocolMock())
+                                 logManager: LogManagerProtocolMock(), 
+                                 preferencesMigrator: preferencesMigrator)
     }
 
     override func tearDown() {
@@ -83,7 +97,7 @@ final class PreferencesManagerTest: XCTestCase {
 extension PreferencesManagerTest {
     func testCreateDefaultAppPreferences() async throws {
         try await sut.setUp()
-        XCTAssertEqual(sut.appPreferences.value, AppPreferences.default)
+        XCTAssertEqual(sut.appPreferences.value, .default)
     }
 
     func testReceiveEventWhenUpdatingAppPreferences() async throws {
@@ -204,5 +218,89 @@ extension PreferencesManagerTest {
             let preferences = try await userPreferencesDatasource.getPreferences(for: userId)
             XCTAssertNil(preferences)
         }
+    }
+}
+
+// MARK: Migration
+extension PreferencesManagerTest {
+    func testMigration() async throws {
+        // Given
+        var expectedAppPrefs = AppPreferences.random()
+        expectedAppPrefs.didMigratePreferences = true
+        let expectedSharedPrefs = SharedPreferences.random()
+        let expectedUserPrefs = UserPreferences.random()
+        preferencesMigrator.stubbedMigratePreferencesResult =
+        (expectedAppPrefs, expectedSharedPrefs, expectedUserPrefs)
+
+        appPreferencesDatasource.closureGetPreferences = {
+            if self.preferencesMigrator.invokedMigratePreferencesfunction {
+                self.appPreferencesDatasource.stubbedGetPreferencesResult = expectedAppPrefs
+            }
+        }
+
+        // When
+        for _ in 0..<5 {
+            // Simulate different app launches
+            try await sut.setUp()
+        }
+
+        // Then
+        XCTAssertTrue(preferencesMigrator.invokedMigratePreferencesfunction)
+        // Only migrate once
+        XCTAssertEqual(preferencesMigrator.invokedMigratePreferencesCount, 1)
+        XCTAssertEqual(sut.appPreferences.value, expectedAppPrefs)
+        XCTAssertEqual(sut.sharedPreferences.value, expectedSharedPrefs)
+        XCTAssertEqual(sut.userPreferences.value, expectedUserPrefs)
+    }
+}
+
+extension PreferencesManagerTest {
+    func testFilterMultipleKeysPath() async throws {
+        try await sut.setUp()
+        let expectation1 = XCTestExpectation(description: "Should receive 1 update event")
+        expectation1.expectedFulfillmentCount = 1
+
+        let expectation2 = XCTestExpectation(description: "Should receive 1 update event")
+        expectation2.expectedFulfillmentCount = 1
+
+        let expectation3 = XCTestExpectation(description: "Should receive 2 update events")
+        expectation3.expectedFulfillmentCount = 2
+
+        let expectation4 = XCTestExpectation(description: "Should receive 3 update events")
+        expectation4.expectedFulfillmentCount = 3
+
+        sut.appPreferencesUpdates
+            .filter([\.onboarded])
+            .sink { _ in
+                expectation1.fulfill()
+            }
+            .store(in: &cancellables)
+
+        sut.appPreferencesUpdates
+            .filter([\.telemetryThreshold])
+            .sink { _ in
+                expectation2.fulfill()
+            }
+            .store(in: &cancellables)
+
+        sut.appPreferencesUpdates
+            .filter([\.onboarded, \.telemetryThreshold])
+            .sink { _ in
+                expectation3.fulfill()
+            }
+            .store(in: &cancellables)
+
+        sut.appPreferencesUpdates
+            .filter([\.onboarded, \.telemetryThreshold, \.createdItemsCount])
+            .sink { _ in
+                expectation4.fulfill()
+            }
+            .store(in: &cancellables)
+
+        try await sut.updateAppPreferences(\.onboarded, value: .random())
+        try await sut.updateAppPreferences(\.telemetryThreshold, value: .random(in: 1...10))
+        try await sut.updateAppPreferences(\.createdItemsCount, value: .random(in: 1...10))
+        await fulfillment(of: [expectation1, expectation2, expectation3, expectation4],
+                          timeout: 1)
     }
 }

@@ -39,22 +39,22 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     /// Can be removed onced dropped iOS 16
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        coordinator.start(mode: .showAllLogins(serviceIdentifiers, nil))
+        coordinator.setUpAndStart(mode: .showAllLogins(serviceIdentifiers, nil))
     }
 
     /// Can be removed onced dropped iOS 16
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.start(mode: .checkAndAutoFill(.password(credentialIdentity)))
+        coordinator.setUpAndStart(mode: .checkAndAutoFill(.password(credentialIdentity)))
     }
 
     /// Can be removed onced dropped iOS 16
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        coordinator.start(mode: .authenticateAndAutofill(.password(credentialIdentity)))
+        coordinator.setUpAndStart(mode: .authenticateAndAutofill(.password(credentialIdentity)))
     }
 
     /// Passkey-agnostic, must always implement this function
     override func prepareInterfaceForExtensionConfiguration() {
-        coordinator.start(mode: .configuration)
+        coordinator.setUpAndStart(mode: .configuration)
     }
 }
 
@@ -66,23 +66,23 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 extension CredentialProviderViewController {
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier],
                                         requestParameters: ASPasskeyCredentialRequestParameters) {
-        coordinator.start(mode: .showAllLogins(serviceIdentifiers, requestParameters))
+        coordinator.setUpAndStart(mode: .showAllLogins(serviceIdentifiers, requestParameters))
     }
 
     override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
         guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
-        coordinator.start(mode: .checkAndAutoFill(autoFillRequest))
+        coordinator.setUpAndStart(mode: .checkAndAutoFill(autoFillRequest))
     }
 
     override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
         guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
-        coordinator.start(mode: .authenticateAndAutofill(autoFillRequest))
+        coordinator.setUpAndStart(mode: .authenticateAndAutofill(autoFillRequest))
     }
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: ASCredentialRequest) {
         guard let passkeyCredentialRequest = registrationRequest.passkeyCredentialRequest else {
             return
         }
-        coordinator.start(mode: .passkeyRegistration(passkeyCredentialRequest))
+        coordinator.setUpAndStart(mode: .passkeyRegistration(passkeyCredentialRequest))
     }
 }

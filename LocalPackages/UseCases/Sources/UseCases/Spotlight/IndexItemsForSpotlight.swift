@@ -26,36 +26,33 @@ import Entities
 import Foundation
 
 public protocol IndexItemsForSpotlightUseCase: Sendable {
-    func execute() async throws
+    func execute(_ settings: any SpotlightSettingsProvider) async throws
 }
 
 public extension IndexItemsForSpotlightUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(_ settings: any SpotlightSettingsProvider) async throws {
+        try await execute(settings)
     }
 }
 
 public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
     private let userDataProvider: any UserDataProvider
-    private let settingsProvider: any SpotlightSettingsProvider
     private let itemRepository: any ItemRepositoryProtocol
     private let datasource: any LocalSpotlightVaultDatasourceProtocol
     private let logger: Logger
 
     public init(userDataProvider: any UserDataProvider,
-                settingsProvider: any SpotlightSettingsProvider,
                 itemRepository: any ItemRepositoryProtocol,
                 datasource: any LocalSpotlightVaultDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
         self.userDataProvider = userDataProvider
-        self.settingsProvider = settingsProvider
         self.itemRepository = itemRepository
         self.datasource = datasource
         logger = .init(manager: logManager)
     }
 
-    public func execute() async throws {
-        guard settingsProvider.spotlightEnabled else {
+    public func execute(_ settings: any SpotlightSettingsProvider) async throws {
+        guard settings.spotlightEnabled else {
             logger.trace("Spotlight is disabled, removing all indexed items")
             try await CSSearchableIndex.default().deleteAllSearchableItems()
             logger.trace("Removed all spotlight indexed items")
@@ -67,7 +64,7 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
         logger.trace("Found \(allItems.count) items")
 
         let selectedItems: [ItemContent]
-        switch settingsProvider.spotlightSearchableVaults {
+        switch settings.spotlightSearchableVaults {
         case .all:
             selectedItems = allItems
             logger.trace("Indexing \(selectedItems.count) items in all vaults for Spotlight")
@@ -78,7 +75,7 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             logger.trace("Indexing \(selectedItems.count) items in \(ids.count) vaults for Spotlight")
         }
 
-        let content = settingsProvider.spotlightSearchableContent
+        let content = settings.spotlightSearchableContent
         let searchableItems = try selectedItems.map { try $0.toSearchableItem(content: content) }
         try await CSSearchableIndex.default().deleteAllSearchableItems()
         try await CSSearchableIndex.default().indexSearchableItems(searchableItems)

@@ -1,6 +1,6 @@
 //
-// AppPreferences+Test.swift
-// Proton Pass - Created on 03/04/2024.
+// GetSharedPreferences.swift
+// Proton Pass - Created on 12/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,14 +19,29 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
+import Foundation
 
-extension AppPreferences {
-    static func random() -> Self {
-        .init(onboarded: .random(),
-              telemetryThreshold: .random(in: 1...1_000_000),
-              createdItemsCount: .random(in: 1...100),
-              dismissedBannerIds: .random(randomElement: .random()),
-              didMigratePreferences: .random())
+/// Get the current `SharedPreferences`, return the default value if `nil`
+public protocol GetSharedPreferencesUseCase: Sendable {
+    func execute() -> SharedPreferences
+}
+
+public extension GetSharedPreferencesUseCase {
+    func callAsFunction() -> SharedPreferences {
+        execute()
+    }
+}
+
+public final class GetSharedPreferences: GetSharedPreferencesUseCase {
+    private let manager: any PreferencesManagerProtocol
+
+    public init(manager: any PreferencesManagerProtocol) {
+        self.manager = manager
+    }
+
+    public func execute() -> SharedPreferences {
+        manager.sharedPreferences.unwrapped()
     }
 }

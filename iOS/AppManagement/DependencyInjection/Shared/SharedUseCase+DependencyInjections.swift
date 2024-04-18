@@ -41,8 +41,8 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var preferences: Preferences {
-        SharedToolingContainer.shared.preferences()
+    var preferencesManager: PreferencesManagerProtocol {
+        SharedToolingContainer.shared.preferencesManager()
     }
 
     var credentialManager: CredentialManagerProtocol {
@@ -109,6 +109,10 @@ extension SharedUseCasesContainer {
     var sendErrorToSentry: Factory<SendErrorToSentryUseCase> {
         self { SendErrorToSentry(userDataProvider: self.userDataProvider) }
     }
+
+    var setCoreLoggerEnvironment: Factory<SetCoreLoggerEnvironmentUseCase> {
+        self { SetCoreLoggerEnvironment() }
+    }
 }
 
 // MARK: AutoFill
@@ -123,7 +127,6 @@ extension SharedUseCasesContainer {
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                   accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                   credentialManager: self.credentialManager,
-                                  preferences: self.preferences,
                                   mapLoginItem: self.mapLoginItem(),
                                   logManager: self.logManager) }
     }
@@ -138,7 +141,6 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var indexItemsForSpotlight: Factory<IndexItemsForSpotlightUseCase> {
         self { IndexItemsForSpotlight(userDataProvider: self.userDataProvider,
-                                      settingsProvider: SharedToolingContainer.shared.spotlightSettingsProvider(),
                                       itemRepository: self.itemRepository,
                                       datasource: SharedRepositoryContainer.shared
                                           .localSpotlightVaultDatasource(),
@@ -170,6 +172,7 @@ extension SharedUseCasesContainer {
 // MARK: - Feature Flags
 
 extension SharedUseCasesContainer {
+    // periphery:ignore
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository())
@@ -230,9 +233,8 @@ extension SharedUseCasesContainer {
     var wipeAllData: Factory<WipeAllDataUseCase> {
         self { WipeAllData(logManager: self.logManager,
                            appData: SharedDataContainer.shared.appData(),
-                           mainKeyProvider: SharedToolingContainer.shared.mainKeyProvider(),
                            apiManager: SharedToolingContainer.shared.apiManager(),
-                           preferences: self.preferences,
+                           preferencesManager: self.preferencesManager,
                            databaseService: SharedServiceContainer.shared.databaseService(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
@@ -318,5 +320,33 @@ extension SharedUseCasesContainer {
 
     var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
         self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
+    }
+}
+
+// MARK: Preferences
+
+extension SharedUseCasesContainer {
+    var getAppPreferences: Factory<GetAppPreferencesUseCase> {
+        self { GetAppPreferences(manager: self.preferencesManager) }
+    }
+
+    var getSharedPreferences: Factory<GetSharedPreferencesUseCase> {
+        self { GetSharedPreferences(manager: self.preferencesManager) }
+    }
+
+    var getUserPreferences: Factory<GetUserPreferencesUseCase> {
+        self { GetUserPreferences(manager: self.preferencesManager) }
+    }
+
+    var updateAppPreferences: Factory<UpdateAppPreferencesUseCase> {
+        self { UpdateAppPreferences(manager: self.preferencesManager) }
+    }
+
+    var updateSharedPreferences: Factory<UpdateSharedPreferencesUseCase> {
+        self { UpdateSharedPreferences(manager: self.preferencesManager) }
+    }
+
+    var updateUserPreferences: Factory<UpdateUserPreferencesUseCase> {
+        self { UpdateUserPreferences(manager: self.preferencesManager) }
     }
 }

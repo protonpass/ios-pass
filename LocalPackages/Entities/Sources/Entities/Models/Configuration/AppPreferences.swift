@@ -35,14 +35,20 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     /// Keep track of dismissed banners so we don't show them again
     public var dismissedBannerIds: [String]
 
+    // swiftlint:disable:next todo
+    // TODO: Introduced in april 2024, can be removed several months later
+    public var didMigratePreferences: Bool
+
     public init(onboarded: Bool,
                 telemetryThreshold: TimeInterval?,
                 createdItemsCount: Int,
-                dismissedBannerIds: [String]) {
+                dismissedBannerIds: [String],
+                didMigratePreferences: Bool) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
         self.dismissedBannerIds = dismissedBannerIds
+        self.didMigratePreferences = didMigratePreferences
     }
 }
 
@@ -52,6 +58,7 @@ private extension AppPreferences {
         static let telemetryThreshold: TimeInterval? = nil
         static let createdItemsCount = 0
         static let dismissedBannerIds: [String] = []
+        static let didMigratePreferences = false
     }
 
     enum CodingKeys: String, CodingKey {
@@ -59,6 +66,7 @@ private extension AppPreferences {
         case telemetryThreshold
         case createdItemsCount
         case dismissedBannerIds
+        case didMigratePreferences
     }
 }
 
@@ -70,18 +78,22 @@ public extension AppPreferences {
                                                                forKey: .telemetryThreshold)
         let createdItemsCount = try container.decodeIfPresent(Int.self, forKey: .createdItemsCount)
         let dismissedBannerIds = try container.decodeIfPresent([String].self, forKey: .dismissedBannerIds)
+        let didMigratePreferences = try container.decodeIfPresent(Bool.self,
+                                                                  forKey: .didMigratePreferences)
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,
-                  dismissedBannerIds: dismissedBannerIds ?? Default.dismissedBannerIds)
+                  dismissedBannerIds: dismissedBannerIds ?? Default.dismissedBannerIds,
+                  didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences)
     }
 }
 
-public extension AppPreferences {
-    static var `default`: Self {
+extension AppPreferences: Defaultable {
+    public static var `default`: Self {
         .init(onboarded: Default.onboarded,
               telemetryThreshold: Default.telemetryThreshold,
               createdItemsCount: Default.createdItemsCount,
-              dismissedBannerIds: Default.dismissedBannerIds)
+              dismissedBannerIds: Default.dismissedBannerIds,
+              didMigratePreferences: Default.didMigratePreferences)
     }
 }

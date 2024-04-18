@@ -40,7 +40,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
         AppearanceSettings.apply()
-        appCoordinator.start()
+        appCoordinator.setUpAndStart()
 
         deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
         deepLinkRoutingService.handle(userActivities: connectionOptions.userActivities)
@@ -68,7 +68,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     struct AppCoverView: View {
-        private let preferences = resolve(\SharedToolingContainer.preferences)
+        private let theme = resolve(\SharedToolingContainer.theme)
         let windowSize: CGSize
 
         var body: some View {
@@ -83,7 +83,7 @@ private extension SceneDelegate {
                     .frame(width: min(windowSize.width, windowSize.height) * 2 / 3)
                     .frame(maxWidth: 245)
             }
-            .theme(preferences.theme)
+            .theme(theme)
         }
     }
 

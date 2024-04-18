@@ -1,7 +1,7 @@
 //
-// Preferences+LocalAuthentication.swift
-// Proton Pass - Created on 19/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// CurrentValueSubject+Extensions.swift
+// Proton Pass - Created on 11/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,11 +17,18 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import LocalAuthentication
+import Combine
+import Entities
 
-extension Preferences {
-    var localAuthenticationPolicy: LAPolicy {
-        fallbackToPasscode ? .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
+public extension CurrentValueSubject {
+    /// Return unwrapped value if not `nil`, return default value otherwise
+    func unwrapped<T: Defaultable>() -> T where Output == T? {
+        if let value {
+            return value
+        } else {
+            return T.default
+        }
     }
 }

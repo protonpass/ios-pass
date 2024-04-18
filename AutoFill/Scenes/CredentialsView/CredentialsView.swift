@@ -31,7 +31,7 @@ import SwiftUI
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let theme = resolve(\SharedToolingContainer.theme)
 
     init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -46,7 +46,7 @@ struct CredentialsView: View {
         .task {
             await viewModel.sync()
         }
-        .theme(preferences.theme)
+        .theme(theme)
         .localAuthentication(delayed: false,
                              onAuth: {},
                              onSuccess: viewModel.handleAuthenticationSuccess,
@@ -82,7 +82,7 @@ struct CredentialsView: View {
             if let info = viewModel.selectPasskeySheetInformation,
                let context = viewModel.context {
                 SelectPasskeyView(info: info, context: context)
-                    .theme(preferences.theme)
+                    .theme(theme)
                     .presentationDetents([.height(CGFloat(info.passkeys.count * 60) + 80)])
             }
         }

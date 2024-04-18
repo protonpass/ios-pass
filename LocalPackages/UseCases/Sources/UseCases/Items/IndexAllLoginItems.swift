@@ -24,16 +24,13 @@ import Entities
 import Foundation
 
 /// Empty credential database and index all existing login items
-/// We only index if user enabled "QuickType bar" option but in case when
-/// user is enabling but not yet enabled "QuickType bar" option we need to bypass
-/// by ignoring what is currently set in preferences.
 public protocol IndexAllLoginItemsUseCase: Sendable {
-    func execute(ignorePreferences: Bool) async throws
+    func execute() async throws
 }
 
 public extension IndexAllLoginItemsUseCase {
-    func callAsFunction(ignorePreferences: Bool) async throws {
-        try await execute(ignorePreferences: ignorePreferences)
+    func callAsFunction() async throws {
+        try await execute()
     }
 }
 
@@ -42,7 +39,6 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
     private let shareRepository: any ShareRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let credentialManager: any CredentialManagerProtocol
-    private let preferences: any PreferencesProtocol
     private let mapLoginItem: any MapLoginItemUseCase
     private let logger: Logger
 
@@ -50,26 +46,19 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
                 shareRepository: any ShareRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 credentialManager: any CredentialManagerProtocol,
-                preferences: any PreferencesProtocol,
                 mapLoginItem: any MapLoginItemUseCase,
                 logManager: any LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
-        self.preferences = preferences
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
         logger = .init(manager: logManager)
     }
 
-    public func execute(ignorePreferences: Bool) async throws {
+    public func execute() async throws {
         let start = Date()
         logger.trace("Indexing all login items")
-
-        guard preferences.quickTypeBar || ignorePreferences else {
-            logger.trace("Skipped indexing all login items. QuickType bar not enabled")
-            return
-        }
 
         guard await credentialManager.isAutoFillEnabled else {
             logger.trace("Skipped indexing all login items. AutoFill not enabled")

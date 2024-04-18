@@ -70,7 +70,7 @@ extension SharedServiceContainer {
 
     var clipboardManager: Factory<ClipboardManagerProtocol> {
         self { ClipboardManager(bannerManager: SharedViewContainer.shared.bannerManager(),
-                                preferences: SharedToolingContainer.shared.preferences()) }
+                                settingsProvider: SharedToolingContainer.shared.preferencesManager()) }
     }
 
     @MainActor

@@ -107,7 +107,7 @@ extension SharedToolingContainer {
     }
 
     var theme: Factory<Theme> {
-        self { self.preferences().theme }
+        self { self.preferencesManager().sharedPreferences.unwrapped().theme }
             .unique
     }
 
@@ -115,8 +115,17 @@ extension SharedToolingContainer {
         self { CurrentDateProvider() }
     }
 
-    var spotlightSettingsProvider: Factory<SpotlightSettingsProvider> {
-        self { self.preferences() }
+    var preferencesManager: Factory<PreferencesManagerProtocol> {
+        self {
+            let currentUserIdProvider = SharedDataContainer.shared.currentUserIdProvider()
+            let cont = SharedRepositoryContainer.shared
+            return PreferencesManager(currentUserIdProvider: currentUserIdProvider,
+                                      appPreferencesDatasource: cont.appPreferencesDatasource(),
+                                      sharedPreferencesDatasource: cont.sharedPreferencesDatasource(),
+                                      userPreferencesDatasource: cont.userPreferencesDatasource(),
+                                      logManager: self.logManager(),
+                                      preferencesMigrator: self.preferences())
+        }
     }
 }
 
