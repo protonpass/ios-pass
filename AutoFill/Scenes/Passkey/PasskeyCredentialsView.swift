@@ -28,7 +28,7 @@ import SwiftUI
 
 struct PasskeyCredentialsView: View {
     @StateObject private var viewModel: PasskeyCredentialsViewModel
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let theme = resolve(\SharedToolingContainer.theme)
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
@@ -63,7 +63,7 @@ struct PasskeyCredentialsView: View {
                                    onRetry: { Task { await viewModel.loadCredentials() } })
             }
         }
-        .theme(preferences.theme)
+        .theme(theme)
         .showSpinner(viewModel.isCreatingPasskey)
         .alert("Create passkey",
                isPresented: $viewModel.isShowingAssociationConfirmation,

@@ -20,7 +20,6 @@
 		351B420E2B6419FA003FA3E3 /* LocalAuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AAA2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift */; };
 		351B420F2B641A00003FA3E3 /* BiometricAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */; };
 		351B42102B641A03003FA3E3 /* PinAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */; };
-		351B42112B641A17003FA3E3 /* Preferences+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */; };
 		351E31A82B271E6E00750504 /* OpenAutoFillSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E31A72B271E6E00750504 /* OpenAutoFillSettings.swift */; };
 		3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36228E325900053A606 /* CredentialsViewModel.swift */; };
 		35219D7F2AE1C38D00868F78 /* ShareInvitee+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */; };
@@ -125,7 +124,6 @@
 		355895AF29D76E67001E2207 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AE29D76E67001E2207 /* LogsView.swift */; };
 		355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B029D76E9F001E2207 /* LogsViewModel.swift */; };
 		355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B229D79565001E2207 /* FeedbackChannelsView.swift */; };
-		3559BA9C2A5B321E0020E172 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46329B0C93C00511D62 /* PreferencesTests.swift */; };
 		3559BA9D2A5B32550020E172 /* Browser+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */; };
 		3559BA9E2A5B32550020E172 /* Theme+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme+Extensions.swift */; };
 		3559BAA02A5B32550020E172 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
@@ -336,8 +334,6 @@
 		3585DE522B591035008AFD9F /* ImportExportWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585DE512B591035008AFD9F /* ImportExportWebView.swift */; };
 		3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586478129F825E0003487B1 /* TelemetryEventsSection.swift */; };
 		358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68252A68067B006E720F /* SetPINCodeViewModel.swift */; };
-		358C68282A68131E006E720F /* Preferences+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */; };
-		358C68292A681379006E720F /* Preferences+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */; };
 		3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
 		35951DCE2B8CCC48006616BE /* GenerateAuthorizationCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */; };
 		35951DD02B8D226A006616BE /* ASCredentialRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35951DCF2B8D226A006616BE /* ASCredentialRequest+Extensions.swift */; };
@@ -744,7 +740,6 @@
 		356650D82AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSyncProgressViewModel.swift; sourceTree = "<group>"; };
 		356750D429D31E9200247648 /* ItemSwipeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSwipeModifier.swift; sourceTree = "<group>"; };
 		3567DF4C2A49C7950025BD88 /* UpsellableDetailText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpsellableDetailText.swift; sourceTree = "<group>"; };
-		3567E46329B0C93C00511D62 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
 		3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCameraPermissionView.swift; sourceTree = "<group>"; };
 		3569AE402A695E070026B780 /* Entities */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Entities; path = LocalPackages/Entities; sourceTree = "<group>"; };
 		3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Scientist.plist"; sourceTree = "<group>"; };
@@ -811,7 +806,6 @@
 		3585DE512B591035008AFD9F /* ImportExportWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportWebView.swift; sourceTree = "<group>"; };
 		3586478129F825E0003487B1 /* TelemetryEventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventsSection.swift; sourceTree = "<group>"; };
 		358C68252A68067B006E720F /* SetPINCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeViewModel.swift; sourceTree = "<group>"; };
-		358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preferences+LocalAuthentication.swift"; sourceTree = "<group>"; };
 		3590A3382A9F9C2600622F45 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAuthorizationCredential.swift; sourceTree = "<group>"; };
 		35951DCF2B8D226A006616BE /* ASCredentialRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCredentialRequest+Extensions.swift"; sourceTree = "<group>"; };
@@ -1179,7 +1173,6 @@
 		354A803D28D8B8D8003F49CF /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				3559BA9B2A5B31F40020E172 /* Configuration */,
 				5B503FF32A4DD5A300E6681C /* Domain */,
 				6699002C29A77182001033B6 /* Mocks */,
 				35F3EF272AF673E000A67459 /* AppDataTests.swift */,
@@ -1250,7 +1243,6 @@
 				354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */,
 				354E9AAA2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift */,
 				354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */,
-				358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */,
 				356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */,
 				358C68252A68067B006E720F /* SetPINCodeViewModel.swift */,
 				354E9A9D2A44430D00AD2B9A /* View+LocalAuthentication.swift */,
@@ -1272,14 +1264,6 @@
 			isa = PBXGroup;
 			children = (
 				356043F828ED6B54003BDDDC /* Preferences.swift */,
-			);
-			path = Configuration;
-			sourceTree = "<group>";
-		};
-		3559BA9B2A5B31F40020E172 /* Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -2820,7 +2804,6 @@
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				359A90342B90D01C00A50138 /* SelectPasskeyViewModel.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
-				358C68292A681379006E720F /* Preferences+LocalAuthentication.swift in Sources */,
 				5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */,
 				35AC9A5D2A0BDB7D00FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
@@ -2896,7 +2879,6 @@
 				5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */,
 				5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */,
 				5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */,
-				3559BA9C2A5B321E0020E172 /* PreferencesTests.swift in Sources */,
 				5B5040132A53114600E6681C /* ExtractLogsToFileTests.swift in Sources */,
 				1C9AA77B635A4599C2AA6036 /* CredentialsMigrationStateProviderMock.generated.swift in Sources */,
 			);
@@ -2937,7 +2919,6 @@
 				35796CED2B5EE68B00BF4E9E /* View+Extensions.swift in Sources */,
 				357C71BB2B5FB10B00AA0BF1 /* CreateEditItemToolbar.swift in Sources */,
 				357C71E42B600D7D00AA0BF1 /* MailboxSelectionView.swift in Sources */,
-				351B42112B641A17003FA3E3 /* Preferences+LocalAuthentication.swift in Sources */,
 				357C71A32B5FAE6500AA0BF1 /* CustomFieldEditionCoordinator.swift in Sources */,
 				357C71C32B5FB23500AA0BF1 /* URL+Extensions.swift in Sources */,
 				357C71E02B6003AF00AA0BF1 /* AppearanceSettings.swift in Sources */,
@@ -3133,7 +3114,6 @@
 				357919B12B70E7630085B532 /* HomepageCoordinator+Spotlight.swift in Sources */,
 				5B0C75002A2F61D000272CE8 /* SharedServices+DependencyInjections.swift in Sources */,
 				357ABEB22B188A30003D05C8 /* ItemsTabTopBarViewModel.swift in Sources */,
-				358C68282A68131E006E720F /* Preferences+LocalAuthentication.swift in Sources */,
 				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
 				357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */,
 				3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */,

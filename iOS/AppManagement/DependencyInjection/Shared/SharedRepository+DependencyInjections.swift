@@ -82,6 +82,10 @@ private extension SharedRepositoryContainer {
         SharedDataContainer.shared.appData()
     }
 
+    var keychain: KeychainProtocol {
+        SharedToolingContainer.shared.keychain()
+    }
+
     var corruptedSessionEventStream: CorruptedSessionEventStream {
         SharedDataStreamContainer.shared.corruptedSessionEventStream()
     }
@@ -198,6 +202,20 @@ private extension SharedRepositoryContainer {
 extension SharedRepositoryContainer {
     var localSpotlightVaultDatasource: Factory<LocalSpotlightVaultDatasourceProtocol> {
         self { LocalSpotlightVaultDatasource(databaseService: self.databaseService) }
+    }
+
+    var appPreferencesDatasource: Factory<LocalAppPreferencesDatasourceProtocol> {
+        self { LocalAppPreferencesDatasource(userDefault: kSharedUserDefaults) }
+    }
+
+    var sharedPreferencesDatasource: Factory<LocalSharedPreferencesDatasourceProtocol> {
+        self { LocalSharedPreferencesDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
+                                                keychain: self.keychain) }
+    }
+
+    var userPreferencesDatasource: Factory<LocalUserPreferencesDatasourceProtocol> {
+        self { LocalUserPreferencesDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
+                                              databaseService: self.databaseService) }
     }
 }
 

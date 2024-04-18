@@ -46,8 +46,8 @@ final class APIManager {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
     private let appData = resolve(\SharedDataContainer.appData)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
     private let doh = resolve(\SharedToolingContainer.doh)
+    private let theme = resolve(\SharedToolingContainer.theme)
     private let trustKitDelegate: TrustKitDelegate
     let authHelper: AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
 
@@ -80,10 +80,7 @@ final class APIManager {
         apiService.loggingDelegate = self
 
         humanHelper = HumanCheckHelper(apiService: apiService,
-                                       inAppTheme: { [weak self] in
-                                           guard let self else { return .matchSystem }
-                                           return preferences.theme.inAppTheme
-                                       },
+                                       inAppTheme: { [theme] in theme.inAppTheme },
                                        clientApp: .pass)
         apiService.humanDelegate = humanHelper
 

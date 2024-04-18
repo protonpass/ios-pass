@@ -20,18 +20,20 @@
 
 import DesignSystem
 import Entities
+import Factory
 import SwiftUI
 
 struct EditThemeView: View {
     @Environment(\.dismiss) private var dismiss
-    let preferences: Preferences
+    private let currentTheme = resolve(\SharedToolingContainer.theme)
+    let onSelect: (Theme) -> Void
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
-                        SelectableOptionRow(action: { preferences.theme = theme; dismiss() },
+                        SelectableOptionRow(action: { onSelect(theme); dismiss() },
                                             height: .short,
                                             content: {
                                                 Label(title: {
@@ -42,9 +44,9 @@ struct EditThemeView: View {
                                                         .scaledToFit()
                                                         .frame(maxWidth: 20, maxHeight: 20)
                                                 })
-                                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                                .foregroundStyle(PassColor.textNorm.toColor)
                                             },
-                                            isSelected: theme == preferences.theme)
+                                            isSelected: theme == currentTheme)
 
                         PassDivider()
                     }

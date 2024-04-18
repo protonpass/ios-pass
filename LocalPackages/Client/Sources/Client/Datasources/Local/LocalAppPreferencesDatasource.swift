@@ -28,6 +28,7 @@ import Foundation
 
 private let kAppPreferencesKey = "AppPreferences"
 
+// sourcery: AutoMockable
 /// Store `AppPreferences` as-is in `UserDefaults`
 public protocol LocalAppPreferencesDatasourceProtocol: Sendable {
     func getPreferences() throws -> AppPreferences?

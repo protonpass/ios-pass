@@ -18,26 +18,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import UIKit
+
+public protocol ClipboardSettingsProvider: Sendable {
+    var shareClipboard: Bool { get }
+    var clipboardExpiration: ClipboardExpiration { get }
+}
 
 public protocol ClipboardManagerProtocol: Sendable {
     func copy(text: String, bannerMessage: String)
 }
 
 public final class ClipboardManager: ClipboardManagerProtocol {
-    private let preferences: any PreferencesProtocol
-    public let bannerManager: any BannerDisplayProtocol
+    private let settingsProvider: any ClipboardSettingsProvider
+    private let bannerManager: any BannerDisplayProtocol
 
     public init(bannerManager: any BannerDisplayProtocol,
-                preferences: any PreferencesProtocol) {
+                settingsProvider: any ClipboardSettingsProvider) {
         self.bannerManager = bannerManager
-        self.preferences = preferences
+        self.settingsProvider = settingsProvider
     }
 
     public func copy(text: String, bannerMessage: String) {
         UIPasteboard.general.setObjects([NSString(string: text)],
-                                        localOnly: !preferences.shareClipboard,
-                                        expirationDate: preferences.clipboardExpiration.expirationDate)
+                                        localOnly: !settingsProvider.shareClipboard,
+                                        expirationDate: settingsProvider.clipboardExpiration.expirationDate)
         bannerManager.displayBottomInfoMessage(bannerMessage)
     }
 }

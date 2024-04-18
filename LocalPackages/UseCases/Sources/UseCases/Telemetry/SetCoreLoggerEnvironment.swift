@@ -1,7 +1,7 @@
 //
-// PreferencesProtocol.swift
-// Proton Pass - Created on 30/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// SetCoreLoggerEnvironment.swift
+// Proton Pass - Created on 11/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,11 +17,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Entities
+import Core
+import Foundation
+import ProtonCoreLog
 
-public protocol PreferencesProtocol: Sendable {
-    var shareClipboard: Bool { get set }
-    var clipboardExpiration: ClipboardExpiration { get set }
-    var quickTypeBar: Bool { get set }
+public protocol SetCoreLoggerEnvironmentUseCase: Sendable {
+    func execute(bundle: Bundle)
+}
+
+public extension SetCoreLoggerEnvironmentUseCase {
+    func callAsFunction(bundle: Bundle = .main) {
+        execute(bundle: bundle)
+    }
+}
+
+public final class SetCoreLoggerEnvironment: SetCoreLoggerEnvironmentUseCase {
+    public init() {}
+
+    public func execute(bundle: Bundle) {
+        let environment = ProtonPassDoH(bundle: bundle).environment.name
+        PMLog.setEnvironment(environment: environment)
+    }
 }
