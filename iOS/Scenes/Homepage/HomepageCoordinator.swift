@@ -837,7 +837,7 @@ extension HomepageCoordinator {
                 let navigationController = UINavigationController(rootViewController: viewController)
                 present(navigationController)
             } catch {
-                self.logger.error(error.localizedDescription)
+                logger.error(error.localizedDescription)
                 bannerManager.displayTopErrorMessage(error)
             }
         }
