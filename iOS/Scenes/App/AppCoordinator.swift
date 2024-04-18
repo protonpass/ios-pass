@@ -53,6 +53,7 @@ final class AppCoordinator {
     private var cancellables = Set<AnyCancellable>()
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let appData = resolve(\SharedDataContainer.appData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -76,7 +77,6 @@ final class AppCoordinator {
 
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
-            isUITest = true
             resetAllData()
         }
 
@@ -94,6 +94,8 @@ final class AppCoordinator {
         corruptedSessionStream = nil
     }
 
+    // swiftlint:disable:next todo
+    // TODO: Remove preferences and this function once session migration is done
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
@@ -133,16 +135,32 @@ final class AppCoordinator {
             }
             .store(in: &cancellables)
 
-        preferences
-            .objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
+            .filter(\.theme)
+            .sink { [weak self] theme in
                 guard let self else { return }
-                window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
             }
             .store(in: &cancellables)
     }
 
+    /// Necessary set up like initializing preferences before starting user flow
+    func setUpAndStart() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.setUp()
+                start()
+            } catch {
+                appStateObserver.updateAppState(.loggedOut(.failedToInitializePreferences(error)))
+            }
+        }
+    }
+}
+
+private extension AppCoordinator {
     func start() {
         if appData.isAuthenticated {
             appStateObserver.updateAppState(.alreadyLoggedIn)
@@ -153,7 +171,7 @@ final class AppCoordinator {
         }
     }
 
-    private func showWelcomeScene(reason: LogOutReason) {
+    func showWelcomeScene(reason: LogOutReason) {
         let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
                                                     preferences: preferences)
         welcomeCoordinator.delegate = self
@@ -166,7 +184,7 @@ final class AppCoordinator {
         }
     }
 
-    private func showHomeScene(manualLogIn: Bool) {
+    func showHomeScene(manualLogIn: Bool) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -182,8 +200,8 @@ final class AppCoordinator {
         }
     }
 
-    private func animateUpdateRootViewController(_ newRootViewController: UIViewController,
-                                                 completion: (() -> Void)? = nil) {
+    func animateUpdateRootViewController(_ newRootViewController: UIViewController,
+                                         completion: (() -> Void)? = nil) {
         window.rootViewController = newRootViewController
         window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         UIView.transition(with: window,
@@ -192,10 +210,10 @@ final class AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    private func resetAllData() {
+    func resetAllData() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            await wipeAllData(isTests: isUITest)
+            await wipeAllData()
             SharedViewContainer.shared.reset()
         }
     }
@@ -266,6 +284,8 @@ private extension AppCoordinator {
         case .failedBiometricAuthentication:
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
+        case let .failedToInitializePreferences(error):
+            alert(title: #localized("Error occured"), message: error.localizedDescription)
         default:
             break
         }
