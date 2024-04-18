@@ -1,6 +1,6 @@
 //
-// StaticToggleView.swift
-// Proton Pass - Created on 09/04/2024.
+// BreachAction.swift
+// Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-public struct StaticToggleView: View {
-    private var isOn: Bool
+public struct BreachAction: Decodable, Equatable, Sendable {
+    public let code, name, desc: String
+    public let urls: [String]?
 
-    public init(isOn: Bool) {
-        self.isOn = isOn
-    }
-
-    public var body: some View {
-        HStack {
-            Rectangle()
-                .foregroundStyle(isOn ? PassColor.interactionNorm.toColor : UIColor.secondarySystemFill.toColor)
-                .frame(width: 50, height: 30)
-                .cornerRadius(15)
-                .overlay(Circle()
-                    .foregroundColor(.white)
-                    .padding(3)
-                    .offset(x: isOn ? 10 : -10))
-                .animation(.easeInOut, value: isOn)
-        }
+    public init(code: String, name: String, desc: String, urls: [String]?) {
+        self.code = code
+        self.name = name
+        self.desc = desc
+        self.urls = urls
     }
 }

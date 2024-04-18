@@ -25,25 +25,21 @@ public struct WeaknessStats: Equatable, Sendable {
     public let reusedPasswords: Int
     public let missing2FA: Int
     public let excludedItems: Int
-    public let exposedPasswords: Int
 
     public init(weakPasswords: Int,
                 reusedPasswords: Int,
                 missing2FA: Int,
-                excludedItems: Int,
-                exposedPasswords: Int) {
+                excludedItems: Int) {
         self.weakPasswords = weakPasswords
         self.reusedPasswords = reusedPasswords
         self.missing2FA = missing2FA
         self.excludedItems = excludedItems
-        self.exposedPasswords = exposedPasswords
     }
 
     public static var `default`: WeaknessStats {
         WeaknessStats(weakPasswords: 0,
                       reusedPasswords: 0,
                       missing2FA: 0,
-                      excludedItems: 0,
-                      exposedPasswords: 0)
+                      excludedItems: 0)
     }
 }

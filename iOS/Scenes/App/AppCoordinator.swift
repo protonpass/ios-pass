@@ -241,8 +241,8 @@ private extension AppCoordinator {
             return .success
         }
 
-        NotificationType.allAccountRecoveryTypes.forEach {
-            pushNotificationService.registerHandler(passHandler, forType: $0)
+        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
+            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
         }
     }
 }
