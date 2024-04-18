@@ -155,18 +155,19 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
 
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor [weak self] in
+            Task { [weak self] in
                 guard let self else { return }
-                guard authenticated, let destination = router.pendingDeeplinkDestination else { return }
+                guard await authenticated,
+                      let destination = await router.pendingDeeplinkDestination else { return }
                 switch destination {
                 case let .totp(uri):
-                    totpDeepLink(totpUri: uri)
+                    await totpDeepLink(totpUri: uri)
                 case let .spotlightItemDetail(itemContent):
-                    router.present(for: .itemDetail(itemContent))
+                    await router.present(for: .itemDetail(itemContent))
                 case let .error(error):
-                    router.display(element: .displayErrorBanner(error))
+                    await router.display(element: .displayErrorBanner(error))
                 }
-                router.resolveDeeplink()
+                await router.resolveDeeplink()
             }
         }
 
@@ -261,7 +262,7 @@ private extension HomepageCoordinator {
     }
 
     func synchroniseData() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await vaultsManager.asyncRefresh()
@@ -334,7 +335,7 @@ private extension HomepageCoordinator {
     }
 
     func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let currentCount = getAppPreferences().createdItemsCount
@@ -623,7 +624,7 @@ extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -804,7 +805,7 @@ extension HomepageCoordinator {
     }
 
     func handleFailedLocalAuthentication() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             logger.error("Failed to locally authenticate. Logging out.")
             showLoadingHud()
@@ -892,7 +893,7 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func presentItemHistory(_ item: ItemContent) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let plan = try await accessRepository.getPlan()
@@ -918,7 +919,7 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func beginImportExportFlow() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 showLoadingHud()
@@ -970,7 +971,7 @@ private extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self,
                   await loginMethod.isManualLogIn() else { return }
             if let access = try? await accessRepository.getAccess(),
@@ -1127,7 +1128,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToShowTrialDetail() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { self.hideLoadingHud() }
             do {
@@ -1352,7 +1353,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -1512,12 +1513,12 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
             // swiftformat:disable:next redundantParens
             let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
                 guard let self else { return }
-                Task { @MainActor [weak self] in
+                Task { [weak self] in
                     guard let self else {
                         return
                     }
-                    banner.dismiss()
-                    itemContextMenuHandler.restore(item)
+                    await banner.dismiss()
+                    await itemContextMenuHandler.restore(item)
                 }
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,

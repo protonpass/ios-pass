@@ -82,7 +82,7 @@ private extension LoginItemsViewModel {
         }
 
         lastTask?.cancel()
-        lastTask = Task { @MainActor [weak self] in
+        lastTask = Task { [weak self] in
             guard let self else {
                 return
             }

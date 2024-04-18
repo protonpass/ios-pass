@@ -94,7 +94,7 @@ private extension SetPINCodeViewModel {
     }
 
     func set(pinCode: String) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await updateSharedPreferences(\.localAuthenticationMethod, value: .pin)
