@@ -54,12 +54,12 @@ extension ItemContextMenuHandler {
             try await itemRepository.trashItems([item])
 
             let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
-                Task { @MainActor [weak self] in
+                Task { [weak self] in
                     guard let self else {
                         return
                     }
-                    banner.dismiss()
-                    restore(item)
+                    await banner.dismiss()
+                    await restore(item)
                 }
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,
@@ -180,7 +180,7 @@ private extension ItemContextMenuHandler {
     func performAction(on item: any ItemTypeIdentifiable,
                        showSpinner: Bool,
                        handler: @escaping (ItemContent) async throws -> Void) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer {
                 if showSpinner {

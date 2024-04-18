@@ -88,7 +88,7 @@ extension OnboardingViewModel {
             showAppropriateBiometricAuthenticationStep()
 
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            Task { @MainActor [weak self] in
+            Task { [weak self] in
                 guard let self else { return }
                 do {
                     let authenticated = try await authenticate(policy: policy,
@@ -131,7 +131,7 @@ extension OnboardingViewModel {
 
 private extension OnboardingViewModel {
     func checkAutoFillStatus() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             let autoFillEnabled = await credentialManager.isAutoFillEnabled
             if case .autoFill = state, autoFillEnabled {
@@ -141,7 +141,7 @@ private extension OnboardingViewModel {
     }
 
     func finishOnboarding() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             // Optionally update "onboarded" to not block users from using the app
             // in case errors happens

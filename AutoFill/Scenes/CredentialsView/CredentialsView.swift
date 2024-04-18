@@ -39,7 +39,7 @@ struct CredentialsView: View {
 
     var body: some View {
         ZStack {
-            Color(uiColor: PassColor.backgroundNorm)
+            PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
             stateViews
         }

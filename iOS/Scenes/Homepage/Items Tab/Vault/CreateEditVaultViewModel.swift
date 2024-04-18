@@ -109,7 +109,7 @@ final class CreateEditVaultViewModel: ObservableObject {
 
 private extension CreateEditVaultViewModel {
     func verifyLimitation() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self, mode.isCreation else { return }
             do {
                 canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
@@ -128,7 +128,7 @@ private extension CreateEditVaultViewModel {
     }
 
     func editVault(_ oldVault: Vault) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { self.loading = false }
             do {
@@ -146,7 +146,7 @@ private extension CreateEditVaultViewModel {
     }
 
     func createVault() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { self.loading = false }
             do {

@@ -45,8 +45,9 @@ struct LocalAuthenticationMethodsView: View {
                                         height: .compact,
                                         content: {
                                             Text(uiModel.title)
-                                                .foregroundColor(Color(uiColor: isSelected ?
-                                                        PassColor.interactionNormMajor2 : PassColor.textNorm))
+                                                .foregroundStyle((isSelected ?
+                                                        PassColor.interactionNormMajor2 : PassColor
+                                                        .textNorm).toColor)
                                         },
                                         isSelected: isSelected)
                     PassSectionDivider()

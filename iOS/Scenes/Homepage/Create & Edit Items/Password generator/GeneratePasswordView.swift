@@ -95,7 +95,7 @@ struct GeneratePasswordView: View {
                 ctaButtons
             }
             .padding(.horizontal)
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: viewModel.password)
             .animation(.default, value: viewModel.isShowingAdvancedOptions)
@@ -130,7 +130,7 @@ struct GeneratePasswordView: View {
     private var passwordTypeRow: some View {
         HStack {
             Text("Type")
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
 
             Spacer()
 
@@ -151,11 +151,11 @@ struct GeneratePasswordView: View {
             }, label: {
                 HStack {
                     Text(viewModel.type.title)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .foregroundStyle(PassColor.textNorm.toColor)
                     Image(uiImage: IconProvider.chevronDownFilled)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(Color(uiColor: PassColor.textHint))
+                        .foregroundStyle(PassColor.textHint.toColor)
                         .frame(width: 16)
                 }
             })
@@ -194,12 +194,10 @@ struct GeneratePasswordView: View {
             Text("\(Int(viewModel.characterCount)) characters")
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .animationsDisabled()
-            Slider(value: $viewModel.characterCount,
-                   in: 4...64,
-                   step: 1)
-                .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+            Slider(value: $viewModel.characterCount, in: 4...64, step: 1)
+                .tint(PassColor.loginInteractionNormMajor1.toColor)
         }
     }
 
@@ -208,19 +206,17 @@ struct GeneratePasswordView: View {
             Text("\(Int(viewModel.wordCount)) word(s)")
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .animationsDisabled()
-            Slider(value: $viewModel.wordCount,
-                   in: 1...10,
-                   step: 1)
-                .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+            Slider(value: $viewModel.wordCount, in: 1...10, step: 1)
+                .tint(PassColor.loginInteractionNormMajor1.toColor)
         }
     }
 
     private func toggle(title: String, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
             Text(title)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
         }
         .toggleStyle(SwitchToggleStyle.pass)
     }
@@ -232,7 +228,7 @@ struct GeneratePasswordView: View {
     private var wordSeparatorRow: some View {
         HStack {
             Text("Word separator")
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
 
             Spacer()
 
@@ -253,11 +249,11 @@ struct GeneratePasswordView: View {
             }, label: {
                 HStack {
                     Text(viewModel.wordSeparator.title)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .foregroundStyle(PassColor.textNorm.toColor)
                     Image(uiImage: IconProvider.chevronDownFilled)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(Color(uiColor: PassColor.textHint))
+                        .foregroundStyle(PassColor.textHint.toColor)
                         .frame(width: 16)
                 }
             })

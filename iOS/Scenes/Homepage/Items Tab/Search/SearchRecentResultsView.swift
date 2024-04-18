@@ -36,10 +36,10 @@ struct SearchRecentResultsView: View {
                 Text("Recent searches")
                     .font(.callout)
                     .fontWeight(.bold)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                    .foregroundColor(PassColor.textNorm.toColor) +
                     Text(verbatim: " (\(results.count))")
                     .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    .foregroundColor(PassColor.textWeak.toColor)
 
                 Spacer()
 
@@ -47,8 +47,8 @@ struct SearchRecentResultsView: View {
                     Text("Clear")
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
-                        .underline(color: Color(uiColor: PassColor.textWeak))
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .underline(color: PassColor.textWeak.toColor)
                 }
             }
             .padding(.horizontal)
@@ -89,7 +89,7 @@ private struct SearchEntryView: View {
                     Image(uiImage: IconProvider.cross)
                         .resizable()
                         .scaledToFill()
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(width: 24, height: 24)
                 }
                 .frame(width: 48, height: 48)

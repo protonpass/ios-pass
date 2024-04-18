@@ -256,7 +256,7 @@ private extension ShareCoordinator {
     }
 
     func presentCreateItemView(for type: SharedItemType, content: SharedContent) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if vaultsManager.getAllVaultContents().isEmpty {
@@ -323,7 +323,7 @@ private extension ShareCoordinator {
     func logOut(error: Error? = nil,
                 sessionId: String? = nil,
                 completion: (() -> Void)? = nil) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             if let error {
                 sendErrorToSentry(error, sessionId: sessionId)

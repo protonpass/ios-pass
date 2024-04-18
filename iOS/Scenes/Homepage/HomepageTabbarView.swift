@@ -138,6 +138,7 @@ protocol HomepageTabBarControllerDelegate: AnyObject {
     func selected(tab: HomepageTab)
 }
 
+@MainActor
 final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -247,7 +248,7 @@ extension HomepageTabBarController {
     }
 
     func refreshTabBarIcons() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let plan = try await accessRepository.getPlan()

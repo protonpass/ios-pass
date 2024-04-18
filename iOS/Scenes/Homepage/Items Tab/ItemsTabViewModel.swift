@@ -111,7 +111,7 @@ private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
 
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 showingUpgradeAppBanner = try await shouldDisplayUpgradeAppBanner()
@@ -146,7 +146,7 @@ private extension ItemsTabViewModel {
             .store(in: &cancellables)
 
         // Show the progress if after 5 seconds after logging in and items are not yet loaded
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             try? await Task.sleep(seconds: 5)
 
@@ -173,7 +173,7 @@ private extension ItemsTabViewModel {
 
     func refreshBanners(_ invites: [UserInvite]? = nil) {
         inviteRefreshTask?.cancel()
-        inviteRefreshTask = Task { @MainActor [weak self] in
+        inviteRefreshTask = Task { [weak self] in
             guard let self else { return }
             var banners = [InfoBanner]()
             if let invites, !invites.isEmpty {

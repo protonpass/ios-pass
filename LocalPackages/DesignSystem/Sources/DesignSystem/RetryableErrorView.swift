@@ -33,10 +33,11 @@ public struct RetryableErrorView: View {
     public var body: some View {
         VStack {
             Text(errorMessage)
+                .foregroundStyle(PassColor.textNorm.toColor)
             Button(action: onRetry) {
                 Text("Retry", bundle: .module)
             }
-            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+            .foregroundStyle(PassColor.interactionNorm.toColor)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

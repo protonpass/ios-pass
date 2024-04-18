@@ -56,7 +56,7 @@ struct CreateEditAliasView: View {
                     .toolbar { closeButtonToolbar }
                 }
             }
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
@@ -216,7 +216,7 @@ struct CreateEditAliasView: View {
 
                 if viewModel.prefixError != nil {
                     Text(viewModel.prefix + viewModel.suffix)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                        .foregroundStyle(PassColor.signalDanger.toColor)
                 } else {
                     switch viewModel.state {
                     case .loading:
@@ -231,9 +231,9 @@ struct CreateEditAliasView: View {
 
                     default:
                         Text(viewModel.prefix)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                            .foregroundColor(PassColor.textNorm.toColor) +
                             Text(viewModel.suffix)
-                            .foregroundColor(Color(uiColor: viewModel.itemContentType().normMajor2Color))
+                            .foregroundColor(viewModel.itemContentType().normMajor2Color.toColor)
                     }
                 }
             }

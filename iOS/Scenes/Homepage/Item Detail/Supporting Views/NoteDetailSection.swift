@@ -31,7 +31,6 @@ struct NoteDetailSection: View {
     let vault: Vault?
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.normColor)
 
@@ -53,7 +52,7 @@ struct NoteDetailSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
-        .tint(tintColor)
+        .tint(itemContent.type.normMajor2Color.toColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
             FullNoteView(itemContent: itemContent, vault: vault)
@@ -68,7 +67,6 @@ private struct FullNoteView: View {
     let vault: Vault?
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -97,7 +95,7 @@ private struct FullNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .tint(tintColor)
+        .tint(itemContent.type.normMajor2Color.toColor)
         .theme(theme)
     }
 }

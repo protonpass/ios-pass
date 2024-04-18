@@ -148,7 +148,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         guard canFetchMoreEmails else { return }
         currentTask?.cancel()
         currentTask = nil
-        currentTask = Task { @MainActor [weak self] in
+        currentTask = Task { [weak self] in
             guard let self else { return }
             defer {
                 currentTask = nil

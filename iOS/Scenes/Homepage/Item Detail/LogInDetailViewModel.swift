@@ -38,6 +38,7 @@ enum TOTPTokenState {
     case notAllowed
 }
 
+@MainActor
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -132,7 +133,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
 private extension LogInDetailViewModel {
     func getAliasItem(username: String) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 aliasItem = try await itemRepository.getAliasItem(email: username)
@@ -143,7 +144,7 @@ private extension LogInDetailViewModel {
     }
 
     func checkTotpState() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {

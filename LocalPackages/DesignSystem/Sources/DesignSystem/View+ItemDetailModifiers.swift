@@ -59,6 +59,6 @@ public extension Text {
 
     func navigationTitleText() -> Text {
         font(.callout.bold())
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .foregroundColor(PassColor.textNorm.toColor)
     }
 }
