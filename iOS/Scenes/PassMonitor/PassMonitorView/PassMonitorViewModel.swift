@@ -22,7 +22,6 @@
 
 import Client
 import Combine
-import Core
 import DesignSystem
 import Entities
 import Factory
@@ -53,6 +52,8 @@ enum UpsellEntry {
 @MainActor
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
+    @Published private(set) var breaches: UserBreaches?
+
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
     @Published var isSentinelActive = false
@@ -62,10 +63,10 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let breachRepository = resolve(\RepositoryContainer.breachRepository)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
-
-    private let userDefaults: UserDefaults = .standard
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -78,11 +79,9 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     }
 
     func refresh() async {
-        do {
-            try await passMonitorRepository.refreshSecurityChecks()
-        } catch {
-            router.display(element: .displayErrorBanner(error))
-        }
+        async let fetchBreaches: () = refreshRemoteMonitoredData()
+        async let refresh: () = refreshLocalMonitoredData()
+        _ = await (fetchBreaches, refresh)
     }
 
     func sentinelSheetAction() {
@@ -95,7 +94,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func upsell(entryPoint: UpsellEntry) {
         var upsellElements = [UpsellElement]()
-        if userDefaults.bool(forKey: Constants.QA.displaySecurityCenter) {
+        if getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1) {
             upsellElements.append(UpsellElement(icon: PassIcon.shield2,
                                                 title: #localized("Dark Web Monitoring"),
                                                 color: PassColor.interactionNormMajor2))
@@ -156,7 +155,25 @@ private extension PassMonitorViewModel {
                 guard let self else {
                     return
                 }
-                weaknessStats = newWeaknessStats
+                if newWeaknessStats != weaknessStats {
+                    weaknessStats = newWeaknessStats
+                }
             }.store(in: &cancellables)
+    }
+
+    func refreshLocalMonitoredData() async {
+        do {
+            try await passMonitorRepository.refreshSecurityChecks()
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+        }
+    }
+
+    func refreshRemoteMonitoredData() async {
+        do {
+            breaches = try await breachRepository.getAllBreachesForUser()
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+        }
     }
 }

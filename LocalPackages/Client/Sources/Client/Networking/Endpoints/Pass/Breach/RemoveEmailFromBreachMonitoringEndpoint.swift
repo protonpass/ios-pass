@@ -1,6 +1,6 @@
 //
-// SecuritySection.swift
-// Proton Pass - Created on 08/03/2024.
+// RemoveEmailFromBreachMonitoringEndpoint.swift
+// Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,20 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public struct ReusedPasswordsKey: Hashable, Sendable {
-    public let id: String = UUID().uuidString
-    public let numberOfTimeReused: Int
+struct RemoveEmailFromBreachMonitoringEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public init(numberOfTimeReused: Int) {
-        self.numberOfTimeReused = numberOfTimeReused
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+
+    init(emailId: String) {
+        debugDescription = "Remove an email for breach monitoring"
+        path = "/pass/v1/breach/custom_email/\(emailId)"
+        method = .delete
     }
-}
-
-public enum SecuritySection: Hashable, Sendable {
-    case weakPasswords(PasswordStrength)
-    case reusedPasswords(ReusedPasswordsKey)
-    case missing2fa
-    case excludedItems
 }

@@ -67,24 +67,14 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
-    @Published var automaticallyCopyTotpCode: Bool {
-        didSet {
-            if automaticallyCopyTotpCode {
-                notificationService.requestNotificationPermission()
-            }
-            preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
-        }
-    }
+    @Published private(set) var automaticallyCopyTotpCode: Bool
+    @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
 
     @Published private(set) var loading = false
     @Published private(set) var plan: Plan?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
-
-    var automaticallyCopyTotpCodeDisabled: Bool {
-        localAuthenticationMethod == .none
-    }
 
     init(childCoordinatorDelegate: ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
@@ -154,6 +144,18 @@ extension ProfileTabViewModel {
         openAutoFillSettings()
     }
 
+    func toggleAutomaticCopyTotpCode() {
+        if !automaticallyCopyTotpCode, preferences.localAuthenticationMethod == .none {
+            showAutomaticCopyTotpCodeExplanation = true
+            return
+        }
+        automaticallyCopyTotpCode.toggle()
+        if automaticallyCopyTotpCode {
+            notificationService.requestNotificationPermission()
+        }
+        preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
+    }
+
     func showAccountMenu() {
         delegate?.profileTabViewModelWantsToShowAccountMenu()
     }
@@ -209,6 +211,7 @@ private extension ProfileTabViewModel {
                 guard let self else { return }
                 updateAutoFillAvalability()
                 updateSecuritySettings()
+                showAutomaticCopyTotpCodeExplanation = false
             }
             .store(in: &cancellables)
 
@@ -234,9 +237,7 @@ private extension ProfileTabViewModel {
         switch preferences.localAuthenticationMethod {
         case .none:
             localAuthenticationMethod = .none
-            if automaticallyCopyTotpCode {
-                automaticallyCopyTotpCode = false
-            }
+            automaticallyCopyTotpCode = false
         case .biometric:
             do {
                 let biometryType = try checkBiometryType(policy: policy)
