@@ -101,6 +101,7 @@ public extension TelemetryEventRepository {
         if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
             try await localDatasource.removeAllEvents(userId: userId)
+            try await scheduler.randomNextThreshold()
             return .thresholdReachedButTelemetryOff
         }
 
@@ -166,10 +167,6 @@ public actor TelemetryScheduler: TelemetrySchedulerProtocol {
         }
     }
 
-    /// We are setting this function as part of the main actor as it has influence on Preference that seems to
-    /// trigger an ui update.
-    /// We saw crash as the update what not executed from the main thread.
-    /// This is an attend to mitigate this issue
     public func randomNextThreshold() async throws {
         let randomIntervalInHours = Int.random(in: minIntervalInHours...maxIntervalInHours)
         let currentDate = currentDateProvider.getCurrentDate()
