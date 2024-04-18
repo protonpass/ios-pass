@@ -70,18 +70,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
     @Published private(set) var spotlightFlagAvailable = false
-    @Published var spotlightEnabled: Bool {
-        didSet {
-            if spotlightEnabled, plan?.isFreeUser == true {
-                spotlightEnabled = false
-                router.present(for: .upselling(.default))
-            } else {
-                preferences.spotlightEnabled = spotlightEnabled
-            }
-            reindexItemsForSpotlight()
-        }
-    }
-
+    @Published private(set) var spotlightEnabled: Bool
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
     @Published private(set) var spotlightVaults: [Vault]?
@@ -122,6 +111,16 @@ extension SettingsViewModel {
 
     func editClipboardExpiration() {
         delegate?.settingsViewModelWantsToEditClipboardExpiration()
+    }
+
+    func toggleSpotlight() {
+        if !spotlightEnabled, plan?.isFreeUser == true {
+            router.present(for: .upselling(.default))
+            return
+        }
+        spotlightEnabled.toggle()
+        preferences.spotlightEnabled = spotlightEnabled
+        reindexItemsForSpotlight()
     }
 
     func editSpotlightSearchableContent() {

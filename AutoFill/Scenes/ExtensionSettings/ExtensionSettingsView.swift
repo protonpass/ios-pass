@@ -56,16 +56,13 @@ struct ExtensionSettingsView: View {
                         .frame(height: 24)
 
                     OptionRow(height: .medium) {
-                        Toggle(isOn: $viewModel.automaticallyCopyTotpCode) {
-                            Text("Copy 2FA code")
-                                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                        }
-                        .tint(Color(uiColor: PassColor.interactionNorm))
+                        StaticToggle("Copy 2FA code",
+                                     isOn: viewModel.automaticallyCopyTotpCode,
+                                     action: { viewModel.toggleAutomaticCopy2FACode() })
                     }
                     .roundedEditableSection()
-                    .disabled(viewModel.automaticallyCopyTotpCodeDisabled)
 
-                    if viewModel.automaticallyCopyTotpCodeDisabled {
+                    if viewModel.showAutomaticCopyTotpCodeExplication {
                         Text("Automatic copy of the 2FA code requires biometric lock or PIN code to be set up")
                             .sectionTitleText()
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -75,7 +72,8 @@ struct ExtensionSettingsView: View {
                 }
                 .padding(.horizontal)
             }
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .background(PassColor.backgroundNorm.toColor)
+            .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplication)
             .navigationTitle("AutoFill")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
