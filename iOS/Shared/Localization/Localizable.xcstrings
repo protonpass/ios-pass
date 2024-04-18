@@ -18275,6 +18275,26 @@
         }
       }
     },
+    "Change mailbox password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change mailbox password"
+          }
+        }
+      }
+    },
+    "Change password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change password"
+          }
+        }
+      }
+    },
     "Change PIN code" : {
       "localizations" : {
         "be" : {
