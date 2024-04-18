@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import Entities
@@ -51,7 +52,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
-    @Published private(set) var passwordMode: Int = 1
+    @Published private(set) var passwordMode: UserSettings.Password.PasswordMode = .singlePassword
     private(set) var accountRecovery: AccountRecovery?
 
     weak var delegate: AccountViewModelDelegate?
@@ -102,6 +103,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
                 passwordMode = settings.password.mode
             } catch {
                 logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -126,18 +128,20 @@ extension AccountViewModel {
         }
     }
 
-    var showChangePassword: Bool {
+    var canChangePassword: Bool {
         featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
     }
 
-    var showChangeMailboxPassword: Bool {
+    var canChangeMailboxPassword: Bool {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
         else { return false }
-        return passwordMode != 1
+        return passwordMode == .loginAndMailboxPassword
     }
 
     func openChangeUserPassword() {
-        router.present(for: .changePassword(passwordMode == 1 ? .singlePassword : .loginPassword))
+        let mode: PasswordChangeModule
+            .PasswordChangeMode = passwordMode == .singlePassword ? .singlePassword : .loginPassword
+        router.present(for: .changePassword(mode))
     }
 
     func openChangeMailboxPassword() {

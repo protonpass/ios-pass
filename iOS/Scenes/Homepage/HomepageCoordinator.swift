@@ -830,12 +830,15 @@ extension HomepageCoordinator {
                                                       apiService: apiManager.apiService,
                                                       authCredential: userData.credential,
                                                       userInfo: userInfo,
-                                                      showingDismissButton: true,
-                                                      completion: processPasswordChange)
+                                                      showingDismissButton: true) { [weak self] cred, userInfo in
+                        guard let self else { return }
+                        processPasswordChange(authCredential: cred, userInfo: userInfo)
+                    }
                 let navigationController = UINavigationController(rootViewController: viewController)
                 present(navigationController)
             } catch {
                 self.logger.error(error.localizedDescription)
+                bannerManager.displayTopErrorMessage(error)
             }
         }
     }
@@ -844,8 +847,8 @@ extension HomepageCoordinator {
         let userId = try userDataProvider.getUserId()
         let settings = await userSettingsRepository.getSettings(for: userId)
         let userInfo = userData.toUserInfo
-        userInfo.twoFactor = settings.twoFactor.enabled
-        userInfo.passwordMode = settings.password.mode
+        userInfo.twoFactor = settings.twoFactor.type.rawValue
+        userInfo.passwordMode = settings.password.mode.rawValue
         return userInfo
     }
 
