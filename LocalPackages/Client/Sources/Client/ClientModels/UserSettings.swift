@@ -23,13 +23,13 @@ import Foundation
 public struct UserSettings: Sendable {
     public let telemetry: Bool
     public let highSecurity: HighSecurity
-    public let password: PasswordMode
-    public let twoFactor: TwoFactorVerify
+    public let password: Password
+    public let twoFactor: TwoFactor
 
     public init(telemetry: Bool,
                 highSecurity: HighSecurity,
-                password: PasswordMode,
-                twoFactor: TwoFactorVerify) {
+                password: Password,
+                twoFactor: TwoFactor) {
         self.telemetry = telemetry
         self.highSecurity = highSecurity
         self.password = password
@@ -39,8 +39,57 @@ public struct UserSettings: Sendable {
     static var `default`: UserSettings {
         UserSettings(telemetry: false,
                      highSecurity: HighSecurity.default,
-                     password: .init(mode: 1),
-                     twoFactor: .init(enabled: 0))
+                     password: .init(mode: .singlePassword),
+                     twoFactor: .init(type: .disabled))
+    }
+
+    public struct Password: Sendable, Codable {
+        public let mode: PasswordMode
+
+        public enum PasswordMode: Int, Sendable, Codable {
+            case singlePassword = 1
+            case loginAndMailboxPassword = 2
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case mode
+        }
+
+        public init(mode: PasswordMode) {
+            self.mode = mode
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            // 1 means single password, 2 means login + mailbox password
+            mode = try container.decode(PasswordMode.self, forKey: .mode)
+        }
+    }
+
+    public struct TwoFactor: Sendable, Codable {
+        public let type: TwoFactorType
+
+        public enum TwoFactorType: Int, Sendable, Codable {
+            case disabled = 0
+            case otp = 1
+            case fido2 = 2
+            case both = 3
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case type = "enabled"
+        }
+
+        public init(type: TwoFactorType) {
+            self.type = type
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            type = try container.decode(TwoFactorType.self, forKey: .type)
+        }
     }
 }
 
@@ -59,8 +108,8 @@ extension UserSettings: Codable {
         let telemetry = try container.decode(Int.self, forKey: .telemetry)
         self.telemetry = telemetry.codableBoolValue
         highSecurity = try container.decode(HighSecurity.self, forKey: .highSecurity)
-        password = try container.decode(PasswordMode.self, forKey: .password)
-        twoFactor = try container.decode(TwoFactorVerify.self, forKey: .twoFactor)
+        password = try container.decode(Password.self, forKey: .password)
+        twoFactor = try container.decode(TwoFactor.self, forKey: .twoFactor)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -119,39 +168,5 @@ extension HighSecurity: Codable {
 
         // Encode `value` as 1 if true, else 0
         try container.encode(value.codableIntValue, forKey: .value)
-    }
-}
-
-public struct PasswordMode: Sendable {
-    public let mode: Int
-}
-
-extension PasswordMode: Codable {
-    enum CodingKeys: String, CodingKey {
-        case mode
-    }
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        // 1 means single password, 2 means login + mailbox password
-        mode = try container.decode(Int.self, forKey: .mode)
-    }
-}
-
-public struct TwoFactorVerify: Sendable {
-    public let enabled: Int
-}
-
-extension TwoFactorVerify: Codable {
-    enum CodingKeys: String, CodingKey {
-        case enabled
-    }
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        // 0 means not enabled
-        enabled = try container.decode(Int.self, forKey: .enabled)
     }
 }
