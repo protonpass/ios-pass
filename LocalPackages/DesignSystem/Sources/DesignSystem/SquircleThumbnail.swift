@@ -43,7 +43,7 @@ public struct SquircleThumbnail: View {
 
     public var body: some View {
         ZStack {
-            Color(uiColor: backgroundColor)
+            backgroundColor.toColor
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
 
             switch data {
@@ -52,14 +52,14 @@ public struct SquircleThumbnail: View {
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundColor(Color(uiColor: tintColor))
+                    .foregroundStyle(tintColor.toColor)
                     .padding(.vertical, height / 3.5)
 
             case let .initials(string):
                 Text(string)
                     .font(.system(size: height / 3))
                     .fontWeight(.medium)
-                    .foregroundColor(Color(uiColor: tintColor))
+                    .foregroundStyle(tintColor.toColor)
             }
         }
         .frame(width: height, height: height)

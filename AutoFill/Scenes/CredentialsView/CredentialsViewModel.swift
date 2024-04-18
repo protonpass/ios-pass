@@ -153,7 +153,7 @@ extension CredentialsViewModel {
     }
 
     func fetchItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -185,7 +185,7 @@ extension CredentialsViewModel {
     }
 
     func associateAndAutofill(item: any ItemIdentifiable) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self, let context else {
                 return
             }
@@ -304,7 +304,7 @@ private extension CredentialsViewModel {
         }
 
         lastTask?.cancel()
-        lastTask = Task { @MainActor [weak self] in
+        lastTask = Task { [weak self] in
             guard let self else {
                 return
             }

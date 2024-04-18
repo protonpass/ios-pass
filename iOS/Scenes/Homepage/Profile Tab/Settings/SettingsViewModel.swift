@@ -109,7 +109,7 @@ extension SettingsViewModel {
     }
 
     func toggleDisplayFavIcons() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let newValue = !displayFavIcons
@@ -127,7 +127,7 @@ extension SettingsViewModel {
     }
 
     func toggleShareClipboard() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let newValue = !shareClipboard
@@ -140,7 +140,7 @@ extension SettingsViewModel {
     }
 
     func toggleSpotlight() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if !spotlightEnabled, plan?.isFreeUser == true {
@@ -183,7 +183,7 @@ extension SettingsViewModel {
     }
 
     func forceSync() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 router.present(for: .fullSync)
@@ -298,7 +298,7 @@ private extension SettingsViewModel {
     }
 
     func reindexItemsForSpotlight() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let preferences = getUserPreferences()
@@ -315,7 +315,7 @@ private extension SettingsViewModel {
     }
 
     func refreshSpotlightVaults() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 logger.trace("Refreshing spotlight vaults")

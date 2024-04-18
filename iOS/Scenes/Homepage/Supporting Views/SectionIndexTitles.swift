@@ -35,7 +35,7 @@ struct SectionIndexTitles: View {
             ForEach(AlphabetLetter.letters(for: direction), id: \.rawValue) { letter in
                 Text(letter.character)
                     .font(.caption)
-                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                    .foregroundStyle(PassColor.interactionNorm.toColor)
                     .multilineTextAlignment(.trailing)
                     .padding(.leading)
                     .contentShape(Rectangle())

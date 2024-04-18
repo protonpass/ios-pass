@@ -37,7 +37,7 @@ struct CustomFieldTypesView: View {
             }
             .padding()
         }
-        .background(Color(uiColor: PassColor.backgroundWeak))
+        .background(PassColor.backgroundWeak.toColor)
     }
 
     private func row(for type: CustomFieldType) -> some View {
@@ -48,11 +48,11 @@ struct CustomFieldTypesView: View {
                 Image(uiImage: type.icon)
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: 20)
 
                 Text(type.title)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 Spacer()
             }

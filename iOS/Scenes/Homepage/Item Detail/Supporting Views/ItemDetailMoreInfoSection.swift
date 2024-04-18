@@ -46,7 +46,7 @@ struct ItemDetailMoreInfoSection: View {
                         Text("More info")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .foregroundStyle(PassColor.textWeak.toColor)
                     }, icon: {
                         icon(from: IconProvider.infoCircle)
                     })

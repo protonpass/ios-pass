@@ -126,7 +126,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             // We only show upsell button when in create mode
             // because we want to let users access their data in edit mode
             // even when they've reached limitations
-            Task { @MainActor [weak self] in
+            Task { [weak self] in
                 guard let self else { return }
                 do {
                     canAddOrEdit2FAURI = try await upgradeChecker.canHaveMoreLoginsWith2FA()
@@ -228,7 +228,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                                               creationInfo: aliasCreationLiteInfo,
                                                               delegate: self)
         } else {
-            Task { @MainActor [weak self] in
+            Task { [weak self] in
                 guard let self else { return }
                 defer { self.loading = false }
                 do {
@@ -271,7 +271,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func openCodeScanner() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             if await checkCameraPermission() {
                 isShowingCodeScanner = true

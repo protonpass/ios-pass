@@ -106,7 +106,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
 
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
         fetchingTask?.cancel()
-        fetchingTask = Task { @MainActor [weak self] in
+        fetchingTask = Task { [weak self] in
             guard let self else {
                 return
             }
@@ -138,7 +138,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     // swiftformat:disable all
     // swiftformat is confused when an async function takes an async autoclosure
     func handle(option: ShareInviteeOption) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 switch option {
@@ -231,7 +231,7 @@ private extension ManageSharedVaultViewModel {
 
 private extension ManageSharedVaultViewModel {
     func setUp() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }

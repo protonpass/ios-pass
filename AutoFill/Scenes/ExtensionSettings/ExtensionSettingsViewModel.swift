@@ -45,7 +45,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     }
 
     func toggleQuickTypeBar() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -63,7 +63,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     }
 
     func toggleAutomaticCopy2FACode() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if !automaticallyCopyTotpCode, getSharedPreferences().localAuthenticationMethod == .none {

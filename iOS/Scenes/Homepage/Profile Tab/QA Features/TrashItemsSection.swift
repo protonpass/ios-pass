@@ -140,7 +140,7 @@ private final class TrashItemsViewModel: ObservableObject {
     }
 
     func loadVaults() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 state = .loading
@@ -160,7 +160,7 @@ private final class TrashItemsViewModel: ObservableObject {
     }
 
     func trashItems(for vault: Vault) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 bannerManager.displayBottomInfoMessage("Trashing all items of \"\(vault.name)\"")

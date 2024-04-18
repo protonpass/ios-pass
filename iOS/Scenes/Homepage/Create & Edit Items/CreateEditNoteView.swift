@@ -79,7 +79,7 @@ struct CreateEditNoteView: View {
                     proxy.scrollTo(dummyId)
                 }
             }
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {

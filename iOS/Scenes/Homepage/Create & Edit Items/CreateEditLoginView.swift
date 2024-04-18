@@ -125,7 +125,7 @@ struct CreateEditLoginView: View {
                     }
                 }
             }
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {
@@ -358,7 +358,7 @@ private extension CreateEditLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
             }
@@ -485,7 +485,7 @@ private extension CreateEditLoginView {
                     .keyboardType(.URL)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 if !viewModel.totpUriErrorMessage.isEmpty {
                     InvalidInputLabel(viewModel.totpUriErrorMessage)
@@ -551,8 +551,8 @@ private struct WebsiteSection<Field: Hashable>: View {
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
-                            .foregroundColor(Color(uiColor: isValid(url) ?
-                                    PassColor.textNorm : PassColor.signalDanger))
+                            .foregroundStyle((isValid(url) ?
+                                    PassColor.textNorm : PassColor.signalDanger).toColor)
                             .onSubmit(onSubmit)
 
                             if !url.value.isEmpty {

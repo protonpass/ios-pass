@@ -31,7 +31,7 @@ struct LogsView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(uiColor: PassColor.backgroundNorm)
+                PassColor.backgroundNorm.toColor
                     .ignoresSafeArea()
 
                 if viewModel.isLoading {
@@ -60,7 +60,7 @@ struct LogsView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .background(PassColor.backgroundNorm.toColor)
         }
         .navigationViewStyle(.stack)
     }

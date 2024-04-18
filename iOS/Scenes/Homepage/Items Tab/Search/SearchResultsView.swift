@@ -79,7 +79,7 @@ struct SearchResultsView: View {
             } header: {
                 Text(headerTitle)
                     .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    .foregroundStyle(PassColor.textWeak.toColor)
             }
         }
     }
