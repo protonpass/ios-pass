@@ -177,6 +177,7 @@ public extension PreferencesManager {
     }
 
     func reset() async throws {
+        guard didSetUp else { return }
         try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
         try await updateSharedPreferences(\.pinCode, value: nil)
         try await updateSharedPreferences(\.failedAttemptCount, value: 0)
