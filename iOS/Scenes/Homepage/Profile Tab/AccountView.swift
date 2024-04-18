@@ -58,18 +58,44 @@ struct AccountView: View {
                                   height: .tall,
                                   content: {
                                       Text(plan.displayName)
-                                          .foregroundColor(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm.toColor)
                                   })
                     }
                 }
                 .roundedEditableSection()
+
+                if viewModel.canChangePassword {
+                    VStack(spacing: 0) {
+                        OptionRow(action: { viewModel.openChangeUserPassword() },
+                                  height: .tall,
+                                  content: {
+                                      Text("Change password")
+                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                  },
+                                  trailing: { ChevronRight() })
+
+                        if viewModel.canChangeMailboxPassword {
+                            PassSectionDivider()
+
+                            OptionRow(action: { viewModel.openChangeMailboxPassword() },
+                                      height: .tall,
+                                      content: {
+                                          Text("Change mailbox password")
+                                              .foregroundStyle(PassColor.textNorm.toColor)
+                                      },
+                                      trailing: { ChevronRight() })
+                        }
+                    }
+                    .roundedEditableSection()
+                    .padding(.top)
+                }
 
                 VStack(spacing: 0) {
                     OptionRow(action: { viewModel.openAccountSettings() },
                               height: .tall,
                               content: {
                                   Text("Manage account")
-                                      .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                                      .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                               },
                               trailing: {
                                   CircleButton(icon: IconProvider.arrowOutSquare,
@@ -83,7 +109,7 @@ struct AccountView: View {
                               height: .tall,
                               content: {
                                   Text("Manage subscription")
-                                      .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                                      .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                               },
                               trailing: {
                                   CircleButton(icon: IconProvider.arrowOutSquare,
@@ -102,7 +128,7 @@ struct AccountView: View {
                                       Text(AccountRecoveryModule.settingsItem)
                                       Spacer()
                                       Text(accountRecovery.valueForSettingsItem)
-                                  }.foregroundColor(PassColor.interactionNormMajor2.toColor)
+                                  }.foregroundStyle(PassColor.interactionNormMajor2.toColor)
                               },
                               trailing: {
                                   if let image = accountRecovery.imageForSettingsItem {
@@ -133,7 +159,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Delete account")
-                                  .foregroundColor(PassColor.signalDanger.toColor)
+                                  .foregroundStyle(PassColor.signalDanger.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.trash,

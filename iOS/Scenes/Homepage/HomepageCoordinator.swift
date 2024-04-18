@@ -33,6 +33,8 @@ import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCorePasswordChange
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import Screens
@@ -65,6 +67,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -465,6 +468,8 @@ extension HomepageCoordinator {
                     presentSecurity(securityWeakness)
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
+                case let .changePassword(mode):
+                    presentChangePassword(mode: mode)
                 }
             }
             .store(in: &cancellables)
@@ -813,6 +818,51 @@ extension HomepageCoordinator {
             hideLoadingHud()
             delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
         }
+    }
+
+    func presentChangePassword(mode: PasswordChangeModule.PasswordChangeMode) {
+        Task { @MainActor [weak self] in
+            guard let self, let userData = userDataProvider.getUserData() else { return }
+            do {
+                let userInfo = try await filledUserInfo(userData: userData)
+                let viewController = PasswordChangeModule
+                    .makePasswordChangeViewController(mode: mode,
+                                                      apiService: apiManager.apiService,
+                                                      authCredential: userData.credential,
+                                                      userInfo: userInfo,
+                                                      showingDismissButton: true) { [weak self] cred, userInfo in
+                        guard let self else { return }
+                        processPasswordChange(authCredential: cred, userInfo: userInfo)
+                    }
+                let navigationController = UINavigationController(rootViewController: viewController)
+                present(navigationController)
+            } catch {
+                self.logger.error(error.localizedDescription)
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
+    }
+
+    private func filledUserInfo(userData: UserData) async throws -> UserInfo {
+        let userId = try userDataProvider.getUserId()
+        let settings = await userSettingsRepository.getSettings(for: userId)
+        let userInfo = userData.toUserInfo
+        userInfo.twoFactor = settings.twoFactor.type.rawValue
+        userInfo.passwordMode = settings.password.mode.rawValue
+        return userInfo
+    }
+
+    private func processPasswordChange(authCredential: AuthCredential, userInfo: UserInfo) {
+        guard let userData = userDataProvider.getUserData() else { return }
+        var updatedUser = userData.user
+        updatedUser.setNewKeys(userInfo.userKeys)
+        userDataProvider.setUserData(.init(credential: authCredential,
+                                           user: updatedUser,
+                                           salts: userData.salts,
+                                           passphrases: userData.passphrases,
+                                           addresses: userInfo.userAddresses,
+                                           scopes: userData.scopes))
+        dismissTopMostViewController()
     }
 
     // MARK: - UI Helper presentation functions
