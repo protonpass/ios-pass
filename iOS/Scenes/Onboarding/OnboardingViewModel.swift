@@ -33,10 +33,13 @@ final class OnboardingViewModel: ObservableObject {
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let bannerManager = resolve(\SharedViewContainer.bannerManager)
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -51,22 +54,22 @@ final class OnboardingViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        preferences.objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
+            .filter(\.localAuthenticationMethod)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                if preferences.localAuthenticationMethod == .biometric {
-                    do {
-                        let biometryType = try checkBiometryType(policy: policy)
-                        switch biometryType {
-                        case .touchID:
-                            state = .touchIDEnabled
-                        default:
-                            state = .faceIDEnabled
-                        }
-                    } catch {
+            .sink { [weak self] newValue in
+                guard let self, newValue == .biometric else { return }
+                do {
+                    let biometryType = try checkBiometryType(policy: policy)
+                    switch biometryType {
+                    case .touchID:
+                        state = .touchIDEnabled
+                    default:
                         state = .faceIDEnabled
                     }
+                } catch {
+                    state = .faceIDEnabled
                 }
             }
             .store(in: &cancellables)
@@ -91,7 +94,7 @@ extension OnboardingViewModel {
                     let authenticated = try await authenticate(policy: policy,
                                                                reason: #localized("Please authenticate"))
                     if authenticated {
-                        preferences.localAuthenticationMethod = .biometric
+                        try await updateSharedPreferences(\.localAuthenticationMethod, value: .biometric)
                         showAppropriateBiometricAuthenticationStep()
                     }
                 } catch {
@@ -138,12 +141,18 @@ private extension OnboardingViewModel {
     }
 
     func finishOnboarding() {
-        preferences.onboarded = true
-        finished = true
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            // Optionally update "onboarded" to not block users from using the app
+            // in case errors happens
+            try? await updateAppPreferences(\.onboarded, value: true)
+            finished = true
+        }
     }
 
     func showAppropriateBiometricAuthenticationStep() {
         do {
+            let preferences = getSharedPreferences()
             let biometryType = try checkBiometryType(policy: policy)
             switch biometryType {
             case .faceID:

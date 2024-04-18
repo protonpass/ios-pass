@@ -45,8 +45,9 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
 
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -74,6 +75,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
+    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -92,8 +94,8 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         self.context = context
 
         // Post init
-        rootViewController.view.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
-        setUpSentry(bundle: .main)
+        setUpSentry()
+        setCoreLoggerEnvironment()
         AppearanceSettings.apply()
         setUpRouting()
 
@@ -116,6 +118,22 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             .store(in: &cancellables)
     }
 
+    /// Necessary set up like initializing preferences and theme before starting user flow
+    func setUpAndStart(mode: AutoFillMode) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.setUp()
+                rootViewController?.view.overrideUserInterfaceStyle = theme.userInterfaceStyle
+                start(mode: mode)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+}
+
+private extension CredentialProviderCoordinator {
     func start(mode: AutoFillMode) {
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
@@ -135,9 +153,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             handlePasskeyRegistration(request)
         }
     }
-}
 
-private extension CredentialProviderCoordinator {
     func handleShowAllLoginsMode(identifiers: [ASCredentialServiceIdentifier],
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
@@ -189,7 +205,7 @@ private extension CredentialProviderCoordinator {
                 handle(error: error)
             }
         }
-        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
+        showView(LockedCredentialView(viewModel: viewModel))
     }
 
     func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
@@ -321,6 +337,7 @@ private extension CredentialProviderCoordinator {
         case .userCancelled:
             cancelAutoFill(reason: .userCanceled, context: context)
             return
+
         case .failedToAuthenticate:
             logOut { [weak self] in
                 guard let self else { return }
@@ -345,7 +362,7 @@ private extension CredentialProviderCoordinator {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
             await revokeCurrentSession()
-            await wipeAllData(isTests: false)
+            await wipeAllData()
             showNotLoggedInView()
             completion?()
         }
@@ -415,7 +432,7 @@ private extension CredentialProviderCoordinator {
 
     func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
-        viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
         topMostViewController?.present(viewController, animated: animated)
     }
 
@@ -524,7 +541,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
-                    try await indexAllLoginItems(ignorePreferences: false)
+                    if getSharedPreferences().quickTypeBar {
+                        try await indexAllLoginItems()
+                    }
                     if let response {
                         completePasskeyRegistration(response, context: context)
                     } else {

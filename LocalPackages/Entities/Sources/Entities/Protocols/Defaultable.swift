@@ -1,7 +1,7 @@
 //
-// LABiometryType+Extensions.swift
-// Proton Pass - Created on 31/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Defaultable.swift
+// Proton Pass - Created on 11/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,22 +17,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import LocalAuthentication
-import SwiftUI
+import Foundation
 
-public extension LABiometryType {
-    var fallbackToPasscodeMessage: LocalizedStringKey? {
-        switch self {
-        case .faceID:
-            return "Use system passcode when Face ID fails"
-        case .touchID:
-            return "Use system passcode when Touch ID fails"
-        case .opticID:
-            return "Use system passcode when Optic ID fails"
-        default:
-            assertionFailure("Not applicable")
-            return nil
-        }
-    }
+public protocol Defaultable {
+    static var `default`: Self { get }
 }

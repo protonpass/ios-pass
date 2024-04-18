@@ -51,6 +51,8 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -162,13 +164,15 @@ private extension VaultsManager {
             guard let self else { return }
             // "Do catch" separately because we don't want an operation to fail the others
             do {
-                try await indexAllLoginItems(ignorePreferences: false)
+                if getSharedPreferences().quickTypeBar {
+                    try await indexAllLoginItems()
+                }
             } catch {
                 logger.error(error)
             }
 
             do {
-                try await indexItemsForSpotlight()
+                try await indexItemsForSpotlight(getUserPreferences())
             } catch {
                 logger.error(error)
             }

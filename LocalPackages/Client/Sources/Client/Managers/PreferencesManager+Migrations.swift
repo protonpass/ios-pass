@@ -1,7 +1,7 @@
 //
-// LABiometryType+Extensions.swift
-// Proton Pass - Created on 31/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PreferencesManager+Migrations.swift
+// Proton Pass - Created on 07/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,22 +17,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import LocalAuthentication
-import SwiftUI
+import Entities
+import Foundation
 
-public extension LABiometryType {
-    var fallbackToPasscodeMessage: LocalizedStringKey? {
-        switch self {
-        case .faceID:
-            return "Use system passcode when Face ID fails"
-        case .touchID:
-            return "Use system passcode when Touch ID fails"
-        case .opticID:
-            return "Use system passcode when Optic ID fails"
-        default:
-            assertionFailure("Not applicable")
-            return nil
-        }
-    }
+// swiftlint:disable:next todo
+// TODO: Introduced in april 2024, can be removed several months later
+// sourcery: AutoMockable
+public protocol PreferencesMigrator: Sendable {
+    // swiftlint:disable:next large_tuple
+    func migratePreferences() -> (AppPreferences, SharedPreferences, UserPreferences)
 }
