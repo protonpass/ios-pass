@@ -23,10 +23,11 @@
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
 
 enum SecureRowType {
-    case info, warning, danger, success
+    case info, warning, danger, success, upsell
 
     var icon: String? {
         switch self {
@@ -62,6 +63,8 @@ enum SecureRowType {
             PassColor.cardInteractionNormMinor2
         case .info:
             PassColor.backgroundNorm
+        case .upsell:
+            PassColor.interactionNormMinor2
         }
     }
 
@@ -75,6 +78,8 @@ enum SecureRowType {
             PassColor.cardInteractionNormMinor1
         case .info:
             PassColor.inputBorderNorm
+        case .upsell:
+            PassColor.interactionNormMinor1
         }
     }
 
@@ -86,7 +91,7 @@ enum SecureRowType {
             PassColor.noteInteractionNormMajor2
         case .success:
             PassColor.cardInteractionNormMajor2
-        case .info:
+        case .info, .upsell:
             PassColor.textNorm
         }
     }
@@ -99,8 +104,21 @@ enum SecureRowType {
             PassColor.noteInteractionNormMinor1
         case .success:
             PassColor.cardInteractionNormMinor1
-        case .info:
+        case .info, .upsell:
             PassColor.backgroundMedium
+        }
+    }
+
+    var titleColor: UIColor {
+        PassColor.textNorm
+    }
+
+    var subtitleColor: UIColor {
+        switch self {
+        case .success:
+            PassColor.cardInteractionNormMajor2
+        default:
+            PassColor.textWeak
         }
     }
 }
@@ -119,6 +137,7 @@ struct PassMonitorView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
+            .animation(.default, value: viewModel.breaches)
             .showSpinner(viewModel.loading || viewModel.updatingSentinel)
             .sheet(isPresented: $viewModel.showSentinelSheet) {
                 SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
@@ -138,14 +157,24 @@ struct PassMonitorView: View {
 
 private extension PassMonitorView {
     var mainContent: some View {
-        LazyVStack {
-            if let weaknessStats = viewModel.weaknessStats {
-                breachedDataRows(weaknessStats: weaknessStats)
+        LazyVStack(spacing: DesignConstant.sectionPadding) {
+            if let breaches = viewModel.breaches {
+                breachedDataRows(breaches: breaches)
+            }
 
-                sentinelRow(rowType: .info,
-                            title: "Proton Sentinel",
-                            subTitle: "Advanced account protection program",
-                            action: { viewModel.showSentinelSheet = true })
+            if let weaknessStats = viewModel.weaknessStats {
+                if viewModel.isFreeUser {
+                    passMonitorRow(rowType: .upsell,
+                                   title: "Proton Sentinel",
+                                   subTitle: "Advanced account protection program",
+                                   badge: PassIcon.passSubscriptionBadge,
+                                   action: { viewModel.showSentinelSheet = true })
+                } else {
+                    sentinelRow(rowType: .info,
+                                title: "Proton Sentinel",
+                                subTitle: "Advanced account protection program",
+                                action: { viewModel.showSentinelSheet = true })
+                }
                 Section {
                     VStack(spacing: DesignConstant.sectionPadding) {
                         weakPasswordsRow(weaknessStats.weakPasswords)
@@ -170,14 +199,12 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
-    func breachedDataRows(weaknessStats: WeaknessStats) -> some View {
-        VStack {
-            if viewModel.isFreeUser {
-                upsellRow(weaknessStats: weaknessStats)
-            } else {
-                breachedEmailsRow(weaknessStats.exposedPasswords, showAdvice: true)
-                breachedPasswordsRow(weaknessStats.exposedPasswords, showAdvice: true)
-            }
+    @ViewBuilder
+    func breachedDataRows(breaches: UserBreaches) -> some View {
+        if viewModel.isFreeUser {
+            upsellRow(breaches: breaches)
+        } else {
+            breachedRow(breaches.emailsCount)
         }
     }
 
@@ -202,7 +229,7 @@ private extension PassMonitorView {
                 .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
                 .layoutPriority(1)
 
-                StaticToggleView(isOn: viewModel.isSentinelActive)
+                StaticToggle(isOn: viewModel.isSentinelActive, action: action)
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
             .roundedDetailSection(backgroundColor: rowType.background,
@@ -211,47 +238,112 @@ private extension PassMonitorView {
         .buttonStyle(.plain)
     }
 
-    func upsellRow(weaknessStats: WeaknessStats) -> some View {
-        VStack(spacing: DesignConstant.sectionPadding) {
-            Text("Data Breach Protection")
-                .font(.title)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .padding(.top, DesignConstant.sectionPadding)
+    func upsellRow(breaches: UserBreaches) -> some View {
+        ZStack(alignment: .topTrailing) {
+            VStack(alignment: breaches.breached ? .leading : .center, spacing: DesignConstant.sectionPadding) {
+                Text(breaches.breached ? "Breached Detected" : "Dark Web Monitoring")
+                    .font(.title)
+                    .fontWeight(.medium)
+                    .foregroundStyle(breaches.breached ? PassColor.passwordInteractionNormMajor2
+                        .toColor : PassColor.textNorm.toColor)
+                    .padding(.top, DesignConstant.sectionPadding + 15)
+                    .multilineTextAlignment(breaches.breached ? .leading : .center)
 
-            VStack(spacing: DesignConstant.sectionPadding / 2) {
-                breachedEmailsRow(weaknessStats.exposedPasswords, showAdvice: false)
-                breachedPasswordsRow(weaknessStats.exposedPasswords, showAdvice: false)
+                Text(breaches
+                    .breached ? "Your email addresses were leaked in at least 1 data breach." :
+                    "Get notified if your email, password or other personal data was leaked.")
+                    .font(.body)
+                    .foregroundStyle(breaches.breached ? PassColor.passwordInteractionNormMajor2
+                        .toColor : PassColor.textNorm.toColor)
+                    .multilineTextAlignment(breaches.breached ? .leading : .center)
+
+                if breaches.breached, let latestBreach = breaches.latestBreach {
+                    HStack {
+                        Image(uiImage: PassIcon.lightning)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 24)
+                            .padding(10)
+                            .roundedDetailSection(backgroundColor: PassColor
+                                .passwordInteractionNormMinor1,
+                                borderColor: .clear)
+
+                        VStack(alignment: .leading) {
+                            Text(latestBreach.domain)
+                                .font(.body)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                            Text(latestBreach.formattedDateDescription)
+                                .font(.footnote)
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
+                        VStack(alignment: .leading) {
+                            Text("Email address")
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Text(verbatim: "Thisisafakeemail@proton.me")
+                                .font(.body)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .blur(radius: 5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, DesignConstant.sectionPadding)
+
+                        VStack(alignment: .leading) {
+                            Text("Password")
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Text(verbatim: "Thisisafakepassword")
+                                .font(.body)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                                .blur(radius: 5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, DesignConstant.sectionPadding)
+                    }
+                    .padding(DesignConstant.sectionPadding)
+                    .frame(maxWidth: .infinity)
+                    .roundedDetailSection(backgroundColor: PassColor
+                        .passwordInteractionNormMinor1,
+                        borderColor: .clear)
+                }
+
+                CapsuleTextButton(title: breaches.breached ? "View Details" : "Enable",
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: breaches.breached ? PassColor
+                                      .passwordInteractionNormMajor2 : PassColor.interactionNormMajor2,
+                                  action: { viewModel.upsell(entryPoint: .darkWebMonitorNoBreach) })
+                    .padding(.bottom, DesignConstant.sectionPadding)
             }
-
-            Text("Your data appears in data breaches, upgrade to see which ones.")
-                .font(.body)
-                .foregroundStyle(PassColor.textNorm.toColor)
-
-            CapsuleTextButton(title: "Enable data breach protection",
-                              titleColor: PassColor.textInvert,
-                              backgroundColor: PassColor.interactionNormMajor2,
-                              action: {})
-                .padding(.bottom, DesignConstant.sectionPadding)
+            Image(uiImage: PassIcon.passSubscriptionBadge)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 24)
+                .padding(.top, 10)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: SecureRowType.danger.background,
-                              borderColor: SecureRowType.danger.border)
+        .roundedDetailSection(backgroundColor: breaches.breached ? PassColor
+            .passwordInteractionNormMinor2 : PassColor.interactionNormMinor2,
+            borderColor: breaches.breached ? PassColor.passwordInteractionNormMinor1 : PassColor
+                .interactionNormMinor1)
     }
 
-    func breachedPasswordsRow(_ breachedPasswords: Int, showAdvice: Bool) -> some View {
-        passMonitorRow(rowType: breachedPasswords > 0 ? .warning : .success,
-                       title: "Exposed passwords",
-                       subTitle: showAdvice ? "Requires immediate action" : nil,
-                       info: "\(breachedPasswords)",
-                       action: { viewModel.showSecurityWeakness(type: .exposedPassword) })
-    }
-
-    func breachedEmailsRow(_ breachedEmails: Int, showAdvice: Bool) -> some View {
-        passMonitorRow(rowType: breachedEmails > 0 ? .warning : .success,
-                       title: "Exposed emails",
-                       subTitle: showAdvice ? "Requires immediate action" : nil,
-                       info: "\(breachedEmails)",
-                       action: { viewModel.showSecurityWeakness(type: .exposedEmail) })
+    func breachedRow(_ breaches: Int) -> some View {
+        passMonitorRow(rowType: breaches > 0 ? .warning : .success,
+                       title: "Dark Web Monitoring",
+                       subTitle: breaches > 0 ? "Requires immediate action" : "No breaches detected",
+                       info: "\(breaches)",
+                       action: { viewModel.showSecurityWeakness(type: .breaches) })
     }
 }
 
@@ -262,6 +354,7 @@ private extension PassMonitorView {
                        subTitle: weakPasswords > 0 ? "Create strong passwords" :
                            "You don't have any weak passwords",
                        info: "\(weakPasswords)",
+                       actionable: weakPasswords > 0,
                        action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
     }
 }
@@ -272,6 +365,7 @@ private extension PassMonitorView {
                        title: "Reused passwords",
                        subTitle: "Create unique passwords",
                        info: "\(reusedPasswords)",
+                       actionable: reusedPasswords > 0,
                        action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
     }
 }
@@ -282,6 +376,7 @@ private extension PassMonitorView {
                        title: "Missing two-factor authentication",
                        subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
                        info: "\(missing2FA)",
+                       actionable: missing2FA > 0,
                        action: { viewModel.showSecurityWeakness(type: .missing2FA) })
     }
 }
@@ -292,6 +387,7 @@ private extension PassMonitorView {
                        title: "Excluded items",
                        subTitle: "These items remain at risk",
                        info: "\(excludedItems)",
+                       actionable: excludedItems > 0,
                        action: { viewModel.showSecurityWeakness(type: .excludedItems) })
     }
 }
@@ -302,9 +398,11 @@ private extension PassMonitorView {
     func passMonitorRow(rowType: SecureRowType,
                         title: LocalizedStringKey,
                         subTitle: LocalizedStringKey?,
-                        info: String,
+                        info: String? = nil,
+                        badge: UIImage? = nil,
+                        actionable: Bool = true,
                         action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button(action: actionable ? action : {}) {
             HStack(spacing: DesignConstant.sectionPadding) {
                 if let iconName = rowType.icon {
                     Image(systemName: iconName)
@@ -318,22 +416,47 @@ private extension PassMonitorView {
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(title)
                         .font(.body)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .lineLimit(1)
+                        .foregroundStyle(rowType.titleColor.toColor)
+                        .minimumScaleFactor(0.5)
+
                     if let subTitle {
                         Text(subTitle)
-                            .font(.footnote)
-                            .foregroundColor(PassColor.textWeak.toColor)
+                            .font(.callout)
+                            .lineLimit(1)
+                            .foregroundColor(rowType.subtitleColor.toColor)
+                            .layoutPriority(1)
+                            .minimumScaleFactor(0.25)
                     }
                 }
                 .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
                 .contentShape(Rectangle())
 
-                Text(info)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 11)
-                    .foregroundColor(rowType.infoForeground.toColor)
-                    .background(rowType.infoBackground.toColor)
-                    .clipShape(Capsule())
+                if let info {
+                    Text(info)
+                        .font(.body)
+                        .fontWeight(.medium)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 11)
+                        .foregroundColor(rowType.infoForeground.toColor)
+                        .background(rowType.infoBackground.toColor)
+                        .clipShape(Capsule())
+                    if actionable {
+                        Image(uiImage: IconProvider.chevronRight)
+                            .resizable()
+                            .foregroundColor(rowType.infoForeground.toColor)
+                            .scaledToFit()
+                            .frame(height: 12)
+                    }
+                }
+
+                if let badge {
+                    Image(uiImage: badge)
+                        .resizable()
+                        .foregroundColor(rowType.infoForeground.toColor)
+                        .scaledToFit()
+                        .frame(height: 24)
+                }
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
             .roundedDetailSection(backgroundColor: rowType.background,
