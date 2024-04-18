@@ -96,7 +96,7 @@ private extension EditableVaultListViewModel {
     }
 
     func doDelete(vault: Vault) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
             do {
@@ -133,7 +133,7 @@ extension EditableVaultListViewModel {
     }
 
     func leaveVault(vault: Vault) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await leaveShare(with: vault.shareId)
@@ -150,7 +150,7 @@ extension EditableVaultListViewModel {
     }
 
     func restoreAllTrashedItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
             do {
@@ -168,7 +168,7 @@ extension EditableVaultListViewModel {
     }
 
     func emptyTrash() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
             do {

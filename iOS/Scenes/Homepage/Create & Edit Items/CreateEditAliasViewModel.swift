@@ -76,6 +76,7 @@ final class MailboxSelection: ObservableObject, Equatable, Hashable {
 
 // MARK: - Initialization
 
+@MainActor
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -219,7 +220,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
 extension CreateEditAliasViewModel {
     func getAliasAndAliasOptions() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 state = .loading

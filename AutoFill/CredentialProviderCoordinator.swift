@@ -120,7 +120,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Necessary set up like initializing preferences and theme before starting user flow
     func setUpAndStart(mode: AutoFillMode) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
@@ -225,7 +225,7 @@ private extension CredentialProviderCoordinator {
     }
 
     func createNewLoginWithPasskey(_ request: PasskeyCredentialRequest) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             await showCreateLoginView(url: nil, request: request)
         }
@@ -356,7 +356,7 @@ private extension CredentialProviderCoordinator {
     func logOut(error: Error? = nil,
                 sessionId: String? = nil,
                 completion: (() -> Void)? = nil) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             if let error {
                 sendErrorToSentry(error, sessionId: sessionId)
@@ -488,7 +488,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCreateLoginItem(url: URL?) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             await showCreateLoginView(url: url, request: nil)
         }
