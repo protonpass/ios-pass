@@ -118,13 +118,15 @@ final class AppCoordinator {
                     logger.info("Already logged in")
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: false)
-                    registerForPushNotificationsIfNeededAndAddHandlers()
+                    if let sessionID = appData.getCredential()?.sessionID {
+                        registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
+                    }
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: true)
-                    registerForPushNotificationsIfNeededAndAddHandlers()
+                    registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
@@ -225,11 +227,12 @@ private extension AppCoordinator {
 }
 
 private extension AppCoordinator {
-    func registerForPushNotificationsIfNeededAndAddHandlers() {
+    func registerForPushNotificationsIfNeededAndAddHandlers(uid: String) {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.pushNotifications, reloadValue: true)
         else { return }
 
         pushNotificationService.setup()
+        pushNotificationService.registerForRemoteNotifications(uid: uid)
 
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true)
         else { return }
