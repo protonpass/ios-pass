@@ -55,13 +55,14 @@ private extension SecurityWeaknessDetailView {
                 }
                 Spacer()
             }
-        }.padding(.horizontal, DesignConstant.sectionPadding)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .toolbar { toolbarContent }
-            .scrollViewEmbeded(maxWidth: .infinity)
-            .background(PassColor.backgroundNorm.toColor)
-            .showSpinner(viewModel.loading)
-            .navigationTitle(viewModel.title)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .toolbar { toolbarContent }
+        .scrollViewEmbeded(maxWidth: .infinity)
+        .background(PassColor.backgroundNorm.toColor)
+        .showSpinner(viewModel.loading)
+        .navigationTitle(viewModel.title)
     }
 }
 
