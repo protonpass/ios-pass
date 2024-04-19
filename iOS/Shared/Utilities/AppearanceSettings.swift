@@ -29,6 +29,7 @@ enum AppearanceSettings {
 
             UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
                 PassColor.interactionNorm
+            UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
 
             UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassColor.textNorm]
