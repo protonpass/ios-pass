@@ -46,14 +46,4 @@ public final class MainKeyProviderMock: @unchecked Sendable, MainKeyProvider {
             return stubbedMainKey
         }
     }
-    // MARK: - wipeMainKey
-    public var closureWipeMainKey: () -> () = {}
-    public var invokedWipeMainKeyfunction = false
-    public var invokedWipeMainKeyCount = 0
-
-    public func wipeMainKey() {
-        invokedWipeMainKeyfunction = true
-        invokedWipeMainKeyCount += 1
-        closureWipeMainKey()
-    }
 }

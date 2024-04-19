@@ -95,7 +95,8 @@ private extension LogInDetailView {
                                                  action: { viewModel.showItemHistory() })
 
                         ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
-                                                  itemContent: viewModel.itemContent)
+                                                  itemContent: viewModel.itemContent,
+                                                  onCopy: { viewModel.copyToClipboard(text: $0, message: $1) })
                             .padding(.top, 24)
                             .id(bottomID)
                     }

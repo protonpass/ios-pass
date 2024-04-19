@@ -350,3 +350,11 @@ extension SharedUseCasesContainer {
         self { UpdateUserPreferences(manager: self.preferencesManager) }
     }
 }
+
+// MARK: Misc
+
+extension SharedUseCasesContainer {
+    var copyToClipboard: Factory<CopyToClipboardUseCase> {
+        self { CopyToClipboard(getSharedPreferences: self.getSharedPreferences()) }
+    }
+}

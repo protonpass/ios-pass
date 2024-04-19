@@ -180,7 +180,10 @@ private extension CredentialProviderCoordinator {
         Task { [weak self] in
             guard let self, let context else { return }
             do {
-                try await checkAndAutoFill(request, context: context)
+                let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod
+                try await checkAndAutoFill(request,
+                                           context: context,
+                                           localAuthenticationMethod: localAuthenticationMethod)
             } catch {
                 logger.error(error)
                 cancelAutoFill(reason: .failed, context: context)

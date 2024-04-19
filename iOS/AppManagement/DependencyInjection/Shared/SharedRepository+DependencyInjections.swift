@@ -58,10 +58,6 @@ private extension SharedRepositoryContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var preferences: Preferences {
-        SharedToolingContainer.shared.preferences()
-    }
-
     var currentDateProvider: CurrentDateProviderProtocol {
         SharedToolingContainer.shared.currentDateProvider()
     }
@@ -179,7 +175,7 @@ private extension SharedRepositoryContainer {
 
     var telemetryScheduler: Factory<TelemetrySchedulerProtocol> {
         self { TelemetryScheduler(currentDateProvider: self.currentDateProvider,
-                                  thresholdProvider: self.preferences) }
+                                  thresholdProvider: SharedToolingContainer.shared.preferencesManager()) }
     }
 
     var remoteFavIconDatasource: Factory<RemoteFavIconDatasourceProtocol> {
@@ -327,7 +323,6 @@ extension SharedRepositoryContainer {
     var favIconRepository: Factory<FavIconRepositoryProtocol> {
         self { FavIconRepository(datasource: self.remoteFavIconDatasource(),
                                  containerUrl: URL.favIconsContainerURL(),
-                                 settings: self.preferences,
                                  symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 
