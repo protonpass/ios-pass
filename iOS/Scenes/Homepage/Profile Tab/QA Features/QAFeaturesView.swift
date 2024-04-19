@@ -52,6 +52,7 @@ struct QAFeaturesView: View {
                 if #available(iOS 17, *) {
                     TipKitSection()
                 }
+                PassMonitorSection()
             }
             .navigationTitle(Text(verbatim: "QA Features"))
             .toolbar {
