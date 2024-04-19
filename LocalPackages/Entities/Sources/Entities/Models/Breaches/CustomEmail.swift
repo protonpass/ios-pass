@@ -49,5 +49,3 @@ public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiabl
         breachCounter > 0
     }
 }
-
-
