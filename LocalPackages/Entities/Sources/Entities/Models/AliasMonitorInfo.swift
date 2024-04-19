@@ -1,7 +1,6 @@
 //
-//
-// GetAllAliases.swift
-// Proton Pass - Created on 17/04/2024.
+// AliasMonitorInfo.swift
+// Proton Pass - Created on 19/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,29 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
-import Entities
+import Foundation
 
-public protocol GetAllAliasesUseCase: Sendable {
-    func execute() async throws -> [ItemContent]
-}
+public struct AliasMonitorInfo: Sendable, Identifiable {
+    public let alias: ItemContent
+    public let breaches: EmailBreaches?
 
-public extension GetAllAliasesUseCase {
-    func callAsFunction() async throws -> [ItemContent] {
-        try await execute()
-    }
-}
-
-public final class GetAllAliases: GetAllAliasesUseCase {
-    private let itemRepository: any ItemRepositoryProtocol
-
-    public init(itemRepository: any ItemRepositoryProtocol) {
-        self.itemRepository = itemRepository
+    public init(alias: ItemContent, breaches: EmailBreaches?) {
+        self.alias = alias
+        self.breaches = breaches
     }
 
-    public func execute() async throws -> [ItemContent] {
-        try await itemRepository.getAllItemContents().filter { $0.contentData == .alias }
+    public var id: String {
+        alias.id
     }
 }
