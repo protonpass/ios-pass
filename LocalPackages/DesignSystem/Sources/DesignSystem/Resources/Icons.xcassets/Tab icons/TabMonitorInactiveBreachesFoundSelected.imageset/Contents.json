@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "TabMonitorInactiveBreachesFoundSelectedLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "TabMonitorInactiveBreachesFoundSelectedDark.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
