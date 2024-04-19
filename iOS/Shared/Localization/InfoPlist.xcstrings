@@ -25,7 +25,7 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Proton Pass"
           }
         },
@@ -121,7 +121,7 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Scan 2FA code, credit card and hand-written note"
           }
         },
@@ -265,7 +265,7 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Restrict unwelcome access to your Proton Pass account on this device"
           }
         },
