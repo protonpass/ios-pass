@@ -25,8 +25,6 @@ import Foundation
 
 /// Take care of fetching and caching behind the scenes
 public protocol BreachRepositoryProtocol: Sendable {
-    var updatedCustomEmails: PassthroughSubject<[CustomEmail]?, Never> { get }
-
     func getAllBreachesForUser() async throws -> UserBreaches
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
@@ -37,8 +35,6 @@ public protocol BreachRepositoryProtocol: Sendable {
 }
 
 public actor BreachRepository: BreachRepositoryProtocol {
-    public let updatedCustomEmails: PassthroughSubject<[CustomEmail]?, Never> = .init()
-
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
     private let logger: Logger
 
@@ -55,7 +51,6 @@ public actor BreachRepository: BreachRepositoryProtocol {
 
     public func getAllCustomEmailForUser() async throws -> [CustomEmail] {
         let emails = try await remoteDataSource.getAllCustomEmailForUser()
-        updatedCustomEmails.send(emails)
         return emails
     }
 
