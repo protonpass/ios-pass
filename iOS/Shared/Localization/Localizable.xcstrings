@@ -39311,6 +39311,26 @@
         }
       }
     },
+    "Item added to monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item added to monitoring"
+          }
+        }
+      }
+    },
+    "Item excluded from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item excluded from monitoring"
+          }
+        }
+      }
+    },
     "Item ID" : {
       "localizations" : {
         "be" : {
