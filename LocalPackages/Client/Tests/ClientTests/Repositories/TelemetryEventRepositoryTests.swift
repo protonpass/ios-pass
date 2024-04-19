@@ -78,7 +78,8 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
                                     trialEnd: .random(in: 1...100),
                                     vaultLimit: .random(in: 1...100),
                                     aliasLimit: .random(in: 1...100),
-                                    totpLimit: .random(in: 1...100)),
+                                    totpLimit: .random(in: 1...100)), 
+                        monitor: .init(protonAddress: .random(), aliases: .random()),
                         pendingInvites: 1,
                         waitingNewUserInvites: 1,
                         minVersionUpgrade: nil)
