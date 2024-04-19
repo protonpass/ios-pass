@@ -31,7 +31,7 @@ public struct SquircleCheckbox: View {
 
     public var body: some View {
         ZStack {
-            Color(uiColor: PassColor.interactionNorm)
+            PassColor.interactionNorm.toColor
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
 
             Image(uiImage: IconProvider.checkmark)

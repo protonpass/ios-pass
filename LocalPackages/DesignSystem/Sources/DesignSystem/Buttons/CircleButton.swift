@@ -82,14 +82,14 @@ public struct CircleButton: View {
 
     private var realBody: some View {
         ZStack {
-            Color(uiColor: isEnabled ? backgroundColor : PassColor.backgroundWeak)
+            (isEnabled ? backgroundColor : PassColor.backgroundWeak).toColor
                 .clipShape(Circle())
 
             Image(uiImage: icon)
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()
-                .foregroundColor(isEnabled ? iconColor.toColor : PassColor.textDisabled.toColor)
+                .foregroundStyle((isEnabled ? iconColor : PassColor.textDisabled).toColor)
                 .frame(width: type.iconWidth, height: type.iconWidth)
         }
         .frame(width: type.width, height: type.width)

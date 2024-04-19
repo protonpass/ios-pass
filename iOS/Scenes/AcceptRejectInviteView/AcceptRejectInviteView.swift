@@ -84,7 +84,7 @@ private extension AcceptRejectInviteView {
     func vaultInformation(infos: VaultProtobuf) -> some View {
         VStack {
             ZStack {
-                Color(uiColor: infos.display.color.color.color.withAlphaComponent(0.16))
+                infos.display.color.color.color.withAlphaComponent(0.16).toColor
                     .clipShape(Circle())
 
                 Image(uiImage: infos.display.icon.icon.bigImage)

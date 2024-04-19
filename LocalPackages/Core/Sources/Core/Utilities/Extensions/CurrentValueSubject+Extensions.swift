@@ -1,6 +1,6 @@
 //
-// SecuritySettingsProvider.swift
-// Proton Pass - Created on 04/03/2024.
+// CurrentValueSubject+Extensions.swift
+// Proton Pass - Created on 11/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,9 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Combine
 import Entities
 
-public protocol SecuritySettingsProvider: Sendable, AnyObject {
-    var localAuthenticationMethod: LocalAuthenticationMethod { get set }
-    var appLockTime: AppLockTime { get set }
+public extension CurrentValueSubject {
+    /// Return unwrapped value if not `nil`, return default value otherwise
+    func unwrapped<T: Defaultable>() -> T where Output == T? {
+        if let value {
+            return value
+        } else {
+            return T.default
+        }
+    }
 }

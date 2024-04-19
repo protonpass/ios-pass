@@ -26,7 +26,7 @@ public struct PassDivider: View {
 
     public var body: some View {
         Divider()
-            .foregroundColor(Color(uiColor: PassColor.backgroundWeak))
+            .foregroundStyle(PassColor.backgroundWeak.toColor)
     }
 }
 
@@ -35,6 +35,6 @@ public struct PassSectionDivider: View {
 
     public var body: some View {
         Divider()
-            .foregroundColor(Color(uiColor: PassColor.inputBorderNorm))
+            .foregroundStyle(PassColor.inputBorderNorm.toColor)
     }
 }

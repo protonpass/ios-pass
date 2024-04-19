@@ -70,7 +70,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     }
 
     func loadLogs() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { self.isLoading = false }
             do {
@@ -83,7 +83,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     }
 
     func shareLogs() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { self.sharingLogs = false }
             do {

@@ -77,6 +77,19 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.tabProfileTrialSelected
         _ = PassIcon.tabProfileTrialUnselected
 
+        _ = PassIcon.tabMonitorActiveBreachesFoundSelected
+        _ = PassIcon.tabMonitorActiveBreachesFoundUnselected
+        _ = PassIcon.tabMonitorActiveNoBreachesSelected
+        _ = PassIcon.tabMonitorActiveNoBreachesUnselected
+        _ = PassIcon.tabMonitorActiveNoBreachesWeakReusedPasswordsSelected
+        _ = PassIcon.tabMonitorActiveNoBreachesWeakReusedPasswordsUnselected
+        _ = PassIcon.tabMonitorInactiveBreachesFoundSelected
+        _ = PassIcon.tabMonitorInactiveBreachesFoundUnselected
+        _ = PassIcon.tabMonitorInactiveNoBreachesSelected
+        _ = PassIcon.tabMonitorInactiveNoBreachesUnselected
+        _ = PassIcon.tabMonitorInactiveNoBreachesWeakReusedPasswordsSelected
+        _ = PassIcon.tabMonitorInactiveNoBreachesWeakReusedPasswordsUnselected
+
         _ = PassIcon.trash
 
         _ = PassIcon.trial2FA

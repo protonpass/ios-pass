@@ -59,6 +59,7 @@ struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
     private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let data: ItemThumbnailData
     private let pinned: Bool
     private let size: ItemSquircleThumbnailSize
@@ -107,7 +108,7 @@ private extension ItemSquircleThumbnail {
                             .scaledToFit()
                             .padding(size.height / 5)
                         RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
-                            .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: size.strokeWidth)
+                            .stroke(PassColor.inputBorderNorm.toColor, lineWidth: size.strokeWidth)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
                 } else {
@@ -120,14 +121,17 @@ private extension ItemSquircleThumbnail {
             }
             .frame(width: size.height, height: size.height)
             .animation(.default, value: image)
-            .onChange(of: repository.settings.shouldDisplayFavIcons) { shouldDisplay in
-                if !shouldDisplay {
-                    image = nil
-                }
+            .onReceive(preferencesManager
+                .sharedPreferencesUpdates
+                .filter(\.displayFavIcons)
+                .receive(on: DispatchQueue.main)) { displayFavIcons in
+                    if !displayFavIcons {
+                        image = nil
+                    }
             }
             .task {
                 do {
-                    if repository.settings.shouldDisplayFavIcons,
+                    if preferencesManager.sharedPreferences.unwrapped().displayFavIcons,
                        let favIcon = try await repository.getIcon(for: url),
                        let newImage = UIImage(data: favIcon.data) {
                         image = newImage

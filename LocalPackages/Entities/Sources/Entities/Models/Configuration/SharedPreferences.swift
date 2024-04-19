@@ -20,6 +20,7 @@
 //
 
 import Foundation
+import LocalAuthentication
 
 /// Shared preferences between all users
 public struct SharedPreferences: Codable, Equatable, Sendable {
@@ -58,6 +59,10 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
 
     /// Share clipboard's content to devices logged in with same Apple ID
     public var shareClipboard: Bool
+
+    public var localAuthenticationPolicy: LAPolicy {
+        fallbackToPasscode ? .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
+    }
 
     public init(quickTypeBar: Bool,
                 automaticallyCopyTotpCode: Bool,
@@ -151,8 +156,8 @@ public extension SharedPreferences {
     }
 }
 
-public extension SharedPreferences {
-    static var `default`: Self {
+extension SharedPreferences: Defaultable {
+    public static var `default`: Self {
         .init(quickTypeBar: Default.quickTypeBar,
               automaticallyCopyTotpCode: Default.automaticallyCopyTotpCode,
               theme: Default.theme,

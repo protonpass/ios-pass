@@ -64,10 +64,10 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     private(set) var searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -164,7 +164,7 @@ private extension SearchViewModel {
             }
         }
         lastTask?.cancel()
-        lastTask = Task { @MainActor [weak self] in
+        lastTask = Task { [weak self] in
             guard let self else {
                 return
             }
@@ -194,7 +194,7 @@ private extension SearchViewModel {
             results
         }
         filteringTask?.cancel()
-        filteringTask = Task { @MainActor [weak self] in
+        filteringTask = Task { [weak self] in
             guard let self else {
                 return
             }
@@ -229,7 +229,7 @@ private extension SearchViewModel {
 
 extension SearchViewModel {
     func refreshResults() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             await indexItems()
             doSearch(query: lastSearchQuery)
@@ -237,7 +237,7 @@ extension SearchViewModel {
     }
 
     func viewDetail(of item: any ItemIdentifiable) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
@@ -257,7 +257,7 @@ extension SearchViewModel {
     }
 
     func removeFromHistory(_ item: any ItemIdentifiable) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await searchEntryDatasource.remove(item: item)
@@ -269,7 +269,7 @@ extension SearchViewModel {
     }
 
     func removeAllSearchHistory() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await searchEntryDatasource.removeAllEntries()
@@ -323,7 +323,7 @@ private extension SearchViewModel {
             .store(in: &cancellables)
 
         if #available(iOS 17, *) {
-            SpotlightTip.spotlightEnabled = preferences.spotlightEnabled
+            SpotlightTip.spotlightEnabled = getUserPreferences().spotlightEnabled
         }
     }
 }

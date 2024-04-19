@@ -58,10 +58,6 @@ private extension SharedRepositoryContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var preferences: Preferences {
-        SharedToolingContainer.shared.preferences()
-    }
-
     var currentDateProvider: CurrentDateProviderProtocol {
         SharedToolingContainer.shared.currentDateProvider()
     }
@@ -80,6 +76,10 @@ private extension SharedRepositoryContainer {
 
     var userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider {
         SharedDataContainer.shared.appData()
+    }
+
+    var keychain: KeychainProtocol {
+        SharedToolingContainer.shared.keychain()
     }
 
     var corruptedSessionEventStream: CorruptedSessionEventStream {
@@ -175,7 +175,7 @@ private extension SharedRepositoryContainer {
 
     var telemetryScheduler: Factory<TelemetrySchedulerProtocol> {
         self { TelemetryScheduler(currentDateProvider: self.currentDateProvider,
-                                  thresholdProvider: self.preferences) }
+                                  thresholdProvider: SharedToolingContainer.shared.preferencesManager()) }
     }
 
     var remoteFavIconDatasource: Factory<RemoteFavIconDatasourceProtocol> {
@@ -198,6 +198,20 @@ private extension SharedRepositoryContainer {
 extension SharedRepositoryContainer {
     var localSpotlightVaultDatasource: Factory<LocalSpotlightVaultDatasourceProtocol> {
         self { LocalSpotlightVaultDatasource(databaseService: self.databaseService) }
+    }
+
+    var appPreferencesDatasource: Factory<LocalAppPreferencesDatasourceProtocol> {
+        self { LocalAppPreferencesDatasource(userDefault: kSharedUserDefaults) }
+    }
+
+    var sharedPreferencesDatasource: Factory<LocalSharedPreferencesDatasourceProtocol> {
+        self { LocalSharedPreferencesDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
+                                                keychain: self.keychain) }
+    }
+
+    var userPreferencesDatasource: Factory<LocalUserPreferencesDatasourceProtocol> {
+        self { LocalUserPreferencesDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
+                                              databaseService: self.databaseService) }
     }
 }
 
@@ -309,7 +323,6 @@ extension SharedRepositoryContainer {
     var favIconRepository: Factory<FavIconRepositoryProtocol> {
         self { FavIconRepository(datasource: self.remoteFavIconDatasource(),
                                  containerUrl: URL.favIconsContainerURL(),
-                                 settings: self.preferences,
                                  symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 

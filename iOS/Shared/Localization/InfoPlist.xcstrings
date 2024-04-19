@@ -3,7 +3,6 @@
   "strings" : {
     "CFBundleName" : {
       "comment" : "Bundle name",
-      "extractionState" : "extracted_with_value",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25,7 +24,7 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Proton Pass"
           }
         },
@@ -93,7 +92,6 @@
     },
     "NSCameraUsageDescription" : {
       "comment" : "Privacy - Camera Usage Description",
-      "extractionState" : "extracted_with_value",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -121,7 +119,7 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Scan 2FA code, credit card and hand-written note"
           }
         },
@@ -237,7 +235,6 @@
     },
     "NSFaceIDUsageDescription" : {
       "comment" : "Privacy - Face ID Usage Description",
-      "extractionState" : "extracted_with_value",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -265,7 +262,7 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Restrict unwelcome access to your Proton Pass account on this device"
           }
         },

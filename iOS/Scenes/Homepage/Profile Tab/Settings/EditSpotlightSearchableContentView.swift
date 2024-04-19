@@ -20,12 +20,12 @@
 
 import DesignSystem
 import Entities
-import Factory
 import SwiftUI
 
 struct EditSpotlightSearchableContentView: View {
     @Environment(\.dismiss) private var dismiss
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    let selection: SpotlightSearchableContent
+    let onSelect: (SpotlightSearchableContent) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -51,15 +51,12 @@ struct EditSpotlightSearchableContentView: View {
 
 private extension EditSpotlightSearchableContentView {
     func row(for content: SpotlightSearchableContent) -> some View {
-        SelectableOptionRow(action: {
-                                preferences.spotlightSearchableContent = content
-                                dismiss()
-                            },
+        SelectableOptionRow(action: { onSelect(content); dismiss() },
                             height: .compact,
                             content: {
                                 Text(content.title)
                                     .foregroundColor(PassColor.textNorm.toColor)
                             },
-                            isSelected: content == preferences.spotlightSearchableContent)
+                            isSelected: content == selection)
     }
 }

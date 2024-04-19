@@ -48,7 +48,7 @@ struct ItemSwipeModifier: ViewModifier {
                             IconProvider.clockRotateLeft
                         })
                     })
-                    .tint(Color(uiColor: PassColor.signalSuccess))
+                    .tint(PassColor.signalSuccess.toColor)
                 }
             }
             .swipeActions(edge: .trailing) {
@@ -64,7 +64,7 @@ struct ItemSwipeModifier: ViewModifier {
                             IconProvider.trashCross
                         })
                     })
-                    .tint(Color(uiColor: PassColor.signalDanger))
+                    .tint(PassColor.signalDanger.toColor)
                 } else {
                     Button(action: {
                         itemContextMenuHandler.trash(item)
@@ -75,7 +75,7 @@ struct ItemSwipeModifier: ViewModifier {
                             IconProvider.trash
                         })
                     })
-                    .tint(Color(uiColor: PassColor.signalDanger))
+                    .tint(PassColor.signalDanger.toColor)
                 }
             }
     }

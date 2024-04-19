@@ -39,9 +39,13 @@ public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
 /// Manage all types of preferences: app-wide, shared between users and user's specific
-public protocol PreferencesManagerProtocol {
+public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProviderProtocol {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
+
+    /// Remove user preferences and some shared preferences like PIN code & biometric
+    /// (e.g user is logged out because of failed local authentication)
+    func reset() async throws
 
     // App preferences
     var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
@@ -68,6 +72,16 @@ public protocol PreferencesManagerProtocol {
     func removeUserPreferences() async throws
 }
 
+public extension PreferencesManagerProtocol {
+    func getThreshold() -> TimeInterval? {
+        appPreferences.unwrapped().telemetryThreshold
+    }
+
+    func setThreshold(_ threshold: TimeInterval?) async throws {
+        try await updateAppPreferences(\.telemetryThreshold, value: threshold)
+    }
+}
+
 public actor PreferencesManager: PreferencesManagerProtocol {
     public nonisolated let appPreferences = CurrentValueSubject<AppPreferences?, Never>(nil)
     public nonisolated let appPreferencesUpdates = PassthroughSubject<AppPreferencesUpdate, Never>()
@@ -86,22 +100,27 @@ public actor PreferencesManager: PreferencesManagerProtocol {
 
     private var didSetUp = false
 
+    private let preferencesMigrator: any PreferencesMigrator
+
     public init(currentUserIdProvider: any CurrentUserIdProvider,
                 appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
                 sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
-                logManager: any LogManagerProtocol) {
+                logManager: any LogManagerProtocol,
+                preferencesMigrator: any PreferencesMigrator) {
         self.currentUserIdProvider = currentUserIdProvider
         self.appPreferencesDatasource = appPreferencesDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.sharedPreferencesDatasource = sharedPreferencesDatasource
         logger = .init(manager: logManager)
+        self.preferencesMigrator = preferencesMigrator
     }
 }
 
 public extension PreferencesManager {
     func setUp() async throws {
         logger.trace("Setting up preferences manager")
+
         // App preferences
         if let preferences = try appPreferencesDatasource.getPreferences() {
             appPreferences.send(preferences)
@@ -109,6 +128,9 @@ public extension PreferencesManager {
             let preferences = AppPreferences.default
             try appPreferencesDatasource.upsertPreferences(preferences)
             appPreferences.send(preferences)
+            // When entering this code path, the app might be reinstalled
+            // so we remove shared preferences which survives because it's stored in Keychain
+            try sharedPreferencesDatasource.removePreferences()
         }
 
         // Shared preferences
@@ -131,8 +153,35 @@ public extension PreferencesManager {
             }
         }
 
+        // Migrations
+        if !appPreferences.unwrapped().didMigratePreferences {
+            logger.trace("Migrating preferences")
+            let (app, shared, user) = preferencesMigrator.migratePreferences()
+
+            try appPreferencesDatasource.upsertPreferences(app)
+            appPreferences.send(app)
+
+            try sharedPreferencesDatasource.upsertPreferences(shared)
+            sharedPreferences.send(shared)
+
+            if let userId = try await currentUserIdProvider.getCurrentUserId() {
+                try await userPreferencesDatasource.upsertPreferences(user, for: userId)
+                userPreferences.send(user)
+            }
+
+            logger.trace("Migrated preferences")
+        }
+
         logger.info("Set up preferences manager")
         didSetUp = true
+    }
+
+    func reset() async throws {
+        guard didSetUp else { return }
+        try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
+        try await updateSharedPreferences(\.pinCode, value: nil)
+        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+        try await removeUserPreferences()
     }
 
     func assertDidSetUp() {
@@ -217,7 +266,6 @@ public extension PreferencesManager {
     func removeUserPreferences() async throws {
         guard let userId = try await currentUserIdProvider.getCurrentUserId() else {
             let errorMessage = "Failed to remove user's preferences. No current user ID found."
-            assertionFailure(errorMessage)
             logger.error(errorMessage)
             return
         }
@@ -242,6 +290,16 @@ public extension Publisher {
 
             return update.value as? V
         }
+        .eraseToAnyPublisher()
+    }
+
+    /// Filter by multiple keypaths and return `Void` to indicate positive result
+    func filter<T>(_ keyPaths: [PartialKeyPath<T>]) -> AnyPublisher<Void, Failure>
+        where Output == PreferencesUpdate<T> {
+        filter { update in
+            keyPaths.contains { type(of: update.keyPath) == type(of: $0) }
+        }
+        .map { _ in () }
         .eraseToAnyPublisher()
     }
 }

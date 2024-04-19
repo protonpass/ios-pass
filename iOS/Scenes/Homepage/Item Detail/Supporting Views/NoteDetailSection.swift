@@ -27,12 +27,10 @@ import SwiftUI
 /// Note section of item detail pages
 struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
-    private let theme = resolve(\SharedToolingContainer.theme)
     let itemContent: ItemContent
     let vault: Vault?
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.normColor)
 
@@ -54,22 +52,21 @@ struct NoteDetailSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
-        .tint(tintColor)
+        .tint(itemContent.type.normMajor2Color.toColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
-            FullNoteView(itemContent: itemContent, vault: vault, theme: theme)
+            FullNoteView(itemContent: itemContent, vault: vault)
         }
     }
 }
 
 private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
+    private let theme = resolve(\SharedToolingContainer.theme)
     let itemContent: ItemContent
     let vault: Vault?
-    let theme: Theme
 
     var body: some View {
-        let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -98,7 +95,7 @@ private struct FullNoteView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .tint(tintColor)
+        .tint(itemContent.type.normMajor2Color.toColor)
         .theme(theme)
     }
 }

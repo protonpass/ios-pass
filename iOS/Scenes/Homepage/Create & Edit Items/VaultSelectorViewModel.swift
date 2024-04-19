@@ -61,7 +61,7 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
 
 private extension VaultSelectorViewModel {
     func setup() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             guard allVaults.count > 1 else { return }
             do {

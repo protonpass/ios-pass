@@ -148,7 +148,6 @@ final class AppData: AppDataProtocol {
 
     func resetData() {
         userData = nil
-        symmetricKey = nil
         mainCredential = nil
         hostAppCredential = nil
         autofillExtensionCredential = nil
@@ -179,5 +178,11 @@ private extension AppData {
             autofillExtensionCredential = credential
             shareExtensionCredential = credential
         }
+    }
+}
+
+extension AppData {
+    func getCurrentUserId() async throws -> String? {
+        userData?.user.ID
     }
 }

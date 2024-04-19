@@ -69,13 +69,13 @@ struct PrefixSuffixSection<Field: Hashable>: View {
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .focused(focusedField, equals: field)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.done)
                     .onSubmit { onSubmitPrefix?() }
                     if let prefixError {
                         Text(prefixError.localizedDescription)
                             .font(.callout)
-                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                            .foregroundStyle(PassColor.signalDanger.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }

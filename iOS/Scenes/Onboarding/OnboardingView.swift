@@ -56,12 +56,12 @@ struct OnboardingView: View {
                         .font(.headline)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                         .fixedSize(horizontal: false, vertical: true)
 
                     Text(viewModel.state.description)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .foregroundStyle(PassColor.textWeak.toColor)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         .fixedSize(horizontal: false, vertical: true)
@@ -81,7 +81,7 @@ struct OnboardingView: View {
                     if let secondaryButtonTitle = viewModel.state.secondaryButtonTitle {
                         Button { viewModel.secondaryAction() } label: {
                             Text(secondaryButtonTitle)
-                                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                                 .animationsDisabled()
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
@@ -105,7 +105,7 @@ struct OnboardingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundNorm.toColor)
         .edgesIgnoringSafeArea(.all)
         .theme(theme)
         .onReceiveBoolean(viewModel.$finished, perform: dismiss.callAsFunction)
@@ -139,7 +139,7 @@ struct OnboardingAutoFillView: View {
                 Text("Select **Proton Pass**")
                     .frame(height: 36)
             }
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .foregroundStyle(PassColor.textNorm.toColor)
         }
         .frame(maxWidth: .infinity)
     }
