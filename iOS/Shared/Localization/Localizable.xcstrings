@@ -322,7 +322,14 @@
       }
     },
     "%lld breaches detected" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld breaches detected"
+          }
+        }
+      }
     },
     "%lld characters" : {
       "localizations" : {
@@ -19691,7 +19698,14 @@
       }
     },
     "Code" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code"
+          }
+        }
+      }
     },
     "Commas" : {
       "localizations" : {
@@ -20335,7 +20349,14 @@
       }
     },
     "Confirm your email" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm your email"
+          }
+        }
+      }
     },
     "Congratulations,\n your access has been confirmed" : {
       "comment" : "When an admin confirmed access of a new user",
@@ -25810,10 +25831,24 @@
       }
     },
     "Custom email address" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom email address"
+          }
+        }
+      }
     },
     "Custom email monitoring" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom email monitoring"
+          }
+        }
+      }
     },
     "Custom field menu" : {
       "comment" : "accessibility",
@@ -33931,7 +33966,14 @@
       }
     },
     "Found in %lld breaches" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Found in %lld breaches"
+          }
+        }
+      }
     },
     "Free trial" : {
       "localizations" : {
@@ -42189,7 +42231,14 @@
       }
     },
     "Last check: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last check: %@"
+          }
+        }
+      }
     },
     "Last modified" : {
       "localizations" : {
@@ -42672,7 +42721,14 @@
       }
     },
     "Latest breach on %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest breach on %@"
+          }
+        }
+      }
     },
     "Learn more" : {
       "localizations" : {
@@ -46847,7 +46903,14 @@
       }
     },
     "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses."
+          }
+        }
+      }
     },
     "More info" : {
       "localizations" : {
@@ -48142,7 +48205,14 @@
       }
     },
     "No Breaches detected" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Breaches detected"
+          }
+        }
+      }
     },
     "No logs" : {
       "localizations" : {
@@ -50959,7 +51029,14 @@
       }
     },
     "Ok" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        }
+      }
     },
     "OK" : {
       "localizations" : {
@@ -57814,7 +57891,14 @@
       }
     },
     "Proton addresses" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton addresses"
+          }
+        }
+      }
     },
     "Proton Sentinel" : {
       "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
@@ -58794,7 +58878,14 @@
       }
     },
     "Remove" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        }
+      }
     },
     "Remove alias" : {
       "localizations" : {
@@ -59705,10 +59796,24 @@
       }
     },
     "Resend Code" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resend Code"
+          }
+        }
+      }
     },
     "Resend code in: %lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resend code in: %lld"
+          }
+        }
+      }
     },
     "Resend invitation" : {
       "localizations" : {
@@ -71401,7 +71506,14 @@
       }
     },
     "Suggestions" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        }
+      }
     },
     "Suggestions for %@" : {
       "comment" : "The title of the section of matched login items of a given URL. E.g \"Suggestions for https://proton.me\"",
@@ -79150,10 +79262,24 @@
       }
     },
     "Unverified" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified"
+          }
+        }
+      }
     },
     "Unverified email action menu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified email action menu"
+          }
+        }
+      }
     },
     "Update vault" : {
       "comment" : "The title for the save button when editing vault",
@@ -81314,7 +81440,14 @@
       }
     },
     "Used in %lld logins" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Used in %lld logins"
+          }
+        }
+      }
     },
     "Username" : {
       "comment" : "Account page",
@@ -83620,7 +83753,14 @@
       }
     },
     "Verify" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verify"
+          }
+        }
+      }
     },
     "Version %@" : {
       "localizations" : {
@@ -85455,7 +85595,14 @@
       }
     },
     "We’ve sent a verification code to %@. Please enter it below:" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We’ve sent a verification code to %@. Please enter it below:"
+          }
+        }
+      }
     },
     "Weak" : {
       "comment" : "Title describing a weak password",

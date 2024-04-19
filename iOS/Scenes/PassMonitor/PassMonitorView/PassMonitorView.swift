@@ -356,7 +356,6 @@ private extension PassMonitorView {
                            .emailsCount > 0 ? "\(breaches.emailsCount) breaches detected" : "No breaches detected",
                        info: breaches.emailsCount > 0 ? "\(breaches.emailsCount)" : nil,
                        action: { router.navigate(to: .darkWebMonitorHome(.breaches(breaches)))
-//            viewModel.showSecurityWeakness(type: .breaches(breaches))
                        })
     }
 }
