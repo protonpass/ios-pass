@@ -85,7 +85,6 @@ struct AddCustomEmailView: View {
         .padding(.top, 40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
-//            .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .showSpinner(viewModel.loading)
         .onChange(of: viewModel.finishedVerification) { isVerificationFinished in
