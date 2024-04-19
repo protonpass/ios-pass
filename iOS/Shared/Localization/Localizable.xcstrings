@@ -321,6 +321,9 @@
         }
       }
     },
+    "%lld breaches detected" : {
+
+    },
     "%lld characters" : {
       "localizations" : {
         "be" : {
@@ -19687,6 +19690,9 @@
         }
       }
     },
+    "Code" : {
+
+    },
     "Commas" : {
       "localizations" : {
         "be" : {
@@ -20327,6 +20333,9 @@
           }
         }
       }
+    },
+    "Confirm your email" : {
+
     },
     "Congratulations,\n your access has been confirmed" : {
       "comment" : "When an admin confirmed access of a new user",
@@ -25799,6 +25808,12 @@
           }
         }
       }
+    },
+    "Custom email address" : {
+
+    },
+    "Custom email monitoring" : {
+
     },
     "Custom field menu" : {
       "comment" : "accessibility",
@@ -33914,6 +33929,9 @@
           }
         }
       }
+    },
+    "Found in %lld breaches" : {
+
     },
     "Free trial" : {
       "localizations" : {
@@ -42170,6 +42188,9 @@
         }
       }
     },
+    "Last check: %@" : {
+
+    },
     "Last modified" : {
       "localizations" : {
         "be" : {
@@ -42649,6 +42670,9 @@
           }
         }
       }
+    },
+    "Latest breach on %@" : {
+
     },
     "Learn more" : {
       "localizations" : {
@@ -46822,6 +46846,9 @@
         }
       }
     },
+    "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses." : {
+
+    },
     "More info" : {
       "localizations" : {
         "be" : {
@@ -48113,6 +48140,9 @@
           }
         }
       }
+    },
+    "No Breaches detected" : {
+
     },
     "No logs" : {
       "localizations" : {
@@ -50927,6 +50957,9 @@
           }
         }
       }
+    },
+    "Ok" : {
+
     },
     "OK" : {
       "localizations" : {
@@ -57780,6 +57813,9 @@
         }
       }
     },
+    "Proton addresses" : {
+
+    },
     "Proton Sentinel" : {
       "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
       "localizations" : {
@@ -58757,6 +58793,9 @@
         }
       }
     },
+    "Remove" : {
+
+    },
     "Remove alias" : {
       "localizations" : {
         "be" : {
@@ -59559,6 +59598,7 @@
       }
     },
     "Requires immediate action" : {
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -59663,6 +59703,12 @@
           }
         }
       }
+    },
+    "Resend Code" : {
+
+    },
+    "Resend code in: %lld" : {
+
     },
     "Resend invitation" : {
       "localizations" : {
@@ -71354,6 +71400,9 @@
         }
       }
     },
+    "Suggestions" : {
+
+    },
     "Suggestions for %@" : {
       "comment" : "The title of the section of matched login items of a given URL. E.g \"Suggestions for https://proton.me\"",
       "localizations" : {
@@ -79100,6 +79149,12 @@
         }
       }
     },
+    "Unverified" : {
+
+    },
+    "Unverified email action menu" : {
+
+    },
     "Update vault" : {
       "comment" : "The title for the save button when editing vault",
       "localizations" : {
@@ -81257,6 +81312,9 @@
           }
         }
       }
+    },
+    "Used in %lld logins" : {
+
     },
     "Username" : {
       "comment" : "Account page",
@@ -83561,6 +83619,9 @@
         }
       }
     },
+    "Verify" : {
+
+    },
     "Version %@" : {
       "localizations" : {
         "be" : {
@@ -85392,6 +85453,9 @@
           }
         }
       }
+    },
+    "We’ve sent a verification code to %@. Please enter it below:" : {
+
     },
     "Weak" : {
       "comment" : "Title describing a weak password",
