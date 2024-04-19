@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import Entities
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -66,6 +67,43 @@ enum HomepageTab: CaseIterable, Hashable {
             "HomepageTabBarController_profileTabView"
         default:
             nil
+        }
+    }
+}
+
+private extension MonitorState {
+    func icon(selected: Bool) -> UIImage {
+        switch self {
+        case let .active(state):
+            switch state {
+            case .noBreaches:
+                selected ?
+                    PassIcon.tabMonitorActiveNoBreachesSelected :
+                    PassIcon.tabMonitorActiveNoBreachesUnselected
+            case .noBreachesButWeakOrReusedPasswords:
+                selected ?
+                    PassIcon.tabMonitorActiveNoBreachesWeakReusedPasswordsSelected :
+                    PassIcon.tabMonitorActiveNoBreachesWeakReusedPasswordsUnselected
+            case .breachesFound:
+                selected ?
+                    PassIcon.tabMonitorActiveBreachesFoundSelected :
+                    PassIcon.tabMonitorActiveBreachesFoundUnselected
+            }
+        case let .inactive(state):
+            switch state {
+            case .noBreaches:
+                selected ?
+                    PassIcon.tabMonitorInactiveNoBreachesSelected :
+                    PassIcon.tabMonitorInactiveNoBreachesUnselected
+            case .noBreachesButWeakOrReusedPasswords:
+                selected ?
+                    PassIcon.tabMonitorInactiveNoBreachesWeakReusedPasswordsSelected :
+                    PassIcon.tabMonitorInactiveNoBreachesWeakReusedPasswordsUnselected
+            case .breachesFound:
+                selected ?
+                    PassIcon.tabMonitorInactiveBreachesFoundSelected :
+                    PassIcon.tabMonitorInactiveBreachesFoundUnselected
+            }
         }
     }
 }
@@ -145,15 +183,18 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
     private let passMonitorView: PassMonitorView
+    private var passMonitorViewController: UIViewController?
     private var profileTabViewController: UIViewController?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
     private var tabIndexes = [HomepageTab: Int]()
+    private var cancellables = Set<AnyCancellable>()
 
     init(itemsTabView: ItemsTabView,
          profileTabView: ProfileTabView,
@@ -162,6 +203,16 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         self.profileTabView = profileTabView
         self.passMonitorView = passMonitorView
         super.init(nibName: nil, bundle: nil)
+
+        passMonitorRepository
+            .state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self else { return }
+                passMonitorViewController?.tabBarItem.image = state.icon(selected: false)
+                passMonitorViewController?.tabBarItem.selectedImage = state.icon(selected: true)
+            }
+            .store(in: &cancellables)
     }
 
     @available(*, unavailable)
@@ -200,10 +251,12 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         currentIndex += 1
 
         if getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1) {
-            let passMonitor = UIHostingController(rootView: passMonitorView)
-            passMonitor.tabBarItem.image = HomepageTab.securityCenter.image
-            passMonitor.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
-            controllers.append(passMonitor)
+            let passMonitorViewController = UIHostingController(rootView: passMonitorView)
+            passMonitorViewController.tabBarItem.image = MonitorState.default.icon(selected: false)
+            passMonitorViewController.tabBarItem.selectedImage = MonitorState.default.icon(selected: true)
+            passMonitorViewController.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
+            controllers.append(passMonitorViewController)
+            self.passMonitorViewController = passMonitorViewController
             tabIndexes[.securityCenter] = currentIndex
             currentIndex += 1
         }

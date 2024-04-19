@@ -36,11 +36,15 @@ private struct InternalPassMonitorItem {
 
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
+    var state: CurrentValueSubject<MonitorState, Never> { get }
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
 
     func refreshSecurityChecks() async throws
     func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent]
+
+    /// For testing purpose
+    func updateState(_ newValue: MonitorState) async
 }
 
 public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
@@ -50,6 +54,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let twofaDomainChecker: any TwofaDomainCheckerProtocol
     private let domainParser: (any DomainParsingProtocol)?
 
+    public let state: CurrentValueSubject<MonitorState, Never> = .init(.default)
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
 
@@ -152,6 +157,10 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             }
             return decriptedItem
         }
+    }
+
+    public func updateState(_ newValue: MonitorState) async {
+        state.send(newValue)
     }
 }
 
