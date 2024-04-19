@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import Combine
-import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -52,7 +51,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let passwordScorer: any PasswordScorerProtocol
     private let twofaDomainChecker: any TwofaDomainCheckerProtocol
-    private let domainParser: (any DomainParsingProtocol)?
 
     public let state: CurrentValueSubject<MonitorState, Never> = .init(.default)
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
@@ -64,13 +62,11 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     public init(itemRepository: any ItemRepositoryProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 passwordScorer: any PasswordScorerProtocol = PasswordScorer(),
-                twofaDomainChecker: any TwofaDomainCheckerProtocol = TwofaDomainChecker(),
-                domainParser: (any DomainParsingProtocol)? = try? DomainParser()) {
+                twofaDomainChecker: any TwofaDomainCheckerProtocol = TwofaDomainChecker()) {
         self.itemRepository = itemRepository
         self.symmetricKeyProvider = symmetricKeyProvider
         self.passwordScorer = passwordScorer
         self.twofaDomainChecker = twofaDomainChecker
-        self.domainParser = domainParser
 
         Task { [weak self] in
             guard let self else {
@@ -123,7 +119,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                     numberOfWeakPassword += 1
                 }
 
-                if item.loginData.totpUri.isEmpty, contains2faDomains(urls: item.loginData.urls) {
+                if item.loginData.totpUri.isEmpty,
+                   item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }) {
                     weaknesses.append(.missing2FA)
                     numberOfMissing2fa += 1
                 }
@@ -165,12 +162,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 }
 
 private extension PassMonitorRepository {
-    func contains2faDomains(urls: [String]) -> Bool {
-        urls
-            .compactMap { domainParser?.parse(host: $0)?.domain }
-            .contains { twofaDomainChecker.twofaDomainEligible(domain: $0) }
-    }
-
     func refresh() {
         refreshTask?.cancel()
         refreshTask = Task { [weak self] in
