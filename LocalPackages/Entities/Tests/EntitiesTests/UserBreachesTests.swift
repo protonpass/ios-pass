@@ -31,9 +31,24 @@ final class UserBreachesTests: XCTestCase {
                                                       latestbreach
                                                       ],
                                         addresses: [],
-                                        customEmails: [CustomEmail(customEmailID: "test1", email: "test", verified: true, breachCounter: 1),
-                                                       CustomEmail(customEmailID: "test2", email: "test", verified: true, breachCounter: 2),
-                                                       CustomEmail(customEmailID: "test3", email: "test", verified: false, breachCounter: 3)])
+                                        customEmails: [CustomEmail(customEmailID: "test1",
+                                                                   email: "test",
+                                                                   verified: true,
+                                                                   breachCounter: 1, 
+                                                                   flags: 0,
+                                                                   lastBreachedTime: nil),
+                                                       CustomEmail(customEmailID: "test2",
+                                                                   email: "test",
+                                                                   verified: true,
+                                                                   breachCounter: 2, 
+                                                                   flags: 0,
+                                                                   lastBreachedTime: nil),
+                                                       CustomEmail(customEmailID: "test3",
+                                                                   email: "test",
+                                                                   verified: false,
+                                                                   breachCounter: 3, 
+                                                                   flags: 0, 
+                                                                   lastBreachedTime: nil)], hasCustomDomains: false)
         
         XCTAssertEqual(userBreaches.latestBreach, latestbreach)
         XCTAssertEqual(userBreaches.verifiedCustomEmails.count, 2)
