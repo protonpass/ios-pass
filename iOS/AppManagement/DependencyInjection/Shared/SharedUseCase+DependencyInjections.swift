@@ -337,13 +337,4 @@ extension SharedUseCasesContainer {
     var getAllAliases: Factory<GetAllAliasesUseCase> {
         self { GetAllAliases(itemRepository: self.itemRepository) }
     }
-
-//
-//    var createPasskey: Factory<CreatePasskeyUseCase> {
-//        self { CreatePasskey(managerProvider: self.passkeyManagerProvider()) }
-//    }
-//
-//    var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
-//        self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
-//    }
 }
