@@ -87,6 +87,10 @@ private extension UseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
+
+    var breachRepository: any BreachRepositoryProtocol {
+        RepositoryContainer.shared.breachRepository()
+    }
 }
 
 // MARK: User report
@@ -421,7 +425,30 @@ extension UseCasesContainer {
 
     var getAllAliasMonitorInfos: Factory<GetAllAliasMonitorInfoUseCase> {
         self { GetAllAliasMonitorInfos(getAllAliasesUseCase: SharedUseCasesContainer.shared.getAllAliases(),
-                                       repository: RepositoryContainer.shared.breachRepository()) }
+                                       repository: self.breachRepository) }
+    }
+
+    var updatesForDarkWebHome: Factory<UpdatesForDarkWebHomeUseCase> {
+        self { UpdatesForDarkWebHome() }
+    }
+
+    var addCustomEmailToMonitoring: Factory<AddCustomEmailToMonitoringUseCase> {
+        self { AddCustomEmailToMonitoring(breachRepository: self.breachRepository,
+                                          updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+    }
+
+    var getAllCustomEmails: Factory<GetAllCustomEmailsUseCase> {
+        self { GetAllCustomEmails(repository: self.breachRepository) }
+    }
+
+    var removeEmailFromBreachMonitoring: Factory<RemoveEmailFromBreachMonitoringUseCase> {
+        self { RemoveEmailFromBreachMonitoring(breachRepository: self.breachRepository,
+                                               updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+    }
+
+    var verifyCustomEmail: Factory<VerifyCustomEmailUseCase> {
+        self { VerifyCustomEmail(breachRepository: self.breachRepository,
+                                 updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
     }
 }
 

@@ -99,19 +99,21 @@ extension View {
 
 @MainActor
 final class PathRouter: ObservableObject {
-    @Published public var path = NavigationPath()
-    @Published public var presentedSheet: GeneralSheetDestination?
+    @Published var path = NavigationPath()
+    @Published var presentedSheet: GeneralSheetDestination?
 
-    public init() {}
+    init() {}
 
     func navigate(to destination: GeneralRouterDestination) {
         path.append(destination)
     }
 
+    // periphery:ignore
     func popToRoot() {
         path = NavigationPath()
     }
 
+    // periphery:ignore
     func back(to numberOfScreen: Int = 1) {
         path.removeLast(numberOfScreen)
     }
@@ -120,6 +122,7 @@ final class PathRouter: ObservableObject {
         presentedSheet = sheet
     }
 
+    // periphery:ignore
     func dismissSheet() {
         presentedSheet = nil
     }

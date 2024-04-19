@@ -95,26 +95,26 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
 
 public extension Item {
     var skipHealthCheck: Bool {
-        isFlagActive(ItemFlags.skipHealthCheck)
+        isFlagActive(ItemFlags.skipHealthCheckOrMonitoring)
     }
 
     var isBreached: Bool {
         isFlagActive(ItemFlags.isBreached)
     }
 
-    func isFlagActive(_ flag: Int) -> Bool {
-        (Int(flags) & flag) != 0
+    func isFlagActive(_ flag: ItemFlags) -> Bool {
+        (Int(flags) & flag.intValue) != 0
     }
 
-    func areAllFlagsActive(_ flagsToCheck: [Int]) -> Bool {
-        for flag in flagsToCheck where (Int(flags) & flag) == 0 {
+    func areAllFlagsActive(_ flagsToCheck: [ItemFlags]) -> Bool {
+        for flag in flagsToCheck where (Int(flags) & flag.intValue) == 0 {
             return false // If any flag is not set, return false
         }
         return true // All flags are set
     }
 
-    func isAnyFlagActive(_ flagsToCheck: [Int]) -> Bool {
-        for flag in flagsToCheck where (Int(flags) & flag) != 0 {
+    func isAnyFlagActive(_ flagsToCheck: [ItemFlags]) -> Bool {
+        for flag in flagsToCheck where (Int(flags) & flag.intValue) != 0 {
             return true // If any flag is set, return true
         }
         return false // No flags are set

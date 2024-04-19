@@ -29,7 +29,6 @@ import SwiftUI
 struct AddCustomEmailView: View {
     @StateObject var viewModel: AddCustomEmailViewModel
     @Environment(\.dismiss) private var dismiss
-    let router = resolve(\RouterContainer.darkWebRouter)
 
     var body: some View {
         VStack {

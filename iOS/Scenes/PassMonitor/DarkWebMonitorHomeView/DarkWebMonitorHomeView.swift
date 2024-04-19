@@ -70,6 +70,7 @@ private extension DarkWebMonitorHomeView {
                    Button(role: .cancel, label: { Text("Ok") })
                },
                message: {
+                   // swiftlint:disable:next line_length
                    Text("Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses.")
                })
     }
@@ -95,31 +96,6 @@ private extension DarkWebMonitorHomeView {
                                           subTitle: "Latest breach on \(item.lastBreachTime?.lastestBreachDate ?? "")",
                                           info: "\(item.breachCounter)",
                                           hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
-                                          isDetail: true,
-                                          action: {})
-                }
-            }
-        }
-        .padding(.vertical, DesignConstant.sectionPadding)
-        .roundedDetailSection()
-    }
-
-    var aliasSection: some View {
-        VStack(spacing: DesignConstant.sectionPadding) {
-            darkWebMonitorHomeRow(title: #localized("Proton addresses"),
-                                  subTitle: viewModel
-                                      .noAliasBreaches ? #localized("No breaches detected") :
-                                      #localized("Found in %lld breaches", viewModel.numberOFBreachedAlias),
-                                  hasBreaches: !viewModel.noAliasBreaches,
-                                  isDetail: false,
-                                  action: {})
-            if !viewModel.noAliasBreaches {
-                PassSectionDivider()
-                ForEach(viewModel.mostBreachedAliases) { item in
-                    darkWebMonitorHomeRow(title: item.alias.item.aliasEmail ?? "",
-                                          subTitle: "Latest breach on \(item.breaches?.breaches.first?.publishedAt ?? "")",
-                                          info: "\(item.breaches?.count ?? 0)",
-                                          hasBreaches: !viewModel.noAliasBreaches,
                                           isDetail: true,
                                           action: {})
                 }
@@ -201,12 +177,32 @@ private extension DarkWebMonitorHomeView {
 
 // MARK: - Proton Aliases
 
-// private extension DarkWebMonitorHomeView {
-//    @ViewBuilder
-//    var aliasSection: some View {
-//        EmptyView()
-//    }
-// }
+private extension DarkWebMonitorHomeView {
+    var aliasSection: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            darkWebMonitorHomeRow(title: #localized("Proton addresses"),
+                                  subTitle: viewModel
+                                      .noAliasBreaches ? #localized("No breaches detected") :
+                                      #localized("Found in %lld breaches", viewModel.numberOFBreachedAlias),
+                                  hasBreaches: !viewModel.noAliasBreaches,
+                                  isDetail: false,
+                                  action: {})
+            if !viewModel.noAliasBreaches {
+                PassSectionDivider()
+                ForEach(viewModel.mostBreachedAliases) { item in
+                    darkWebMonitorHomeRow(title: item.alias.item.aliasEmail ?? "",
+                                          subTitle: item.latestBreach,
+                                          info: "\(item.breaches?.count ?? 0)",
+                                          hasBreaches: !viewModel.noAliasBreaches,
+                                          isDetail: true,
+                                          action: {})
+                }
+            }
+        }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedDetailSection()
+    }
+}
 
 // MARK: - Custom Email sections
 
@@ -422,27 +418,6 @@ private extension DarkWebMonitorHomeView {
                 .background((viewModel.noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
                         .passwordInteractionNormMinor2).toColor)
                 .clipShape(Circle())
-        }
-    }
-}
-
-extension String {
-    var breachDate: String {
-        let isoFormatter = DateFormatter()
-//        isoFormatter.locale = Locale(identifier: "en_US_POSIX") // POSIX to ensure the format is interpreted
-//        correctly
-        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        // Parse the date string into a Date object
-        if let date = isoFormatter.date(from: self) {
-            // Create another DateFormatter to output the date in the desired format
-            let outputFormatter = DateFormatter()
-            outputFormatter.locale = Locale.current // Change to specific locale if needed
-            outputFormatter.dateFormat = "MMM d, yyyy"
-
-            // Format the Date object into the desired date string
-            return outputFormatter.string(from: date)
-        } else {
-            return ""
         }
     }
 }

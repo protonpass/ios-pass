@@ -1,7 +1,6 @@
 //
-//
-// GetAllAliases.swift
-// Proton Pass - Created on 17/04/2024.
+// GetAllCustomEmails.swift
+// Proton Pass - Created on 19/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,29 +17,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Client
 import Entities
 
-public protocol GetAllAliasesUseCase: Sendable {
-    func execute() async throws -> [ItemContent]
+public protocol GetAllCustomEmailsUseCase: Sendable {
+    func execute() async throws -> [CustomEmail]
 }
 
-public extension GetAllAliasesUseCase {
-    func callAsFunction() async throws -> [ItemContent] {
+public extension GetAllCustomEmailsUseCase {
+    func callAsFunction() async throws -> [CustomEmail] {
         try await execute()
     }
 }
 
-public final class GetAllAliases: GetAllAliasesUseCase {
-    private let itemRepository: any ItemRepositoryProtocol
+public final class GetAllCustomEmails: GetAllCustomEmailsUseCase {
+    private let repository: any BreachRepositoryProtocol
 
-    public init(itemRepository: any ItemRepositoryProtocol) {
-        self.itemRepository = itemRepository
+    public init(repository: any BreachRepositoryProtocol) {
+        self.repository = repository
     }
 
-    public func execute() async throws -> [ItemContent] {
-        try await itemRepository.getAllItemContents().filter { $0.contentData == .alias }
+    public func execute() async throws -> [CustomEmail] {
+        try await repository.getAllCustomEmailForUser()
     }
 }
