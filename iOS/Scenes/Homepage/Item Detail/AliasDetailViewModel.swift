@@ -38,6 +38,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     override func bindValues() {
+        super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
         if case .alias = itemContent.contentData {
             name = itemContent.name

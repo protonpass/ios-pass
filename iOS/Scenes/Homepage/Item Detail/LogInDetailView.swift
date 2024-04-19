@@ -115,7 +115,6 @@ private extension LogInDetailView {
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
-        .showSpinner(viewModel.loading)
     }
 }
 
@@ -346,16 +345,14 @@ private extension LogInDetailView {
 private extension LogInDetailView {
     func securityIssuesView(issues: [SecurityWeakness]) -> some View {
         VStack {
-            ForEach(issues, id: \.self) { issue in
-                securityWeaknessRow(weakness: issue,
-                                    action: { viewModel.toggleFromSecurityMonitoring() })
+            ForEach(issues, id: \.self) {
+                securityWeaknessRow(weakness: $0)
             }
         }
     }
 
     @ViewBuilder
-    func securityWeaknessRow(weakness: SecurityWeakness,
-                             action: @escaping () -> Void) -> some View {
+    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
         let rowType = weakness.secureRowType
         HStack(spacing: DesignConstant.sectionPadding) {
             if let iconName = rowType.icon {
@@ -366,7 +363,8 @@ private extension LogInDetailView {
                         .scaledToFit()
                         .symbolRenderingMode(.hierarchical)
                         .foregroundColor(rowType.iconColor.toColor)
-                        .frame(width: 25)
+                        .frame(width: 28)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     Spacer()
                 }
             }
@@ -374,48 +372,19 @@ private extension LogInDetailView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(weakness.title)
                     .font(.body)
-                    .fontWeight(.medium)
+                    .fontWeight(.bold)
                     .foregroundStyle(rowType.iconColor.toColor)
                 if weakness == .reusedPasswords {
                     reusedList(rowType: rowType)
-                        .padding(.top, 6)
-                } else {
-                    Spacer()
+                        .padding(.vertical, DesignConstant.sectionPadding / 4)
                 }
                 Text(weakness.infos)
                     .font(.callout)
                     .foregroundColor(rowType.iconColor.toColor)
             }
-            .frame(maxWidth: .infinity, minHeight: 75, alignment: .leading)
-            .contentShape(Rectangle())
-            VStack {
-                Menu(content: {
-                    Button { action() }
-                        label: {
-                            Label(title: {
-                                      Text(weakness != .excludedItems ? "Exclude from monitoring" :
-                                          "Add to monitoring")
-                                  },
-                                  icon: {
-                                      Image(uiImage: weakness != .excludedItems ? IconProvider
-                                          .eyeSlash : IconProvider
-                                          .eye)
-                                  })
-                        }
-                }, label: {
-                    Image(uiImage: IconProvider.threeDotsVertical)
-                        .resizable()
-                        .renderingMode(.template)
-                        .scaledToFit()
-                        .foregroundColor(rowType.iconColor.toColor)
-                        .frame(width: DesignConstant.Icons.defaultIconSize,
-                               height: DesignConstant.Icons.defaultIconSize)
-                })
-                Spacer()
-            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .padding(.vertical, DesignConstant.sectionPadding)
+        .padding(DesignConstant.sectionPadding)
         .roundedDetailSection(backgroundColor: rowType.background,
                               borderColor: rowType.border)
     }
