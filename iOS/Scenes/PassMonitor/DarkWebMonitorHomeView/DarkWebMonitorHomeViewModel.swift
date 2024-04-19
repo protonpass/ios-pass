@@ -19,26 +19,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
-import Client
+
 import Combine
+import Core
 import Entities
 import Factory
 import Foundation
+import Macro
 import UseCases
 
 @MainActor
 final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     @Published private(set) var userBreaches: UserBreaches
-    // periphery:ignore
     @Published private(set) var customEmails: [CustomEmail]?
     @Published private(set) var suggestedEmail: [SuggestedEmail]?
     @Published private(set) var aliasInfos: [AliasMonitorInfo]?
-
     @Published private(set) var loading = false
 
-    private let breachRepository = resolve(\RepositoryContainer.breachRepository)
     private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
     private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
+    private let updatesForDarkWebHome = resolve(\UseCasesContainer.updatesForDarkWebHome)
+    private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
+    private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
+    private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = resolve(\SharedToolingContainer.logger)
+
     private var cancellables = Set<AnyCancellable>()
 
     var noBreaches: Bool {
@@ -46,8 +52,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     }
 
     var mostBreachedProtonAddress: [ProtonAddress] {
-        Array(userBreaches.addresses.filter { !$0.flags.isFlagActive(.skipHealthChecktest) }
-            .sorted { $0.breachCounter > $1.breachCounter }.prefix(10))
+        userBreaches.topTenBreachedAddresses
     }
 
     var mostBreachedAliases: [AliasMonitorInfo] {
@@ -102,10 +107,9 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
-                try await breachRepository.removeEmailFromBreachMonitoring(emailId: email.customEmailID)
-                customEmails = try await breachRepository.getAllCustomEmailForUser()
+                try await removeEmailFromBreachMonitoring(emailId: email.customEmailID)
             } catch {
-                print(error.localizedDescription)
+                handle(error: error)
             }
         }
     }
@@ -115,9 +119,13 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
 
         do {
             loading = true
-            return try await breachRepository.addEmailToBreachMonitoring(email: email)
+            let customEmail = try await addCustomEmailToMonitoring(email: email)
+            if let index = suggestedEmail?.firstIndex(where: { $0.email == email }) {
+                suggestedEmail?.remove(at: index)
+            }
+            return customEmail
         } catch {
-            print(error.localizedDescription)
+            handle(error: error)
         }
         return nil
     }
@@ -133,39 +141,84 @@ private extension DarkWebMonitorHomeViewModel {
             do {
                 loading = true
 
-                async let currentCustomEmails = breachRepository.getAllCustomEmailForUser()
+                async let currentCustomEmails = getAllCustomEmails()
                 async let currentAliasInfos = getAllAliasMonitorInfos()
                 async let currentSuggestedEmail = getCustomEmailSuggestion(breaches: userBreaches)
 
-                customEmails = try await breachRepository.getAllCustomEmailForUser()
                 let results = try await (currentCustomEmails, currentSuggestedEmail, currentAliasInfos)
                 customEmails = results.0
                 suggestedEmail = results.1
                 aliasInfos = results.2
             } catch {
-                print(error.localizedDescription)
+                handle(error: error)
             }
         }
 
-        breachRepository.updatedCustomEmails
+        updatesForDarkWebHome()
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] updatedCustomEmails in
-                guard let self, updatedCustomEmails != customEmails else {
+            .sink { [weak self] section in
+                guard let self else {
                     return
                 }
-                customEmails = updatedCustomEmails
+                switch section {
+                case .aliases:
+                    return
+                case let .customEmails(updatedCustomEmails):
+                    guard updatedCustomEmails != customEmails else {
+                        return
+                    }
+                    customEmails = updatedCustomEmails
+                case .protonAddresses:
+                    return
+                case .all:
+                    return
+                }
             }.store(in: &cancellables)
+    }
+
+    func handle(error: Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
-extension SuggestedEmail {
-    var toCustomEmail: CustomEmail {
-        CustomEmail(customEmailID: UUID().uuidString,
-                    email: email,
-                    verified: false,
-                    breachCounter: 0,
-                    flags: 0,
-                    lastBreachedTime: 0)
+extension ProtonAddress {
+    var isMonitored: Bool {
+        !flags.isFlagActive(.skipHealthCheckOrMonitoring)
+    }
+}
+
+extension UserBreaches {
+    var topTenBreachedAddresses: [ProtonAddress] {
+        Array(addresses.filter { !$0.isMonitored }
+            .sorted { $0.breachCounter > $1.breachCounter }.prefix(10))
+    }
+}
+
+extension AliasMonitorInfo {
+    var latestBreach: String {
+        #localized("Latest breach on %@", breaches?.breaches.first?.publishedAt.breachDate ?? "")
+    }
+}
+
+extension String {
+    var breachDate: String {
+        let isoFormatter = DateFormatter()
+//        isoFormatter.locale = Locale(identifier: "en_US_POSIX") // POSIX to ensure the format is interpreted
+//        correctly
+        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        // Parse the date string into a Date object
+        if let date = isoFormatter.date(from: self) {
+            // Create another DateFormatter to output the date in the desired format
+            let outputFormatter = DateFormatter()
+            outputFormatter.locale = Locale.current // Change to specific locale if needed
+            outputFormatter.dateFormat = "MMM d, yyyy"
+
+            // Format the Date object into the desired date string
+            return outputFormatter.string(from: date)
+        } else {
+            return ""
+        }
     }
 }

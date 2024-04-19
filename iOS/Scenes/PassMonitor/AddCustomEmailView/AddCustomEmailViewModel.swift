@@ -32,12 +32,17 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @Published var loading = false
     @Published var finishedVerification = false
     @Published var canResendCode = true
-    @Published var timeRemaining: Int = 120
+    @Published var timeRemaining: Int
 
     private let breachRepository = resolve(\RepositoryContainer.breachRepository)
+    private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
+    private let verifyCustomEmail = resolve(\UseCasesContainer.verifyCustomEmail)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = resolve(\SharedToolingContainer.logger)
+
     private var timerTask: Task<Void, Never>?
     private var currentCustomEmail: CustomEmail?
-    let totalTime: Int = 120
+    let totalTime: Int
 
     var canContinue: Bool {
         if isMonitored, !code.isEmpty {
@@ -53,7 +58,8 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
         currentCustomEmail = email
         self.email = email?.email ?? ""
         self.isMonitored = isMonitored
-        setUp()
+        totalTime = 120
+        timeRemaining = 120
     }
 
     deinit {
@@ -83,7 +89,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
                 try await breachRepository.resendEmailVerification(emailId: currentCustomEmail.customEmailID)
                 startTimer()
             } catch {
-                print(error.localizedDescription)
+                handle(error: error)
             }
         }
     }
@@ -99,13 +105,11 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
-                try await breachRepository.verifyCustomEmail(emailId: currentCustomEmail.customEmailID,
-                                                             code: code)
-                // This is done to update emails displayed in home view
-                _ = try await breachRepository.getAllCustomEmailForUser()
+                try await verifyCustomEmail(emailId: currentCustomEmail.customEmailID,
+                                            code: code)
                 finishedVerification = true
             } catch {
-                print(error.localizedDescription)
+                handle(error: error)
             }
         }
     }
@@ -121,9 +125,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
-                currentCustomEmail = try await breachRepository.addEmailToBreachMonitoring(email: email)
-                // This is done to update emails displayed in home view
-                _ = try await breachRepository.getAllCustomEmailForUser()
+                currentCustomEmail = try await addCustomEmailToMonitoring(email: email)
                 isMonitored = true
             } catch {
                 print(error.localizedDescription)
@@ -159,7 +161,8 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
 }
 
 private extension AddCustomEmailViewModel {
-    func setUp() {
-        startTimer()
+    func handle(error: Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
