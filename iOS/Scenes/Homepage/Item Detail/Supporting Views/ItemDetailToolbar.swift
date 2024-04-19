@@ -75,13 +75,10 @@ struct ItemDetailToolbar: ToolbarContent {
                                       icon: { Image(uiImage: viewModel.itemContent.item.pinIcon) })
                             }
 
-                        Divider()
-
                         if viewModel.itemContent.type == .note {
                             Button { viewModel.copyNoteContent() }
                                 label: { Label(title: { Text("Copy note content") },
                                                icon: { Image(uiImage: IconProvider.note) }) }
-                            Divider()
                         }
 
                         if viewModel.itemContent.type != .alias {
@@ -89,9 +86,20 @@ struct ItemDetailToolbar: ToolbarContent {
                                 Label(title: { Text("Clone") },
                                       icon: { Image(uiImage: IconProvider.squares) })
                             })
-
-                            Divider()
                         }
+
+                        if viewModel.itemContent.type == .login {
+                            let title = viewModel.isMonitored ?
+                                #localized("Exclude from monitoring") :
+                                #localized("Add to monitoring")
+                            let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye
+
+                            Button(action: { viewModel.toggleMonitoring() },
+                                   label: { Label(title: { Text(title) },
+                                                  icon: { Image(uiImage: icon) }) })
+                        }
+
+                        Divider()
 
                         Button(role: .destructive,
                                action: { viewModel.moveToTrash() },
