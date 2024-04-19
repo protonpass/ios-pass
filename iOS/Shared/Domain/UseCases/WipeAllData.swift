@@ -25,21 +25,20 @@ import ProtonCoreFeatureFlags
 import UIKit
 
 protocol WipeAllDataUseCase {
-    func execute(isTests: Bool) async
+    func execute() async
 }
 
 extension WipeAllDataUseCase {
-    func callAsFunction(isTests: Bool) async {
-        await execute(isTests: isTests)
+    func callAsFunction() async {
+        await execute()
     }
 }
 
 final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
     private let appData: AppDataProtocol
-    private let mainKeyProvider: MainKeyProvider
     private let apiManager: APIManager
-    private let preferences: Preferences
+    private let preferencesManager: PreferencesManagerProtocol
     private let databaseService: DatabaseServiceProtocol
     private let syncEventLoop: SyncEventLoopProtocol
     private let vaultsManager: VaultsManager
@@ -50,9 +49,8 @@ final class WipeAllData: WipeAllDataUseCase {
 
     init(logManager: LogManagerProtocol,
          appData: AppDataProtocol,
-         mainKeyProvider: MainKeyProvider,
          apiManager: APIManager,
-         preferences: Preferences,
+         preferencesManager: PreferencesManagerProtocol,
          databaseService: DatabaseServiceProtocol,
          syncEventLoop: SyncEventLoopProtocol,
          vaultsManager: VaultsManager,
@@ -62,9 +60,8 @@ final class WipeAllData: WipeAllDataUseCase {
          featureFlagsRepository: FeatureFlagsRepositoryProtocol) {
         logger = .init(manager: logManager)
         self.appData = appData
-        self.mainKeyProvider = mainKeyProvider
         self.apiManager = apiManager
-        self.preferences = preferences
+        self.preferencesManager = preferencesManager
         self.databaseService = databaseService
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
@@ -74,7 +71,7 @@ final class WipeAllData: WipeAllDataUseCase {
         self.featureFlagsRepository = featureFlagsRepository
     }
 
-    func execute(isTests: Bool) async {
+    func execute() async {
         logger.info("Wiping all data")
 
         if let userID = try? userDataProvider.getUserId(), !userID.isEmpty {
@@ -83,9 +80,8 @@ final class WipeAllData: WipeAllDataUseCase {
         featureFlagsRepository.clearUserId()
 
         appData.resetData()
-        mainKeyProvider.wipeMainKey()
         apiManager.clearCredentials()
-        await preferences.reset(isTests: isTests)
+        try? await preferencesManager.reset()
         databaseService.resetContainer()
         UIPasteboard.general.items = []
         syncEventLoop.reset()

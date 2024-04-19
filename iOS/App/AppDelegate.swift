@@ -34,6 +34,7 @@ import UIKit
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     @LazyInjected(\ServiceContainer
@@ -42,9 +43,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         injectDefaultCryptoImplementation()
-        setUpSentry(bundle: .main)
+        setUpSentry()
         setUpDefaultValuesForSettingsBundle()
-        configureCoreLogger()
+        setCoreLoggerEnvironment()
         configureTipKit()
         return true
     }
@@ -72,11 +73,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 private extension AppDelegate {
-    private func configureCoreLogger() {
-        let environment = ProtonPassDoH(bundle: .main).environment.name
-        PMLog.setEnvironment(environment: environment)
-    }
-
     func setUpDefaultValuesForSettingsBundle() {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])

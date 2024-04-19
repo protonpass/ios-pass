@@ -456,6 +456,6 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var overrideSecuritySettings: Factory<OverrideSecuritySettingsUseCase> {
-        self { OverrideSecuritySettings(settingsProvider: SharedToolingContainer.shared.preferences()) }
+        self { OverrideSecuritySettings(preferencesManager: SharedToolingContainer.shared.preferencesManager()) }
     }
 }

@@ -188,7 +188,7 @@ class BaseCreateEditItemViewModel {
 
 private extension BaseCreateEditItemViewModel {
     func setUp() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
@@ -300,7 +300,7 @@ extension BaseCreateEditItemViewModel {
     }
 
     func save() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
 
             defer { isSaving = false }
@@ -344,7 +344,7 @@ extension BaseCreateEditItemViewModel {
     /// When changes happen, announce via `isObsolete` boolean  so the view can act accordingly
     func refresh() {
         guard case let .edit(itemContent) = mode else { return }
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 guard let updatedItem =

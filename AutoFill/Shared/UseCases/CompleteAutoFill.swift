@@ -50,21 +50,18 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let logger: Logger
     private let logManager: LogManagerProtocol
     private let telemetryRepository: TelemetryEventRepositoryProtocol
-    private let clipboardManager: ClipboardManagerProtocol
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
     private let updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase
     private let resetFactory: ResetFactoryUseCase
 
     init(logManager: LogManagerProtocol,
          telemetryRepository: TelemetryEventRepositoryProtocol,
-         clipboardManager: ClipboardManagerProtocol,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
          updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase,
          resetFactory: ResetFactoryUseCase) {
         logger = .init(manager: logManager)
         self.logManager = logManager
         self.telemetryRepository = telemetryRepository
-        self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
         self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.resetFactory = resetFactory
@@ -96,8 +93,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                 resetFactory()
             }
             await logManager.saveAllLogs()
-            try await copyTotpTokenAndNotify(itemContent: itemContent,
-                                             clipboardManager: clipboardManager)
+            try await copyTotpTokenAndNotify(itemContent: itemContent)
             let completion: (Bool) -> Void = { [weak self] _ in
                 guard let self else { return }
                 update(item: itemContent, identifiers: identifiers)

@@ -25,8 +25,6 @@ import Factory
 import Foundation
 import Macro
 
-private let kMaxAttemptCount = 3
-
 enum LocalAuthenticationState: Equatable {
     case noAttempts
     case remainingAttempts(Int)
@@ -38,12 +36,14 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let delayed: Bool
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let onSuccess: () -> Void
+    private let onSuccess: () async throws -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     let mode: Mode
     let onAuth: () -> Void
 
@@ -57,10 +57,16 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         case biometric, pin
     }
 
+    private let maxAttemptCount = 3
+
+    private var failedAttemptCount: Int {
+        preferencesManager.sharedPreferences.value?.failedAttemptCount ?? maxAttemptCount
+    }
+
     init(mode: Mode,
          delayed: Bool,
          onAuth: @escaping () -> Void,
-         onSuccess: @escaping () -> Void,
+         onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
         self.mode = mode
         self.delayed = delayed
@@ -69,8 +75,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         self.onFailure = onFailure
         updateStateBasedOnFailedAttemptCount()
 
-        preferences.objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
+            .filter(\.failedAttemptCount)
             .sink { [weak self] _ in
                 guard let self else { return }
                 updateStateBasedOnFailedAttemptCount()
@@ -79,10 +87,11 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func biometricallyAuthenticate() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
-                let authenticated = try await authenticate(policy: preferences.localAuthenticationPolicy,
+                let policy = getSharedPreferences().localAuthenticationPolicy
+                let authenticated = try await authenticate(policy: policy,
                                                            reason: #localized("Please authenticate"))
                 if authenticated {
                     recordSuccess()
@@ -99,7 +108,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func checkPinCode(_ enteredPinCode: String) {
-        guard let currentPIN = preferences.pinCode else {
+        guard let currentPIN = getSharedPreferences().pinCode else {
             // No PIN code is set before, can't do anything but logging out
             let message = "Can not check PIN code. No PIN code set."
             assertionFailure(message)
@@ -122,13 +131,13 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
 private extension LocalAuthenticationViewModel {
     func updateStateBasedOnFailedAttemptCount() {
-        switch preferences.failedAttemptCount {
+        switch failedAttemptCount {
         case 0:
             state = .noAttempts
-        case kMaxAttemptCount - 1:
+        case maxAttemptCount - 1:
             state = .lastAttempt
         default:
-            let remainingAttempts = kMaxAttemptCount - preferences.failedAttemptCount
+            let remainingAttempts = maxAttemptCount - failedAttemptCount
             if remainingAttempts >= 1 {
                 state = .remainingAttempts(remainingAttempts)
             } else {
@@ -138,18 +147,33 @@ private extension LocalAuthenticationViewModel {
     }
 
     func recordFailure(_ error: Error?) {
-        preferences.failedAttemptCount += 1
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
 
-        let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
-        if let error {
-            logger.error(logMessage + " Reason \(error)")
-        } else {
-            logger.error(logMessage)
+                let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
+                if let error {
+                    logger.error(logMessage + " Reason \(error)")
+                } else {
+                    logger.error(logMessage)
+                }
+            } catch {
+                // Failed to even record error, something's very wrong. Just log out.
+                onFailure()
+            }
         }
     }
 
     func recordSuccess() {
-        preferences.failedAttemptCount = 0
-        onSuccess()
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+                try await onSuccess()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }

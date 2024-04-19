@@ -65,9 +65,9 @@ public struct SortTypeListView: View {
                                         height: .compact,
                                         content: {
                                             Text(type.title)
-                                                .foregroundColor(Color(uiColor: type == viewModel
-                                                        .selectedSortType ?
-                                                        PassColor.interactionNormMajor2 : PassColor.textNorm))
+                                                .foregroundStyle((type == viewModel.selectedSortType ?
+                                                        PassColor.interactionNormMajor2 : PassColor
+                                                        .textNorm).toColor)
                                         },
                                         isSelected: type == viewModel.selectedSortType)
 
@@ -77,7 +77,7 @@ public struct SortTypeListView: View {
                 Spacer()
             }
             .frame(maxWidth: .infinity, alignment: .center)
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

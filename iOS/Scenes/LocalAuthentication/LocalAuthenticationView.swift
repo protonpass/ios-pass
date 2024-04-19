@@ -26,12 +26,12 @@ import SwiftUI
 /// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let theme = resolve(\SharedToolingContainer.theme)
 
     init(mode: LocalAuthenticationViewModel.Mode,
          delayed: Bool,
          onAuth: @escaping () -> Void,
-         onSuccess: @escaping () -> Void,
+         onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
@@ -59,6 +59,6 @@ struct LocalAuthenticationView: View {
             }
             .padding()
         }
-        .theme(preferences.theme)
+        .theme(theme)
     }
 }

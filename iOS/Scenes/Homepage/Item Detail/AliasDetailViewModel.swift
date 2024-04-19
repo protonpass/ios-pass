@@ -25,6 +25,7 @@ import Entities
 import Factory
 import Macro
 
+@MainActor
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -37,6 +38,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     override func bindValues() {
+        super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
         if case .alias = itemContent.contentData {
             name = itemContent.name
@@ -47,7 +49,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func getAlias() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let alias =
