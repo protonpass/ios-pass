@@ -30,6 +30,26 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
 
     public init() {}
 
+    // MARK: - state
+    public var invokedStateSetter = false
+    public var invokedStateSetterCount = 0
+    public var invokedState: CurrentValueSubject<MonitorState, Never>?
+    public var invokedStateList = [CurrentValueSubject<MonitorState, Never>?]()
+    public var invokedStateGetter = false
+    public var invokedStateGetterCount = 0
+    public var stubbedState: CurrentValueSubject<MonitorState, Never>!
+    public var state: CurrentValueSubject<MonitorState, Never> {
+        set {
+            invokedStateSetter = true
+            invokedStateSetterCount += 1
+            invokedState = newValue
+            invokedStateList.append(newValue)
+        } get {
+            invokedStateGetter = true
+            invokedStateGetterCount += 1
+            return stubbedState
+        }
+    }
     // MARK: - weaknessStats
     public var invokedWeaknessStatsSetter = false
     public var invokedWeaknessStatsSetterCount = 0
@@ -103,5 +123,19 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         }
         closureGetItemsWithSamePassword()
         return stubbedGetItemsWithSamePasswordResult
+    }
+    // MARK: - updateState
+    public var closureUpdateState: () -> () = {}
+    public var invokedUpdateStatefunction = false
+    public var invokedUpdateStateCount = 0
+    public var invokedUpdateStateParameters: (newValue: MonitorState, Void)?
+    public var invokedUpdateStateParametersList = [(newValue: MonitorState, Void)]()
+
+    public func updateState(_ newValue: MonitorState) async {
+        invokedUpdateStatefunction = true
+        invokedUpdateStateCount += 1
+        invokedUpdateStateParameters = (newValue, ())
+        invokedUpdateStateParametersList.append((newValue, ()))
+        closureUpdateState()
     }
 }
