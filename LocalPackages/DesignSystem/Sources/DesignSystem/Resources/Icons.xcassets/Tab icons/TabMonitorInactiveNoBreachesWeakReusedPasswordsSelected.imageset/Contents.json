@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "TabMonitorInactiveNoBreachesWeakReusedPasswordsSelectedLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "TabMonitorInactiveNoBreachesWeakReusedPasswordsSelectedDark.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

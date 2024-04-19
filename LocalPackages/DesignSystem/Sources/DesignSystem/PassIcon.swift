@@ -91,6 +91,28 @@ public extension PassIcon {
     static let tabProfileTrialUnselected = Self.icon(named: "TabProfileTrialUnselected")
     static let tabAuthenticator = Self.icon(named: "TabAuthenticator")
 
+    // swiftlint:disable identifier_name
+    static let tabMonitorActiveBreachesFoundSelected = Self.icon(named: "TabMonitorActiveBreachesFoundSelected")
+    static let tabMonitorActiveBreachesFoundUnselected =
+        Self.icon(named: "TabMonitorActiveBreachesFoundUnselected")
+    static let tabMonitorActiveNoBreachesSelected = Self.icon(named: "TabMonitorActiveNoBreachesSelected")
+    static let tabMonitorActiveNoBreachesUnselected = Self.icon(named: "TabMonitorActiveNoBreachesUnselected")
+    static let tabMonitorActiveNoBreachesWeakReusedPasswordsSelected =
+        Self.icon(named: "TabMonitorActiveNoBreachesWeakReusedPasswordsSelected")
+    static let tabMonitorActiveNoBreachesWeakReusedPasswordsUnselected =
+        Self.icon(named: "TabMonitorActiveNoBreachesWeakReusedPasswordsUnselected")
+    static let tabMonitorInactiveBreachesFoundSelected =
+        Self.icon(named: "TabMonitorInactiveBreachesFoundSelected")
+    static let tabMonitorInactiveBreachesFoundUnselected = Self
+        .icon(named: "TabMonitorInactiveBreachesFoundUnselected")
+    static let tabMonitorInactiveNoBreachesSelected = Self.icon(named: "TabMonitorInactiveNoBreachesSelected")
+    static let tabMonitorInactiveNoBreachesUnselected = Self.icon(named: "TabMonitorInactiveNoBreachesUnselected")
+    static let tabMonitorInactiveNoBreachesWeakReusedPasswordsSelected =
+        Self.icon(named: "TabMonitorInactiveNoBreachesWeakReusedPasswordsSelected")
+    static let tabMonitorInactiveNoBreachesWeakReusedPasswordsUnselected =
+        Self.icon(named: "TabMonitorInactiveNoBreachesWeakReusedPasswordsUnselected")
+    // swiftlint:enable identifier_name
+
     static let trash = Self.icon(named: "Trash")
 
     static let trial2FA = Self.icon(named: "Trial2FA")
