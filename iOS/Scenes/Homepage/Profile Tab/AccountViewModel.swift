@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import Entities
@@ -25,6 +26,7 @@ import Factory
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
+import ProtonCorePasswordChange
 
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
@@ -46,9 +48,11 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
+    @Published private(set) var passwordMode: UserSettings.Password.PasswordMode = .singlePassword
     private(set) var accountRecovery: AccountRecovery?
 
     weak var delegate: AccountViewModelDelegate?
@@ -59,10 +63,11 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         self.isShownAsSheet = isShownAsSheet
         refreshUserPlan()
         refreshAccountRecovery()
+        refreshAccountPasswordMode()
     }
 
     private func refreshUserPlan() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 // First get local plan to optimistically display it
@@ -79,11 +84,25 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true) else {
             return
         }
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 accountRecovery = try await accountRepository.accountRecovery()
             } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    private func refreshAccountPasswordMode() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try userDataProvider.getUserId()
+                let settings = await userSettingsRepository.getSettings(for: userId)
+                passwordMode = settings.password.mode
+            } catch {
+                logger.error(error)
                 router.display(element: .displayErrorBanner(error))
             }
         }
@@ -109,12 +128,32 @@ extension AccountViewModel {
         }
     }
 
+    var canChangePassword: Bool {
+        featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
+    }
+
+    var canChangeMailboxPassword: Bool {
+        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
+        else { return false }
+        return passwordMode == .loginAndMailboxPassword
+    }
+
+    func openChangeUserPassword() {
+        let mode: PasswordChangeModule
+            .PasswordChangeMode = passwordMode == .singlePassword ? .singlePassword : .loginPassword
+        router.present(for: .changePassword(mode))
+    }
+
+    func openChangeMailboxPassword() {
+        router.present(for: .changePassword(.mailboxPassword))
+    }
+
     func openAccountSettings() {
         router.present(for: .accountSettings)
     }
 
     func signOut() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             isLoading = true
             await revokeCurrentSession()

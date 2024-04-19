@@ -42,16 +42,10 @@ private extension SettingsView {
         ScrollView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 untitledSection
-
                 clipboardSection
                     .padding(.vertical)
-
-                if viewModel.spotlightFlagAvailable {
-                    spotlightSection
-                }
-
+                spotlightSection
                 logsSection
-
                 applicationSection
                     .padding(.top)
             }
@@ -62,7 +56,7 @@ private extension SettingsView {
         .navigationBarBackButtonHidden()
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.large)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .animation(.default, value: viewModel.spotlightEnabled)
         .animation(.default, value: viewModel.spotlightSearchableVaults)
@@ -89,7 +83,7 @@ private extension SettingsView {
                           height: .tall,
                           content: {
                               Text(viewModel.selectedBrowser.description)
-                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                  .foregroundStyle(PassColor.textNorm.toColor)
                           },
                           trailing: { ChevronRight() })
 
@@ -108,18 +102,16 @@ private extension SettingsView {
                                   .scaledToFit()
                                   .frame(width: 14, height: 14)
                           })
-                          .foregroundColor(Color(uiColor: PassColor.textNorm))
+                          .foregroundStyle(PassColor.textNorm.toColor)
                       },
                       trailing: { ChevronRight() })
 
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                Toggle(isOn: $viewModel.displayFavIcons) {
-                    Text("Show website thumbnails")
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                }
-                .tint(Color(uiColor: PassColor.interactionNorm))
+                StaticToggle("Show website thumbnails",
+                             isOn: viewModel.displayFavIcons,
+                             action: { viewModel.toggleDisplayFavIcons() })
             }
         }
         .roundedEditableSection()
@@ -139,18 +131,16 @@ private extension SettingsView {
                           height: .tall,
                           content: {
                               Text(viewModel.selectedClipboardExpiration.description)
-                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                  .foregroundStyle(PassColor.textNorm.toColor)
                           },
                           trailing: { ChevronRight() })
 
                 PassSectionDivider()
 
                 OptionRow(height: .tall) {
-                    Toggle(isOn: $viewModel.shareClipboard) {
-                        Text("Share clipboard between devices")
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    }
-                    .tint(Color(uiColor: PassColor.interactionNorm))
+                    StaticToggle("Share clipboard between devices",
+                                 isOn: viewModel.shareClipboard,
+                                 action: { viewModel.toggleShareClipboard() })
                 }
             }
             .roundedEditableSection()
@@ -293,7 +283,7 @@ private extension SettingsView {
                       height: .medium,
                       content: {
                           Text("Clear all logs")
-                              .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                              .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                       },
                       trailing: {
                           CircleButton(icon: IconProvider.trash,
@@ -318,7 +308,7 @@ private extension SettingsView {
                       height: .medium,
                       content: {
                           Text("Force synchronization")
-                              .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                              .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                       },
                       trailing: {
                           CircleButton(icon: IconProvider.arrowRotateRight,

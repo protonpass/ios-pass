@@ -27,7 +27,7 @@ public protocol SetUpSentryUseCase {
 }
 
 public extension SetUpSentryUseCase {
-    func callAsFunction(bundle: Bundle) {
+    func callAsFunction(bundle: Bundle = .main) {
         execute(bundle: bundle)
     }
 }

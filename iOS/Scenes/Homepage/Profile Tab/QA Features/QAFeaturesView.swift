@@ -33,7 +33,6 @@ struct QAFeaturesView: View {
     private var displayAuthenticator = false
 
     var body: some View {
-        let tintColor = Color(uiColor: PassColor.interactionNorm)
         NavigationView {
             Form {
                 OnboardSection()
@@ -53,6 +52,7 @@ struct QAFeaturesView: View {
                 if #available(iOS 17, *) {
                     TipKitSection()
                 }
+                PassMonitorSection()
             }
             .navigationTitle(Text(verbatim: "QA Features"))
             .toolbar {
@@ -65,8 +65,7 @@ struct QAFeaturesView: View {
                 }
             }
         }
-        .accentColor(tintColor)
-        .tint(tintColor)
+        .tint(PassColor.interactionNorm.toColor)
         .navigationViewStyle(.stack)
     }
 }

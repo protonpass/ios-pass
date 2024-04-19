@@ -109,7 +109,7 @@ private extension CreateEditCreditCardView {
     var upsellBanner: some View {
         Text("Upgrade to create credit cards")
             .padding()
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(PassColor.cardInteractionNormMinor1.toColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))

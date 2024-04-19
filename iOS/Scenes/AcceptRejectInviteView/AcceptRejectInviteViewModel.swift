@@ -50,7 +50,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     }
 
     func reject() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -71,7 +71,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     }
 
     func accept() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -106,7 +106,7 @@ private extension AcceptRejectInviteViewModel {
     }
 
     func decodeVaultData() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }

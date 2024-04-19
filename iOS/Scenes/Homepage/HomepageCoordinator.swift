@@ -33,6 +33,8 @@ import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCorePasswordChange
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import Screens
@@ -56,7 +58,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -65,9 +67,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     // Lazily initialised properties
-    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
@@ -81,6 +83,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
+    private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
+
+    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
+    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -95,6 +103,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var authenticated = false
+
+    private var theme: Theme { getSharedPreferences().theme }
 
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegate: HomepageTabDelegate?
@@ -126,7 +136,7 @@ private extension HomepageCoordinator {
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                           task: refreshInvitations.callAsFunction))
 
-        authenticated = preferences.localAuthenticationMethod == .none
+        authenticated = getSharedPreferences().localAuthenticationMethod == .none
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
@@ -137,28 +147,30 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        preferences.objectWillChange
+        preferencesManager
+            .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .filter(\.theme)
+            .sink { [weak self] theme in
                 guard let self else { return }
-                rootViewController.setUserInterfaceStyle(preferences
-                    .theme.userInterfaceStyle)
+                rootViewController.setUserInterfaceStyle(theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
 
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor [weak self] in
+            Task { [weak self] in
                 guard let self else { return }
-                guard authenticated, let destination = router.pendingDeeplinkDestination else { return }
+                guard await authenticated,
+                      let destination = await router.pendingDeeplinkDestination else { return }
                 switch destination {
                 case let .totp(uri):
-                    totpDeepLink(totpUri: uri)
+                    await totpDeepLink(totpUri: uri)
                 case let .spotlightItemDetail(itemContent):
-                    router.present(for: .itemDetail(itemContent))
+                    await router.present(for: .itemDetail(itemContent))
                 case let .error(error):
-                    router.display(element: .displayErrorBanner(error))
+                    await router.display(element: .displayErrorBanner(error))
                 }
-                router.resolveDeeplink()
+                await router.resolveDeeplink()
             }
         }
 
@@ -249,11 +261,11 @@ private extension HomepageCoordinator {
                                  })
 
         start(with: homeView, secondaryView: placeholderView)
-        rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
 
     func synchroniseData() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 try await vaultsManager.asyncRefresh()
@@ -280,7 +292,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 if let organization = try await organizationRepository.refreshOrganization() {
-                    overrideSecuritySettings(with: organization)
+                    try await overrideSecuritySettings(with: organization)
                 }
             } catch {
                 logger.error(error)
@@ -326,13 +338,26 @@ private extension HomepageCoordinator {
     }
 
     func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
-        preferences.createdItemsCount += 1
-        // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
-        if !ProcessInfo.processInfo.isiOSAppOnMac,
-           preferences.createdItemsCount >= 10,
-           let windowScene = rootViewController.view.window?.windowScene {
-            SKStoreReviewController.requestReview(in: windowScene)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let currentCount = getAppPreferences().createdItemsCount
+                try await updateAppPreferences(\.createdItemsCount, value: currentCount + 1)
+                // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
+                if !ProcessInfo.processInfo.isiOSAppOnMac,
+                   currentCount >= 10,
+                   let windowScene = rootViewController.view.window?.windowScene {
+                    SKStoreReviewController.requestReview(in: windowScene)
+                }
+            } catch {
+                handle(error: error)
+            }
         }
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -443,6 +468,8 @@ extension HomepageCoordinator {
                     presentSecurity(securityWeakness)
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
+                case let .changePassword(mode):
+                    presentChangePassword(mode: mode)
                 }
             }
             .store(in: &cancellables)
@@ -489,7 +516,7 @@ extension HomepageCoordinator {
                 guard let self else { return }
                 switch destination {
                 case let .copyToClipboard(text, message):
-                    clipboardManager.copy(text: text, bannerMessage: message)
+                    copyToClipboard(text, bannerMessage: message, bannerDisplay: bannerManager)
                 case let .back(isShownAsSheet):
                     itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
                 }
@@ -585,8 +612,7 @@ extension HomepageCoordinator {
             let coordinator = makeCreateEditItemCoordinator()
             try coordinator.presentEditItemView(for: itemContent)
         } catch {
-            logger.error(error)
-            bannerManager.displayTopErrorMessage(error)
+            handle(error: error)
         }
     }
 
@@ -597,14 +623,13 @@ extension HomepageCoordinator {
                 let coordinator = makeCreateEditItemCoordinator()
                 try coordinator.presentCloneItemView(for: itemContent)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
 
     func presentCreateItemView(for itemType: ItemType) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -612,8 +637,7 @@ extension HomepageCoordinator {
                 let coordinator = makeCreateEditItemCoordinator()
                 try await coordinator.presentCreateItemView(for: itemType)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -716,7 +740,7 @@ extension HomepageCoordinator {
                         logger.debug("Payment is done but no plan is purchased")
                     }
                 case let .failure(error):
-                    bannerManager.displayTopErrorMessage(error)
+                    handle(error: error)
                 }
             }
         }
@@ -786,7 +810,7 @@ extension HomepageCoordinator {
     }
 
     func handleFailedLocalAuthentication() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             logger.error("Failed to locally authenticate. Logging out.")
             showLoadingHud()
@@ -794,6 +818,50 @@ extension HomepageCoordinator {
             hideLoadingHud()
             delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
         }
+    }
+
+    func presentChangePassword(mode: PasswordChangeModule.PasswordChangeMode) {
+        Task { @MainActor [weak self] in
+            guard let self, let userData = userDataProvider.getUserData() else { return }
+            do {
+                let userInfo = try await filledUserInfo(userData: userData)
+                let viewController = PasswordChangeModule
+                    .makePasswordChangeViewController(mode: mode,
+                                                      apiService: apiManager.apiService,
+                                                      authCredential: userData.credential,
+                                                      userInfo: userInfo,
+                                                      showingDismissButton: true) { [weak self] cred, userInfo in
+                        guard let self else { return }
+                        processPasswordChange(authCredential: cred, userInfo: userInfo)
+                    }
+                let navigationController = UINavigationController(rootViewController: viewController)
+                present(navigationController)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    private func filledUserInfo(userData: UserData) async throws -> UserInfo {
+        let userId = try userDataProvider.getUserId()
+        let settings = await userSettingsRepository.getSettings(for: userId)
+        let userInfo = userData.toUserInfo
+        userInfo.twoFactor = settings.twoFactor.type.rawValue
+        userInfo.passwordMode = settings.password.mode.rawValue
+        return userInfo
+    }
+
+    private func processPasswordChange(authCredential: AuthCredential, userInfo: UserInfo) {
+        guard let userData = userDataProvider.getUserData() else { return }
+        var updatedUser = userData.user
+        updatedUser.setNewKeys(userInfo.userKeys)
+        userDataProvider.setUserData(.init(credential: authCredential,
+                                           user: updatedUser,
+                                           salts: userData.salts,
+                                           passphrases: userData.passphrases,
+                                           addresses: userInfo.userAddresses,
+                                           scopes: userData.scopes))
+        dismissTopMostViewController()
     }
 
     // MARK: - UI Helper presentation functions
@@ -821,16 +889,38 @@ extension HomepageCoordinator {
 
     func present(_ view: some View, animated: Bool = true, dismissible: Bool = true) {
         present(UIHostingController(rootView: view),
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                userInterfaceStyle: theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible)
     }
 
     func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
         present(viewController,
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                userInterfaceStyle: theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible)
+    }
+
+    func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>, value: T) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateSharedPreferences(keyPath, value: value)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>, value: T) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateUserPreferences(keyPath, value: value)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 }
 
@@ -852,7 +942,7 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func presentItemHistory(_ item: ItemContent) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let plan = try await accessRepository.getPlan()
@@ -863,8 +953,7 @@ extension HomepageCoordinator {
                     present(view)
                 }
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -879,7 +968,7 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func beginImportExportFlow() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 showLoadingHud()
@@ -889,7 +978,7 @@ extension HomepageCoordinator {
                 presentImportExportView(url: url)
             } catch {
                 hideLoadingHud()
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -907,7 +996,7 @@ extension HomepageCoordinator {
             let url = try makeAccountSettingsUrl()
             urlOpener.open(urlString: url)
         } catch {
-            bannerManager.displayTopErrorMessage(error)
+            handle(error: error)
         }
     }
 
@@ -931,7 +1020,7 @@ private extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self,
                   await loginMethod.isManualLogIn() else { return }
             if let access = try? await accessRepository.getAccess(),
@@ -956,7 +1045,7 @@ private extension HomepageCoordinator {
                 presentOnboardView(forced: true)
             }
         }
-        .theme(preferences.theme)
+        .theme(theme)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
@@ -964,7 +1053,7 @@ private extension HomepageCoordinator {
     }
 
     func presentOnboardView(forced: Bool) {
-        guard forced || !preferences.onboarded else { return }
+        guard forced || !getAppPreferences().onboarded else { return }
         let view = OnboardingView { [weak self] in
             guard let self else { return }
             openTutorialVideo()
@@ -1088,7 +1177,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToShowTrialDetail() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { self.hideLoadingHud() }
             do {
@@ -1106,8 +1195,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                                            onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
                 present(view)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                handle(error: error)
             }
         }
     }
@@ -1184,7 +1272,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func presentBugReportView() {
         let errorHandler: (Error) -> Void = { [weak self] error in
             guard let self else { return }
-            bannerManager.displayTopErrorMessage(error)
+            handle(error: error)
         }
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
@@ -1267,7 +1355,12 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditDefaultBrowser() {
-        let viewController = UIHostingController(rootView: EditDefaultBrowserView())
+        let currentValue = getSharedPreferences().browser
+        let view = EditDefaultBrowserView(selection: currentValue) { [weak self] newValue in
+            guard let self else { return }
+            updateSharedPreferences(\.browser, value: newValue)
+        }
+        let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.compact.value) * Browser.allCases.count + 100
         viewController.setDetentType(.custom(CGFloat(customHeight)),
@@ -1278,7 +1371,10 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditTheme() {
-        let view = EditThemeView(preferences: preferences)
+        let view = EditThemeView { [weak self] newTheme in
+            guard let self else { return }
+            updateSharedPreferences(\.theme, value: newTheme)
+        }
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.short.value) * Theme.allCases.count + 60
@@ -1290,7 +1386,11 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditClipboardExpiration() {
-        let view = EditClipboardExpirationView(preferences: preferences)
+        let currentValue = getSharedPreferences().clipboardExpiration
+        let view = EditClipboardExpirationView(selection: currentValue) { [weak self] newValue in
+            guard let self else { return }
+            updateSharedPreferences(\.clipboardExpiration, value: newValue)
+        }
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.compact.value) * ClipboardExpiration.allCases.count + 60
@@ -1302,7 +1402,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
@@ -1419,7 +1519,9 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
-            clipboardManager.copy(text: password, bannerMessage: #localized("Password copied"))
+            copyToClipboard(password,
+                            bannerMessage: #localized("Password copied"),
+                            bannerDisplay: bannerManager)
         }
     }
 }
@@ -1452,7 +1554,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
-        showFullScreen(data: data, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        showFullScreen(data: data, userInterfaceStyle: theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable) {
@@ -1462,12 +1564,12 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
             // swiftformat:disable:next redundantParens
             let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
                 guard let self else { return }
-                Task { @MainActor [weak self] in
+                Task { [weak self] in
                     guard let self else {
                         return
                     }
-                    banner.dismiss()
-                    itemContextMenuHandler.restore(item)
+                    await banner.dismiss()
+                    await itemContextMenuHandler.restore(item)
                 }
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,

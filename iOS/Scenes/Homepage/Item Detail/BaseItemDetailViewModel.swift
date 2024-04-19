@@ -39,8 +39,11 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
+    @Published private(set) var isMonitored = false // Only applicable to login items
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
+
+    private var superBindValuesCalled = false
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -64,6 +67,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
+    private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
 
     var isAllowedToShare: Bool {
         guard let vault else {
@@ -97,10 +101,14 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
+        assert(superBindValuesCalled, "bindValues must be overridden with call to super")
     }
 
-    /// To be overidden by subclasses
-    func bindValues() {}
+    /// To be overidden with super call by subclasses
+    func bindValues() {
+        isMonitored = !itemContent.item.skipHealthCheck
+        superBindValuesCalled = true
+    }
 
     /// Copy to clipboard and trigger a toast message
     /// - Parameters:
@@ -130,7 +138,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func refresh() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 let shareId = itemContent.shareId
@@ -175,8 +183,28 @@ class BaseItemDetailViewModel: ObservableObject {
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
                 donateToItemForceTouchTip()
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
+            }
+        }
+    }
+
+    func toggleMonitoring() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                logger.trace("Toggling monitor from \(isMonitored) for \(itemContent.debugDescription)")
+                router.display(element: .globalLoading(shouldShow: true))
+                try await toggleItemMonitoring(item: itemContent, shouldNotMonitor: isMonitored)
+                logger.trace("Toggled monitor to \(!isMonitored) for \(itemContent.debugDescription)")
+                let message = isMonitored ? #localized("Item excluded from monitoring") :
+                    #localized("Item added to monitoring")
+                router.display(element: .infosMessage(message, config: nil))
+                refresh()
+            } catch {
+                handle(error)
             }
         }
     }
@@ -194,7 +222,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToTrash() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -214,7 +242,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func restore() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -235,7 +263,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func permanentlyDelete() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -266,19 +294,23 @@ class BaseItemDetailViewModel: ObservableObject {
     func showItemHistory() {
         router.present(for: .history(itemContent))
     }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
 }
 
 // MARK: - Private APIs
 
 private extension BaseItemDetailViewModel {
     func checkIfFreeUser() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -297,8 +329,8 @@ private extension BaseItemDetailViewModel {
     }
 
     func donateToItemForceTouchTip() {
-        Task { [weak self] in
-            guard #available(iOS 17, *), let self else { return }
+        Task {
+            guard #available(iOS 17, *) else { return }
             await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
         }
     }

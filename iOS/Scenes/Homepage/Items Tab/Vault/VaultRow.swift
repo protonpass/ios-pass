@@ -39,7 +39,7 @@ struct VaultRow<Thumbnail: View>: View {
 
             VStack(alignment: .leading) {
                 Text(title)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 if itemCount == 0 {
                     Text("Empty")
@@ -47,7 +47,7 @@ struct VaultRow<Thumbnail: View>: View {
                 } else {
                     Text("\(itemCount) item(s)")
                         .font(.callout)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 }
             }
 
@@ -77,7 +77,7 @@ struct VaultRow<Thumbnail: View>: View {
                 Image(uiImage: IconProvider.checkmark)
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                    .foregroundStyle(PassColor.interactionNorm.toColor)
                     .frame(maxHeight: 20)
             }
         }

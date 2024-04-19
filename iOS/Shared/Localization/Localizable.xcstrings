@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds."
+          }
+        }
+      }
+    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -948,7 +958,7 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld invite remaining"
                 }
               },
@@ -2090,7 +2100,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "%lld items moved to trash"
                 }
               }
@@ -18281,6 +18291,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép tên chủ thẻ"
+          }
+        }
+      }
+    },
+    "Change mailbox password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change mailbox password"
+          }
+        }
+      }
+    },
+    "Change password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change password"
           }
         }
       }
@@ -39341,6 +39371,26 @@
         }
       }
     },
+    "Item added to monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item added to monitoring"
+          }
+        }
+      }
+    },
+    "Item excluded from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item excluded from monitoring"
+          }
+        }
+      }
+    },
     "Item ID" : {
       "localizations" : {
         "be" : {
@@ -54390,7 +54440,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Permanently deleted %lld items"
                 }
               }
@@ -60772,7 +60822,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Restored %lld items"
                 }
               }
@@ -61374,7 +61424,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Reused %lld times"
                 }
               }
@@ -88024,7 +88074,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "You are going to delete %lld items irreversibly, are you sure?"
                 }
               }

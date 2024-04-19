@@ -61,7 +61,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
@@ -73,6 +72,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
+    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
+    private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -110,7 +111,7 @@ private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
 
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 showingUpgradeAppBanner = try await shouldDisplayUpgradeAppBanner()
@@ -145,7 +146,7 @@ private extension ItemsTabViewModel {
             .store(in: &cancellables)
 
         // Show the progress if after 5 seconds after logging in and items are not yet loaded
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             try? await Task.sleep(seconds: 5)
 
@@ -172,7 +173,7 @@ private extension ItemsTabViewModel {
 
     func refreshBanners(_ invites: [UserInvite]? = nil) {
         inviteRefreshTask?.cancel()
-        inviteRefreshTask = Task { @MainActor [weak self] in
+        inviteRefreshTask = Task { [weak self] in
             guard let self else { return }
             var banners = [InfoBanner]()
             if let invites, !invites.isEmpty {
@@ -191,9 +192,10 @@ private extension ItemsTabViewModel {
 
     func localBanners() async -> [InfoBanner] {
         do {
+            let dismissedIds = getAppPreferences().dismissedBannerIds
             var banners = [InfoBanner]()
             for banner in InfoBanner.allCases {
-                if preferences.dismissedBannerIds.contains(where: { $0 == banner.id }) {
+                if dismissedIds.contains(where: { $0 == banner.id }) {
                     continue
                 }
 
@@ -216,8 +218,7 @@ private extension ItemsTabViewModel {
             }
             return banners
         } catch {
-            logger.error(error)
-            router.display(element: .displayErrorBanner(error))
+            handle(error: error)
             return []
         }
     }
@@ -233,6 +234,11 @@ private extension ItemsTabViewModel {
         if items.isEmpty {
             isEditMode = false
         }
+    }
+
+    func handle(error: Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
@@ -268,7 +274,7 @@ extension ItemsTabViewModel {
     }
 
     func trashSelectedItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -279,14 +285,13 @@ extension ItemsTabViewModel {
                 let message = #localized("%lld items moved to trash", items.count)
                 router.display(element: .infosMessage(message, config: .dismissAndRefresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
 
     func restoreSelectedItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -297,14 +302,13 @@ extension ItemsTabViewModel {
                 let message = #localized("Restored %lld items", items.count)
                 router.display(element: .successMessage(message, config: .dismissAndRefresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
 
     func permanentlyDeleteSelectedItems() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
@@ -315,8 +319,7 @@ extension ItemsTabViewModel {
                 let message = #localized("Permanently deleted %lld items", items.count)
                 router.display(element: .infosMessage(message, config: .dismissAndRefresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -339,7 +342,15 @@ extension ItemsTabViewModel {
             return
         }
         banners.removeAll(where: { $0 == banner })
-        preferences.dismissedBannerIds.append(banner.id)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let newIds = getAppPreferences().dismissedBannerIds.appending(banner.id)
+                try await updateAppPreferences(\.dismissedBannerIds, value: newIds)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     func handleAction(banner: InfoBanner) {
@@ -367,7 +378,7 @@ extension ItemsTabViewModel {
     }
 
     func viewDetail(of item: any ItemIdentifiable) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,

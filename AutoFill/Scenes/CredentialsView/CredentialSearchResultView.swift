@@ -49,10 +49,10 @@ private extension CredentialSearchResultView {
             Text("Results")
                 .font(.callout)
                 .fontWeight(.bold)
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                .foregroundColor(PassColor.textNorm.toColor) +
                 Text(verbatim: " (\(results.count))")
                 .font(.callout)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
+                .foregroundColor(PassColor.textWeak.toColor)
 
             Spacer()
 
@@ -142,7 +142,7 @@ private extension CredentialSearchResultView {
                 Text(headerTitle)
                     .font(.callout)
                     .fontWeight(headerFontWeight)
-                    .foregroundColor(Color(uiColor: headerColor))
+                    .foregroundStyle(headerColor.toColor)
             })
         }
     }

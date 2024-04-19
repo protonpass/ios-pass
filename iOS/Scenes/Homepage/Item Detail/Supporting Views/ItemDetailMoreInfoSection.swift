@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import DesignSystem
 import Entities
 import Factory
@@ -28,14 +27,16 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemDetailMoreInfoSection: View {
-    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     @Binding var isExpanded: Bool
     private let item: ItemContent
+    let onCopy: (_ text: String, _ bannerMessage: String) -> Void
 
     init(isExpanded: Binding<Bool>,
-         itemContent: ItemContent) {
+         itemContent: ItemContent,
+         onCopy: @escaping (_ text: String, _ bannerMessage: String) -> Void) {
         _isExpanded = isExpanded
         item = itemContent
+        self.onCopy = onCopy
     }
 
     var body: some View {
@@ -46,7 +47,7 @@ struct ItemDetailMoreInfoSection: View {
                         Text("More info")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .foregroundStyle(PassColor.textWeak.toColor)
                     }, icon: {
                         icon(from: IconProvider.infoCircle)
                     })
@@ -69,7 +70,8 @@ struct ItemDetailMoreInfoSection: View {
                             .textSelection(.enabled)
                             .onTapGesture(perform: copyItemId)
                         Spacer()
-                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     HStack {
                         title(#localized("Vault ID") + ":")
@@ -77,7 +79,19 @@ struct ItemDetailMoreInfoSection: View {
                             .textSelection(.enabled)
                             .onTapGesture(perform: copyVaultId)
                         Spacer()
-                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    if Bundle.main.isQaBuild {
+                        HStack {
+                            title("CFV:")
+                            Text(verbatim: "\(item.item.contentFormatVersion)")
+                                .textSelection(.enabled)
+                                .onTapGesture(perform: copyVaultId)
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
                 .font(.caption)
                 .foregroundColor(PassColor.textWeak.toColor)
@@ -92,13 +106,11 @@ struct ItemDetailMoreInfoSection: View {
 
 private extension ItemDetailMoreInfoSection {
     func copyItemId() {
-        clipboardManager.copy(text: item.itemId,
-                              bannerMessage: #localized("Item ID copied"))
+        onCopy(item.itemId, #localized("Item ID copied"))
     }
 
     func copyVaultId() {
-        clipboardManager.copy(text: item.shareId,
-                              bannerMessage: #localized("Vault ID copied"))
+        onCopy(item.shareId, #localized("Vault ID copied"))
     }
 
     func icon(from image: UIImage) -> some View {

@@ -41,8 +41,8 @@ struct UpgradeButton: View {
             .frame(height: height)
             .frame(maxWidth: maxWidth)
             .padding(.horizontal, 16)
-            .foregroundColor(Color(uiColor: PassColor.textInvert))
-            .background(Color(uiColor: backgroundColor))
+            .foregroundStyle(PassColor.textInvert.toColor)
+            .background(backgroundColor.toColor)
             .clipShape(Capsule())
         }
     }
@@ -62,7 +62,7 @@ struct UpgradeButtonLite: View {
                     .scaledToFit()
                     .frame(maxWidth: 16)
             }
-            .foregroundColor(Color(uiColor: foregroundColor))
+            .foregroundStyle(foregroundColor.toColor)
             .containerShape(Rectangle())
         }
     }

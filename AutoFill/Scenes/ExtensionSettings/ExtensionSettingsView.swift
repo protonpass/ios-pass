@@ -41,11 +41,9 @@ struct ExtensionSettingsView: View {
             ScrollView {
                 VStack {
                     OptionRow(height: .medium) {
-                        Toggle(isOn: $viewModel.quickTypeBar) {
-                            Text("QuickType bar suggestions")
-                                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                        }
-                        .tint(Color(uiColor: PassColor.interactionNorm))
+                        StaticToggle("QuickType bar suggestions",
+                                     isOn: viewModel.quickTypeBar,
+                                     action: { viewModel.toggleQuickTypeBar() })
                     }
                     .roundedEditableSection()
                     Text("Quickly pick a login item from suggestions above the keyboard")

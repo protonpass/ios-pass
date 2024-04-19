@@ -19,16 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
 /// When autofilling from QuickType bar but local authentication is turned on
 struct LockedCredentialView: View {
-    let preferences: Preferences
+    private let theme = resolve(\SharedToolingContainer.theme)
     let viewModel: LockedCredentialViewModel
 
-    init(preferences: Preferences, viewModel: LockedCredentialViewModel) {
-        self.preferences = preferences
+    init(viewModel: LockedCredentialViewModel) {
         self.viewModel = viewModel
     }
 
@@ -42,7 +42,7 @@ struct LockedCredentialView: View {
                 .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
-        .theme(preferences.theme)
+        .theme(theme)
     }
 
     @ToolbarContentBuilder

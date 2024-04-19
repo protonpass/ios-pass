@@ -45,7 +45,7 @@ private extension KeychainStorage {
 /// Use `@AppStorage` for trivial data that do not need to survive reinstallations
 /// Consider using this property wrapper for data that can be lost without any security impacts
 /// (theme settings, selected browser...)
-final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol {
+final class Preferences: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     init() {}
@@ -120,32 +120,6 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     /// Not really sensitive but `@AppStorage` does not support array so we rely on `@KeychainStorage`
     @KeychainStorage(key: Key.dismissedBannerIds, defaultValue: [])
     var dismissedBannerIds: [String]
-
-    @MainActor
-    func reset(isTests: Bool = false) {
-        quickTypeBar = true
-        automaticallyCopyTotpCode = true
-        failedAttemptCount = 0
-        localAuthenticationMethod = .none
-        fallbackToPasscode = true
-        pinCode = nil
-        appLockTime = .twoMinutes
-        theme = .dark
-        browser = .systemDefault
-        clipboardExpiration = .twoMinutes
-        shareClipboard = false
-        spotlightEnabled = false
-        spotlightSearchableContent = .title
-        spotlightSearchableVaults = .all
-        telemetryThreshold = nil
-        displayFavIcons = true
-        dismissedBannerIds = []
-        if isTests {
-            isFirstRun = true
-            onboarded = false
-            createdItemsCount = 0
-        }
-    }
 }
 
 private extension Preferences {
@@ -179,23 +153,29 @@ private extension Preferences {
     }
 }
 
-// MARK: - TelemetryThresholdProviderProtocol
-
-extension Preferences: TelemetryThresholdProviderProtocol {
-    func getThreshold() -> TimeInterval? { telemetryThreshold }
-    func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
+extension Preferences: PreferencesMigrator {
+    // swiftlint:disable:next large_tuple
+    func migratePreferences() -> (AppPreferences, SharedPreferences, UserPreferences) {
+        let app = AppPreferences(onboarded: onboarded,
+                                 telemetryThreshold: telemetryThreshold,
+                                 createdItemsCount: createdItemsCount,
+                                 dismissedBannerIds: dismissedBannerIds,
+                                 didMigratePreferences: true)
+        let shared = SharedPreferences(quickTypeBar: quickTypeBar,
+                                       automaticallyCopyTotpCode: automaticallyCopyTotpCode,
+                                       theme: theme,
+                                       browser: browser,
+                                       displayFavIcons: displayFavIcons,
+                                       failedAttemptCount: failedAttemptCount,
+                                       localAuthenticationMethod: localAuthenticationMethod,
+                                       pinCode: pinCode,
+                                       fallbackToPasscode: fallbackToPasscode,
+                                       appLockTime: appLockTime,
+                                       clipboardExpiration: clipboardExpiration,
+                                       shareClipboard: shareClipboard)
+        let user = UserPreferences(spotlightEnabled: spotlightEnabled,
+                                   spotlightSearchableContent: spotlightSearchableContent,
+                                   spotlightSearchableVaults: spotlightSearchableVaults)
+        return (app, shared, user)
+    }
 }
-
-// MARK: - FavIconSettings
-
-extension Preferences: FavIconSettings {
-    var shouldDisplayFavIcons: Bool { displayFavIcons }
-}
-
-// MARK: - SpotlightSettingsProvider
-
-extension Preferences: SpotlightSettingsProvider {}
-
-// MARK: - SecuritySettingsProvider
-
-extension Preferences: SecuritySettingsProvider {}

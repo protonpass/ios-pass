@@ -38,6 +38,7 @@ enum TOTPTokenState {
     case notAllowed
 }
 
+@MainActor
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -53,14 +54,12 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published private(set) var securityIssues: [SecurityWeakness]?
     @Published private(set) var reusedItems: [ItemContent]?
-    @Published private(set) var loading = false
 
     var isAlias: Bool { aliasItem != nil }
     let showSecurityIssues: Bool
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
-    private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
@@ -105,6 +104,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     override func bindValues() {
+        super.bindValues()
         if case let .login(data) = itemContent.contentData {
             passkeys = data.passkeys
             name = itemContent.name
@@ -132,18 +132,18 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
 private extension LogInDetailViewModel {
     func getAliasItem(username: String) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 aliasItem = try await itemRepository.getAliasItem(email: username)
             } catch {
-                logAndDisplay(error: error)
+                handle(error)
             }
         }
     }
 
     func checkTotpState() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
@@ -152,7 +152,7 @@ private extension LogInDetailViewModel {
                     totpTokenState = .notAllowed
                 }
             } catch {
-                logAndDisplay(error: error)
+                handle(error)
             }
         }
     }
@@ -188,7 +188,7 @@ extension LogInDetailViewModel {
             let itemContent = try aliasItem.getItemContent(symmetricKey: getSymmetricKey())
             logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
         } catch {
-            logAndDisplay(error: error)
+            handle(error)
         }
     }
 
@@ -204,24 +204,6 @@ extension LogInDetailViewModel {
         router.navigate(to: .urlPage(urlString: urlString))
     }
 
-    func toggleFromSecurityMonitoring() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer { loading = false }
-            do {
-                if let securityIssues {
-                    loading = true
-                    try await toggleItemMonitoring(item: itemContent,
-                                                   shouldNotMonitor: !securityIssues.contains(.excludedItems))
-                }
-            } catch {
-                logAndDisplay(error: error)
-            }
-        }
-    }
-
     func fetchSimilarPasswordItems() {
         Task { [weak self] in
             guard let self else {
@@ -230,16 +212,9 @@ extension LogInDetailViewModel {
             do {
                 reusedItems = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
             } catch {
-                logAndDisplay(error: error)
+                handle(error)
             }
         }
-    }
-}
-
-private extension LogInDetailViewModel {
-    func logAndDisplay(error: Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
     }
 }
 

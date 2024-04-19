@@ -1,7 +1,7 @@
 //
-// Preferences+LocalAuthentication.swift
-// Proton Pass - Created on 19/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// MonitorState.swift
+// Proton Pass - Created on 19/04/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,11 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import LocalAuthentication
+import Foundation
 
-extension Preferences {
-    var localAuthenticationPolicy: LAPolicy {
-        fallbackToPasscode ? .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
+public enum MonitorState: Sendable {
+    case active(MonitorBreachState)
+    case inactive(MonitorBreachState)
+
+    public static var `default`: Self {
+        .inactive(.noBreaches)
     }
+}
+
+public enum MonitorBreachState: Sendable {
+    case noBreaches
+    case noBreachesButWeakOrReusedPasswords
+    case breachesFound
 }

@@ -43,10 +43,8 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     @Published var confirmedPIN = ""
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private var cancellables = Set<AnyCancellable>()
-
-    var theme: Theme { preferences.theme }
 
     var actionNotAllowed: Bool {
         // Always disallow when error occurs
@@ -80,10 +78,7 @@ extension SetPINCodeViewModel {
 
         case .confirmation:
             if confirmedPIN == definedPIN {
-                preferences.localAuthenticationMethod = .pin
-                preferences.pinCode = definedPIN
-                router.display(element: .successMessage(#localized("PIN code set"),
-                                                        config: NavigationConfiguration(dismissBeforeShowing: true)))
+                set(pinCode: definedPIN)
             } else {
                 error = .notMatched
             }
@@ -96,6 +91,20 @@ private extension SetPINCodeViewModel {
         let minLength = Constants.PINCode.minLength
         let maxLength = Constants.PINCode.maxLength
         return pin.isEmpty || !(minLength...maxLength).contains(pin.count)
+    }
+
+    func set(pinCode: String) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateSharedPreferences(\.localAuthenticationMethod, value: .pin)
+                try await updateSharedPreferences(\.pinCode, value: pinCode)
+                router.display(element: .successMessage(#localized("PIN code set"),
+                                                        config: .init(dismissBeforeShowing: true)))
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 
