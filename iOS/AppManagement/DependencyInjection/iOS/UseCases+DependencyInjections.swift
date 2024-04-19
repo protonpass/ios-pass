@@ -418,6 +418,11 @@ extension UseCasesContainer {
             ToggleItemMonitoring(itemRepository: self.itemRepository)
         }
     }
+
+    var getAllAliasMonitorInfos: Factory<GetAllAliasMonitorInfoUseCase> {
+        self { GetAllAliasMonitorInfos(getAllAliasesUseCase: SharedUseCasesContainer.shared.getAllAliases(),
+                                       repository: RepositoryContainer.shared.breachRepository()) }
+    }
 }
 
 // MARK: - Organization

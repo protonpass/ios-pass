@@ -1,6 +1,6 @@
 //
-// CustomEmail.swift
-// Proton Pass - Created on 10/04/2024.
+// ResendEmailVerificationEndpoint.swift
+// Proton Pass - Created on 18/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiable {
-    public let customEmailID, email: String
-    public let verified: Bool
-    public let breachCounter: Int
+struct ResendEmailVerificationEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public init(customEmailID: String, email: String, verified: Bool, breachCounter: Int) {
-        self.customEmailID = customEmailID
-        self.email = email
-        self.verified = verified
-        self.breachCounter = breachCounter
-    }
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-    public var id: String {
-        customEmailID
+    init(emailId: String) {
+        debugDescription = "Remove an email for breach monitoring"
+        path = "pass/v1/breach/custom_email/\(emailId)/resend_verification"
+        method = .post
     }
 }

@@ -85,7 +85,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                     return nil
                 }
 
-                if !encryptedItem.item.isFlagActive(ItemFlags.skipHealthCheck), !loginItem.password.isEmpty {
+                if !encryptedItem.item.skipHealthCheck, !loginItem.password.isEmpty {
                     reusedPasswords[loginItem.password, default: 0] += 1
                 }
                 return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
@@ -104,7 +104,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             var weaknesses = [SecurityWeakness]()
 
             if item.encrypted.item
-                .isFlagActive(ItemFlags.skipHealthCheck) {
+                .skipHealthCheck {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
@@ -144,7 +144,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
         return encryptedItems.compactMap { encryptedItem in
             guard let decriptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  !decriptedItem.item.isFlagActive(ItemFlags.skipHealthCheck),
+                  !decriptedItem.item.skipHealthCheck,
                   let loginItem = decriptedItem.loginItem,
                   decriptedItem.ids != item.ids,
                   !loginItem.password.isEmpty, loginItem.password == login.password else {

@@ -23,24 +23,28 @@ import Foundation
 public struct UserBreaches: Decodable, Equatable, Sendable, Hashable {
     public let emailsCount: Int
     public let domainsPeek: [BreachedDomain]
-    public let addresses: [BreachedAddress]
+    public let addresses: [ProtonAddress]
     public let customEmails: [CustomEmail]
+    public let hasCustomDomains: Bool
 
     public init(emailsCount: Int,
                 domainsPeek: [BreachedDomain],
-                addresses: [BreachedAddress],
-                customEmails: [CustomEmail]) {
+                addresses: [ProtonAddress],
+                customEmails: [CustomEmail],
+                hasCustomDomains: Bool) {
         self.emailsCount = emailsCount
         self.domainsPeek = domainsPeek
         self.addresses = addresses
         self.customEmails = customEmails
+        self.hasCustomDomains = hasCustomDomains
     }
 
     public static var `default`: UserBreaches {
         UserBreaches(emailsCount: 0,
                      domainsPeek: [],
                      addresses: [],
-                     customEmails: [])
+                     customEmails: [],
+                     hasCustomDomains: false)
     }
 
     public var breached: Bool {
@@ -49,5 +53,21 @@ public struct UserBreaches: Decodable, Equatable, Sendable, Hashable {
 
     public var latestBreach: BreachedDomain? {
         domainsPeek.max()
+    }
+
+    public var verifiedCustomEmails: [CustomEmail] {
+        customEmails.filter(\.verified)
+    }
+
+    public var unverifiedCustomEmails: [CustomEmail] {
+        customEmails.filter { !$0.verified }
+    }
+
+    public var hasBreachedAddresses: Bool {
+        !breachedAddresses.isEmpty
+    }
+
+    public var breachedAddresses: [ProtonAddress] {
+        addresses.filter { $0.breachCounter > 0 }
     }
 }
