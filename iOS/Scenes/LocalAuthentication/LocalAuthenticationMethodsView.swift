@@ -28,10 +28,10 @@ struct LocalAuthenticationMethodsView: View {
     private let uiModels: [LocalAuthenticationMethodUiModel]
     private let onSelect: (LocalAuthenticationMethodUiModel) -> Void
 
-    init(supportedMethods: [LocalAuthenticationMethodUiModel],
+    init(selectedMethod: LocalAuthenticationMethod,
+         supportedMethods: [LocalAuthenticationMethodUiModel],
          onSelect: @escaping (LocalAuthenticationMethodUiModel) -> Void) {
-        let preferences = resolve(\SharedToolingContainer.preferences)
-        selectedMethod = preferences.localAuthenticationMethod
+        self.selectedMethod = selectedMethod
         uiModels = supportedMethods
         self.onSelect = onSelect
     }
@@ -45,8 +45,9 @@ struct LocalAuthenticationMethodsView: View {
                                         height: .compact,
                                         content: {
                                             Text(uiModel.title)
-                                                .foregroundColor(Color(uiColor: isSelected ?
-                                                        PassColor.interactionNormMajor2 : PassColor.textNorm))
+                                                .foregroundStyle((isSelected ?
+                                                        PassColor.interactionNormMajor2 : PassColor
+                                                        .textNorm).toColor)
                                         },
                                         isSelected: isSelected)
                     PassSectionDivider()

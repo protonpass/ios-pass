@@ -39,6 +39,7 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
     }
 
     override func bindValues() {
+        super.bindValues()
         if case let .creditCard(data) = itemContent.contentData {
             cardholderName = data.cardholderName
             cardNumber = data.number

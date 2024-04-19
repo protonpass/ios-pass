@@ -39,7 +39,7 @@ struct EmptyVaultView: View {
                 Text("Your vault is empty")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(.bottom, 8)
 
                 Text("Let's get started by creating your first item")

@@ -68,7 +68,7 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
             }, icon: {
                 Image(systemName: "plus")
             })
-            .foregroundColor(Color(uiColor: contentType.normMajor2Color))
+            .foregroundStyle(contentType.normMajor2Color.toColor)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, DesignConstant.sectionPadding)
@@ -86,7 +86,7 @@ struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
                     .scaledToFit()
                     .frame(maxWidth: 16)
             })
-            .foregroundColor(Color(uiColor: contentType.normMajor2Color))
+            .foregroundStyle(contentType.normMajor2Color.toColor)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, DesignConstant.sectionPadding)

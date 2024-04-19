@@ -70,8 +70,10 @@ enum SharedItemType: CaseIterable {
 @MainActor
 final class ShareCoordinator {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
@@ -99,8 +101,9 @@ final class ShareCoordinator {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
         self.rootViewController = rootViewController
         AppearanceSettings.apply()
-        setUpSentry(bundle: .main)
+        setUpSentry()
         setUpRouter()
+        setCoreLoggerEnvironment()
 
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
@@ -126,10 +129,18 @@ final class ShareCoordinator {
 
 extension ShareCoordinator {
     func start() async {
-        if credentialProvider.isAuthenticated {
-            await parseSharedContentAndBeginShareFlow()
-        } else {
-            showNotLoggedInView()
+        do {
+            try await preferencesManager.setUp()
+            if credentialProvider.isAuthenticated {
+                await parseSharedContentAndBeginShareFlow()
+            } else {
+                showNotLoggedInView()
+            }
+        } catch {
+            alert(error: error) { [weak self] in
+                guard let self else { return }
+                dismissExtension()
+            }
         }
     }
 }
@@ -245,7 +256,7 @@ private extension ShareCoordinator {
     }
 
     func presentCreateItemView(for type: SharedItemType, content: SharedContent) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             do {
                 if vaultsManager.getAllVaultContents().isEmpty {
@@ -312,13 +323,13 @@ private extension ShareCoordinator {
     func logOut(error: Error? = nil,
                 sessionId: String? = nil,
                 completion: (() -> Void)? = nil) {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             if let error {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
             await revokeCurrentSession()
-            await wipeAllData(isTests: false)
+            await wipeAllData()
             showNotLoggedInView()
             completion?()
         }

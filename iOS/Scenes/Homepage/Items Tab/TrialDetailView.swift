@@ -90,8 +90,8 @@ struct TrialDetailView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
-            .foregroundColor(Color(uiColor: PassColor.textNorm))
-            .background(Color(uiColor: PassColor.backgroundNorm))
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .background(PassColor.backgroundNorm.toColor)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,

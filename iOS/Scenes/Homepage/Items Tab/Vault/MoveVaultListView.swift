@@ -85,7 +85,7 @@ struct MoveVaultListView: View {
             }
             .padding([.bottom, .horizontal])
         }
-        .background(Color(uiColor: PassColor.backgroundWeak))
+        .background(PassColor.backgroundWeak.toColor)
         .frame(maxWidth: .infinity, alignment: .leading)
         .animation(.default, value: viewModel.isFreeUser)
     }

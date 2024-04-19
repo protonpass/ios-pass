@@ -45,8 +45,8 @@ struct MailboxSelectionView: View {
                         ForEach(selection.mailboxes, id: \.ID) { mailbox in
                             HStack {
                                 Text(mailbox.email)
-                                    .foregroundColor(isSelected(mailbox) ?
-                                        viewModel.mode.tintColor : Color(uiColor: PassColor.textNorm))
+                                    .foregroundStyle(isSelected(mailbox) ?
+                                        viewModel.mode.tintColor : PassColor.textNorm.toColor)
                                 Spacer()
 
                                 if isSelected(mailbox) {
@@ -83,7 +83,7 @@ struct MailboxSelectionView: View {
                 closeButton
                     .padding()
             }
-            .background(Color(uiColor: PassColor.backgroundWeak))
+            .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -118,7 +118,7 @@ struct MailboxSelectionView: View {
     private var closeButton: some View {
         Button(action: dismiss.callAsFunction) {
             Text("Close")
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .foregroundStyle(PassColor.textNorm.toColor)
         }
     }
 }

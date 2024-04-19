@@ -44,17 +44,17 @@ public struct SearchBar: View {
     public var body: some View {
         HStack(spacing: 16) {
             ZStack {
-                Color(uiColor: PassColor.backgroundStrong)
+                PassColor.backgroundStrong.toColor
                 HStack(spacing: 12) {
                     Image(uiImage: IconProvider.magnifier)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(width: 20, height: 20)
 
                     TextField(placeholder, text: $query)
-                        .tint(Color(uiColor: PassColor.interactionNorm))
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .tint(PassColor.interactionNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
                         .autocorrectionDisabled()
                         .focused(isFocused)
                         .minimumScaleFactor(0.75)
@@ -65,7 +65,7 @@ public struct SearchBar: View {
                         Image(uiImage: IconProvider.cross)
                             .resizable()
                             .scaledToFit()
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .foregroundStyle(PassColor.textWeak.toColor)
                             .frame(width: 24, height: 24)
                     })
                     .buttonStyle(.plain)
@@ -80,7 +80,7 @@ public struct SearchBar: View {
                 Button(action: onCancel) {
                     Text("Cancel", bundle: .module)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                 }
             }
         }

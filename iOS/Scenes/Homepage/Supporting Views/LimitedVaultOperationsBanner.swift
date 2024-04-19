@@ -29,17 +29,17 @@ struct LimitedVaultOperationsBanner: View {
             .padding()
             .frame(maxWidth: .infinity)
             .fixedSize(horizontal: false, vertical: true)
-            .background(Color(uiColor: PassColor.interactionNormMinor1))
+            .background(PassColor.interactionNormMinor1.toColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .onTapGesture(perform: onUpgrade)
     }
 
     private var texts: some View {
         Text("To interact with your other vaults, you need to upgrade your account.")
-            .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+            .foregroundColor(PassColor.textNorm.toColor) +
             Text(verbatim: " ") +
             Text("Upgrade now")
-            .underline(color: Color(uiColor: PassColor.interactionNormMajor1))
-            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
+            .underline(color: PassColor.interactionNormMajor1.toColor)
+            .foregroundColor(PassColor.interactionNormMajor1.toColor)
     }
 }
