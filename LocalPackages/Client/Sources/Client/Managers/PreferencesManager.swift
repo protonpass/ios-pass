@@ -39,7 +39,7 @@ public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
 /// Manage all types of preferences: app-wide, shared between users and user's specific
-public protocol PreferencesManagerProtocol: Sendable, ClipboardSettingsProvider {
+public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProviderProtocol {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 
@@ -73,12 +73,12 @@ public protocol PreferencesManagerProtocol: Sendable, ClipboardSettingsProvider 
 }
 
 public extension PreferencesManagerProtocol {
-    var shareClipboard: Bool {
-        sharedPreferences.unwrapped().shareClipboard
+    func getThreshold() -> TimeInterval? {
+        appPreferences.unwrapped().telemetryThreshold
     }
 
-    var clipboardExpiration: ClipboardExpiration {
-        sharedPreferences.unwrapped().clipboardExpiration
+    func setThreshold(_ threshold: TimeInterval?) async throws {
+        try await updateAppPreferences(\.telemetryThreshold, value: threshold)
     }
 }
 

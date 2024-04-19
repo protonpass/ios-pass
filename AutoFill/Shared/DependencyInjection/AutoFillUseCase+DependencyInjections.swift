@@ -35,10 +35,6 @@ final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
 }
 
 private extension AutoFillUseCaseContainer {
-    var preferences: Preferences {
-        SharedToolingContainer.shared.preferences()
-    }
-
     var logManager: LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
@@ -74,9 +70,10 @@ extension AutoFillUseCaseContainer {
     }
 
     var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
-        self { CopyTotpTokenAndNotify(preferences: self.preferences,
-                                      logManager: self.logManager,
+        self { CopyTotpTokenAndNotify(logManager: self.logManager,
                                       generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
+                                      getSharedPreferences: SharedUseCasesContainer.shared.getSharedPreferences(),
+                                      copyToClipboard: SharedUseCasesContainer.shared.copyToClipboard(),
                                       notificationService: SharedServiceContainer.shared.notificationService(),
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
@@ -118,8 +115,7 @@ extension AutoFillUseCaseContainer {
         self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
-                                completeAutoFill: self.completeAutoFill(),
-                                securitySettingsProvider: self.preferences) }
+                                completeAutoFill: self.completeAutoFill()) }
     }
 
     var autoFillPassword: Factory<AutoFillPasswordUseCase> {
@@ -145,7 +141,6 @@ extension AutoFillUseCaseContainer {
     var completeAutoFill: Factory<CompleteAutoFillUseCase> {
         self { CompleteAutoFill(logManager: self.logManager,
                                 telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
-                                clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                 resetFactory: self.resetFactory()) }

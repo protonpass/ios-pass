@@ -24,29 +24,30 @@ import Entities
 import Foundation
 
 public protocol OverrideSecuritySettingsUseCase: Sendable {
-    func execute(with organization: Organization)
+    func execute(with organization: Organization) async throws
 }
 
 public extension OverrideSecuritySettingsUseCase {
-    func callAsFunction(with organization: Organization) {
-        execute(with: organization)
+    func callAsFunction(with organization: Organization) async throws {
+        try await execute(with: organization)
     }
 }
 
 public final class OverrideSecuritySettings: OverrideSecuritySettingsUseCase {
-    private let settingsProvider: any SecuritySettingsProvider
+    private let preferencesManager: any PreferencesManagerProtocol
 
-    public init(settingsProvider: any SecuritySettingsProvider) {
-        self.settingsProvider = settingsProvider
+    public init(preferencesManager: any PreferencesManagerProtocol) {
+        self.preferencesManager = preferencesManager
     }
 
-    public func execute(with organization: Organization) {
+    public func execute(with organization: Organization) async throws {
         guard let appLockTime = organization.settings.appLockTime else { return }
-        settingsProvider.appLockTime = appLockTime
+        try await preferencesManager.updateSharedPreferences(\.appLockTime, value: appLockTime)
 
         // Only default to biometric authentication if user has no authentication method
-        if settingsProvider.localAuthenticationMethod == .none {
-            settingsProvider.localAuthenticationMethod = .biometric
+        if preferencesManager.sharedPreferences.unwrapped().localAuthenticationMethod == .none {
+            try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                                 value: .biometric)
         }
     }
 }

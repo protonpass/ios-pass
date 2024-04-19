@@ -153,23 +153,6 @@ private extension Preferences {
     }
 }
 
-// MARK: - TelemetryThresholdProviderProtocol
-
-extension Preferences: TelemetryThresholdProviderProtocol {
-    func getThreshold() -> TimeInterval? { telemetryThreshold }
-    func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
-}
-
-// MARK: - FavIconSettings
-
-extension Preferences: FavIconSettings {
-    var shouldDisplayFavIcons: Bool { displayFavIcons }
-}
-
-// MARK: - SecuritySettingsProvider
-
-extension Preferences: SecuritySettingsProvider {}
-
 extension Preferences: PreferencesMigrator {
     // swiftlint:disable:next large_tuple
     func migratePreferences() -> (AppPreferences, SharedPreferences, UserPreferences) {

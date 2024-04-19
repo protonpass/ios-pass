@@ -87,12 +87,10 @@ public extension TelemetryEventRepository {
     }
 
     func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult {
-        guard await scheduler.shouldSendEvents() else {
+        guard try await scheduler.shouldSendEvents() else {
             logger.debug("Threshold not reached")
             return .thresholdNotReached
         }
-
-        defer { setNewThreshold() }
 
         let userId = try userDataProvider.getUserId()
 
@@ -103,6 +101,7 @@ public extension TelemetryEventRepository {
         if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
             try await localDatasource.removeAllEvents(userId: userId)
+            try await scheduler.randomNextThreshold()
             return .thresholdReachedButTelemetryOff
         }
 
@@ -121,25 +120,17 @@ public extension TelemetryEventRepository {
         }
 
         logger.info("Sent all events")
+        try await scheduler.randomNextThreshold()
         return .allEventsSent
-    }
-
-    func setNewThreshold() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            await scheduler.randomNextThreshold()
-        }
     }
 }
 
 // MARK: - TelemetrySchedulerProtocol
 
 public protocol TelemetrySchedulerProtocol: Actor, Sendable {
-    func shouldSendEvents() async -> Bool
-    func randomNextThreshold() async
-    func getThreshold() async -> Date?
+    func shouldSendEvents() async throws -> Bool
+    func randomNextThreshold() async throws
+    func getThreshold() -> Date?
 }
 
 public actor TelemetryScheduler: TelemetrySchedulerProtocol {
@@ -154,7 +145,7 @@ public actor TelemetryScheduler: TelemetrySchedulerProtocol {
         self.thresholdProvider = thresholdProvider
     }
 
-    public func getThreshold() async -> Date? {
+    public func getThreshold() -> Date? {
         if let telemetryThreshold = thresholdProvider.getThreshold() {
             Date(timeIntervalSince1970: telemetryThreshold)
         } else {
@@ -162,32 +153,28 @@ public actor TelemetryScheduler: TelemetrySchedulerProtocol {
         }
     }
 
-    func setThreshold(with date: Date?) async {
-        thresholdProvider.setThreshold(date?.timeIntervalSince1970)
+    func setThreshold(with date: Date?) async throws {
+        try await thresholdProvider.setThreshold(date?.timeIntervalSince1970)
     }
 
-    public func shouldSendEvents() async -> Bool {
+    public func shouldSendEvents() async throws -> Bool {
         let currentDate = currentDateProvider.getCurrentDate()
         if let threshold = thresholdProvider.getThreshold() {
             return currentDate > Date(timeIntervalSince1970: threshold)
         } else {
-            await randomNextThreshold()
+            try await randomNextThreshold()
             return false
         }
     }
 
-    /// We are setting this function as part of the main actor as it has influence on Preference that seems to
-    /// trigger an ui update.
-    /// We saw crash as the update what not executed from the main thread.
-    /// This is an attend to mitigate this issue
-    public func randomNextThreshold() async {
+    public func randomNextThreshold() async throws {
         let randomIntervalInHours = Int.random(in: minIntervalInHours...maxIntervalInHours)
         let currentDate = currentDateProvider.getCurrentDate()
-        await setThreshold(with: currentDate.adding(component: .hour, value: randomIntervalInHours))
+        try await setThreshold(with: currentDate.adding(component: .hour, value: randomIntervalInHours))
     }
 }
 
 public protocol TelemetryThresholdProviderProtocol: Sendable {
     func getThreshold() -> TimeInterval?
-    func setThreshold(_ threshold: TimeInterval?)
+    func setThreshold(_ threshold: TimeInterval?) async throws
 }
