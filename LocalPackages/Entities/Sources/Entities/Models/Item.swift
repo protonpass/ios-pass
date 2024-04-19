@@ -94,6 +94,14 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
 }
 
 public extension Item {
+    var skipHealthCheck: Bool {
+        isFlagActive(ItemFlags.skipHealthCheck)
+    }
+
+    var isBreached: Bool {
+        isFlagActive(ItemFlags.isBreached)
+    }
+
     func isFlagActive(_ flag: Int) -> Bool {
         (Int(flags) & flag) != 0
     }

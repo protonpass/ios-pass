@@ -506,6 +506,8 @@
 		5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		5BAE710B2BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */; };
 		5BAE710C2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */; };
+		5BAE71102BD1128400F579E4 /* AddCustomEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710E2BD1128400F579E4 /* AddCustomEmailView.swift */; };
+		5BAE71112BD1128400F579E4 /* AddCustomEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710F2BD1128400F579E4 /* AddCustomEmailViewModel.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -951,6 +953,8 @@
 		5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellingViewConfiguration+Extensions.swift"; sourceTree = "<group>"; };
 		5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkWebMonitorHomeView.swift; sourceTree = "<group>"; };
 		5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkWebMonitorHomeViewModel.swift; sourceTree = "<group>"; };
+		5BAE710E2BD1128400F579E4 /* AddCustomEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomEmailView.swift; sourceTree = "<group>"; };
+		5BAE710F2BD1128400F579E4 /* AddCustomEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomEmailViewModel.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
@@ -2012,6 +2016,15 @@
 			path = DarkWebMonitorHomeView;
 			sourceTree = "<group>";
 		};
+		5BAE710D2BD1126300F579E4 /* AddCustomEmailView */ = {
+			isa = PBXGroup;
+			children = (
+				5BAE710E2BD1128400F579E4 /* AddCustomEmailView.swift */,
+				5BAE710F2BD1128400F579E4 /* AddCustomEmailViewModel.swift */,
+			);
+			path = AddCustomEmailView;
+			sourceTree = "<group>";
+		};
 		5BB2B6E62A444B73005E831C /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -2157,6 +2170,7 @@
 		5BECDE452B90EC230040FCA7 /* PassMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				5BAE710D2BD1126300F579E4 /* AddCustomEmailView */,
 				5BAE71082BCEDAC900F579E4 /* DarkWebMonitorHomeView */,
 				5BD870D52BB46C5200A9F1A8 /* PasswordReusedView */,
 				5BECDE4B2B9778610040FCA7 /* SecurityWeaknessDetailView */,
@@ -3142,6 +3156,7 @@
 				359DB2A92A70435800549466 /* Service+DependencyInjections.swift in Sources */,
 				35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				3546327B2A9CEFBC00321691 /* AutoFillInstructionsView.swift in Sources */,
+				5BAE71102BD1128400F579E4 /* AddCustomEmailView.swift in Sources */,
 				3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
@@ -3210,6 +3225,7 @@
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				357ABEB02B188A08003D05C8 /* ItemsTabTopBar.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
+				5BAE71112BD1128400F579E4 /* AddCustomEmailViewModel.swift in Sources */,
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,

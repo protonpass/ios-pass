@@ -320,3 +320,30 @@ extension SharedUseCasesContainer {
         self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
     }
 }
+
+// MARK: - Dark web monitor
+
+extension SharedUseCasesContainer {
+    var getCustomEmailSuggestion: Factory<GetCustomEmailSuggestionUseCase> {
+        self { GetCustomEmailSuggestion(itemRepository: self.itemRepository,
+                                        symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                                        validateEmailUseCase: self.validateEmail()) }
+    }
+
+    var validateEmail: Factory<ValidateEmailUseCase> {
+        self { ValidateEmail() }
+    }
+
+    var getAllAliases: Factory<GetAllAliasesUseCase> {
+        self { GetAllAliases(itemRepository: self.itemRepository) }
+    }
+
+//
+//    var createPasskey: Factory<CreatePasskeyUseCase> {
+//        self { CreatePasskey(managerProvider: self.passkeyManagerProvider()) }
+//    }
+//
+//    var resolvePasskeyChallenge: Factory<ResolvePasskeyChallengeUseCase> {
+//        self { ResolvePasskeyChallenge(managerProvider: self.passkeyManagerProvider()) }
+//    }
+}

@@ -162,21 +162,3 @@ final class MainUIKitSwiftUIRouter: Sendable {
         pendingDeeplinkDestination = nil
     }
 }
-
-// @available(iOS 16.0, *)
-// final class MainNavStackRouter {
-//    @Published public var path = NavigationPath()
-//    @Published public var presentedSheet: SheetDestination?
-//
-//    func navigate(to destination: RouterDestination) {
-//        path.append(destination)
-//    }
-//
-//    func popToRoot() {
-//        path.removeLast(path.count)
-//    }
-//
-//    func back(to numberOfScreen: Int = 1) {
-//        path.removeLast(numberOfScreen)
-//    }
-// }

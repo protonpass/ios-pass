@@ -22,5 +22,18 @@ import Foundation
 
 public enum ItemFlags {
     public static let skipHealthCheck = 1 << 0 // Equals 1
+    public static let isBreached = 1 << 1
     // Define other flags with different bits, e.g., `static let anotherFlag = 1 << 1`
+
+    case skipHealthChecktest
+    case isBreachedtest
+
+    public var intValue: Int {
+        switch self {
+        case .skipHealthChecktest:
+            1 << 0
+        case .isBreachedtest:
+            1 << 1
+        }
+    }
 }
