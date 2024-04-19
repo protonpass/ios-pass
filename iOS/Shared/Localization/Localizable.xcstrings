@@ -948,7 +948,7 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld invite remaining"
                 }
               },
@@ -2090,7 +2090,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "%lld items moved to trash"
                 }
               }
@@ -54330,7 +54330,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Permanently deleted %lld items"
                 }
               }
@@ -60778,7 +60778,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Restored %lld items"
                 }
               }
@@ -61380,7 +61380,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Reused %lld times"
                 }
               }
@@ -87970,7 +87970,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "You are going to delete %lld items irreversibly, are you sure?"
                 }
               }
