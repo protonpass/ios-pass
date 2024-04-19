@@ -28,6 +28,7 @@ final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
 
     override func bindValues() {
+        super.bindValues()
         if case .note = itemContent.contentData {
             name = itemContent.name
             note = itemContent.note
