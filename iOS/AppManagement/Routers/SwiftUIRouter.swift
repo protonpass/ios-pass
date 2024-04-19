@@ -25,6 +25,26 @@ enum GeneralRouterDestination: Hashable {
     case userSharePermission
     case shareSummary
     case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
+    case darkWebMonitorHome(SecurityWeakness)
+}
+
+enum GeneralSheetDestination: Identifiable, Hashable {
+    case addCustomEmail(CustomEmail?, Bool)
+
+    var id: String {
+        switch self {
+        case .addCustomEmail:
+            "addCustomEmail"
+        }
+    }
+
+    static func == (lhs: GeneralSheetDestination, rhs: GeneralSheetDestination) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 @MainActor
@@ -39,6 +59,8 @@ final class MainNavViewRouter {
         case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
             DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
                                                                 pastRevision: pastRevision))
+        default:
+            EmptyView()
         }
     }
 }
@@ -55,7 +77,50 @@ extension View {
             case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
                 DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
                                                                     pastRevision: pastRevision))
+            case let .darkWebMonitorHome(securityWeakness):
+                if case let .breaches(userBreaches) = securityWeakness {
+                    DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches))
+                } else {
+                    EmptyView()
+                }
             }
         }
+    }
+
+    func sheetDestinations(sheetDestination: Binding<GeneralSheetDestination?>) -> some View {
+        sheet(item: sheetDestination) { destination in
+            switch destination {
+            case let .addCustomEmail(email, isMonitored):
+                AddCustomEmailView(viewModel: .init(email: email, isMonitored: isMonitored))
+            }
+        }
+    }
+}
+
+@MainActor
+final class PathRouter: ObservableObject {
+    @Published public var path = NavigationPath()
+    @Published public var presentedSheet: GeneralSheetDestination?
+
+    public init() {}
+
+    func navigate(to destination: GeneralRouterDestination) {
+        path.append(destination)
+    }
+
+    func popToRoot() {
+        path = NavigationPath()
+    }
+
+    func back(to numberOfScreen: Int = 1) {
+        path.removeLast(numberOfScreen)
+    }
+
+    func present(sheet: GeneralSheetDestination) {
+        presentedSheet = sheet
+    }
+
+    func dismissSheet() {
+        presentedSheet = nil
     }
 }
