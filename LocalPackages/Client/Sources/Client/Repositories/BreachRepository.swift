@@ -18,17 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
+import Combine
+@preconcurrency import Core
 import Entities
 import Foundation
 
 /// Take care of fetching and caching behind the scenes
 public protocol BreachRepositoryProtocol: Sendable {
+    var updatedCustomEmails: PassthroughSubject<[CustomEmail]?, Never> { get }
+
     func getAllBreachesForUser() async throws -> UserBreaches
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
+    func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
+    func verifyCustomEmail(emailId: String, code: String) async throws
+    func removeEmailFromBreachMonitoring(emailId: String) async throws
+    func resendEmailVerification(emailId: String) async throws
+    func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
 }
 
 public actor BreachRepository: BreachRepositoryProtocol {
+    public let updatedCustomEmails: PassthroughSubject<[CustomEmail]?, Never> = .init()
+
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
     private let logger: Logger
 
@@ -45,6 +55,29 @@ public actor BreachRepository: BreachRepositoryProtocol {
 
     public func getAllCustomEmailForUser() async throws -> [CustomEmail] {
         let emails = try await remoteDataSource.getAllCustomEmailForUser()
+        updatedCustomEmails.send(emails)
         return emails
+    }
+
+    public func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail {
+        let email = try await remoteDataSource.addEmailToBreachMonitoring(email: email)
+        return email
+    }
+
+    public func verifyCustomEmail(emailId: String, code: String) async throws {
+        try await remoteDataSource.verifyCustomEmail(emailId: emailId, code: code)
+    }
+
+    public func removeEmailFromBreachMonitoring(emailId: String) async throws {
+        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: emailId)
+    }
+
+    public func resendEmailVerification(emailId: String) async throws {
+        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: emailId)
+    }
+
+    public func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
+        try Task.checkCancellation()
+        return try await remoteDataSource.getBreachesForAlias(sharedId: sharedId, itemId: itemId)
     }
 }
