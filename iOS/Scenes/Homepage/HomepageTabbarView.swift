@@ -187,7 +187,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private var profileTabViewController: UIViewController?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let monitorStateStream = resolve(\SharedDataStreamContainer.monitorStateStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
@@ -204,8 +204,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         self.passMonitorView = passMonitorView
         super.init(nibName: nil, bundle: nil)
 
-        passMonitorRepository
-            .state
+        monitorStateStream
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }
