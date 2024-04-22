@@ -53,7 +53,6 @@ enum UpsellEntry {
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var breaches: UserBreaches?
-
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
     @Published var isSentinelActive = false
@@ -63,12 +62,18 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let breachRepository = resolve(\RepositoryContainer.breachRepository)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getAllAliases = resolve(\SharedUseCasesContainer.getAllAliases)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
 
     private var cancellables = Set<AnyCancellable>()
+    private var numberOfBreachedAliases = 0
+
+    var numberOfBreaches: Int {
+        (breaches?.emailsCount ?? 0) + numberOfBreachedAliases
+    }
 
     init() {
         setUp()
@@ -136,18 +141,7 @@ extension PassMonitorViewModel {
 
 private extension PassMonitorViewModel {
     func setUp() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
-                isSentinelActive = await getSentinelStatus()
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-
+        refreshUserStatus()
         passMonitorRepository.weaknessStats
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
@@ -158,6 +152,15 @@ private extension PassMonitorViewModel {
                 if newWeaknessStats != weaknessStats {
                     weaknessStats = newWeaknessStats
                 }
+            }.store(in: &cancellables)
+
+        accessRepository.didUpdateToNewPlan
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
+                refreshUserStatus()
             }.store(in: &cancellables)
     }
 
@@ -171,9 +174,24 @@ private extension PassMonitorViewModel {
 
     func refreshRemoteMonitoredData() async {
         do {
-            breaches = try await breachRepository.getAllBreachesForUser()
+            numberOfBreachedAliases = try await getAllAliases().filter(\.item.isBreached).count
+            breaches = try await passMonitorRepository.getAllBreachesForUser()
         } catch {
             router.display(element: .displayErrorBanner(error))
+        }
+    }
+
+    func refreshUserStatus() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+                isSentinelActive = await getSentinelStatus()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
         }
     }
 }

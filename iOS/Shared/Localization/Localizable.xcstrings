@@ -421,6 +421,28 @@
         }
       }
     },
+    "%lld breaches detected" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld breach detected"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld breaches detected"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld characters" : {
       "localizations" : {
         "be" : {
@@ -20383,6 +20405,16 @@
         }
       }
     },
+    "Code" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code"
+          }
+        }
+      }
+    },
     "Commas" : {
       "localizations" : {
         "be" : {
@@ -21020,6 +21052,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xác nhận truy cập"
+          }
+        }
+      }
+    },
+    "Confirm your email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm your email"
           }
         }
       }
@@ -26492,6 +26534,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Phiên bản hiện tại"
+          }
+        }
+      }
+    },
+    "Custom email address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom email address"
+          }
+        }
+      }
+    },
+    "Custom email monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom email monitoring"
           }
         }
       }
@@ -34635,6 +34697,28 @@
         }
       }
     },
+    "Found in %lld breaches" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Found in %lld breach"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Found in %lld breaches"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Free trial" : {
       "localizations" : {
         "be" : {
@@ -37476,6 +37560,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Güvenlik kodunu gizle"
+          }
+        }
+      }
+    },
+    "Hide-my-email aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email aliases"
           }
         }
       }
@@ -43228,6 +43322,16 @@
         }
       }
     },
+    "Last check: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last check: %@"
+          }
+        }
+      }
+    },
     "Last modified" : {
       "localizations" : {
         "be" : {
@@ -43704,6 +43808,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tuần trước"
+          }
+        }
+      }
+    },
+    "Latest breach on %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest breach on %@"
           }
         }
       }
@@ -47892,6 +48006,16 @@
         }
       }
     },
+    "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses."
+          }
+        }
+      }
+    },
     "More info" : {
       "localizations" : {
         "be" : {
@@ -49312,6 +49436,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir veri açığa çıkmamış"
+          }
+        }
+      }
+    },
+    "No Breaches detected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Breaches detected"
           }
         }
       }
@@ -59006,6 +59140,16 @@
         }
       }
     },
+    "Proton addresses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton addresses"
+          }
+        }
+      }
+    },
     "Proton Sentinel" : {
       "comment" : "title for the screen that enable activation or deactivation of proton sentinel",
       "localizations" : {
@@ -59983,6 +60127,16 @@
         }
       }
     },
+    "Remove" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        }
+      }
+    },
     "Remove alias" : {
       "localizations" : {
         "be" : {
@@ -60784,138 +60938,22 @@
         }
       }
     },
-    "Requires immediate action" : {
+    "Resend Code" : {
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Патрабуе неадкладнага дзеяння"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kræver øjeblikkelig handling"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erfordert sofortiges Handeln"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Απαιτεί άμεση δράση"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Requires immediate action"
+            "value" : "Resend Code"
           }
-        },
-        "es" : {
+        }
+      }
+    },
+    "Resend code in %lld" : {
+      "localizations" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Requiere una acción inmediata."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Requiere acción inmediata"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vaatii välittömiä toimenpiteitä"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cette situation nécessite une action immédiate."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Memerlukan tindakan segera"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Richiede un'azione immediata"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "საჭიროებს დაუყოვნებლივ ქმედებას"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "즉시 행동 필요"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Krever umiddelbar handling"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vereist onmiddellijke actie"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wymaga natychmiastowej akcji"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Requer ação imediata"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Necesită acțiune imediată"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vyžaduje okamžité opatrenia"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zahteva takojšnje ukrepanje"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kräver omedelbar åtgärd"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hemen işlem yapmanız gerekiyor"
+            "value" : "Resend code in %lld"
           }
         }
       }
@@ -72610,6 +72648,16 @@
         }
       }
     },
+    "Suggestions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        }
+      }
+    },
     "Suggestions for %@" : {
       "comment" : "The title of the section of matched login items of a given URL. E.g \"Suggestions for https://proton.me\"",
       "localizations" : {
@@ -80416,6 +80464,26 @@
         }
       }
     },
+    "Unverified" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified"
+          }
+        }
+      }
+    },
+    "Unverified email action menu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified email action menu"
+          }
+        }
+      }
+    },
     "Update vault" : {
       "comment" : "The title for the save button when editing vault",
       "localizations" : {
@@ -82570,6 +82638,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dùng kho lưu trữ để chia sẻ nội dung này với người khác"
+          }
+        }
+      }
+    },
+    "Used in %lld logins" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Used in %lld login"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Used in %lld logins"
+                }
+              }
+            }
           }
         }
       }
@@ -84883,6 +84973,16 @@
         }
       }
     },
+    "Verify" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verify"
+          }
+        }
+      }
+    },
     "Version %@" : {
       "localizations" : {
         "be" : {
@@ -86723,6 +86823,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chúng tôi đang tải xuống và giải mã nội dung của bạn."
+          }
+        }
+      }
+    },
+    "We’ve sent a verification code to %@. Please enter it below:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We’ve sent a verification code to %@. Please enter it below:"
           }
         }
       }

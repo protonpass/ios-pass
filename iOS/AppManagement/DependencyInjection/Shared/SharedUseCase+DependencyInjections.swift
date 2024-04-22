@@ -358,3 +358,21 @@ extension SharedUseCasesContainer {
         self { CopyToClipboard(getSharedPreferences: self.getSharedPreferences()) }
     }
 }
+
+// MARK: - Dark web monitor
+
+extension SharedUseCasesContainer {
+    var getCustomEmailSuggestion: Factory<GetCustomEmailSuggestionUseCase> {
+        self { GetCustomEmailSuggestion(itemRepository: self.itemRepository,
+                                        symmetricKeyProvider: self.symmetricKeyProvider,
+                                        validateEmailUseCase: self.validateEmail()) }
+    }
+
+    var validateEmail: Factory<ValidateEmailUseCase> {
+        self { ValidateEmail() }
+    }
+
+    var getAllAliases: Factory<GetAllAliasesUseCase> {
+        self { GetAllAliases(itemRepository: self.itemRepository) }
+    }
+}
