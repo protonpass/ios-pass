@@ -1,6 +1,6 @@
 //
-// ResendEmailVerificationEndpoint.swift
-// Proton Pass - Created on 18/04/2024.
+// DateFromatter+Extensions.swift
+// Proton Pass - Created on 22/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,20 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreNetworking
-import ProtonCoreServices
+import Foundation
 
-struct ResendEmailVerificationEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = CodeOnlyResponse
-
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init(emailId: String) {
-        debugDescription = "Remove an email for breach monitoring"
-        path = "/pass/v1/breach/custom_email/\(emailId)/resend_verification"
-        method = .post
+extension DateFormatter {
+    convenience init(format: String,
+                     locale: Locale = .current,
+                     timeStyle: DateFormatter.Style = .short,
+                     dateStyle: DateFormatter.Style = .medium) {
+        self.init()
+        dateFormat = format
+        self.locale = locale
+        self.timeStyle = timeStyle
+        self.dateStyle = dateStyle
+        setLocalizedDateFormatFromTemplate(format)
     }
 }
