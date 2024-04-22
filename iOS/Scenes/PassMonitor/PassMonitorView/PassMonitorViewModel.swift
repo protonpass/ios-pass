@@ -62,11 +62,9 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private let getAllAliases = resolve(\SharedUseCasesContainer.getAllAliases)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
 
     private var cancellables = Set<AnyCancellable>()
@@ -82,14 +80,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func showSecurityWeakness(type: SecurityWeakness) {
         router.present(for: .securityDetail(type))
-    }
-
-    func refresh() async {
-        do {
-            breaches = try await refreshAccessAndMonitorState()
-        } catch {
-            handle(error: error)
-        }
     }
 
     func sentinelSheetAction() {
@@ -145,17 +135,25 @@ extension PassMonitorViewModel {
 private extension PassMonitorViewModel {
     func setUp() {
         refreshUserStatus()
+
         passMonitorRepository.weaknessStats
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] newWeaknessStats in
+            .sink { [weak self] newValue in
                 guard let self else {
                     return
                 }
-                if newWeaknessStats != weaknessStats {
-                    weaknessStats = newWeaknessStats
-                }
+                weaknessStats = newValue
             }.store(in: &cancellables)
+
+        passMonitorRepository.userBreaches
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                breaches = newValue
+            }
+            .store(in: &cancellables)
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
