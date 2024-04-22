@@ -45,6 +45,9 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
     }
 
     public func execute(breaches: UserBreaches) async throws -> [SuggestedEmail] {
+        guard breaches.customEmails.count < 10 else {
+            return []
+        }
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
         let emails = try await itemRepository.getActiveLogInItems()
@@ -52,7 +55,7 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
                       let loginItem = item.loginItem,
                       validateEmailUseCase(email: loginItem.username),
-                      !loginItem.username.contains("proton."),
+                      !loginItem.username.contains(["proton.", "pm.", "protonMail."]),
                       !breaches.customEmails.map(\.email).contains(loginItem.username)
                 else {
                     return nil
@@ -74,5 +77,11 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
         }
 
         return counts
+    }
+}
+
+private extension String {
+    func contains(_ strings: [String]) -> Bool {
+        strings.contains { contains($0) }
     }
 }

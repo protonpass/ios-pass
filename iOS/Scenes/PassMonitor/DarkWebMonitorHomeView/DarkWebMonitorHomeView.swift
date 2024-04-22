@@ -61,13 +61,12 @@ private extension DarkWebMonitorHomeView {
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
-        .showSpinner(viewModel.loading)
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Dark Web Monitoring")
         .alert(Text("Custom email address"),
                isPresented: $alertDisplay,
                actions: {
-                   Button(role: .cancel, label: { Text("Ok") })
+                   Button(role: .cancel, label: { Text("OK") })
                },
                message: {
                    // swiftlint:disable:next line_length
@@ -82,10 +81,8 @@ private extension DarkWebMonitorHomeView {
     var addressesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Proton addresses"),
-                                  subTitle: viewModel.userBreaches.breached ? #localized("Found in %lld breaches",
-                                                                                         viewModel.userBreaches
-                                                                                             .emailsCount) :
-                                      #localized("No breaches detected"),
+                                  subTitle: viewModel.breachSubtitle(numberOfBreaches:
+                                      viewModel.userBreaches.numberOfBreachedProtonAddresses),
                                   hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                   isDetail: false,
                                   action: {})
@@ -104,75 +101,6 @@ private extension DarkWebMonitorHomeView {
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
-
-    func colorOfTitle(hasBreaches: Bool, isDetail: Bool) -> Color {
-        if isDetail {
-            (hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
-                .textNorm).toColor
-        } else {
-            PassColor.textNorm.toColor
-        }
-    }
-
-    func colorOfSubtitle(hasBreaches: Bool, isDetail: Bool) -> Color {
-        if isDetail {
-            PassColor.textNorm.toColor
-        } else {
-            (hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
-                .cardInteractionNormMajor1).toColor
-        }
-    }
-
-    func darkWebMonitorHomeRow(title: String,
-                               subTitle: String?,
-                               info: String? = nil,
-                               hasBreaches: Bool,
-                               isDetail: Bool,
-                               action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: DesignConstant.sectionPadding) {
-                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                    Text(title)
-                        .font(.body)
-                        .lineLimit(1)
-                        .foregroundStyle(colorOfTitle(hasBreaches: hasBreaches,
-                                                      isDetail: isDetail))
-                        .minimumScaleFactor(0.5)
-
-                    if let subTitle {
-                        Text(subTitle)
-                            .font(.callout)
-                            .lineLimit(1)
-                            .foregroundColor(colorOfSubtitle(hasBreaches: hasBreaches, isDetail: isDetail))
-                            .layoutPriority(1)
-                            .minimumScaleFactor(0.25)
-                    }
-                }
-                .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
-                .contentShape(Rectangle())
-
-                if let info {
-                    Text(info)
-                        .font(.body)
-                        .fontWeight(.medium)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 11)
-                        .foregroundColor(PassColor.passwordInteractionNormMajor2.toColor)
-                        .background(PassColor.passwordInteractionNormMinor1.toColor)
-                        .clipShape(Capsule())
-                }
-
-                Image(uiImage: IconProvider.chevronRight)
-                    .resizable()
-                    .foregroundColor((hasBreaches ? PassColor.passwordInteractionNormMajor1 : PassColor
-                            .textWeak).toColor)
-                    .scaledToFit()
-                    .frame(height: 15)
-            }
-            .padding(.horizontal, DesignConstant.sectionPadding)
-        }
-        .buttonStyle(.plain)
-    }
 }
 
 // MARK: - Proton Aliases
@@ -182,8 +110,7 @@ private extension DarkWebMonitorHomeView {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Hide-my-email aliases"),
                                   subTitle: viewModel
-                                      .noAliasBreaches ? #localized("No breaches detected") :
-                                      #localized("Found in %lld breaches", viewModel.numberOFBreachedAlias),
+                                      .breachSubtitle(numberOfBreaches: viewModel.numberOFBreachedAlias),
                                   hasBreaches: !viewModel.noAliasBreaches,
                                   isDetail: false,
                                   action: {})
@@ -256,7 +183,7 @@ private extension DarkWebMonitorHomeView {
                         Button {
                             Task {
                                 let customEmail = await viewModel.addCustomEmail(email: item.email)
-                                router.present(sheet: .addCustomEmail(customEmail, true))
+                                router.present(sheet: .addCustomEmail(customEmail: customEmail, isMonitored: true))
                             }
                         } label: {
                             Text("Add")
@@ -285,7 +212,7 @@ private extension DarkWebMonitorHomeView {
                 }
                 .buttonStyle(.plain)
                 Spacer()
-                Button { router.present(sheet: .addCustomEmail(nil, false)) } label: {
+                Button { router.present(sheet: .addCustomEmail(customEmail: nil, isMonitored: false)) } label: {
                     CircleButton(icon: IconProvider.plus,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
@@ -330,7 +257,7 @@ private extension DarkWebMonitorHomeView {
                             .fontWeight(.medium)
                             .padding(.vertical, 4)
                             .padding(.horizontal, 11)
-                            .foregroundColor(PassColor.passwordInteractionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                             .background(PassColor.passwordInteractionNormMinor1.toColor)
                             .clipShape(Capsule())
                     }
@@ -352,9 +279,8 @@ private extension DarkWebMonitorHomeView {
                     .frame(height: 24)
                     .padding(10)
                     .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    .roundedDetailSection(backgroundColor: PassColor
-                        .interactionNormMinor1,
-                        borderColor: .clear)
+                    .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor1,
+                                          borderColor: .clear)
 
                 Spacer()
                 VStack(alignment: .leading) {
@@ -374,7 +300,8 @@ private extension DarkWebMonitorHomeView {
                 Spacer()
 
                 Menu(content: {
-                    Button { router.present(sheet: .addCustomEmail(email, true)) } label: {
+                    Button { router.present(sheet: .addCustomEmail(customEmail: email, isMonitored: true))
+                    } label: {
                         Label(title: { Text("Verify") }, icon: { Image(uiImage: IconProvider.paperPlane) })
                     }
 
@@ -391,6 +318,79 @@ private extension DarkWebMonitorHomeView {
                 })
             }
         }
+    }
+}
+
+// MARK: - Utils
+
+private extension DarkWebMonitorHomeView {
+    func colorOfTitle(hasBreaches: Bool, isDetail: Bool) -> Color {
+        if isDetail {
+            (hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
+                .textNorm).toColor
+        } else {
+            PassColor.textNorm.toColor
+        }
+    }
+
+    func colorOfSubtitle(hasBreaches: Bool, isDetail: Bool) -> Color {
+        if isDetail {
+            PassColor.textNorm.toColor
+        } else {
+            (hasBreaches ? PassColor.passwordInteractionNormMajor2 : PassColor
+                .cardInteractionNormMajor1).toColor
+        }
+    }
+
+    func darkWebMonitorHomeRow(title: String,
+                               subTitle: String?,
+                               info: String? = nil,
+                               hasBreaches: Bool,
+                               isDetail: Bool,
+                               action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text(title)
+                        .font(.body)
+                        .lineLimit(1)
+                        .foregroundStyle(colorOfTitle(hasBreaches: hasBreaches,
+                                                      isDetail: isDetail))
+                        .minimumScaleFactor(0.5)
+
+                    if let subTitle {
+                        Text(subTitle)
+                            .font(.callout)
+                            .lineLimit(1)
+                            .foregroundStyle(colorOfSubtitle(hasBreaches: hasBreaches, isDetail: isDetail))
+                            .layoutPriority(1)
+                            .minimumScaleFactor(0.25)
+                    }
+                }
+                .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
+                .contentShape(Rectangle())
+
+                if let info {
+                    Text(info)
+                        .font(.body)
+                        .fontWeight(.medium)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 11)
+                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                        .background(PassColor.passwordInteractionNormMinor1.toColor)
+                        .clipShape(Capsule())
+                }
+
+                Image(uiImage: IconProvider.chevronRight)
+                    .resizable()
+                    .foregroundStyle((hasBreaches ? PassColor.passwordInteractionNormMajor1 : PassColor
+                            .textWeak).toColor)
+                    .scaledToFit()
+                    .frame(height: 15)
+            }
+            .padding(.horizontal, DesignConstant.sectionPadding)
+        }
+        .buttonStyle(.plain)
     }
 }
 

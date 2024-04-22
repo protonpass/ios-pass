@@ -51088,16 +51088,6 @@
         }
       }
     },
-    "Ok" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ok"
-          }
-        }
-      }
-    },
     "OK" : {
       "localizations" : {
         "be" : {
@@ -59758,12 +59748,12 @@
         }
       }
     },
-    "Resend code in: %lld" : {
+    "Resend code in %lld" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Resend code in: %lld"
+            "value" : "Resend code in %lld"
           }
         }
       }
@@ -81395,9 +81385,21 @@
     "Used in %lld logins" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Used in %lld logins"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Used in %lld login"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Used in %lld logins"
+                }
+              }
+            }
           }
         }
       }

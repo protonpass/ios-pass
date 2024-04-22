@@ -74,21 +74,3 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable {
         case actions
     }
 }
-
-public extension Breach {
-    init(from decoder: any Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(String.self, forKey: .id)
-        email = try values.decode(String.self, forKey: .email)
-        severity = try values.decode(Double.self, forKey: .severity)
-        name = try values.decode(String.self, forKey: .name)
-        resolvedState = try values.decode(Int.self, forKey: .resolvedState)
-        createdAt = try values.decode(String.self, forKey: .createdAt)
-        publishedAt = try values.decode(String.self, forKey: .publishedAt)
-        source = try values.decode(BreachSource.self, forKey: .source)
-        size = try values.decode(Int?.self, forKey: .size)
-        exposedData = try values.decode([BreachExposedData].self, forKey: .exposedData)
-        passwordLastChars = try values.decode(String?.self, forKey: .passwordLastChars)
-        actions = try values.decode([BreachAction].self, forKey: .actions)
-    }
-}

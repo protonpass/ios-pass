@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol RemoveEmailFromBreachMonitoringUseCase: Sendable {
-    func execute(emailId: String) async throws
+    func execute(email: CustomEmail) async throws
 }
 
 public extension RemoveEmailFromBreachMonitoringUseCase {
-    func callAsFunction(emailId: String) async throws {
-        try await execute(emailId: emailId)
+    func callAsFunction(email: CustomEmail) async throws {
+        try await execute(email: email)
     }
 }
 
@@ -43,8 +43,8 @@ public final class RemoveEmailFromBreachMonitoring: RemoveEmailFromBreachMonitor
         self.updatesForDarkWebHomeUseCase = updatesForDarkWebHomeUseCase
     }
 
-    public func execute(emailId: String) async throws {
-        try await repository.removeEmailFromBreachMonitoring(emailId: emailId)
+    public func execute(email: CustomEmail) async throws {
+        try await repository.removeEmailFromBreachMonitoring(email: email)
         let emails = try await repository.getAllCustomEmailForUser()
         updatesForDarkWebHomeUseCase(updateSection: .customEmails(emails))
     }

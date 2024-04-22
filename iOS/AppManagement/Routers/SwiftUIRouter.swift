@@ -26,10 +26,12 @@ enum GeneralRouterDestination: Hashable {
     case shareSummary
     case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
     case darkWebMonitorHome(SecurityWeakness)
+    case passMonitorItemsList
+    case breachDetail
 }
 
 enum GeneralSheetDestination: Identifiable, Hashable {
-    case addCustomEmail(CustomEmail?, Bool)
+    case addCustomEmail(customEmail: CustomEmail?, isMonitored: Bool)
 
     var id: String {
         switch self {
@@ -80,9 +82,11 @@ extension View {
             case let .darkWebMonitorHome(securityWeakness):
                 if case let .breaches(userBreaches) = securityWeakness {
                     DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches))
-                } else {
-                    EmptyView()
                 }
+            case .passMonitorItemsList:
+                Text(verbatim: "Upcomming screen")
+            case .breachDetail:
+                Text(verbatim: "Upcomming screen")
             }
         }
     }

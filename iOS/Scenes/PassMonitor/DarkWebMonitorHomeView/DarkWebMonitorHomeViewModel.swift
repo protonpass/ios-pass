@@ -34,7 +34,6 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     @Published private(set) var customEmails: [CustomEmail]?
     @Published private(set) var suggestedEmail: [SuggestedEmail]?
     @Published private(set) var aliasInfos: [AliasMonitorInfo]?
-    @Published private(set) var loading = false
 
     private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
     private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
@@ -82,19 +81,10 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     }
 
     func getCurrentLocalizedDateTime() -> String {
+        let format = "MMM dd yyyy, HH:mm"
         let now = Date()
-        let dateFormatter = DateFormatter()
-
-        // Set the date and time style
-        dateFormatter.dateFormat = "MMM dd yyyy, HH:mm" // e.g., "Feb 14 2024, 09:41"
-
-        // Set the locale to the current device's locale
-        dateFormatter.locale = Locale.current
-
-        // Optional: If you want the time to also adapt to the user's 24-hour or 12-hour format preference:
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateStyle = .medium
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMM dd yyyy, HH:mm")
+        let dateFormatter = DateFormatter(format: format)
+        dateFormatter.setLocalizedDateFormatFromTemplate(format)
 
         return dateFormatter.string(from: now)
     }
@@ -104,10 +94,10 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
-            defer { loading = false }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                loading = true
-                try await removeEmailFromBreachMonitoring(emailId: email.customEmailID)
+                router.display(element: .globalLoading(shouldShow: true))
+                try await removeEmailFromBreachMonitoring(email: email)
             } catch {
                 handle(error: error)
             }
@@ -115,10 +105,10 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     }
 
     func addCustomEmail(email: String) async -> CustomEmail? {
-        defer { loading = false }
+        defer { router.display(element: .globalLoading(shouldShow: false)) }
 
         do {
-            loading = true
+            router.display(element: .globalLoading(shouldShow: true))
             let customEmail = try await addCustomEmailToMonitoring(email: email)
             if let index = suggestedEmail?.firstIndex(where: { $0.email == email }) {
                 suggestedEmail?.remove(at: index)
@@ -129,6 +119,11 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
         }
         return nil
     }
+
+    func breachSubtitle(numberOfBreaches: Int) -> String {
+        numberOfBreaches == 0 ? #localized("No breaches detected") :
+            #localized("Found in %lld breaches", numberOfBreaches)
+    }
 }
 
 private extension DarkWebMonitorHomeViewModel {
@@ -138,10 +133,9 @@ private extension DarkWebMonitorHomeViewModel {
             guard let self else {
                 return
             }
-            defer { loading = false }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                loading = true
-
+                router.display(element: .globalLoading(shouldShow: true))
                 async let currentCustomEmails = getAllCustomEmails()
                 async let currentAliasInfos = getAllAliasMonitorInfos()
                 async let currentSuggestedEmail = getCustomEmailSuggestion(breaches: userBreaches)

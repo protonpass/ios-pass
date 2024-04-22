@@ -53,7 +53,6 @@ enum UpsellEntry {
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var breaches: UserBreaches?
-
     @Published private(set) var isFreeUser = false
     @Published private(set) var loading = false
     @Published var isSentinelActive = false
@@ -66,8 +65,14 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getAllAliases = resolve(\SharedUseCasesContainer.getAllAliases)
 
     private var cancellables = Set<AnyCancellable>()
+    private var numberOfBreachedAliases = 0
+
+    var numberOfBreaches: Int {
+        (breaches?.emailsCount ?? 0) + numberOfBreachedAliases
+    }
 
     init() {
         setUp()
@@ -170,6 +175,7 @@ private extension PassMonitorViewModel {
 
     func refreshRemoteMonitoredData() async {
         do {
+            numberOfBreachedAliases = try await getAllAliases().filter(\.item.isBreached).count
             breaches = try await passMonitorRepository.getAllBreachesForUser()
         } catch {
             router.display(element: .displayErrorBanner(error))

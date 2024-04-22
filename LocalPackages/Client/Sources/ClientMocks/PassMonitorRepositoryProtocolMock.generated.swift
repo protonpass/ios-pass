@@ -176,37 +176,37 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         return stubbedAddEmailToBreachMonitoringResult
     }
     // MARK: - verifyCustomEmail
-    public var verifyCustomEmailEmailIdCodeThrowableError6: Error?
+    public var verifyCustomEmailEmailCodeThrowableError6: Error?
     public var closureVerifyCustomEmail: () -> () = {}
     public var invokedVerifyCustomEmailfunction = false
     public var invokedVerifyCustomEmailCount = 0
-    public var invokedVerifyCustomEmailParameters: (emailId: String, code: String)?
-    public var invokedVerifyCustomEmailParametersList = [(emailId: String, code: String)]()
+    public var invokedVerifyCustomEmailParameters: (email: CustomEmail, code: String)?
+    public var invokedVerifyCustomEmailParametersList = [(email: CustomEmail, code: String)]()
 
-    public func verifyCustomEmail(emailId: String, code: String) async throws {
+    public func verifyCustomEmail(email: CustomEmail, code: String) async throws {
         invokedVerifyCustomEmailfunction = true
         invokedVerifyCustomEmailCount += 1
-        invokedVerifyCustomEmailParameters = (emailId, code)
-        invokedVerifyCustomEmailParametersList.append((emailId, code))
-        if let error = verifyCustomEmailEmailIdCodeThrowableError6 {
+        invokedVerifyCustomEmailParameters = (email, code)
+        invokedVerifyCustomEmailParametersList.append((email, code))
+        if let error = verifyCustomEmailEmailCodeThrowableError6 {
             throw error
         }
         closureVerifyCustomEmail()
     }
     // MARK: - removeEmailFromBreachMonitoring
-    public var removeEmailFromBreachMonitoringEmailIdThrowableError7: Error?
+    public var removeEmailFromBreachMonitoringEmailThrowableError7: Error?
     public var closureRemoveEmailFromBreachMonitoring: () -> () = {}
     public var invokedRemoveEmailFromBreachMonitoringfunction = false
     public var invokedRemoveEmailFromBreachMonitoringCount = 0
-    public var invokedRemoveEmailFromBreachMonitoringParameters: (emailId: String, Void)?
-    public var invokedRemoveEmailFromBreachMonitoringParametersList = [(emailId: String, Void)]()
+    public var invokedRemoveEmailFromBreachMonitoringParameters: (email: CustomEmail, Void)?
+    public var invokedRemoveEmailFromBreachMonitoringParametersList = [(email: CustomEmail, Void)]()
 
-    public func removeEmailFromBreachMonitoring(emailId: String) async throws {
+    public func removeEmailFromBreachMonitoring(email: CustomEmail) async throws {
         invokedRemoveEmailFromBreachMonitoringfunction = true
         invokedRemoveEmailFromBreachMonitoringCount += 1
-        invokedRemoveEmailFromBreachMonitoringParameters = (emailId, ())
-        invokedRemoveEmailFromBreachMonitoringParametersList.append((emailId, ()))
-        if let error = removeEmailFromBreachMonitoringEmailIdThrowableError7 {
+        invokedRemoveEmailFromBreachMonitoringParameters = (email, ())
+        invokedRemoveEmailFromBreachMonitoringParametersList.append((email, ()))
+        if let error = removeEmailFromBreachMonitoringEmailThrowableError7 {
             throw error
         }
         closureRemoveEmailFromBreachMonitoring()
