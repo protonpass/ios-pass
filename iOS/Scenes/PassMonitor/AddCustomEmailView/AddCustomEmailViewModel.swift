@@ -127,7 +127,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
                 currentCustomEmail = try await addCustomEmailToMonitoring(email: email)
                 isMonitored = true
             } catch {
-                print(error.localizedDescription)
+                handle(error: error)
             }
         }
     }
