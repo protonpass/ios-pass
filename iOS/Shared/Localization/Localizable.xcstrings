@@ -3,10 +3,100 @@
   "strings" : {
     "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" kopieres til udklipsholderen. Udløber om %2$lld sekunder."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" wurde in die Zwischenablage kopiert. Läuft in %2$lld Sekunden ab."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" on kopioitu leikepöydälle. Erääntyy %2$lld sekunnin kuluttua."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %1$@ » est copié dans presse-papiers. Il expire dans %2$lld secondes."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" disalin ke papan klip. Kedaluwarsa dalam %2$lld detik."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" copiato negli appunti. La scadenza è tra %2$lld secondi."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\"이(가) 클립보드에 복사되었습니다. %2$lld초 후에 만료됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" er kopiert til utklippstavlen. Utløper om %2$lld sekunder."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" is gekopieerd naar het klembord. Verloopt in %2$lld seconden."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" foi copiado para a área de transferência. Expira em %2$lld segundos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" s-a copiat în memorie. Expiră peste %2$lld secunde."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%1$@“ har kopierats till urklipp. Löper ut om %2$lld sekunder."
           }
         }
       }
@@ -334,9 +424,21 @@
     "%lld breaches detected" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld breaches detected"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld breach detected"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld breaches detected"
+                }
+              }
+            }
           }
         }
       }
@@ -3475,6 +3577,24 @@
             }
           }
         },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Ein anderer Login verwendet dieses Passwort"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andere Logins verwenden dieses Passwort"
+                }
+              }
+            }
+          }
+        },
         "el" : {
           "variations" : {
             "plural" : {
@@ -3613,6 +3733,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სხვა მომხმარებელი იყენებს ამ პაროლს"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სხვა მომხმარებელი იყენებს ამ პაროლს"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3638,6 +3776,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld andre pålogginger bruker dette passordet"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andere login gebruiken dit wachtwoord"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andere logins gebruiken dit wachtwoord"
                 }
               }
             }
@@ -5916,7 +6072,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 제한 도달"
+            "value" : "2단계 인증 제한 도달"
           }
         },
         "nb" : {
@@ -6076,7 +6232,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 시크릿 키 (TOTP)"
+            "value" : "2단계 인증 비밀 키 (TOTP)"
           }
         },
         "nb" : {
@@ -6372,7 +6528,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 토큰 (TOTP)"
+            "value" : "2단계 인증 토큰 (TOTP)"
           }
         },
         "nb" : {
@@ -6734,7 +6890,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "20 trezorji"
+            "value" : "20 trezorjev"
           }
         },
         "sv" : {
@@ -7630,7 +7786,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 시크릿 생성"
+            "value" : "2단계 인증 비밀 키 추가"
           }
         },
         "nb" : {
@@ -8870,13 +9026,19 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "모니터링에 추가하기"
+            "value" : "모니터링에 추가"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Legg til overvåking"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toevoegen aan monitoring"
           }
         },
         "pl" : {
@@ -9396,10 +9558,130 @@
     },
     "Advanced account protection program" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковая праграма абароны ўліковага запісу"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanceret program til beskyttelse af konto"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweitertes Programm zum Schutz von Konten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προηγμένο πρόγραμμα προστασίας λογαριασμού"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced account protection program"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programa de protección avanzada de cuentas"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programa de protección avanzada de cuentas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kehittynyt tilin suojausohjelma"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programme de protection de compte avancée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program perlindungan akun tingkat lanjut"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programma avanzato di protezione dell'account"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი ანგარიშის დაცვის პროგრამა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "향상된 계정 보호 프로그램"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avansert kontobeskyttelsesprogram"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geavanceerd account beveiligingsprogramma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaawansowany program ochrony konta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programa avançado de proteção de conta"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program avansat de protecție a contului"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program rozšírenej ochrany účtu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avancerat kontoskyddsprogram"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelişmiş hesap koruma programı"
           }
         }
       }
@@ -10865,7 +11147,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명"
+            "value" : "별칭"
           }
         },
         "nb" : {
@@ -11025,7 +11307,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 \"%@\"의 사용자 메일함에 대한 이메일 포워딩이 중단됩니다."
+            "value" : "별칭 \"%@\"의 사용자 메일함에 대한 이메일 포워딩이 중단됩니다."
           }
         },
         "nb" : {
@@ -11174,7 +11456,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 액션 메뉴"
+            "value" : "별칭 액션 메뉴"
           }
         },
         "nb" : {
@@ -11323,7 +11605,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 주소"
+            "value" : "별칭 주소"
           }
         },
         "nb" : {
@@ -11483,7 +11765,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 주소 복사됨"
+            "value" : "별칭 주소 복사됨"
           }
         },
         "nb" : {
@@ -11643,7 +11925,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명이 2개의 연속적인 점을 포함할 수 없습니다 (..)"
+            "value" : "별칭은 연속되는 2개의 점을 포함할 수 없습니다 (..)"
           }
         },
         "nb" : {
@@ -11946,7 +12228,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 복사됨"
+            "value" : "별칭 복사됨"
           }
         },
         "nb" : {
@@ -12106,7 +12388,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명을 생성했습니다."
+            "value" : "별칭을 생성했습니다."
           }
         },
         "nb" : {
@@ -12266,7 +12548,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "\"%@\" 로그인 항목의 별명"
+            "value" : "\"%@\" 로그인 항목의 별칭"
           }
         },
         "nb" : {
@@ -12426,7 +12708,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명을 완전히 삭제했습니다."
+            "value" : "별칭을 완전히 삭제했습니다."
           }
         },
         "nb" : {
@@ -12586,7 +12868,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 복구됨"
+            "value" : "별칭 복구됨"
           }
         },
         "nb" : {
@@ -12746,7 +13028,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 업데이트됨"
+            "value" : "별칭 업데이트됨"
           }
         },
         "nb" : {
@@ -14465,7 +14747,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "\"%@\"에 2FA 시크릿을 추가하시겠습니까?"
+            "value" : "\"%@\"에 2단계 인증 비밀 키를 추가하시겠습니까?"
           }
         },
         "nb" : {
@@ -14607,7 +14889,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA를 연결합니까?"
+            "value" : "2단계 인증을 연결하시겠습니까?"
           }
         },
         "nb" : {
@@ -15822,7 +16104,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 코드 자동 복사를 설정하려면 생체 인증 및 PIN 코드가 필요합니다."
+            "value" : "2단계 인증 코드 자동 복사를 설정하려면 생체 인증 또는 PIN 코드가 필요합니다."
           }
         },
         "nb" : {
@@ -16203,10 +16485,106 @@
     },
     "Breached Detected" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выяўлены парушэнні"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Databrud registreret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datendiebstahl entdeckt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Breached Detected"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se han detectado una vulneraciones."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vulneraciones detectadas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietomurtoja havaittu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Des fuites de données ont été détectées."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kebocoran Terdeteksi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Violazione di dati rilevata"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "침해 사례 감지됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brudd oppdaget"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inbreuken gedetecteerd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wykryto wycieki"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Violações Detectadas"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Divulgări detectate"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intrång upptäckt"
           }
         }
       }
@@ -18297,20 +18675,320 @@
     },
     "Change mailbox password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змяніць пароль паштовай скрыні"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Změnit heslo poštovní schránky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skift postkasseadgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postfach-Passwort ändern"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αλλαγή κωδικού γραμματοκιβωτίου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change mailbox password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar contraseña del buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar contraseña del buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaihda postilaatikon salasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer le mot de passe de messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubah kata sandi kotak surat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia la password della casella di posta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスのパスワードを変更"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის პაროლის შეცვლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함 비밀번호 변경"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endre postbokspassord"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailboxwachtwoord wijzigen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmień hasło skrzynki pocztowej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar senha da caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schimbare parolă mesaje"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmeniť heslo k poštovej schránke"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spremeni geslo poštnega nabiralnika"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändra lösenord för brevlådan"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posta kutusu parolasını değiştir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змінити пароль поштової скриньки"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thay đổi mật khẩu hòm thư"
           }
         }
       }
     },
     "Change password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змяніць пароль"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Změnit heslo"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skift adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort ändern"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αλλαγή κωδικού πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar contraseña"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar contraseña"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaihda salasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer le mot de passe"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubah kata sandi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia la password"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスワードの変更"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პაროლის შეცვლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비밀번호 변경"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endre passord"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachtwoord wijzigen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmień hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar senha"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schimbare parolă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmeniť heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spremeni geslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolayı değiştir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змінити пароль"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thay đổi mật khẩu"
           }
         }
       }
@@ -21112,7 +21790,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 코드 복사"
+            "value" : "2단계 인증 코드 복사"
           }
         },
         "nb" : {
@@ -21272,7 +21950,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 주소 복사"
+            "value" : "별칭 주소 복사"
           }
         },
         "nb" : {
@@ -23146,7 +23824,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "나의 이메일 별명 숨기기 생성"
+            "value" : "나의 이메일 별칭 숨기기 생성하기"
           }
         },
         "nb" : {
@@ -28747,7 +29425,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 편집"
+            "value" : "별칭 편집"
           }
         },
         "nb" : {
@@ -31880,7 +32558,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poissuljettu seurannasta"
+            "value" : "Poista valvonnasta"
           }
         },
         "fr" : {
@@ -31910,7 +32588,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "감시에서 제외하기"
+            "value" : "모니터링에서 제외"
           }
         },
         "nb" : {
@@ -31983,6 +32661,12 @@
             "value" : "Ekskluderede elementer"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgeschlossene Einträge"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32049,6 +32733,12 @@
             "value" : "Ekskluderte elementer"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uitgesloten items"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32061,10 +32751,22 @@
             "value" : "Itens excluídos"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articole excluse"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vylúčené položky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izključeni predmeti"
           }
         },
         "sv" : {
@@ -33284,7 +33986,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명, 로그인 및 메모 검색"
+            "value" : "별칭, 로그인 및 메모 검색"
           }
         },
         "nb" : {
@@ -33998,9 +34700,21 @@
     "Found in %lld breaches" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Found in %lld breaches"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Found in %lld breach"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Found in %lld breaches"
+                }
+              }
+            }
           }
         }
       }
@@ -34711,7 +35425,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "새 앱에서 사용할 이메일 별명을 받으세요"
+            "value" : "새 앱에서 쓸 이메일 별칭 받기"
           }
         },
         "nb" : {
@@ -34784,10 +35498,130 @@
     },
     "Get notified if your email, password or other personal data was leaked." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Атрымаць апавяшчэнне, калі адбылася ўцечка вашай электроннай пошты, пароля або іншых асабістых даных"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få besked, hvis din e-mail, adgangskode eller andre personlige data er blevet lækket"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lass dich benachrichtigen, wenn deine E-Mail, dein Passwort oder andere persönliche Daten entwendet wurden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Λάβετε ειδοποίηση εάν η διεύθυνση ηλεκτρονικού ταχυδρομείου, ο κωδικός πρόσβασης ή άλλα προσωπικά δεδομένα σας έχουν διαρρεύσει"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Get notified if your email, password or other personal data was leaked"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recibe notificaciones si tu correo electrónico, contraseña u otro dato personal ha sido filtrado."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reciba notificaciones si su correo electrónico, contraseña u otro dato personal ha sido filtrado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vastaanota ilmoituksia, jos sähköpostiosoitteesi, salasanasi tai muita henkilökohtaisia tietojasi on vuotanut"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soyez averti si votre adresse e-mail, mot de passe ou d'autres données personnelles ont été divulguées."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dapatkan notifikasi ketika email, kata sandi, atau data pribadi Anda lainnya terpapar"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ricevi una notifica se un'email, una password o altri dati personali vengono resi pubblici"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიიღეთ შეტყობინება, თუ თქვენი ელფოსტა, პაროლი ან რამე თქვენ შესახებ გაიჟონება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일, 비밀번호나 다른 개인 정보가 유출되는 경우에 알림을 받아보세요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bli varslet hvis e-posten, passordet eller andre personlige data ble lekket"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontvang een melding als je e-mail, wachtwoord of andere persoonlijke gegevens zijn gelekt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otrzymaj powiadomienie o wycieku swojego adresu e-mail, hasła i innych danych osobowych"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seja notificado se seu email, senha ou outros dados pessoais foram vazados"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primiți notificări dacă adresele de e-mail, parolele sau alte date personale au fost divulgate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostávajte upozornenia, ak došlo k úniku vášho emailu, hesla alebo iných osobných údajov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bli aviserad om din e-post, lösenord eller annan personlig data har läckt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta adresiniz, parolanız veya diğer kişisel verileriniz açığa çıktığında bildirim alın"
           }
         }
       }
@@ -35179,7 +36013,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이메일 별명 사용"
+            "value" : "이메일 별칭 사용"
           }
         },
         "nb" : {
@@ -38234,7 +39068,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "통합된 2FA 인증기"
+            "value" : "통합된 2단계 인증기"
           }
         },
         "nb" : {
@@ -39325,16 +40159,28 @@
             "value" : "Sarebbe più sicuro impostare la 2FA per questo elemento"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "უფრო უსაფრთხო იქნება, თუ ამ ელემენტისთვის 2FA-ს მოარგებთ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 항목은 2FA를 설정하는 것이 더욱 안전합니다"
+            "value" : "이 항목은 2단계 인증을 설정하는 것이 더욱 안전합니다"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Det ville være sikrere å sette opp 2FA for dette elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het zou veiliger zijn om 2FA op te zetten voor dit item"
           }
         },
         "pl" : {
@@ -39383,20 +40229,206 @@
     },
     "Item added to monitoring" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Элемент дададзены ў назіранне"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element tilføjet til monitorering"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element zur Überwachung hinzugefügt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item added to monitoring"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El elemento ha sido añadido al monitoreo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento añadido al monitoreo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohde lisättiin valvontaan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'élément a été ajouté à la surveillance."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ditambahkan dalam pemantauan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento aggiunto al monitoraggio"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목을 모니터링에 추가함"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element lagt til i overvåking"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item toegevoegd aan monitoring"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element został uwzględniony w monitoringu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item adicionado ao monitoramento"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol adăugat la monitorizare"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öğe izlemeye eklendi"
           }
         }
       }
     },
     "Item excluded from monitoring" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Элемент выключаны з назірання"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element udelukket fra monitorering"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von der Überwachung ausgeschlossenes Element"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item excluded from monitoring"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El elemento ha sido excluido del monitoreo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento excluido del monitoreo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohde poistettiin valvonnasta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'élément a été exclu de la surveillance."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item dikeluarkan dari pemantauan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento escluso dal monitoraggio"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목을 모니터링에서 제외함"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element eksludert fra overvåking"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item uitgesloten van monitoring"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element został wykluczony z monitoringu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item excluído do monitoramento"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol exclus de la monitorizare"
           }
         }
       }
@@ -43498,6 +44530,12 @@
             "value" : "Elenco di tutti gli altri elementi delle tue casseforti che utilizzano questa password."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ყველა სხვა ელემენტის სია თქვენი საცავებიდან, რომლებიც ამ პაროლს იყენებს."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43508,6 +44546,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Liste over alle andre elementer fra hvelvene dine som bruker dette passordet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lijst van alle andere items uit je kluis die dit wachtwoord gebruiken."
           }
         },
         "pl" : {
@@ -48256,10 +49300,142 @@
     },
     "No breaches detected" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Парушэнні не выяўлены"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádné úniky informací nebyly zjištěny"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen brud registreret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Datendiebstahl entdeckt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν εντοπίστηκαν παραβιάσεις"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No breaches detected"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han detectado vulneraciones."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se detectaron vulneraciones"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietovuotoja ei havaittu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune fuite de données n'a été détectée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada kebocoran yang terdeteksi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna violazione di dati rilevata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაჟონვები აღმოჩენილი არაა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "감지한 침해사례 없음"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen brudd oppdaget"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen inbreuken gedetecteerd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak wykrytych wycieków"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma violação detectada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu există divulgări"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebol zistený únik"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni odkritih uhajanj podatkov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inga intrång upptäckta"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herhangi bir veri açığa çıkmamış"
           }
         }
       }
@@ -50465,7 +51641,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notater"
+            "value" : "Noter"
           }
         },
         "de" : {
@@ -50739,7 +51915,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zdaj lahko Proton Pass odklenete samo, ko ga potrebujete⏤hitro in varno"
+            "value" : "Zdaj lahko Proton Pass odklenete samo, ko ga potrebujete ⏤ hitro in varno."
           }
         },
         "sv" : {
@@ -53598,6 +54774,12 @@
             "value" : "Adgangskode-sundhed"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort Sicherheit"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53664,6 +54846,12 @@
             "value" : "Passordhelse"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachtwoord gezondheid"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53676,10 +54864,22 @@
             "value" : "Saúde da senha"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stare parolă"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stav hesla"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Močno geslo"
           }
         },
         "sv" : {
@@ -57430,7 +58630,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Priprava..."
+            "value" : "Priprava ..."
           }
         },
         "sv" : {
@@ -59026,7 +60226,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 삭제"
+            "value" : "별칭 삭제"
           }
         },
         "nb" : {
@@ -62667,7 +63867,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skeniraj %@"
+            "value" : "Optično preberi %@"
           }
         },
         "sv" : {
@@ -66557,7 +67757,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 설정하기"
+            "value" : "2단계 인증 설정하기"
           }
         },
         "nb" : {
@@ -70479,12 +71679,6 @@
             "value" : "Spotlight"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nowość"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70701,6 +71895,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bliv mere sikker online"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bleib online geschützter"
           }
         },
         "el" : {
@@ -70950,7 +72150,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nehaj deliti svoj pravi e-poštni naslov. Namesto tega ga skrijte z e-poštnimi vzdevki⏤a ekskluzivno za Proton Pass."
+            "value" : "Nehajte deliti svoj pravi e-poštni naslov. Namesto tega ga skrijte z e-poštnimi vzdevki ⏤ ekskluzivno za Proton Pass."
           }
         },
         "sv" : {
@@ -72071,7 +73271,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sinhronizacija predmetov..."
+            "value" : "Sinhronizacija predmetov ..."
           }
         },
         "sv" : {
@@ -73140,7 +74340,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 접두사가 너무 깁니다"
+            "value" : "별칭 접두사가 너무 깁니다"
           }
         },
         "nb" : {
@@ -73812,6 +75012,12 @@
             "value" : "Disse elementer er fortsat i farezonen"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Einträge sind weiterhin gefährdet"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73878,10 +75084,28 @@
             "value" : "Disse elementene er fortsatt i fare"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze items blijven in gevaar"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Te element są zagrożone"
+            "value" : "Te elementy są zagrożone"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esses itens permanecem em risco"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceste articole rămân riscante"
           }
         },
         "sk" : {
@@ -74281,6 +75505,12 @@
             "value" : "Dette elementet er ikke under overvåking"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit item wordt niet gemonitord"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74408,7 +75638,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 로그인 항목은 2FA 시크릿을 이미 포함합니다."
+            "value" : "이 로그인 항목은 2단계 인증 비밀 키가 이미 포함되어 있습니다."
           }
         },
         "nb" : {
@@ -74598,7 +75828,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To lahko traja nekaj minut"
+            "value" : "To lahko traja nekaj minut."
           }
         },
         "sv" : {
@@ -78096,7 +79326,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "무제한 나의 이메일 별명"
+            "value" : "무제한 나의 이메일 별칭"
           }
         },
         "nb" : {
@@ -78286,7 +79516,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliasuri nelimitate hide-my-email"
+            "value" : "Aliasuri hide-my-email nelimitate"
           }
         },
         "sk" : {
@@ -78495,6 +79725,12 @@
             "value" : "Lås op for avancerede sikkerhedsfunktioner og detaljerede logfiler for at beskytte din online tilstedeværelse."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schalte erweiterte Sicherheitsfunktionen und detaillierte Protokolle zum Schutz deiner Online-Präsenz frei."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78555,16 +79791,40 @@
             "value" : "Lås opp avanserte sikkerhetsfunksjoner og detaljerte logger for å beskytte din tilstedeværelse på nettet."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontgrendel geavanceerde beveiligingsfuncties en gedetailleerde logs om uw online aanwezigheid te beschermen."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odblokuj zaawansowane funkcje bezpieczeństwa i szczegółowe logi, aby chronić się w Internecie."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueie recursos avançados de segurança e registros detalhados para proteger sua presença online."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deblocați funcțiile de securitate avansate și jurnalele detaliate pentru a vă securiza prezența online."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odomknite pokročilé funkcie zabezpečenia a podrobné protokoly na ochranu vašej online prítomnosti."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odklenite napredne varnostne funkcije in podrobne dnevnike, da zaščitite svojo spletno prisotnost."
           }
         },
         "sv" : {
@@ -83187,6 +84447,12 @@
             "value" : "Condivisione della cassaforte (fino a 10 persone)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫の共有 (最大 10 人)"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84126,7 +85392,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명 보기"
+            "value" : "별칭 보기"
           }
         },
         "nb" : {
@@ -84286,7 +85552,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별도의 별명 페이지에서 이 별명에 대한 세부 사항을 보고 편집하세요."
+            "value" : "별도의 별칭 페이지에서 이 별칭에 대한 세부 사항을 보고 편집하세요."
           }
         },
         "nb" : {
@@ -84624,7 +85890,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prikaži članov"
+            "value" : "Poglej člane"
           }
         },
         "sv" : {
@@ -84882,6 +86148,12 @@
             "value" : "Visita il sito web e genera una password univoca per questo elemento"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეწვიეთ ვებსაიტს და შექმენით უნიკალური პაროლი ამ ელემენტისთვის"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84892,6 +86164,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Besøk nettstedet og generer et unikt passord for dette elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bezoek de website en genereer een uniek wachtwoord voor dit item"
           }
         },
         "pl" : {
@@ -85858,6 +87136,12 @@
             "value" : "Svage adgangskoder"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwache Passwörter"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85924,6 +87208,12 @@
             "value" : "Svake passord"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwak wachtwoord"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85936,10 +87226,22 @@
             "value" : "Senha fraca"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parole slabe"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slabé heslá"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šibka gesla"
           }
         },
         "sv" : {
@@ -88973,6 +90275,12 @@
             "value" : "Du har ingen svake passord"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je hebt geen zwakke wachtwoorden"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88985,10 +90293,22 @@
             "value" : "Você não tem nenhuma senha fraca"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu aveți parole slabe"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nemáte uložené žiadne heslá"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimate šibkih gesel"
           }
         },
         "sv" : {
@@ -89094,7 +90414,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사용자가 생성할 수 있는 최대 별명 수에 도달했습니다. 구독을 업그레이드하여 무제한 별명을 생성하세요."
+            "value" : "생성하실 수 있는 별명의 한도에 도달했습니다. 구독을 업그레이드하시면 별명을 제한 없이 생성하실 수 있습니다."
           }
         },
         "nb" : {
@@ -89809,6 +91129,12 @@
             "value" : "Du har styr på sikkerheden"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Sicherheit ist hervorragend"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89875,16 +91201,40 @@
             "value" : "Sikkerheten er på plass"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je veiligheid staat op punt"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jesteś bezpieczny na najwyższym poziomie"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua segurança está em dia"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Securitatea este în regulă"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vaše zabezpečenie je v poriadku"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaša varnost je na mestu"
           }
         },
         "tr" : {
@@ -90169,10 +91519,130 @@
     },
     "Your email addresses were leaked in at least 1 data breach." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш адрас электроннай пошты выяўлены прынамсі ў 1 уцечцы даных."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dine e-mailadresser blev lækket i mindst 1 databrud."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine E-Mail-Adressen sind bei mindestens 1 Datendiebstahl veröffentlicht worden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι διευθύνσεις ηλεκτρονικού ταχυδρομείου σας διέρρευσαν σε τουλάχιστον 1 παραβίαση δεδομένων."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your email addresses were leaked in at least 1 data breach."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus direcciones de correo fueron filtradas en al menos una filtración de datos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sus direcciones de correo fueron filtradas en al menos una filtración de datos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sähköpostiosoitteesi ovat paljastuneet ainakin yhdessä tietovuodossa."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos adresses e-mail ont été divulguées dans au moins 1 fuite de données."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alamat email Anda telah dibocorkan pada setidaknya 1 insiden kebocoran data."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I tuoi indirizzi email sono stati resi pubblici in almeno 1 violazione di dati."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი ელფოსტის მისამართები, სულ ცოტა, 1 მონაცემების გაჟონვაში გამოჩნდა."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자의 이메일 주소가 하나 이상의 데이터 침해에 처해있습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-postadressene dine ble lekket i minst 1 datainnbrudd."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je e-mailadressen zijn gelekt in ten minste 1 datalek."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twoje adresy e-mail zostały ujawnione w co najmniej 1 wycieku danych."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seus endereços de email foram vazados em pelo menos 1 violação de dados."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresele de e-mail v-au fost divulgate în cel puțin o compromitere a datelor."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaše emailové adresy unikli najmenej v 1 prípade porušenia ochrany osobných údajov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dina e-postadresser läckte vid minst 1 dataintrång."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta adresleriniz en az 1 verilerin ele geçirilmesi olayında açığa çıkmış."
           }
         }
       }
@@ -90182,13 +91652,19 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Парушэнне вашых асабістых даных адбылося праз сэрвіс у інтэрнэце ў выніку ўцечкі даных. Палепшыце, каб азнаёміцца з падрабязнасцямі і прыняць неабходныя меры."
+            "value" : "Парушэнне вашых асабістых даных адбылося праз сэрвіс у інтэрнэце ў выніку ўцечкі даных. Палепшыце сваю падпіску, каб азнаёміцца з падрабязнасцямі і прыняць неабходныя меры."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dine personlige data er blevet lækket af en onlinetjeneste i et databrud. Opgradér for at se alle detaljer og anbefalede handlinger."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihre persönlichen Daten sind bei einem Online Service durch einen Datendiebstahl bekannt geworden. Upgrade, um alle Details anzuzeigen und Handlungsempfehlungen zu erhalten."
           }
         },
         "el" : {
@@ -90218,7 +91694,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Henkilökohtaisia tietojasi on vuotanut verkkopalvelun tietomurron seurauksena. Päivitä tilauksesi tarkastellaksesi vuodon tietoja ja ryhdy tarvittaviin toimenpiteisiin."
+            "value" : "Henkilökohtaisia tietojasi on paljastunut verkkopalvelun tietovuodon seurauksena. Päivitä tilauksesi tarkastellaksesi vuotaneita tietoja ja ryhdy tarvittaviin toimenpiteisiin."
           }
         },
         "fr" : {
@@ -90242,7 +91718,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "귀하의 개인정보가 데이터 침해사례에 속하는 온라인 서비스로부터 유출되었습니다. 전체 세부사항을 보고 권장하는 대응을 취하려면 업그레이드 하세요."
+            "value" : "귀하의 개인정보가 데이터 침해 사례에 속하는 온라인 서비스로부터 유출되었습니다. 전체 세부사항을 보고 권장하는 대응을 취하려면 업그레이드 하세요."
           }
         },
         "nb" : {
@@ -90251,16 +91727,40 @@
             "value" : "Dine personlige data ble lekket av en nettjeneste i et databrudd. Oppgrader for å vise alle detaljer og få anbefalte handlinger."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je persoonlijke gegevens zijn gelekt door een online dienst in een datalek. Upgrade om alle details te bekijken en krijg aanbevolen acties."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Twoje dane zostały ujawnione w wycieku danych. Ulepsz konto, aby zobaczyć szczegóły i zalecane kroki."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seus dados pessoais foram vazados por um serviço online em uma violação de dados. Faça o upgrade para visualizar os detalhes completos e obter ações recomendadas."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datele personale v-au fost divulgate de un serviciu online printr-o compromitere a datelor. Alegeți un plan superior pentru a vedea detaliile complete și pentru a primi acțiuni recomandate."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pri porušení ochrany osobných údajov došlo k úniku vašich osobných údajov z online služby. Ak chcete zobraziť všetky podrobnosti a získať odporúčané opatrenia, aktualizujte si ich."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaše osebne podatke je razkrila spletna storitev zaradi kršitve podatkov. Nadgradite, če si želite ogledati vse podrobnosti in pridobiti priporočena dejanja."
           }
         },
         "sv" : {

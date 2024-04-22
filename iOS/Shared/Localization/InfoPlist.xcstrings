@@ -99,6 +99,12 @@
             "value" : "Сканіраваць код 2ФА, крэдытную картку і рукапісную нататку"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naskenujte 2FA kód, platební kartu a ručně psanou poznámku"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -168,7 +174,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 코드, 신용카드, 직접 작성한 메모 스캔"
+            "value" : "2단계 인증 코드, 신용카드, 직접 작성한 메모 스캔"
           }
         },
         "nb" : {
@@ -210,7 +216,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skeniranje 2FA kode, plačilne kartice ali ročno napisane opombe"
+            "value" : "Optično preberi 2FA kode, plačilne kartice ali ročno napisane opombe"
           }
         },
         "sv" : {
@@ -240,6 +246,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Забараніць непажаданы доступ да вашага ўліковага запісу Proton Pass на гэтай прыладзе"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omezte nežádoucí přístup ke svému Proton Pass účtu na tomto zařízení"
           }
         },
         "da" : {
