@@ -34,18 +34,18 @@ public extension RemoveEmailFromBreachMonitoringUseCase {
 }
 
 public final class RemoveEmailFromBreachMonitoring: RemoveEmailFromBreachMonitoringUseCase {
-    private let breachRepository: any BreachRepositoryProtocol
+    private let repository: any PassMonitorRepositoryProtocol
     private let updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase
 
-    public init(breachRepository: any BreachRepositoryProtocol,
+    public init(repository: any PassMonitorRepositoryProtocol,
                 updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase) {
-        self.breachRepository = breachRepository
+        self.repository = repository
         self.updatesForDarkWebHomeUseCase = updatesForDarkWebHomeUseCase
     }
 
     public func execute(emailId: String) async throws {
-        try await breachRepository.removeEmailFromBreachMonitoring(emailId: emailId)
-        let emails = try await breachRepository.getAllCustomEmailForUser()
+        try await repository.removeEmailFromBreachMonitoring(emailId: emailId)
+        let emails = try await repository.getAllCustomEmailForUser()
         updatesForDarkWebHomeUseCase(updateSection: .customEmails(emails))
     }
 }

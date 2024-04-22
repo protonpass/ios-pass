@@ -36730,6 +36730,16 @@
         }
       }
     },
+    "Hide-my-email aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email aliases"
+          }
+        }
+      }
+    },
     "History" : {
       "localizations" : {
         "be" : {

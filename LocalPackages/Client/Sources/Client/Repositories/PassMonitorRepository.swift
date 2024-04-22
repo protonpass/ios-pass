@@ -42,6 +42,16 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func refreshSecurityChecks() async throws
     func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent]
 
+    // MARK: - Breaches
+
+    func getAllBreachesForUser() async throws -> UserBreaches
+    func getAllCustomEmailForUser() async throws -> [CustomEmail]
+    func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
+    func verifyCustomEmail(emailId: String, code: String) async throws
+    func removeEmailFromBreachMonitoring(emailId: String) async throws
+    func resendEmailVerification(emailId: String) async throws
+    func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
+
     /// For testing purpose
     func updateState(_ newValue: MonitorState) async
 }
@@ -51,6 +61,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let passwordScorer: any PasswordScorerProtocol
     private let twofaDomainChecker: any TwofaDomainCheckerProtocol
+    private let remoteDataSource: any RemoteBreachDataSourceProtocol
 
     public let state: CurrentValueSubject<MonitorState, Never> = .init(.default)
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
@@ -60,6 +71,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private var refreshTask: Task<Void, Never>?
 
     public init(itemRepository: any ItemRepositoryProtocol,
+                remoteDataSource: any RemoteBreachDataSourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 passwordScorer: any PasswordScorerProtocol = PasswordScorer(),
                 twofaDomainChecker: any TwofaDomainCheckerProtocol = TwofaDomainChecker()) {
@@ -67,6 +79,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.passwordScorer = passwordScorer
         self.twofaDomainChecker = twofaDomainChecker
+        self.remoteDataSource = remoteDataSource
 
         Task { [weak self] in
             guard let self else {
@@ -158,6 +171,42 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public func updateState(_ newValue: MonitorState) async {
         state.send(newValue)
+    }
+}
+
+// MARK: - Breaches
+
+public extension PassMonitorRepository {
+    func getAllBreachesForUser() async throws -> UserBreaches {
+        let breaches = try await remoteDataSource.getAllBreachesForUser()
+        return breaches
+    }
+
+    func getAllCustomEmailForUser() async throws -> [CustomEmail] {
+        let emails = try await remoteDataSource.getAllCustomEmailForUser()
+        return emails
+    }
+
+    func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail {
+        let email = try await remoteDataSource.addEmailToBreachMonitoring(email: email)
+        return email
+    }
+
+    func verifyCustomEmail(emailId: String, code: String) async throws {
+        try await remoteDataSource.verifyCustomEmail(emailId: emailId, code: code)
+    }
+
+    func removeEmailFromBreachMonitoring(emailId: String) async throws {
+        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: emailId)
+    }
+
+    func resendEmailVerification(emailId: String) async throws {
+        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: emailId)
+    }
+
+    func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
+        try Task.checkCancellation()
+        return try await remoteDataSource.getBreachesForAlias(sharedId: sharedId, itemId: itemId)
     }
 }
 
