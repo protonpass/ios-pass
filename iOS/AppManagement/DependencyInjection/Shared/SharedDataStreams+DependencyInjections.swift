@@ -38,8 +38,4 @@ extension SharedDataStreamContainer {
     var corruptedSessionEventStream: Factory<CorruptedSessionEventStream> {
         self { CorruptedSessionEventStream() }
     }
-
-    var monitorStateStream: Factory<MonitorStateStream> {
-        self { MonitorStateStream(.default) }
-    }
 }
