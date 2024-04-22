@@ -110,7 +110,7 @@ private extension DarkWebMonitorHomeView {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Hide-my-email aliases"),
                                   subTitle: viewModel
-                                      .breachSubtitle(numberOfBreaches: viewModel.numberOFBreachedAlias),
+                                      .breachSubtitle(numberOfBreaches: viewModel.numberOfBreachedAlias),
                                   hasBreaches: !viewModel.noAliasBreaches,
                                   isDetail: false,
                                   action: {})

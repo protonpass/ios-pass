@@ -55,8 +55,9 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
                       let loginItem = item.loginItem,
                       validateEmailUseCase(email: loginItem.username),
-                      !loginItem.username.contains(["proton.", "pm.", "protonMail."]),
-                      !breaches.customEmails.map(\.email).contains(loginItem.username)
+                      !loginItem.username.lowercased().contains(["proton.", "pm.", "protonmail."]),
+                      !breaches.customEmails.map({ $0.email.lowercased() })
+                      .contains(loginItem.username.lowercased())
                 else {
                     return nil
                 }
