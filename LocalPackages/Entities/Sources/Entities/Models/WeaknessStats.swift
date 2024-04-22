@@ -36,6 +36,10 @@ public struct WeaknessStats: Equatable, Sendable {
         self.excludedItems = excludedItems
     }
 
+    public var hasWeakOrReusedPasswords: Bool {
+        (weakPasswords + reusedPasswords) > 0
+    }
+
     public static var `default`: WeaknessStats {
         WeaknessStats(weakPasswords: 0,
                       reusedPasswords: 0,
