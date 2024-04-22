@@ -23,7 +23,7 @@ import Foundation
 
 public struct Access: Decodable, Equatable, Sendable {
     public let plan: Plan
-    public let monitor: Monitor
+    public var monitor: Monitor
     public let pendingInvites: Int
     public let waitingNewUserInvites: Int
     public let minVersionUpgrade: String?
