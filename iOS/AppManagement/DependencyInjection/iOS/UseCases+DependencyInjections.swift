@@ -363,6 +363,12 @@ extension UseCasesContainer {
         self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
                                    authenticator: ServiceContainer.shared.authenticator()) }
     }
+
+    var refreshAccessAndMonitorState: Factory<RefreshAccessAndMonitorStateUseCase> {
+        self { RefreshAccessAndMonitorState(accessRepository: self.accessRepository,
+                                            passMonitorRepository: self.passMonitorRepository,
+                                            stream: SharedDataStreamContainer.shared.monitorStateStream()) }
+    }
 }
 
 // MARK: - Misc
