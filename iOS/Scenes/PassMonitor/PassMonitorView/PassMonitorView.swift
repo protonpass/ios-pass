@@ -160,9 +160,6 @@ struct PassMonitorView: View {
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
             .navigationStackEmbeded($router.path)
-            .task {
-                await viewModel.refresh()
-            }
     }
 }
 
@@ -386,7 +383,7 @@ private extension PassMonitorView {
 
 private extension PassMonitorView {
     func missing2FARow(_ missing2FA: Int) -> some View {
-        passMonitorRow(rowType: missing2FA > 0 ? .warning : .success,
+        passMonitorRow(rowType: .info,
                        title: "Missing two-factor authentication",
                        subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
                        info: "\(missing2FA)",

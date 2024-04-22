@@ -28,7 +28,6 @@ import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUtilities
 
-extension VaultSyncEventStream: @unchecked Sendable {}
 extension CorruptedSessionEventStream: @unchecked Sendable {}
 
 /// Contain all repositories
