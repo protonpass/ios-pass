@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Foundation
 import Macro
 
 extension ProtonAddress {
@@ -46,9 +47,24 @@ extension AliasMonitorInfo {
 
 extension [AliasMonitorInfo] {
     var topTenBreachedAliases: [AliasMonitorInfo] {
-        Array(self.filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
+        Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
             .sorted {
                 ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min)
             }.prefix(10))
+    }
+}
+
+private extension String {
+    var breachDate: String {
+        let isoFormatter = DateFormatter()
+        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        if let date = isoFormatter.date(from: self) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.locale = Locale.current
+            outputFormatter.dateFormat = "MMM d, yyyy"
+            return outputFormatter.string(from: date)
+        } else {
+            return ""
+        }
     }
 }

@@ -147,7 +147,7 @@ struct PassMonitorView: View {
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .animation(.default, value: viewModel.breaches)
-            .showSpinner(viewModel.loading || viewModel.updatingSentinel)
+            .showSpinner(viewModel.updatingSentinel)
             .sheet(isPresented: $viewModel.showSentinelSheet) {
                 SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
                                   sentinelActive: viewModel.isSentinelActive,

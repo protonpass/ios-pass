@@ -35,9 +35,9 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     @Published private(set) var suggestedEmail: [SuggestedEmail]?
     @Published private(set) var aliasInfos: [AliasMonitorInfo]?
 
+    private let darkWebSectionUpdateStream = resolve(\DataStreamContainer.darkWebSectionUpdateStream)
     private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
     private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
-    private let updatesForDarkWebHome = resolve(\UseCasesContainer.updatesForDarkWebHome)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
@@ -150,7 +150,7 @@ private extension DarkWebMonitorHomeViewModel {
             }
         }
 
-        updatesForDarkWebHome()
+        darkWebSectionUpdateStream
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] section in
@@ -161,13 +161,8 @@ private extension DarkWebMonitorHomeViewModel {
                 case .aliases:
                     return
                 case let .customEmails(updatedCustomEmails):
-                    guard updatedCustomEmails != customEmails else {
-                        return
-                    }
                     customEmails = updatedCustomEmails
                 case .protonAddresses:
-                    return
-                case .all:
                     return
                 }
             }.store(in: &cancellables)
@@ -176,26 +171,5 @@ private extension DarkWebMonitorHomeViewModel {
     func handle(error: Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-extension String {
-    var breachDate: String {
-        let isoFormatter = DateFormatter()
-//        isoFormatter.locale = Locale(identifier: "en_US_POSIX") // POSIX to ensure the format is interpreted
-//        correctly
-        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        // Parse the date string into a Date object
-        if let date = isoFormatter.date(from: self) {
-            // Create another DateFormatter to output the date in the desired format
-            let outputFormatter = DateFormatter()
-            outputFormatter.locale = Locale.current // Change to specific locale if needed
-            outputFormatter.dateFormat = "MMM d, yyyy"
-
-            // Format the Date object into the desired date string
-            return outputFormatter.string(from: date)
-        } else {
-            return ""
-        }
     }
 }

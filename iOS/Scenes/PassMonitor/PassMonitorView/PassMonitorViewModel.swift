@@ -54,7 +54,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var breaches: UserBreaches?
     @Published private(set) var isFreeUser = false
-    @Published private(set) var loading = false
     @Published var isSentinelActive = false
     @Published private(set) var updatingSentinel = false
     @Published var showSentinelSheet = false
@@ -168,11 +167,6 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
-    }
-
     func refreshUserStatus() {
         Task { [weak self] in
             guard let self else {
@@ -182,8 +176,13 @@ private extension PassMonitorViewModel {
                 isFreeUser = try await upgradeChecker.isFreeUser()
                 isSentinelActive = await getSentinelStatus()
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }

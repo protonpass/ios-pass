@@ -87,6 +87,10 @@ private extension UseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
+
+    var darkWebSectionUpdateStream: DarkWebSectionUpdateStream {
+        DataStreamContainer.shared.darkWebSectionUpdateStream()
+    }
 }
 
 // MARK: User report
@@ -367,7 +371,7 @@ extension UseCasesContainer {
     var refreshAccessAndMonitorState: Factory<RefreshAccessAndMonitorStateUseCase> {
         self { RefreshAccessAndMonitorState(accessRepository: self.accessRepository,
                                             passMonitorRepository: self.passMonitorRepository,
-                                            stream: SharedDataStreamContainer.shared.monitorStateStream()) }
+                                            stream: DataStreamContainer.shared.monitorStateStream()) }
     }
 }
 
@@ -430,13 +434,9 @@ extension UseCasesContainer {
                                        repository: self.passMonitorRepository) }
     }
 
-    var updatesForDarkWebHome: Factory<UpdatesForDarkWebHomeUseCase> {
-        self { UpdatesForDarkWebHome() }
-    }
-
     var addCustomEmailToMonitoring: Factory<AddCustomEmailToMonitoringUseCase> {
-        self { AddCustomEmailToMonitoring(passMonitorRepository: self.passMonitorRepository,
-                                          updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+        self { AddCustomEmailToMonitoring(repository: self.passMonitorRepository,
+                                          stream: self.darkWebSectionUpdateStream) }
     }
 
     var getAllCustomEmails: Factory<GetAllCustomEmailsUseCase> {
@@ -445,12 +445,12 @@ extension UseCasesContainer {
 
     var removeEmailFromBreachMonitoring: Factory<RemoveEmailFromBreachMonitoringUseCase> {
         self { RemoveEmailFromBreachMonitoring(repository: self.passMonitorRepository,
-                                               updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+                                               stream: self.darkWebSectionUpdateStream) }
     }
 
     var verifyCustomEmail: Factory<VerifyCustomEmailUseCase> {
         self { VerifyCustomEmail(repository: self.passMonitorRepository,
-                                 updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+                                 stream: self.darkWebSectionUpdateStream) }
     }
 }
 
