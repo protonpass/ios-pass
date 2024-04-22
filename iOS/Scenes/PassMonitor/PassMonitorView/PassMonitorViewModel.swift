@@ -59,9 +59,11 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var updatingSentinel = false
     @Published var showSentinelSheet = false
 
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
@@ -84,9 +86,11 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     }
 
     func refresh() async {
-        async let fetchBreaches: () = refreshRemoteMonitoredData()
-        async let refresh: () = refreshLocalMonitoredData()
-        _ = await (fetchBreaches, refresh)
+        do {
+            breaches = try await refreshAccessAndMonitorState()
+        } catch {
+            handle(error: error)
+        }
     }
 
     func sentinelSheetAction() {
@@ -164,21 +168,9 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
     }
 
-    func refreshLocalMonitoredData() async {
-        do {
-            try await passMonitorRepository.refreshSecurityChecks()
-        } catch {
-            router.display(element: .displayErrorBanner(error))
-        }
-    }
-
-    func refreshRemoteMonitoredData() async {
-        do {
-            numberOfBreachedAliases = try await getAllAliases().filter(\.item.isBreached).count
-            breaches = try await passMonitorRepository.getAllBreachesForUser()
-        } catch {
-            router.display(element: .displayErrorBanner(error))
-        }
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 
     func refreshUserStatus() {
