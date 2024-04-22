@@ -40,6 +40,10 @@ final class CheckAccessResponseTests: XCTestCase {
          "AliasLimit":10,
          "TotpLimit":3
       },
+      "Monitor":{
+         "ProtonAddress": true,
+         "Aliases": false
+      },
       "PendingInvites":3,
       "WaitingNewUserInvites":0
    }
@@ -54,6 +58,7 @@ final class CheckAccessResponseTests: XCTestCase {
                                                        vaultLimit: 1,
                                                        aliasLimit: 10,
                                                        totpLimit: 3),
+                                           monitor: .init(protonAddress: true, aliases: false),
                                            pendingInvites: 3,
                                            waitingNewUserInvites: 0,
                                            minVersionUpgrade: nil))

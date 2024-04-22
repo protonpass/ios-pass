@@ -95,4 +95,24 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         closureRefreshAccess()
         return stubbedRefreshAccessResult
     }
+    // MARK: - updatePassMonitorState
+    public var updatePassMonitorStateThrowableError4: Error?
+    public var closureUpdatePassMonitorState: () -> () = {}
+    public var invokedUpdatePassMonitorStatefunction = false
+    public var invokedUpdatePassMonitorStateCount = 0
+    public var invokedUpdatePassMonitorStateParameters: (request: UpdateMonitorStateRequest, Void)?
+    public var invokedUpdatePassMonitorStateParametersList = [(request: UpdateMonitorStateRequest, Void)]()
+    public var stubbedUpdatePassMonitorStateResult: Access!
+
+    public func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access {
+        invokedUpdatePassMonitorStatefunction = true
+        invokedUpdatePassMonitorStateCount += 1
+        invokedUpdatePassMonitorStateParameters = (request, ())
+        invokedUpdatePassMonitorStateParametersList.append((request, ()))
+        if let error = updatePassMonitorStateThrowableError4 {
+            throw error
+        }
+        closureUpdatePassMonitorState()
+        return stubbedUpdatePassMonitorStateResult
+    }
 }
