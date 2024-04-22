@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import Entities
 
 public protocol LocalAccessDatasourceProtocol: Sendable {
@@ -38,6 +39,9 @@ public extension LocalAccessDatasource {
     }
 
     func upsert(access: Access, userId: String) async throws {
+        // Work-around core data bug that doesn't update boolean values
+        try await deleteAccess(for: userId)
+
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
@@ -46,5 +50,15 @@ public extension LocalAccessDatasource {
                 (managedObject as? AccessEntity)?.hydrate(from: access, userId: userId)
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+    }
+}
+
+private extension LocalAccessDatasource {
+    func deleteAccess(for userId: String) async throws {
+        let deleteContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "AccessEntity")
+        fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: deleteContext)
     }
 }
