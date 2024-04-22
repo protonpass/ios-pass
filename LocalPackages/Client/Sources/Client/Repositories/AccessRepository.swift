@@ -18,6 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable:next todo
+// TODO: remove later on
+// periphery:ignore:all
 @preconcurrency import Combine
 import Core
 import Entities
@@ -34,6 +37,9 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
 
     @discardableResult
     func refreshAccess() async throws -> Access
+
+    @discardableResult
+    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access
 }
 
 public actor AccessRepository: AccessRepositoryProtocol {
@@ -91,5 +97,19 @@ public extension AccessRepository {
 
         logger.info("Refreshed access for user \(userId)")
         return remoteAccess
+    }
+
+    @discardableResult
+    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access {
+        let userId = try userDataProvider.getUserId()
+        logger.trace("Updating monitor state for user \(userId)")
+        var access = try await getAccess()
+        let updatedMonitor = try await remoteDatasource.updatePassMonitorState(request)
+        access.monitor = updatedMonitor
+
+        logger.trace("Upserting access for user \(userId)")
+        try await localDatasource.upsert(access: access, userId: userId)
+        logger.trace("Upserted monitor state for user \(userId)")
+        return access
     }
 }

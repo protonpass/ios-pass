@@ -87,6 +87,7 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
     func getAccess() async throws -> Access { access }
     func getPlan() async throws -> Plan { access.plan }
     func refreshAccess() async throws -> Access { access }
+    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access { access }
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {
