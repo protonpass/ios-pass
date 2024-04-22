@@ -187,7 +187,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private var profileTabViewController: UIViewController?
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let monitorStateStream = resolve(\SharedDataStreamContainer.monitorStateStream)
+    private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)

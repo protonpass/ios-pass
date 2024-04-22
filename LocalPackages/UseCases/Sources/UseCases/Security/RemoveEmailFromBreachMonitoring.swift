@@ -35,17 +35,17 @@ public extension RemoveEmailFromBreachMonitoringUseCase {
 
 public final class RemoveEmailFromBreachMonitoring: RemoveEmailFromBreachMonitoringUseCase {
     private let repository: any PassMonitorRepositoryProtocol
-    private let updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase
+    private let stream: DarkWebSectionUpdateStream
 
     public init(repository: any PassMonitorRepositoryProtocol,
-                updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase) {
+                stream: DarkWebSectionUpdateStream) {
         self.repository = repository
-        self.updatesForDarkWebHomeUseCase = updatesForDarkWebHomeUseCase
+        self.stream = stream
     }
 
     public func execute(email: CustomEmail) async throws {
         try await repository.removeEmailFromBreachMonitoring(email: email)
         let emails = try await repository.getAllCustomEmailForUser()
-        updatesForDarkWebHomeUseCase(updateSection: .customEmails(emails))
+        stream.send(.customEmails(emails))
     }
 }
