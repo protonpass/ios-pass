@@ -66,6 +66,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getAllAliases = resolve(\SharedUseCasesContainer.getAllAliases)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
 
     private var cancellables = Set<AnyCancellable>()
     private var numberOfBreachedAliases = 0
@@ -140,18 +141,7 @@ extension PassMonitorViewModel {
 
 private extension PassMonitorViewModel {
     func setUp() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
-                isSentinelActive = await getSentinelStatus()
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-
+        refreshUserStatus()
         passMonitorRepository.weaknessStats
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
@@ -162,6 +152,15 @@ private extension PassMonitorViewModel {
                 if newWeaknessStats != weaknessStats {
                     weaknessStats = newWeaknessStats
                 }
+            }.store(in: &cancellables)
+
+        accessRepository.didUpdateToNewPlan
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
+                refreshUserStatus()
             }.store(in: &cancellables)
     }
 
@@ -179,6 +178,20 @@ private extension PassMonitorViewModel {
             breaches = try await passMonitorRepository.getAllBreachesForUser()
         } catch {
             router.display(element: .displayErrorBanner(error))
+        }
+    }
+
+    func refreshUserStatus() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+                isSentinelActive = await getSentinelStatus()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
         }
     }
 }
