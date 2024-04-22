@@ -24,6 +24,7 @@
 
 import Entities
 
+// sourcery: AutoMockable
 public protocol RemoteBreachDataSourceProtocol: Sendable {
     func getAllBreachesForUser() async throws -> UserBreaches
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
@@ -32,6 +33,7 @@ public protocol RemoteBreachDataSourceProtocol: Sendable {
     func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches
     func removeEmailFromBreachMonitoring(emailId: String) async throws
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
+    func resendEmailVerification(emailId: String) async throws
 }
 
 public final class RemoteBreachDataSource: RemoteDatasource, RemoteBreachDataSourceProtocol {}
@@ -77,5 +79,10 @@ public extension RemoteBreachDataSource {
         let endpoint = GetBreachesForAliasEndpoint(shareId: sharedId, itemId: itemId)
         let response = try await exec(endpoint: endpoint)
         return response.breaches
+    }
+
+    func resendEmailVerification(emailId: String) async throws {
+        let endpoint = ResendEmailVerificationEndpoint(emailId: emailId)
+        _ = try await exec(endpoint: endpoint)
     }
 }

@@ -22,6 +22,7 @@
 
 import DesignSystem
 import Entities
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -31,7 +32,9 @@ enum SecureRowType {
 
     var icon: String? {
         switch self {
-        case .danger, .warning:
+        case .danger:
+            "exclamationmark.circle.fill"
+        case .warning:
             "exclamationmark.square.fill"
         case .success:
             "checkmark.square.fill"
@@ -89,9 +92,7 @@ enum SecureRowType {
             PassColor.passwordInteractionNormMajor2
         case .warning:
             PassColor.noteInteractionNormMajor2
-        case .success:
-            PassColor.cardInteractionNormMajor2
-        case .info, .upsell:
+        case .info, .success, .upsell:
             PassColor.textNorm
         }
     }
@@ -110,13 +111,20 @@ enum SecureRowType {
     }
 
     var titleColor: UIColor {
-        PassColor.textNorm
+        switch self {
+        case .danger:
+            PassColor.passwordInteractionNormMajor2
+        default:
+            PassColor.textNorm
+        }
     }
 
     var subtitleColor: UIColor {
         switch self {
         case .success:
             PassColor.cardInteractionNormMajor2
+        case .danger:
+            PassColor.passwordInteractionNormMajor2
         default:
             PassColor.textWeak
         }
@@ -125,6 +133,7 @@ enum SecureRowType {
 
 struct PassMonitorView: View {
     @StateObject var viewModel: PassMonitorViewModel
+    @InjectedObject(\RouterContainer.darkWebRouter) private var router
 
     private enum ElementSizes {
         static let cellHeight: CGFloat = 75
@@ -148,7 +157,9 @@ struct PassMonitorView: View {
                                   }, secondaryAction: { viewModel.showSentinelInformation() })
                     .presentationDetents([.height(570)])
             }
-            .navigationStackEmbeded()
+            .routingProvided
+            .sheetDestinations(sheetDestination: $router.presentedSheet)
+            .navigationStackEmbeded($router.path)
             .task {
                 await viewModel.refresh()
             }
@@ -204,7 +215,7 @@ private extension PassMonitorView {
         if viewModel.isFreeUser {
             upsellRow(breaches: breaches)
         } else {
-            breachedRow(breaches.emailsCount)
+            breachedRow(breaches)
         }
     }
 
@@ -338,12 +349,15 @@ private extension PassMonitorView {
                 .interactionNormMinor1)
     }
 
-    func breachedRow(_ breaches: Int) -> some View {
-        passMonitorRow(rowType: breaches > 0 ? .warning : .success,
+    func breachedRow(_ breaches: UserBreaches) -> some View {
+        passMonitorRow(rowType: breaches.emailsCount > 0 ? .danger : .success,
                        title: "Dark Web Monitoring",
-                       subTitle: breaches > 0 ? "Requires immediate action" : "No breaches detected",
-                       info: "\(breaches)",
-                       action: { viewModel.showSecurityWeakness(type: .breaches) })
+                       subTitle: viewModel
+                           .numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches) breaches detected" :
+                           "No breaches detected",
+                       info: viewModel.numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches)" : nil,
+                       action: { router.navigate(to: .darkWebMonitorHome(.breaches(breaches)))
+                       })
     }
 }
 
@@ -441,13 +455,14 @@ private extension PassMonitorView {
                         .foregroundColor(rowType.infoForeground.toColor)
                         .background(rowType.infoBackground.toColor)
                         .clipShape(Capsule())
-                    if actionable {
-                        Image(uiImage: IconProvider.chevronRight)
-                            .resizable()
-                            .foregroundColor(rowType.infoForeground.toColor)
-                            .scaledToFit()
-                            .frame(height: 12)
-                    }
+                }
+
+                if actionable {
+                    Image(uiImage: IconProvider.chevronRight)
+                        .resizable()
+                        .foregroundColor(rowType.infoForeground.toColor)
+                        .scaledToFit()
+                        .frame(height: 12)
                 }
 
                 if let badge {

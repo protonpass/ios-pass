@@ -1,5 +1,5 @@
 //
-// BreachedAddress.swift
+// CustomEmail.swift
 // Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,13 +20,32 @@
 
 import Foundation
 
-public struct BreachedAddress: Decodable, Equatable, Sendable {
-    public let addressID, email: String
+public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiable {
+    public let customEmailID, email: String
+    public let verified: Bool
     public let breachCounter: Int
+    public let flags: Int
+    public let lastBreachedTime: Int?
 
-    public init(addressID: String, email: String, breachCounter: Int) {
-        self.addressID = addressID
+    public init(customEmailID: String,
+                email: String,
+                verified: Bool,
+                breachCounter: Int,
+                flags: Int,
+                lastBreachedTime: Int?) {
+        self.customEmailID = customEmailID
         self.email = email
+        self.verified = verified
         self.breachCounter = breachCounter
+        self.flags = flags
+        self.lastBreachedTime = lastBreachedTime
+    }
+
+    public var id: String {
+        customEmailID
+    }
+
+    public var isBreached: Bool {
+        breachCounter > 0
     }
 }

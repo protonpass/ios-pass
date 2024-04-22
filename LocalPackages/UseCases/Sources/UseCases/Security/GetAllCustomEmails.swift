@@ -1,6 +1,6 @@
 //
-// CustomEmail.swift
-// Proton Pass - Created on 10/04/2024.
+// GetAllCustomEmails.swift
+// Proton Pass - Created on 19/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,17 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Client
+import Entities
 
-public struct CustomEmail: Decodable, Equatable, Sendable {
-    public let customEmailID, email: String
-    public let verified: Bool
-    public let breachCounter: Int
+public protocol GetAllCustomEmailsUseCase: Sendable {
+    func execute() async throws -> [CustomEmail]
+}
 
-    public init(customEmailID: String, email: String, verified: Bool, breachCounter: Int) {
-        self.customEmailID = customEmailID
-        self.email = email
-        self.verified = verified
-        self.breachCounter = breachCounter
+public extension GetAllCustomEmailsUseCase {
+    func callAsFunction() async throws -> [CustomEmail] {
+        try await execute()
+    }
+}
+
+public final class GetAllCustomEmails: GetAllCustomEmailsUseCase {
+    private let repository: any PassMonitorRepositoryProtocol
+
+    public init(repository: any PassMonitorRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    public func execute() async throws -> [CustomEmail] {
+        try await repository.getAllCustomEmailForUser()
     }
 }

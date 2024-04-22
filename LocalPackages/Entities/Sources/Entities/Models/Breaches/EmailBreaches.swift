@@ -22,11 +22,16 @@ import Foundation
 
 public struct EmailBreaches: Decodable, Equatable, Sendable {
     public let isEligible: Bool
+    public let count: Int
     public let breaches: [Breach]
     public let samples: [BreachSample]
 
-    public init(isEligible: Bool, breaches: [Breach], samples: [BreachSample]) {
+    public init(isEligible: Bool,
+                count: Int,
+                breaches: [Breach],
+                samples: [BreachSample]) {
         self.isEligible = isEligible
+        self.count = count
         self.breaches = breaches
         self.samples = samples
     }

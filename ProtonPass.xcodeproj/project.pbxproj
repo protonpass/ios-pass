@@ -465,6 +465,9 @@
 		5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */; };
+		5B4E53D52BD651F600E8D54A /* BreachEntities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */; };
+		5B4E53D82BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */; };
+		5B4E53DA2BD6A02500E8D54A /* DateFromatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D92BD6A02500E8D54A /* DateFromatter+Extensions.swift */; };
 		5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
 		5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */; };
@@ -501,6 +504,10 @@
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
 		5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
+		5BAE710B2BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */; };
+		5BAE710C2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */; };
+		5BAE71102BD1128400F579E4 /* AddCustomEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710E2BD1128400F579E4 /* AddCustomEmailView.swift */; };
+		5BAE71112BD1128400F579E4 /* AddCustomEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710F2BD1128400F579E4 /* AddCustomEmailViewModel.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -917,6 +924,9 @@
 		5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemUiModel+Extensions.swift"; sourceTree = "<group>"; };
 		5B3E2FFF2AAF01A30002289A /* TestPlans */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestPlans; sourceTree = "<group>"; };
 		5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LABiometryType+Extensions.swift"; sourceTree = "<group>"; };
+		5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BreachEntities+Extensions.swift"; sourceTree = "<group>"; };
+		5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachEntitiesExtensionsTests.swift; sourceTree = "<group>"; };
+		5B4E53D92BD6A02500E8D54A /* DateFromatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFromatter+Extensions.swift"; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UseCases+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -946,6 +956,10 @@
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
 		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
 		5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellingViewConfiguration+Extensions.swift"; sourceTree = "<group>"; };
+		5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkWebMonitorHomeView.swift; sourceTree = "<group>"; };
+		5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkWebMonitorHomeViewModel.swift; sourceTree = "<group>"; };
+		5BAE710E2BD1128400F579E4 /* AddCustomEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomEmailView.swift; sourceTree = "<group>"; };
+		5BAE710F2BD1128400F579E4 /* AddCustomEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomEmailViewModel.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
@@ -1182,6 +1196,7 @@
 		354A803D28D8B8D8003F49CF /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				5B4E53D62BD65E3300E8D54A /* Extensions */,
 				5B503FF32A4DD5A300E6681C /* Domain */,
 				6699002C29A77182001033B6 /* Mocks */,
 				35F3EF272AF673E000A67459 /* AppDataTests.swift */,
@@ -1810,6 +1825,8 @@
 				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 				3590A3382A9F9C2600622F45 /* View+Extensions.swift */,
 				5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */,
+				5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */,
+				5B4E53D92BD6A02500E8D54A /* DateFromatter+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1861,6 +1878,14 @@
 				5B1092DA2B56EA93002621A4 /* DetailHistoryView+Alias.swift */,
 			);
 			path = DetailHistoryView;
+			sourceTree = "<group>";
+		};
+		5B4E53D62BD65E3300E8D54A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		5B503FE02A4D6D0700E6681C /* Data */ = {
@@ -1990,6 +2015,24 @@
 				35704EBE2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift */,
 			);
 			path = ShareOrCreateNewVaultView;
+			sourceTree = "<group>";
+		};
+		5BAE71082BCEDAC900F579E4 /* DarkWebMonitorHomeView */ = {
+			isa = PBXGroup;
+			children = (
+				5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */,
+				5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */,
+			);
+			path = DarkWebMonitorHomeView;
+			sourceTree = "<group>";
+		};
+		5BAE710D2BD1126300F579E4 /* AddCustomEmailView */ = {
+			isa = PBXGroup;
+			children = (
+				5BAE710E2BD1128400F579E4 /* AddCustomEmailView.swift */,
+				5BAE710F2BD1128400F579E4 /* AddCustomEmailViewModel.swift */,
+			);
+			path = AddCustomEmailView;
 			sourceTree = "<group>";
 		};
 		5BB2B6E62A444B73005E831C /* App */ = {
@@ -2137,6 +2180,8 @@
 		5BECDE452B90EC230040FCA7 /* PassMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				5BAE710D2BD1126300F579E4 /* AddCustomEmailView */,
+				5BAE71082BCEDAC900F579E4 /* DarkWebMonitorHomeView */,
 				5BD870D52BB46C5200A9F1A8 /* PasswordReusedView */,
 				5BECDE4B2B9778610040FCA7 /* SecurityWeaknessDetailView */,
 				5BECDE462B90EC640040FCA7 /* PassMonitorView */,
@@ -2887,6 +2932,7 @@
 				6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */,
 				35F3EF282AF673E000A67459 /* AppDataTests.swift in Sources */,
 				6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */,
+				5B4E53D82BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift in Sources */,
 				5B503FF52A4E018500E6681C /* LogingManagerMock.swift in Sources */,
 				5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */,
 				5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */,
@@ -2989,6 +3035,7 @@
 			files = (
 				35AC9A5C2A0BDAA300FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				5B1453992A6938660048B022 /* UserPermissionView.swift in Sources */,
+				5BAE710C2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift in Sources */,
 				356BC35029D6C57100F03497 /* SettingsView.swift in Sources */,
 				35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */,
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
@@ -3040,6 +3087,7 @@
 				5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */,
 				35363D462B14F24B00846179 /* CredentialsMigrationStateProvider.swift in Sources */,
 				5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */,
+				5B4E53DA2BD6A02500E8D54A /* DateFromatter+Extensions.swift in Sources */,
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Extensions.swift in Sources */,
 				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,
@@ -3081,6 +3129,8 @@
 				35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */,
 				356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */,
 				35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */,
+				5B4E53D52BD651F600E8D54A /* BreachEntities+Extensions.swift in Sources */,
+				5BAE710B2BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift in Sources */,
 				5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
 				66CA928129F971CF00F2FC59 /* PaymentsConstants.swift in Sources */,
@@ -3119,6 +3169,7 @@
 				359DB2A92A70435800549466 /* Service+DependencyInjections.swift in Sources */,
 				35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				3546327B2A9CEFBC00321691 /* AutoFillInstructionsView.swift in Sources */,
+				5BAE71102BD1128400F579E4 /* AddCustomEmailView.swift in Sources */,
 				3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
@@ -3187,6 +3238,7 @@
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				357ABEB02B188A08003D05C8 /* ItemsTabTopBar.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
+				5BAE71112BD1128400F579E4 /* AddCustomEmailViewModel.swift in Sources */,
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,

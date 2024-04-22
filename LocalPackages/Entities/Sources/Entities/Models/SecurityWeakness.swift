@@ -20,10 +20,10 @@
 
 import Foundation
 
-public enum SecurityWeakness: Equatable, Sendable {
+public enum SecurityWeakness: Equatable, Sendable, Hashable {
     case weakPasswords
     case reusedPasswords
-    case breaches
+    case breaches(UserBreaches)
     case missing2FA
     case excludedItems
 }

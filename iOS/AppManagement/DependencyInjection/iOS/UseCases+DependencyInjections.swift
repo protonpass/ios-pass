@@ -418,6 +418,34 @@ extension UseCasesContainer {
             ToggleItemMonitoring(itemRepository: self.itemRepository)
         }
     }
+
+    var getAllAliasMonitorInfos: Factory<GetAllAliasMonitorInfoUseCase> {
+        self { GetAllAliasMonitorInfos(getAllAliasesUseCase: SharedUseCasesContainer.shared.getAllAliases(),
+                                       repository: self.passMonitorRepository) }
+    }
+
+    var updatesForDarkWebHome: Factory<UpdatesForDarkWebHomeUseCase> {
+        self { UpdatesForDarkWebHome() }
+    }
+
+    var addCustomEmailToMonitoring: Factory<AddCustomEmailToMonitoringUseCase> {
+        self { AddCustomEmailToMonitoring(passMonitorRepository: self.passMonitorRepository,
+                                          updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+    }
+
+    var getAllCustomEmails: Factory<GetAllCustomEmailsUseCase> {
+        self { GetAllCustomEmails(repository: self.passMonitorRepository) }
+    }
+
+    var removeEmailFromBreachMonitoring: Factory<RemoveEmailFromBreachMonitoringUseCase> {
+        self { RemoveEmailFromBreachMonitoring(repository: self.passMonitorRepository,
+                                               updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+    }
+
+    var verifyCustomEmail: Factory<VerifyCustomEmailUseCase> {
+        self { VerifyCustomEmail(repository: self.passMonitorRepository,
+                                 updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+    }
 }
 
 // MARK: - Organization
