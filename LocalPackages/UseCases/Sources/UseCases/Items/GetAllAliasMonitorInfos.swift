@@ -35,10 +35,10 @@ public extension GetAllAliasMonitorInfoUseCase {
 
 public final class GetAllAliasMonitorInfos: GetAllAliasMonitorInfoUseCase {
     private let getAllAliasesUseCase: any GetAllAliasesUseCase
-    private let repository: any BreachRepositoryProtocol
+    private let repository: any PassMonitorRepositoryProtocol
 
     public init(getAllAliasesUseCase: any GetAllAliasesUseCase,
-                repository: any BreachRepositoryProtocol) {
+                repository: any PassMonitorRepositoryProtocol) {
         self.getAllAliasesUseCase = getAllAliasesUseCase
         self.repository = repository
     }

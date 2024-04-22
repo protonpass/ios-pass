@@ -191,6 +191,11 @@ private extension SharedRepositoryContainer {
         self { RemoteOrganizationDatasource(apiService: self.apiService,
                                             eventStream: self.corruptedSessionEventStream) }
     }
+
+    var remoteBreachDataSource: Factory<RemoteBreachDataSourceProtocol> {
+        self { RemoteBreachDataSource(apiService: self.apiService,
+                                      eventStream: self.corruptedSessionEventStream) }
+    }
 }
 
 // MARK: Public datasources
@@ -358,6 +363,7 @@ extension SharedRepositoryContainer {
     var passMonitorRepository: Factory<PassMonitorRepositoryProtocol> {
         self {
             PassMonitorRepository(itemRepository: self.itemRepository(),
+                                  remoteDataSource: self.remoteBreachDataSource(),
                                   symmetricKeyProvider: self.symmetricKeyProvider)
         }
     }
