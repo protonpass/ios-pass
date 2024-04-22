@@ -62,7 +62,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
         return aliasInfos.topTenBreachedAliases
     }
 
-    var numberOFBreachedAlias: Int {
+    var numberOfBreachedAlias: Int {
         aliasInfos?.filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }.count ?? 0
     }
 
@@ -71,7 +71,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     }
 
     var noAliasBreaches: Bool {
-        numberOFBreachedAlias == 0
+        numberOfBreachedAlias == 0
     }
 
     init(userBreaches: UserBreaches) {
@@ -84,7 +84,6 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
         let format = "MMM dd yyyy, HH:mm"
         let now = Date()
         let dateFormatter = DateFormatter(format: format)
-        dateFormatter.setLocalizedDateFormatFromTemplate(format)
 
         return dateFormatter.string(from: now)
     }
