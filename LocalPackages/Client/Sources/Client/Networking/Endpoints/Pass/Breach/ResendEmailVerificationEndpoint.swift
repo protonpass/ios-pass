@@ -31,7 +31,7 @@ struct ResendEmailVerificationEndpoint: Endpoint {
 
     init(emailId: String) {
         debugDescription = "Remove an email for breach monitoring"
-        path = "pass/v1/breach/custom_email/\(emailId)/resend_verification"
+        path = "/pass/v1/breach/custom_email/\(emailId)/resend_verification"
         method = .post
     }
 }

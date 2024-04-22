@@ -352,9 +352,10 @@ private extension PassMonitorView {
     func breachedRow(_ breaches: UserBreaches) -> some View {
         passMonitorRow(rowType: breaches.emailsCount > 0 ? .danger : .success,
                        title: "Dark Web Monitoring",
-                       subTitle: breaches
-                           .emailsCount > 0 ? "\(breaches.emailsCount) breaches detected" : "No breaches detected",
-                       info: breaches.emailsCount > 0 ? "\(breaches.emailsCount)" : nil,
+                       subTitle: viewModel
+                           .numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches) breaches detected" :
+                           "No breaches detected",
+                       info: viewModel.numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches)" : nil,
                        action: { router.navigate(to: .darkWebMonitorHome(.breaches(breaches)))
                        })
     }

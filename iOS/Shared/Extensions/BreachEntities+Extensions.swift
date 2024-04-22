@@ -32,6 +32,10 @@ extension UserBreaches {
         Array(addresses.filter { $0.isMonitored && $0.isBreached }
             .sorted { $0.breachCounter > $1.breachCounter }.prefix(10))
     }
+
+    var numberOfBreachedProtonAddresses: Int {
+        addresses.filter { $0.isMonitored && $0.isBreached }.count
+    }
 }
 
 extension AliasMonitorInfo {

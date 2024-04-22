@@ -23,7 +23,7 @@
 @preconcurrency import Combine
 import Entities
 
-public enum DarkWeSectionToUpdate: Equatable {
+public enum DarkWebSectionToUpdate: Equatable {
     case customEmails([CustomEmail])
     case protonAddresses
     case aliases
@@ -31,30 +31,30 @@ public enum DarkWeSectionToUpdate: Equatable {
 }
 
 public protocol UpdatesForDarkWebHomeUseCase: Sendable {
-    func execute() -> PassthroughSubject<DarkWeSectionToUpdate, Never>
-    func execute(updateSection: DarkWeSectionToUpdate)
+    func execute() -> PassthroughSubject<DarkWebSectionToUpdate, Never>
+    func execute(updateSection: DarkWebSectionToUpdate)
 }
 
 public extension UpdatesForDarkWebHomeUseCase {
-    func callAsFunction() -> PassthroughSubject<DarkWeSectionToUpdate, Never> {
+    func callAsFunction() -> PassthroughSubject<DarkWebSectionToUpdate, Never> {
         execute()
     }
 
-    func callAsFunction(updateSection: DarkWeSectionToUpdate) {
+    func callAsFunction(updateSection: DarkWebSectionToUpdate) {
         execute(updateSection: updateSection)
     }
 }
 
 public final class UpdatesForDarkWebHome: UpdatesForDarkWebHomeUseCase {
-    private let updateForDarkWebHome: PassthroughSubject<DarkWeSectionToUpdate, Never> = .init()
+    private let updateForDarkWebHome: PassthroughSubject<DarkWebSectionToUpdate, Never> = .init()
 
     public init() {}
 
-    public func execute() -> PassthroughSubject<DarkWeSectionToUpdate, Never> {
+    public func execute() -> PassthroughSubject<DarkWebSectionToUpdate, Never> {
         updateForDarkWebHome
     }
 
-    public func execute(updateSection: DarkWeSectionToUpdate) {
+    public func execute(updateSection: DarkWebSectionToUpdate) {
         updateForDarkWebHome.send(updateSection)
     }
 }

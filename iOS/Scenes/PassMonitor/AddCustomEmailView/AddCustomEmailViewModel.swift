@@ -28,11 +28,10 @@ import Foundation
 final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published var code = ""
-    @Published var isMonitored = false
-    @Published var loading = false
-    @Published var finishedVerification = false
-    @Published var canResendCode = true
-    @Published var timeRemaining: Int
+    @Published private(set) var isMonitored = false
+    @Published private(set) var finishedVerification = false
+    @Published private(set) var canResendCode = true
+    @Published private(set) var timeRemaining: Int
 
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
@@ -45,12 +44,11 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     let totalTime: Int
 
     var canContinue: Bool {
-        if isMonitored, !code.isEmpty {
-            return true
-        } else if !isMonitored, !email.isEmpty, email.isValidEmail() {
-            return true
+        if isMonitored {
+            !code.isEmpty
+        } else {
+            !email.isEmpty && email.isValidEmail()
         }
-        return false
     }
 
     init(email: CustomEmail?,
@@ -79,13 +77,14 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
         guard let currentCustomEmail else {
             return
         }
+        resetTimer()
         Task { [weak self] in
             guard let self else {
                 return
             }
-            defer { loading = false }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                loading = true
+                router.display(element: .globalLoading(shouldShow: true))
                 try await passMonitorRepository.resendEmailVerification(emailId: currentCustomEmail.customEmailID)
                 startTimer()
             } catch {
@@ -102,10 +101,10 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
-            defer { loading = false }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                loading = true
-                try await verifyCustomEmail(emailId: currentCustomEmail.customEmailID,
+                router.display(element: .globalLoading(shouldShow: true))
+                try await verifyCustomEmail(email: currentCustomEmail,
                                             code: code)
                 finishedVerification = true
             } catch {
@@ -122,9 +121,9 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
-            defer { loading = false }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                loading = true
+                router.display(element: .globalLoading(shouldShow: true))
                 currentCustomEmail = try await addCustomEmailToMonitoring(email: email)
                 isMonitored = true
             } catch {

@@ -47,8 +47,8 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func getAllBreachesForUser() async throws -> UserBreaches
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
-    func verifyCustomEmail(emailId: String, code: String) async throws
-    func removeEmailFromBreachMonitoring(emailId: String) async throws
+    func verifyCustomEmail(email: CustomEmail, code: String) async throws
+    func removeEmailFromBreachMonitoring(email: CustomEmail) async throws
     func resendEmailVerification(emailId: String) async throws
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
 
@@ -117,8 +117,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         for item in loginItems {
             var weaknesses = [SecurityWeakness]()
 
-            if item.encrypted.item
-                .skipHealthCheck {
+            if item.encrypted.item.skipHealthCheck {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
@@ -192,12 +191,12 @@ public extension PassMonitorRepository {
         return email
     }
 
-    func verifyCustomEmail(emailId: String, code: String) async throws {
-        try await remoteDataSource.verifyCustomEmail(emailId: emailId, code: code)
+    func verifyCustomEmail(email: CustomEmail, code: String) async throws {
+        try await remoteDataSource.verifyCustomEmail(emailId: email.customEmailID, code: code)
     }
 
-    func removeEmailFromBreachMonitoring(emailId: String) async throws {
-        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: emailId)
+    func removeEmailFromBreachMonitoring(email: CustomEmail) async throws {
+        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: email.customEmailID)
     }
 
     func resendEmailVerification(emailId: String) async throws {

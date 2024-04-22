@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol VerifyCustomEmailUseCase: Sendable {
-    func execute(emailId: String, code: String) async throws
+    func execute(email: CustomEmail, code: String) async throws
 }
 
 public extension VerifyCustomEmailUseCase {
-    func callAsFunction(emailId: String, code: String) async throws {
-        try await execute(emailId: emailId, code: code)
+    func callAsFunction(email: CustomEmail, code: String) async throws {
+        try await execute(email: email, code: code)
     }
 }
 
@@ -43,8 +43,8 @@ public final class VerifyCustomEmail: VerifyCustomEmailUseCase {
         self.updatesForDarkWebHomeUseCase = updatesForDarkWebHomeUseCase
     }
 
-    public func execute(emailId: String, code: String) async throws {
-        try await repository.verifyCustomEmail(emailId: emailId,
+    public func execute(email: CustomEmail, code: String) async throws {
+        try await repository.verifyCustomEmail(email: email,
                                                code: code)
         let emails = try await repository.getAllCustomEmailForUser()
         updatesForDarkWebHomeUseCase(updateSection: .customEmails(emails))

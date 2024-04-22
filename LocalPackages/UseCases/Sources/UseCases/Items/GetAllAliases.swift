@@ -41,6 +41,7 @@ public final class GetAllAliases: GetAllAliasesUseCase {
     }
 
     public func execute() async throws -> [ItemContent] {
-        try await itemRepository.getAllItemContents().filter { $0.contentData == .alias }
+        try await itemRepository.getAllItemContents()
+            .filter { $0.contentData == .alias && $0.item.itemState == .active }
     }
 }
