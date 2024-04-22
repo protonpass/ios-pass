@@ -8166,6 +8166,16 @@
         }
       }
     },
+    "Add custom email address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add custom email address"
+          }
+        }
+      }
+    },
     "Add login details for an app or site" : {
       "localizations" : {
         "be" : {
@@ -27277,6 +27287,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dark Web izleme özelliği ücretli bir tarife ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
+          }
+        }
+      }
+    },
+    "Data Security" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Security"
           }
         }
       }
@@ -59146,6 +59166,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton addresses"
+          }
+        }
+      }
+    },
+    "Proton never shares your information with third parties. All data comes from searches for the appearance of Proton domains on the dark web." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton never shares your information with third parties. All data comes from searches for the appearance of Proton domains on the dark web."
           }
         }
       }

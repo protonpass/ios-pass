@@ -97,11 +97,10 @@ private extension AddCustomEmailView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1,
-                         accessibilityLabel: "Close") {
-                dismiss()
-            }
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Close",
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
