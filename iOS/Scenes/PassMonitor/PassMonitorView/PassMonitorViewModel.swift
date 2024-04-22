@@ -63,7 +63,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let breachRepository = resolve(\RepositoryContainer.breachRepository)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
@@ -171,7 +170,7 @@ private extension PassMonitorViewModel {
 
     func refreshRemoteMonitoredData() async {
         do {
-            breaches = try await breachRepository.getAllBreachesForUser()
+            breaches = try await passMonitorRepository.getAllBreachesForUser()
         } catch {
             router.display(element: .displayErrorBanner(error))
         }

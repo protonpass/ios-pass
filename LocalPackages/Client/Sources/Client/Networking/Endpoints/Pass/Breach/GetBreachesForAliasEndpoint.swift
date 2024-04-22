@@ -31,7 +31,7 @@ struct GetBreachesForAliasEndpoint: Endpoint {
 
     init(shareId: String, itemId: String) {
         debugDescription = "Get breaches for an alias"
-        path = "pass/v1/share/\(shareId)/alias/\(itemId)/breaches"
+        path = "/pass/v1/share/\(shareId)/alias/\(itemId)/breaches"
         method = .get
     }
 }

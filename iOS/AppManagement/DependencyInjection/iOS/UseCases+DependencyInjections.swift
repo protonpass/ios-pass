@@ -87,10 +87,6 @@ private extension UseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
-
-    var breachRepository: any BreachRepositoryProtocol {
-        RepositoryContainer.shared.breachRepository()
-    }
 }
 
 // MARK: User report
@@ -425,7 +421,7 @@ extension UseCasesContainer {
 
     var getAllAliasMonitorInfos: Factory<GetAllAliasMonitorInfoUseCase> {
         self { GetAllAliasMonitorInfos(getAllAliasesUseCase: SharedUseCasesContainer.shared.getAllAliases(),
-                                       repository: self.breachRepository) }
+                                       repository: self.passMonitorRepository) }
     }
 
     var updatesForDarkWebHome: Factory<UpdatesForDarkWebHomeUseCase> {
@@ -433,21 +429,21 @@ extension UseCasesContainer {
     }
 
     var addCustomEmailToMonitoring: Factory<AddCustomEmailToMonitoringUseCase> {
-        self { AddCustomEmailToMonitoring(breachRepository: self.breachRepository,
+        self { AddCustomEmailToMonitoring(passMonitorRepository: self.passMonitorRepository,
                                           updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
     }
 
     var getAllCustomEmails: Factory<GetAllCustomEmailsUseCase> {
-        self { GetAllCustomEmails(repository: self.breachRepository) }
+        self { GetAllCustomEmails(repository: self.passMonitorRepository) }
     }
 
     var removeEmailFromBreachMonitoring: Factory<RemoveEmailFromBreachMonitoringUseCase> {
-        self { RemoveEmailFromBreachMonitoring(breachRepository: self.breachRepository,
+        self { RemoveEmailFromBreachMonitoring(repository: self.passMonitorRepository,
                                                updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
     }
 
     var verifyCustomEmail: Factory<VerifyCustomEmailUseCase> {
-        self { VerifyCustomEmail(breachRepository: self.breachRepository,
+        self { VerifyCustomEmail(repository: self.passMonitorRepository,
                                  updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
     }
 }

@@ -34,7 +34,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @Published var canResendCode = true
     @Published var timeRemaining: Int
 
-    private let breachRepository = resolve(\RepositoryContainer.breachRepository)
+    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
     private let verifyCustomEmail = resolve(\UseCasesContainer.verifyCustomEmail)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -86,7 +86,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
-                try await breachRepository.resendEmailVerification(emailId: currentCustomEmail.customEmailID)
+                try await passMonitorRepository.resendEmailVerification(emailId: currentCustomEmail.customEmailID)
                 startTimer()
             } catch {
                 handle(error: error)

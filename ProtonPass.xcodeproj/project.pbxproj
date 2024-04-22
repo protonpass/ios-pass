@@ -465,6 +465,8 @@
 		5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */; };
+		5B4E53D52BD651F600E8D54A /* BreachEntities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */; };
+		5B4E53D82BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */; };
 		5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
 		5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */; };
@@ -921,6 +923,8 @@
 		5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemUiModel+Extensions.swift"; sourceTree = "<group>"; };
 		5B3E2FFF2AAF01A30002289A /* TestPlans */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestPlans; sourceTree = "<group>"; };
 		5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LABiometryType+Extensions.swift"; sourceTree = "<group>"; };
+		5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BreachEntities+Extensions.swift"; sourceTree = "<group>"; };
+		5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachEntitiesExtensionsTests.swift; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UseCases+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1190,6 +1194,7 @@
 		354A803D28D8B8D8003F49CF /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				5B4E53D62BD65E3300E8D54A /* Extensions */,
 				5B503FF32A4DD5A300E6681C /* Domain */,
 				6699002C29A77182001033B6 /* Mocks */,
 				35F3EF272AF673E000A67459 /* AppDataTests.swift */,
@@ -1818,6 +1823,7 @@
 				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 				3590A3382A9F9C2600622F45 /* View+Extensions.swift */,
 				5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */,
+				5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1869,6 +1875,14 @@
 				5B1092DA2B56EA93002621A4 /* DetailHistoryView+Alias.swift */,
 			);
 			path = DetailHistoryView;
+			sourceTree = "<group>";
+		};
+		5B4E53D62BD65E3300E8D54A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		5B503FE02A4D6D0700E6681C /* Data */ = {
@@ -2915,6 +2929,7 @@
 				6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */,
 				35F3EF282AF673E000A67459 /* AppDataTests.swift in Sources */,
 				6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */,
+				5B4E53D82BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift in Sources */,
 				5B503FF52A4E018500E6681C /* LogingManagerMock.swift in Sources */,
 				5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */,
 				5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */,
@@ -3110,6 +3125,7 @@
 				35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */,
 				356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */,
 				35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */,
+				5B4E53D52BD651F600E8D54A /* BreachEntities+Extensions.swift in Sources */,
 				5BAE710B2BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift in Sources */,
 				5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,

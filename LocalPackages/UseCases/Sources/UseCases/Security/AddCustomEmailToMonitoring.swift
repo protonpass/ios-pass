@@ -34,18 +34,18 @@ public extension AddCustomEmailToMonitoringUseCase {
 }
 
 public final class AddCustomEmailToMonitoring: AddCustomEmailToMonitoringUseCase {
-    private let breachRepository: any BreachRepositoryProtocol
+    private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase
 
-    public init(breachRepository: any BreachRepositoryProtocol,
+    public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
                 updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase) {
-        self.breachRepository = breachRepository
+        self.passMonitorRepository = passMonitorRepository
         self.updatesForDarkWebHomeUseCase = updatesForDarkWebHomeUseCase
     }
 
     public func execute(email: String) async throws -> CustomEmail {
-        let email = try await breachRepository.addEmailToBreachMonitoring(email: email)
-        let emails = try await breachRepository.getAllCustomEmailForUser()
+        let email = try await passMonitorRepository.addEmailToBreachMonitoring(email: email)
+        let emails = try await passMonitorRepository.getAllCustomEmailForUser()
         updatesForDarkWebHomeUseCase(updateSection: .customEmails(emails))
         return email
     }

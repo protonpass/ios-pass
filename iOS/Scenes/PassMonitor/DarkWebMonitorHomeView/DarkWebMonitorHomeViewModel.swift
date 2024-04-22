@@ -46,6 +46,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     private let logger = resolve(\SharedToolingContainer.logger)
 
     private var cancellables = Set<AnyCancellable>()
+    private var currentTask: Task<Void, Never>?
 
     var noBreaches: Bool {
         noProtonEmailBreaches && noAliasBreaches
@@ -59,13 +60,11 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
         guard let aliasInfos else {
             return []
         }
-        return Array(aliasInfos.sorted {
-            ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min)
-        }.filter(\.alias.item.skipHealthCheck).prefix(10))
+        return aliasInfos.topTenBreachedAliases
     }
 
     var numberOFBreachedAlias: Int {
-        aliasInfos?.filter(\.alias.item.skipHealthCheck).count ?? 0
+        aliasInfos?.filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }.count ?? 0
     }
 
     var noProtonEmailBreaches: Bool {
@@ -78,6 +77,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
 
     init(userBreaches: UserBreaches) {
         self.userBreaches = userBreaches
+        customEmails = userBreaches.customEmails
         setUp()
     }
 
@@ -133,7 +133,8 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
 
 private extension DarkWebMonitorHomeViewModel {
     func setUp() {
-        Task { [weak self] in
+        currentTask?.cancel()
+        currentTask = Task { [weak self] in
             guard let self else {
                 return
             }
@@ -145,10 +146,12 @@ private extension DarkWebMonitorHomeViewModel {
                 async let currentAliasInfos = getAllAliasMonitorInfos()
                 async let currentSuggestedEmail = getCustomEmailSuggestion(breaches: userBreaches)
 
-                let results = try await (currentCustomEmails, currentSuggestedEmail, currentAliasInfos)
-                customEmails = results.0
-                suggestedEmail = results.1
-                aliasInfos = results.2
+                let results = try await (customEmails: currentCustomEmails,
+                                         suggestions: currentSuggestedEmail,
+                                         alias: currentAliasInfos)
+                customEmails = results.customEmails
+                suggestedEmail = results.suggestions
+                aliasInfos = results.alias
             } catch {
                 handle(error: error)
             }
@@ -180,25 +183,6 @@ private extension DarkWebMonitorHomeViewModel {
     func handle(error: Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-extension ProtonAddress {
-    var isMonitored: Bool {
-        !flags.isFlagActive(.skipHealthCheckOrMonitoring)
-    }
-}
-
-extension UserBreaches {
-    var topTenBreachedAddresses: [ProtonAddress] {
-        Array(addresses.filter { !$0.isMonitored }
-            .sorted { $0.breachCounter > $1.breachCounter }.prefix(10))
-    }
-}
-
-extension AliasMonitorInfo {
-    var latestBreach: String {
-        #localized("Latest breach on %@", breaches?.breaches.first?.publishedAt.breachDate ?? "")
     }
 }
 

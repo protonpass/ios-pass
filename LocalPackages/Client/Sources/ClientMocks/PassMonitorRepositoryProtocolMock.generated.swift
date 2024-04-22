@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -20,7 +20,6 @@
 
 import Client
 import Combine
-import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -123,6 +122,132 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         }
         closureGetItemsWithSamePassword()
         return stubbedGetItemsWithSamePasswordResult
+    }
+    // MARK: - getAllBreachesForUser
+    public var getAllBreachesForUserThrowableError3: Error?
+    public var closureGetAllBreachesForUser: () -> () = {}
+    public var invokedGetAllBreachesForUserfunction = false
+    public var invokedGetAllBreachesForUserCount = 0
+    public var stubbedGetAllBreachesForUserResult: UserBreaches!
+
+    public func getAllBreachesForUser() async throws -> UserBreaches {
+        invokedGetAllBreachesForUserfunction = true
+        invokedGetAllBreachesForUserCount += 1
+        if let error = getAllBreachesForUserThrowableError3 {
+            throw error
+        }
+        closureGetAllBreachesForUser()
+        return stubbedGetAllBreachesForUserResult
+    }
+    // MARK: - getAllCustomEmailForUser
+    public var getAllCustomEmailForUserThrowableError4: Error?
+    public var closureGetAllCustomEmailForUser: () -> () = {}
+    public var invokedGetAllCustomEmailForUserfunction = false
+    public var invokedGetAllCustomEmailForUserCount = 0
+    public var stubbedGetAllCustomEmailForUserResult: [CustomEmail]!
+
+    public func getAllCustomEmailForUser() async throws -> [CustomEmail] {
+        invokedGetAllCustomEmailForUserfunction = true
+        invokedGetAllCustomEmailForUserCount += 1
+        if let error = getAllCustomEmailForUserThrowableError4 {
+            throw error
+        }
+        closureGetAllCustomEmailForUser()
+        return stubbedGetAllCustomEmailForUserResult
+    }
+    // MARK: - addEmailToBreachMonitoring
+    public var addEmailToBreachMonitoringEmailThrowableError5: Error?
+    public var closureAddEmailToBreachMonitoring: () -> () = {}
+    public var invokedAddEmailToBreachMonitoringfunction = false
+    public var invokedAddEmailToBreachMonitoringCount = 0
+    public var invokedAddEmailToBreachMonitoringParameters: (email: String, Void)?
+    public var invokedAddEmailToBreachMonitoringParametersList = [(email: String, Void)]()
+    public var stubbedAddEmailToBreachMonitoringResult: CustomEmail!
+
+    public func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail {
+        invokedAddEmailToBreachMonitoringfunction = true
+        invokedAddEmailToBreachMonitoringCount += 1
+        invokedAddEmailToBreachMonitoringParameters = (email, ())
+        invokedAddEmailToBreachMonitoringParametersList.append((email, ()))
+        if let error = addEmailToBreachMonitoringEmailThrowableError5 {
+            throw error
+        }
+        closureAddEmailToBreachMonitoring()
+        return stubbedAddEmailToBreachMonitoringResult
+    }
+    // MARK: - verifyCustomEmail
+    public var verifyCustomEmailEmailIdCodeThrowableError6: Error?
+    public var closureVerifyCustomEmail: () -> () = {}
+    public var invokedVerifyCustomEmailfunction = false
+    public var invokedVerifyCustomEmailCount = 0
+    public var invokedVerifyCustomEmailParameters: (emailId: String, code: String)?
+    public var invokedVerifyCustomEmailParametersList = [(emailId: String, code: String)]()
+
+    public func verifyCustomEmail(emailId: String, code: String) async throws {
+        invokedVerifyCustomEmailfunction = true
+        invokedVerifyCustomEmailCount += 1
+        invokedVerifyCustomEmailParameters = (emailId, code)
+        invokedVerifyCustomEmailParametersList.append((emailId, code))
+        if let error = verifyCustomEmailEmailIdCodeThrowableError6 {
+            throw error
+        }
+        closureVerifyCustomEmail()
+    }
+    // MARK: - removeEmailFromBreachMonitoring
+    public var removeEmailFromBreachMonitoringEmailIdThrowableError7: Error?
+    public var closureRemoveEmailFromBreachMonitoring: () -> () = {}
+    public var invokedRemoveEmailFromBreachMonitoringfunction = false
+    public var invokedRemoveEmailFromBreachMonitoringCount = 0
+    public var invokedRemoveEmailFromBreachMonitoringParameters: (emailId: String, Void)?
+    public var invokedRemoveEmailFromBreachMonitoringParametersList = [(emailId: String, Void)]()
+
+    public func removeEmailFromBreachMonitoring(emailId: String) async throws {
+        invokedRemoveEmailFromBreachMonitoringfunction = true
+        invokedRemoveEmailFromBreachMonitoringCount += 1
+        invokedRemoveEmailFromBreachMonitoringParameters = (emailId, ())
+        invokedRemoveEmailFromBreachMonitoringParametersList.append((emailId, ()))
+        if let error = removeEmailFromBreachMonitoringEmailIdThrowableError7 {
+            throw error
+        }
+        closureRemoveEmailFromBreachMonitoring()
+    }
+    // MARK: - resendEmailVerification
+    public var resendEmailVerificationEmailIdThrowableError8: Error?
+    public var closureResendEmailVerification: () -> () = {}
+    public var invokedResendEmailVerificationfunction = false
+    public var invokedResendEmailVerificationCount = 0
+    public var invokedResendEmailVerificationParameters: (emailId: String, Void)?
+    public var invokedResendEmailVerificationParametersList = [(emailId: String, Void)]()
+
+    public func resendEmailVerification(emailId: String) async throws {
+        invokedResendEmailVerificationfunction = true
+        invokedResendEmailVerificationCount += 1
+        invokedResendEmailVerificationParameters = (emailId, ())
+        invokedResendEmailVerificationParametersList.append((emailId, ()))
+        if let error = resendEmailVerificationEmailIdThrowableError8 {
+            throw error
+        }
+        closureResendEmailVerification()
+    }
+    // MARK: - getBreachesForAlias
+    public var getBreachesForAliasSharedIdItemIdThrowableError9: Error?
+    public var closureGetBreachesForAlias: () -> () = {}
+    public var invokedGetBreachesForAliasfunction = false
+    public var invokedGetBreachesForAliasCount = 0
+    public var invokedGetBreachesForAliasParameters: (sharedId: String, itemId: String)?
+    public var invokedGetBreachesForAliasParametersList = [(sharedId: String, itemId: String)]()
+    public var stubbedGetBreachesForAliasResult: EmailBreaches!
+
+    public func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
+        invokedGetBreachesForAliasfunction = true
+        invokedGetBreachesForAliasCount += 1
+        invokedGetBreachesForAliasParameters = (sharedId, itemId)
+        invokedGetBreachesForAliasParametersList.append((sharedId, itemId))
+        if let error = getBreachesForAliasSharedIdItemIdThrowableError9 {
+            throw error
+        }
+        closureGetBreachesForAlias()
+        return stubbedGetBreachesForAliasResult
     }
     // MARK: - updateState
     public var closureUpdateState: () -> () = {}
