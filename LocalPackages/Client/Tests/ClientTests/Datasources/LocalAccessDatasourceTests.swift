@@ -48,6 +48,7 @@ extension LocalAccessDatasourceTests {
                                              vaultLimit: .random(in: 1...100),
                                              aliasLimit: .random(in: 1...100),
                                              totpLimit: .random(in: 1...100)),
+                                 monitor: .init(protonAddress: .random(), aliases: .random()),
                                  pendingInvites: 1,
                                  waitingNewUserInvites: 2,
                                  minVersionUpgrade: nil)
@@ -66,7 +67,8 @@ extension LocalAccessDatasourceTests {
                                                trialEnd: nil,
                                                vaultLimit: nil,
                                                aliasLimit: nil,
-                                               totpLimit: nil),
+                                               totpLimit: nil), 
+                                   monitor: .init(protonAddress: .random(), aliases: .random()),
                                    pendingInvites: 3,
                                    waitingNewUserInvites: 4,
                                    minVersionUpgrade: nil)

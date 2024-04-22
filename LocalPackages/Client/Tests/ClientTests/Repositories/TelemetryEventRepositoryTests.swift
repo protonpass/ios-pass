@@ -78,7 +78,8 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
                                     trialEnd: .random(in: 1...100),
                                     vaultLimit: .random(in: 1...100),
                                     aliasLimit: .random(in: 1...100),
-                                    totpLimit: .random(in: 1...100)),
+                                    totpLimit: .random(in: 1...100)), 
+                        monitor: .init(protonAddress: .random(), aliases: .random()),
                         pendingInvites: 1,
                         waitingNewUserInvites: 1,
                         minVersionUpgrade: nil)
@@ -86,6 +87,7 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
     func getAccess() async throws -> Access { access }
     func getPlan() async throws -> Plan { access.plan }
     func refreshAccess() async throws -> Access { access }
+    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access { access }
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {

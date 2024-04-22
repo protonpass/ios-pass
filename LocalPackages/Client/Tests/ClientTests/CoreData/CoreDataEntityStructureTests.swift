@@ -143,6 +143,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "type", on: sut, hasType: .string)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "vaultLimit", on: sut, hasType: .integer64)
+        verifyAttribute(named: "monitorProtonAddress", on: sut, hasType: .boolean)
+        verifyAttribute(named: "monitorAliases", on: sut, hasType: .boolean)
         verifyAttribute(named: "pendingInvites", on: sut, hasType: .integer64)
         verifyAttribute(named: "waitingNewUserInvites", on: sut, hasType: .integer64)
         verifyAttribute(named: "minVersionUpgrade", on: sut, hasType: .string)

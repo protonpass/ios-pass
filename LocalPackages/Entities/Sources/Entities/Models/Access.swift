@@ -23,17 +23,32 @@ import Foundation
 
 public struct Access: Decodable, Equatable, Sendable {
     public let plan: Plan
+    public var monitor: Monitor
     public let pendingInvites: Int
     public let waitingNewUserInvites: Int
     public let minVersionUpgrade: String?
 
     public init(plan: Plan,
+                monitor: Monitor,
                 pendingInvites: Int,
                 waitingNewUserInvites: Int,
                 minVersionUpgrade: String?) {
         self.plan = plan
+        self.monitor = monitor
         self.pendingInvites = pendingInvites
         self.waitingNewUserInvites = waitingNewUserInvites
         self.minVersionUpgrade = minVersionUpgrade
+    }
+}
+
+public extension Access {
+    struct Monitor: Decodable, Equatable, Sendable {
+        public let protonAddress: Bool
+        public let aliases: Bool
+
+        public init(protonAddress: Bool, aliases: Bool) {
+            self.protonAddress = protonAddress
+            self.aliases = aliases
+        }
     }
 }
