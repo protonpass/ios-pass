@@ -1252,7 +1252,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iskanje v vseh trezorjih..."
+            "value" : "Iskanje v vseh trezorjih ..."
           }
         },
         "sv" : {
@@ -1412,7 +1412,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iskanje v smetnjaku…"
+            "value" : "Iskanje v smetnjaku …"
           }
         },
         "sv" : {
@@ -1851,7 +1851,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Naslov (A–Z)"
+            "value" : "Naslov (A-Ž)"
           }
         },
         "sv" : {
@@ -2011,7 +2011,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Naslov (Z–A)"
+            "value" : "Naslov (Ž-A)"
           }
         },
         "sv" : {
