@@ -30,6 +30,7 @@ import SwiftUI
 struct DarkWebMonitorHomeView: View {
     @StateObject var viewModel: DarkWebMonitorHomeViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showDataSecurityExplanation = false
     @State private var showCustomEmailExplanation = false
     var router = resolve(\RouterContainer.darkWebRouter)
 
@@ -41,9 +42,10 @@ struct DarkWebMonitorHomeView: View {
 private extension DarkWebMonitorHomeView {
     var mainContainer: some View {
         VStack {
+            mainTitle
+                .padding(.top)
             Text("Last check: \(viewModel.getCurrentLocalizedDateTime())")
                 .foregroundStyle(PassColor.textNorm.toColor)
-                .font(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
 
@@ -62,16 +64,42 @@ private extension DarkWebMonitorHomeView {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Dark Web Monitoring")
+        .navigationBarTitleDisplayMode(.inline)
         .alert(Text("Custom email address"),
                isPresented: $showCustomEmailExplanation,
-               actions: {
-                   Button(role: .cancel, label: { Text("OK") })
-               },
+               actions: { Button("OK", action: {}) },
                message: {
                    // swiftlint:disable:next line_length
                    Text("Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses.")
                })
+        .alert(Text("Data Security"),
+               isPresented: $showDataSecurityExplanation,
+               actions: { Button("OK", action: {}) },
+               message: {
+                   // swiftlint:disable:next line_length
+                   Text("Proton never shares your information with third parties. All data comes from searches for the appearance of Proton domains on the dark web.")
+               })
+    }
+
+    var mainTitle: some View {
+        Label(title: {
+            Text("Dark Web Monitoring")
+                .font(.title.bold())
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }, icon: {
+            Button(action: {
+                showDataSecurityExplanation = true
+            }, label: {
+                Image(systemName: "questionmark.circle")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: 24)
+            })
+            .buttonStyle(.plain)
+        })
+        .labelStyle(.rightIcon)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -197,7 +225,7 @@ private extension DarkWebMonitorHomeView {
                 }
             }
         }, header: {
-            HStack {
+            HStack(spacing: 0) {
                 Text("Custom email address")
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -215,7 +243,8 @@ private extension DarkWebMonitorHomeView {
                     CircleButton(icon: IconProvider.plus,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Alias action menu")
+                                 accessibilityLabel: "Add custom email address",
+                                 type: .small)
                 }
                 .buttonStyle(.plain)
             }
@@ -398,11 +427,10 @@ private extension DarkWebMonitorHomeView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.chevronLeft,
-                         iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1,
-                         accessibilityLabel: "Close") {
-                dismiss()
-            }
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Close",
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
