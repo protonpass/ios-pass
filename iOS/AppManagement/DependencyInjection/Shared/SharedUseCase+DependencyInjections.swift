@@ -364,7 +364,7 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var getCustomEmailSuggestion: Factory<GetCustomEmailSuggestionUseCase> {
         self { GetCustomEmailSuggestion(itemRepository: self.itemRepository,
-                                        symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                                        symmetricKeyProvider: self.symmetricKeyProvider,
                                         validateEmailUseCase: self.validateEmail()) }
     }
 

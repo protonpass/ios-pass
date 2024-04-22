@@ -32,12 +32,6 @@ struct AddCustomEmailView: View {
 
     var body: some View {
         VStack {
-            Text(viewModel.isMonitored ? "Confirm your email" : "Custom email monitoring")
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
             if !viewModel.email.isEmpty, viewModel.isMonitored {
                 Text("We’ve sent a verification code to \(viewModel.email). Please enter it below:")
                     .font(.body)
@@ -48,18 +42,18 @@ struct AddCustomEmailView: View {
                 TextField("Code", text: $viewModel.code)
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .tint(PassColor.textNorm.toColor)
                     .frame(height: 64)
 
                 if viewModel.canResendCode {
-                    Text("Resend code in: \(viewModel.timeRemaining)")
+                    Text("Resend code in \(viewModel.timeRemaining)")
                         .font(.body)
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
                     HStack {
                         Button {
-                            viewModel.resetTimer()
                             viewModel.sendVerificationCode()
                         } label: {
                             Text("Resend Code")
@@ -76,7 +70,8 @@ struct AddCustomEmailView: View {
                 TextField("Email address", text: $viewModel.email)
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .tint(PassColor.textNorm.toColor)
                     .frame(height: 64)
             }
             Spacer()
@@ -86,13 +81,13 @@ struct AddCustomEmailView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm.toColor)
-        .showSpinner(viewModel.loading)
         .onChange(of: viewModel.finishedVerification) { isVerificationFinished in
             guard isVerificationFinished else {
                 return
             }
             dismiss()
         }
+        .navigationTitle(viewModel.isMonitored ? "Confirm your email" : "Custom email monitoring")
         .navigationStackEmbeded()
     }
 }

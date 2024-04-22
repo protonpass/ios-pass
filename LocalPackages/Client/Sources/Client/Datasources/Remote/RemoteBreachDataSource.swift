@@ -24,6 +24,7 @@
 
 import Entities
 
+// sourcery: AutoMockable
 public protocol RemoteBreachDataSourceProtocol: Sendable {
     func getAllBreachesForUser() async throws -> UserBreaches
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
