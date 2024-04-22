@@ -1,5 +1,5 @@
 //
-// RefreshMonitorStates.swift
+// RefreshAccessAndMonitorState.swift
 // Proton Pass - Created on 22/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -24,18 +24,14 @@ import Entities
 import Foundation
 
 public protocol RefreshAccessAndMonitorStateUseCase: Sendable {
-    @discardableResult
-    func execute() async throws -> UserBreaches
+    func execute() async throws
 }
 
 public extension RefreshAccessAndMonitorStateUseCase {
-    @discardableResult
-    func callAsFunction() async throws -> UserBreaches {
+    func callAsFunction() async throws {
         try await execute()
     }
 }
-
-extension MonitorStateStream: @unchecked Sendable {}
 
 public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUseCase {
     private let accessRepository: any AccessRepositoryProtocol
@@ -50,11 +46,11 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         self.stream = stream
     }
 
-    public func execute() async throws -> UserBreaches {
+    public func execute() async throws {
         async let getAccess = accessRepository.refreshAccess()
-        async let fetchBreaches = passMonitorRepository.getAllBreachesForUser()
+        async let refreshUserBreaches = passMonitorRepository.refreshUserBreaches()
         async let refreshSecurityChecks: () = passMonitorRepository.refreshSecurityChecks()
-        let (access, userBreaches, _) = try await (getAccess, fetchBreaches, refreshSecurityChecks)
+        let (access, userBreaches, _) = try await (getAccess, refreshUserBreaches, refreshSecurityChecks)
         let hasWeaknesses = passMonitorRepository.weaknessStats.value.hasWeakOrReusedPasswords
 
         let state = switch (access.plan.isFreeUser, userBreaches.breached, hasWeaknesses) {
@@ -72,7 +68,5 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
             MonitorState.active(.breachesFound)
         }
         stream.send(state)
-
-        return userBreaches
     }
 }
