@@ -1,6 +1,6 @@
 //
-// BreachedDomain.swift
-// Proton Pass - Created on 15/04/2024.
+// ProtonAddress.swift
+// Proton Pass - Created on 10/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,24 +20,29 @@
 
 import Foundation
 
-public struct BreachedDomain: Decodable, Equatable, Sendable, Comparable {
-    public let domain: String
-    public let breachTime: Int
+public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifiable {
+    public let addressID, email: String
+    public let breachCounter: Int
+    public let flags: Int
+    public let lastBreachTime: Int?
 
-    public init(domain: String, breachTime: Int) {
-        self.domain = domain
-        self.breachTime = breachTime
+    public init(addressID: String,
+                email: String,
+                breachCounter: Int,
+                flags: Int,
+                lastBreachTime: Int?) {
+        self.addressID = addressID
+        self.email = email
+        self.breachCounter = breachCounter
+        self.flags = flags
+        self.lastBreachTime = lastBreachTime
     }
 
-    public static func < (lhs: BreachedDomain, rhs: BreachedDomain) -> Bool {
-        lhs.breachTime < rhs.breachTime
+    public var id: String {
+        addressID
     }
 
-    public var formattedDateDescription: String {
-        let date = Date(timeIntervalSince1970: TimeInterval(breachTime))
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM dd, yyyy" // e.g., "Apr 21, 2023"
-        dateFormatter.locale = Locale.current
-        return dateFormatter.string(from: date)
+    public var isBreached: Bool {
+        breachCounter > 0
     }
 }

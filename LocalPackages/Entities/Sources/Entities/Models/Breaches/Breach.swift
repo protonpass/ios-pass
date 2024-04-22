@@ -20,19 +20,22 @@
 
 import Foundation
 
-public struct Breach: Decodable, Equatable, Sendable {
-    public let id, email: String
+public struct Breach: Decodable, Equatable, Sendable, Identifiable {
+    public let id: String
+    public let email: String
+    public let resolvedState: Int
     public let severity: Double
     public let name: String
     public let createdAt, publishedAt: String
     public let source: BreachSource
     public let size: Int?
     public let exposedData: [BreachExposedData]
-    public let passwordLastChars: String
+    public let passwordLastChars: String?
     public let actions: [BreachAction]
 
     public init(id: String,
                 email: String,
+                resolvedState: Int,
                 severity: Double,
                 name: String,
                 createdAt: String,
@@ -40,12 +43,13 @@ public struct Breach: Decodable, Equatable, Sendable {
                 source: BreachSource,
                 size: Int?,
                 exposedData: [BreachExposedData],
-                passwordLastChars: String,
+                passwordLastChars: String?,
                 actions: [BreachAction]) {
         self.id = id
         self.email = email
         self.severity = severity
         self.name = name
+        self.resolvedState = resolvedState
         self.createdAt = createdAt
         self.publishedAt = publishedAt
         self.source = source
@@ -57,15 +61,16 @@ public struct Breach: Decodable, Equatable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
-        case email = "Email"
-        case severity = "Severity"
-        case name = "Name"
-        case createdAt = "CreatedAt"
-        case publishedAt = "PublishedAt"
-        case source = "Source"
-        case size = "Size"
-        case exposedData = "ExposedData"
-        case passwordLastChars = "PasswordLastChars"
-        case actions = "Actions"
+        case email
+        case resolvedState
+        case severity
+        case name
+        case createdAt
+        case publishedAt
+        case source
+        case size
+        case exposedData
+        case passwordLastChars
+        case actions
     }
 }

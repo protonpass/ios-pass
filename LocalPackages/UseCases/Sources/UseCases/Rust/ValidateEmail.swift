@@ -20,26 +20,26 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// @preconcurrency import PassRustCore
-//
-// public protocol ValidateEmailUseCase: Sendable {
-//    func execute(email: String) -> Bool
-// }
-//
-// public extension ValidateEmailUseCase {
-//    func callAsFunction(email: String) -> Bool {
-//        execute(email: email)
-//    }
-// }
-//
-// public final class ValidateEmail: ValidateEmailUseCase {
-//    private let validator: any EmailValidatorProtocol
-//
-//    public init(validator: any EmailValidatorProtocol = EmailValidator()) {
-//        self.validator = validator
-//    }
-//
-//    public func execute(email: String) -> Bool {
-//        validator.isEmailValid(email: email)
-//    }
-// }
+@preconcurrency import PassRustCore
+
+public protocol ValidateEmailUseCase: Sendable {
+    func execute(email: String) -> Bool
+}
+
+public extension ValidateEmailUseCase {
+    func callAsFunction(email: String) -> Bool {
+        execute(email: email)
+    }
+}
+
+public final class ValidateEmail: ValidateEmailUseCase {
+    private let validator: any EmailValidatorProtocol
+
+    public init(validator: any EmailValidatorProtocol = EmailValidator()) {
+        self.validator = validator
+    }
+
+    public func execute(email: String) -> Bool {
+        validator.isEmailValid(email: email)
+    }
+}

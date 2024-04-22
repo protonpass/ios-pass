@@ -42,6 +42,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
         sut = PassMonitorRepository(itemRepository: itemRepository, 
+                                    remoteDataSource: RemoteBreachDataSourceProtocolMock(),
                                     symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider())
     }
 
