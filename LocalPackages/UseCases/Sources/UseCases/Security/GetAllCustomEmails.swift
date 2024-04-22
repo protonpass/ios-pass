@@ -32,9 +32,9 @@ public extension GetAllCustomEmailsUseCase {
 }
 
 public final class GetAllCustomEmails: GetAllCustomEmailsUseCase {
-    private let repository: any BreachRepositoryProtocol
+    private let repository: any PassMonitorRepositoryProtocol
 
-    public init(repository: any BreachRepositoryProtocol) {
+    public init(repository: any PassMonitorRepositoryProtocol) {
         self.repository = repository
     }
 
