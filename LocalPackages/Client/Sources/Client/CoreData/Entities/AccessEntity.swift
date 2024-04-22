@@ -44,6 +44,8 @@ extension AccessEntity {
     @NSManaged var trialEnd: Int64
     @NSManaged var vaultLimit: Int64
 
+    @NSManaged var monitorProtonAddress: Bool
+    @NSManaged var monitorAliases: Bool
     @NSManaged var pendingInvites: Int64
     @NSManaged var waitingNewUserInvites: Int64
     @NSManaged var minVersionUpgrade: String
@@ -60,6 +62,7 @@ extension AccessEntity {
                         aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
                         totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
         return .init(plan: plan,
+                     monitor: .init(protonAddress: monitorProtonAddress, aliases: monitorAliases),
                      pendingInvites: Int(pendingInvites),
                      waitingNewUserInvites: Int(waitingNewUserInvites),
                      minVersionUpgrade: minVersionUpgrade.nilIfEmpty)
@@ -76,6 +79,8 @@ extension AccessEntity {
         totpLimit = Int64(plan.totpLimit ?? -1)
         trialEnd = Int64(plan.trialEnd ?? -1)
         vaultLimit = Int64(plan.vaultLimit ?? -1)
+        monitorProtonAddress = access.monitor.protonAddress
+        monitorAliases = access.monitor.aliases
 
         pendingInvites = Int64(access.pendingInvites)
         waitingNewUserInvites = Int64(access.waitingNewUserInvites)
