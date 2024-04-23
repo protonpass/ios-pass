@@ -86,6 +86,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
         if isFreeUser {
             upsell(entryPoint: .sentinel)
         } else {
+            showSentinelSheet = false
             toggleSentinelState()
         }
     }
