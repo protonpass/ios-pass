@@ -202,6 +202,9 @@
 		356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
 		356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356CE7722A2289C80043DC62 /* BannersSection.swift */; };
 		356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */; };
+		356EAF1C2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */; };
+		356EAF1E2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EAF1D2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift */; };
+		356EAF202BD8016100C83AE6 /* ToggleMonitorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */; };
 		356FBD482949246A0063978C /* Coordinator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FBD472949246A0063978C /* Coordinator+Extensions.swift */; };
 		35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C932A1E41C90089B539 /* VaultSelectorViewModel.swift */; };
 		35702C952A1E44140089B539 /* VaultSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C932A1E41C90089B539 /* VaultSelectorViewModel.swift */; };
@@ -779,6 +782,9 @@
 		356BC36229D7226A00F03497 /* VaultThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultThumbnail.swift; sourceTree = "<group>"; };
 		356CE7722A2289C80043DC62 /* BannersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannersSection.swift; sourceTree = "<group>"; };
 		356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultAlertHandler.swift; sourceTree = "<group>"; };
+		356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorProtonAddressesView.swift; sourceTree = "<group>"; };
+		356EAF1D2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorProtonAddressesViewModel.swift; sourceTree = "<group>"; };
+		356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleMonitorButton.swift; sourceTree = "<group>"; };
 		356FBD472949246A0063978C /* Coordinator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+Extensions.swift"; sourceTree = "<group>"; };
 		35702C932A1E41C90089B539 /* VaultSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSelectorViewModel.swift; sourceTree = "<group>"; };
 		35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedVaultOperationsBanner.swift; sourceTree = "<group>"; };
@@ -1443,6 +1449,16 @@
 				356BC35129D6C5B400F03497 /* SettingsViewModel.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		356EAF1A2BD7F6C300C83AE6 /* MonitorAddressesView */ = {
+			isa = PBXGroup;
+			children = (
+				356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */,
+				356EAF1D2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift */,
+				356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */,
+			);
+			path = MonitorAddressesView;
 			sourceTree = "<group>";
 		};
 		3570E04C2B8E06D8005B8186 /* Passkey */ = {
@@ -2207,6 +2223,7 @@
 				5BD870D52BB46C5200A9F1A8 /* PasswordReusedView */,
 				5BECDE4B2B9778610040FCA7 /* SecurityWeaknessDetailView */,
 				5BECDE462B90EC640040FCA7 /* PassMonitorView */,
+				356EAF1A2BD7F6C300C83AE6 /* MonitorAddressesView */,
 			);
 			path = PassMonitor;
 			sourceTree = "<group>";
@@ -3131,6 +3148,7 @@
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				5B5DBF132B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift in Sources */,
+				356EAF1E2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				355E92782A59D2D500C22703 /* Factory+Extensions.swift in Sources */,
 				5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */,
@@ -3143,6 +3161,7 @@
 				3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */,
 				5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */,
 				3559BA9E2A5B32550020E172 /* Theme+Extensions.swift in Sources */,
+				356EAF202BD8016100C83AE6 /* ToggleMonitorButton.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
@@ -3297,6 +3316,7 @@
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				5BECDE4A2B90EC900040FCA7 /* PassMonitorViewModel.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
+				356EAF1C2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
