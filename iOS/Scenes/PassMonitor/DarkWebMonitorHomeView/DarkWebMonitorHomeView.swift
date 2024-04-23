@@ -50,7 +50,12 @@ private extension DarkWebMonitorHomeView {
                 .padding(.vertical)
 
             LazyVStack(spacing: DesignConstant.sectionPadding) {
-                addressesSection
+                if viewModel.access?.monitor.protonAddress == true {
+                    monitoredProtonAddressesSection
+                } else {
+                    notMonitoredSection(title: "Proton addresses")
+                }
+
                 aliasSection
                 VStack(spacing: 0) {
                     customEmails
@@ -108,19 +113,46 @@ private extension DarkWebMonitorHomeView {
     }
 }
 
+private extension DarkWebMonitorHomeView {
+    func notMonitoredSection(title: LocalizedStringKey) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                Text("Monitoring disabled")
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Spacer()
+
+            Image(uiImage: IconProvider.chevronRight)
+                .resizable()
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .scaledToFit()
+                .frame(height: 15)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
+        .contentShape(Rectangle())
+        .onTapGesture {
+            pushProtonAddressesList()
+        }
+    }
+}
+
 // MARK: - Proton Addresses
 
 private extension DarkWebMonitorHomeView {
-    var addressesSection: some View {
+    var monitoredProtonAddressesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Proton addresses"),
                                   subTitle: viewModel.breachSubtitle(numberOfBreaches:
                                       viewModel.userBreaches.numberOfBreachedProtonAddresses),
                                   hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                   isDetail: false,
-                                  action: {
-                                      router.navigate(to: .protonAddressesList(viewModel.userBreaches.addresses))
-                                  })
+                                  action: { pushProtonAddressesList() })
             if viewModel.userBreaches.hasBreachedAddresses {
                 PassSectionDivider()
                 ForEach(viewModel.mostBreachedProtonAddress) { item in
@@ -135,6 +167,10 @@ private extension DarkWebMonitorHomeView {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
+    }
+
+    func pushProtonAddressesList() {
+        router.navigate(to: .protonAddressesList(viewModel.userBreaches.addresses))
     }
 }
 
@@ -271,7 +307,7 @@ private extension DarkWebMonitorHomeView {
 
                         Text(email
                             .isBreached ? "Latest breach on \(email.lastBreachedTime?.lastestBreachDate ?? "")" :
-                            "No Breaches detected")
+                            "No breaches detected")
                             .font(.footnote)
                             .foregroundStyle((email.isBreached ? PassColor.textNorm : PassColor
                                     .cardInteractionNormMajor1).toColor)
