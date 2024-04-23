@@ -23,6 +23,12 @@ import Foundation
 public struct Breach: Decodable, Equatable, Sendable, Identifiable {
     public let id: String
     public let email: String
+    
+    /// The follow int has 3 values
+    /// 1 - unread
+    /// 2 - read
+    /// 3 - resolved
+    /// So for us 1&2 means unresolved and 3 resolved
     public let resolvedState: Int
     public let severity: Double
     public let name: String
@@ -72,5 +78,9 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable {
         case exposedData
         case passwordLastChars
         case actions
+    }
+    
+    var isResolved: Bool {
+        resolvedState == 3
     }
 }
