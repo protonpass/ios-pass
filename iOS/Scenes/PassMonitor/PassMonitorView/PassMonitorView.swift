@@ -149,13 +149,13 @@ struct PassMonitorView: View {
             .animation(.default, value: viewModel.breaches)
             .showSpinner(viewModel.updatingSentinel)
             .sheet(isPresented: $viewModel.showSentinelSheet) {
-                SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
-                                  sentinelActive: viewModel.isSentinelActive,
-                                  mainAction: {
-                                      viewModel.sentinelSheetAction()
-                                      viewModel.showSentinelSheet = false
-                                  }, secondaryAction: { viewModel.showSentinelInformation() })
-                    .presentationDetents([.height(570)])
+                if #available(iOS 16.4, *) {
+                    sentinelSheet(noBackgroundSheet: true)
+                        .presentationBackground(.clear)
+                        .padding(.horizontal)
+                } else {
+                    sentinelSheet(noBackgroundSheet: false)
+                }
             }
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
@@ -203,6 +203,15 @@ private extension PassMonitorView {
             }
         }
         .padding(DesignConstant.sectionPadding)
+    }
+
+    func sentinelSheet(noBackgroundSheet: Bool) -> some View {
+        SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
+                          noBackgroundSheet: noBackgroundSheet,
+                          sentinelActive: viewModel.isSentinelActive,
+                          mainAction: { viewModel.sentinelSheetAction() },
+                          secondaryAction: { viewModel.showSentinelInformation() })
+            .presentationDetents([.height(520)])
     }
 }
 
