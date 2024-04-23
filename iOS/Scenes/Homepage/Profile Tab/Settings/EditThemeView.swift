@@ -29,7 +29,7 @@ struct EditThemeView: View {
     let onSelect: (Theme) -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
@@ -63,6 +63,5 @@ struct EditThemeView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }

@@ -27,7 +27,7 @@ struct EditAppLockTimeView: View {
     let onSelect: (AppLockTime) -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(AppLockTime.allCases, id: \.rawValue) { time in
@@ -54,6 +54,5 @@ struct EditAppLockTimeView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }

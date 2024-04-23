@@ -40,10 +40,9 @@ struct AliasDetailView: View {
             .padding()
         } else {
             if viewModel.isShownAsSheet {
-                NavigationView {
+                NavigationStack {
                     realBody
                 }
-                .navigationViewStyle(.stack)
             } else {
                 realBody
             }

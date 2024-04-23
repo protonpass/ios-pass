@@ -29,10 +29,9 @@ struct AutoFillInstructionsView: View {
     private var theme = resolve(\SharedToolingContainer.theme)
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             realBody
         }
-        .navigationViewStyle(.stack)
     }
 }
 

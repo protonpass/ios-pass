@@ -36,7 +36,7 @@ struct MailboxSelectionView: View {
     private var selection: MailboxSelection { viewModel.mailboxSelection }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
             ZStack(alignment: .bottom) {
@@ -92,7 +92,6 @@ struct MailboxSelectionView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 

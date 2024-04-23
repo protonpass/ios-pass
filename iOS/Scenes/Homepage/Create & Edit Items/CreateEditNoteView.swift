@@ -41,7 +41,7 @@ struct CreateEditNoteView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack {
@@ -105,7 +105,6 @@ struct CreateEditNoteView: View {
                                       onSave: { viewModel.save() })
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
         .tint(viewModel.itemContentType().normMajor1Color.toColor)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
