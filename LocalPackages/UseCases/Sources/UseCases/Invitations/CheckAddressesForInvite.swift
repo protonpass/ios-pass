@@ -59,7 +59,7 @@ public final class CheckAddressesForInvite: CheckAddressesForInviteUseCase {
             throw PassError.organizationNotFound
         }
 
-        if organization.settings.shareMode == .unrestricted {
+        if organization.settings?.shareMode == .unrestricted {
             return .valid
         }
 
