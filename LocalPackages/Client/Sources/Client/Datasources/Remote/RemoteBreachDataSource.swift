@@ -30,10 +30,15 @@ public protocol RemoteBreachDataSourceProtocol: Sendable {
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
     func verifyCustomEmail(emailId: String, code: String) async throws
-    func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches
+    func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches
+    func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches
     func removeEmailFromBreachMonitoring(emailId: String) async throws
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
     func resendEmailVerification(emailId: String) async throws
+
+    func markAliasAsResolved(sharedId: String, itemId: String) async throws
+    func markProtonAddressAsResolved(address: ProtonAddress) async throws
+    func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail
 }
 
 public final class RemoteBreachDataSource: RemoteDatasource, RemoteBreachDataSourceProtocol {}
@@ -64,8 +69,14 @@ public extension RemoteBreachDataSource {
         _ = try await exec(endpoint: endpoint)
     }
 
-    func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches {
-        let endpoint = GetBreachesForCustomEmailEndpoint(emailId: emailId)
+    func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches {
+        let endpoint = GetBreachesForCustomEmailEndpoint(emailId: email.customEmailID)
+        let response = try await exec(endpoint: endpoint)
+        return response.breaches
+    }
+
+    func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches {
+        let endpoint = GetAllBreachesForProtonAddressEndpoint(addressId: address.addressID)
         let response = try await exec(endpoint: endpoint)
         return response.breaches
     }
@@ -84,5 +95,21 @@ public extension RemoteBreachDataSource {
     func resendEmailVerification(emailId: String) async throws {
         let endpoint = ResendEmailVerificationEndpoint(emailId: emailId)
         _ = try await exec(endpoint: endpoint)
+    }
+
+    func markAliasAsResolved(sharedId: String, itemId: String) async throws {
+        let endpoint = MarkAliasAsResolvedEndpoint(sharedId: sharedId, itemId: itemId)
+        _ = try await exec(endpoint: endpoint)
+    }
+
+    func markProtonAddressAsResolved(address: ProtonAddress) async throws {
+        let endpoint = MarkProtonAddressAsResolvedEndpoint(addressdId: address.addressID)
+        _ = try await exec(endpoint: endpoint)
+    }
+
+    func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
+        let endpoint = MarkCustomEmailAsResolvedEndpoint(customEmailId: email.customEmailID)
+        let result = try await exec(endpoint: endpoint)
+        return result.email
     }
 }
