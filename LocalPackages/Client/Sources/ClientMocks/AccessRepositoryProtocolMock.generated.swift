@@ -27,6 +27,26 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
 
     public init() {}
 
+    // MARK: - access
+    public var invokedAccessSetter = false
+    public var invokedAccessSetterCount = 0
+    public var invokedAccess: CurrentValueSubject<Access?, Never>?
+    public var invokedAccessList = [CurrentValueSubject<Access?, Never>?]()
+    public var invokedAccessGetter = false
+    public var invokedAccessGetterCount = 0
+    public var stubbedAccess: CurrentValueSubject<Access?, Never>!
+    public var access: CurrentValueSubject<Access?, Never> {
+        set {
+            invokedAccessSetter = true
+            invokedAccessSetterCount += 1
+            invokedAccess = newValue
+            invokedAccessList.append(newValue)
+        } get {
+            invokedAccessGetter = true
+            invokedAccessGetterCount += 1
+            return stubbedAccess
+        }
+    }
     // MARK: - didUpdateToNewPlan
     public var invokedDidUpdateToNewPlanSetter = false
     public var invokedDidUpdateToNewPlanSetterCount = 0
