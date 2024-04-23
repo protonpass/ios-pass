@@ -41,7 +41,7 @@ struct CreateAliasLiteView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             // ZStack instead of VStack as root because of SwiftUI bug
             // If the ScrollView is contained in a VStack
             // the navigation bar background is not rendered
@@ -101,7 +101,6 @@ struct CreateAliasLiteView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 
