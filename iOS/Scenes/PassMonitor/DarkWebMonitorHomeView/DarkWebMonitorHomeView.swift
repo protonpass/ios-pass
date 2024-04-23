@@ -60,6 +60,9 @@ private extension DarkWebMonitorHomeView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.customEmails)
+        .animation(.default, value: viewModel.suggestedEmail)
+        .animation(.default, value: viewModel.aliasInfos)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
@@ -209,7 +212,7 @@ private extension DarkWebMonitorHomeView {
                         Button {
                             Task {
                                 let customEmail = await viewModel.addCustomEmail(email: item.email)
-                                router.present(sheet: .addCustomEmail(customEmail: customEmail, isMonitored: true))
+                                router.present(sheet: .addCustomEmail(customEmail))
                             }
                         } label: {
                             Text("Add")
@@ -239,7 +242,7 @@ private extension DarkWebMonitorHomeView {
                 }
                 .buttonStyle(.plain)
                 Spacer()
-                Button { router.present(sheet: .addCustomEmail(customEmail: nil, isMonitored: false)) } label: {
+                Button { router.present(sheet: .addCustomEmail(nil)) } label: {
                     CircleButton(icon: IconProvider.plus,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
@@ -328,7 +331,7 @@ private extension DarkWebMonitorHomeView {
                 Spacer()
 
                 Menu(content: {
-                    Button { router.present(sheet: .addCustomEmail(customEmail: email, isMonitored: true))
+                    Button { router.present(sheet: .addCustomEmail(email))
                     } label: {
                         Label(title: { Text("Verify") }, icon: { Image(uiImage: IconProvider.paperPlane) })
                     }
