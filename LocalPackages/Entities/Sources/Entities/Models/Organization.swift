@@ -24,9 +24,9 @@ import Foundation
 public struct Organization: Sendable, Decodable, Equatable {
     /// Whether this user can update the organization
     public let canUpdate: Bool
-    public let settings: Settings
+    public let settings: Settings?
 
-    public init(canUpdate: Bool, settings: Settings) {
+    public init(canUpdate: Bool, settings: Settings?) {
         self.canUpdate = canUpdate
         self.settings = settings
     }
