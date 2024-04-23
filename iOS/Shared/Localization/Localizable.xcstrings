@@ -53621,6 +53621,16 @@
         }
       }
     },
+    "Options" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options"
+          }
+        }
+      }
+    },
     "Other" : {
       "localizations" : {
         "be" : {
