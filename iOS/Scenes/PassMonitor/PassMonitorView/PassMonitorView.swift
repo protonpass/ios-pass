@@ -147,21 +147,21 @@ struct PassMonitorView: View {
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .animation(.default, value: viewModel.breaches)
-            .showSpinner(viewModel.loading || viewModel.updatingSentinel)
+            .showSpinner(viewModel.updatingSentinel)
             .sheet(isPresented: $viewModel.showSentinelSheet) {
-                SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
-                                  sentinelActive: viewModel.isSentinelActive,
-                                  mainAction: {
-                                      viewModel.sentinelSheetAction()
-                                      viewModel.showSentinelSheet = false
-                                  }, secondaryAction: { viewModel.showSentinelInformation() })
-                    .presentationDetents([.height(570)])
+                if #available(iOS 16.4, *) {
+                    sentinelSheet(noBackgroundSheet: true)
+                        .presentationBackground(.clear)
+                        .padding(.horizontal)
+                } else {
+                    sentinelSheet(noBackgroundSheet: false)
+                }
             }
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
             .navigationStackEmbeded($router.path)
             .task {
-                await viewModel.refresh()
+                try? await viewModel.refresh()
             }
     }
 }
@@ -206,6 +206,15 @@ private extension PassMonitorView {
             }
         }
         .padding(DesignConstant.sectionPadding)
+    }
+
+    func sentinelSheet(noBackgroundSheet: Bool) -> some View {
+        SentinelSheetView(isPresented: $viewModel.showSentinelSheet,
+                          noBackgroundSheet: noBackgroundSheet,
+                          sentinelActive: viewModel.isSentinelActive,
+                          mainAction: { viewModel.sentinelSheetAction() },
+                          secondaryAction: { viewModel.showSentinelInformation() })
+            .presentationDetents([.height(520)])
     }
 }
 
@@ -386,7 +395,7 @@ private extension PassMonitorView {
 
 private extension PassMonitorView {
     func missing2FARow(_ missing2FA: Int) -> some View {
-        passMonitorRow(rowType: missing2FA > 0 ? .warning : .success,
+        passMonitorRow(rowType: .info,
                        title: "Missing two-factor authentication",
                        subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
                        info: "\(missing2FA)",

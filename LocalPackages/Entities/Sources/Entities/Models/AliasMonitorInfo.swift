@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct AliasMonitorInfo: Sendable, Identifiable {
+public struct AliasMonitorInfo: Sendable, Identifiable, Hashable {
     public let alias: ItemContent
     public let breaches: EmailBreaches?
 
