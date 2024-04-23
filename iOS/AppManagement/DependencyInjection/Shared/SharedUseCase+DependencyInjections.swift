@@ -375,4 +375,9 @@ extension SharedUseCasesContainer {
     var getAllAliases: Factory<GetAllAliasesUseCase> {
         self { GetAllAliases(itemRepository: self.itemRepository) }
     }
+
+    var getItemLinkedToBreach: Factory<GetItemLinkedToBreachUseCase> {
+        self { GetItemLinkedToBreach(symmetricKeyProvider: self.symmetricKeyProvider,
+                                     repository: self.itemRepository) }
+    }
 }

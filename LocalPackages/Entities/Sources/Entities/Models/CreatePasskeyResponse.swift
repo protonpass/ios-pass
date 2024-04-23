@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct CreatePasskeyResponse: Hashable {
+public struct CreatePasskeyResponse: Hashable, Sendable {
     public let passkey: Data
     public let keyId: String
     public let domain: String
