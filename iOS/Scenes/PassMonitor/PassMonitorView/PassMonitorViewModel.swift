@@ -53,6 +53,7 @@ enum UpsellEntry {
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var breaches: UserBreaches?
+    @Published private(set) var numberOfBreaches = 0
     @Published private(set) var isFreeUser = false
     @Published var isSentinelActive = false
     @Published private(set) var updatingSentinel = false
@@ -62,6 +63,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
@@ -69,11 +71,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
 
     private var cancellables = Set<AnyCancellable>()
-    private var numberOfBreachedAliases = 0
-
-    var numberOfBreaches: Int {
-        (breaches?.emailsCount ?? 0) + numberOfBreachedAliases
-    }
 
     init() {
         setUp()
@@ -168,6 +165,14 @@ private extension PassMonitorViewModel {
                     return
                 }
                 refreshUserStatus()
+            }.store(in: &cancellables)
+
+        monitorStateStream
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self, let breachCount = state.breachCount else { return }
+                numberOfBreaches = breachCount
             }.store(in: &cancellables)
     }
 
