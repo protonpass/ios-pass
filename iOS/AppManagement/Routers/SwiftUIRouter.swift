@@ -86,6 +86,7 @@ extension View {
             case .passMonitorItemsList:
                 Text(verbatim: "Upcomming screen")
             case .breachDetail:
+                DetailMonitoredItemView(.init(userBreaches: userBreaches))
                 Text(verbatim: "Upcomming screen")
             }
         }
