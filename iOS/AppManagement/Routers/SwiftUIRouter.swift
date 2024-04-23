@@ -39,11 +39,14 @@ enum GeneralRouterDestination: Hashable {
 
 enum GeneralSheetDestination: Identifiable, Hashable {
     case addCustomEmail(customEmail: CustomEmail?, isMonitored: Bool)
+    case breachDetail(Breach)
 
     var id: String {
         switch self {
         case .addCustomEmail:
             "addCustomEmail"
+        case .breachDetail:
+            "breachDetail"
         }
     }
 
@@ -105,6 +108,8 @@ extension View {
             switch destination {
             case let .addCustomEmail(email, isMonitored):
                 AddCustomEmailView(viewModel: .init(email: email, isMonitored: isMonitored))
+            case let .breachDetail(breach):
+                BreachDetailView(viewModel: .init(breach: breach))
             }
         }
     }

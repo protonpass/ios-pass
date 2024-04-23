@@ -16493,6 +16493,26 @@
         }
       }
     },
+    "Breach detail action menu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breach detail action menu"
+          }
+        }
+      }
+    },
+    "Breach detected for" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breach detected for"
+          }
+        }
+      }
+    },
     "Breached Detected" : {
       "localizations" : {
         "be" : {
@@ -16595,6 +16615,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Intrång upptäckt"
+          }
+        }
+      }
+    },
+    "Breaches" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breaches"
           }
         }
       }
@@ -28418,6 +28448,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa kho lưu trữ?"
+          }
+        }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        }
+      }
+    },
+    "Disable monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable monitoring"
           }
         }
       }
@@ -46946,6 +46996,16 @@
         }
       }
     },
+    "Mark as resolved" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as resolved"
+          }
+        }
+      }
+    },
     "Match system" : {
       "localizations" : {
         "be" : {
@@ -49466,6 +49526,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Breaches detected"
+          }
+        }
+      }
+    },
+    "No breaches detected for" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No breaches detected for"
           }
         }
       }
@@ -59861,6 +59931,16 @@
         }
       }
     },
+    "Recommended actions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recommended actions"
+          }
+        }
+      }
+    },
     "Regenerate password" : {
       "localizations" : {
         "be" : {
@@ -61287,6 +61367,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Süzgeçleri sıfırla"
+          }
+        }
+      }
+    },
+    "Resolved breaches" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resolved breaches"
           }
         }
       }
@@ -82672,6 +82762,16 @@
         }
       }
     },
+    "Used in" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Used in"
+          }
+        }
+      }
+    },
     "Used in %lld logins" : {
       "localizations" : {
         "en" : {
@@ -91677,6 +91777,26 @@
         }
       }
     },
+    "Your exposed information" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your exposed information"
+          }
+        }
+      }
+    },
+    "Your info was in a data breach and found on **%@**" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your info was in a data breach and found on **%@**"
+          }
+        }
+      }
+    },
     "Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions." : {
       "localizations" : {
         "be" : {
@@ -91946,6 +92066,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gói của bạn chỉ cho phép sử dụng các nội dung trong kho lưu trữ đầu tiên để tự động điền."
+          }
+        }
+      }
+    },
+    "Your Proton Account information remains secure and encrypted. [Learn more]()" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Proton Account information remains secure and encrypted. [Learn more]()"
           }
         }
       }
