@@ -39,7 +39,7 @@ struct BugReportView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             mainContainer
                 .toolbar { toolbarContent }
                 .navigationTitle("Report a problem")
@@ -49,7 +49,6 @@ struct BugReportView: View {
                     focused = true
                 }
         }
-        .navigationViewStyle(.stack)
         .onChange(of: viewModel.hasSent) { value in
             if value {
                 // Do not automatically dismiss here but let the coordinator dismiss

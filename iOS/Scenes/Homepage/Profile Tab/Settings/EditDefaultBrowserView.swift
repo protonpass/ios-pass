@@ -28,7 +28,7 @@ struct EditDefaultBrowserView: View {
     let onSelect: (Browser) -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Browser.allCases, id: \.rawValue) { browser in
@@ -55,6 +55,5 @@ struct EditDefaultBrowserView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }

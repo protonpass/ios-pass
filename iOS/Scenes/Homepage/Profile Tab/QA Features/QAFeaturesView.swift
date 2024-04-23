@@ -33,7 +33,7 @@ struct QAFeaturesView: View {
     private var displayAuthenticator = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 OnboardSection()
                 HapticFeedbacksSection()
@@ -65,6 +65,5 @@ struct QAFeaturesView: View {
             }
         }
         .tint(PassColor.interactionNorm.toColor)
-        .navigationViewStyle(.stack)
     }
 }

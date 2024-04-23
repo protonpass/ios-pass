@@ -35,7 +35,7 @@ struct GeneratePasswordView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Text(viewModel.coloredPassword)
                     .font(.title3.monospaced())
@@ -123,7 +123,6 @@ struct GeneratePasswordView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 
