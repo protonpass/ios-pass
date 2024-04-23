@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct BreachAction: Decodable, Equatable, Sendable {
+public struct BreachAction: Decodable, Equatable, Sendable, Hashable {
     public let code, name, desc: String
     public let urls: [String]?
 
