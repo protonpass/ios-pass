@@ -27,6 +27,7 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
+    var access: CurrentValueSubject<Access?, Never> { get }
     var didUpdateToNewPlan: PassthroughSubject<Void, Never> { get }
 
     /// Get from local, refresh if not exist
@@ -48,6 +49,7 @@ public actor AccessRepository: AccessRepositoryProtocol {
     private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
+    public let access: CurrentValueSubject<Access?, Never> = .init(nil)
     public let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: any LocalAccessDatasourceProtocol,
@@ -67,6 +69,7 @@ public extension AccessRepository {
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
+            access.send(localAccess)
             return localAccess
         }
 
@@ -85,6 +88,7 @@ public extension AccessRepository {
         let userId = try userDataProvider.getUserId()
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess()
+        access.send(remoteAccess)
 
         if let localAccess = try await localDatasource.getAccess(userId: userId),
            localAccess.plan != remoteAccess.plan {
@@ -110,6 +114,7 @@ public extension AccessRepository {
         logger.trace("Upserting access for user \(userId)")
         try await localDatasource.upsert(access: access, userId: userId)
         logger.trace("Upserted monitor state for user \(userId)")
+        self.access.send(access)
         return access
     }
 }

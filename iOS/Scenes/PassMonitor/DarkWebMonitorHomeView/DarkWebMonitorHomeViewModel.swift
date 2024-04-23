@@ -30,11 +30,13 @@ import UseCases
 
 @MainActor
 final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
+    @Published private(set) var access: Access?
     @Published private(set) var userBreaches: UserBreaches
     @Published private(set) var customEmails: [CustomEmail]?
     @Published private(set) var suggestedEmail: [SuggestedEmail]?
     @Published private(set) var aliasInfos: [AliasMonitorInfo]?
 
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
     private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
@@ -75,17 +77,15 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     }
 
     init(userBreaches: UserBreaches) {
+        access = accessRepository.access.value
         self.userBreaches = userBreaches
         customEmails = userBreaches.customEmails
         setUp()
     }
 
     func getCurrentLocalizedDateTime() -> String {
-        let format = "MMM dd yyyy, HH:mm"
-        let now = Date()
-        let dateFormatter = DateFormatter(format: format)
-
-        return dateFormatter.string(from: now)
+        let dateFormatter = DateFormatter(format: "MMM dd yyyy, HH:mm")
+        return dateFormatter.string(from: .now)
     }
 
     func removeCustomMailFromMonitor(email: CustomEmail) {
@@ -166,6 +166,15 @@ private extension DarkWebMonitorHomeViewModel {
                     userBreaches = updatedUserBreaches
                 }
             }.store(in: &cancellables)
+
+        accessRepository.access
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                access = newValue
+            }
+            .store(in: &cancellables)
     }
 
     func handle(error: Error) {
