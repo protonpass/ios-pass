@@ -29,6 +29,26 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
 
     public init() {}
 
+    // MARK: - darkWebDataSectionUpdate
+    public var invokedDarkWebDataSectionUpdateSetter = false
+    public var invokedDarkWebDataSectionUpdateSetterCount = 0
+    public var invokedDarkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never>?
+    public var invokedDarkWebDataSectionUpdateList = [PassthroughSubject<DarkWebDataSectionUpdate, Never>?]()
+    public var invokedDarkWebDataSectionUpdateGetter = false
+    public var invokedDarkWebDataSectionUpdateGetterCount = 0
+    public var stubbedDarkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never>!
+    public var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> {
+        set {
+            invokedDarkWebDataSectionUpdateSetter = true
+            invokedDarkWebDataSectionUpdateSetterCount += 1
+            invokedDarkWebDataSectionUpdate = newValue
+            invokedDarkWebDataSectionUpdateList.append(newValue)
+        } get {
+            invokedDarkWebDataSectionUpdateGetter = true
+            invokedDarkWebDataSectionUpdateGetterCount += 1
+            return stubbedDarkWebDataSectionUpdate
+        }
+    }
     // MARK: - userBreaches
     public var invokedUserBreachesSetter = false
     public var invokedUserBreachesSetterCount = 0
