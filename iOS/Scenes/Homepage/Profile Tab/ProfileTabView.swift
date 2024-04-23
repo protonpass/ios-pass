@@ -362,46 +362,42 @@ private extension Plan {
 
 struct SentinelSheetView: View {
     @Binding var isPresented: Bool
+    let noBackgroundSheet: Bool
     let sentinelActive: Bool
     let mainAction: () -> Void
     let secondaryAction: () -> Void
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            Color.white
-                .ignoresSafeArea()
-
-            LinearGradient(colors: [
-                .clear,
-                Color(red: 112 / 255, green: 76 / 255, blue: 225 / 255, opacity: 0.15)
-            ],
-            startPoint: .top,
-            endPoint: .bottom)
-                .ignoresSafeArea()
+            if noBackgroundSheet {
+                background
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+            } else {
+                background
+            }
 
             ViewThatFits(in: .vertical) {
-                mainSentinelSheet.padding(20)
+                mainSentinelSheet.padding()
                 ScrollView(showsIndicators: false) {
                     mainSentinelSheet
-                }.padding(20)
+                }.padding()
             }
 
             Button { isPresented = false } label: {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()
+                    .padding(4)
                     .frame(width: 30, height: 30)
-                    .foregroundColor(.black)
-                    .background(PassColor.interactionNormMinor1.toColor)
-                    .clipShape(.circle)
+                    .foregroundStyle(.black.opacity(0.7))
             }
             .buttonStyle(.plain)
-            .padding(15)
+            .padding()
         }
         .preferredColorScheme(.light)
     }
 
     private var mainSentinelSheet: some View {
-        VStack(spacing: 16) {
+        VStack {
             Image(uiImage: PassIcon.netShield)
                 .resizable()
                 .scaledToFit()
@@ -416,23 +412,34 @@ struct SentinelSheetView: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textInvert.toColor)
                 .frame(maxWidth: .infinity, alignment: .top)
+                .padding(.bottom, 8)
 
             CapsuleTextButton(title: sentinelActive ? #localized("Disable Proton Sentinel") :
                 #localized("Enable Proton Sentinel"),
                 titleColor: PassColor.interactionNormMinor1,
                 backgroundColor: PassColor.interactionNormMajor2,
                 height: 48,
-                action: {
-                    mainAction()
-                })
+                action: mainAction)
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
             CapsuleTextButton(title: #localized("Learn more"),
                               titleColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1,
                               height: 48,
-                              action: { secondaryAction() })
+                              action: secondaryAction)
                 .padding(.horizontal, DesignConstant.sectionPadding)
+        }
+    }
+
+    private var background: some View {
+        Group {
+            Color.white
+            LinearGradient(colors: [
+                .clear,
+                Color(red: 112 / 255, green: 76 / 255, blue: 225 / 255, opacity: 0.15)
+            ],
+            startPoint: .top,
+            endPoint: .bottom)
         }
     }
 }

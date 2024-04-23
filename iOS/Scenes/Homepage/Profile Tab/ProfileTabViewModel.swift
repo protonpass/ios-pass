@@ -305,7 +305,7 @@ private extension ProfileTabViewModel {
             guard let self else { return }
             do {
                 if let organization = try await organizationRepository.getOrganization() {
-                    canUpdateAppLockTime = organization.settings.appLockTime == nil
+                    canUpdateAppLockTime = organization.settings?.appLockTime == nil
                 }
             } catch {
                 handle(error: error)

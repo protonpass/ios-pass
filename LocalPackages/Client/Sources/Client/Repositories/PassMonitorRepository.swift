@@ -35,7 +35,8 @@ private struct InternalPassMonitorItem {
 
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
-    var state: CurrentValueSubject<MonitorState, Never> { get }
+    var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> { get }
+    var userBreaches: CurrentValueSubject<UserBreaches?, Never> { get }
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
 
@@ -44,16 +45,13 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
 
     // MARK: - Breaches
 
-    func getAllBreachesForUser() async throws -> UserBreaches
+    func refreshUserBreaches() async throws -> UserBreaches
     func getAllCustomEmailForUser() async throws -> [CustomEmail]
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
     func verifyCustomEmail(email: CustomEmail, code: String) async throws
     func removeEmailFromBreachMonitoring(email: CustomEmail) async throws
     func resendEmailVerification(emailId: String) async throws
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
-
-    /// For testing purpose
-    func updateState(_ newValue: MonitorState) async
 }
 
 public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
@@ -63,7 +61,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let twofaDomainChecker: any TwofaDomainCheckerProtocol
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
 
-    public let state: CurrentValueSubject<MonitorState, Never> = .init(.default)
+    public let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
+    public let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
 
@@ -167,17 +166,14 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             return decriptedItem
         }
     }
-
-    public func updateState(_ newValue: MonitorState) async {
-        state.send(newValue)
-    }
 }
 
 // MARK: - Breaches
 
 public extension PassMonitorRepository {
-    func getAllBreachesForUser() async throws -> UserBreaches {
+    func refreshUserBreaches() async throws -> UserBreaches {
         let breaches = try await remoteDataSource.getAllBreachesForUser()
+        userBreaches.send(breaches)
         return breaches
     }
 

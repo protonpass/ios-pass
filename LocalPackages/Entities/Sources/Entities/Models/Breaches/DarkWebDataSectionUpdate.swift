@@ -1,6 +1,6 @@
 //
-// BreachExposedData.swift
-// Proton Pass - Created on 10/04/2024.
+// DarkWebDataSectionUpdate.swift
+// Proton Pass - Created on 22/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,14 +17,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public struct BreachExposedData: Decodable, Equatable, Sendable, Hashable {
-    public let code, name: String
-
-    public init(code: String, name: String) {
-        self.code = code
-        self.name = name
-    }
+public enum DarkWebDataSectionUpdate: Sendable, Equatable {
+    case customEmails([CustomEmail])
+    case protonAddresses
+    case aliases
 }

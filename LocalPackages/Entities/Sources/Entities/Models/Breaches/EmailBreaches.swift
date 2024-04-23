@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct EmailBreaches: Decodable, Equatable, Sendable {
+public struct EmailBreaches: Decodable, Equatable, Sendable, Hashable {
     public let isEligible: Bool
     public let count: Int
     public let breaches: [Breach]

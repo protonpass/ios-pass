@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.3 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -29,24 +29,44 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
 
     public init() {}
 
-    // MARK: - state
-    public var invokedStateSetter = false
-    public var invokedStateSetterCount = 0
-    public var invokedState: CurrentValueSubject<MonitorState, Never>?
-    public var invokedStateList = [CurrentValueSubject<MonitorState, Never>?]()
-    public var invokedStateGetter = false
-    public var invokedStateGetterCount = 0
-    public var stubbedState: CurrentValueSubject<MonitorState, Never>!
-    public var state: CurrentValueSubject<MonitorState, Never> {
+    // MARK: - darkWebDataSectionUpdate
+    public var invokedDarkWebDataSectionUpdateSetter = false
+    public var invokedDarkWebDataSectionUpdateSetterCount = 0
+    public var invokedDarkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never>?
+    public var invokedDarkWebDataSectionUpdateList = [PassthroughSubject<DarkWebDataSectionUpdate, Never>?]()
+    public var invokedDarkWebDataSectionUpdateGetter = false
+    public var invokedDarkWebDataSectionUpdateGetterCount = 0
+    public var stubbedDarkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never>!
+    public var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> {
         set {
-            invokedStateSetter = true
-            invokedStateSetterCount += 1
-            invokedState = newValue
-            invokedStateList.append(newValue)
+            invokedDarkWebDataSectionUpdateSetter = true
+            invokedDarkWebDataSectionUpdateSetterCount += 1
+            invokedDarkWebDataSectionUpdate = newValue
+            invokedDarkWebDataSectionUpdateList.append(newValue)
         } get {
-            invokedStateGetter = true
-            invokedStateGetterCount += 1
-            return stubbedState
+            invokedDarkWebDataSectionUpdateGetter = true
+            invokedDarkWebDataSectionUpdateGetterCount += 1
+            return stubbedDarkWebDataSectionUpdate
+        }
+    }
+    // MARK: - userBreaches
+    public var invokedUserBreachesSetter = false
+    public var invokedUserBreachesSetterCount = 0
+    public var invokedUserBreaches: CurrentValueSubject<UserBreaches?, Never>?
+    public var invokedUserBreachesList = [CurrentValueSubject<UserBreaches?, Never>?]()
+    public var invokedUserBreachesGetter = false
+    public var invokedUserBreachesGetterCount = 0
+    public var stubbedUserBreaches: CurrentValueSubject<UserBreaches?, Never>!
+    public var userBreaches: CurrentValueSubject<UserBreaches?, Never> {
+        set {
+            invokedUserBreachesSetter = true
+            invokedUserBreachesSetterCount += 1
+            invokedUserBreaches = newValue
+            invokedUserBreachesList.append(newValue)
+        } get {
+            invokedUserBreachesGetter = true
+            invokedUserBreachesGetterCount += 1
+            return stubbedUserBreaches
         }
     }
     // MARK: - weaknessStats
@@ -123,21 +143,21 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         closureGetItemsWithSamePassword()
         return stubbedGetItemsWithSamePasswordResult
     }
-    // MARK: - getAllBreachesForUser
-    public var getAllBreachesForUserThrowableError3: Error?
-    public var closureGetAllBreachesForUser: () -> () = {}
-    public var invokedGetAllBreachesForUserfunction = false
-    public var invokedGetAllBreachesForUserCount = 0
-    public var stubbedGetAllBreachesForUserResult: UserBreaches!
+    // MARK: - refreshUserBreaches
+    public var refreshUserBreachesThrowableError3: Error?
+    public var closureRefreshUserBreaches: () -> () = {}
+    public var invokedRefreshUserBreachesfunction = false
+    public var invokedRefreshUserBreachesCount = 0
+    public var stubbedRefreshUserBreachesResult: UserBreaches!
 
-    public func getAllBreachesForUser() async throws -> UserBreaches {
-        invokedGetAllBreachesForUserfunction = true
-        invokedGetAllBreachesForUserCount += 1
-        if let error = getAllBreachesForUserThrowableError3 {
+    public func refreshUserBreaches() async throws -> UserBreaches {
+        invokedRefreshUserBreachesfunction = true
+        invokedRefreshUserBreachesCount += 1
+        if let error = refreshUserBreachesThrowableError3 {
             throw error
         }
-        closureGetAllBreachesForUser()
-        return stubbedGetAllBreachesForUserResult
+        closureRefreshUserBreaches()
+        return stubbedRefreshUserBreachesResult
     }
     // MARK: - getAllCustomEmailForUser
     public var getAllCustomEmailForUserThrowableError4: Error?
@@ -248,19 +268,5 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         }
         closureGetBreachesForAlias()
         return stubbedGetBreachesForAliasResult
-    }
-    // MARK: - updateState
-    public var closureUpdateState: () -> () = {}
-    public var invokedUpdateStatefunction = false
-    public var invokedUpdateStateCount = 0
-    public var invokedUpdateStateParameters: (newValue: MonitorState, Void)?
-    public var invokedUpdateStateParametersList = [(newValue: MonitorState, Void)]()
-
-    public func updateState(_ newValue: MonitorState) async {
-        invokedUpdateStatefunction = true
-        invokedUpdateStateCount += 1
-        invokedUpdateStateParameters = (newValue, ())
-        invokedUpdateStateParametersList.append((newValue, ()))
-        closureUpdateState()
     }
 }

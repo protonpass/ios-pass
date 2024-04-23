@@ -42,19 +42,24 @@ extension OrganizationEntity {
 
 extension OrganizationEntity {
     var toOrganization: Organization {
-        let shareMode = Organization.ShareMode(rawValue: Int(shareMode)) ?? .default
-        let exportMode = Organization.ExportMode(rawValue: Int(exportMode)) ?? .default
-        let settings = Organization.Settings(shareMode: shareMode,
-                                             forceLockSeconds: Int(forceLockSeconds),
-                                             exportMode: exportMode)
+        let settings: Organization.Settings?
+        if shareMode == -1 || exportMode == -1 || forceLockSeconds == -1 {
+            settings = nil
+        } else {
+            let shareMode = Organization.ShareMode(rawValue: Int(shareMode)) ?? .default
+            let exportMode = Organization.ExportMode(rawValue: Int(exportMode)) ?? .default
+            settings = .init(shareMode: shareMode,
+                             forceLockSeconds: Int(forceLockSeconds),
+                             exportMode: exportMode)
+        }
         return .init(canUpdate: canUpdate, settings: settings)
     }
 
     func hydrate(from org: Organization, userId: String) {
         userID = userId
         canUpdate = org.canUpdate
-        exportMode = Int64(org.settings.exportMode.rawValue)
-        forceLockSeconds = Int64(org.settings.forceLockSeconds)
-        shareMode = Int64(org.settings.shareMode.rawValue)
+        exportMode = Int64(org.settings?.exportMode.rawValue ?? -1)
+        forceLockSeconds = Int64(org.settings?.forceLockSeconds ?? -1)
+        shareMode = Int64(org.settings?.shareMode.rawValue ?? -1)
     }
 }
