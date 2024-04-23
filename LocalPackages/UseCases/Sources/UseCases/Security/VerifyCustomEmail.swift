@@ -35,18 +35,15 @@ public extension VerifyCustomEmailUseCase {
 
 public final class VerifyCustomEmail: VerifyCustomEmailUseCase {
     private let repository: any PassMonitorRepositoryProtocol
-    private let stream: DarkWebSectionUpdateStream
 
-    public init(repository: any PassMonitorRepositoryProtocol,
-                stream: DarkWebSectionUpdateStream) {
+    public init(repository: any PassMonitorRepositoryProtocol) {
         self.repository = repository
-        self.stream = stream
     }
 
     public func execute(email: CustomEmail, code: String) async throws {
         try await repository.verifyCustomEmail(email: email,
                                                code: code)
         let emails = try await repository.getAllCustomEmailForUser()
-        stream.send(.customEmails(emails))
+        repository.darkWebDataSectionUpdate.send(.customEmails(emails))
     }
 }

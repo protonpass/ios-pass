@@ -35,7 +35,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     @Published private(set) var suggestedEmail: [SuggestedEmail]?
     @Published private(set) var aliasInfos: [AliasMonitorInfo]?
 
-    private let darkWebSectionUpdateStream = resolve(\DataStreamContainer.darkWebSectionUpdateStream)
+    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let getCustomEmailSuggestion = resolve(\SharedUseCasesContainer.getCustomEmailSuggestion)
     private let getAllAliasMonitorInfos = resolve(\UseCasesContainer.getAllAliasMonitorInfos)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
@@ -150,7 +150,7 @@ private extension DarkWebMonitorHomeViewModel {
             }
         }
 
-        darkWebSectionUpdateStream
+        passMonitorRepository.darkWebDataSectionUpdate
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] section in

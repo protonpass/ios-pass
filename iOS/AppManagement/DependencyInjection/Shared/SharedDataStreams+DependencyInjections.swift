@@ -21,9 +21,6 @@
 import Client
 import Factory
 
-extension VaultSyncEventStream: @unchecked Sendable {}
-extension CorruptedSessionEventStream: @unchecked Sendable {}
-
 final class SharedDataStreamContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataStreamContainer()
     let manager = ContainerManager()

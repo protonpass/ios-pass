@@ -45,8 +45,4 @@ extension DataStreamContainer {
     var monitorStateStream: Factory<MonitorStateStream> {
         self { MonitorStateStream(.default) }
     }
-
-    var darkWebSectionUpdateStream: Factory<DarkWebSectionUpdateStream> {
-        self { DarkWebSectionUpdateStream() }
-    }
 }

@@ -28,5 +28,4 @@ public typealias AppDataProtocol =
 public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
 public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
 public typealias MonitorStateStream = CurrentValueSubject<MonitorState, Never>
-public typealias DarkWebSectionUpdateStream = PassthroughSubject<DarkWebSectionUpdate, Never>
 public typealias ShareID = String
