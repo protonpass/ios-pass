@@ -160,6 +160,9 @@ struct PassMonitorView: View {
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
             .navigationStackEmbeded($router.path)
+            .task {
+                try? await viewModel.refresh()
+            }
     }
 }
 
