@@ -40,10 +40,9 @@ struct CreateEditCreditCardView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             content
         }
-        .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }

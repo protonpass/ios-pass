@@ -55,7 +55,7 @@ public struct SortTypeListView: View {
     }
 
     public var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .center, spacing: 0) {
                 ForEach(SortType.allCases, id: \.self) { type in
                     SelectableOptionRow(action: {
@@ -86,6 +86,5 @@ public struct SortTypeListView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }

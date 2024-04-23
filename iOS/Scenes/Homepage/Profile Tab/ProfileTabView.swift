@@ -29,7 +29,7 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     itemCountSection
@@ -73,7 +73,6 @@ struct ProfileTabView: View {
         .task {
             await viewModel.refreshPlan()
         }
-        .navigationViewStyle(.stack)
     }
 
     @ToolbarContentBuilder

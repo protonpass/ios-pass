@@ -30,7 +30,7 @@ struct NoCameraPermissionView: View {
     let onOpenSettings: () -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 PassColor.backgroundNorm.toColor
                     .ignoresSafeArea()
@@ -64,7 +64,6 @@ struct NoCameraPermissionView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 }

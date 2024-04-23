@@ -35,7 +35,7 @@ struct WrappedCodeScannerView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             CodeScannerView(codeTypes: [.qr],
                             simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
                             isGalleryPresented: $isGaleryPresented) { result in
@@ -67,7 +67,6 @@ struct WrappedCodeScannerView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 }
