@@ -367,6 +367,7 @@ extension UseCasesContainer {
     var refreshAccessAndMonitorState: Factory<RefreshAccessAndMonitorStateUseCase> {
         self { RefreshAccessAndMonitorState(accessRepository: self.accessRepository,
                                             passMonitorRepository: self.passMonitorRepository,
+                                            getAllAliases: SharedUseCasesContainer.shared.getAllAliases(),
                                             stream: DataStreamContainer.shared.monitorStateStream()) }
     }
 }

@@ -36,13 +36,16 @@ public extension RefreshAccessAndMonitorStateUseCase {
 public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
+    private let getAllAliases: any GetAllAliasesUseCase
     private let stream: MonitorStateStream
 
     public init(accessRepository: any AccessRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
+                getAllAliases: any GetAllAliasesUseCase,
                 stream: MonitorStateStream) {
         self.accessRepository = accessRepository
         self.passMonitorRepository = passMonitorRepository
+        self.getAllAliases = getAllAliases
         self.stream = stream
     }
 
@@ -50,10 +53,14 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         async let getAccess = accessRepository.refreshAccess()
         async let refreshUserBreaches = passMonitorRepository.refreshUserBreaches()
         async let refreshSecurityChecks: () = passMonitorRepository.refreshSecurityChecks()
-        let (access, userBreaches, _) = try await (getAccess, refreshUserBreaches, refreshSecurityChecks)
+        async let getAllAliases = getAllAliases()
+        let (access, userBreaches, aliases, _) = try await (getAccess, refreshUserBreaches, getAllAliases,
+                                                            refreshSecurityChecks)
+        let hasBreachedAliases = aliases.contains(where: \.item.isBreached)
+        let isBreached = userBreaches.breached || hasBreachedAliases
         let hasWeaknesses = passMonitorRepository.weaknessStats.value.hasWeakOrReusedPasswords
 
-        let state = switch (access.plan.isFreeUser, userBreaches.breached, hasWeaknesses) {
+        let state = switch (access.plan.isFreeUser, isBreached, hasWeaknesses) {
         case (true, false, false):
             MonitorState.inactive(.noBreaches)
         case (true, false, true):
