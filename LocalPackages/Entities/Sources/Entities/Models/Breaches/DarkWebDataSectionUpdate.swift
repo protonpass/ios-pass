@@ -1,6 +1,6 @@
 //
-// UncheckedSendable+Extensions.swift
-// Proton Pass - Created on 08/01/2024.
+// DarkWebDataSectionUpdate.swift
+// Proton Pass - Created on 22/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,17 +17,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Combine
-import Factory
-import PhotosUI
-import SwiftUI
+import Foundation
 
-/// We are regrouping some of the `@unchecked Sendable` extensions in the following file.
-/// This should help us keep a eye on what we are not currently checking for strict structured concurrency
-
-extension AnyCancellable: @unchecked Sendable {}
-extension PhotosPickerItem: @unchecked Sendable {}
-extension ContainerManager: @unchecked Sendable {}
-extension CurrentValueSubject: @unchecked Sendable {}
-extension PassthroughSubject: @unchecked Sendable {}
+public enum DarkWebDataSectionUpdate: Sendable, Equatable {
+    case customEmails([CustomEmail])
+    case protonAddresses
+    case aliases
+}

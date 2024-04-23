@@ -363,6 +363,13 @@ extension UseCasesContainer {
         self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
                                    authenticator: ServiceContainer.shared.authenticator()) }
     }
+
+    var refreshAccessAndMonitorState: Factory<RefreshAccessAndMonitorStateUseCase> {
+        self { RefreshAccessAndMonitorState(accessRepository: self.accessRepository,
+                                            passMonitorRepository: self.passMonitorRepository,
+                                            getAllAliases: SharedUseCasesContainer.shared.getAllAliases(),
+                                            stream: DataStreamContainer.shared.monitorStateStream()) }
+    }
 }
 
 // MARK: - Misc
@@ -424,13 +431,8 @@ extension UseCasesContainer {
                                        repository: self.passMonitorRepository) }
     }
 
-    var updatesForDarkWebHome: Factory<UpdatesForDarkWebHomeUseCase> {
-        self { UpdatesForDarkWebHome() }
-    }
-
     var addCustomEmailToMonitoring: Factory<AddCustomEmailToMonitoringUseCase> {
-        self { AddCustomEmailToMonitoring(passMonitorRepository: self.passMonitorRepository,
-                                          updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+        self { AddCustomEmailToMonitoring(repository: self.passMonitorRepository) }
     }
 
     var getAllCustomEmails: Factory<GetAllCustomEmailsUseCase> {
@@ -438,13 +440,11 @@ extension UseCasesContainer {
     }
 
     var removeEmailFromBreachMonitoring: Factory<RemoveEmailFromBreachMonitoringUseCase> {
-        self { RemoveEmailFromBreachMonitoring(repository: self.passMonitorRepository,
-                                               updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+        self { RemoveEmailFromBreachMonitoring(repository: self.passMonitorRepository) }
     }
 
     var verifyCustomEmail: Factory<VerifyCustomEmailUseCase> {
-        self { VerifyCustomEmail(repository: self.passMonitorRepository,
-                                 updatesForDarkWebHomeUseCase: self.updatesForDarkWebHome()) }
+        self { VerifyCustomEmail(repository: self.passMonitorRepository) }
     }
 }
 

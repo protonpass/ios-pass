@@ -35,7 +35,6 @@
 		353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */; };
 		353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E229EAE9D900A3255E /* QAFeaturesView.swift */; };
 		353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E629EAEE6F00A3255E /* OnboardSection.swift */; };
-		3537B0372BD29A02004CE449 /* PassMonitorSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3537B0362BD29A02004CE449 /* PassMonitorSection.swift */; };
 		353EC0162A05A7EF004AF925 /* TrashItemsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */; };
 		354192842AC1CB9B001F2996 /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = 354192832AC1CB9B001F2996 /* Macro */; };
 		354192862AC1CB9F001F2996 /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = 354192852AC1CB9F001F2996 /* Macro */; };
@@ -654,7 +653,6 @@
 		353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbacksSection.swift; sourceTree = "<group>"; };
 		353739E229EAE9D900A3255E /* QAFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAFeaturesView.swift; sourceTree = "<group>"; };
 		353739E629EAEE6F00A3255E /* OnboardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardSection.swift; sourceTree = "<group>"; };
-		3537B0362BD29A02004CE449 /* PassMonitorSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassMonitorSection.swift; sourceTree = "<group>"; };
 		353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashItemsSection.swift; sourceTree = "<group>"; };
 		3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Spotlight+Extensions.swift"; sourceTree = "<group>"; };
 		3541C07A2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightSearchableContentView.swift; sourceTree = "<group>"; };
@@ -1137,7 +1135,6 @@
 				356CE7722A2289C80043DC62 /* BannersSection.swift */,
 				353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */,
 				353739E629EAEE6F00A3255E /* OnboardSection.swift */,
-				3537B0362BD29A02004CE449 /* PassMonitorSection.swift */,
 				353739E229EAE9D900A3255E /* QAFeaturesView.swift */,
 				3586478129F825E0003487B1 /* TelemetryEventsSection.swift */,
 				351A96002BAC7E8700D599BB /* TipKitSection.swift */,
@@ -3222,7 +3219,6 @@
 				5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */,
 				354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */,
 				3559BAA12A5B32550020E172 /* AppLockTime+Extensions.swift in Sources */,
-				3537B0372BD29A02004CE449 /* PassMonitorSection.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
