@@ -66,6 +66,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
 
     private var cancellables = Set<AnyCancellable>()
     private var numberOfBreachedAliases = 0
@@ -76,6 +77,10 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     init() {
         setUp()
+    }
+
+    func refresh() async throws {
+        try await refreshAccessAndMonitorState()
     }
 
     func showSecurityWeakness(type: SecurityWeakness) {
