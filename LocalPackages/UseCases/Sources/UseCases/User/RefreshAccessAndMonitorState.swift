@@ -56,23 +56,23 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         async let getAllAliases = getAllAliases()
         let (access, userBreaches, aliases, _) = try await (getAccess, refreshUserBreaches, getAllAliases,
                                                             refreshSecurityChecks)
-        let hasBreachedAliases = aliases.contains(where: \.item.isBreached)
-        let isBreached = userBreaches.breached || hasBreachedAliases
+        let breachedAliases = aliases.filter(\.item.isBreached)
+        let breachCount = userBreaches.emailsCount + breachedAliases.count
         let hasWeaknesses = passMonitorRepository.weaknessStats.value.hasWeakOrReusedPasswords
 
-        let state = switch (access.plan.isFreeUser, isBreached, hasWeaknesses) {
+        let state = switch (access.plan.isFreeUser, breachCount > 0, hasWeaknesses) {
         case (true, false, false):
             MonitorState.inactive(.noBreaches)
         case (true, false, true):
             MonitorState.inactive(.noBreachesButWeakOrReusedPasswords)
         case (true, true, _):
-            MonitorState.inactive(.breachesFound)
+            MonitorState.inactive(.breachesFound(breachCount))
         case (false, false, false):
             MonitorState.active(.noBreaches)
         case (false, false, true):
             MonitorState.active(.noBreachesButWeakOrReusedPasswords)
         case (false, true, _):
-            MonitorState.active(.breachesFound)
+            MonitorState.active(.breachesFound(breachCount))
         }
         stream.send(state)
     }
