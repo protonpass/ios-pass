@@ -41,7 +41,7 @@ public final class OverrideSecuritySettings: OverrideSecuritySettingsUseCase {
     }
 
     public func execute(with organization: Organization) async throws {
-        guard let appLockTime = organization.settings.appLockTime else { return }
+        guard let appLockTime = organization.settings?.appLockTime else { return }
         try await preferencesManager.updateSharedPreferences(\.appLockTime, value: appLockTime)
 
         // Only default to biometric authentication if user has no authentication method
