@@ -21,13 +21,19 @@
 import Entities
 import SwiftUI
 
+enum BreachDetailsInfo: Equatable, Hashable {
+    case alias(AliasMonitorInfo)
+    case customEmail(CustomEmail)
+    case portonAddress(ProtonAddress)
+}
+
 enum GeneralRouterDestination: Hashable {
     case userSharePermission
     case shareSummary
     case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
     case darkWebMonitorHome(SecurityWeakness)
     case passMonitorItemsList
-    case breachDetail
+    case breachDetail(BreachDetailsInfo)
 }
 
 enum GeneralSheetDestination: Identifiable, Hashable {
