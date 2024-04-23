@@ -1,5 +1,6 @@
 //
-// MarkCustomEmailAsResolvedEndpoint.swift
+//
+// BreachDetailViewModel.swift
 // Proton Pass - Created on 23/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -17,21 +18,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import ProtonCoreNetworking
-import ProtonCoreServices
+import Combine
+import Entities
 
-struct MarkCustomEmailAsResolvedEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = AddEmailToBreachMonitoringResponse
+@MainActor
+final class BreachDetailViewModel: ObservableObject, Sendable {
+    @Published private(set) var breach: Breach
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init(customEmailId: String) {
-        debugDescription = "Mark a proton address breaches as resolved"
-        path = "/pass/v1/breach/custom_email/\(customEmailId)/resolved"
-        method = .put
+    init(breach: Breach) {
+        self.breach = breach
+        setUp()
     }
+}
+
+private extension BreachDetailViewModel {
+    func setUp() {}
 }

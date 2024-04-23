@@ -469,6 +469,8 @@
 		5B4E53DA2BD6A02500E8D54A /* DateFromatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D92BD6A02500E8D54A /* DateFromatter+Extensions.swift */; };
 		5B4E53DE2BD7B8B600E8D54A /* DetailMonitoredItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53DC2BD7B8B600E8D54A /* DetailMonitoredItemView.swift */; };
 		5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53DD2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift */; };
+		5B4E53E32BD8033A00E8D54A /* BreachDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */; };
+		5B4E53E42BD8033A00E8D54A /* BreachDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53E22BD8033A00E8D54A /* BreachDetailViewModel.swift */; };
 		5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
 		5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */; };
@@ -929,6 +931,8 @@
 		5B4E53D92BD6A02500E8D54A /* DateFromatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFromatter+Extensions.swift"; sourceTree = "<group>"; };
 		5B4E53DC2BD7B8B600E8D54A /* DetailMonitoredItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMonitoredItemView.swift; sourceTree = "<group>"; };
 		5B4E53DD2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMonitoredItemViewModel.swift; sourceTree = "<group>"; };
+		5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachDetailView.swift; sourceTree = "<group>"; };
+		5B4E53E22BD8033A00E8D54A /* BreachDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachDetailViewModel.swift; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UseCases+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1898,6 +1902,15 @@
 			path = DetailMonitoredItemView;
 			sourceTree = "<group>";
 		};
+		5B4E53E02BD8032000E8D54A /* BreachDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */,
+				5B4E53E22BD8033A00E8D54A /* BreachDetailViewModel.swift */,
+			);
+			path = BreachDetailView;
+			sourceTree = "<group>";
+		};
 		5B503FE02A4D6D0700E6681C /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -2190,6 +2203,7 @@
 		5BECDE452B90EC230040FCA7 /* PassMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				5B4E53E02BD8032000E8D54A /* BreachDetailView */,
 				5B4E53DB2BD7B14600E8D54A /* DetailMonitoredItemView */,
 				5BAE710D2BD1126300F579E4 /* AddCustomEmailView */,
 				5BAE71082BCEDAC900F579E4 /* DarkWebMonitorHomeView */,
@@ -3134,6 +3148,7 @@
 				3559BA9E2A5B32550020E172 /* Theme+Extensions.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
+				5B4E53E42BD8033A00E8D54A /* BreachDetailViewModel.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				5BD4A90C2B15F18100C44C08 /* PasswordStrength+Extensions.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
@@ -3163,6 +3178,7 @@
 				5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */,
 				354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */,
 				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
+				5B4E53E32BD8033A00E8D54A /* BreachDetailView.swift in Sources */,
 				5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */,
 				35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */,

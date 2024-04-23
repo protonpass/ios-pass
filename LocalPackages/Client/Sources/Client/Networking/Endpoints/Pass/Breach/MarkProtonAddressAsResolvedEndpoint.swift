@@ -1,4 +1,4 @@
-//  
+//
 // MarkProtonAddressAsResolvedEndpoint.swift
 // Proton Pass - Created on 23/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
