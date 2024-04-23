@@ -25,10 +25,8 @@ import CryptoKit
 import Factory
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
-import ProtonCoreServices
+@preconcurrency import ProtonCoreServices
 import ProtonCoreUtilities
-
-extension CorruptedSessionEventStream: @unchecked Sendable {}
 
 /// Contain all repositories
 final class SharedRepositoryContainer: SharedContainer, AutoRegistering {

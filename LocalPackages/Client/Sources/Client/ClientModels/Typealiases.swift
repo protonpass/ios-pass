@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Combine
+import Combine
 import Entities
 
 public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
