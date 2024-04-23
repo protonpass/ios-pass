@@ -21,7 +21,7 @@
 
 import Foundation
 
-public enum MonitorState: Sendable {
+public enum MonitorState: Sendable, Equatable {
     case active(MonitorBreachState)
     case inactive(MonitorBreachState)
 
