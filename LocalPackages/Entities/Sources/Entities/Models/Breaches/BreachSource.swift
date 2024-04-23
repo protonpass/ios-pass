@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct BreachSource: Decodable, Equatable, Sendable {
+public struct BreachSource: Decodable, Equatable, Sendable, Hashable {
     public let isAggregated: Bool
     public let domain: String?
     public let category: BreachSourceCategory?
@@ -36,7 +36,7 @@ public struct BreachSource: Decodable, Equatable, Sendable {
 
 // MARK: - Breach Source Category
 
-public struct BreachSourceCategory: Decodable, Equatable, Sendable {
+public struct BreachSourceCategory: Decodable, Equatable, Sendable, Hashable {
     public let code, name: String
 
     public init(code: String, name: String) {
@@ -47,7 +47,7 @@ public struct BreachSourceCategory: Decodable, Equatable, Sendable {
 
 // MARK: - Country
 
-public struct Country: Decodable, Equatable, Sendable {
+public struct Country: Decodable, Equatable, Sendable, Hashable {
     public let code, name, flagEmoji: String
 
     public init(code: String, name: String, flagEmoji: String) {

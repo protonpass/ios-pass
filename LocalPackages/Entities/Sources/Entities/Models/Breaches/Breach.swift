@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct Breach: Decodable, Equatable, Sendable, Identifiable {
+public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
     public let id: String
     public let email: String
     public let resolvedState: Int
