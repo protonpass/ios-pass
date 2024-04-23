@@ -122,7 +122,7 @@ private extension DarkWebMonitorHomeView {
                                           info: "\(item.breachCounter)",
                                           hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                           isDetail: true,
-                                          action: {})
+                                          action: { router.navigate(to: .breachDetail(.portonAddress(item))) })
                 }
             }
         }
@@ -150,7 +150,7 @@ private extension DarkWebMonitorHomeView {
                                           info: "\(item.breaches?.count ?? 0)",
                                           hasBreaches: !viewModel.noAliasBreaches,
                                           isDetail: true,
-                                          action: {})
+                                          action: { router.navigate(to: .breachDetail(.alias(item))) })
                 }
             }
         }
@@ -257,7 +257,7 @@ private extension DarkWebMonitorHomeView {
     @ViewBuilder
     func customEmailRow(for email: CustomEmail) -> some View {
         if email.verified {
-            Button {} label: {
+            Button { router.navigate(to: .breachDetail(.customEmail(email))) } label: {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(email.email)
