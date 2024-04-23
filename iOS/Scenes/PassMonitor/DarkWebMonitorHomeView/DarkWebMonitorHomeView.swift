@@ -30,7 +30,8 @@ import SwiftUI
 struct DarkWebMonitorHomeView: View {
     @StateObject var viewModel: DarkWebMonitorHomeViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var alertDisplay = false
+    @State private var showDataSecurityExplanation = false
+    @State private var showCustomEmailExplanation = false
     var router = resolve(\RouterContainer.darkWebRouter)
 
     var body: some View {
@@ -41,9 +42,10 @@ struct DarkWebMonitorHomeView: View {
 private extension DarkWebMonitorHomeView {
     var mainContainer: some View {
         VStack {
+            mainTitle
+                .padding(.top)
             Text("Last check: \(viewModel.getCurrentLocalizedDateTime())")
                 .foregroundStyle(PassColor.textNorm.toColor)
-                .font(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
 
@@ -62,16 +64,42 @@ private extension DarkWebMonitorHomeView {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Dark Web Monitoring")
+        .navigationBarTitleDisplayMode(.inline)
         .alert(Text("Custom email address"),
-               isPresented: $alertDisplay,
-               actions: {
-                   Button(role: .cancel, label: { Text("OK") })
-               },
+               isPresented: $showCustomEmailExplanation,
+               actions: { Button("OK", action: {}) },
                message: {
                    // swiftlint:disable:next line_length
                    Text("Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses.")
                })
+        .alert(Text("Data Security"),
+               isPresented: $showDataSecurityExplanation,
+               actions: { Button("OK", action: {}) },
+               message: {
+                   // swiftlint:disable:next line_length
+                   Text("Proton never shares your information with third parties. All data comes from searches for the appearance of Proton domains on the dark web.")
+               })
+    }
+
+    var mainTitle: some View {
+        Label(title: {
+            Text("Dark Web Monitoring")
+                .font(.title.bold())
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }, icon: {
+            Button(action: {
+                showDataSecurityExplanation = true
+            }, label: {
+                Image(systemName: "questionmark.circle")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: 24)
+            })
+            .buttonStyle(.plain)
+        })
+        .labelStyle(.rightIcon)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -144,14 +172,12 @@ private extension DarkWebMonitorHomeView {
                 }
             }
 
-            if let suggestedEmail = viewModel.suggestedEmail {
-                if let customEmails = viewModel.customEmails, !customEmails.isEmpty {
-                    Text("Suggestions")
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .font(.body)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical, 12)
-                }
+            if let suggestedEmail = viewModel.suggestedEmail, !suggestedEmail.isEmpty {
+                Text("Suggestions")
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .font(.body)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 12)
                 ForEach(suggestedEmail, id: \.email) { item in
                     HStack {
                         Image(uiImage: IconProvider.envelope)
@@ -190,19 +216,20 @@ private extension DarkWebMonitorHomeView {
                                 .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                                 .padding(.vertical, 10)
                                 .padding(.horizontal, 15)
-                        }.buttonStyle(.plain)
-                            .background(PassColor.interactionNormMinor1.toColor)
-                            .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+                        .background(PassColor.interactionNormMinor1.toColor)
+                        .clipShape(Capsule())
                     }
                     .padding(.vertical, 12)
                 }
             }
         }, header: {
-            HStack {
+            HStack(spacing: 0) {
                 Text("Custom email address")
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                Button { alertDisplay.toggle() } label: {
+                Button { showCustomEmailExplanation.toggle() } label: {
                     Image(uiImage: IconProvider.questionCircle)
                         .resizable()
                         .scaledToFit()
@@ -216,7 +243,8 @@ private extension DarkWebMonitorHomeView {
                     CircleButton(icon: IconProvider.plus,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Alias action menu")
+                                 accessibilityLabel: "Add custom email address",
+                                 type: .small)
                 }
                 .buttonStyle(.plain)
             }
@@ -312,8 +340,8 @@ private extension DarkWebMonitorHomeView {
                         }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 iconColor: PassColor.textWeak,
+                                 backgroundColor: .clear,
                                  accessibilityLabel: "Unverified email action menu")
                 })
             }
@@ -399,11 +427,10 @@ private extension DarkWebMonitorHomeView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.chevronLeft,
-                         iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1,
-                         accessibilityLabel: "Close") {
-                dismiss()
-            }
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Close",
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

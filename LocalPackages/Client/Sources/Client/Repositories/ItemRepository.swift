@@ -32,7 +32,7 @@ private let kBatchPageSize = 100
 extension KeyPath: @unchecked Sendable {}
 
 // sourcery: AutoMockable
-public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
+public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> { get }
     var itemsWereUpdated: CurrentValueSubject<Void, Never> { get }
 

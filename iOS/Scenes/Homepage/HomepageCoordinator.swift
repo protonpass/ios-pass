@@ -84,6 +84,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
     private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
+    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -117,7 +118,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         start()
         synchroniseData()
         refreshOrganizationAndOverrideSecuritySettings()
-        refreshAccess()
+        refreshAccessAndMonitorStateSync()
         refreshSettings()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
@@ -207,7 +208,7 @@ private extension HomepageCoordinator {
                 sendAllEventsIfApplicable()
                 eventLoop.start()
                 eventLoop.forceSync()
-                refreshAccess()
+                refreshAccessAndMonitorStateSync()
                 refreshSettings()
                 refreshFeatureFlags()
             }
@@ -276,11 +277,11 @@ private extension HomepageCoordinator {
         }
     }
 
-    func refreshAccess() {
+    func refreshAccessAndMonitorStateSync() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await accessRepository.refreshAccess()
+                try await refreshAccessAndMonitorState()
             } catch {
                 logger.error(error)
             }
@@ -735,7 +736,7 @@ extension HomepageCoordinator {
                 switch result {
                 case let .success(inAppPurchasePlan):
                     if inAppPurchasePlan != nil {
-                        refreshAccess()
+                        refreshAccessAndMonitorStateSync()
                     } else {
                         logger.debug("Payment is done but no plan is purchased")
                     }

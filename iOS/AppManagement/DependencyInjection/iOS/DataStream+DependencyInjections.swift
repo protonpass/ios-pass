@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 @preconcurrency import Combine
 import Entities
 import Factory
@@ -39,5 +40,9 @@ extension DataStreamContainer {
 
     var currentSpotlightSelectedVaults: Factory<CurrentValueSubject<[Vault], Never>> {
         self { .init([]) }
+    }
+
+    var monitorStateStream: Factory<MonitorStateStream> {
+        self { MonitorStateStream(.default) }
     }
 }
