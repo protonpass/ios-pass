@@ -38,7 +38,7 @@ enum GeneralRouterDestination: Hashable {
 }
 
 enum GeneralSheetDestination: Identifiable, Hashable {
-    case addCustomEmail(customEmail: CustomEmail?, isMonitored: Bool)
+    case addCustomEmail(CustomEmail?)
 
     var id: String {
         switch self {
@@ -103,8 +103,8 @@ extension View {
     func sheetDestinations(sheetDestination: Binding<GeneralSheetDestination?>) -> some View {
         sheet(item: sheetDestination) { destination in
             switch destination {
-            case let .addCustomEmail(email, isMonitored):
-                AddCustomEmailView(viewModel: .init(email: email, isMonitored: isMonitored))
+            case let .addCustomEmail(email):
+                AddCustomEmailView(viewModel: .init(email: email))
             }
         }
     }
