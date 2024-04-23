@@ -40,8 +40,9 @@ public protocol BannerDisplayProtocol: Sendable {
 
 public extension BannerDisplayProtocol {
     func displayTopErrorMessage(_ message: String,
-                                dismissButtonTitle: String = #localized("OK"),
+                                dismissButtonTitle: String? = nil,
                                 onDismiss: (@Sendable (PMBanner) -> Void)? = nil) {
+        let dismissButtonTitle = dismissButtonTitle ?? #localized("OK", bundle: .module)
         displayTopErrorMessage(message, dismissButtonTitle: dismissButtonTitle, onDismiss: onDismiss)
     }
 }
@@ -90,7 +91,7 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
     }
 
     public func displayTopErrorMessage(_ message: String,
-                                       dismissButtonTitle: String = #localized("OK"),
+                                       dismissButtonTitle: String,
                                        onDismiss: (@Sendable (PMBanner) -> Void)? = nil) {
         guard let container else {
             return
