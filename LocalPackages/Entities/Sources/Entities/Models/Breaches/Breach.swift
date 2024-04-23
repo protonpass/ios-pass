@@ -23,7 +23,7 @@ import Foundation
 public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
     public let id: String
     public let email: String
-    
+
     /// The follow int has 3 values
     /// 1 - unread
     /// 2 - read
@@ -79,8 +79,8 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
         case passwordLastChars
         case actions
     }
-    
-    var isResolved: Bool {
+
+    public var isResolved: Bool {
         resolvedState == 3
     }
 }
