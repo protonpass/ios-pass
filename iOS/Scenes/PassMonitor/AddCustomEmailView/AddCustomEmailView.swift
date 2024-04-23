@@ -23,6 +23,7 @@
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -32,7 +33,7 @@ struct AddCustomEmailView: View {
 
     var body: some View {
         VStack {
-            if !viewModel.email.isEmpty, viewModel.isMonitored {
+            if viewModel.customEmail != nil {
                 Text("We’ve sent a verification code to \(viewModel.email). Please enter it below:")
                     .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -47,24 +48,19 @@ struct AddCustomEmailView: View {
                     .frame(height: 64)
 
                 if viewModel.canResendCode {
+                    HStack {
+                        CapsuleTextButton(title: #localized("Resend code"),
+                                          titleColor: PassColor.interactionNormMajor2,
+                                          backgroundColor: PassColor.interactionNormMinor1,
+                                          action: { viewModel.sendVerificationCode() })
+                            .fixedSize(horizontal: true, vertical: true)
+                        Spacer()
+                    }
+                } else {
                     Text("Resend code in \(viewModel.timeRemaining)")
                         .font(.body)
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                } else {
-                    HStack {
-                        Button {
-                            viewModel.sendVerificationCode()
-                        } label: {
-                            Text("Resend Code")
-                                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                                .padding()
-                        }
-                        .buttonStyle(.plain)
-                        .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor1,
-                                              borderColor: .clear)
-                        Spacer()
-                    }
                 }
             } else {
                 TextField("Email address", text: $viewModel.email)
@@ -77,8 +73,8 @@ struct AddCustomEmailView: View {
             Spacer()
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .padding(.top, 40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.canResendCode)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm.toColor)
         .onChange(of: viewModel.finishedVerification) { isVerificationFinished in
@@ -87,7 +83,7 @@ struct AddCustomEmailView: View {
             }
             dismiss()
         }
-        .navigationTitle(viewModel.isMonitored ? "Confirm your email" : "Custom email monitoring")
+        .navigationTitle(viewModel.customEmail != nil ? "Confirm your email" : "Custom email monitoring")
         .navigationStackEmbeded()
     }
 }
