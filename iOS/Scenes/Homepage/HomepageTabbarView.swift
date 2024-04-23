@@ -205,6 +205,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         super.init(nibName: nil, bundle: nil)
 
         monitorStateStream
+            .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }
