@@ -34,19 +34,16 @@ public extension AddCustomEmailToMonitoringUseCase {
 }
 
 public final class AddCustomEmailToMonitoring: AddCustomEmailToMonitoringUseCase {
-    private let passMonitorRepository: any PassMonitorRepositoryProtocol
-    private let updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase
+    private let repository: any PassMonitorRepositoryProtocol
 
-    public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
-                updatesForDarkWebHomeUseCase: any UpdatesForDarkWebHomeUseCase) {
-        self.passMonitorRepository = passMonitorRepository
-        self.updatesForDarkWebHomeUseCase = updatesForDarkWebHomeUseCase
+    public init(repository: any PassMonitorRepositoryProtocol) {
+        self.repository = repository
     }
 
     public func execute(email: String) async throws -> CustomEmail {
-        let email = try await passMonitorRepository.addEmailToBreachMonitoring(email: email)
-        let emails = try await passMonitorRepository.getAllCustomEmailForUser()
-        updatesForDarkWebHomeUseCase(updateSection: .customEmails(emails))
+        let email = try await repository.addEmailToBreachMonitoring(email: email)
+        let emails = try await repository.getAllCustomEmailForUser()
+        repository.darkWebDataSectionUpdate.send(.customEmails(emails))
         return email
     }
 }
