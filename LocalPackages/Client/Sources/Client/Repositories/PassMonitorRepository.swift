@@ -35,6 +35,7 @@ private struct InternalPassMonitorItem {
 
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
+    var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> { get }
     var userBreaches: CurrentValueSubject<UserBreaches?, Never> { get }
     var weaknessStats: CurrentValueSubject<WeaknessStats, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
@@ -60,6 +61,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let twofaDomainChecker: any TwofaDomainCheckerProtocol
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
 
+    public let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
     public let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
     public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
     public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])

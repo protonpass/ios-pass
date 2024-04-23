@@ -1,5 +1,5 @@
 //
-// DarkWebSectionUpdate.swift
+// DarkWebDataSectionUpdate.swift
 // Proton Pass - Created on 22/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 
 import Foundation
 
-public enum DarkWebSectionUpdate: Sendable, Equatable {
+public enum DarkWebDataSectionUpdate: Sendable, Equatable {
     case customEmails([CustomEmail])
     case protonAddresses
     case aliases

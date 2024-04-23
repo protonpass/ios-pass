@@ -87,10 +87,6 @@ private extension UseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
-
-    var darkWebSectionUpdateStream: DarkWebSectionUpdateStream {
-        DataStreamContainer.shared.darkWebSectionUpdateStream()
-    }
 }
 
 // MARK: User report
@@ -435,8 +431,7 @@ extension UseCasesContainer {
     }
 
     var addCustomEmailToMonitoring: Factory<AddCustomEmailToMonitoringUseCase> {
-        self { AddCustomEmailToMonitoring(repository: self.passMonitorRepository,
-                                          stream: self.darkWebSectionUpdateStream) }
+        self { AddCustomEmailToMonitoring(repository: self.passMonitorRepository) }
     }
 
     var getAllCustomEmails: Factory<GetAllCustomEmailsUseCase> {
@@ -444,13 +439,11 @@ extension UseCasesContainer {
     }
 
     var removeEmailFromBreachMonitoring: Factory<RemoveEmailFromBreachMonitoringUseCase> {
-        self { RemoveEmailFromBreachMonitoring(repository: self.passMonitorRepository,
-                                               stream: self.darkWebSectionUpdateStream) }
+        self { RemoveEmailFromBreachMonitoring(repository: self.passMonitorRepository) }
     }
 
     var verifyCustomEmail: Factory<VerifyCustomEmailUseCase> {
-        self { VerifyCustomEmail(repository: self.passMonitorRepository,
-                                 stream: self.darkWebSectionUpdateStream) }
+        self { VerifyCustomEmail(repository: self.passMonitorRepository) }
     }
 }
 

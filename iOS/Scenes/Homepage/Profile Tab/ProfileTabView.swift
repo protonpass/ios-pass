@@ -388,7 +388,7 @@ struct SentinelSheetView: View {
                     .resizable()
                     .padding(4)
                     .frame(width: 30, height: 30)
-                    .foregroundColor(.black.opacity(0.7))
+                    .foregroundStyle(.black.opacity(0.7))
             }
             .buttonStyle(.plain)
             .padding()

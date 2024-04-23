@@ -35,17 +35,14 @@ public extension RemoveEmailFromBreachMonitoringUseCase {
 
 public final class RemoveEmailFromBreachMonitoring: RemoveEmailFromBreachMonitoringUseCase {
     private let repository: any PassMonitorRepositoryProtocol
-    private let stream: DarkWebSectionUpdateStream
 
-    public init(repository: any PassMonitorRepositoryProtocol,
-                stream: DarkWebSectionUpdateStream) {
+    public init(repository: any PassMonitorRepositoryProtocol) {
         self.repository = repository
-        self.stream = stream
     }
 
     public func execute(email: CustomEmail) async throws {
         try await repository.removeEmailFromBreachMonitoring(email: email)
         let emails = try await repository.getAllCustomEmailForUser()
-        stream.send(.customEmails(emails))
+        repository.darkWebDataSectionUpdate.send(.customEmails(emails))
     }
 }
