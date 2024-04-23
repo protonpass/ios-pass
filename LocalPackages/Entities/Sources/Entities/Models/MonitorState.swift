@@ -28,10 +28,27 @@ public enum MonitorState: Sendable, Equatable {
     public static var `default`: Self {
         .inactive(.noBreaches)
     }
+
+    public var breachCount: Int? {
+        switch self {
+        case let .active(state):
+            state.breachCount
+        case let .inactive(state):
+            state.breachCount
+        }
+    }
 }
 
-public enum MonitorBreachState: Sendable {
+public enum MonitorBreachState: Sendable, Equatable {
     case noBreaches
     case noBreachesButWeakOrReusedPasswords
-    case breachesFound
+    case breachesFound(Int)
+
+    public var breachCount: Int? {
+        if case let .breachesFound(count) = self {
+            count
+        } else {
+            nil
+        }
+    }
 }
