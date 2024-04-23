@@ -52,6 +52,12 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func removeEmailFromBreachMonitoring(email: CustomEmail) async throws
     func resendEmailVerification(emailId: String) async throws
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
+    func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches
+    func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches
+
+    func markAliasAsResolved(sharedId: String, itemId: String) async throws
+    func markProtonAddressAsResolved(address: ProtonAddress) async throws
+    func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail
 }
 
 public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
@@ -202,6 +208,31 @@ public extension PassMonitorRepository {
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
         try Task.checkCancellation()
         return try await remoteDataSource.getBreachesForAlias(sharedId: sharedId, itemId: itemId)
+    }
+
+    func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches {
+        try Task.checkCancellation()
+        return try await remoteDataSource.getAllBreachesForEmail(email: email)
+    }
+
+    func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches {
+        try Task.checkCancellation()
+        return try await remoteDataSource.getAllBreachesForProtonAddress(address: address)
+    }
+
+    func markAliasAsResolved(sharedId: String, itemId: String) async throws {
+        try Task.checkCancellation()
+        return try await remoteDataSource.markAliasAsResolved(sharedId: sharedId, itemId: itemId)
+    }
+
+    func markProtonAddressAsResolved(address: ProtonAddress) async throws {
+        try Task.checkCancellation()
+        return try await remoteDataSource.markProtonAddressAsResolved(address: address)
+    }
+
+    func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
+        try Task.checkCancellation()
+        return try await remoteDataSource.markCustomEmailAsResolved(email: email)
     }
 }
 
