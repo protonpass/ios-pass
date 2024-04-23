@@ -96,8 +96,8 @@ extension View {
                 if case let .breaches(userBreaches) = securityWeakness {
                     DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches))
                 }
-            case let .protonAddressesList(items):
-                Text(verbatim: "Upcomming screen")
+            case let .protonAddressesList(addresses):
+                MonitorProtonAddressesView(viewModel: .init(addresses: addresses))
             case let .aliasesList(items):
                 Text(verbatim: "Upcomming screen")
             case let .breachDetail(info):
