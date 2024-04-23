@@ -32,7 +32,8 @@ enum GeneralRouterDestination: Hashable {
     case shareSummary
     case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
     case darkWebMonitorHome(SecurityWeakness)
-    case passMonitorItemsList
+    case protonAddressesList([ProtonAddress])
+    case aliasesList([AliasMonitorInfo])
     case breachDetail(BreachDetailsInfo)
 }
 
@@ -89,7 +90,9 @@ extension View {
                 if case let .breaches(userBreaches) = securityWeakness {
                     DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches))
                 }
-            case .passMonitorItemsList:
+            case let .protonAddressesList(items):
+                Text(verbatim: "Upcomming screen")
+            case let .aliasesList(items):
                 Text(verbatim: "Upcomming screen")
             case let .breachDetail(info):
                 Text(verbatim: "Upcomming screen")
