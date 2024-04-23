@@ -91,7 +91,7 @@ extension View {
                 }
             case .passMonitorItemsList:
                 Text(verbatim: "Upcomming screen")
-            case .breachDetail:
+            case let .breachDetail(info):
                 Text(verbatim: "Upcomming screen")
             }
         }
