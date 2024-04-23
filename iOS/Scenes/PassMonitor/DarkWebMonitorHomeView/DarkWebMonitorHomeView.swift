@@ -118,7 +118,9 @@ private extension DarkWebMonitorHomeView {
                                       viewModel.userBreaches.numberOfBreachedProtonAddresses),
                                   hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                   isDetail: false,
-                                  action: {})
+                                  action: {
+                                      router.navigate(to: .protonAddressesList(viewModel.userBreaches.addresses))
+                                  })
             if viewModel.userBreaches.hasBreachedAddresses {
                 PassSectionDivider()
                 ForEach(viewModel.mostBreachedProtonAddress) { item in
