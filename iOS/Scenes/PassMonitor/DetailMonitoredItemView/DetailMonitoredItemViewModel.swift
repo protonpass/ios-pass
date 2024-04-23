@@ -48,6 +48,7 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
         setUp()
     }
 
+    // swiftlint:disable:next todo
     // TODO: enable disable monitoring for email
 
     func markAsResolved() {
