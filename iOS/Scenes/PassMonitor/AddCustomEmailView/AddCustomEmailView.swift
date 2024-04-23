@@ -35,7 +35,7 @@ struct AddCustomEmailView: View {
             if !viewModel.email.isEmpty, viewModel.isMonitored {
                 Text("We’ve sent a verification code to \(viewModel.email). Please enter it below:")
                     .font(.body)
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 8)
 
@@ -43,7 +43,7 @@ struct AddCustomEmailView: View {
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
-                    .tint(PassColor.textNorm.toColor)
+                    .tint(PassColor.interactionNorm.toColor)
                     .frame(height: 64)
 
                 if viewModel.canResendCode {
@@ -71,7 +71,7 @@ struct AddCustomEmailView: View {
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
-                    .tint(PassColor.textNorm.toColor)
+                    .tint(PassColor.interactionNorm.toColor)
                     .frame(height: 64)
             }
             Spacer()
@@ -97,11 +97,10 @@ private extension AddCustomEmailView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1,
-                         accessibilityLabel: "Close") {
-                dismiss()
-            }
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Close",
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
