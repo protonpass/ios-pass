@@ -488,19 +488,15 @@ private extension PassMonitorView {
                 }
 
                 if actionable {
-                    Image(uiImage: IconProvider.chevronRight)
-                        .resizable()
-                        .foregroundColor(rowType.infoForeground.toColor)
-                        .scaledToFit()
-                        .frame(height: 12)
+                    ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                          color: rowType.infoForeground,
+                                          width: 12)
                 }
 
                 if let badge {
-                    Image(uiImage: badge)
-                        .resizable()
-                        .foregroundColor(rowType.infoForeground.toColor)
-                        .scaledToFit()
-                        .frame(height: 24)
+                    ItemDetailSectionIcon(icon: badge,
+                                          color: rowType.infoForeground,
+                                          width: 24)
                 }
             }
             .padding(.horizontal, DesignConstant.sectionPadding)

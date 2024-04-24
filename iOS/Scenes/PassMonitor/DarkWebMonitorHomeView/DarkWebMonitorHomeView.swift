@@ -127,11 +127,9 @@ private extension DarkWebMonitorHomeView {
 
             Spacer()
 
-            Image(uiImage: IconProvider.chevronRight)
-                .resizable()
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .scaledToFit()
-                .frame(height: 15)
+            ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                  color: PassColor.textNorm,
+                                  width: 15)
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
@@ -157,8 +155,8 @@ private extension DarkWebMonitorHomeView {
                 PassSectionDivider()
                 ForEach(viewModel.mostBreachedProtonAddress) { item in
                     darkWebMonitorHomeRow(title: item.email,
-                                          subTitle: "Latest breach on \(item.lastBreachTime?.lastestBreachDate ?? "")",
-                                          info: "\(item.breachCounter)",
+                                          subTitle: "Latest breach on \(item.lastBreachDate ?? "")",
+                                          count: item.breachCounter,
                                           hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                           isDetail: true,
                                           action: { router.navigate(to: .breachDetail(.protonAddress(item))) })
@@ -190,7 +188,7 @@ private extension DarkWebMonitorHomeView {
                 ForEach(viewModel.mostBreachedAliases) { item in
                     darkWebMonitorHomeRow(title: item.alias.item.aliasEmail ?? "",
                                           subTitle: item.latestBreach,
-                                          info: "\(item.breaches?.count ?? 0)",
+                                          count: item.breaches?.count,
                                           hasBreaches: !viewModel.noAliasBreaches,
                                           isDetail: true,
                                           action: { router.navigate(to: .breachDetail(.alias(item))) })
@@ -305,8 +303,8 @@ private extension DarkWebMonitorHomeView {
                             .minimumScaleFactor(0.25)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Text(email
-                            .isBreached ? "Latest breach on \(email.lastBreachedTime?.lastestBreachDate ?? "")" :
+                        Text(email.isBreached ?
+                            "Latest breach on \(email.lastBreachDate ?? "")" :
                             "No breaches detected")
                             .font(.footnote)
                             .foregroundStyle((email.isBreached ? PassColor.textNorm : PassColor
@@ -326,12 +324,10 @@ private extension DarkWebMonitorHomeView {
                             .clipShape(Capsule())
                     }
 
-                    Image(uiImage: IconProvider.chevronRight)
-                        .resizable()
-                        .foregroundStyle((email.isBreached ? PassColor.passwordInteractionNormMajor2 : PassColor
-                                .textNorm).toColor)
-                        .scaledToFit()
-                        .frame(height: 15)
+                    ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                          color: email.isBreached ?
+                                              PassColor.passwordInteractionNormMajor2 : PassColor.textNorm,
+                                          width: 15)
                 }
                 .contentShape(Rectangle())
             }
@@ -409,7 +405,7 @@ private extension DarkWebMonitorHomeView {
 
     func darkWebMonitorHomeRow(title: String,
                                subTitle: String?,
-                               info: String? = nil,
+                               count: Int? = nil,
                                hasBreaches: Bool,
                                isDetail: Bool,
                                action: @escaping () -> Void) -> some View {
@@ -418,40 +414,25 @@ private extension DarkWebMonitorHomeView {
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(title)
                         .font(.body)
-                        .lineLimit(1)
-                        .foregroundStyle(colorOfTitle(hasBreaches: hasBreaches,
-                                                      isDetail: isDetail))
-                        .minimumScaleFactor(0.5)
+                        .foregroundStyle(colorOfTitle(hasBreaches: hasBreaches, isDetail: isDetail))
 
                     if let subTitle {
                         Text(subTitle)
                             .font(.callout)
-                            .lineLimit(1)
                             .foregroundStyle(colorOfSubtitle(hasBreaches: hasBreaches, isDetail: isDetail))
-                            .layoutPriority(1)
-                            .minimumScaleFactor(0.25)
                     }
                 }
-                .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
 
-                if let info {
-                    Text(info)
-                        .font(.body)
-                        .fontWeight(.medium)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 11)
-                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                        .background(PassColor.passwordInteractionNormMinor1.toColor)
-                        .clipShape(Capsule())
+                if let count {
+                    BreachCounterView(count: count, type: .danger)
                 }
 
-                Image(uiImage: IconProvider.chevronRight)
-                    .resizable()
-                    .foregroundStyle((hasBreaches ? PassColor.passwordInteractionNormMajor1 : PassColor
-                            .textWeak).toColor)
-                    .scaledToFit()
-                    .frame(height: 15)
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                      color: hasBreaches ?
+                                          PassColor.passwordInteractionNormMajor1 : PassColor.textWeak,
+                                      width: 15)
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
         }
