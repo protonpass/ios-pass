@@ -35,7 +35,8 @@ enum PaymentsConstants {
         "visionary2022",
         "bundlepro2022",
         "enterprise2022",
-        "visionary"
+        "visionary",
+        "passpro2024"
     ]
 
     static let clientApp = ClientApp.pass
