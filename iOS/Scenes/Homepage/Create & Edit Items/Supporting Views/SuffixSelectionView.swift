@@ -38,7 +38,7 @@ struct SuffixSelectionView: View {
     private var tintColor: UIColor { ItemContentType.alias.normMajor2Color }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
             ZStack(alignment: .bottom) {
@@ -84,7 +84,6 @@ struct SuffixSelectionView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 

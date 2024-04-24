@@ -37,11 +37,10 @@ struct FullSyncProgressView: View {
     var body: some View {
         switch viewModel.mode {
         case .fullSync:
-            NavigationView {
+            NavigationStack {
                 realBody
                     .background(PassColor.backgroundNorm.toColor)
             }
-            .navigationViewStyle(.stack)
         case .logIn:
             realBody
         }

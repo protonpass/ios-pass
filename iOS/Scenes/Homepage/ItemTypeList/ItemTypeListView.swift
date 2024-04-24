@@ -29,7 +29,7 @@ struct ItemTypeListView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(ItemType.allCases, id: \.self) { type in
@@ -51,7 +51,6 @@ struct ItemTypeListView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 
     private func itemRow(for type: ItemType) -> some View {

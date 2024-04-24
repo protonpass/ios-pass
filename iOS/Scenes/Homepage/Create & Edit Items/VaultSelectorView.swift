@@ -29,7 +29,7 @@ struct VaultSelectorView: View {
     let viewModel: VaultSelectorViewModel
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 if viewModel.isFreeUser {
                     LimitedVaultOperationsBanner(onUpgrade: { viewModel.upgrade() })
@@ -56,7 +56,6 @@ struct VaultSelectorView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 
