@@ -28,7 +28,7 @@ struct EditClipboardExpirationView: View {
     let onSelect: (ClipboardExpiration) -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
@@ -55,6 +55,5 @@ struct EditClipboardExpirationView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
