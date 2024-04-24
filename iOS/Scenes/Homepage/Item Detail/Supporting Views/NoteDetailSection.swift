@@ -67,7 +67,7 @@ private struct FullNoteView: View {
     let vault: Vault?
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
                     ItemDetailTitleView(itemContent: itemContent,
@@ -94,7 +94,6 @@ private struct FullNoteView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .tint(itemContent.type.normMajor2Color.toColor)
         .theme(theme)
     }

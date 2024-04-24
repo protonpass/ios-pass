@@ -37,7 +37,7 @@ struct LocalAuthenticationMethodsView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ForEach(uiModels, id: \.method) { uiModel in
                     let isSelected = uiModel.method == selectedMethod
@@ -66,6 +66,5 @@ struct LocalAuthenticationMethodsView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }

@@ -29,7 +29,7 @@ struct LogsView: View {
     @StateObject var viewModel: LogsViewModel
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 PassColor.backgroundNorm.toColor
                     .ignoresSafeArea()
@@ -62,7 +62,6 @@ struct LogsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .background(PassColor.backgroundNorm.toColor)
         }
-        .navigationViewStyle(.stack)
     }
 
     private var dismissButton: some View {

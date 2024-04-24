@@ -30,10 +30,9 @@ struct AccountView: View {
 
     var body: some View {
         if viewModel.isShownAsSheet {
-            NavigationView {
+            NavigationStack {
                 realBody
             }
-            .navigationViewStyle(.stack)
         } else {
             realBody
         }

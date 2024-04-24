@@ -33,7 +33,7 @@ struct LockedCredentialView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             PassColor.backgroundNorm.toColor
                 .localAuthentication(delayed: true,
                                      onAuth: {},
@@ -41,7 +41,6 @@ struct LockedCredentialView: View {
                                      onFailure: { viewModel.handleAuthenticationFailure() })
                 .toolbar { toolbarContent }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
     }
 

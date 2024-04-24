@@ -34,7 +34,7 @@ struct FeedbackChannelsView: View {
     let onSelectChannel: (FeedbackChannel) -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(FeedbackChannel.allCases) { channel in
@@ -71,7 +71,6 @@ struct FeedbackChannelsView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
