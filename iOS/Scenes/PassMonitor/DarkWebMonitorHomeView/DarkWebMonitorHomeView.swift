@@ -134,9 +134,7 @@ private extension DarkWebMonitorHomeView {
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
         .contentShape(Rectangle())
-        .onTapGesture {
-            pushProtonAddressesList()
-        }
+        .buttonEmbeded { pushProtonAddressesList() }
     }
 }
 
