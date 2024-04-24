@@ -30,6 +30,7 @@ import SwiftUI
 struct AddCustomEmailView: View {
     @StateObject var viewModel: AddCustomEmailViewModel
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var focused
 
     var body: some View {
         VStack {
@@ -41,6 +42,7 @@ struct AddCustomEmailView: View {
                     .padding(.top, 8)
 
                 TextField("Code", text: $viewModel.code)
+                    .focused($focused)
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -64,6 +66,7 @@ struct AddCustomEmailView: View {
                 }
             } else {
                 TextField("Email address", text: $viewModel.email)
+                    .focused($focused)
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -83,6 +86,7 @@ struct AddCustomEmailView: View {
             }
             dismiss()
         }
+        .onAppear { focused = true }
         .navigationTitle(viewModel.customEmail != nil ? "Confirm your email" : "Custom email monitoring")
         .navigationStackEmbeded()
     }
