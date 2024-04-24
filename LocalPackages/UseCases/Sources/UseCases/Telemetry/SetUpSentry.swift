@@ -41,6 +41,7 @@ public final class SetUpSentry: SetUpSentryUseCase {
             if ProcessInfo.processInfo.environment["me.proton.pass.SentryDebug"] == "1" {
                 options.debug = true
             }
+            options.enableAppHangTracking = false
             options.enableFileIOTracing = true
             options.enableCoreDataTracing = true
             options.attachViewHierarchy = true // EXPERIMENTAL
