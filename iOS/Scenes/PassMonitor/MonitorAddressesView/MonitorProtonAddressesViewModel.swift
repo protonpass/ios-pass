@@ -46,6 +46,7 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     }
 
     init(addresses: [ProtonAddress]) {
+        access = accessRepository.access.value
         allAddresses = addresses
         setUp()
     }
@@ -63,7 +64,7 @@ extension MonitorProtonAddressesViewModel {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 let request = UpdateMonitorStateRequest.protonAddress(!access.monitor.protonAddress)
-                self.access = try await accessRepository.updatePassMonitorState(request)
+                _ = try await accessRepository.updatePassMonitorState(request)
                 try await refreshAccessAndMonitorState()
             } catch {
                 handle(error: error)
@@ -82,6 +83,16 @@ private extension MonitorProtonAddressesViewModel {
                 handle(error: error)
             }
         }
+
+        accessRepository.access
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                access = newValue
+            }
+            .store(in: &cancellables)
 
         passMonitorRepository.userBreaches
             .removeDuplicates()

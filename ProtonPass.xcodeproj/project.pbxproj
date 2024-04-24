@@ -330,6 +330,7 @@
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
 		357E62702B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
 		357E62712B0E671300F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
+		35805D0A2BD8E39300288CC0 /* MonitorExcludedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */; };
 		35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855C112AC8743F00794DB4 /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 35855C102AC8743F00794DB4 /* UseCases */; };
@@ -392,6 +393,8 @@
 		35CACB9A2B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 35CACB992B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore */; };
 		35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */; };
 		35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */; };
+		35D3861D2BD9299D00532323 /* MonitorIncludedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D3861C2BD9299D00532323 /* MonitorIncludedEmailView.swift */; };
+		35D386202BD92B2900532323 /* BreachCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D3861F2BD92B2900532323 /* BreachCounterView.swift */; };
 		35D708F82B6B8517001CBB03 /* EditSpotlightVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */; };
 		35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */; };
 		35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */; };
@@ -821,6 +824,7 @@
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
 		357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataStreams+DependencyInjections.swift"; sourceTree = "<group>"; };
 		357ED8C42AC1C6F20019A0E9 /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = LocalPackages/Macro; sourceTree = "<group>"; };
+		35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorExcludedEmailView.swift; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
 		3585DE512B591035008AFD9F /* ImportExportWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportWebView.swift; sourceTree = "<group>"; };
 		3586478129F825E0003487B1 /* TelemetryEventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventsSection.swift; sourceTree = "<group>"; };
@@ -875,6 +879,8 @@
 		35C9B8322B5EA8890062D787 /* SharedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContentView.swift; sourceTree = "<group>"; };
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
 		35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsCoordinator.swift; sourceTree = "<group>"; };
+		35D3861C2BD9299D00532323 /* MonitorIncludedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorIncludedEmailView.swift; sourceTree = "<group>"; };
+		35D3861F2BD92B2900532323 /* BreachCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachCounterView.swift; sourceTree = "<group>"; };
 		35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsView.swift; sourceTree = "<group>"; };
 		35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsViewModel.swift; sourceTree = "<group>"; };
 		35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardView.swift; sourceTree = "<group>"; };
@@ -1456,7 +1462,6 @@
 			children = (
 				356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */,
 				356EAF1D2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift */,
-				356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */,
 			);
 			path = MonitorAddressesView;
 			sourceTree = "<group>";
@@ -1574,6 +1579,17 @@
 				35C9B81B2B5E8AA90062D787 /* Info.plist */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		35D3861E2BD92B0800532323 /* Supporting Views */ = {
+			isa = PBXGroup;
+			children = (
+				35D3861F2BD92B2900532323 /* BreachCounterView.swift */,
+				35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */,
+				35D3861C2BD9299D00532323 /* MonitorIncludedEmailView.swift */,
+				356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */,
+			);
+			path = "Supporting Views";
 			sourceTree = "<group>";
 		};
 		35E5062E286F819F00A3F6EA = {
@@ -2218,6 +2234,7 @@
 			children = (
 				5B4E53E02BD8032000E8D54A /* BreachDetailView */,
 				5B4E53DB2BD7B14600E8D54A /* DetailMonitoredItemView */,
+				35D3861E2BD92B0800532323 /* Supporting Views */,
 				5BAE710D2BD1126300F579E4 /* AddCustomEmailView */,
 				5BAE71082BCEDAC900F579E4 /* DarkWebMonitorHomeView */,
 				5BD870D52BB46C5200A9F1A8 /* PasswordReusedView */,
@@ -3098,6 +3115,7 @@
 				356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */,
 				356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */,
 				356BBB712ACC539E005A10DB /* ShareOrCreateNewVaultView.swift in Sources */,
+				35D386202BD92B2900532323 /* BreachCounterView.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
 				35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */,
 				3567DF4D2A49C7950025BD88 /* UpsellableDetailText.swift in Sources */,
@@ -3198,6 +3216,7 @@
 				35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				35D708F82B6B8517001CBB03 /* EditSpotlightVaultsView.swift in Sources */,
+				35D3861D2BD9299D00532323 /* MonitorIncludedEmailView.swift in Sources */,
 				5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
@@ -3253,6 +3272,7 @@
 				354E9AAB2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */,
+				35805D0A2BD8E39300288CC0 /* MonitorExcludedEmailView.swift in Sources */,
 				3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				351E31A82B271E6E00750504 /* OpenAutoFillSettings.swift in Sources */,
 				35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */,

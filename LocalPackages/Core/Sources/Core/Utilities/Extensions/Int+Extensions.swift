@@ -42,23 +42,3 @@ public extension Int {
         return false // No flags are set
     }
 }
-
-public extension Int {
-    var lastestBreachDate: String {
-        let date = Date(timeIntervalSince1970: TimeInterval(self))
-        let dateFormatter = DateFormatter()
-
-        // Set the date and time style
-        dateFormatter.dateFormat = "MMM dd yyyy" // e.g., "Feb 14 2024, 09:41"
-
-        // Set the locale to the current device's locale
-        dateFormatter.locale = Locale.current
-
-        // Optional: If you want the time to also adapt to the user's 24-hour or 12-hour format preference:
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateStyle = .medium
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMM dd yyyy")
-
-        return dateFormatter.string(from: date)
-    }
-}
