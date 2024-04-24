@@ -446,6 +446,24 @@ extension UseCasesContainer {
     var verifyCustomEmail: Factory<VerifyCustomEmailUseCase> {
         self { VerifyCustomEmail(repository: self.passMonitorRepository) }
     }
+
+    var toggleMonitoringForAlias: Factory<ToggleMonitoringForAliasUseCase> {
+        self { ToggleMonitoringForAlias(repository: self.passMonitorRepository,
+                                        getAllAliasMonitorInfo: self.getAllAliasMonitorInfos()) }
+    }
+
+    var toggleMonitoringForCustomEmail: Factory<ToggleMonitoringForCustomEmailUseCase> {
+        self { ToggleMonitoringForCustomEmail(repository: self.passMonitorRepository) }
+    }
+
+    var toggleMonitoringForProtonAddress: Factory<ToggleMonitoringForProtonAddressUseCase> {
+        self { ToggleMonitoringForProtonAddress(repository: self.passMonitorRepository) }
+    }
+
+    var getItemsLinkedToBreach: Factory<GetItemsLinkedToBreachUseCase> {
+        self { GetItemsLinkedToBreach(symmetricKeyProvider: self.symmetricKeyProvider,
+                                      repository: self.itemRepository) }
+    }
 }
 
 // MARK: - Organization

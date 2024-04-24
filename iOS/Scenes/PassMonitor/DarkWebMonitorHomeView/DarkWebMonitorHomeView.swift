@@ -67,6 +67,8 @@ private extension DarkWebMonitorHomeView {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
+        .toolbarBackground(PassColor.backgroundNorm.toColor,
+                           for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .alert(Text("Custom email address"),
                isPresented: $showCustomEmailExplanation,
@@ -125,7 +127,7 @@ private extension DarkWebMonitorHomeView {
                                           info: "\(item.breachCounter)",
                                           hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                           isDetail: true,
-                                          action: {})
+                                          action: { router.navigate(to: .breachDetail(.protonAddress(item))) })
                 }
             }
         }
@@ -153,7 +155,7 @@ private extension DarkWebMonitorHomeView {
                                           info: "\(item.breaches?.count ?? 0)",
                                           hasBreaches: !viewModel.noAliasBreaches,
                                           isDetail: true,
-                                          action: {})
+                                          action: { router.navigate(to: .breachDetail(.alias(item))) })
                 }
             }
         }
@@ -253,7 +255,7 @@ private extension DarkWebMonitorHomeView {
     @ViewBuilder
     func customEmailRow(for email: CustomEmail) -> some View {
         if email.verified {
-            Button {} label: {
+            Button { router.navigate(to: .breachDetail(.customEmail(email))) } label: {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(email.email)
@@ -293,7 +295,9 @@ private extension DarkWebMonitorHomeView {
                         .scaledToFit()
                         .frame(height: 15)
                 }
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
         } else {
             HStack {
                 Image(uiImage: IconProvider.envelope)

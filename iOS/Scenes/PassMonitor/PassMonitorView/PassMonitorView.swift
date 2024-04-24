@@ -380,7 +380,7 @@ private extension PassMonitorView {
     }
 
     func breachedRow(_ breaches: UserBreaches) -> some View {
-        passMonitorRow(rowType: breaches.emailsCount > 0 ? .danger : .success,
+        passMonitorRow(rowType: viewModel.numberOfBreaches > 0 ? .danger : .success,
                        title: "Dark Web Monitoring",
                        subTitle: viewModel
                            .numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches) breaches detected" :

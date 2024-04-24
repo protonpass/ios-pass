@@ -158,12 +158,12 @@ private extension DarkWebMonitorHomeViewModel {
                     return
                 }
                 switch section {
-                case .aliases:
-                    return
+                case let .aliases(updatedAliasInfos):
+                    aliasInfos = updatedAliasInfos
                 case let .customEmails(updatedCustomEmails):
                     customEmails = updatedCustomEmails
-                case .protonAddresses:
-                    return
+                case let .protonAddresses(updatedUserBreaches):
+                    userBreaches = updatedUserBreaches
                 }
             }.store(in: &cancellables)
     }

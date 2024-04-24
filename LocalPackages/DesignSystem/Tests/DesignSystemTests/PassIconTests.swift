@@ -168,6 +168,8 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.passPlus
         _ = PassIcon.lightning
         _ = PassIcon.passSubscriptionBadge
+        _ = PassIcon.breachShieldResolved
+        _ = PassIcon.breachShieldUnresolved
 
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
