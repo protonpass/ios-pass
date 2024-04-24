@@ -253,44 +253,46 @@ private extension DarkWebMonitorHomeView {
     @ViewBuilder
     func customEmailRow(for email: CustomEmail) -> some View {
         if email.verified {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(email.email)
-                        .font(.body)
-                        .lineLimit(2)
-                        .foregroundStyle((email.isBreached ? PassColor
-                                .passwordInteractionNormMajor2 : PassColor.textNorm).toColor)
-                        .layoutPriority(1)
-                        .minimumScaleFactor(0.25)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            Button {} label: {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(email.email)
+                            .font(.body)
+                            .lineLimit(2)
+                            .foregroundStyle((email.isBreached ? PassColor
+                                    .passwordInteractionNormMajor2 : PassColor.textNorm).toColor)
+                            .layoutPriority(1)
+                            .minimumScaleFactor(0.25)
+                            .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Text(email
-                        .isBreached ? "Latest breach on \(email.lastBreachedTime?.lastestBreachDate ?? "")" :
-                        "No Breaches detected")
-                        .font(.footnote)
-                        .foregroundStyle((email.isBreached ? PassColor.textNorm : PassColor
-                                .cardInteractionNormMajor1).toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Text(email
+                            .isBreached ? "Latest breach on \(email.lastBreachedTime?.lastestBreachDate ?? "")" :
+                            "No Breaches detected")
+                            .font(.footnote)
+                            .foregroundStyle((email.isBreached ? PassColor.textNorm : PassColor
+                                    .cardInteractionNormMajor1).toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    Spacer()
+
+                    if email.isBreached {
+                        Text(verbatim: "\(email.breachCounter)")
+                            .font(.body)
+                            .fontWeight(.medium)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 11)
+                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                            .background(PassColor.passwordInteractionNormMinor1.toColor)
+                            .clipShape(Capsule())
+                    }
+
+                    Image(uiImage: IconProvider.chevronRight)
+                        .resizable()
+                        .foregroundStyle((email.isBreached ? PassColor.passwordInteractionNormMajor2 : PassColor
+                                .textNorm).toColor)
+                        .scaledToFit()
+                        .frame(height: 15)
                 }
-                Spacer()
-
-                if email.isBreached {
-                    Text(verbatim: "\(email.breachCounter)")
-                        .font(.body)
-                        .fontWeight(.medium)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 11)
-                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                        .background(PassColor.passwordInteractionNormMinor1.toColor)
-                        .clipShape(Capsule())
-                }
-
-                Image(uiImage: IconProvider.chevronRight)
-                    .resizable()
-                    .foregroundStyle((email.isBreached ? PassColor.passwordInteractionNormMajor2 : PassColor
-                            .textNorm).toColor)
-                    .scaledToFit()
-                    .frame(height: 15)
             }
         } else {
             HStack {
