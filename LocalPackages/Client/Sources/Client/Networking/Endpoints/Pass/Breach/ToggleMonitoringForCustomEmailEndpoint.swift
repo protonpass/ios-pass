@@ -31,7 +31,7 @@ struct ToggleMonitoringForCustomEmailEndpoint: Endpoint {
     var body: ToggleMonitoringRequest?
 
     init(customEmailId: String, request: ToggleMonitoringRequest) {
-        debugDescription = "Toggle the monitoring for a proton address"
+        debugDescription = "Toggle the monitoring for a custom email"
         path = "/pass/v1/breach/custom_email/\(customEmailId)/monitor"
         method = .put
         body = request
