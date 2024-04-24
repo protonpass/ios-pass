@@ -96,27 +96,47 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         closureVerifyCustomEmail()
     }
     // MARK: - getAllBreachesForEmail
-    public var getAllBreachesForEmailEmailIdThrowableError5: Error?
+    public var getAllBreachesForEmailEmailThrowableError5: Error?
     public var closureGetAllBreachesForEmail: () -> () = {}
     public var invokedGetAllBreachesForEmailfunction = false
     public var invokedGetAllBreachesForEmailCount = 0
-    public var invokedGetAllBreachesForEmailParameters: (emailId: String, Void)?
-    public var invokedGetAllBreachesForEmailParametersList = [(emailId: String, Void)]()
+    public var invokedGetAllBreachesForEmailParameters: (email: CustomEmail, Void)?
+    public var invokedGetAllBreachesForEmailParametersList = [(email: CustomEmail, Void)]()
     public var stubbedGetAllBreachesForEmailResult: EmailBreaches!
 
-    public func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches {
+    public func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches {
         invokedGetAllBreachesForEmailfunction = true
         invokedGetAllBreachesForEmailCount += 1
-        invokedGetAllBreachesForEmailParameters = (emailId, ())
-        invokedGetAllBreachesForEmailParametersList.append((emailId, ()))
-        if let error = getAllBreachesForEmailEmailIdThrowableError5 {
+        invokedGetAllBreachesForEmailParameters = (email, ())
+        invokedGetAllBreachesForEmailParametersList.append((email, ()))
+        if let error = getAllBreachesForEmailEmailThrowableError5 {
             throw error
         }
         closureGetAllBreachesForEmail()
         return stubbedGetAllBreachesForEmailResult
     }
+    // MARK: - getAllBreachesForProtonAddress
+    public var getAllBreachesForProtonAddressAddressThrowableError6: Error?
+    public var closureGetAllBreachesForProtonAddress: () -> () = {}
+    public var invokedGetAllBreachesForProtonAddressfunction = false
+    public var invokedGetAllBreachesForProtonAddressCount = 0
+    public var invokedGetAllBreachesForProtonAddressParameters: (address: ProtonAddress, Void)?
+    public var invokedGetAllBreachesForProtonAddressParametersList = [(address: ProtonAddress, Void)]()
+    public var stubbedGetAllBreachesForProtonAddressResult: EmailBreaches!
+
+    public func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches {
+        invokedGetAllBreachesForProtonAddressfunction = true
+        invokedGetAllBreachesForProtonAddressCount += 1
+        invokedGetAllBreachesForProtonAddressParameters = (address, ())
+        invokedGetAllBreachesForProtonAddressParametersList.append((address, ()))
+        if let error = getAllBreachesForProtonAddressAddressThrowableError6 {
+            throw error
+        }
+        closureGetAllBreachesForProtonAddress()
+        return stubbedGetAllBreachesForProtonAddressResult
+    }
     // MARK: - removeEmailFromBreachMonitoring
-    public var removeEmailFromBreachMonitoringEmailIdThrowableError6: Error?
+    public var removeEmailFromBreachMonitoringEmailIdThrowableError7: Error?
     public var closureRemoveEmailFromBreachMonitoring: () -> () = {}
     public var invokedRemoveEmailFromBreachMonitoringfunction = false
     public var invokedRemoveEmailFromBreachMonitoringCount = 0
@@ -128,13 +148,13 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedRemoveEmailFromBreachMonitoringCount += 1
         invokedRemoveEmailFromBreachMonitoringParameters = (emailId, ())
         invokedRemoveEmailFromBreachMonitoringParametersList.append((emailId, ()))
-        if let error = removeEmailFromBreachMonitoringEmailIdThrowableError6 {
+        if let error = removeEmailFromBreachMonitoringEmailIdThrowableError7 {
             throw error
         }
         closureRemoveEmailFromBreachMonitoring()
     }
     // MARK: - getBreachesForAlias
-    public var getBreachesForAliasSharedIdItemIdThrowableError7: Error?
+    public var getBreachesForAliasSharedIdItemIdThrowableError8: Error?
     public var closureGetBreachesForAlias: () -> () = {}
     public var invokedGetBreachesForAliasfunction = false
     public var invokedGetBreachesForAliasCount = 0
@@ -147,14 +167,14 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedGetBreachesForAliasCount += 1
         invokedGetBreachesForAliasParameters = (sharedId, itemId)
         invokedGetBreachesForAliasParametersList.append((sharedId, itemId))
-        if let error = getBreachesForAliasSharedIdItemIdThrowableError7 {
+        if let error = getBreachesForAliasSharedIdItemIdThrowableError8 {
             throw error
         }
         closureGetBreachesForAlias()
         return stubbedGetBreachesForAliasResult
     }
     // MARK: - resendEmailVerification
-    public var resendEmailVerificationEmailIdThrowableError8: Error?
+    public var resendEmailVerificationEmailIdThrowableError9: Error?
     public var closureResendEmailVerification: () -> () = {}
     public var invokedResendEmailVerificationfunction = false
     public var invokedResendEmailVerificationCount = 0
@@ -166,9 +186,103 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         invokedResendEmailVerificationCount += 1
         invokedResendEmailVerificationParameters = (emailId, ())
         invokedResendEmailVerificationParametersList.append((emailId, ()))
-        if let error = resendEmailVerificationEmailIdThrowableError8 {
+        if let error = resendEmailVerificationEmailIdThrowableError9 {
             throw error
         }
         closureResendEmailVerification()
+    }
+    // MARK: - markAliasAsResolved
+    public var markAliasAsResolvedSharedIdItemIdThrowableError10: Error?
+    public var closureMarkAliasAsResolved: () -> () = {}
+    public var invokedMarkAliasAsResolvedfunction = false
+    public var invokedMarkAliasAsResolvedCount = 0
+    public var invokedMarkAliasAsResolvedParameters: (sharedId: String, itemId: String)?
+    public var invokedMarkAliasAsResolvedParametersList = [(sharedId: String, itemId: String)]()
+
+    public func markAliasAsResolved(sharedId: String, itemId: String) async throws {
+        invokedMarkAliasAsResolvedfunction = true
+        invokedMarkAliasAsResolvedCount += 1
+        invokedMarkAliasAsResolvedParameters = (sharedId, itemId)
+        invokedMarkAliasAsResolvedParametersList.append((sharedId, itemId))
+        if let error = markAliasAsResolvedSharedIdItemIdThrowableError10 {
+            throw error
+        }
+        closureMarkAliasAsResolved()
+    }
+    // MARK: - markProtonAddressAsResolved
+    public var markProtonAddressAsResolvedAddressThrowableError11: Error?
+    public var closureMarkProtonAddressAsResolved: () -> () = {}
+    public var invokedMarkProtonAddressAsResolvedfunction = false
+    public var invokedMarkProtonAddressAsResolvedCount = 0
+    public var invokedMarkProtonAddressAsResolvedParameters: (address: ProtonAddress, Void)?
+    public var invokedMarkProtonAddressAsResolvedParametersList = [(address: ProtonAddress, Void)]()
+
+    public func markProtonAddressAsResolved(address: ProtonAddress) async throws {
+        invokedMarkProtonAddressAsResolvedfunction = true
+        invokedMarkProtonAddressAsResolvedCount += 1
+        invokedMarkProtonAddressAsResolvedParameters = (address, ())
+        invokedMarkProtonAddressAsResolvedParametersList.append((address, ()))
+        if let error = markProtonAddressAsResolvedAddressThrowableError11 {
+            throw error
+        }
+        closureMarkProtonAddressAsResolved()
+    }
+    // MARK: - markCustomEmailAsResolved
+    public var markCustomEmailAsResolvedEmailThrowableError12: Error?
+    public var closureMarkCustomEmailAsResolved: () -> () = {}
+    public var invokedMarkCustomEmailAsResolvedfunction = false
+    public var invokedMarkCustomEmailAsResolvedCount = 0
+    public var invokedMarkCustomEmailAsResolvedParameters: (email: CustomEmail, Void)?
+    public var invokedMarkCustomEmailAsResolvedParametersList = [(email: CustomEmail, Void)]()
+    public var stubbedMarkCustomEmailAsResolvedResult: CustomEmail!
+
+    public func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
+        invokedMarkCustomEmailAsResolvedfunction = true
+        invokedMarkCustomEmailAsResolvedCount += 1
+        invokedMarkCustomEmailAsResolvedParameters = (email, ())
+        invokedMarkCustomEmailAsResolvedParametersList.append((email, ()))
+        if let error = markCustomEmailAsResolvedEmailThrowableError12 {
+            throw error
+        }
+        closureMarkCustomEmailAsResolved()
+        return stubbedMarkCustomEmailAsResolvedResult
+    }
+    // MARK: - toggleMonitoringForAddressShouldMonitor
+    public var toggleMonitoringForAddressShouldMonitorThrowableError13: Error?
+    public var closureToggleMonitoringForAddressShouldMonitorAsync13: () -> () = {}
+    public var invokedToggleMonitoringForAddressShouldMonitorAsync13 = false
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncCount13 = 0
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParameters13: (address: ProtonAddress, shouldMonitor: Bool)?
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList13 = [(address: ProtonAddress, shouldMonitor: Bool)]()
+
+    public func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
+        invokedToggleMonitoringForAddressShouldMonitorAsync13 = true
+        invokedToggleMonitoringForAddressShouldMonitorAsyncCount13 += 1
+        invokedToggleMonitoringForAddressShouldMonitorAsyncParameters13 = (address, shouldMonitor)
+        invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList13.append((address, shouldMonitor))
+        if let error = toggleMonitoringForAddressShouldMonitorThrowableError13 {
+            throw error
+        }
+        closureToggleMonitoringForAddressShouldMonitorAsync13()
+    }
+    // MARK: - toggleMonitoringForEmailShouldMonitor
+    public var toggleMonitoringForEmailShouldMonitorThrowableError14: Error?
+    public var closureToggleMonitoringForEmailShouldMonitorAsync14: () -> () = {}
+    public var invokedToggleMonitoringForEmailShouldMonitorAsync14 = false
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncCount14 = 0
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParameters14: (email: CustomEmail, shouldMonitor: Bool)?
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList14 = [(email: CustomEmail, shouldMonitor: Bool)]()
+    public var stubbedToggleMonitoringForEmailShouldMonitorAsyncResult14: CustomEmail!
+
+    public func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
+        invokedToggleMonitoringForEmailShouldMonitorAsync14 = true
+        invokedToggleMonitoringForEmailShouldMonitorAsyncCount14 += 1
+        invokedToggleMonitoringForEmailShouldMonitorAsyncParameters14 = (email, shouldMonitor)
+        invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList14.append((email, shouldMonitor))
+        if let error = toggleMonitoringForEmailShouldMonitorThrowableError14 {
+            throw error
+        }
+        closureToggleMonitoringForEmailShouldMonitorAsync14()
+        return stubbedToggleMonitoringForEmailShouldMonitorAsyncResult14
     }
 }

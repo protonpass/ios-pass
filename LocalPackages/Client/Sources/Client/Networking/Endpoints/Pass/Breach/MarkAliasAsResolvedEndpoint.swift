@@ -1,6 +1,6 @@
 //
-// DarkWebDataSectionUpdate.swift
-// Proton Pass - Created on 22/04/2024.
+// MarkAliasAsResolvedEndpoint.swift
+// Proton Pass - Created on 23/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,12 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Foundation
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public enum DarkWebDataSectionUpdate: Sendable, Equatable {
-    case customEmails([CustomEmail])
-    case protonAddresses(UserBreaches)
-    case aliases([AliasMonitorInfo])
+struct MarkAliasAsResolvedEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
+
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+
+    init(sharedId: String, itemId: String) {
+        debugDescription = "Mark an alias breach as resolved"
+        path = "/pass/v1/share/\(sharedId)/alias/\(itemId)/breaches/resolved"
+        method = .post
+    }
 }
