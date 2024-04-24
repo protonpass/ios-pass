@@ -27,7 +27,7 @@ import SwiftUI
 enum BreachDetailsInfo: Equatable, Hashable {
     case alias(AliasMonitorInfo)
     case customEmail(CustomEmail)
-    case portonAddress(ProtonAddress)
+    case protonAddress(ProtonAddress)
 }
 
 enum GeneralRouterDestination: Hashable {
@@ -42,11 +42,14 @@ enum GeneralRouterDestination: Hashable {
 
 enum GeneralSheetDestination: Identifiable, Hashable {
     case addCustomEmail(CustomEmail?)
+    case breachDetail(Breach)
 
     var id: String {
         switch self {
         case .addCustomEmail:
             "addCustomEmail"
+        case .breachDetail:
+            "breachDetail"
         }
     }
 
@@ -98,7 +101,7 @@ extension View {
             case let .aliasesList(items):
                 Text(verbatim: "Upcomming screen")
             case let .breachDetail(info):
-                Text(verbatim: "Upcomming screen")
+                DetailMonitoredItemView(viewModel: .init(infos: info))
             }
         }
     }
@@ -108,6 +111,8 @@ extension View {
             switch destination {
             case let .addCustomEmail(email):
                 AddCustomEmailView(viewModel: .init(email: email))
+            case let .breachDetail(breach):
+                BreachDetailView(breach: breach)
             }
         }
     }

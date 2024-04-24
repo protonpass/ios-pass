@@ -1,6 +1,6 @@
 //
-// DarkWebDataSectionUpdate.swift
-// Proton Pass - Created on 22/04/2024.
+// GetAllBreachesForProtonAddressEndpoint.swift
+// Proton Pass - Created on 23/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,12 +17,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Foundation
+import Entities
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public enum DarkWebDataSectionUpdate: Sendable, Equatable {
-    case customEmails([CustomEmail])
-    case protonAddresses(UserBreaches)
-    case aliases([AliasMonitorInfo])
+struct GetAllBreachesForProtonAddressEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = BreachesForCustomEmailResponse
+
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+
+    init(addressId: String) {
+        debugDescription = "Get breaches for a proton address"
+        path = "/pass/v1/breach/address/\(addressId)/breaches"
+        method = .get
+    }
 }

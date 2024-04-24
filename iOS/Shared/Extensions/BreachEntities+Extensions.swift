@@ -54,7 +54,7 @@ extension [AliasMonitorInfo] {
     }
 }
 
-private extension String {
+public extension String {
     var breachDate: String {
         let isoFormatter = DateFormatter()
         isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
