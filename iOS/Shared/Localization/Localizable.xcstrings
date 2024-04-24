@@ -49560,6 +49560,16 @@
         }
       }
     },
+    "No breaches detected for" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No breaches detected for"
+          }
+        }
+      }
+    },
     "No logs" : {
       "localizations" : {
         "be" : {
