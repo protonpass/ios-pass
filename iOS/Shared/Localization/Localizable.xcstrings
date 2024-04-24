@@ -32737,6 +32737,16 @@
         }
       }
     },
+    "Excluded from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded from monitoring"
+          }
+        }
+      }
+    },
     "Excluded items" : {
       "localizations" : {
         "be" : {
