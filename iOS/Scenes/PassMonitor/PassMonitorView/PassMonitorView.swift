@@ -52,7 +52,17 @@ enum SecureRowType {
         case .success:
             PassColor.cardInteractionNormMajor1
         default:
-            .clear
+            PassColor.loginInteractionNormMajor1
+        }
+    }
+
+    /// Icon used in item detail pages
+    var detailIcon: String? {
+        switch self {
+        case .info:
+            "exclamationmark.square.fill"
+        default:
+            icon
         }
     }
 
@@ -68,6 +78,16 @@ enum SecureRowType {
             PassColor.backgroundNorm
         case .upsell:
             PassColor.interactionNormMinor2
+        }
+    }
+
+    /// Background used in item detail pages
+    var detailBackground: UIColor {
+        switch self {
+        case .info:
+            PassColor.loginInteractionNormMinor2
+        default:
+            background
         }
     }
 
@@ -147,6 +167,7 @@ struct PassMonitorView: View {
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .animation(.default, value: viewModel.breaches)
+            .animation(.default, value: viewModel.weaknessStats)
             .showSpinner(viewModel.updatingSentinel)
             .sheet(isPresented: $viewModel.showSentinelSheet) {
                 if #available(iOS 16.4, *) {

@@ -355,7 +355,7 @@ private extension LogInDetailView {
     func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
         let rowType = weakness.secureRowType
         HStack(spacing: DesignConstant.sectionPadding) {
-            if let iconName = rowType.icon {
+            if let iconName = rowType.detailIcon {
                 VStack {
                     Image(systemName: iconName)
                         .resizable()
@@ -385,7 +385,7 @@ private extension LogInDetailView {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: rowType.background,
+        .roundedDetailSection(backgroundColor: rowType.detailBackground,
                               borderColor: rowType.border)
     }
 
