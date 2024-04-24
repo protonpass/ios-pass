@@ -28,7 +28,7 @@ struct CreateEditVaultView: View {
     @FocusState private var isFocusedOnTitle
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 24) {
                 if !viewModel.canCreateOrEdit {
                     vaultsLimitMessage
@@ -47,7 +47,6 @@ struct CreateEditVaultView: View {
             .ignoresSafeArea(.keyboard)
             .gesture(DragGesture().onChanged { _ in isFocusedOnTitle = false })
         }
-        .navigationViewStyle(.stack)
         .onAppear {
             isFocusedOnTitle = true
         }

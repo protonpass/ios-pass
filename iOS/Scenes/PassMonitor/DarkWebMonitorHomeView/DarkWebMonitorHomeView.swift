@@ -60,6 +60,9 @@ private extension DarkWebMonitorHomeView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.customEmails)
+        .animation(.default, value: viewModel.suggestedEmail)
+        .animation(.default, value: viewModel.aliasInfos)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
@@ -206,20 +209,15 @@ private extension DarkWebMonitorHomeView {
                         }
                         Spacer()
 
-                        Button {
+                        CapsuleTextButton(title: #localized("Add"),
+                                          titleColor: PassColor.interactionNormMajor2,
+                                          backgroundColor: PassColor.interactionNormMinor1) {
                             Task {
                                 let customEmail = await viewModel.addCustomEmail(email: item.email)
-                                router.present(sheet: .addCustomEmail(customEmail: customEmail, isMonitored: true))
+                                router.present(sheet: .addCustomEmail(customEmail))
                             }
-                        } label: {
-                            Text("Add")
-                                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 15)
                         }
-                        .buttonStyle(.plain)
-                        .background(PassColor.interactionNormMinor1.toColor)
-                        .clipShape(Capsule())
+                        .fixedSize(horizontal: true, vertical: true)
                     }
                     .padding(.vertical, 12)
                 }
@@ -239,14 +237,12 @@ private extension DarkWebMonitorHomeView {
                 }
                 .buttonStyle(.plain)
                 Spacer()
-                Button { router.present(sheet: .addCustomEmail(customEmail: nil, isMonitored: false)) } label: {
-                    CircleButton(icon: IconProvider.plus,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Add custom email address",
-                                 type: .small)
-                }
-                .buttonStyle(.plain)
+                CircleButton(icon: IconProvider.plus,
+                             iconColor: PassColor.interactionNormMajor2,
+                             backgroundColor: PassColor.interactionNormMinor1,
+                             accessibilityLabel: "Add custom email address",
+                             type: .small,
+                             action: { router.present(sheet: .addCustomEmail(nil)) })
             }
             .font(.callout)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -328,7 +324,7 @@ private extension DarkWebMonitorHomeView {
                 Spacer()
 
                 Menu(content: {
-                    Button { router.present(sheet: .addCustomEmail(customEmail: email, isMonitored: true))
+                    Button { router.present(sheet: .addCustomEmail(email))
                     } label: {
                         Label(title: { Text("Verify") }, icon: { Image(uiImage: IconProvider.paperPlane) })
                     }

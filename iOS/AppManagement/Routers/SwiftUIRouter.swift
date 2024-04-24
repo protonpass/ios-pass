@@ -18,6 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable:next todo
+// TODO: Remove later on
+// periphery:ignore:all
 import Entities
 import SwiftUI
 
@@ -38,7 +41,7 @@ enum GeneralRouterDestination: Hashable {
 }
 
 enum GeneralSheetDestination: Identifiable, Hashable {
-    case addCustomEmail(customEmail: CustomEmail?, isMonitored: Bool)
+    case addCustomEmail(CustomEmail?)
     case breachDetail(Breach)
 
     var id: String {
@@ -106,8 +109,8 @@ extension View {
     func sheetDestinations(sheetDestination: Binding<GeneralSheetDestination?>) -> some View {
         sheet(item: sheetDestination) { destination in
             switch destination {
-            case let .addCustomEmail(email, isMonitored):
-                AddCustomEmailView(viewModel: .init(email: email, isMonitored: isMonitored))
+            case let .addCustomEmail(email):
+                AddCustomEmailView(viewModel: .init(email: email))
             case let .breachDetail(breach):
                 BreachDetailView(viewModel: .init(breach: breach))
             }

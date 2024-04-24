@@ -69,7 +69,7 @@ struct FullScreenView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 PassColor.backgroundNorm.toColor
                     .ignoresSafeArea()
@@ -89,7 +89,6 @@ struct FullScreenView: View {
             .animation(.default, value: mode)
             .toolbar { toolbarContent }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
         .onAppear {
             originalBrightness = UIScreen.main.brightness
