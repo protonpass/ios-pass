@@ -30,7 +30,7 @@ import SwiftUI
 struct DetailMonitoredItemView: View {
     @StateObject var viewModel: DetailMonitoredItemViewModel
     @Environment(\.dismiss) private var dismiss
-    var router = resolve(\RouterContainer.darkWebRouter)
+    private let router = resolve(\RouterContainer.darkWebRouter)
 
     var body: some View {
         mainContainer
@@ -66,25 +66,23 @@ private extension DetailMonitoredItemView {
     var headerInfo: some View {
         VStack(alignment: .center, spacing: DesignConstant.sectionPadding) {
             if let numberOfBreaches = viewModel.numberOfBreaches, let email = viewModel.email {
+                let isNotBreached = numberOfBreaches == 0
                 Text(verbatim: "\(numberOfBreaches)")
                     .font(.title)
-                    .foregroundStyle((viewModel.numberOfBreaches == 0 ? PassColor.textNorm : PassColor
+                    .foregroundStyle((isNotBreached ? PassColor.textNorm : PassColor
                             .passwordInteractionNormMajor2).toColor)
                     .frame(height: 41)
                     .padding(16)
-                    .background((numberOfBreaches == 0 ? PassColor.backgroundMedium : PassColor
+                    .background((isNotBreached ? PassColor.backgroundMedium : PassColor
                             .passwordInteractionNormMinor2).toColor)
                     .clipShape(Circle())
                 VStack(alignment: .center, spacing: 5) {
-                    Text(numberOfBreaches == 0 ? "No breaches detected for" : "Breach detected for")
-                        .font(.body)
+                    Text(isNotBreached ? "No breaches detected for" : "Breach detected for")
                         .fontWeight(.medium)
                         .foregroundStyle((viewModel.numberOfBreaches == 0 ? PassColor
                                 .cardInteractionNormMajor1 : PassColor
                                 .passwordInteractionNormMajor2).toColor)
                     Text(email)
-                        .font(.body)
-                        .fontWeight(.regular)
                         .foregroundStyle(PassColor.textNorm.toColor)
                 }
 
@@ -92,6 +90,7 @@ private extension DetailMonitoredItemView {
                     CapsuleTextButton(title: #localized("Mark as resolved"),
                                       titleColor: PassColor.interactionNormMajor2,
                                       backgroundColor: PassColor.interactionNormMinor1,
+                                      height: 48,
                                       action: { viewModel.markAsResolved() })
                 }
             }
@@ -124,12 +123,7 @@ private extension DetailMonitoredItemView {
                 breachRow(breach: breach, resolved: false)
             }
         } header: {
-            Text("Breaches")
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 16)
+            createSectionHeader(title: "Breaches")
         }
     }
 }
@@ -141,12 +135,7 @@ private extension DetailMonitoredItemView {
                 breachRow(breach: breach, resolved: true)
             }
         } header: {
-            Text("Resolved breaches")
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 16)
+            createSectionHeader(title: "Resolved breaches")
         }
     }
 }
@@ -158,12 +147,7 @@ private extension DetailMonitoredItemView {
                 itemRow(for: item)
             }
         } header: {
-            Text("Used in")
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 16)
+            createSectionHeader(title: "Used in")
         }
     }
 }
@@ -182,16 +166,11 @@ private extension DetailMonitoredItemView {
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(breach.name /* source.domain ?? "<Unknown>" */ )
                         .font(.body)
-                        .lineLimit(1)
                         .foregroundStyle(PassColor.textNorm.toColor)
-                        .minimumScaleFactor(0.5)
 
                     Text(breach.publishedAt.breachDate)
                         .font(.callout)
-                        .lineLimit(1)
                         .foregroundStyle(PassColor.textWeak.toColor)
-                        .layoutPriority(1)
-                        .minimumScaleFactor(0.25)
                 }
                 .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
                 .contentShape(Rectangle())
@@ -207,6 +186,18 @@ private extension DetailMonitoredItemView {
                            description: uiModel.description)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+}
+
+// MARK: - Utils
+
+private extension DetailMonitoredItemView {
+    func createSectionHeader(title: LocalizedStringKey) -> some View {
+        Text(title)
+            .fontWeight(.bold)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 16)
     }
 }
 
