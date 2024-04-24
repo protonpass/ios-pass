@@ -27,7 +27,7 @@ import SwiftUI
 enum BreachDetailsInfo: Equatable, Hashable {
     case alias(AliasMonitorInfo)
     case customEmail(CustomEmail)
-    case portonAddress(ProtonAddress)
+    case protonAddress(ProtonAddress)
 }
 
 enum GeneralRouterDestination: Hashable {

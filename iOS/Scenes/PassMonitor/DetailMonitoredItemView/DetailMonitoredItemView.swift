@@ -34,6 +34,12 @@ struct DetailMonitoredItemView: View {
 
     var body: some View {
         mainContainer
+            .onChange(of: viewModel.shouldDismiss) { value in
+                guard value else {
+                    return
+                }
+                dismiss()
+            }
     }
 }
 
@@ -50,6 +56,8 @@ private extension DetailMonitoredItemView {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
+        .toolbarBackground(PassColor.backgroundNorm.toColor,
+                           for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -193,7 +201,7 @@ private extension DetailMonitoredItemView {
     }
 
     func itemRow(for uiModel: ItemUiModel) -> some View {
-        Button {} label: {
+        Button { viewModel.goToDetailPage(item: uiModel) } label: {
             GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: uiModel.thumbnailData()) },
                            title: uiModel.title,
                            description: uiModel.description)
@@ -217,9 +225,10 @@ private extension DetailMonitoredItemView {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             Menu(content: {
-                Button { /* outer.present(sheet: .addCustomEmail(customEmail: email, isMonitored: true)) */
-                } label: {
-                    Label(title: { Text("Disable monitoring") }, icon: { Image(uiImage: IconProvider.paperPlane) })
+                Button { viewModel.toggleMonitoring() } label: {
+                    Label(title: { Text(viewModel.isMonitored ? "Disable monitoring" : "Enable monitoring") },
+                          icon: { Image(uiImage: viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye)
+                          })
                 }
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,

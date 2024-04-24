@@ -31,14 +31,30 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     @Published private(set) var unresolvedBreaches: [Breach]?
     @Published private(set) var resolvedBreaches: [Breach]?
     @Published private(set) var linkedItems: [ItemUiModel]?
+    @Published private(set) var shouldDismiss = false
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let getItemLinkedToBreach = resolve(\SharedUseCasesContainer.getItemLinkedToBreach)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let toggleMonitoringForAlias = resolve(\UseCasesContainer.toggleMonitoringForAlias)
+    private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
+    private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)
 
     var isFullyResolved: Bool {
         unresolvedBreaches?.isEmpty ?? true
+    }
+
+    var isMonitored: Bool {
+        switch infos {
+        case let .alias(aliasInfos):
+            !aliasInfos.alias.item.skipHealthCheck
+        case let .customEmail(email):
+            !email.flags.isFlagActive(.skipHealthCheckOrMonitoring)
+        case let .protonAddress(address):
+            !address.flags.isFlagActive(.skipHealthCheckOrMonitoring)
+        }
     }
 
     private let infos: BreachDetailsInfo
@@ -47,9 +63,6 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
         self.infos = infos
         setUp()
     }
-
-    // swiftlint:disable:next todo
-    // TODO: enable disable monitoring for email
 
     func markAsResolved() {
         Task { [weak self] in
@@ -67,10 +80,50 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
                 case let .customEmail(email):
                     _ = try await passMonitorRepository.markCustomEmailAsResolved(email: email)
                     try await fetchCustomEmailInfos(email: email)
-                case let .portonAddress(address):
+                case let .protonAddress(address):
                     try await passMonitorRepository.markProtonAddressAsResolved(address: address)
                     try await fetchAddressInfos(address: address)
                 }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func goToDetailPage(item: ItemUiModel) {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                guard let content = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                            itemId: item.itemId) else {
+                    return
+                }
+                router.present(for: .itemDetail(content, automaticDisplay: true, showSecurityIssues: true))
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func toggleMonitoring() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                switch infos {
+                case let .alias(aliasInfos):
+                    try await toggleMonitoringForAlias(alias: aliasInfos.alias)
+                case let .customEmail(email):
+                    _ = try await toggleMonitoringForCustomEmail(email: email)
+                case let .protonAddress(address):
+                    try await toggleMonitoringForProtonAddress(address: address)
+                }
+                shouldDismiss = true
             } catch {
                 handle(error: error)
             }
@@ -92,7 +145,7 @@ private extension DetailMonitoredItemViewModel {
                     try await fetchAliasInfos(alias: aliasInfos.alias)
                 case let .customEmail(email):
                     try await fetchCustomEmailInfos(email: email)
-                case let .portonAddress(address):
+                case let .protonAddress(address):
                     try await fetchAddressInfos(address: address)
                 }
                 if let email = infos.email {
@@ -105,19 +158,19 @@ private extension DetailMonitoredItemViewModel {
     }
 
     func fetchCustomEmailInfos(email: CustomEmail) async throws {
-        let brechesInfos = try await passMonitorRepository.getAllBreachesForEmail(email: email)
-        updateInfos(email: email.email, breachesInfos: brechesInfos)
+        let breachesInfos = try await passMonitorRepository.getAllBreachesForEmail(email: email)
+        updateInfos(email: email.email, breachesInfos: breachesInfos)
     }
 
     func fetchAddressInfos(address: ProtonAddress) async throws {
-        let brechesInfos = try await passMonitorRepository.getAllBreachesForProtonAddress(address: address)
-        updateInfos(email: address.email, breachesInfos: brechesInfos)
+        let breachesInfos = try await passMonitorRepository.getAllBreachesForProtonAddress(address: address)
+        updateInfos(email: address.email, breachesInfos: breachesInfos)
     }
 
     func fetchAliasInfos(alias: ItemContent) async throws {
-        let brechesInfos = try await passMonitorRepository.getBreachesForAlias(sharedId: alias.shareId,
-                                                                               itemId: alias.itemId)
-        updateInfos(email: alias.item.aliasEmail ?? "", breachesInfos: brechesInfos)
+        let breachesInfos = try await passMonitorRepository.getBreachesForAlias(sharedId: alias.shareId,
+                                                                                itemId: alias.itemId)
+        updateInfos(email: alias.item.aliasEmail ?? "", breachesInfos: breachesInfos)
     }
 
     func updateInfos(email: String, breachesInfos: EmailBreaches) {
@@ -134,13 +187,6 @@ private extension DetailMonitoredItemViewModel {
 }
 
 extension [Breach] {
-    var areAllResolved: Bool {
-        for breach in self where !breach.isResolved {
-            return false
-        }
-        return true
-    }
-
     var allResolvedBreaches: [Breach] {
         filter(\.isResolved)
     }
@@ -157,7 +203,7 @@ private extension BreachDetailsInfo {
             aliasInfos.alias.item.aliasEmail
         case let .customEmail(email):
             email.email
-        case let .portonAddress(address):
+        case let .protonAddress(address):
             address.email
         }
     }

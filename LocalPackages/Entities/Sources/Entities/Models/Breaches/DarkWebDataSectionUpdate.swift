@@ -23,6 +23,6 @@ import Foundation
 
 public enum DarkWebDataSectionUpdate: Sendable, Equatable {
     case customEmails([CustomEmail])
-    case protonAddresses
-    case aliases
+    case protonAddresses(UserBreaches)
+    case aliases([AliasMonitorInfo])
 }
