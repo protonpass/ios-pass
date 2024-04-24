@@ -54,7 +54,6 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
     func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches
     func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches
-
     func markAliasAsResolved(sharedId: String, itemId: String) async throws
     func markProtonAddressAsResolved(address: ProtonAddress) async throws
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail
