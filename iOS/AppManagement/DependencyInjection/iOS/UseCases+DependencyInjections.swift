@@ -449,7 +449,7 @@ extension UseCasesContainer {
 
     var toggleMonitoringForAlias: Factory<ToggleMonitoringForAliasUseCase> {
         self { ToggleMonitoringForAlias(repository: self.passMonitorRepository,
-                                        getAllAliasMonitorInfoUseCase: self.getAllAliasMonitorInfos()) }
+                                        getAllAliasMonitorInfo: self.getAllAliasMonitorInfos()) }
     }
 
     var toggleMonitoringForCustomEmail: Factory<ToggleMonitoringForCustomEmailUseCase> {
@@ -458,6 +458,11 @@ extension UseCasesContainer {
 
     var toggleMonitoringForProtonAddress: Factory<ToggleMonitoringForProtonAddressUseCase> {
         self { ToggleMonitoringForProtonAddress(repository: self.passMonitorRepository) }
+    }
+
+    var getItemsLinkedToBreach: Factory<GetItemsLinkedToBreachUseCase> {
+        self { GetItemsLinkedToBreach(symmetricKeyProvider: self.symmetricKeyProvider,
+                                      repository: self.itemRepository) }
     }
 }
 
