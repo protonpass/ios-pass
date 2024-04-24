@@ -58,6 +58,8 @@ enum SheetDismissal {
     case all
 }
 
+extension PasswordChangeModule.PasswordChangeMode: @unchecked Sendable {}
+
 enum SheetDestination: Equatable, Hashable, Sendable {
     case sharingFlow(SheetDismissal)
     case manageShareVault(Vault, SheetDismissal)

@@ -21,7 +21,7 @@
 import Foundation
 
 @MainActor
-public protocol PullToRefreshable: AnyObject, SyncEventLoopPullToRefreshDelegate {
+public protocol PullToRefreshable: AnyObject, Sendable, SyncEventLoopPullToRefreshDelegate {
     var syncEventLoop: SyncEventLoop { get }
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>? { get set }
 

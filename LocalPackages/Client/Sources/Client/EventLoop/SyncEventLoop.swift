@@ -96,14 +96,14 @@ public protocol SyncEventLoopProtocol {
 }
 
 public extension SyncEventLoop {
-    struct AdditionalTask {
+    struct AdditionalTask: Sendable {
         /// Uniquely identiable label between tasks, each task should have a unique label
         /// This is to help the event loop adding/removing tasks
         let label: String
         /// The execution block of the task
-        let task: () async throws -> Void
+        let task: @Sendable () async throws -> Void
 
-        public init(label: String, task: @escaping () async throws -> Void) {
+        public init(label: String, task: @Sendable @escaping () async throws -> Void) {
             self.label = label
             self.task = task
         }
