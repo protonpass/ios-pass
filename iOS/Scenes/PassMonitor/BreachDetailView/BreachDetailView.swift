@@ -74,7 +74,6 @@ private extension BreachDetailView {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text("Your info was in a data breach and found on **\(viewModel.breach.publishedAt.breachDate)**")
-                    .font(.body)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -89,8 +88,9 @@ private extension BreachDetailView {
                 HStack {
                     ForEach(viewModel.breach.exposedData, id: \.self) { item in
                         Text(item.name)
+                            .font(.caption)
                             .foregroundStyle(PassColor.textInvert.toColor)
-                            .padding(.vertical, 10)
+                            .padding(.vertical, 7)
                             .padding(.horizontal, 15)
                             .background(PassColor.signalDanger.toColor)
                             .clipShape(Capsule())
@@ -99,12 +99,7 @@ private extension BreachDetailView {
                 }
             }
         } header: {
-            Text("Your exposed information")
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 16)
+            createSectionHeader(title: "Your exposed information")
         }
     }
 }
@@ -115,7 +110,6 @@ private extension BreachDetailView {
             VStack(spacing: 12) {
                 VStack {
                     Text("Email address")
-                        .font(.body)
                         .fontWeight(.thin)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -127,7 +121,6 @@ private extension BreachDetailView {
                 if let passwordLastChars = viewModel.breach.passwordLastChars {
                     VStack {
                         Text("Password")
-                            .font(.body)
                             .fontWeight(.thin)
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -139,12 +132,7 @@ private extension BreachDetailView {
                 }
             }
         } header: {
-            Text("Details")
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 16)
+            createSectionHeader(title: "Details")
         }
     }
 }
@@ -155,7 +143,6 @@ private extension BreachDetailView {
             VStack(spacing: 12) {
                 ForEach(viewModel.breach.actions, id: \.self) { item in
                     Text(item.name)
-                        .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(DesignConstant.sectionPadding)
@@ -164,12 +151,7 @@ private extension BreachDetailView {
                 }
             }
         } header: {
-            Text("Recommended actions")
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 16)
+            createSectionHeader(title: "Recommended actions")
         }
     }
 }
@@ -177,10 +159,22 @@ private extension BreachDetailView {
 private extension BreachDetailView {
     var footer: some View {
         Text("Your Proton Account information remains secure and encrypted. [Learn more]()")
-            .font(.body)
-            .fontWeight(.thin)
+            .font(.callout)
+            .fontWeight(.regular)
             .foregroundStyle(PassColor.textWeak.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+// MARK: - utils
+
+private extension BreachDetailView {
+    func createSectionHeader(title: LocalizedStringKey) -> some View {
+        Text(title)
+            .fontWeight(.bold)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 16)
     }
 }
 

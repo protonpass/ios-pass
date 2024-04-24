@@ -23,17 +23,17 @@
 import Client
 import Entities
 
-public protocol GetItemLinkedToBreachUseCase: Sendable {
+public protocol GetItemsLinkedToBreachUseCase: Sendable {
     func execute(email: String) async throws -> [ItemUiModel]
 }
 
-public extension GetItemLinkedToBreachUseCase {
+public extension GetItemsLinkedToBreachUseCase {
     func callAsFunction(email: String) async throws -> [ItemUiModel] {
         try await execute(email: email)
     }
 }
 
-public final class GetItemLinkedToBreach: GetItemLinkedToBreachUseCase {
+public final class GetItemsLinkedToBreach: GetItemsLinkedToBreachUseCase {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let repository: any ItemRepositoryProtocol
 

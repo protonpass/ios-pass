@@ -35,19 +35,19 @@ public extension ToggleMonitoringForAliasUseCase {
 
 public final class ToggleMonitoringForAlias: ToggleMonitoringForAliasUseCase {
     private let repository: any PassMonitorRepositoryProtocol
-    private let getAllAliasMonitorInfoUseCase: any GetAllAliasMonitorInfoUseCase
+    private let getAllAliasMonitorInfo: any GetAllAliasMonitorInfoUseCase
 
     public init(repository: any PassMonitorRepositoryProtocol,
-                getAllAliasMonitorInfoUseCase: any GetAllAliasMonitorInfoUseCase) {
+                getAllAliasMonitorInfo: any GetAllAliasMonitorInfoUseCase) {
         self.repository = repository
-        self.getAllAliasMonitorInfoUseCase = getAllAliasMonitorInfoUseCase
+        self.getAllAliasMonitorInfo = getAllAliasMonitorInfo
     }
 
     public func execute(alias: ItemContent) async throws {
         try await repository.toggleMonitoringForAlias(sharedId: alias.shareId,
                                                       itemId: alias.itemId,
                                                       shouldMonitor: !alias.item.skipHealthCheck)
-        let aliasesMonitorInfos = try await getAllAliasMonitorInfoUseCase()
+        let aliasesMonitorInfos = try await getAllAliasMonitorInfo()
         repository.darkWebDataSectionUpdate.send(.aliases(aliasesMonitorInfos))
     }
 }

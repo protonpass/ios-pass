@@ -36,7 +36,7 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let getItemLinkedToBreach = resolve(\SharedUseCasesContainer.getItemLinkedToBreach)
+    private let getItemsLinkedToBreach = resolve(\UseCasesContainer.getItemsLinkedToBreach)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let toggleMonitoringForAlias = resolve(\UseCasesContainer.toggleMonitoringForAlias)
     private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
@@ -149,7 +149,7 @@ private extension DetailMonitoredItemViewModel {
                     try await fetchAddressInfos(address: address)
                 }
                 if let email = infos.email {
-                    linkedItems = try await getItemLinkedToBreach(email: email)
+                    linkedItems = try await getItemsLinkedToBreach(email: email)
                 }
             } catch {
                 handle(error: error)
@@ -176,7 +176,7 @@ private extension DetailMonitoredItemViewModel {
     func updateInfos(email: String, breachesInfos: EmailBreaches) {
         self.email = email
         numberOfBreaches = breachesInfos.count
-        unresolvedBreaches = breachesInfos.breaches.allUnresolvedResolved
+        unresolvedBreaches = breachesInfos.breaches.allUnresolvedBreaches
         resolvedBreaches = breachesInfos.breaches.allResolvedBreaches
     }
 
@@ -191,7 +191,7 @@ extension [Breach] {
         filter(\.isResolved)
     }
 
-    var allUnresolvedResolved: [Breach] {
+    var allUnresolvedBreaches: [Breach] {
         filter { !$0.isResolved }
     }
 }
