@@ -84,7 +84,7 @@ private extension DetailMonitoredItemView {
                     CapsuleTextButton(title: #localized("Mark as resolved"),
                                       titleColor: PassColor.interactionNormMajor2,
                                       backgroundColor: PassColor.interactionNormMinor1,
-                                      action: {})
+                                      action: { viewModel.markAsResolved() })
                 }
             }
         }
