@@ -44,8 +44,4 @@ public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiabl
     public var id: String {
         customEmailID
     }
-
-    public var isBreached: Bool {
-        breachCounter > 0
-    }
 }

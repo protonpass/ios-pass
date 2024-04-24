@@ -23,7 +23,7 @@ import Entities
 import SwiftUI
 
 struct MonitorExcludedEmailView: View {
-    let address: ProtonAddress
+    let address: Breachable
     let action: () -> Void
 
     var body: some View {

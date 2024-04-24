@@ -41,8 +41,4 @@ public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifia
     public var id: String {
         addressID
     }
-
-    public var isBreached: Bool {
-        breachCounter > 0
-    }
 }

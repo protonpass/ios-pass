@@ -22,10 +22,16 @@
 import Foundation
 
 public protocol Breachable {
+    var email: String { get }
+    var breachCounter: Int { get }
     var lastBreachTime: Int? { get }
 }
 
 public extension Breachable {
+    var isBreached: Bool {
+        breachCounter > 0
+    }
+
     var lastBreachDate: String? {
         guard let lastBreachTime else { return nil }
         let formatter = DateFormatter()

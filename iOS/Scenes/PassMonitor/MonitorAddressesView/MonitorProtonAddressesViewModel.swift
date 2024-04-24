@@ -63,8 +63,7 @@ extension MonitorProtonAddressesViewModel {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                let request = UpdateMonitorStateRequest.protonAddress(!access.monitor.protonAddress)
-                _ = try await accessRepository.updatePassMonitorState(request)
+                try await accessRepository.updateProtonAddressesMonitor(!access.monitor.protonAddress)
                 try await refreshAccessAndMonitorState()
             } catch {
                 handle(error: error)
@@ -75,15 +74,6 @@ extension MonitorProtonAddressesViewModel {
 
 private extension MonitorProtonAddressesViewModel {
     func setUp() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                access = try await accessRepository.getAccess()
-            } catch {
-                handle(error: error)
-            }
-        }
-
         accessRepository.access
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
