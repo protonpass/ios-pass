@@ -37,7 +37,7 @@ struct ExtensionSettingsView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     OptionRow(height: .medium) {
@@ -83,7 +83,6 @@ struct ExtensionSettingsView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .theme(theme)
         .localAuthentication(delayed: false,
                              onAuth: {},

@@ -42,7 +42,7 @@ struct CreateEditAliasView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 switch viewModel.state {
                 case .loaded, .loading:
@@ -59,7 +59,6 @@ struct CreateEditAliasView: View {
             .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
