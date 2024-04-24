@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
@@ -37,7 +38,10 @@ struct MonitorProtonAddressesView: View {
                 disabledView
             }
         }
+        .padding(.horizontal)
         .scrollViewEmbeded()
+        .animation(.default, value: viewModel.access)
+        .animation(.default, value: viewModel.allAddresses)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle("Proton addresses")
@@ -71,12 +75,27 @@ private extension MonitorProtonAddressesView {
             }
         }
     }
+
+    func select(_ address: ProtonAddress) {
+        router.navigate(to: .breachDetail(.protonAddress(address)))
+    }
 }
 
 private extension MonitorProtonAddressesView {
     @ViewBuilder
     var enabledView: some View {
-        Text(verbatim: "enabled")
+        ForEach(viewModel.monitoredAddresses) { address in
+            MonitorIncludedEmailView(address: address, action: { select(address) })
+                .padding(.bottom)
+        }
+
+        if !viewModel.excludedAddresses.isEmpty {
+            Text("Excluded from monitoring")
+            ForEach(viewModel.excludedAddresses) { address in
+                MonitorExcludedEmailView(address: address, action: { select(address) })
+                    .padding(.bottom)
+            }
+        }
     }
 }
 
@@ -85,5 +104,9 @@ private extension MonitorProtonAddressesView {
     var disabledView: some View {
         Text("Enable monitoring to get notified if your Proton addresses were leaked.")
             .foregroundStyle(PassColor.textNorm.toColor)
+        ForEach(viewModel.allAddresses) { address in
+            MonitorExcludedEmailView(address: address, action: { select(address) })
+                .padding(.bottom)
+        }
     }
 }

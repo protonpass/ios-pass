@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifiable {
+public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifiable, Breachable {
     public let addressID, email: String
     public let breachCounter: Int
     public let flags: Int

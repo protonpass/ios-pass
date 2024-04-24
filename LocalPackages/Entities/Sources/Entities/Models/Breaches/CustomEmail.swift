@@ -20,25 +20,25 @@
 
 import Foundation
 
-public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiable {
+public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiable, Breachable {
     public let customEmailID, email: String
     public let verified: Bool
     public let breachCounter: Int
     public let flags: Int
-    public let lastBreachedTime: Int?
+    public let lastBreachTime: Int?
 
     public init(customEmailID: String,
                 email: String,
                 verified: Bool,
                 breachCounter: Int,
                 flags: Int,
-                lastBreachedTime: Int?) {
+                lastBreachTime: Int?) {
         self.customEmailID = customEmailID
         self.email = email
         self.verified = verified
         self.breachCounter = breachCounter
         self.flags = flags
-        self.lastBreachedTime = lastBreachedTime
+        self.lastBreachTime = lastBreachTime
     }
 
     public var id: String {
