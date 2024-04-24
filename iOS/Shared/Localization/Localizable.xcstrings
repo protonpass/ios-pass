@@ -60968,22 +60968,22 @@
         }
       }
     },
-    "Resend Code" : {
+    "Resend code" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Resend Code"
+            "value" : "Resend code"
           }
         }
       }
     },
-    "Resend code in %lld" : {
+    "Resend code in %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Resend code in %lld"
+            "value" : "Resend code in %@"
           }
         }
       }

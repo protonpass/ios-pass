@@ -221,8 +221,10 @@ extension LogInDetailViewModel {
 extension SecurityWeakness {
     var secureRowType: SecureRowType {
         switch self {
-        case .excludedItems, .missing2FA, .reusedPasswords, .weakPasswords:
+        case .excludedItems, .reusedPasswords, .weakPasswords:
             .warning
+        case .missing2FA:
+            .info
         case .breaches:
             .danger
         }
