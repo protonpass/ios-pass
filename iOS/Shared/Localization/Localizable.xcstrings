@@ -31158,6 +31158,16 @@
         }
       }
     },
+    "Enable monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable monitoring"
+          }
+        }
+      }
+    },
     "Enable Proton Sentinel" : {
       "localizations" : {
         "be" : {

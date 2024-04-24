@@ -365,4 +365,60 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         closureMarkCustomEmailAsResolved()
         return stubbedMarkCustomEmailAsResolvedResult
     }
+    // MARK: - toggleMonitoringForAddressShouldMonitor
+    public var toggleMonitoringForAddressShouldMonitorThrowableError15: Error?
+    public var closureToggleMonitoringForAddressShouldMonitorAsync15: () -> () = {}
+    public var invokedToggleMonitoringForAddressShouldMonitorAsync15 = false
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncCount15 = 0
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParameters15: (address: ProtonAddress, shouldMonitor: Bool)?
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList15 = [(address: ProtonAddress, shouldMonitor: Bool)]()
+
+    public func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
+        invokedToggleMonitoringForAddressShouldMonitorAsync15 = true
+        invokedToggleMonitoringForAddressShouldMonitorAsyncCount15 += 1
+        invokedToggleMonitoringForAddressShouldMonitorAsyncParameters15 = (address, shouldMonitor)
+        invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList15.append((address, shouldMonitor))
+        if let error = toggleMonitoringForAddressShouldMonitorThrowableError15 {
+            throw error
+        }
+        closureToggleMonitoringForAddressShouldMonitorAsync15()
+    }
+    // MARK: - toggleMonitoringForEmailShouldMonitor
+    public var toggleMonitoringForEmailShouldMonitorThrowableError16: Error?
+    public var closureToggleMonitoringForEmailShouldMonitorAsync16: () -> () = {}
+    public var invokedToggleMonitoringForEmailShouldMonitorAsync16 = false
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncCount16 = 0
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParameters16: (email: CustomEmail, shouldMonitor: Bool)?
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList16 = [(email: CustomEmail, shouldMonitor: Bool)]()
+    public var stubbedToggleMonitoringForEmailShouldMonitorAsyncResult16: CustomEmail!
+
+    public func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
+        invokedToggleMonitoringForEmailShouldMonitorAsync16 = true
+        invokedToggleMonitoringForEmailShouldMonitorAsyncCount16 += 1
+        invokedToggleMonitoringForEmailShouldMonitorAsyncParameters16 = (email, shouldMonitor)
+        invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList16.append((email, shouldMonitor))
+        if let error = toggleMonitoringForEmailShouldMonitorThrowableError16 {
+            throw error
+        }
+        closureToggleMonitoringForEmailShouldMonitorAsync16()
+        return stubbedToggleMonitoringForEmailShouldMonitorAsyncResult16
+    }
+    // MARK: - toggleMonitoringForAlias
+    public var toggleMonitoringForAliasSharedIdItemIdShouldMonitorThrowableError17: Error?
+    public var closureToggleMonitoringForAlias: () -> () = {}
+    public var invokedToggleMonitoringForAliasfunction = false
+    public var invokedToggleMonitoringForAliasCount = 0
+    public var invokedToggleMonitoringForAliasParameters: (sharedId: String, itemId: String, shouldMonitor: Bool)?
+    public var invokedToggleMonitoringForAliasParametersList = [(sharedId: String, itemId: String, shouldMonitor: Bool)]()
+
+    public func toggleMonitoringForAlias(sharedId: String, itemId: String, shouldMonitor: Bool) async throws {
+        invokedToggleMonitoringForAliasfunction = true
+        invokedToggleMonitoringForAliasCount += 1
+        invokedToggleMonitoringForAliasParameters = (sharedId, itemId, shouldMonitor)
+        invokedToggleMonitoringForAliasParametersList.append((sharedId, itemId, shouldMonitor))
+        if let error = toggleMonitoringForAliasSharedIdItemIdShouldMonitorThrowableError17 {
+            throw error
+        }
+        closureToggleMonitoringForAlias()
+    }
 }
