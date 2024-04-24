@@ -295,6 +295,7 @@ private extension DarkWebMonitorHomeView {
                         .scaledToFit()
                         .frame(height: 15)
                 }
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         } else {
