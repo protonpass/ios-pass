@@ -39,8 +39,8 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     @discardableResult
     func refreshAccess() async throws -> Access
 
-    @discardableResult
-    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access
+    func updateProtonAddressesMonitor(_ monitored: Bool) async throws
+    func updateAliasesMonitor(_ monitored: Bool) async throws
 }
 
 public actor AccessRepository: AccessRepositoryProtocol {
@@ -103,8 +103,17 @@ public extension AccessRepository {
         return remoteAccess
     }
 
-    @discardableResult
-    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access {
+    func updateProtonAddressesMonitor(_ monitored: Bool) async throws {
+        try await updatePassMonitorState(.protonAddress(monitored))
+    }
+
+    func updateAliasesMonitor(_ monitored: Bool) async throws {
+        try await updatePassMonitorState(.protonAddress(monitored))
+    }
+}
+
+private extension AccessRepository {
+    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws {
         let userId = try userDataProvider.getUserId()
         logger.trace("Updating monitor state for user \(userId)")
         var access = try await getAccess()
@@ -115,6 +124,5 @@ public extension AccessRepository {
         try await localDatasource.upsert(access: access, userId: userId)
         logger.trace("Upserted monitor state for user \(userId)")
         self.access.send(access)
-        return access
     }
 }
