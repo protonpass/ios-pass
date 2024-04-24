@@ -209,20 +209,15 @@ private extension DarkWebMonitorHomeView {
                         }
                         Spacer()
 
-                        Button {
+                        CapsuleTextButton(title: #localized("Add"),
+                                          titleColor: PassColor.interactionNormMajor2,
+                                          backgroundColor: PassColor.interactionNormMinor1) {
                             Task {
                                 let customEmail = await viewModel.addCustomEmail(email: item.email)
                                 router.present(sheet: .addCustomEmail(customEmail))
                             }
-                        } label: {
-                            Text("Add")
-                                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 15)
                         }
-                        .buttonStyle(.plain)
-                        .background(PassColor.interactionNormMinor1.toColor)
-                        .clipShape(Capsule())
+                        .fixedSize(horizontal: true, vertical: true)
                     }
                     .padding(.vertical, 12)
                 }
@@ -242,14 +237,12 @@ private extension DarkWebMonitorHomeView {
                 }
                 .buttonStyle(.plain)
                 Spacer()
-                Button { router.present(sheet: .addCustomEmail(nil)) } label: {
-                    CircleButton(icon: IconProvider.plus,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Add custom email address",
-                                 type: .small)
-                }
-                .buttonStyle(.plain)
+                CircleButton(icon: IconProvider.plus,
+                             iconColor: PassColor.interactionNormMajor2,
+                             backgroundColor: PassColor.interactionNormMinor1,
+                             accessibilityLabel: "Add custom email address",
+                             type: .small,
+                             action: { router.present(sheet: .addCustomEmail(nil)) })
             }
             .font(.callout)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -260,48 +253,45 @@ private extension DarkWebMonitorHomeView {
     @ViewBuilder
     func customEmailRow(for email: CustomEmail) -> some View {
         if email.verified {
-            Button {} label: {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(email.email)
-                            .font(.body)
-                            .lineLimit(2)
-                            .foregroundStyle((email.isBreached ? PassColor
-                                    .passwordInteractionNormMajor2 : PassColor.textNorm).toColor)
-                            .layoutPriority(1)
-                            .minimumScaleFactor(0.25)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(email.email)
+                        .font(.body)
+                        .lineLimit(2)
+                        .foregroundStyle((email.isBreached ? PassColor
+                                .passwordInteractionNormMajor2 : PassColor.textNorm).toColor)
+                        .layoutPriority(1)
+                        .minimumScaleFactor(0.25)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Text(email
-                            .isBreached ? "Latest breach on \(email.lastBreachedTime?.lastestBreachDate ?? "")" :
-                            "No Breaches detected")
-                            .font(.footnote)
-                            .foregroundStyle((email.isBreached ? PassColor.textNorm : PassColor
-                                    .cardInteractionNormMajor1).toColor)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    Spacer()
-
-                    if email.isBreached {
-                        Text(verbatim: "\(email.breachCounter)")
-                            .font(.body)
-                            .fontWeight(.medium)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 11)
-                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                            .background(PassColor.passwordInteractionNormMinor1.toColor)
-                            .clipShape(Capsule())
-                    }
-
-                    Image(uiImage: IconProvider.chevronRight)
-                        .resizable()
-                        .foregroundStyle((email.isBreached ? PassColor.passwordInteractionNormMajor2 : PassColor
-                                .textNorm).toColor)
-                        .scaledToFit()
-                        .frame(height: 15)
+                    Text(email
+                        .isBreached ? "Latest breach on \(email.lastBreachedTime?.lastestBreachDate ?? "")" :
+                        "No Breaches detected")
+                        .font(.footnote)
+                        .foregroundStyle((email.isBreached ? PassColor.textNorm : PassColor
+                                .cardInteractionNormMajor1).toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                Spacer()
+
+                if email.isBreached {
+                    Text(verbatim: "\(email.breachCounter)")
+                        .font(.body)
+                        .fontWeight(.medium)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 11)
+                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                        .background(PassColor.passwordInteractionNormMinor1.toColor)
+                        .clipShape(Capsule())
+                }
+
+                Image(uiImage: IconProvider.chevronRight)
+                    .resizable()
+                    .foregroundStyle((email.isBreached ? PassColor.passwordInteractionNormMajor2 : PassColor
+                            .textNorm).toColor)
+                    .scaledToFit()
+                    .frame(height: 15)
             }
-            .buttonStyle(.plain)
         } else {
             HStack {
                 Image(uiImage: IconProvider.envelope)
