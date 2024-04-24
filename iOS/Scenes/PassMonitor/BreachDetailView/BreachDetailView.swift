@@ -55,10 +55,8 @@ private extension BreachDetailView {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
-        .toolbarBackground(// 1
-            PassColor.backgroundNorm.toColor,
-            // 2
-            for: .navigationBar)
+        .toolbarBackground(PassColor.backgroundNorm.toColor,
+                           for: .navigationBar)
     }
 }
 

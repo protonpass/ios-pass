@@ -1,6 +1,6 @@
 //
-// DarkWebDataSectionUpdate.swift
-// Proton Pass - Created on 22/04/2024.
+// ToggleMonitoringForCustomEmailEndpoint.swift
+// Proton Pass - Created on 24/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,12 +17,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Foundation
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public enum DarkWebDataSectionUpdate: Sendable, Equatable {
-    case customEmails([CustomEmail])
-    case protonAddresses(UserBreaches)
-    case aliases([AliasMonitorInfo])
+struct ToggleMonitoringForCustomEmailEndpoint: Endpoint {
+    typealias Body = ToggleMonitoringRequest
+    typealias Response = AddEmailToBreachMonitoringResponse
+
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: ToggleMonitoringRequest?
+
+    init(customEmailId: String, request: ToggleMonitoringRequest) {
+        debugDescription = "Toggle the monitoring for a proton address"
+        path = "/pass/v1/breach/custom_email/\(customEmailId)/monitor"
+        method = .put
+        body = request
+    }
 }

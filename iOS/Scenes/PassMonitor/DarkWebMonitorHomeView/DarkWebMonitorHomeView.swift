@@ -67,6 +67,8 @@ private extension DarkWebMonitorHomeView {
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
+        .toolbarBackground(PassColor.backgroundNorm.toColor,
+                           for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .alert(Text("Custom email address"),
                isPresented: $showCustomEmailExplanation,
@@ -125,7 +127,7 @@ private extension DarkWebMonitorHomeView {
                                           info: "\(item.breachCounter)",
                                           hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                           isDetail: true,
-                                          action: { router.navigate(to: .breachDetail(.portonAddress(item))) })
+                                          action: { router.navigate(to: .breachDetail(.protonAddress(item))) })
                 }
             }
         }

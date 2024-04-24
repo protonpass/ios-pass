@@ -39,6 +39,8 @@ public protocol RemoteBreachDataSourceProtocol: Sendable {
     func markAliasAsResolved(sharedId: String, itemId: String) async throws
     func markProtonAddressAsResolved(address: ProtonAddress) async throws
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail
+    func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws
+    func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail
 }
 
 public final class RemoteBreachDataSource: RemoteDatasource, RemoteBreachDataSourceProtocol {}
@@ -109,6 +111,19 @@ public extension RemoteBreachDataSource {
 
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
         let endpoint = MarkCustomEmailAsResolvedEndpoint(customEmailId: email.customEmailID)
+        let result = try await exec(endpoint: endpoint)
+        return result.email
+    }
+
+    func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
+        let request = ToggleMonitoringRequest(monitor: shouldMonitor)
+        let endpoint = ToggleMonitoringForProtonAddressEndpoint(addressId: address.addressID, request: request)
+        _ = try await exec(endpoint: endpoint)
+    }
+
+    func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
+        let request = ToggleMonitoringRequest(monitor: shouldMonitor)
+        let endpoint = ToggleMonitoringForCustomEmailEndpoint(customEmailId: email.customEmailID, request: request)
         let result = try await exec(endpoint: endpoint)
         return result.email
     }

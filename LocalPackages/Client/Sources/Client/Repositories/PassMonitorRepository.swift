@@ -58,6 +58,9 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func markAliasAsResolved(sharedId: String, itemId: String) async throws
     func markProtonAddressAsResolved(address: ProtonAddress) async throws
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail
+    func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws
+    func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail
+    func toggleMonitoringForAlias(sharedId: String, itemId: String, shouldMonitor: Bool) async throws
 }
 
 public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
@@ -233,6 +236,23 @@ public extension PassMonitorRepository {
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
         try Task.checkCancellation()
         return try await remoteDataSource.markCustomEmailAsResolved(email: email)
+    }
+
+    func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
+        try Task.checkCancellation()
+        return try await remoteDataSource.toggleMonitoringFor(address: address, shouldMonitor: shouldMonitor)
+    }
+
+    func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
+        try Task.checkCancellation()
+        return try await remoteDataSource.toggleMonitoringFor(email: email, shouldMonitor: shouldMonitor)
+    }
+
+    func toggleMonitoringForAlias(sharedId: String, itemId: String, shouldMonitor: Bool) async throws {
+        try Task.checkCancellation()
+        return try await itemRepository.updateItemFlags(flags: [.skipHealthCheck(!shouldMonitor)],
+                                                        shareId: sharedId,
+                                                        itemId: itemId)
     }
 }
 
