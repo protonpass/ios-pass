@@ -112,7 +112,7 @@ extension View {
             case let .addCustomEmail(email):
                 AddCustomEmailView(viewModel: .init(email: email))
             case let .breachDetail(breach):
-                BreachDetailView(viewModel: .init(breach: breach))
+                BreachDetailView(breach: breach)
             }
         }
     }

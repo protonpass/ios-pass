@@ -470,7 +470,6 @@
 		5B4E53DE2BD7B8B600E8D54A /* DetailMonitoredItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53DC2BD7B8B600E8D54A /* DetailMonitoredItemView.swift */; };
 		5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53DD2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift */; };
 		5B4E53E32BD8033A00E8D54A /* BreachDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */; };
-		5B4E53E42BD8033A00E8D54A /* BreachDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53E22BD8033A00E8D54A /* BreachDetailViewModel.swift */; };
 		5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
 		5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */; };
@@ -932,7 +931,6 @@
 		5B4E53DC2BD7B8B600E8D54A /* DetailMonitoredItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMonitoredItemView.swift; sourceTree = "<group>"; };
 		5B4E53DD2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMonitoredItemViewModel.swift; sourceTree = "<group>"; };
 		5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachDetailView.swift; sourceTree = "<group>"; };
-		5B4E53E22BD8033A00E8D54A /* BreachDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachDetailViewModel.swift; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UseCases+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1906,7 +1904,6 @@
 			isa = PBXGroup;
 			children = (
 				5B4E53E12BD8033A00E8D54A /* BreachDetailView.swift */,
-				5B4E53E22BD8033A00E8D54A /* BreachDetailViewModel.swift */,
 			);
 			path = BreachDetailView;
 			sourceTree = "<group>";
@@ -3148,7 +3145,6 @@
 				3559BA9E2A5B32550020E172 /* Theme+Extensions.swift in Sources */,
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
-				5B4E53E42BD8033A00E8D54A /* BreachDetailViewModel.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				5BD4A90C2B15F18100C44C08 /* PasswordStrength+Extensions.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,

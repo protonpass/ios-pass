@@ -28,8 +28,12 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct BreachDetailView: View {
-    @StateObject var viewModel: BreachDetailViewModel
+    private let breach: Breach
     @Environment(\.dismiss) private var dismiss
+
+    init(breach: Breach) {
+        self.breach = breach
+    }
 
     var body: some View {
         NavigationStack {
@@ -63,17 +67,17 @@ private extension BreachDetailView {
 private extension BreachDetailView {
     var headerInfo: some View {
         HStack(spacing: 12) {
-            Image(uiImage: viewModel.breach.isResolved ? PassIcon.breachShieldResolved : PassIcon
+            Image(uiImage: breach.isResolved ? PassIcon.breachShieldResolved : PassIcon
                 .breachShieldUnresolved)
                 .resizable()
                 .scaledToFit()
                 .frame(height: 50)
             VStack {
-                Text(viewModel.breach.name)
-                    .font(.title)
+                Text(breach.name)
+                    .font(.title3)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Your info was in a data breach and found on **\(viewModel.breach.publishedAt.breachDate)**")
+                Text("Your info was in a data breach and found on **\(breach.publishedAt.breachDate)**")
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -86,7 +90,7 @@ private extension BreachDetailView {
         Section {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(viewModel.breach.exposedData, id: \.self) { item in
+                    ForEach(breach.exposedData, id: \.self) { item in
                         Text(item.name)
                             .font(.caption)
                             .foregroundStyle(PassColor.textInvert.toColor)
@@ -113,12 +117,12 @@ private extension BreachDetailView {
                         .fontWeight(.thin)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Text(viewModel.breach.email)
+                    Text(breach.email)
                         .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                if let passwordLastChars = viewModel.breach.passwordLastChars {
+                if let passwordLastChars = breach.passwordLastChars {
                     VStack {
                         Text("Password")
                             .fontWeight(.thin)
@@ -141,7 +145,7 @@ private extension BreachDetailView {
     var recommendedActions: some View {
         Section {
             VStack(spacing: 12) {
-                ForEach(viewModel.breach.actions, id: \.self) { item in
+                ForEach(breach.actions, id: \.self) { item in
                     Text(item.name)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
