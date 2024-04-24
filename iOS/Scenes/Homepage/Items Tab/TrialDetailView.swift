@@ -30,7 +30,7 @@ struct TrialDetailView: View {
     let onLearnMore: () -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .center) {
                 Image(uiImage: PassIcon.trialDetail)
                     .resizable()
@@ -102,7 +102,6 @@ struct TrialDetailView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 
     private func perk(title: String, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {

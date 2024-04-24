@@ -32,7 +32,7 @@ struct SetPINCodeView: View {
     init() {}
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .leading, spacing: 12) {
                 Text(viewModel.state.title)
                     .font(.largeTitle.bold())
@@ -67,7 +67,6 @@ struct SetPINCodeView: View {
                 isFocused = true
             }
         }
-        .navigationViewStyle(.stack)
         .accentColor(PassColor.interactionNormMajor1.toColor)
         .tint(PassColor.interactionNormMajor1.toColor)
         .theme(theme)
