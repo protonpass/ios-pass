@@ -163,7 +163,7 @@ private extension DarkWebMonitorHomeViewModel {
                 case let .customEmails(updatedCustomEmails):
                     customEmails = updatedCustomEmails
                 case let .protonAddresses(updatedUserBreaches):
-                    userBreaches = userBreaches
+                    userBreaches = updatedUserBreaches
                 }
             }.store(in: &cancellables)
     }
