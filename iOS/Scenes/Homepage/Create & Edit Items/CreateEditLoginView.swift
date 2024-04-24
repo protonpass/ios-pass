@@ -59,7 +59,7 @@ struct CreateEditLoginView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: DesignConstant.sectionPadding / 2) {
@@ -162,7 +162,6 @@ struct CreateEditLoginView: View {
             .toolbar { keyboardToolbar }
         }
         .tint(viewModel.itemContentType().normMajor2Color.toColor)
-        .navigationViewStyle(.stack)
         .theme(theme)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
