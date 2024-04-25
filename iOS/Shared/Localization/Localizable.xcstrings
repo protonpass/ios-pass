@@ -13269,6 +13269,16 @@
         }
       }
     },
+    "Aliases with custom domains are not monitored, please add them as a custom email for monitoring." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliases with custom domains are not monitored, please add them as a custom email for monitoring."
+          }
+        }
+      }
+    },
     "All" : {
       "localizations" : {
         "be" : {
