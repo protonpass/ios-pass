@@ -27,6 +27,7 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
+    var access: CurrentValueSubject<Access?, Never> { get }
     var didUpdateToNewPlan: PassthroughSubject<Void, Never> { get }
 
     /// Get from local, refresh if not exist
@@ -38,8 +39,8 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     @discardableResult
     func refreshAccess() async throws -> Access
 
-    @discardableResult
-    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access
+    func updateProtonAddressesMonitor(_ monitored: Bool) async throws
+    func updateAliasesMonitor(_ monitored: Bool) async throws
 }
 
 public actor AccessRepository: AccessRepositoryProtocol {
@@ -48,6 +49,7 @@ public actor AccessRepository: AccessRepositoryProtocol {
     private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
+    public let access: CurrentValueSubject<Access?, Never> = .init(nil)
     public let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: any LocalAccessDatasourceProtocol,
@@ -67,6 +69,7 @@ public extension AccessRepository {
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
+            access.send(localAccess)
             return localAccess
         }
 
@@ -85,6 +88,7 @@ public extension AccessRepository {
         let userId = try userDataProvider.getUserId()
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess()
+        access.send(remoteAccess)
 
         if let localAccess = try await localDatasource.getAccess(userId: userId),
            localAccess.plan != remoteAccess.plan {
@@ -99,8 +103,17 @@ public extension AccessRepository {
         return remoteAccess
     }
 
-    @discardableResult
-    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access {
+    func updateProtonAddressesMonitor(_ monitored: Bool) async throws {
+        try await updatePassMonitorState(.protonAddress(monitored))
+    }
+
+    func updateAliasesMonitor(_ monitored: Bool) async throws {
+        try await updatePassMonitorState(.protonAddress(monitored))
+    }
+}
+
+private extension AccessRepository {
+    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws {
         let userId = try userDataProvider.getUserId()
         logger.trace("Updating monitor state for user \(userId)")
         var access = try await getAccess()
@@ -110,6 +123,6 @@ public extension AccessRepository {
         logger.trace("Upserting access for user \(userId)")
         try await localDatasource.upsert(access: access, userId: userId)
         logger.trace("Upserted monitor state for user \(userId)")
-        return access
+        self.access.send(access)
     }
 }
