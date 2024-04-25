@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -28,18 +29,46 @@ struct MonitorAliasesView: View {
 
     var body: some View {
         LazyVStack {
-            if !viewModel.dismissedCustomDomainExplanation {
-                customDomainExplanation
+            if viewModel.access?.monitor.aliases == true {
+                enabledView
+            } else {
+                disabledView
             }
             Spacer()
         }
+        .padding(.horizontal)
         .scrollViewEmbeded()
+        .animation(.default, value: viewModel.access)
         .animation(.default, value: viewModel.dismissedCustomDomainExplanation)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle("Hide-my-email aliases")
         .navigationBarBackButtonHidden()
+    }
+}
+
+private extension MonitorAliasesView {
+    @ViewBuilder
+    var enabledView: some View {
+        if !viewModel.dismissedCustomDomainExplanation {
+            customDomainExplanation
+        }
+    }
+
+    @ViewBuilder
+    var disabledView: some View {
+        Text("Enable monitoring to get notified if your aliases were leaked.")
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .padding(.vertical)
+        ForEach(viewModel.infos) { info in
+            MonitorExcludedEmailView(address: info, action: { select(info) })
+                .padding(.bottom)
+        }
+    }
+
+    func select(_ info: AliasMonitorInfo) {
+        print(#function)
     }
 }
 
