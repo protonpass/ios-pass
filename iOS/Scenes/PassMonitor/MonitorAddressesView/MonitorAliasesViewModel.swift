@@ -38,6 +38,18 @@ final class MonitorAliasesViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
+    var breachedAliases: [AliasMonitorInfo] {
+        infos.filter { $0.breaches != nil && !$0.alias.item.skipHealthCheck }
+    }
+
+    var notBreachedAliases: [AliasMonitorInfo] {
+        infos.filter { $0.breaches == nil && !$0.alias.item.skipHealthCheck }
+    }
+
+    var notMonitoredAliases: [AliasMonitorInfo] {
+        infos.filter(\.alias.item.skipHealthCheck)
+    }
+
     init(infos: [AliasMonitorInfo]) {
         access = accessRepository.access.value
         dismissedCustomDomainExplanation = getAppPreferences().dismissedCustomDomainExplanation
@@ -87,6 +99,16 @@ private extension MonitorAliasesViewModel {
             .sink { [weak self] newValue in
                 guard let self else { return }
                 dismissedCustomDomainExplanation = newValue
+            }
+            .store(in: &cancellables)
+
+        accessRepository.access
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                access = newValue
             }
             .store(in: &cancellables)
     }
