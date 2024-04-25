@@ -241,7 +241,8 @@ extension SharedUseCasesContainer {
                            vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager(),
                            userDataProvider: self.userDataProvider,
-                           featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository()) }
+                           featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository()) }
     }
 }
 

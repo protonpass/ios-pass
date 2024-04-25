@@ -31,8 +31,8 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
             securityAuthenticator()
         case .itemCreation:
             createNewItem()
-        case .securityCenter:
-            securityCenter()
+        case .passMonitor:
+            passMonitor()
         case .profile:
             profileTab()
         }
@@ -69,7 +69,7 @@ private extension HomepageCoordinator {
         present(viewController)
     }
 
-    func securityCenter() {
+    func passMonitor() {
         guard !isCollapsed() else {
             return
         }
