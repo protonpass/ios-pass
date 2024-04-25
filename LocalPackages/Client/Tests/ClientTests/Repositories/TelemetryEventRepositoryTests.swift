@@ -69,25 +69,27 @@ private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepository
 }
 
 private final class MockedFreePlanRepository: AccessRepositoryProtocol {
+    let access: CurrentValueSubject<Access?, Never> = .init(nil)
     let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
-    let access = Access(plan: .init(type: "free",
-                                    internalName: .random(),
-                                    displayName: .random(),
-                                    hideUpgrade: false,
-                                    trialEnd: .random(in: 1...100),
-                                    vaultLimit: .random(in: 1...100),
-                                    aliasLimit: .random(in: 1...100),
-                                    totpLimit: .random(in: 1...100)), 
-                        monitor: .init(protonAddress: .random(), aliases: .random()),
-                        pendingInvites: 1,
-                        waitingNewUserInvites: 1,
-                        minVersionUpgrade: nil)
+    let mockedAccess = Access(plan: .init(type: "free",
+                                          internalName: .random(),
+                                          displayName: .random(),
+                                          hideUpgrade: false,
+                                          trialEnd: .random(in: 1...100),
+                                          vaultLimit: .random(in: 1...100),
+                                          aliasLimit: .random(in: 1...100),
+                                          totpLimit: .random(in: 1...100)),
+                              monitor: .init(protonAddress: .random(), aliases: .random()),
+                              pendingInvites: 1,
+                              waitingNewUserInvites: 1,
+                              minVersionUpgrade: nil)
 
-    func getAccess() async throws -> Access { access }
-    func getPlan() async throws -> Plan { access.plan }
-    func refreshAccess() async throws -> Access { access }
-    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access { access }
+    func getAccess() async throws -> Access { mockedAccess }
+    func getPlan() async throws -> Plan { mockedAccess.plan }
+    func refreshAccess() async throws -> Access { mockedAccess }
+    func updateProtonAddressesMonitor(_ monitored: Bool) async throws {}
+    func updateAliasesMonitor(_ monitored: Bool) async throws {}
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {
