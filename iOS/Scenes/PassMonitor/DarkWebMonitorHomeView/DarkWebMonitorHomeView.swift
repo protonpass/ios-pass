@@ -180,7 +180,11 @@ private extension DarkWebMonitorHomeView {
                                       .breachSubtitle(numberOfBreaches: viewModel.numberOfBreachedAlias),
                                   hasBreaches: !viewModel.noAliasBreaches,
                                   isDetail: false,
-                                  action: {})
+                                  action: {
+                                      if let infos = viewModel.aliasInfos {
+                                          router.navigate(to: .aliasesList(infos))
+                                      }
+                                  })
             if !viewModel.noAliasBreaches {
                 PassSectionDivider()
                 ForEach(viewModel.mostBreachedAliases) { item in

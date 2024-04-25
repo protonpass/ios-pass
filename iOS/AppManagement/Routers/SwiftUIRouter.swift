@@ -98,8 +98,8 @@ extension View {
                 }
             case let .protonAddressesList(addresses):
                 MonitorProtonAddressesView(viewModel: .init(addresses: addresses))
-            case let .aliasesList(items):
-                Text(verbatim: "Upcomming screen")
+            case let .aliasesList(infos):
+                MonitorAliasesView(viewModel: .init(infos: infos))
             case let .breachDetail(info):
                 DetailMonitoredItemView(viewModel: .init(infos: info))
             }
