@@ -24,14 +24,35 @@ import Combine
 import Entities
 import Factory
 
+struct DetailMonitoredItemUiModel: Sendable, Hashable {
+    let breachCount: Int
+    let email: String
+    let unresolvedBreaches: [Breach]
+    let resolvedBreaches: [Breach]
+    let linkedItems: [ItemUiModel]
+
+    var isFullyResolved: Bool {
+        unresolvedBreaches.isEmpty
+    }
+}
+
 @MainActor
 final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
-    @Published private(set) var numberOfBreaches: Int?
-    @Published private(set) var email: String?
-    @Published private(set) var unresolvedBreaches: [Breach]?
-    @Published private(set) var resolvedBreaches: [Breach]?
-    @Published private(set) var linkedItems: [ItemUiModel]?
+    @Published private(set) var state: State = .fetching
     @Published private(set) var shouldDismiss = false
+
+    enum State {
+        case fetching
+        case fetched(DetailMonitoredItemUiModel)
+        case error(Error)
+
+        var isFetched: Bool {
+            if case .fetched = self {
+                return true
+            }
+            return false
+        }
+    }
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -41,10 +62,6 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     private let toggleMonitoringForAlias = resolve(\UseCasesContainer.toggleMonitoringForAlias)
     private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
     private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)
-
-    var isFullyResolved: Bool {
-        unresolvedBreaches?.isEmpty ?? true
-    }
 
     var isMonitored: Bool {
         switch infos {
@@ -61,7 +78,17 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
 
     init(infos: BreachDetailsInfo) {
         self.infos = infos
-        setUp()
+    }
+
+    func fetchData() async {
+        do {
+            state = .fetching
+            let uiModel = try await refreshUiModel()
+            state = .fetched(uiModel)
+        } catch {
+            logger.error(error)
+            state = .error(error)
+        }
     }
 
     func markAsResolved() {
@@ -76,14 +103,13 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
                 case let .alias(aliasInfos):
                     try await passMonitorRepository.markAliasAsResolved(sharedId: aliasInfos.alias.shareId,
                                                                         itemId: aliasInfos.alias.itemId)
-                    try await fetchAliasInfos(alias: aliasInfos.alias)
                 case let .customEmail(email):
                     _ = try await passMonitorRepository.markCustomEmailAsResolved(email: email)
-                    try await fetchCustomEmailInfos(email: email)
                 case let .protonAddress(address):
                     try await passMonitorRepository.markProtonAddressAsResolved(address: address)
-                    try await fetchAddressInfos(address: address)
                 }
+                let uiModel = try await refreshUiModel()
+                state = .fetched(uiModel)
             } catch {
                 handle(error: error)
             }
@@ -132,52 +158,29 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
 }
 
 private extension DetailMonitoredItemViewModel {
-    func setUp() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                router.display(element: .globalLoading(shouldShow: true))
-                switch infos {
-                case let .alias(aliasInfos):
-                    try await fetchAliasInfos(alias: aliasInfos.alias)
-                case let .customEmail(email):
-                    try await fetchCustomEmailInfos(email: email)
-                case let .protonAddress(address):
-                    try await fetchAddressInfos(address: address)
-                }
-                if let email = infos.email {
-                    linkedItems = try await getItemsLinkedToBreach(email: email)
-                }
-            } catch {
-                handle(error: error)
-            }
+    func refreshUiModel() async throws -> DetailMonitoredItemUiModel {
+        let breaches: EmailBreaches
+        switch infos {
+        case let .alias(aliasInfos):
+            let alias = aliasInfos.alias
+            breaches = try await passMonitorRepository.getBreachesForAlias(sharedId: alias.shareId,
+                                                                           itemId: alias.itemId)
+        case let .customEmail(customEmail):
+            breaches = try await passMonitorRepository.getAllBreachesForEmail(email: customEmail)
+        case let .protonAddress(address):
+            breaches = try await passMonitorRepository.getAllBreachesForProtonAddress(address: address)
         }
-    }
-
-    func fetchCustomEmailInfos(email: CustomEmail) async throws {
-        let breachesInfos = try await passMonitorRepository.getAllBreachesForEmail(email: email)
-        updateInfos(email: email.email, breachesInfos: breachesInfos)
-    }
-
-    func fetchAddressInfos(address: ProtonAddress) async throws {
-        let breachesInfos = try await passMonitorRepository.getAllBreachesForProtonAddress(address: address)
-        updateInfos(email: address.email, breachesInfos: breachesInfos)
-    }
-
-    func fetchAliasInfos(alias: ItemContent) async throws {
-        let breachesInfos = try await passMonitorRepository.getBreachesForAlias(sharedId: alias.shareId,
-                                                                                itemId: alias.itemId)
-        updateInfos(email: alias.item.aliasEmail ?? "", breachesInfos: breachesInfos)
-    }
-
-    func updateInfos(email: String, breachesInfos: EmailBreaches) {
-        self.email = email
-        numberOfBreaches = breachesInfos.count
-        unresolvedBreaches = breachesInfos.breaches.allUnresolvedBreaches
-        resolvedBreaches = breachesInfos.breaches.allResolvedBreaches
+        let linkedItems: [ItemUiModel] = switch state {
+        case let .fetched(uiModel):
+            uiModel.linkedItems
+        default:
+            try await getItemsLinkedToBreach(email: infos.email)
+        }
+        return .init(breachCount: breaches.count,
+                     email: infos.email,
+                     unresolvedBreaches: breaches.breaches.allUnresolvedBreaches,
+                     resolvedBreaches: breaches.breaches.allResolvedBreaches,
+                     linkedItems: linkedItems)
     }
 
     func handle(error: Error) {
@@ -186,7 +189,7 @@ private extension DetailMonitoredItemViewModel {
     }
 }
 
-extension [Breach] {
+private extension [Breach] {
     var allResolvedBreaches: [Breach] {
         filter(\.isResolved)
     }
@@ -197,10 +200,10 @@ extension [Breach] {
 }
 
 private extension BreachDetailsInfo {
-    var email: String? {
+    var email: String {
         switch self {
         case let .alias(aliasInfos):
-            aliasInfos.alias.item.aliasEmail
+            aliasInfos.alias.item.aliasEmail ?? ""
         case let .customEmail(email):
             email.email
         case let .protonAddress(address):
