@@ -33,109 +33,99 @@ struct DetailMonitoredItemView: View {
     private let router = resolve(\RouterContainer.darkWebRouter)
 
     var body: some View {
-        mainContainer
-            .onChange(of: viewModel.shouldDismiss) { value in
-                guard value else {
-                    return
-                }
-                dismiss()
+        ZStack {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+            switch viewModel.state {
+            case .fetching:
+                ProgressView()
+            case let .fetched(uiModel):
+                content(uiModel)
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: { Task { await viewModel.fetchData() } })
             }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationBarBackButtonHidden(true)
+        .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar { toolbarContent }
+        .task {
+            await viewModel.fetchData()
+        }
+        .onChange(of: viewModel.shouldDismiss) { _ in
+            dismiss()
+        }
     }
 }
 
 private extension DetailMonitoredItemView {
-    var mainContainer: some View {
+    func content(_ uiModel: DetailMonitoredItemUiModel) -> some View {
         VStack {
-            headerInfo
-            infosList
+            header(email: uiModel.email,
+                   breachCount: uiModel.breachCount,
+                   isFullyResolved: uiModel.isFullyResolved)
+            LazyVStack {
+                if !uiModel.unresolvedBreaches.isEmpty {
+                    breachesSection(breaches: uiModel.unresolvedBreaches, resolved: false)
+                }
+                if !uiModel.resolvedBreaches.isEmpty {
+                    breachesSection(breaches: uiModel.resolvedBreaches, resolved: true)
+                }
+                if !uiModel.linkedItems.isEmpty {
+                    linkedItemSection(linkedItems: uiModel.linkedItems)
+                }
+            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
-        .background(PassColor.backgroundNorm.toColor)
-        .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor,
-                           for: .navigationBar)
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 private extension DetailMonitoredItemView {
-    var headerInfo: some View {
+    func header(email: String, breachCount: Int, isFullyResolved: Bool) -> some View {
         VStack(alignment: .center, spacing: DesignConstant.sectionPadding) {
-            if let numberOfBreaches = viewModel.numberOfBreaches, let email = viewModel.email {
-                let isNotBreached = numberOfBreaches == 0
-                Text(verbatim: "\(numberOfBreaches)")
-                    .font(.title)
-                    .foregroundStyle((isNotBreached ? PassColor.textNorm : PassColor
+            let isNotBreached = breachCount == 0
+            Text(verbatim: "\(breachCount)")
+                .font(.title)
+                .foregroundStyle((isNotBreached ? PassColor.textNorm : PassColor
+                        .passwordInteractionNormMajor2).toColor)
+                .frame(height: 41)
+                .padding(16)
+                .background((isNotBreached ? PassColor.backgroundMedium : PassColor
+                        .passwordInteractionNormMinor2).toColor)
+                .clipShape(Circle())
+            VStack(alignment: .center, spacing: 5) {
+                Text(isNotBreached ? "No breaches detected for" : "Breach detected for")
+                    .fontWeight(.medium)
+                    .foregroundStyle((isNotBreached ? PassColor.cardInteractionNormMajor1 : PassColor
                             .passwordInteractionNormMajor2).toColor)
-                    .frame(height: 41)
-                    .padding(16)
-                    .background((isNotBreached ? PassColor.backgroundMedium : PassColor
-                            .passwordInteractionNormMinor2).toColor)
-                    .clipShape(Circle())
-                VStack(alignment: .center, spacing: 5) {
-                    Text(isNotBreached ? "No breaches detected for" : "Breach detected for")
-                        .fontWeight(.medium)
-                        .foregroundStyle((viewModel.numberOfBreaches == 0 ? PassColor
-                                .cardInteractionNormMajor1 : PassColor
-                                .passwordInteractionNormMajor2).toColor)
-                    Text(email)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                }
+                Text(email)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
 
-                if !viewModel.isFullyResolved {
-                    CapsuleTextButton(title: #localized("Mark as resolved"),
-                                      titleColor: PassColor.interactionNormMajor2,
-                                      backgroundColor: PassColor.interactionNormMinor1,
-                                      height: 48,
-                                      action: { viewModel.markAsResolved() })
-                }
+            if !isFullyResolved {
+                CapsuleTextButton(title: #localized("Mark as resolved"),
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: PassColor.interactionNormMinor1,
+                                  height: 48,
+                                  action: { viewModel.markAsResolved() })
             }
         }
     }
 }
 
 private extension DetailMonitoredItemView {
-    var infosList: some View {
-        LazyVStack {
-            if let unresolvedBreaches = viewModel.unresolvedBreaches {
-                breachedSection(unresolvedBreaches: unresolvedBreaches)
-            }
-
-            if let resolvedBreaches = viewModel.resolvedBreaches {
-                resolvedBreachedSection(resolvedBreaches: resolvedBreaches)
-            }
-
-            if let items = viewModel.linkedItems {
-                linkedItemSection(linkedItems: items)
-            }
-        }
-    }
-}
-
-private extension DetailMonitoredItemView {
-    func breachedSection(unresolvedBreaches: [Breach]) -> some View {
+    func breachesSection(breaches: [Breach], resolved: Bool) -> some View {
         Section {
-            ForEach(unresolvedBreaches) { breach in
-                breachRow(breach: breach, resolved: false)
+            ForEach(breaches) { breach in
+                breachRow(breach: breach, resolved: resolved)
             }
         } header: {
-            createSectionHeader(title: "Breaches")
-        }
-    }
-}
-
-private extension DetailMonitoredItemView {
-    func resolvedBreachedSection(resolvedBreaches: [Breach]) -> some View {
-        Section {
-            ForEach(resolvedBreaches) { breach in
-                breachRow(breach: breach, resolved: true)
-            }
-        } header: {
-            createSectionHeader(title: "Resolved breaches")
+            createSectionHeader(title: resolved ? "Resolved breaches" : "Breaches")
         }
     }
 }
@@ -164,7 +154,7 @@ private extension DetailMonitoredItemView {
                     .frame(height: 43)
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                    Text(breach.name /* source.domain ?? "<Unknown>" */ )
+                    Text(breach.name)
                         .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
 
@@ -187,11 +177,7 @@ private extension DetailMonitoredItemView {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
-}
 
-// MARK: - Utils
-
-private extension DetailMonitoredItemView {
     func createSectionHeader(title: LocalizedStringKey) -> some View {
         Text(title)
             .fontWeight(.bold)
@@ -214,20 +200,23 @@ private extension DetailMonitoredItemView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Menu(content: {
-                Button { viewModel.toggleMonitoring() } label: {
-                    Label(title: { Text(viewModel.isMonitored ? "Disable monitoring" : "Enable monitoring") },
-                          icon: { Image(uiImage: viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye)
-                          })
-                }
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: PassColor.interactionNormMajor2,
-                             backgroundColor: PassColor.interactionNormMinor1,
-                             accessibilityLabel: "Breach detail action menu",
-                             action: {})
-            })
+        if viewModel.state.isFetched {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu(content: {
+                    Button { viewModel.toggleMonitoring() } label: {
+                        Label(title: { Text(viewModel.isMonitored ? "Disable monitoring" : "Enable monitoring") },
+                              icon: {
+                                  Image(uiImage: viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye)
+                              })
+                    }
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Breach detail action menu",
+                                 action: {})
+                })
+            }
         }
     }
 }
