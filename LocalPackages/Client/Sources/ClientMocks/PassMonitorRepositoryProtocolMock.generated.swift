@@ -143,8 +143,18 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         closureGetItemsWithSamePassword()
         return stubbedGetItemsWithSamePasswordResult
     }
+    // MARK: - reset
+    public var closureReset: () -> () = {}
+    public var invokedResetfunction = false
+    public var invokedResetCount = 0
+
+    public func reset() async {
+        invokedResetfunction = true
+        invokedResetCount += 1
+        closureReset()
+    }
     // MARK: - refreshUserBreaches
-    public var refreshUserBreachesThrowableError3: Error?
+    public var refreshUserBreachesThrowableError4: Error?
     public var closureRefreshUserBreaches: () -> () = {}
     public var invokedRefreshUserBreachesfunction = false
     public var invokedRefreshUserBreachesCount = 0
@@ -153,14 +163,14 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public func refreshUserBreaches() async throws -> UserBreaches {
         invokedRefreshUserBreachesfunction = true
         invokedRefreshUserBreachesCount += 1
-        if let error = refreshUserBreachesThrowableError3 {
+        if let error = refreshUserBreachesThrowableError4 {
             throw error
         }
         closureRefreshUserBreaches()
         return stubbedRefreshUserBreachesResult
     }
     // MARK: - getAllCustomEmailForUser
-    public var getAllCustomEmailForUserThrowableError4: Error?
+    public var getAllCustomEmailForUserThrowableError5: Error?
     public var closureGetAllCustomEmailForUser: () -> () = {}
     public var invokedGetAllCustomEmailForUserfunction = false
     public var invokedGetAllCustomEmailForUserCount = 0
@@ -169,14 +179,14 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public func getAllCustomEmailForUser() async throws -> [CustomEmail] {
         invokedGetAllCustomEmailForUserfunction = true
         invokedGetAllCustomEmailForUserCount += 1
-        if let error = getAllCustomEmailForUserThrowableError4 {
+        if let error = getAllCustomEmailForUserThrowableError5 {
             throw error
         }
         closureGetAllCustomEmailForUser()
         return stubbedGetAllCustomEmailForUserResult
     }
     // MARK: - addEmailToBreachMonitoring
-    public var addEmailToBreachMonitoringEmailThrowableError5: Error?
+    public var addEmailToBreachMonitoringEmailThrowableError6: Error?
     public var closureAddEmailToBreachMonitoring: () -> () = {}
     public var invokedAddEmailToBreachMonitoringfunction = false
     public var invokedAddEmailToBreachMonitoringCount = 0
@@ -189,14 +199,14 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedAddEmailToBreachMonitoringCount += 1
         invokedAddEmailToBreachMonitoringParameters = (email, ())
         invokedAddEmailToBreachMonitoringParametersList.append((email, ()))
-        if let error = addEmailToBreachMonitoringEmailThrowableError5 {
+        if let error = addEmailToBreachMonitoringEmailThrowableError6 {
             throw error
         }
         closureAddEmailToBreachMonitoring()
         return stubbedAddEmailToBreachMonitoringResult
     }
     // MARK: - verifyCustomEmail
-    public var verifyCustomEmailEmailCodeThrowableError6: Error?
+    public var verifyCustomEmailEmailCodeThrowableError7: Error?
     public var closureVerifyCustomEmail: () -> () = {}
     public var invokedVerifyCustomEmailfunction = false
     public var invokedVerifyCustomEmailCount = 0
@@ -208,13 +218,13 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedVerifyCustomEmailCount += 1
         invokedVerifyCustomEmailParameters = (email, code)
         invokedVerifyCustomEmailParametersList.append((email, code))
-        if let error = verifyCustomEmailEmailCodeThrowableError6 {
+        if let error = verifyCustomEmailEmailCodeThrowableError7 {
             throw error
         }
         closureVerifyCustomEmail()
     }
     // MARK: - removeEmailFromBreachMonitoring
-    public var removeEmailFromBreachMonitoringEmailThrowableError7: Error?
+    public var removeEmailFromBreachMonitoringEmailThrowableError8: Error?
     public var closureRemoveEmailFromBreachMonitoring: () -> () = {}
     public var invokedRemoveEmailFromBreachMonitoringfunction = false
     public var invokedRemoveEmailFromBreachMonitoringCount = 0
@@ -226,13 +236,13 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedRemoveEmailFromBreachMonitoringCount += 1
         invokedRemoveEmailFromBreachMonitoringParameters = (email, ())
         invokedRemoveEmailFromBreachMonitoringParametersList.append((email, ()))
-        if let error = removeEmailFromBreachMonitoringEmailThrowableError7 {
+        if let error = removeEmailFromBreachMonitoringEmailThrowableError8 {
             throw error
         }
         closureRemoveEmailFromBreachMonitoring()
     }
     // MARK: - resendEmailVerification
-    public var resendEmailVerificationEmailIdThrowableError8: Error?
+    public var resendEmailVerificationEmailIdThrowableError9: Error?
     public var closureResendEmailVerification: () -> () = {}
     public var invokedResendEmailVerificationfunction = false
     public var invokedResendEmailVerificationCount = 0
@@ -244,13 +254,13 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedResendEmailVerificationCount += 1
         invokedResendEmailVerificationParameters = (emailId, ())
         invokedResendEmailVerificationParametersList.append((emailId, ()))
-        if let error = resendEmailVerificationEmailIdThrowableError8 {
+        if let error = resendEmailVerificationEmailIdThrowableError9 {
             throw error
         }
         closureResendEmailVerification()
     }
     // MARK: - getBreachesForAlias
-    public var getBreachesForAliasSharedIdItemIdThrowableError9: Error?
+    public var getBreachesForAliasSharedIdItemIdThrowableError10: Error?
     public var closureGetBreachesForAlias: () -> () = {}
     public var invokedGetBreachesForAliasfunction = false
     public var invokedGetBreachesForAliasCount = 0
@@ -263,14 +273,14 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedGetBreachesForAliasCount += 1
         invokedGetBreachesForAliasParameters = (sharedId, itemId)
         invokedGetBreachesForAliasParametersList.append((sharedId, itemId))
-        if let error = getBreachesForAliasSharedIdItemIdThrowableError9 {
+        if let error = getBreachesForAliasSharedIdItemIdThrowableError10 {
             throw error
         }
         closureGetBreachesForAlias()
         return stubbedGetBreachesForAliasResult
     }
     // MARK: - getAllBreachesForEmail
-    public var getAllBreachesForEmailEmailThrowableError10: Error?
+    public var getAllBreachesForEmailEmailThrowableError11: Error?
     public var closureGetAllBreachesForEmail: () -> () = {}
     public var invokedGetAllBreachesForEmailfunction = false
     public var invokedGetAllBreachesForEmailCount = 0
@@ -283,14 +293,14 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedGetAllBreachesForEmailCount += 1
         invokedGetAllBreachesForEmailParameters = (email, ())
         invokedGetAllBreachesForEmailParametersList.append((email, ()))
-        if let error = getAllBreachesForEmailEmailThrowableError10 {
+        if let error = getAllBreachesForEmailEmailThrowableError11 {
             throw error
         }
         closureGetAllBreachesForEmail()
         return stubbedGetAllBreachesForEmailResult
     }
     // MARK: - getAllBreachesForProtonAddress
-    public var getAllBreachesForProtonAddressAddressThrowableError11: Error?
+    public var getAllBreachesForProtonAddressAddressThrowableError12: Error?
     public var closureGetAllBreachesForProtonAddress: () -> () = {}
     public var invokedGetAllBreachesForProtonAddressfunction = false
     public var invokedGetAllBreachesForProtonAddressCount = 0
@@ -303,14 +313,14 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedGetAllBreachesForProtonAddressCount += 1
         invokedGetAllBreachesForProtonAddressParameters = (address, ())
         invokedGetAllBreachesForProtonAddressParametersList.append((address, ()))
-        if let error = getAllBreachesForProtonAddressAddressThrowableError11 {
+        if let error = getAllBreachesForProtonAddressAddressThrowableError12 {
             throw error
         }
         closureGetAllBreachesForProtonAddress()
         return stubbedGetAllBreachesForProtonAddressResult
     }
     // MARK: - markAliasAsResolved
-    public var markAliasAsResolvedSharedIdItemIdThrowableError12: Error?
+    public var markAliasAsResolvedSharedIdItemIdThrowableError13: Error?
     public var closureMarkAliasAsResolved: () -> () = {}
     public var invokedMarkAliasAsResolvedfunction = false
     public var invokedMarkAliasAsResolvedCount = 0
@@ -322,13 +332,13 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedMarkAliasAsResolvedCount += 1
         invokedMarkAliasAsResolvedParameters = (sharedId, itemId)
         invokedMarkAliasAsResolvedParametersList.append((sharedId, itemId))
-        if let error = markAliasAsResolvedSharedIdItemIdThrowableError12 {
+        if let error = markAliasAsResolvedSharedIdItemIdThrowableError13 {
             throw error
         }
         closureMarkAliasAsResolved()
     }
     // MARK: - markProtonAddressAsResolved
-    public var markProtonAddressAsResolvedAddressThrowableError13: Error?
+    public var markProtonAddressAsResolvedAddressThrowableError14: Error?
     public var closureMarkProtonAddressAsResolved: () -> () = {}
     public var invokedMarkProtonAddressAsResolvedfunction = false
     public var invokedMarkProtonAddressAsResolvedCount = 0
@@ -340,13 +350,13 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedMarkProtonAddressAsResolvedCount += 1
         invokedMarkProtonAddressAsResolvedParameters = (address, ())
         invokedMarkProtonAddressAsResolvedParametersList.append((address, ()))
-        if let error = markProtonAddressAsResolvedAddressThrowableError13 {
+        if let error = markProtonAddressAsResolvedAddressThrowableError14 {
             throw error
         }
         closureMarkProtonAddressAsResolved()
     }
     // MARK: - markCustomEmailAsResolved
-    public var markCustomEmailAsResolvedEmailThrowableError14: Error?
+    public var markCustomEmailAsResolvedEmailThrowableError15: Error?
     public var closureMarkCustomEmailAsResolved: () -> () = {}
     public var invokedMarkCustomEmailAsResolvedfunction = false
     public var invokedMarkCustomEmailAsResolvedCount = 0
@@ -359,52 +369,52 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedMarkCustomEmailAsResolvedCount += 1
         invokedMarkCustomEmailAsResolvedParameters = (email, ())
         invokedMarkCustomEmailAsResolvedParametersList.append((email, ()))
-        if let error = markCustomEmailAsResolvedEmailThrowableError14 {
+        if let error = markCustomEmailAsResolvedEmailThrowableError15 {
             throw error
         }
         closureMarkCustomEmailAsResolved()
         return stubbedMarkCustomEmailAsResolvedResult
     }
     // MARK: - toggleMonitoringForAddressShouldMonitor
-    public var toggleMonitoringForAddressShouldMonitorThrowableError15: Error?
-    public var closureToggleMonitoringForAddressShouldMonitorAsync15: () -> () = {}
-    public var invokedToggleMonitoringForAddressShouldMonitorAsync15 = false
-    public var invokedToggleMonitoringForAddressShouldMonitorAsyncCount15 = 0
-    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParameters15: (address: ProtonAddress, shouldMonitor: Bool)?
-    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList15 = [(address: ProtonAddress, shouldMonitor: Bool)]()
+    public var toggleMonitoringForAddressShouldMonitorThrowableError16: Error?
+    public var closureToggleMonitoringForAddressShouldMonitorAsync16: () -> () = {}
+    public var invokedToggleMonitoringForAddressShouldMonitorAsync16 = false
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncCount16 = 0
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParameters16: (address: ProtonAddress, shouldMonitor: Bool)?
+    public var invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList16 = [(address: ProtonAddress, shouldMonitor: Bool)]()
 
     public func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
-        invokedToggleMonitoringForAddressShouldMonitorAsync15 = true
-        invokedToggleMonitoringForAddressShouldMonitorAsyncCount15 += 1
-        invokedToggleMonitoringForAddressShouldMonitorAsyncParameters15 = (address, shouldMonitor)
-        invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList15.append((address, shouldMonitor))
-        if let error = toggleMonitoringForAddressShouldMonitorThrowableError15 {
+        invokedToggleMonitoringForAddressShouldMonitorAsync16 = true
+        invokedToggleMonitoringForAddressShouldMonitorAsyncCount16 += 1
+        invokedToggleMonitoringForAddressShouldMonitorAsyncParameters16 = (address, shouldMonitor)
+        invokedToggleMonitoringForAddressShouldMonitorAsyncParametersList16.append((address, shouldMonitor))
+        if let error = toggleMonitoringForAddressShouldMonitorThrowableError16 {
             throw error
         }
-        closureToggleMonitoringForAddressShouldMonitorAsync15()
+        closureToggleMonitoringForAddressShouldMonitorAsync16()
     }
     // MARK: - toggleMonitoringForEmailShouldMonitor
-    public var toggleMonitoringForEmailShouldMonitorThrowableError16: Error?
-    public var closureToggleMonitoringForEmailShouldMonitorAsync16: () -> () = {}
-    public var invokedToggleMonitoringForEmailShouldMonitorAsync16 = false
-    public var invokedToggleMonitoringForEmailShouldMonitorAsyncCount16 = 0
-    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParameters16: (email: CustomEmail, shouldMonitor: Bool)?
-    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList16 = [(email: CustomEmail, shouldMonitor: Bool)]()
-    public var stubbedToggleMonitoringForEmailShouldMonitorAsyncResult16: CustomEmail!
+    public var toggleMonitoringForEmailShouldMonitorThrowableError17: Error?
+    public var closureToggleMonitoringForEmailShouldMonitorAsync17: () -> () = {}
+    public var invokedToggleMonitoringForEmailShouldMonitorAsync17 = false
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncCount17 = 0
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParameters17: (email: CustomEmail, shouldMonitor: Bool)?
+    public var invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList17 = [(email: CustomEmail, shouldMonitor: Bool)]()
+    public var stubbedToggleMonitoringForEmailShouldMonitorAsyncResult17: CustomEmail!
 
     public func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
-        invokedToggleMonitoringForEmailShouldMonitorAsync16 = true
-        invokedToggleMonitoringForEmailShouldMonitorAsyncCount16 += 1
-        invokedToggleMonitoringForEmailShouldMonitorAsyncParameters16 = (email, shouldMonitor)
-        invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList16.append((email, shouldMonitor))
-        if let error = toggleMonitoringForEmailShouldMonitorThrowableError16 {
+        invokedToggleMonitoringForEmailShouldMonitorAsync17 = true
+        invokedToggleMonitoringForEmailShouldMonitorAsyncCount17 += 1
+        invokedToggleMonitoringForEmailShouldMonitorAsyncParameters17 = (email, shouldMonitor)
+        invokedToggleMonitoringForEmailShouldMonitorAsyncParametersList17.append((email, shouldMonitor))
+        if let error = toggleMonitoringForEmailShouldMonitorThrowableError17 {
             throw error
         }
-        closureToggleMonitoringForEmailShouldMonitorAsync16()
-        return stubbedToggleMonitoringForEmailShouldMonitorAsyncResult16
+        closureToggleMonitoringForEmailShouldMonitorAsync17()
+        return stubbedToggleMonitoringForEmailShouldMonitorAsyncResult17
     }
     // MARK: - toggleMonitoringForAlias
-    public var toggleMonitoringForAliasSharedIdItemIdShouldMonitorThrowableError17: Error?
+    public var toggleMonitoringForAliasSharedIdItemIdShouldMonitorThrowableError18: Error?
     public var closureToggleMonitoringForAlias: () -> () = {}
     public var invokedToggleMonitoringForAliasfunction = false
     public var invokedToggleMonitoringForAliasCount = 0
@@ -416,7 +426,7 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         invokedToggleMonitoringForAliasCount += 1
         invokedToggleMonitoringForAliasParameters = (sharedId, itemId, shouldMonitor)
         invokedToggleMonitoringForAliasParametersList.append((sharedId, itemId, shouldMonitor))
-        if let error = toggleMonitoringForAliasSharedIdItemIdShouldMonitorThrowableError17 {
+        if let error = toggleMonitoringForAliasSharedIdItemIdShouldMonitorThrowableError18 {
             throw error
         }
         closureToggleMonitoringForAlias()

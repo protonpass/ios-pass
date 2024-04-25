@@ -209,6 +209,12 @@ private extension DetailMonitoredItemView {
                                   Image(uiImage: viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye)
                               })
                     }
+                    if viewModel.isCustomEmail {
+                        Button { viewModel.removeCustomMailFromMonitor() } label: {
+                            Label(title: { Text("Remove") },
+                                  icon: { Image(uiImage: IconProvider.trash) })
+                        }
+                    }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.interactionNormMajor2,
