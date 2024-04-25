@@ -27,6 +27,26 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
 
     public init() {}
 
+    // MARK: - access
+    public var invokedAccessSetter = false
+    public var invokedAccessSetterCount = 0
+    public var invokedAccess: CurrentValueSubject<Access?, Never>?
+    public var invokedAccessList = [CurrentValueSubject<Access?, Never>?]()
+    public var invokedAccessGetter = false
+    public var invokedAccessGetterCount = 0
+    public var stubbedAccess: CurrentValueSubject<Access?, Never>!
+    public var access: CurrentValueSubject<Access?, Never> {
+        set {
+            invokedAccessSetter = true
+            invokedAccessSetterCount += 1
+            invokedAccess = newValue
+            invokedAccessList.append(newValue)
+        } get {
+            invokedAccessGetter = true
+            invokedAccessGetterCount += 1
+            return stubbedAccess
+        }
+    }
     // MARK: - didUpdateToNewPlan
     public var invokedDidUpdateToNewPlanSetter = false
     public var invokedDidUpdateToNewPlanSetterCount = 0
@@ -95,24 +115,40 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         closureRefreshAccess()
         return stubbedRefreshAccessResult
     }
-    // MARK: - updatePassMonitorState
-    public var updatePassMonitorStateThrowableError4: Error?
-    public var closureUpdatePassMonitorState: () -> () = {}
-    public var invokedUpdatePassMonitorStatefunction = false
-    public var invokedUpdatePassMonitorStateCount = 0
-    public var invokedUpdatePassMonitorStateParameters: (request: UpdateMonitorStateRequest, Void)?
-    public var invokedUpdatePassMonitorStateParametersList = [(request: UpdateMonitorStateRequest, Void)]()
-    public var stubbedUpdatePassMonitorStateResult: Access!
+    // MARK: - updateProtonAddressesMonitor
+    public var updateProtonAddressesMonitorThrowableError4: Error?
+    public var closureUpdateProtonAddressesMonitor: () -> () = {}
+    public var invokedUpdateProtonAddressesMonitorfunction = false
+    public var invokedUpdateProtonAddressesMonitorCount = 0
+    public var invokedUpdateProtonAddressesMonitorParameters: (monitored: Bool, Void)?
+    public var invokedUpdateProtonAddressesMonitorParametersList = [(monitored: Bool, Void)]()
 
-    public func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws -> Access {
-        invokedUpdatePassMonitorStatefunction = true
-        invokedUpdatePassMonitorStateCount += 1
-        invokedUpdatePassMonitorStateParameters = (request, ())
-        invokedUpdatePassMonitorStateParametersList.append((request, ()))
-        if let error = updatePassMonitorStateThrowableError4 {
+    public func updateProtonAddressesMonitor(_ monitored: Bool) async throws {
+        invokedUpdateProtonAddressesMonitorfunction = true
+        invokedUpdateProtonAddressesMonitorCount += 1
+        invokedUpdateProtonAddressesMonitorParameters = (monitored, ())
+        invokedUpdateProtonAddressesMonitorParametersList.append((monitored, ()))
+        if let error = updateProtonAddressesMonitorThrowableError4 {
             throw error
         }
-        closureUpdatePassMonitorState()
-        return stubbedUpdatePassMonitorStateResult
+        closureUpdateProtonAddressesMonitor()
+    }
+    // MARK: - updateAliasesMonitor
+    public var updateAliasesMonitorThrowableError5: Error?
+    public var closureUpdateAliasesMonitor: () -> () = {}
+    public var invokedUpdateAliasesMonitorfunction = false
+    public var invokedUpdateAliasesMonitorCount = 0
+    public var invokedUpdateAliasesMonitorParameters: (monitored: Bool, Void)?
+    public var invokedUpdateAliasesMonitorParametersList = [(monitored: Bool, Void)]()
+
+    public func updateAliasesMonitor(_ monitored: Bool) async throws {
+        invokedUpdateAliasesMonitorfunction = true
+        invokedUpdateAliasesMonitorCount += 1
+        invokedUpdateAliasesMonitorParameters = (monitored, ())
+        invokedUpdateAliasesMonitorParametersList.append((monitored, ()))
+        if let error = updateAliasesMonitorThrowableError5 {
+            throw error
+        }
+        closureUpdateAliasesMonitor()
     }
 }
