@@ -203,18 +203,13 @@ private extension DetailMonitoredItemView {
         if viewModel.state.isFetched {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
-                    Button { viewModel.toggleMonitoring() } label: {
-                        Label(title: { Text(viewModel.isMonitored ? "Disable monitoring" : "Enable monitoring") },
-                              icon: {
-                                  Image(uiImage: viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye)
-                              })
-                    }
+                    ToggleMonitorButton(monitored: viewModel.isMonitored,
+                                        action: { viewModel.toggleMonitoring() })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Breach detail action menu",
-                                 action: {})
+                                 accessibilityLabel: "Breach detail action menu")
                 })
             }
         }
