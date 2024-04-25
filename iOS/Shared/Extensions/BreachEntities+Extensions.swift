@@ -41,7 +41,7 @@ extension UserBreaches {
 
 extension AliasMonitorInfo {
     var latestBreach: String {
-        #localized("Latest breach on %@", breaches?.breaches.first?.publishedAt.breachDate ?? "")
+        #localized("Latest breach on %@", breaches?.breaches.first?.breachDate ?? "")
     }
 }
 
@@ -51,20 +51,5 @@ extension [AliasMonitorInfo] {
             .sorted {
                 ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min)
             }.prefix(10))
-    }
-}
-
-public extension String {
-    var breachDate: String {
-        let isoFormatter = DateFormatter()
-        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        if let date = isoFormatter.date(from: self) {
-            let outputFormatter = DateFormatter()
-            outputFormatter.locale = Locale.current
-            outputFormatter.dateFormat = "MMM d, yyyy"
-            return outputFormatter.string(from: date)
-        } else {
-            return ""
-        }
     }
 }

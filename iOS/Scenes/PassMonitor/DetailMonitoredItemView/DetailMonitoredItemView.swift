@@ -158,7 +158,7 @@ private extension DetailMonitoredItemView {
                         .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
 
-                    Text(breach.publishedAt.breachDate)
+                    Text(breach.breachDate)
                         .font(.callout)
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
