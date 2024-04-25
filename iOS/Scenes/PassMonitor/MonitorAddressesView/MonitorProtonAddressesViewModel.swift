@@ -84,6 +84,17 @@ private extension MonitorProtonAddressesViewModel {
             }
             .store(in: &cancellables)
 
+        passMonitorRepository.darkWebDataSectionUpdate
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] update in
+                guard let self else { return }
+                if case let .protonAddresses(userBreaches) = update {
+                    allAddresses = userBreaches.addresses
+                }
+            }
+            .store(in: &cancellables)
+
         passMonitorRepository.userBreaches
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
