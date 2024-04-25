@@ -77,6 +77,7 @@ private extension MonitorProtonAddressesView {
     }
 
     func select(_ address: ProtonAddress) {
+        guard viewModel.access?.monitor.protonAddress == true else { return }
         router.navigate(to: .breachDetail(.protonAddress(address)))
     }
 }
@@ -104,6 +105,7 @@ private extension MonitorProtonAddressesView {
     var disabledView: some View {
         Text("Enable monitoring to get notified if your Proton addresses were leaked.")
             .foregroundStyle(PassColor.textNorm.toColor)
+            .padding(.vertical)
         ForEach(viewModel.allAddresses) { address in
             MonitorExcludedEmailView(address: address, action: { select(address) })
                 .padding(.bottom)
