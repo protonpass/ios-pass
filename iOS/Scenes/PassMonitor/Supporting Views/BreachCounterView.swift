@@ -1,6 +1,6 @@
 //
-// ProtonAddress.swift
-// Proton Pass - Created on 10/04/2024.
+// BreachCounterView.swift
+// Proton Pass - Created on 24/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,27 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import DesignSystem
+import Entities
+import SwiftUI
 
-public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifiable, Breachable {
-    public let addressID, email: String
-    public let breachCounter: Int
-    public let flags: Int
-    public let lastBreachTime: Int?
+struct BreachCounterView: View {
+    let count: Int
+    let type: SecureRowType
 
-    public init(addressID: String,
-                email: String,
-                breachCounter: Int,
-                flags: Int,
-                lastBreachTime: Int?) {
-        self.addressID = addressID
-        self.email = email
-        self.breachCounter = breachCounter
-        self.flags = flags
-        self.lastBreachTime = lastBreachTime
-    }
-
-    public var id: String {
-        addressID
+    var body: some View {
+        Text(verbatim: "\(count)")
+            .fontWeight(.medium)
+            .padding(.vertical, 4)
+            .padding(.horizontal, 12)
+            .foregroundStyle(type.iconColor.toColor)
+            .background(type.background.toColor)
+            .clipShape(Capsule())
     }
 }

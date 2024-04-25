@@ -34,7 +34,6 @@ public extension View {
 // MARK: - ViewBuilders
 
 public extension View {
-    @ViewBuilder
     func navigationStackEmbeded(_ path: Binding<NavigationPath>? = nil) -> some View {
         if let path {
             NavigationStack(path: path) {
@@ -47,11 +46,17 @@ public extension View {
         }
     }
 
-    @ViewBuilder
     func scrollViewEmbeded(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> some View {
         ScrollView {
             self
         }
         .frame(maxWidth: maxWidth, maxHeight: maxHeight)
+    }
+
+    func buttonEmbeded(_ action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            self
+        }
+        .buttonStyle(.plain)
     }
 }

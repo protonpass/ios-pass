@@ -1,6 +1,6 @@
 //
-// ProtonAddress.swift
-// Proton Pass - Created on 10/04/2024.
+// Breachable.swift
+// Proton Pass - Created on 24/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,28 +17,26 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifiable, Breachable {
-    public let addressID, email: String
-    public let breachCounter: Int
-    public let flags: Int
-    public let lastBreachTime: Int?
+public protocol Breachable {
+    var email: String { get }
+    var breachCounter: Int { get }
+    var lastBreachTime: Int? { get }
+}
 
-    public init(addressID: String,
-                email: String,
-                breachCounter: Int,
-                flags: Int,
-                lastBreachTime: Int?) {
-        self.addressID = addressID
-        self.email = email
-        self.breachCounter = breachCounter
-        self.flags = flags
-        self.lastBreachTime = lastBreachTime
+public extension Breachable {
+    var isBreached: Bool {
+        breachCounter > 0
     }
 
-    public var id: String {
-        addressID
+    var lastBreachDate: String? {
+        guard let lastBreachTime else { return nil }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM dd yyyy"
+        let date = Date(timeIntervalSince1970: TimeInterval(lastBreachTime))
+        return formatter.string(from: date)
     }
 }

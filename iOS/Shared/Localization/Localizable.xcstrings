@@ -31168,6 +31168,16 @@
         }
       }
     },
+    "Enable monitoring to get notified if your Proton addresses were leaked." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable monitoring to get notified if your Proton addresses were leaked."
+          }
+        }
+      }
+    },
     "Enable Proton Sentinel" : {
       "localizations" : {
         "be" : {
@@ -32723,6 +32733,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İzlemeye katmama"
+          }
+        }
+      }
+    },
+    "Excluded from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded from monitoring"
           }
         }
       }
@@ -48106,6 +48126,16 @@
         }
       }
     },
+    "Monitoring disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoring disabled"
+          }
+        }
+      }
+    },
     "More info" : {
       "localizations" : {
         "be" : {
@@ -49526,16 +49556,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir veri açığa çıkmamış"
-          }
-        }
-      }
-    },
-    "No Breaches detected" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Breaches detected"
           }
         }
       }
@@ -53617,6 +53637,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optik kimlik"
+          }
+        }
+      }
+    },
+    "Options" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options"
           }
         }
       }

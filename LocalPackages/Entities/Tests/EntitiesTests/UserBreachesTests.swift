@@ -36,20 +36,20 @@ final class UserBreachesTests: XCTestCase {
                                                                    verified: true,
                                                                    breachCounter: 1, 
                                                                    flags: 0,
-                                                                   lastBreachedTime: nil),
+                                                                   lastBreachTime: nil),
                                                        CustomEmail(customEmailID: "test2",
                                                                    email: "test",
                                                                    verified: true,
                                                                    breachCounter: 2, 
                                                                    flags: 0,
-                                                                   lastBreachedTime: nil),
+                                                                   lastBreachTime: nil),
                                                        CustomEmail(customEmailID: "test3",
                                                                    email: "test",
                                                                    verified: false,
                                                                    breachCounter: 3, 
                                                                    flags: 0, 
-                                                                   lastBreachedTime: nil)], hasCustomDomains: false)
-        
+                                                                   lastBreachTime: nil)], hasCustomDomains: false)
+
         XCTAssertEqual(userBreaches.latestBreach, latestbreach)
         XCTAssertEqual(userBreaches.verifiedCustomEmails.count, 2)
         XCTAssertEqual(userBreaches.unverifiedCustomEmails.count, 1)
