@@ -111,14 +111,6 @@ private extension SecurityWeaknessDetailViewModel {
     }
 }
 
-extension PasswordStrength {
-    var toSecuritySectionHeaderKey: SecuritySectionHeaderKey {
-        SecuritySectionHeaderKey(color: color,
-                                 title: title,
-                                 iconName: iconName)
-    }
-}
-
 private extension SecuritySection {
     var toSecuritySectionHeaderKey: SecuritySectionHeaderKey {
         switch self {

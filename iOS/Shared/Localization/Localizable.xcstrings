@@ -14372,12 +14372,12 @@
         }
       }
     },
-    "All your login items have two-factor authentication enabled." : {
+    "All your login items have two-factor authentication enabled" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All your login items have two-factor authentication enabled."
+            "value" : "All your login items have two-factor authentication enabled"
           }
         }
       }
@@ -50338,12 +50338,12 @@
         }
       }
     },
-    "No weak password found in your login items" : {
+    "No weak passwords were found in your login items" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No weak password found in your login items"
+            "value" : "No weak passwords were found in your login items"
           }
         }
       }
@@ -90525,12 +90525,12 @@
         }
       }
     },
-    "You have no reused password in your login items" : {
+    "You have no reused passwords in your login items" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You have no reused password in your login items"
+            "value" : "You have no reused passwords in your login items"
           }
         }
       }
