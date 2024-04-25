@@ -170,7 +170,12 @@ private extension DetailMonitoredItemViewModel {
         case let .protonAddress(address):
             breaches = try await passMonitorRepository.getAllBreachesForProtonAddress(address: address)
         }
-        let linkedItems = try await getItemsLinkedToBreach(email: infos.email)
+        let linkedItems: [ItemUiModel] = switch state {
+        case let .fetched(uiModel):
+            uiModel.linkedItems
+        default:
+            try await getItemsLinkedToBreach(email: infos.email)
+        }
         return .init(breachCount: breaches.count,
                      email: infos.email,
                      unresolvedBreaches: breaches.breaches.allUnresolvedBreaches,
