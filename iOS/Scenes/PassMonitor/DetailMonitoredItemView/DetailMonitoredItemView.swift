@@ -154,7 +154,7 @@ private extension DetailMonitoredItemView {
                     .frame(height: 43)
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                    Text(breach.name /* source.domain ?? "<Unknown>" */ )
+                    Text(breach.name)
                         .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
 
@@ -177,11 +177,7 @@ private extension DetailMonitoredItemView {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
-}
 
-// MARK: - Utils
-
-private extension DetailMonitoredItemView {
     func createSectionHeader(title: LocalizedStringKey) -> some View {
         Text(title)
             .fontWeight(.bold)
