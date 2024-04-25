@@ -19,8 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-
-@preconcurrency import ProtonCoreServices
+import ProtonCoreServices
 
 public protocol NetworkRepositoryProtocol: Sendable {
     func revokeCurrentSession() async throws
