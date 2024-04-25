@@ -46,14 +46,24 @@ private extension SecurityWeaknessDetailView {
                 .font(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
-
-            LazyVStack(spacing: 0) {
-                if viewModel.showSections {
-                    itemsSections(sections: viewModel.sectionedData)
-                } else {
-                    itemsList(items: viewModel.sectionedData.flatMap(\.value))
+            if viewModel.isEmpty {
+                Image(uiImage: PassIcon.securityEmptyState)
+                    .resizable()
+                    .frame(width: 195)
+                    .padding(.top, 52)
+                Text(viewModel.nothingWrongMessage)
+                    .foregroundStyle(PassColor.textHint.toColor)
+                    .fontWeight(.medium)
+                    .multilineTextAlignment(.center)
+            } else {
+                LazyVStack(spacing: 0) {
+                    if viewModel.showSections {
+                        itemsSections(sections: viewModel.sectionedData)
+                    } else {
+                        itemsList(items: viewModel.sectionedData.flatMap(\.value))
+                    }
+                    Spacer()
                 }
-                Spacer()
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -70,7 +80,7 @@ private extension SecurityWeaknessDetailView {
 
 private extension SecurityWeaknessDetailView {
     func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
-        ForEach(sections.keys.sorted(by: >), id: \.self) { key in
+        ForEach(sections.keys.sorted(by: >)) { key in
             Section(content: {
                 itemsList(items: sections[key] ?? [])
             }, header: {

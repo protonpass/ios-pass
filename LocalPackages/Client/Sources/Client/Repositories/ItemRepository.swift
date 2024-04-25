@@ -470,6 +470,7 @@ public extension ItemRepository {
     func update(lastUseItems: [LastUseItem], shareId: String) async throws {
         logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
         try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
+        itemsWereUpdated.send()
         logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
     }
 
@@ -479,6 +480,7 @@ public extension ItemRepository {
                                                                        itemId: item.itemId,
                                                                        lastUseTime: date.timeIntervalSince1970)
         try await upsertItems([updatedItem], shareId: item.shareId)
+        itemsWereUpdated.send()
         logger.trace("Updated last use time \(item.debugDescription)")
     }
 
@@ -502,6 +504,7 @@ public extension ItemRepository {
         try await localDatasource.deleteItems([oldEncryptedItem])
         try await localDatasource.upsertItems([newEncryptedItem])
         try await refreshPinnedItemDataStream()
+        itemsWereUpdated.send()
         logger.info("Moved \(item.debugDescription) to share \(toShareId)")
         return newEncryptedItem
     }
@@ -522,6 +525,7 @@ public extension ItemRepository {
         logger.trace("Moving current share \(currentShareId) to share \(toShareId)")
         let oldEncryptedItems = try await getItems(shareId: currentShareId, state: .active)
         let results = try await parallelMove(oldEncryptedItems: oldEncryptedItems, to: toShareId)
+        itemsWereUpdated.send()
         logger.trace("Moved share \(currentShareId) to share \(toShareId)")
         return results
     }
