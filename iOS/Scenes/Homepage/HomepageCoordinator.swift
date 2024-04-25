@@ -162,7 +162,7 @@ private extension HomepageCoordinator {
             Task { [weak self] in
                 guard let self else { return }
                 guard await authenticated,
-                      let destination = await router.pendingDeeplinkDestination else { return }
+                      let destination = await router.getDeeplink() else { return }
                 switch destination {
                 case let .totp(uri):
                     await totpDeepLink(totpUri: uri)

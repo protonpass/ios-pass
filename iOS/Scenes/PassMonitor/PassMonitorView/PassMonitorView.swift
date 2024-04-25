@@ -398,7 +398,6 @@ private extension PassMonitorView {
                        subTitle: weakPasswords > 0 ? "Create strong passwords" :
                            "You don't have any weak passwords",
                        info: "\(weakPasswords)",
-                       actionable: weakPasswords > 0,
                        action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
     }
 }
@@ -409,7 +408,6 @@ private extension PassMonitorView {
                        title: "Reused passwords",
                        subTitle: "Create unique passwords",
                        info: "\(reusedPasswords)",
-                       actionable: reusedPasswords > 0,
                        action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
     }
 }
@@ -420,7 +418,6 @@ private extension PassMonitorView {
                        title: "Missing two-factor authentication",
                        subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
                        info: "\(missing2FA)",
-                       actionable: missing2FA > 0,
                        action: { viewModel.showSecurityWeakness(type: .missing2FA) })
     }
 }
@@ -431,7 +428,6 @@ private extension PassMonitorView {
                        title: "Excluded items",
                        subTitle: "These items remain at risk",
                        info: "\(excludedItems)",
-                       actionable: excludedItems > 0,
                        action: { viewModel.showSecurityWeakness(type: .excludedItems) })
     }
 }
@@ -444,9 +440,8 @@ private extension PassMonitorView {
                         subTitle: LocalizedStringKey?,
                         info: String? = nil,
                         badge: UIImage? = nil,
-                        actionable: Bool = true,
                         action: @escaping () -> Void) -> some View {
-        Button(action: actionable ? action : {}) {
+        Button(action: action) {
             HStack(spacing: DesignConstant.sectionPadding) {
                 if let iconName = rowType.icon {
                     Image(systemName: iconName)
@@ -487,11 +482,9 @@ private extension PassMonitorView {
                         .clipShape(Capsule())
                 }
 
-                if actionable {
-                    ItemDetailSectionIcon(icon: IconProvider.chevronRight,
-                                          color: rowType.infoForeground,
-                                          width: 12)
-                }
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                      color: rowType.infoForeground,
+                                      width: 12)
 
                 if let badge {
                     ItemDetailSectionIcon(icon: badge,

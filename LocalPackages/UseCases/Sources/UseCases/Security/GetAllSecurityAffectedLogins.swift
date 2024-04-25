@@ -77,14 +77,11 @@ private extension GetAllSecurityAffectedLogins {
                              type: SecurityWeakness,
                              key: SymmetricKey) throws -> SecurityIssuesContent {
         var weakPasswords: [SecuritySection: [ItemContent]] = [:]
+        let section = SecuritySection.weakPasswords
 
         for item in items where item.weaknesses.contains(type) {
             let itemContent = try item.item.getItemContent(symmetricKey: key)
-            guard let password = itemContent.loginItem?.password,
-                  let strength = getPasswordStrength(password: password) else {
-                continue
-            }
-            let section = SecuritySection.weakPasswords(strength)
+
             if weakPasswords[section] != nil {
                 weakPasswords[section]?.append(itemContent)
             } else {

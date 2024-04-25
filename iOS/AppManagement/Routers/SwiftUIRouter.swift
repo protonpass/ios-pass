@@ -62,9 +62,8 @@ enum GeneralSheetDestination: Identifiable, Hashable {
     }
 }
 
-@MainActor
 final class MainNavViewRouter {
-    @ViewBuilder
+    @MainActor @ViewBuilder
     func navigate(to destination: GeneralRouterDestination) -> some View {
         switch destination {
         case .userSharePermission:
@@ -118,31 +117,35 @@ extension View {
     }
 }
 
-@MainActor
 final class PathRouter: ObservableObject {
-    @Published var path = NavigationPath()
-    @Published var presentedSheet: GeneralSheetDestination?
+    @MainActor @Published var path = NavigationPath()
+    @MainActor @Published var presentedSheet: GeneralSheetDestination?
 
     init() {}
 
+    @MainActor
     func navigate(to destination: GeneralRouterDestination) {
         path.append(destination)
     }
 
+    @MainActor
     // periphery:ignore
     func popToRoot() {
         path = NavigationPath()
     }
 
+    @MainActor
     // periphery:ignore
     func back(to numberOfScreen: Int = 1) {
         path.removeLast(numberOfScreen)
     }
 
+    @MainActor
     func present(sheet: GeneralSheetDestination) {
         presentedSheet = sheet
     }
 
+    @MainActor
     // periphery:ignore
     func dismissSheet() {
         presentedSheet = nil
