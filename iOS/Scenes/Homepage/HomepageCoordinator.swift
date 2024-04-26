@@ -929,8 +929,17 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func presentSecurity(_ securityWeakness: SecurityWeakness) {
-        let isSheet = shouldShowAsSheet()
-        let view = SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness), isSheet: isSheet)
+        var isSheet = if case let .breaches(userBreaches) = securityWeakness {
+            true
+        } else {
+            shouldShowAsSheet()
+        }
+        let view: any View = if case let .breaches(userBreaches) = securityWeakness {
+            DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches))
+        } else {
+            SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness), isSheet: isSheet)
+        }
+
         if isSheet {
             present(view)
         } else {

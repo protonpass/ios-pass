@@ -191,7 +191,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private let darkWebRouter = resolve(\RouterContainer.darkWebRouter)
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
     private var previousVC: UIViewController?
@@ -371,13 +370,5 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         }
 
         return false
-    }
-
-    func tabBarController(_ tabBarController: UITabBarController,
-                          didSelect viewController: UIViewController) {
-        if viewController == passMonitorViewController, previousVC == viewController {
-            darkWebRouter.popToRoot()
-        }
-        previousVC = viewController
     }
 }
