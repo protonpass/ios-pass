@@ -44,11 +44,11 @@ public final class GetAllAliasMonitorInfos: GetAllAliasMonitorInfoUseCase {
     }
 
     public func execute() async throws -> [AliasMonitorInfo] {
-        let alias = try await getAllAliasesUseCase()
+        let aliases = try await getAllAliasesUseCase()
 
         return try await withThrowingTaskGroup(of: AliasMonitorInfo.self,
                                                returning: [AliasMonitorInfo].self) { group in
-            for alias in alias {
+            for alias in aliases {
                 group.addTask { [weak self] in
                     guard let self, alias.item.isBreached else { return AliasMonitorInfo(alias: alias,
                                                                                          breaches: nil) }
