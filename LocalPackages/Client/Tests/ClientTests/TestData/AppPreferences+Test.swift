@@ -27,6 +27,7 @@ extension AppPreferences {
               telemetryThreshold: .random(in: 1...1_000_000),
               createdItemsCount: .random(in: 1...100),
               dismissedBannerIds: .random(randomElement: .random()),
+              dismissedCustomDomainExplanation: .random(),
               didMigratePreferences: .random())
     }
 }

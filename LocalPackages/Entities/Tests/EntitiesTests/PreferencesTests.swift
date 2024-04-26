@@ -37,7 +37,9 @@ final class PreferencesTests: XCTestCase {
         let expectation = AppPreferences(onboarded: AppPreferences.default.onboarded,
                                          telemetryThreshold: AppPreferences.default.telemetryThreshold,
                                          createdItemsCount: 100,
-                                         dismissedBannerIds: ["a", "b", "c"],
+                                         dismissedBannerIds: ["a", "b", "c"], 
+                                         dismissedCustomDomainExplanation:
+                                            AppPreferences.default.dismissedCustomDomainExplanation,
                                          didMigratePreferences: AppPreferences.default.didMigratePreferences)
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
     }

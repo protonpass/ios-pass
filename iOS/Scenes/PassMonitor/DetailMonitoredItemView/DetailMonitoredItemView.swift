@@ -158,7 +158,7 @@ private extension DetailMonitoredItemView {
                         .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
 
-                    Text(breach.publishedAt.breachDate)
+                    Text(breach.breachDate)
                         .font(.callout)
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
@@ -180,10 +180,8 @@ private extension DetailMonitoredItemView {
 
     func createSectionHeader(title: LocalizedStringKey) -> some View {
         Text(title)
-            .fontWeight(.bold)
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 16)
+            .monitorSectionTitleText()
+            .padding(.top, DesignConstant.sectionPadding)
     }
 }
 
@@ -203,18 +201,13 @@ private extension DetailMonitoredItemView {
         if viewModel.state.isFetched {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
-                    Button { viewModel.toggleMonitoring() } label: {
-                        Label(title: { Text(viewModel.isMonitored ? "Disable monitoring" : "Enable monitoring") },
-                              icon: {
-                                  Image(uiImage: viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye)
-                              })
-                    }
+                    ToggleMonitorButton(monitored: viewModel.isMonitored,
+                                        action: { viewModel.toggleMonitoring() })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 accessibilityLabel: "Breach detail action menu",
-                                 action: {})
+                                 accessibilityLabel: "Breach detail action menu")
                 })
             }
         }
