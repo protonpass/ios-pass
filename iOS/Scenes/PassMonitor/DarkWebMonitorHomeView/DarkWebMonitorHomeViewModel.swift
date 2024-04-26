@@ -32,7 +32,7 @@ import UseCases
 final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     @Published private(set) var access: Access?
     @Published private(set) var userBreaches: UserBreaches
-    @Published private(set) var customEmails: [CustomEmail]?
+    @Published private(set) var customEmails: [CustomEmail]
     @Published private(set) var suggestedEmail: [SuggestedEmail]?
     @Published private(set) var aliasInfos: [AliasMonitorInfo]?
 
