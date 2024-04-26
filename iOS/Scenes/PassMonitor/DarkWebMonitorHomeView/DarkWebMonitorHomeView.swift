@@ -54,9 +54,16 @@ private extension DarkWebMonitorHomeView {
                     monitoredProtonAddressesSection
                 } else {
                     notMonitoredSection(title: "Proton addresses")
+                        .buttonEmbeded { pushProtonAddressesList() }
                 }
 
-                aliasSection
+                if viewModel.access?.monitor.aliases == true {
+                    monitoredAliasesSection
+                } else {
+                    notMonitoredSection(title: "Hide-my-email aliases")
+                        .buttonEmbeded { pushAliasesList() }
+                }
+
                 VStack(spacing: 0) {
                     customEmails
                 }
@@ -134,7 +141,6 @@ private extension DarkWebMonitorHomeView {
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
         .contentShape(Rectangle())
-        .buttonEmbeded { pushProtonAddressesList() }
     }
 }
 
@@ -168,23 +174,25 @@ private extension DarkWebMonitorHomeView {
     func pushProtonAddressesList() {
         router.navigate(to: .protonAddressesList(viewModel.userBreaches.addresses))
     }
+
+    func pushAliasesList() {
+        if let infos = viewModel.aliasInfos {
+            router.navigate(to: .aliasesList(infos))
+        }
+    }
 }
 
 // MARK: - Proton Aliases
 
 private extension DarkWebMonitorHomeView {
-    var aliasSection: some View {
+    var monitoredAliasesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Hide-my-email aliases"),
                                   subTitle: viewModel
                                       .breachSubtitle(numberOfBreaches: viewModel.numberOfBreachedAlias),
                                   hasBreaches: !viewModel.noAliasBreaches,
                                   isDetail: false,
-                                  action: {
-                                      if let infos = viewModel.aliasInfos {
-                                          router.navigate(to: .aliasesList(infos))
-                                      }
-                                  })
+                                  action: { pushAliasesList() })
             if !viewModel.noAliasBreaches {
                 PassSectionDivider()
                 ForEach(viewModel.mostBreachedAliases) { item in
