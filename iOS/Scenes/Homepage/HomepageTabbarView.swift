@@ -193,7 +193,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
-    private var previousVC: UIViewController?
     private var tabIndexes = [HomepageTab: Int]()
     private var cancellables = Set<AnyCancellable>()
 
