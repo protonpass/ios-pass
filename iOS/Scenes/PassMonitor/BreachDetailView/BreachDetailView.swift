@@ -77,7 +77,7 @@ private extension BreachDetailView {
                     .font(.title3)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Your info was in a data breach and found on **\(breach.publishedAt.breachDate)**")
+                Text("Your info was in a data breach and found on **\(breach.breachDate)**")
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -162,10 +162,11 @@ private extension BreachDetailView {
 
 private extension BreachDetailView {
     var footer: some View {
-        Text("Your Proton Account information remains secure and encrypted. [Learn more]()")
+        Text("Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)")
             .font(.callout)
             .fontWeight(.regular)
             .foregroundStyle(PassColor.textWeak.toColor)
+            .tint(PassColor.interactionNormMajor2.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
@@ -175,10 +176,8 @@ private extension BreachDetailView {
 private extension BreachDetailView {
     func createSectionHeader(title: LocalizedStringKey) -> some View {
         Text(title)
-            .fontWeight(.bold)
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 16)
+            .monitorSectionTitleText()
+            .padding(.top, DesignConstant.sectionPadding)
     }
 }
 

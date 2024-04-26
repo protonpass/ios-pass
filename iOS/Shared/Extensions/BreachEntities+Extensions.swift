@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
 import Foundation
 import Macro
@@ -30,8 +31,10 @@ extension ProtonAddress {
 
 extension UserBreaches {
     var topTenBreachedAddresses: [ProtonAddress] {
-        Array(addresses.filter { $0.isMonitored && $0.isBreached }
-            .sorted { $0.breachCounter > $1.breachCounter }.prefix(10))
+        Array(addresses
+            .filter { $0.isMonitored && $0.isBreached }
+            .sorted { $0.breachCounter > $1.breachCounter }
+            .prefix(DesignConstant.previewBreachItemCount))
     }
 
     var numberOfBreachedProtonAddresses: Int {
@@ -41,30 +44,14 @@ extension UserBreaches {
 
 extension AliasMonitorInfo {
     var latestBreach: String {
-        #localized("Latest breach on %@", breaches?.breaches.first?.publishedAt.breachDate ?? "")
+        #localized("Latest breach on %@", breaches?.breaches.first?.breachDate ?? "")
     }
 }
 
 extension [AliasMonitorInfo] {
     var topTenBreachedAliases: [AliasMonitorInfo] {
         Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
-            .sorted {
-                ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min)
-            }.prefix(10))
-    }
-}
-
-public extension String {
-    var breachDate: String {
-        let isoFormatter = DateFormatter()
-        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        if let date = isoFormatter.date(from: self) {
-            let outputFormatter = DateFormatter()
-            outputFormatter.locale = Locale.current
-            outputFormatter.dateFormat = "MMM d, yyyy"
-            return outputFormatter.string(from: date)
-        } else {
-            return ""
-        }
+            .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
+            .prefix(DesignConstant.previewBreachItemCount))
     }
 }
