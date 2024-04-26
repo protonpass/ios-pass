@@ -46,6 +46,7 @@ final class WipeAllData: WipeAllDataUseCase {
     private let credentialManager: CredentialManagerProtocol
     private let userDataProvider: UserDataProvider
     private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    private let passMonitorRepository: PassMonitorRepositoryProtocol
 
     init(logManager: LogManagerProtocol,
          appData: AppDataProtocol,
@@ -57,7 +58,8 @@ final class WipeAllData: WipeAllDataUseCase {
          vaultSyncEventStream: VaultSyncEventStream,
          credentialManager: CredentialManagerProtocol,
          userDataProvider: UserDataProvider,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol) {
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
+         passMonitorRepository: PassMonitorRepositoryProtocol) {
         logger = .init(manager: logManager)
         self.appData = appData
         self.apiManager = apiManager
@@ -69,6 +71,7 @@ final class WipeAllData: WipeAllDataUseCase {
         self.credentialManager = credentialManager
         self.userDataProvider = userDataProvider
         self.featureFlagsRepository = featureFlagsRepository
+        self.passMonitorRepository = passMonitorRepository
     }
 
     func execute() async {
@@ -79,6 +82,7 @@ final class WipeAllData: WipeAllDataUseCase {
         }
         featureFlagsRepository.clearUserId()
 
+        await passMonitorRepository.reset()
         appData.resetData()
         apiManager.clearCredentials()
         try? await preferencesManager.reset()

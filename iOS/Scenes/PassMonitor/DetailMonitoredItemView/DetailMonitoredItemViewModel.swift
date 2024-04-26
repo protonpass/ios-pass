@@ -62,6 +62,7 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     private let toggleMonitoringForAlias = resolve(\UseCasesContainer.toggleMonitoringForAlias)
     private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
     private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)
+    private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
 
     var isMonitored: Bool {
         switch infos {
@@ -71,6 +72,14 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
             !email.flags.isFlagActive(.skipHealthCheckOrMonitoring)
         case let .protonAddress(address):
             !address.flags.isFlagActive(.skipHealthCheckOrMonitoring)
+        }
+    }
+
+    var isCustomEmail: Bool {
+        if case .customEmail = infos {
+            true
+        } else {
+            false
         }
     }
 
@@ -152,6 +161,24 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
                 shouldDismiss = true
             } catch {
                 handle(error: error)
+            }
+        }
+    }
+
+    func removeCustomMailFromMonitor() {
+        if case let .customEmail(email) = infos {
+            Task { [weak self] in
+                guard let self else {
+                    return
+                }
+                defer { router.display(element: .globalLoading(shouldShow: false)) }
+                do {
+                    router.display(element: .globalLoading(shouldShow: true))
+                    try await removeEmailFromBreachMonitoring(email: email)
+                    shouldDismiss = true
+                } catch {
+                    handle(error: error)
+                }
             }
         }
     }

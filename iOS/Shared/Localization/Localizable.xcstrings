@@ -14382,6 +14382,16 @@
         }
       }
     },
+    "All your login items have two-factor authentication enabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All your login items have two-factor authentication enabled"
+          }
+        }
+      }
+    },
     "Allow items to appear in Search" : {
       "localizations" : {
         "be" : {
@@ -50354,6 +50364,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Henüz bir kasa yok"
+          }
+        }
+      }
+    },
+    "No weak passwords were found in your login items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No weak passwords were found in your login items"
           }
         }
       }
@@ -90389,6 +90409,16 @@
         }
       }
     },
+    "You don't have any excluded login items from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any excluded login items from monitoring"
+          }
+        }
+      }
+    },
     "You don't have any weak passwords" : {
       "localizations" : {
         "be" : {
@@ -90521,6 +90551,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir zayıf parolanız yok"
+          }
+        }
+      }
+    },
+    "You have no reused passwords in your login items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have no reused passwords in your login items"
           }
         }
       }
