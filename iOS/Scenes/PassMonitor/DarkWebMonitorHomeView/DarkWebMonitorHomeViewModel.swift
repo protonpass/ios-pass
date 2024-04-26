@@ -69,11 +69,11 @@ extension DarkWebMonitorHomeViewModel {
         fetchAliasBreachesTask = Task { [weak self] in
             guard let self else { return }
             do {
+                try Task.checkCancellation()
                 if aliasBreachesState.isError {
                     aliasBreachesState = .fetching
                 }
                 let infos = try await getAllAliasMonitorInfos()
-                try randomlyFailInDebugMode()
                 aliasBreachesState = .fetched(infos)
                 updateDate = .now
             } catch {
@@ -87,11 +87,11 @@ extension DarkWebMonitorHomeViewModel {
         fetchCustomEmailsTask = Task { [weak self] in
             guard let self else { return }
             do {
+                try Task.checkCancellation()
                 if customEmailsState.isError {
                     customEmailsState = .fetching
                 }
                 let emails = try await getAllCustomEmails()
-                try randomlyFailInDebugMode()
                 customEmailsState = .fetched(emails)
             } catch {
                 customEmailsState = .error(error)
@@ -104,11 +104,11 @@ extension DarkWebMonitorHomeViewModel {
         fetchSuggestedEmailsTask = Task { [weak self] in
             guard let self else { return }
             do {
+                try Task.checkCancellation()
                 if suggestedEmailsState.isError {
                     suggestedEmailsState = .fetching
                 }
                 let emails = try await getCustomEmailSuggestion(breaches: userBreaches)
-                try randomlyFailInDebugMode()
                 suggestedEmailsState = .fetched(emails)
             } catch {
                 suggestedEmailsState = .error(error)
@@ -179,13 +179,5 @@ private extension DarkWebMonitorHomeViewModel {
     func handle(error: Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-
-    func randomlyFailInDebugMode() throws {
-        #if DEBUG
-        if Bool.random() {
-            throw PassError.errorExpected
-        }
-        #endif
     }
 }
