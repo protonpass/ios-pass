@@ -62,9 +62,9 @@ public extension Text {
             .foregroundColor(PassColor.textNorm.toColor)
     }
 
-    func monitorSectionTitleText() -> some View {
+    func monitorSectionTitleText(maxWidth: CGFloat? = .infinity) -> some View {
         font(.callout.bold())
             .foregroundStyle(PassColor.textNorm.toColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: maxWidth, alignment: .leading)
     }
 }
