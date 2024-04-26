@@ -32,8 +32,10 @@ struct DarkWebMonitorHomeView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showDataSecurityExplanation = false
     @State private var showCustomEmailExplanation = false
+    @State private var showNoBreachesAlert = false
+    @State private var showBreachesFoundAlert = false
     @StateObject var router = resolve(\RouterContainer.darkWebRouter)
-
+    
     var body: some View {
         mainContainer
             .routingProvided
@@ -91,6 +93,14 @@ private extension DarkWebMonitorHomeView {
                    // swiftlint:disable:next line_length
                    Text("Proton never shares your information with third parties. All data comes from searches for the appearance of Proton domains on the dark web.")
                })
+        .alert(Text(verbatim: "✅"),
+               isPresented: $showNoBreachesAlert,
+               actions: { Button("OK", action: {}) },
+               message: { Text("None of your email addresses or aliases appear in a data breach") })
+        .alert(Text(verbatim: "⚠️"),
+               isPresented: $showBreachesFoundAlert,
+               actions: { Button("OK", action: {}) },
+               message: { Text("One of your email addresses or aliases appear in a data breach") })
     }
 
     var mainTitle: some View {
@@ -507,8 +517,11 @@ private extension DarkWebMonitorHomeView {
                          action: dismiss.callAsFunction)
         }
 
-        if let aliasBreaches = viewModel.aliasBreachesState.fetchedObject {
-            let noBreaches = aliasBreaches.breachCount == 0 && viewModel.userBreaches.emailsCount == 0
+        if let aliasBreaches = viewModel.aliasBreachesState.fetchedObject,
+           let customEmailBreaches = viewModel.customEmailsState.fetchedObject {
+            let totalBreaches = aliasBreaches.breachCount + customEmailBreaches.breachCount + viewModel
+                .userBreaches.emailsCount
+            let noBreaches = totalBreaches == 0
             let icon: UIImage = noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
                 .exclamationCircleFilled
             let iconColor = noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
@@ -516,9 +529,13 @@ private extension DarkWebMonitorHomeView {
             let backgroundColor = noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
                 .passwordInteractionNormMinor2
             ToolbarItem(placement: .navigationBarTrailing) {
-                CircleButton(icon: icon,
-                             iconColor: iconColor,
-                             backgroundColor: backgroundColor)
+                CircleButton(icon: icon, iconColor: iconColor, backgroundColor: backgroundColor) {
+                    if noBreaches {
+                        showNoBreachesAlert.toggle()
+                    } else {
+                        showBreachesFoundAlert.toggle()
+                    }
+                }
             }
         }
     }
@@ -539,5 +556,11 @@ private extension [AliasMonitorInfo] {
         Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
             .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
             .prefix(DesignConstant.previewBreachItemCount))
+    }
+}
+
+private extension [CustomEmail] {
+    var breachCount: Int {
+        filter(\.isBreached).count
     }
 }
