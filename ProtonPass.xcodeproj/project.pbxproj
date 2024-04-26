@@ -49,6 +49,7 @@
 		3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */; };
 		3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3544F5E528E2341900834CA4 /* MainInterface.storyboard */; };
 		3544F5EC28E2341900834CA4 /* AutoFill.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3544F5E028E2341800834CA4 /* AutoFill.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3545731F2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545731E2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift */; };
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3546327B2A9CEFBC00321691 /* AutoFillInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3546327A2A9CEFBC00321691 /* AutoFillInstructionsView.swift */; };
@@ -382,6 +383,8 @@
 		35C0D1C72B20B567005D48A6 /* TOTPRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C0D1C62B20B567005D48A6 /* TOTPRow.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35C2ED8F2BA0507200E94BAA /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 35C2ED8E2BA0507200E94BAA /* InfoPlist.xcstrings */; };
+		35C44F742BDA4A310054F7EE /* MonitorAliasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C44F732BDA4A310054F7EE /* MonitorAliasesView.swift */; };
+		35C44F762BDA4A420054F7EE /* MonitorAliasesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C44F752BDA4A420054F7EE /* MonitorAliasesViewModel.swift */; };
 		35C9B8172B5E8AA90062D787 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C9B8162B5E8AA90062D787 /* ShareViewController.swift */; };
 		35C9B81A2B5E8AA90062D787 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35C9B8182B5E8AA90062D787 /* MainInterface.storyboard */; };
 		35C9B81E2B5E8AA90062D787 /* Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 35C9B8142B5E8AA90062D787 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -675,6 +678,7 @@
 		3544F5E628E2341900834CA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3544F5E828E2341900834CA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3544F5E928E2341900834CA4 /* AutoFill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AutoFill.entitlements; sourceTree = "<group>"; };
+		3545731E2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorAllAliasesView.swift; sourceTree = "<group>"; };
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3546327A2A9CEFBC00321691 /* AutoFillInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillInstructionsView.swift; sourceTree = "<group>"; };
@@ -867,6 +871,8 @@
 		35C2162829EA911E001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2ED8E2BA0507200E94BAA /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		35C44F732BDA4A310054F7EE /* MonitorAliasesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorAliasesView.swift; sourceTree = "<group>"; };
+		35C44F752BDA4A420054F7EE /* MonitorAliasesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorAliasesViewModel.swift; sourceTree = "<group>"; };
 		35C9B8142B5E8AA90062D787 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		35C9B8162B5E8AA90062D787 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		35C9B8192B5E8AA90062D787 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -1460,6 +1466,9 @@
 		356EAF1A2BD7F6C300C83AE6 /* MonitorAddressesView */ = {
 			isa = PBXGroup;
 			children = (
+				35C44F732BDA4A310054F7EE /* MonitorAliasesView.swift */,
+				35C44F752BDA4A420054F7EE /* MonitorAliasesViewModel.swift */,
+				3545731E2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift */,
 				356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */,
 				356EAF1D2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift */,
 			);
@@ -3090,6 +3099,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				35AC9A5C2A0BDAA300FBCEEC /* EditCustomFieldSections.swift in Sources */,
+				35C44F762BDA4A420054F7EE /* MonitorAliasesViewModel.swift in Sources */,
 				5B1453992A6938660048B022 /* UserPermissionView.swift in Sources */,
 				5BAE710C2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift in Sources */,
 				356BC35029D6C57100F03497 /* SettingsView.swift in Sources */,
@@ -3170,6 +3180,7 @@
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				355E92782A59D2D500C22703 /* Factory+Extensions.swift in Sources */,
 				5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */,
+				3545731F2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
@@ -3257,6 +3268,7 @@
 				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,
 				5B1092D32B5199F1002621A4 /* DetailHistoryView+Note.swift in Sources */,
 				356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */,
+				35C44F742BDA4A310054F7EE /* MonitorAliasesView.swift in Sources */,
 				357E62702B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
