@@ -69,7 +69,7 @@ private extension DarkWebMonitorHomeView {
                 }
 
                 VStack(spacing: 0) {
-                    customEmails
+                    customEmailsSection
                 }
             }
         }
@@ -218,13 +218,11 @@ private extension DarkWebMonitorHomeView {
 
 private extension DarkWebMonitorHomeView {
     @ViewBuilder
-    var customEmails: some View {
+    var customEmailsSection: some View {
         Section(content: {
-            if let customEmails = viewModel.customEmails {
-                ForEach(customEmails) { item in
-                    customEmailRow(for: item)
-                        .padding(.vertical, 12)
-                }
+            ForEach(viewModel.customEmails) {
+                customEmailRow(for: $0)
+                    .padding(.vertical, 12)
             }
 
             if let suggestedEmail = viewModel.suggestedEmail, !suggestedEmail.isEmpty {
