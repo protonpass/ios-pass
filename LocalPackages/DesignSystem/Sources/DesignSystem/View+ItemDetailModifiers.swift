@@ -61,4 +61,10 @@ public extension Text {
         font(.callout.bold())
             .foregroundColor(PassColor.textNorm.toColor)
     }
+
+    func monitorSectionTitleText() -> some View {
+        font(.callout.bold())
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
 }

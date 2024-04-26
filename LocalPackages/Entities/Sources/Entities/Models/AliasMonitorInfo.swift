@@ -45,8 +45,9 @@ extension AliasMonitorInfo: Breachable {
 
     public var lastBreachTime: Int? {
         guard let breaches = breaches?.breaches,
-              let latestBreach = breaches.sorted(by: { $0.publishedAtDate > $1.publishedAtDate }).first
-        else { return nil }
+              let latestBreach = breaches.min(by: { $0.publishedAtDate > $1.publishedAtDate }) else {
+            return nil
+        }
         return Int(latestBreach.publishedAtDate.timeIntervalSince1970)
     }
 }

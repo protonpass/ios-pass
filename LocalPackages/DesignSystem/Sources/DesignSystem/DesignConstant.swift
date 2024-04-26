@@ -24,6 +24,7 @@ public enum DesignConstant {
     public static let sectionPadding: CGFloat = 16
     public static let defaultPickerHeight: CGFloat = 50
     public static let searchBarHeight: CGFloat = 48
+    public static let previewBreachItemCount = 10
 
     public enum Icons {
         public static let defaultIconSize: CGFloat = 20
