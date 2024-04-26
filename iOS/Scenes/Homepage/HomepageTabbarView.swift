@@ -29,7 +29,7 @@ import SwiftUI
 import UIKit
 
 enum HomepageTab: CaseIterable, Hashable {
-    case items, authenticator, itemCreation, securityCenter, profile
+    case items, authenticator, itemCreation, passMonitor, profile
 
     var image: UIImage {
         switch self {
@@ -39,7 +39,7 @@ enum HomepageTab: CaseIterable, Hashable {
             PassIcon.tabAuthenticator
         case .itemCreation:
             IconProvider.plus
-        case .securityCenter:
+        case .passMonitor:
             IconProvider.shield
         case .profile:
             IconProvider.user
@@ -54,8 +54,8 @@ enum HomepageTab: CaseIterable, Hashable {
             "2fa Authenticator tab"
         case .itemCreation:
             "Create new item button"
-        case .securityCenter:
-            "Security centre tab"
+        case .passMonitor:
+            "Pass Monitor tab"
         case .profile:
             "Profile tab"
         }
@@ -177,7 +177,7 @@ protocol HomepageTabBarControllerDelegate: AnyObject {
 }
 
 @MainActor
-final class HomepageTabBarController: UITabBarController, DeinitPrintable {
+final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGestureRecognizerDelegate {
     deinit { print(deinitMessage) }
 
     private let itemsTabView: ItemsTabView
@@ -191,8 +191,10 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let darkWebRouter = resolve(\RouterContainer.darkWebRouter)
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
+    private var previousVC: UIViewController?
     private var tabIndexes = [HomepageTab: Int]()
     private var cancellables = Set<AnyCancellable>()
 
@@ -254,10 +256,10 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
             let passMonitorViewController = UIHostingController(rootView: passMonitorView)
             passMonitorViewController.tabBarItem.image = MonitorState.default.icon(selected: false)
             passMonitorViewController.tabBarItem.selectedImage = MonitorState.default.icon(selected: true)
-            passMonitorViewController.tabBarItem.accessibilityLabel = HomepageTab.securityCenter.hint
+            passMonitorViewController.tabBarItem.accessibilityLabel = HomepageTab.passMonitor.hint
             controllers.append(passMonitorViewController)
             self.passMonitorViewController = passMonitorViewController
-            tabIndexes[.securityCenter] = currentIndex
+            tabIndexes[.passMonitor] = currentIndex
             currentIndex += 1
         }
 
@@ -369,5 +371,13 @@ extension HomepageTabBarController: UITabBarControllerDelegate {
         }
 
         return false
+    }
+
+    func tabBarController(_ tabBarController: UITabBarController,
+                          didSelect viewController: UIViewController) {
+        if viewController == passMonitorViewController, previousVC == viewController {
+            darkWebRouter.popToRoot()
+        }
+        previousVC = viewController
     }
 }

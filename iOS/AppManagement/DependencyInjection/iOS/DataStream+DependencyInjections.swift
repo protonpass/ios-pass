@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-@preconcurrency import Combine
+import Combine
 import Entities
 import Factory
 import Foundation
