@@ -21,43 +21,58 @@
 
 import Foundation
 
-public enum FetchableObject<T> {
+public enum FetchableObject<T: Sendable & Equatable>: Sendable, Equatable {
     case fetching
     case fetched(T)
     case error(any Error)
+}
 
-    public var isFetching: Bool {
+public extension FetchableObject {
+    var isFetching: Bool {
         if case .fetching = self {
             return true
         }
         return false
     }
 
-    public var isFetched: Bool {
+    var isFetched: Bool {
         if case .fetched = self {
             return true
         }
         return false
     }
 
-    public var fetchedObject: T? {
+    var fetchedObject: T? {
         if case let .fetched(object) = self {
             return object
         }
         return nil
     }
 
-    public var isError: Bool {
+    var isError: Bool {
         if case .error = self {
             return true
         }
         return false
     }
 
-    public var error: (any Error)? {
+    var error: (any Error)? {
         if case let .error(error) = self {
             return error
         }
         return nil
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.fetching, .fetching):
+            true
+        case let (.fetched(lValue), .fetched(rValue)):
+            lValue == rValue
+        case let (.error(lError), .error(rError)):
+            lError.localizedDescription == rError.localizedDescription
+        default:
+            false
+        }
     }
 }
