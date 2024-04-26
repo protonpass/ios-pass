@@ -57,26 +57,19 @@ private extension DarkWebMonitorHomeView {
             }
 
             LazyVStack(spacing: DesignConstant.sectionPadding) {
-                if viewModel.access?.monitor.protonAddress == true {
-                    monitoredProtonAddressesSection
-                } else {
-                    notMonitoredSection(title: "Proton addresses")
-                        .buttonEmbeded { pushProtonAddressesList() }
-                }
-
+                protonAddressesSection
                 aliasesSection
-                VStack(spacing: 0) {
-                    customEmailsSection
-                }
+                customEmailsSection
+                suggestedEmailsSection
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.updateDate)
-        .animation(.default, value: viewModel.customEmails)
-        .animation(.default, value: viewModel.suggestedEmail)
         .animation(.default, value: viewModel.aliasBreachesState)
+        .animation(.default, value: viewModel.customEmailsState)
+        .animation(.default, value: viewModel.suggestedEmailsState)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
@@ -142,13 +135,22 @@ private extension DarkWebMonitorHomeView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .contentShape(Rectangle())
     }
 }
 
 // MARK: - Proton Addresses
 
 private extension DarkWebMonitorHomeView {
+    @ViewBuilder
+    var protonAddressesSection: some View {
+        if viewModel.access?.monitor.protonAddress == true {
+            monitoredProtonAddressesSection
+        } else {
+            notMonitoredSection(title: "Proton addresses")
+                .buttonEmbeded { pushProtonAddressesList() }
+        }
+    }
+
     var monitoredProtonAddressesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Proton addresses"),
@@ -260,83 +262,55 @@ private extension DarkWebMonitorHomeView {
 // MARK: - Custom Email sections
 
 private extension DarkWebMonitorHomeView {
-    @ViewBuilder
     var customEmailsSection: some View {
         Section(content: {
-            ForEach(viewModel.customEmails) {
-                customEmailRow(for: $0)
-                    .padding(.vertical, 12)
-            }
-
-            if let suggestedEmail = viewModel.suggestedEmail, !suggestedEmail.isEmpty {
-                Text("Suggestions")
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .font(.body)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 12)
-                ForEach(suggestedEmail, id: \.email) { item in
-                    HStack {
-                        Image(uiImage: IconProvider.envelope)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 24)
-                            .padding(10)
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                            .roundedDetailSection(backgroundColor: PassColor
-                                .interactionNormMinor1,
-                                borderColor: .clear)
-                        Spacer()
-                        VStack(alignment: .leading) {
-                            Text(item.email)
-                                .font(.body)
-                                .lineLimit(2)
-                                .foregroundStyle(PassColor.textNorm.toColor)
-                                .layoutPriority(1)
-                                .minimumScaleFactor(0.25)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-
-                            Text("Used in \(item.count) logins")
-                                .font(.footnote)
-                                .foregroundStyle(PassColor.textWeak.toColor)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        Spacer()
-
-                        CapsuleTextButton(title: #localized("Add"),
-                                          titleColor: PassColor.interactionNormMajor2,
-                                          backgroundColor: PassColor.interactionNormMinor1) {
-                            Task {
-                                let customEmail = await viewModel.addCustomEmail(email: item.email)
-                                router.present(sheet: .addCustomEmail(customEmail))
-                            }
-                        }
-                        .fixedSize(horizontal: true, vertical: true)
-                    }
-                    .padding(.vertical, 12)
+            switch viewModel.customEmailsState {
+            case .fetching:
+                // Handled in header
+                EmptyView()
+            case let .fetched(emails):
+                ForEach(emails) {
+                    customEmailRow(for: $0)
+                        .padding(.bottom)
+                }
+            case let .error(error):
+                HStack {
+                    Text(error.localizedDescription)
+                        .font(.callout)
+                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    RetryButton { viewModel.fetchCustomEmails() }
                 }
             }
         }, header: {
             HStack(spacing: 0) {
                 Text("Custom email address")
                     .monitorSectionTitleText(maxWidth: nil)
-                Button { showCustomEmailExplanation.toggle() } label: {
+
+                switch viewModel.customEmailsState {
+                case .fetching:
+                    Spacer()
+                    ProgressView()
+                case .fetched:
                     Image(uiImage: IconProvider.questionCircle)
                         .resizable()
                         .scaledToFit()
                         .frame(height: 16)
                         .padding(10)
                         .foregroundStyle(PassColor.textWeak.toColor)
+                        .buttonEmbeded { showCustomEmailExplanation.toggle() }
+                    Spacer()
+                    CircleButton(icon: IconProvider.plus,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Add custom email address",
+                                 type: .small,
+                                 action: { router.present(sheet: .addCustomEmail(nil)) })
+                case .error:
+                    Spacer()
                 }
-                .buttonStyle(.plain)
-                Spacer()
-                CircleButton(icon: IconProvider.plus,
-                             iconColor: PassColor.interactionNormMajor2,
-                             backgroundColor: PassColor.interactionNormMinor1,
-                             accessibilityLabel: "Add custom email address",
-                             type: .small,
-                             action: { router.present(sheet: .addCustomEmail(nil)) })
             }
-            .font(.callout)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, DesignConstant.sectionPadding)
         })
@@ -345,47 +319,8 @@ private extension DarkWebMonitorHomeView {
     @ViewBuilder
     func customEmailRow(for email: CustomEmail) -> some View {
         if email.verified {
-            Button { router.navigate(to: .breachDetail(.customEmail(email))) } label: {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(email.email)
-                            .font(.body)
-                            .lineLimit(2)
-                            .foregroundStyle((email.isBreached ? PassColor
-                                    .passwordInteractionNormMajor2 : PassColor.textNorm).toColor)
-                            .layoutPriority(1)
-                            .minimumScaleFactor(0.25)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-
-                        Text(email.isBreached ?
-                            "Latest breach on \(email.lastBreachDate ?? "")" :
-                            "No breaches detected")
-                            .font(.footnote)
-                            .foregroundStyle((email.isBreached ? PassColor.textNorm : PassColor
-                                    .cardInteractionNormMajor1).toColor)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    Spacer()
-
-                    if email.isBreached {
-                        Text(verbatim: "\(email.breachCounter)")
-                            .font(.body)
-                            .fontWeight(.medium)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 11)
-                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                            .background(PassColor.passwordInteractionNormMinor1.toColor)
-                            .clipShape(Capsule())
-                    }
-
-                    ItemDetailSectionIcon(icon: IconProvider.chevronRight,
-                                          color: email.isBreached ?
-                                              PassColor.passwordInteractionNormMajor2 : PassColor.textNorm,
-                                          width: 15)
-                }
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
+            MonitorIncludedEmailView(address: email,
+                                     action: { router.navigate(to: .breachDetail(.customEmail(email))) })
         } else {
             HStack {
                 Image(uiImage: IconProvider.envelope)
@@ -398,13 +333,10 @@ private extension DarkWebMonitorHomeView {
                                           borderColor: .clear)
 
                 Spacer()
+
                 VStack(alignment: .leading) {
                     Text(email.email)
-                        .font(.body)
-                        .lineLimit(2)
                         .foregroundStyle(PassColor.textNorm.toColor)
-                        .layoutPriority(1)
-                        .minimumScaleFactor(0.25)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     Text("Unverified")
@@ -415,16 +347,13 @@ private extension DarkWebMonitorHomeView {
                 Spacer()
 
                 Menu(content: {
-                    Button { router.present(sheet: .addCustomEmail(email))
-                    } label: {
-                        Label(title: { Text("Verify") }, icon: { Image(uiImage: IconProvider.paperPlane) })
-                    }
+                    Label(title: { Text("Verify") },
+                          icon: { Image(uiImage: IconProvider.paperPlane) })
+                        .buttonEmbeded { router.present(sheet: .addCustomEmail(email)) }
 
-                    Button { viewModel.removeCustomMailFromMonitor(email: email) }
-                        label: {
-                            Label(title: { Text("Remove") },
-                                  icon: { Image(uiImage: IconProvider.trash) })
-                        }
+                    Label(title: { Text("Remove") },
+                          icon: { Image(uiImage: IconProvider.trash) })
+                        .buttonEmbeded { viewModel.removeCustomMailFromMonitor(email: email) }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.textWeak,
@@ -432,6 +361,82 @@ private extension DarkWebMonitorHomeView {
                                  accessibilityLabel: "Unverified email action menu")
                 })
             }
+        }
+    }
+}
+
+// MARK: Suggested emails section
+
+private extension DarkWebMonitorHomeView {
+    var suggestedEmailsSection: some View {
+        Section(content: {
+            switch viewModel.suggestedEmailsState {
+            case .fetching:
+                EmptyView()
+            case let .fetched(emails):
+                ForEach(emails, id: \.email) {
+                    suggestedEmailRow($0)
+                }
+            case let .error(error):
+                HStack {
+                    Text(error.localizedDescription)
+                        .font(.callout)
+                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    RetryButton { viewModel.fetchSuggestedEmails() }
+                }
+            }
+        }, header: {
+            HStack {
+                Text("Suggestions")
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Spacer()
+                if viewModel.suggestedEmailsState.isFetching {
+                    ProgressView()
+                }
+            }
+        })
+    }
+
+    func suggestedEmailRow(_ email: SuggestedEmail) -> some View {
+        HStack {
+            Image(uiImage: IconProvider.envelope)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 24)
+                .padding(10)
+                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor1,
+                                      borderColor: .clear)
+
+            Spacer()
+
+            VStack(alignment: .leading) {
+                Text(email.email)
+                    .font(.body)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("Used in \(email.count) logins")
+                    .font(.footnote)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            Spacer()
+
+            CapsuleTextButton(title: #localized("Add"),
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1) {
+                Task {
+                    let customEmail = await viewModel.addCustomEmail(email: email.email)
+                    router.present(sheet: .addCustomEmail(customEmail))
+                }
+            }
+            .fixedSize(horizontal: true, vertical: true)
         }
     }
 }
@@ -463,34 +468,31 @@ private extension DarkWebMonitorHomeView {
                                hasBreaches: Bool,
                                isDetail: Bool,
                                action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: DesignConstant.sectionPadding) {
-                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                    Text(title)
-                        .font(.body)
-                        .foregroundStyle(colorOfTitle(hasBreaches: hasBreaches, isDetail: isDetail))
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(title)
+                    .foregroundStyle(colorOfTitle(hasBreaches: hasBreaches, isDetail: isDetail))
 
-                    if let subTitle {
-                        Text(subTitle)
-                            .font(.callout)
-                            .foregroundStyle(colorOfSubtitle(hasBreaches: hasBreaches, isDetail: isDetail))
-                    }
+                if let subTitle {
+                    Text(subTitle)
+                        .font(.callout)
+                        .foregroundStyle(colorOfSubtitle(hasBreaches: hasBreaches, isDetail: isDetail))
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
-
-                if let count {
-                    BreachCounterView(count: count, type: .danger)
-                }
-
-                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
-                                      color: hasBreaches ?
-                                          PassColor.passwordInteractionNormMajor1 : PassColor.textWeak,
-                                      width: 15)
             }
-            .padding(.horizontal, DesignConstant.sectionPadding)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let count {
+                BreachCounterView(count: count, type: .danger)
+            }
+
+            ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                  color: hasBreaches ?
+                                      PassColor.passwordInteractionNormMajor1 : PassColor.textWeak,
+                                  width: 15)
         }
-        .buttonStyle(.plain)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .contentShape(Rectangle())
+        .buttonEmbeded(action)
     }
 }
 
@@ -507,18 +509,16 @@ private extension DarkWebMonitorHomeView {
 
         if let aliasBreaches = viewModel.aliasBreachesState.fetchedObject {
             let noBreaches = aliasBreaches.breachCount == 0 && viewModel.userBreaches.emailsCount == 0
+            let icon: UIImage = noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
+                .exclamationCircleFilled
+            let iconColor = noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
+                .passwordInteractionNormMajor2
+            let backgroundColor = noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
+                .passwordInteractionNormMinor2
             ToolbarItem(placement: .navigationBarTrailing) {
-                Image(uiImage: noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
-                    .exclamationCircleFilled)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle((noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
-                            .passwordInteractionNormMajor2).toColor)
-                    .frame(height: 18)
-                    .padding(12)
-                    .background((noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
-                            .passwordInteractionNormMinor2).toColor)
-                    .clipShape(Circle())
+                CircleButton(icon: icon,
+                             iconColor: iconColor,
+                             backgroundColor: backgroundColor)
             }
         }
     }
