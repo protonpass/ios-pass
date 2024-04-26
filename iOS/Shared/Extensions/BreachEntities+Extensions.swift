@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
 import Foundation
 import Macro
@@ -30,8 +31,10 @@ extension ProtonAddress {
 
 extension UserBreaches {
     var topTenBreachedAddresses: [ProtonAddress] {
-        Array(addresses.filter { $0.isMonitored && $0.isBreached }
-            .sorted { $0.breachCounter > $1.breachCounter }.prefix(10))
+        Array(addresses
+            .filter { $0.isMonitored && $0.isBreached }
+            .sorted { $0.breachCounter > $1.breachCounter }
+            .prefix(DesignConstant.previewBreachItemCount))
     }
 
     var numberOfBreachedProtonAddresses: Int {
@@ -48,8 +51,7 @@ extension AliasMonitorInfo {
 extension [AliasMonitorInfo] {
     var topTenBreachedAliases: [AliasMonitorInfo] {
         Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
-            .sorted {
-                ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min)
-            }.prefix(10))
+            .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
+            .prefix(DesignConstant.previewBreachItemCount))
     }
 }
