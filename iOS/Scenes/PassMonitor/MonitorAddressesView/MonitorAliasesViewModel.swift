@@ -116,8 +116,8 @@ private extension MonitorAliasesViewModel {
 
         accessRepository.access
             .removeDuplicates()
-            .receive(on: DispatchQueue.main)
             .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 access = newValue
