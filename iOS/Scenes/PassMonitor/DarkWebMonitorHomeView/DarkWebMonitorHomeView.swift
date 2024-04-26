@@ -35,7 +35,7 @@ struct DarkWebMonitorHomeView: View {
     @State private var showNoBreachesAlert = false
     @State private var showBreachesFoundAlert = false
     @StateObject var router = resolve(\RouterContainer.darkWebRouter)
-    
+
     var body: some View {
         mainContainer
             .routingProvided
