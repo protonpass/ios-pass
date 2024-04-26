@@ -43,6 +43,8 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func refreshSecurityChecks() async throws
     func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent]
 
+    func reset() async
+
     // MARK: - Breaches
 
     func refreshUserBreaches() async throws -> UserBreaches
@@ -173,6 +175,14 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             }
             return decriptedItem
         }
+    }
+
+    public func reset() async {
+        userBreaches.send(nil)
+        weaknessStats.send(.default)
+        itemsWithSecurityIssues.send([])
+        refreshTask?.cancel()
+        refreshTask = nil
     }
 }
 

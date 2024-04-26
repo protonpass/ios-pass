@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -102,14 +103,14 @@ private extension UpsellingView {
                 .roundedDetailSection()
                 Spacer()
 
-                CapsuleTextButton(title: "Get Pass Plus",
+                CapsuleTextButton(title: #localized("Get Pass Plus", bundle: .module),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNormMajor2,
                                   height: 48,
                                   action: onUpgrade)
                     .padding(.horizontal, DesignConstant.sectionPadding)
 
-                CapsuleTextButton(title: "Not Now",
+                CapsuleTextButton(title: #localized("Not Now", bundle: .module),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: .clear,
                                   height: 48,

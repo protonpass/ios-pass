@@ -41,11 +41,25 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     private var cancellables = Set<AnyCancellable>()
 
     var showSections: Bool {
+        type.hasSections
+    }
+
+    var isEmpty: Bool {
+        sectionedData.values.flatMap { $0 }.isEmpty
+    }
+
+    var nothingWrongMessage: String {
         switch type {
-        case .excludedItems, .missing2FA:
-            false
+        case .weakPasswords:
+            #localized("No weak passwords were found in your login items")
+        case .reusedPasswords:
+            #localized("You have no reused passwords in your login items")
+        case .missing2FA:
+            #localized("All your login items have two-factor authentication enabled")
+        case .excludedItems:
+            #localized("You don't have any excluded login items from monitoring")
         default:
-            true
+            ""
         }
     }
 
@@ -97,23 +111,24 @@ private extension SecurityWeaknessDetailViewModel {
     }
 }
 
-extension PasswordStrength {
+private extension SecuritySection {
     var toSecuritySectionHeaderKey: SecuritySectionHeaderKey {
-        SecuritySectionHeaderKey(color: color,
-                                 title: title,
-                                 iconName: iconName)
+        switch self {
+        case let .reusedPasswords(numberOfTime):
+            SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime.numberOfTimeReused))
+        case .excludedItems, .missing2fa, .weakPasswords:
+            SecuritySectionHeaderKey(title: "")
+        }
     }
 }
 
-extension SecuritySection {
-    var toSecuritySectionHeaderKey: SecuritySectionHeaderKey {
+private extension SecurityWeakness {
+    var hasSections: Bool {
         switch self {
-        case let .weakPasswords(passwordStrength):
-            passwordStrength.toSecuritySectionHeaderKey
-        case let .reusedPasswords(numberOfTime):
-            SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime.numberOfTimeReused))
-        case .excludedItems, .missing2fa:
-            SecuritySectionHeaderKey(title: "")
+        case .excludedItems, .missing2FA, .weakPasswords:
+            false
+        default:
+            true
         }
     }
 }

@@ -30,7 +30,7 @@ public struct ReusedPasswordsKey: Hashable, Sendable {
 }
 
 public enum SecuritySection: Hashable, Sendable {
-    case weakPasswords(PasswordStrength)
+    case weakPasswords
     case reusedPasswords(ReusedPasswordsKey)
     case missing2fa
     case excludedItems
