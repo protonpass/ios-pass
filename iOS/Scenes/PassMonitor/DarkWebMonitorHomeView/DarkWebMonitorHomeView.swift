@@ -48,10 +48,13 @@ private extension DarkWebMonitorHomeView {
         VStack {
             mainTitle
                 .padding(.top)
-            Text("Last check: \(viewModel.getCurrentLocalizedDateTime())")
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical)
+            if let updateDate = viewModel.updateDate {
+                let dateString = DateFormatter(format: "MMM dd yyyy, HH:mm").string(from: updateDate)
+                Text("Last check: \(dateString)")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical)
+            }
 
             LazyVStack(spacing: DesignConstant.sectionPadding) {
                 if viewModel.access?.monitor.protonAddress == true {
@@ -61,13 +64,7 @@ private extension DarkWebMonitorHomeView {
                         .buttonEmbeded { pushProtonAddressesList() }
                 }
 
-                if viewModel.access?.monitor.aliases == true {
-                    monitoredAliasesSection
-                } else {
-                    notMonitoredSection(title: "Hide-my-email aliases")
-                        .buttonEmbeded { pushAliasesList() }
-                }
-
+                aliasesSection
                 VStack(spacing: 0) {
                     customEmailsSection
                 }
@@ -76,9 +73,10 @@ private extension DarkWebMonitorHomeView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.updateDate)
         .animation(.default, value: viewModel.customEmails)
         .animation(.default, value: viewModel.suggestedEmail)
-        .animation(.default, value: viewModel.aliasInfos)
+        .animation(.default, value: viewModel.aliasBreachesState)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
@@ -154,14 +152,14 @@ private extension DarkWebMonitorHomeView {
     var monitoredProtonAddressesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Proton addresses"),
-                                  subTitle: viewModel.breachSubtitle(numberOfBreaches:
-                                      viewModel.userBreaches.numberOfBreachedProtonAddresses),
+                                  subTitle: viewModel.userBreaches.numberOfBreachedProtonAddresses
+                                      .breachDescription,
                                   hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                   isDetail: false,
                                   action: { pushProtonAddressesList() })
             if viewModel.userBreaches.hasBreachedAddresses {
                 PassSectionDivider()
-                ForEach(viewModel.mostBreachedProtonAddress) { item in
+                ForEach(viewModel.userBreaches.topBreachedAddresses) { item in
                     darkWebMonitorHomeRow(title: item.email,
                                           subTitle: "Latest breach on \(item.lastBreachDate ?? "")",
                                           count: item.breachCounter,
@@ -180,30 +178,75 @@ private extension DarkWebMonitorHomeView {
     }
 
     func pushAliasesList() {
-        if let infos = viewModel.aliasInfos {
+        if let infos = viewModel.aliasBreachesState.fetchedObject {
             router.navigate(to: .aliasesList(infos))
         }
     }
 }
 
-// MARK: - Proton Aliases
+// MARK: - Aliases
 
 private extension DarkWebMonitorHomeView {
-    var monitoredAliasesSection: some View {
+    @ViewBuilder
+    var aliasesSection: some View {
+        let title: LocalizedStringKey = "Hide-my-email aliases"
+
+        switch viewModel.aliasBreachesState {
+        case .fetching:
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(title)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    Text(verbatim: "You can't see me, can you?")
+                        .redacted(reason: .placeholder)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Spacer()
+                ProgressView()
+            }
+            .padding(DesignConstant.sectionPadding)
+            .roundedDetailSection()
+
+        case let .fetched(infos):
+            if viewModel.access?.monitor.aliases == true {
+                monitoredAliasesSection(infos)
+            } else {
+                notMonitoredSection(title: title)
+                    .buttonEmbeded { pushAliasesList() }
+            }
+
+        case let .error(error):
+            HStack {
+                Text(error.localizedDescription)
+                    .font(.callout)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Spacer()
+                RetryButton { viewModel.fetchAliasBreaches() }
+            }
+            .padding(DesignConstant.sectionPadding)
+            .roundedDetailSection()
+            .frame(minHeight: 50)
+        }
+    }
+
+    @ViewBuilder
+    func monitoredAliasesSection(_ infos: [AliasMonitorInfo]) -> some View {
+        let breachCount = infos.breachCount
+        let hasBreaches = breachCount > 0
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Hide-my-email aliases"),
-                                  subTitle: viewModel
-                                      .breachSubtitle(numberOfBreaches: viewModel.numberOfBreachedAlias),
-                                  hasBreaches: !viewModel.noAliasBreaches,
+                                  subTitle: breachCount.breachDescription,
+                                  hasBreaches: hasBreaches,
                                   isDetail: false,
                                   action: { pushAliasesList() })
-            if !viewModel.noAliasBreaches {
+            if hasBreaches {
                 PassSectionDivider()
-                ForEach(viewModel.mostBreachedAliases) { item in
+                ForEach(infos.topBreaches) { item in
                     darkWebMonitorHomeRow(title: item.alias.item.aliasEmail ?? "",
                                           subTitle: item.latestBreach,
                                           count: item.breaches?.count,
-                                          hasBreaches: !viewModel.noAliasBreaches,
+                                          hasBreaches: hasBreaches,
                                           isDetail: true,
                                           action: { router.navigate(to: .breachDetail(.alias(item))) })
                 }
@@ -275,7 +318,7 @@ private extension DarkWebMonitorHomeView {
         }, header: {
             HStack(spacing: 0) {
                 Text("Custom email address")
-                    .monitorSectionTitleText()
+                    .monitorSectionTitleText(maxWidth: nil)
                 Button { showCustomEmailExplanation.toggle() } label: {
                     Image(uiImage: IconProvider.questionCircle)
                         .resizable()
@@ -462,18 +505,39 @@ private extension DarkWebMonitorHomeView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Image(uiImage: viewModel.noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
-                .exclamationCircleFilled)
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle((viewModel.noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
-                        .passwordInteractionNormMajor2).toColor)
-                .frame(height: 18)
-                .padding(12)
-                .background((viewModel.noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
-                        .passwordInteractionNormMinor2).toColor)
-                .clipShape(Circle())
+        if let aliasBreaches = viewModel.aliasBreachesState.fetchedObject {
+            let noBreaches = aliasBreaches.breachCount == 0 && viewModel.userBreaches.emailsCount == 0
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Image(uiImage: noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
+                    .exclamationCircleFilled)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle((noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
+                            .passwordInteractionNormMajor2).toColor)
+                    .frame(height: 18)
+                    .padding(12)
+                    .background((noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
+                            .passwordInteractionNormMinor2).toColor)
+                    .clipShape(Circle())
+            }
         }
+    }
+}
+
+private extension Int {
+    var breachDescription: String {
+        self == 0 ? #localized("No breaches detected") : #localized("Found in %lld breaches", self)
+    }
+}
+
+private extension [AliasMonitorInfo] {
+    var breachCount: Int {
+        filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }.count
+    }
+
+    var topBreaches: [AliasMonitorInfo] {
+        Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
+            .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
+            .prefix(DesignConstant.previewBreachItemCount))
     }
 }

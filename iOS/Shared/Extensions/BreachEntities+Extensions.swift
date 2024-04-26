@@ -30,7 +30,7 @@ extension ProtonAddress {
 }
 
 extension UserBreaches {
-    var topTenBreachedAddresses: [ProtonAddress] {
+    var topBreachedAddresses: [ProtonAddress] {
         Array(addresses
             .filter { $0.isMonitored && $0.isBreached }
             .sorted { $0.breachCounter > $1.breachCounter }
@@ -45,13 +45,5 @@ extension UserBreaches {
 extension AliasMonitorInfo {
     var latestBreach: String {
         #localized("Latest breach on %@", breaches?.breaches.first?.breachDate ?? "")
-    }
-}
-
-extension [AliasMonitorInfo] {
-    var topTenBreachedAliases: [AliasMonitorInfo] {
-        Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
-            .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
-            .prefix(DesignConstant.previewBreachItemCount))
     }
 }
