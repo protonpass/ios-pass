@@ -1163,6 +1163,16 @@
         }
       }
     },
+    "Get Pass Plus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Pass Plus"
+          }
+        }
+      }
+    },
     "Learn more about Pass" : {
       "localizations" : {
         "be" : {
@@ -1307,6 +1317,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm hiểu thêm về Pass"
+          }
+        }
+      }
+    },
+    "Not Now" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
           }
         }
       }
