@@ -30,11 +30,12 @@ import UseCases
 
 @MainActor
 final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
+    @Published private(set) var updateDate: Date?
     @Published private(set) var access: Access?
     @Published private(set) var userBreaches: UserBreaches
     @Published private(set) var customEmails: [CustomEmail]
     @Published private(set) var suggestedEmail: [SuggestedEmail]?
-    @Published private(set) var aliasInfos: [AliasMonitorInfo]?
+    @Published private(set) var aliasBreachesState: FetchableObject<[AliasMonitorInfo]> = .fetching
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
@@ -47,45 +48,33 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     private let logger = resolve(\SharedToolingContainer.logger)
 
     private var cancellables = Set<AnyCancellable>()
+    private var fetchAliasBreachesTask: Task<Void, Never>?
     private var currentTask: Task<Void, Never>?
-
-    var noBreaches: Bool {
-        noProtonEmailBreaches && noAliasBreaches
-    }
-
-    var mostBreachedProtonAddress: [ProtonAddress] {
-        userBreaches.topTenBreachedAddresses
-    }
-
-    var mostBreachedAliases: [AliasMonitorInfo] {
-        guard let aliasInfos else {
-            return []
-        }
-        return aliasInfos.topTenBreachedAliases
-    }
-
-    var numberOfBreachedAlias: Int {
-        aliasInfos?.filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }.count ?? 0
-    }
-
-    var noProtonEmailBreaches: Bool {
-        userBreaches.emailsCount == 0
-    }
-
-    var noAliasBreaches: Bool {
-        numberOfBreachedAlias == 0
-    }
 
     init(userBreaches: UserBreaches) {
         access = accessRepository.access.value
         self.userBreaches = userBreaches
         customEmails = userBreaches.customEmails
         setUp()
+        fetchAliasBreaches()
     }
+}
 
-    func getCurrentLocalizedDateTime() -> String {
-        let dateFormatter = DateFormatter(format: "MMM dd yyyy, HH:mm")
-        return dateFormatter.string(from: .now)
+extension DarkWebMonitorHomeViewModel {
+    func fetchAliasBreaches() {
+        fetchAliasBreachesTask?.cancel()
+        fetchAliasBreachesTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                aliasBreachesState = .fetching
+                let infos = try await getAllAliasMonitorInfos()
+                try randomlyFailInDebugMode()
+                aliasBreachesState = .fetched(infos)
+                updateDate = .now
+            } catch {
+                aliasBreachesState = .error(error)
+            }
+        }
     }
 
     func removeCustomMailFromMonitor(email: CustomEmail) {
@@ -118,11 +107,6 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
         }
         return nil
     }
-
-    func breachSubtitle(numberOfBreaches: Int) -> String {
-        numberOfBreaches == 0 ? #localized("No breaches detected") :
-            #localized("Found in %lld breaches", numberOfBreaches)
-    }
 }
 
 private extension DarkWebMonitorHomeViewModel {
@@ -136,15 +120,12 @@ private extension DarkWebMonitorHomeViewModel {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 async let currentCustomEmails = getAllCustomEmails()
-                async let currentAliasInfos = getAllAliasMonitorInfos()
                 async let currentSuggestedEmail = getCustomEmailSuggestion(breaches: userBreaches)
 
                 let results = try await (customEmails: currentCustomEmails,
-                                         suggestions: currentSuggestedEmail,
-                                         alias: currentAliasInfos)
+                                         suggestions: currentSuggestedEmail)
                 customEmails = results.customEmails
                 suggestedEmail = results.suggestions
-                aliasInfos = results.alias
             } catch {
                 handle(error: error)
             }
@@ -157,9 +138,10 @@ private extension DarkWebMonitorHomeViewModel {
                 guard let self else {
                     return
                 }
+                defer { updateDate = .now }
                 switch section {
-                case let .aliases(updatedAliasInfos):
-                    aliasInfos = updatedAliasInfos
+                case let .aliases(newValue):
+                    aliasBreachesState = .fetched(newValue)
                 case let .customEmails(updatedCustomEmails):
                     customEmails = updatedCustomEmails
                     reloadEmailSuggestion()
@@ -196,5 +178,13 @@ private extension DarkWebMonitorHomeViewModel {
     func handle(error: Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
+    }
+
+    func randomlyFailInDebugMode() throws {
+        #if DEBUG
+        if Bool.random() {
+            throw PassError.errorExpected
+        }
+        #endif
     }
 }
