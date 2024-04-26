@@ -95,30 +95,6 @@ final class BreachEntitiesExtensionsTests: XCTestCase {
                                       ],
                                       customEmails: [],
                                       hasCustomDomains: false)
-    
-//    let aliasMonitorInfoData = [AliasMonitorInfo(alias:
-//                                                 breaches: EmailBreaches(isEligible: true,
-//                                                                         count: 3,
-//                                                                         breaches: [Breach(id: <#T##String#>,
-//                                                                                           email: <#T##String#>,
-//                                                                                           severity: <#T##Double#>,
-//                                                                                           name: <#T##String#>,
-//                                                                                           createdAt: <#T##String#>,
-//                                                                                           publishedAt: <#T##String#>,
-//                                                                                           source: <#T##BreachSource#>,
-//                                                                                           size: <#T##Int?#>,
-//                                                                                           exposedData: <#T##[BreachExposedData]#>,
-//                                                                                           passwordLastChars: <#T##String#>,
-//                                                                                           actions: <#T##[BreachAction]#>)],
-//                                                                         samples: [])) ]
-//    
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
 }
 
 extension ItemContent {
@@ -223,9 +199,9 @@ extension BreachEntitiesExtensionsTests {
                           flags: 0,
                           lastBreachTime: 2)
         ]
-        XCTAssertEqual(userBreachData.topTenBreachedAddresses.count, 10)
-        XCTAssertEqual(userBreachData.topTenBreachedAddresses.first?.breachCounter, 90)
-        XCTAssertEqual(userBreachData.topTenBreachedAddresses.last?.breachCounter, 10)
-        XCTAssertEqual(userBreachData.topTenBreachedAddresses, comparableArray)
+        XCTAssertEqual(userBreachData.topBreachedAddresses.count, 10)
+        XCTAssertEqual(userBreachData.topBreachedAddresses.first?.breachCounter, 90)
+        XCTAssertEqual(userBreachData.topBreachedAddresses.last?.breachCounter, 10)
+        XCTAssertEqual(userBreachData.topBreachedAddresses, comparableArray)
     }
 }
