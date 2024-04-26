@@ -30,11 +30,12 @@ import UseCases
 
 @MainActor
 final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
+    @Published private(set) var updateDate: Date?
     @Published private(set) var access: Access?
     @Published private(set) var userBreaches: UserBreaches
-    @Published private(set) var customEmails: [CustomEmail]?
-    @Published private(set) var suggestedEmail: [SuggestedEmail]?
-    @Published private(set) var aliasInfos: [AliasMonitorInfo]?
+    @Published private(set) var aliasBreachesState: FetchableObject<[AliasMonitorInfo]> = .fetching
+    @Published private(set) var customEmailsState: FetchableObject<[CustomEmail]> = .fetching
+    @Published private(set) var suggestedEmailsState: FetchableObject<[SuggestedEmail]> = .fetching
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
@@ -47,45 +48,72 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     private let logger = resolve(\SharedToolingContainer.logger)
 
     private var cancellables = Set<AnyCancellable>()
-    private var currentTask: Task<Void, Never>?
-
-    var noBreaches: Bool {
-        noProtonEmailBreaches && noAliasBreaches
-    }
-
-    var mostBreachedProtonAddress: [ProtonAddress] {
-        userBreaches.topTenBreachedAddresses
-    }
-
-    var mostBreachedAliases: [AliasMonitorInfo] {
-        guard let aliasInfos else {
-            return []
-        }
-        return aliasInfos.topTenBreachedAliases
-    }
-
-    var numberOfBreachedAlias: Int {
-        aliasInfos?.filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }.count ?? 0
-    }
-
-    var noProtonEmailBreaches: Bool {
-        userBreaches.emailsCount == 0
-    }
-
-    var noAliasBreaches: Bool {
-        numberOfBreachedAlias == 0
-    }
+    private var fetchAliasBreachesTask: Task<Void, Never>?
+    private var fetchCustomEmailsTask: Task<Void, Never>?
+    private var fetchSuggestedEmailsTask: Task<Void, Never>?
 
     init(userBreaches: UserBreaches) {
         access = accessRepository.access.value
         self.userBreaches = userBreaches
-        customEmails = userBreaches.customEmails
+        customEmailsState = .fetched(userBreaches.customEmails)
         setUp()
+        fetchAliasBreaches()
+        fetchCustomEmails()
+        fetchSuggestedEmails()
+    }
+}
+
+extension DarkWebMonitorHomeViewModel {
+    func fetchAliasBreaches() {
+        fetchAliasBreachesTask?.cancel()
+        fetchAliasBreachesTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                try Task.checkCancellation()
+                if aliasBreachesState.isError {
+                    aliasBreachesState = .fetching
+                }
+                let infos = try await getAllAliasMonitorInfos()
+                aliasBreachesState = .fetched(infos)
+                updateDate = .now
+            } catch {
+                aliasBreachesState = .error(error)
+            }
+        }
     }
 
-    func getCurrentLocalizedDateTime() -> String {
-        let dateFormatter = DateFormatter(format: "MMM dd yyyy, HH:mm")
-        return dateFormatter.string(from: .now)
+    func fetchCustomEmails() {
+        fetchCustomEmailsTask?.cancel()
+        fetchCustomEmailsTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                try Task.checkCancellation()
+                if customEmailsState.isError {
+                    customEmailsState = .fetching
+                }
+                let emails = try await getAllCustomEmails()
+                customEmailsState = .fetched(emails)
+            } catch {
+                customEmailsState = .error(error)
+            }
+        }
+    }
+
+    func fetchSuggestedEmails() {
+        fetchSuggestedEmailsTask?.cancel()
+        fetchSuggestedEmailsTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                try Task.checkCancellation()
+                if suggestedEmailsState.isError {
+                    suggestedEmailsState = .fetching
+                }
+                let emails = try await getCustomEmailSuggestion(breaches: userBreaches)
+                suggestedEmailsState = .fetched(emails)
+            } catch {
+                suggestedEmailsState = .error(error)
+            }
+        }
     }
 
     func removeCustomMailFromMonitor(email: CustomEmail) {
@@ -105,51 +133,20 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
 
     func addCustomEmail(email: String) async -> CustomEmail? {
         defer { router.display(element: .globalLoading(shouldShow: false)) }
-
         do {
             router.display(element: .globalLoading(shouldShow: true))
             let customEmail = try await addCustomEmailToMonitoring(email: email)
-            if let index = suggestedEmail?.firstIndex(where: { $0.email == email }) {
-                suggestedEmail?.remove(at: index)
-            }
+            fetchSuggestedEmails()
             return customEmail
         } catch {
             handle(error: error)
+            return nil
         }
-        return nil
-    }
-
-    func breachSubtitle(numberOfBreaches: Int) -> String {
-        numberOfBreaches == 0 ? #localized("No breaches detected") :
-            #localized("Found in %lld breaches", numberOfBreaches)
     }
 }
 
 private extension DarkWebMonitorHomeViewModel {
     func setUp() {
-        currentTask?.cancel()
-        currentTask = Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                router.display(element: .globalLoading(shouldShow: true))
-                async let currentCustomEmails = getAllCustomEmails()
-                async let currentAliasInfos = getAllAliasMonitorInfos()
-                async let currentSuggestedEmail = getCustomEmailSuggestion(breaches: userBreaches)
-
-                let results = try await (customEmails: currentCustomEmails,
-                                         suggestions: currentSuggestedEmail,
-                                         alias: currentAliasInfos)
-                customEmails = results.customEmails
-                suggestedEmail = results.suggestions
-                aliasInfos = results.alias
-            } catch {
-                handle(error: error)
-            }
-        }
-
         passMonitorRepository.darkWebDataSectionUpdate
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
@@ -157,12 +154,13 @@ private extension DarkWebMonitorHomeViewModel {
                 guard let self else {
                     return
                 }
+                defer { updateDate = .now }
                 switch section {
-                case let .aliases(updatedAliasInfos):
-                    aliasInfos = updatedAliasInfos
-                case let .customEmails(updatedCustomEmails):
-                    customEmails = updatedCustomEmails
-                    reloadEmailSuggestion()
+                case let .aliases(newValue):
+                    aliasBreachesState = .fetched(newValue)
+                case let .customEmails(newValue):
+                    customEmailsState = .fetched(newValue)
+                    fetchSuggestedEmails()
                 case let .protonAddresses(updatedUserBreaches):
                     userBreaches = updatedUserBreaches
                 }
@@ -176,21 +174,6 @@ private extension DarkWebMonitorHomeViewModel {
                 access = newValue
             }
             .store(in: &cancellables)
-    }
-
-    func reloadEmailSuggestion() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                router.display(element: .globalLoading(shouldShow: true))
-                suggestedEmail = try await getCustomEmailSuggestion(breaches: userBreaches)
-            } catch {
-                handle(error: error)
-            }
-        }
     }
 
     func handle(error: Error) {

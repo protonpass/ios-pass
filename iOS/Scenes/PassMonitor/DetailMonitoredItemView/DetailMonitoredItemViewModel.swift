@@ -38,21 +38,8 @@ struct DetailMonitoredItemUiModel: Sendable, Hashable {
 
 @MainActor
 final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
-    @Published private(set) var state: State = .fetching
+    @Published private(set) var state: FetchableObject<DetailMonitoredItemUiModel> = .fetching
     @Published private(set) var shouldDismiss = false
-
-    enum State {
-        case fetching
-        case fetched(DetailMonitoredItemUiModel)
-        case error(Error)
-
-        var isFetched: Bool {
-            if case .fetched = self {
-                return true
-            }
-            return false
-        }
-    }
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)

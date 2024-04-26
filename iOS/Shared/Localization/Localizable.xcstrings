@@ -53414,6 +53414,16 @@
         }
       }
     },
+    "None of your email addresses or aliases appear in a data breach" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None of your email addresses or aliases appear in a data breach"
+          }
+        }
+      }
+    },
     "Not now" : {
       "localizations" : {
         "be" : {
@@ -55626,6 +55636,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đồng ý"
+          }
+        }
+      }
+    },
+    "One of your email addresses or aliases appear in a data breach" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One of your email addresses or aliases appear in a data breach"
           }
         }
       }
