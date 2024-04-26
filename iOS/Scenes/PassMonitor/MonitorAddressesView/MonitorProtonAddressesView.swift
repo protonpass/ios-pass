@@ -91,11 +91,16 @@ private extension MonitorProtonAddressesView {
         }
 
         if !viewModel.excludedAddresses.isEmpty {
-            Text("Excluded from monitoring")
-            ForEach(viewModel.excludedAddresses) { address in
-                MonitorExcludedEmailView(address: address, action: { select(address) })
-                    .padding(.bottom)
-            }
+            Section(content: {
+                ForEach(viewModel.excludedAddresses) { address in
+                    MonitorExcludedEmailView(address: address, action: { select(address) })
+                        .padding(.bottom)
+                }
+            }, header: {
+                Text("Excluded from monitoring")
+                    .monitorSectionTitleText()
+                    .padding(.top, DesignConstant.sectionPadding)
+            })
         }
     }
 }

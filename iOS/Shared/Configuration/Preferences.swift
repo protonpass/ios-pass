@@ -160,6 +160,7 @@ extension Preferences: PreferencesMigrator {
                                  telemetryThreshold: telemetryThreshold,
                                  createdItemsCount: createdItemsCount,
                                  dismissedBannerIds: dismissedBannerIds,
+                                 dismissedCustomDomainExplanation: false,
                                  didMigratePreferences: true)
         let shared = SharedPreferences(quickTypeBar: quickTypeBar,
                                        automaticallyCopyTotpCode: automaticallyCopyTotpCode,
