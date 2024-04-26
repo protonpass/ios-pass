@@ -45,5 +45,6 @@ extension RouterContainer {
 
     var darkWebRouter: Factory<PathRouter> {
         self { PathRouter() }
+            .unique
     }
 }

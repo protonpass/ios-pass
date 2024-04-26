@@ -153,7 +153,6 @@ enum SecureRowType {
 
 struct PassMonitorView: View {
     @StateObject var viewModel: PassMonitorViewModel
-    @InjectedObject(\RouterContainer.darkWebRouter) private var router
 
     private enum ElementSizes {
         static let cellHeight: CGFloat = 75
@@ -178,9 +177,7 @@ struct PassMonitorView: View {
                     sentinelSheet(noBackgroundSheet: false)
                 }
             }
-            .routingProvided
-            .sheetDestinations(sheetDestination: $router.presentedSheet)
-            .navigationStackEmbeded($router.path)
+            .navigationStackEmbeded()
             .task {
                 try? await viewModel.refresh()
             }
@@ -386,7 +383,8 @@ private extension PassMonitorView {
                            .numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches) breaches detected" :
                            "No breaches detected",
                        info: viewModel.numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches)" : nil,
-                       action: { router.navigate(to: .darkWebMonitorHome(.breaches(breaches)))
+                       action: {
+                           viewModel.showSecurityWeakness(type: .breaches(breaches))
                        })
     }
 }
