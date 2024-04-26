@@ -20,12 +20,14 @@
 
 import DesignSystem
 import Entities
+import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct MonitorAliasesView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: MonitorAliasesViewModel
+    private let router = resolve(\RouterContainer.darkWebRouter)
 
     var body: some View {
         LazyVStack {
@@ -54,6 +56,53 @@ private extension MonitorAliasesView {
         if !viewModel.dismissedCustomDomainExplanation {
             customDomainExplanation
         }
+
+        ForEach(viewModel.breachedAliases) { info in
+            MonitorIncludedEmailView(address: info, action: { select(info) })
+                .padding(.bottom)
+        }
+
+        if !viewModel.notBreachedAliases.isEmpty {
+            Section(content: {
+                ForEach(viewModel.notBreachedAliases.prefix(DesignConstant.previewBreachItemCount)) { info in
+                    MonitorIncludedEmailView(address: info,
+                                             action: { router.navigate(to: .breachDetail(.alias(info))) })
+                        .padding(.bottom)
+                }
+            }, header: {
+                HStack {
+                    Text("Monitored")
+                        .navigationTitleText()
+                    Spacer()
+                    if viewModel.notBreachedAliases.count > DesignConstant.previewBreachItemCount {
+                        seeAllText(count: viewModel.notBreachedAliases.count)
+                            .buttonEmbeded { seeAll(viewModel.notBreachedAliases, monitored: true) }
+                    }
+                }
+                .padding(.top, DesignConstant.sectionPadding)
+            })
+        }
+
+        if !viewModel.notMonitoredAliases.isEmpty {
+            Section(content: {
+                ForEach(viewModel.notMonitoredAliases.prefix(DesignConstant.previewBreachItemCount)) { info in
+                    MonitorExcludedEmailView(address: info,
+                                             action: { router.navigate(to: .breachDetail(.alias(info))) })
+                        .padding(.bottom)
+                }
+            }, header: {
+                HStack {
+                    Text("Excluded from monitoring")
+                        .navigationTitleText()
+                    Spacer()
+                    if viewModel.notMonitoredAliases.count > DesignConstant.previewBreachItemCount {
+                        seeAllText(count: viewModel.notMonitoredAliases.count)
+                            .buttonEmbeded { seeAll(viewModel.notMonitoredAliases, monitored: false) }
+                    }
+                }
+                .padding(.top, DesignConstant.sectionPadding)
+            })
+        }
     }
 
     @ViewBuilder
@@ -67,8 +116,22 @@ private extension MonitorAliasesView {
         }
     }
 
+    func seeAllText(count: Int) -> some View {
+        Text("See all")
+            .font(.callout)
+            .foregroundColor(PassColor.interactionNormMajor2.toColor) +
+            Text(verbatim: " (\(count))")
+            .font(.callout)
+            .foregroundColor(PassColor.interactionNormMajor2.toColor)
+    }
+
     func select(_ info: AliasMonitorInfo) {
-        print(#function)
+        guard viewModel.access?.monitor.aliases == true else { return }
+        router.navigate(to: .breachDetail(.alias(info)))
+    }
+
+    func seeAll(_ infos: [AliasMonitorInfo], monitored: Bool) {
+        router.navigate(to: .monitoredAliases(infos, monitored: monitored))
     }
 }
 
