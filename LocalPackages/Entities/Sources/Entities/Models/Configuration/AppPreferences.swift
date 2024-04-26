@@ -35,6 +35,9 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     /// Keep track of dismissed banners so we don't show them again
     public var dismissedBannerIds: [String]
 
+    /// Whether to show or not custom domain explanation when viewing monitored aliases
+    public var dismissedCustomDomainExplanation: Bool
+
     // swiftlint:disable:next todo
     // TODO: Introduced in april 2024, can be removed several months later
     public var didMigratePreferences: Bool
@@ -43,11 +46,13 @@ public struct AppPreferences: Codable, Equatable, Sendable {
                 telemetryThreshold: TimeInterval?,
                 createdItemsCount: Int,
                 dismissedBannerIds: [String],
+                dismissedCustomDomainExplanation: Bool,
                 didMigratePreferences: Bool) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
         self.dismissedBannerIds = dismissedBannerIds
+        self.dismissedCustomDomainExplanation = dismissedCustomDomainExplanation
         self.didMigratePreferences = didMigratePreferences
     }
 }
@@ -58,6 +63,7 @@ private extension AppPreferences {
         static let telemetryThreshold: TimeInterval? = nil
         static let createdItemsCount = 0
         static let dismissedBannerIds: [String] = []
+        static let dismissedCustomDomainExplanation = false
         static let didMigratePreferences = false
     }
 
@@ -66,6 +72,7 @@ private extension AppPreferences {
         case telemetryThreshold
         case createdItemsCount
         case dismissedBannerIds
+        case dismissedCustomDomainExplanation
         case didMigratePreferences
     }
 }
@@ -78,12 +85,16 @@ public extension AppPreferences {
                                                                forKey: .telemetryThreshold)
         let createdItemsCount = try container.decodeIfPresent(Int.self, forKey: .createdItemsCount)
         let dismissedBannerIds = try container.decodeIfPresent([String].self, forKey: .dismissedBannerIds)
+        let dismissedCustomDomainExplanation =
+            try container.decodeIfPresent(Bool.self, forKey: .dismissedCustomDomainExplanation)
         let didMigratePreferences = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .didMigratePreferences)
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,
                   dismissedBannerIds: dismissedBannerIds ?? Default.dismissedBannerIds,
+                  dismissedCustomDomainExplanation: dismissedCustomDomainExplanation ?? Default
+                      .dismissedCustomDomainExplanation,
                   didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences)
     }
 }
@@ -94,6 +105,7 @@ extension AppPreferences: Defaultable {
               telemetryThreshold: Default.telemetryThreshold,
               createdItemsCount: Default.createdItemsCount,
               dismissedBannerIds: Default.dismissedBannerIds,
+              dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
               didMigratePreferences: Default.didMigratePreferences)
     }
 }

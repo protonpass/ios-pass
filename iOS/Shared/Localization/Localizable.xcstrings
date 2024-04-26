@@ -13269,6 +13269,16 @@
         }
       }
     },
+    "Aliases with custom domains are not monitored, please add them as a custom email for monitoring." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliases with custom domains are not monitored, please add them as a custom email for monitoring."
+          }
+        }
+      }
+    },
     "All" : {
       "localizations" : {
         "be" : {
@@ -31178,6 +31188,16 @@
         }
       }
     },
+    "Enable monitoring to get notified if your aliases were leaked." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable monitoring to get notified if your aliases were leaked."
+          }
+        }
+      }
+    },
     "Enable monitoring to get notified if your Proton addresses were leaked." : {
       "localizations" : {
         "en" : {
@@ -48132,6 +48152,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses."
+          }
+        }
+      }
+    },
+    "Monitored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitored"
           }
         }
       }
@@ -92150,12 +92180,12 @@
         }
       }
     },
-    "Your Proton Account information remains secure and encrypted. [Learn more]()" : {
+    "Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your Proton Account information remains secure and encrypted. [Learn more]()"
+            "value" : "Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)"
           }
         }
       }

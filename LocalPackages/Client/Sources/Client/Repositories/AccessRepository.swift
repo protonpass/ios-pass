@@ -108,7 +108,7 @@ public extension AccessRepository {
     }
 
     func updateAliasesMonitor(_ monitored: Bool) async throws {
-        try await updatePassMonitorState(.protonAddress(monitored))
+        try await updatePassMonitorState(.aliases(monitored))
     }
 }
 
