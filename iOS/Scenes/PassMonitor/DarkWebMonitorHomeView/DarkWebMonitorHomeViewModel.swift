@@ -162,6 +162,7 @@ private extension DarkWebMonitorHomeViewModel {
                     aliasInfos = updatedAliasInfos
                 case let .customEmails(updatedCustomEmails):
                     customEmails = updatedCustomEmails
+                    reloadEmailSuggestion()
                 case let .protonAddresses(updatedUserBreaches):
                     userBreaches = updatedUserBreaches
                 }
@@ -175,6 +176,21 @@ private extension DarkWebMonitorHomeViewModel {
                 access = newValue
             }
             .store(in: &cancellables)
+    }
+
+    func reloadEmailSuggestion() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                suggestedEmail = try await getCustomEmailSuggestion(breaches: userBreaches)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     func handle(error: Error) {

@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+@preconcurrency import Combine
 import Entities
 import ProtonCorePasswordChange
 import Screens
@@ -128,40 +128,52 @@ enum DeeplinkDestination: Sendable {
     case error(Error)
 }
 
-@MainActor
-final class MainUIKitSwiftUIRouter: Sendable {
+final actor MainUIKitSwiftUIRouter: Sendable {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
     let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
     let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
 
-    private(set) var pendingDeeplinkDestination: DeeplinkDestination?
+    @MainActor
+    private var pendingDeeplinkDestination: DeeplinkDestination?
 
+    @MainActor
     func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
     }
 
+    @MainActor
     func present(for destination: SheetDestination) {
         newSheetDestination.send(destination)
     }
 
+    @MainActor
     func display(element: UIElementDisplay) {
         globalElementDisplay.send(element)
     }
 
+    @MainActor
     func alert(_ destination: AlertDestination) {
         alertDestination.send(destination)
     }
 
+    @MainActor
     func action(_ destination: ActionDestination) {
         actionDestination.send(destination)
     }
 
+    @MainActor
     func requestDeeplink(_ destination: DeeplinkDestination) {
         pendingDeeplinkDestination = destination
     }
 
+    @MainActor
+    func getDeeplink() -> DeeplinkDestination? {
+        pendingDeeplinkDestination
+    }
+
+    @MainActor
     func resolveDeeplink() {
         pendingDeeplinkDestination = nil
     }

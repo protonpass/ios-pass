@@ -203,6 +203,12 @@ private extension DetailMonitoredItemView {
                 Menu(content: {
                     ToggleMonitorButton(monitored: viewModel.isMonitored,
                                         action: { viewModel.toggleMonitoring() })
+                    if viewModel.isCustomEmail {
+                        Button { viewModel.removeCustomMailFromMonitor() } label: {
+                            Label(title: { Text("Remove") },
+                                  icon: { Image(uiImage: IconProvider.trash) })
+                        }
+                    }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.interactionNormMajor2,
