@@ -33,3 +33,21 @@ public struct AliasMonitorInfo: Sendable, Identifiable, Hashable {
         alias.id
     }
 }
+
+extension AliasMonitorInfo: Breachable {
+    public var email: String {
+        alias.aliasEmail ?? ""
+    }
+
+    public var breachCounter: Int {
+        breaches?.count ?? 0
+    }
+
+    public var lastBreachTime: Int? {
+        guard let breaches = breaches?.breaches,
+              let latestBreach = breaches.min(by: { $0.publishedAtDate > $1.publishedAtDate }) else {
+            return nil
+        }
+        return Int(latestBreach.publishedAtDate.timeIntervalSince1970)
+    }
+}
