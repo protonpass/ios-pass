@@ -265,8 +265,7 @@ private extension DarkWebMonitorHomeView {
         }, header: {
             HStack(spacing: 0) {
                 Text("Custom email address")
-                    .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .monitorSectionTitleText()
                 Button { showCustomEmailExplanation.toggle() } label: {
                     Image(uiImage: IconProvider.questionCircle)
                         .resizable()

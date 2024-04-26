@@ -38,6 +38,7 @@ enum GeneralRouterDestination: Hashable {
     case protonAddressesList([ProtonAddress])
     case aliasesList([AliasMonitorInfo])
     case breachDetail(BreachDetailsInfo)
+    case monitoredAliases([AliasMonitorInfo], monitored: Bool)
 }
 
 enum GeneralSheetDestination: Identifiable, Hashable {
@@ -102,6 +103,8 @@ extension View {
                 MonitorAliasesView(viewModel: .init(infos: infos))
             case let .breachDetail(info):
                 DetailMonitoredItemView(viewModel: .init(infos: info))
+            case let .monitoredAliases(infos, monitored):
+                MonitorAllAliasesView(infos: infos, monitored: monitored)
             }
         }
     }

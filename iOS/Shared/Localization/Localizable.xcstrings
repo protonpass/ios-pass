@@ -48146,6 +48146,16 @@
         }
       }
     },
+    "Monitored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitored"
+          }
+        }
+      }
+    },
     "Monitoring disabled" : {
       "localizations" : {
         "en" : {

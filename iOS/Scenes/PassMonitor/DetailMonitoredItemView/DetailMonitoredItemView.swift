@@ -180,10 +180,8 @@ private extension DetailMonitoredItemView {
 
     func createSectionHeader(title: LocalizedStringKey) -> some View {
         Text(title)
-            .fontWeight(.bold)
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 16)
+            .monitorSectionTitleText()
+            .padding(.top, DesignConstant.sectionPadding)
     }
 }
 

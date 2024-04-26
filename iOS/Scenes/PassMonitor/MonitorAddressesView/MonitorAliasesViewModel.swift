@@ -60,7 +60,8 @@ final class MonitorAliasesViewModel: ObservableObject {
 
 extension MonitorAliasesViewModel {
     func dismissCustomDomainExplanation() {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 try await preferencesManager.updateAppPreferences(\.dismissedCustomDomainExplanation,
                                                                   value: true)
@@ -99,6 +100,17 @@ private extension MonitorAliasesViewModel {
             .sink { [weak self] newValue in
                 guard let self else { return }
                 dismissedCustomDomainExplanation = newValue
+            }
+            .store(in: &cancellables)
+
+        passMonitorRepository.darkWebDataSectionUpdate
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] update in
+                guard let self else { return }
+                if case let .aliases(infos) = update {
+                    self.infos = infos
+                }
             }
             .store(in: &cancellables)
 
