@@ -32,10 +32,14 @@ struct DarkWebMonitorHomeView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showDataSecurityExplanation = false
     @State private var showCustomEmailExplanation = false
-    var router = resolve(\RouterContainer.darkWebRouter)
+    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
 
     var body: some View {
         mainContainer
+            .routingProvided
+            .sheetDestinations(sheetDestination: $router.presentedSheet)
+            .navigationStackEmbeded($router.path)
+            .environmentObject(router)
     }
 }
 
@@ -453,7 +457,7 @@ private extension DarkWebMonitorHomeView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.chevronLeft,
+            CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close",

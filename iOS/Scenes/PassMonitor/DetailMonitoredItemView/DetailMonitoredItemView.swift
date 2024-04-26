@@ -30,7 +30,7 @@ import SwiftUI
 struct DetailMonitoredItemView: View {
     @StateObject var viewModel: DetailMonitoredItemViewModel
     @Environment(\.dismiss) private var dismiss
-    private let router = resolve(\RouterContainer.darkWebRouter)
+    @EnvironmentObject private var router: PathRouter
 
     var body: some View {
         ZStack {
