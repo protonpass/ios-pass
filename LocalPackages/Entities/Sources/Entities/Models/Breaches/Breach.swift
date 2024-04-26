@@ -84,3 +84,17 @@ public struct Breach: Decodable, Equatable, Sendable, Identifiable, Hashable {
         resolvedState == 3
     }
 }
+
+public extension Breach {
+    var publishedAtDate: Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        return formatter.date(from: publishedAt) ?? .now
+    }
+
+    var breachDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        return formatter.string(for: publishedAt) ?? ""
+    }
+}
