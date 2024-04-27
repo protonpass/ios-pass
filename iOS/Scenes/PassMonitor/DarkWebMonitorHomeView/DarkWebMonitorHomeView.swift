@@ -145,6 +145,7 @@ private extension DarkWebMonitorHomeView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+        .contentShape(Rectangle())
     }
 }
 
@@ -510,7 +511,7 @@ private extension DarkWebMonitorHomeView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.cross,
+            CircleButton(icon: IconProvider.chevronDown,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close",
