@@ -22,6 +22,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 
 @MainActor
 final class MonitorAliasesViewModel: ObservableObject {
@@ -81,8 +82,17 @@ extension MonitorAliasesViewModel {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                try await accessRepository.updateAliasesMonitor(!access.monitor.aliases)
+                let enabled = !access.monitor.aliases
+                try await accessRepository.updateAliasesMonitor(enabled)
                 try await refreshAccessAndMonitorState()
+
+                if enabled {
+                    let message = #localized("Hide-my-email aliases monitoring enabled")
+                    router.display(element: .successMessage(message))
+                } else {
+                    let message = #localized("Hide-my-email aliases monitoring disabled")
+                    router.display(element: .infosMessage(message))
+                }
             } catch {
                 handle(error: error)
             }
