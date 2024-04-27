@@ -33,7 +33,7 @@ public extension SecurityWeakness {
         case .breaches:
             #localized("Dark Web Monitoring")
         case .missing2FA:
-            #localized("Missing two-factor authentication")
+            #localized("Inactive 2FA authentication")
         }
     }
 
