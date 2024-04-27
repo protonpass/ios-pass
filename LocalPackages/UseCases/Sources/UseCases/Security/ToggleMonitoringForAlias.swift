@@ -46,7 +46,7 @@ public final class ToggleMonitoringForAlias: ToggleMonitoringForAliasUseCase {
     public func execute(alias: ItemContent) async throws {
         try await repository.toggleMonitoringForAlias(sharedId: alias.shareId,
                                                       itemId: alias.itemId,
-                                                      shouldMonitor: !alias.item.skipHealthCheck)
+                                                      shouldMonitor: !alias.item.monitoringDisabled)
         let aliasesMonitorInfos = try await getAllAliasMonitorInfo()
         repository.darkWebDataSectionUpdate.send(.aliases(aliasesMonitorInfos))
     }

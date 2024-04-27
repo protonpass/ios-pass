@@ -39,15 +39,15 @@ final class MonitorAliasesViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     var breachedAliases: [AliasMonitorInfo] {
-        infos.filter { $0.breaches != nil && !$0.alias.item.skipHealthCheck }
+        infos.filter { $0.breaches != nil && !$0.alias.item.monitoringDisabled }
     }
 
     var notBreachedAliases: [AliasMonitorInfo] {
-        infos.filter { $0.breaches == nil && !$0.alias.item.skipHealthCheck }
+        infos.filter { $0.breaches == nil && !$0.alias.item.monitoringDisabled }
     }
 
     var notMonitoredAliases: [AliasMonitorInfo] {
-        infos.filter(\.alias.item.skipHealthCheck)
+        infos.filter(\.alias.item.monitoringDisabled)
     }
 
     init(infos: [AliasMonitorInfo]) {

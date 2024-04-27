@@ -38,11 +38,11 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     var monitoredAddresses: [ProtonAddress] {
-        allAddresses.filter(\.isMonitored)
+        allAddresses.filter { !$0.monitoringDisabled }
     }
 
     var excludedAddresses: [ProtonAddress] {
-        allAddresses.filter { !$0.isMonitored }
+        allAddresses.filter(\.monitoringDisabled)
     }
 
     init(addresses: [ProtonAddress]) {
