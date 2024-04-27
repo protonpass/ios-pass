@@ -83,7 +83,7 @@ extension ItemEntity {
                         modifyTime: modifyTime,
                         lastUseTime: lastUseTime == 0 ? nil : lastUseTime,
                         revisionTime: revisionTime,
-                        flags: flags)
+                        flags: Int(flags))
 
         return .init(shareId: shareID,
                      item: item,
@@ -109,6 +109,6 @@ extension ItemEntity {
         shareID = symmetricallyEncryptedItem.shareId
         state = item.state
         symmetricallyEncryptedContent = symmetricallyEncryptedItem.encryptedContent
-        flags = item.flags
+        flags = Int64(item.flags)
     }
 }

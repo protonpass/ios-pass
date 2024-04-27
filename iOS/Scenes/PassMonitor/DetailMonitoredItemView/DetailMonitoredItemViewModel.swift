@@ -54,11 +54,11 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     var isMonitored: Bool {
         switch infos {
         case let .alias(aliasInfos):
-            !aliasInfos.alias.item.skipHealthCheck
+            !aliasInfos.alias.item.monitoringDisabled
         case let .customEmail(email):
-            !email.flags.isFlagActive(.skipHealthCheckOrMonitoring)
+            !email.monitoringDisabled
         case let .protonAddress(address):
-            !address.flags.isFlagActive(.skipHealthCheckOrMonitoring)
+            !address.monitoringDisabled
         }
     }
 

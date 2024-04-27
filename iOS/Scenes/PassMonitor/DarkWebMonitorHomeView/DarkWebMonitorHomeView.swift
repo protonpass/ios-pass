@@ -550,11 +550,11 @@ private extension Int {
 
 private extension [AliasMonitorInfo] {
     var breachCount: Int {
-        filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }.count
+        filter { !$0.alias.item.monitoringDisabled && $0.alias.item.isBreached }.count
     }
 
     var topBreaches: [AliasMonitorInfo] {
-        Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
+        Array(filter { !$0.alias.item.monitoringDisabled && $0.alias.item.isBreached }
             .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
             .prefix(DesignConstant.previewBreachItemCount))
     }

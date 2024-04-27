@@ -1,6 +1,6 @@
 //
-// ItemFlags.swift
-// Proton Pass - Created on 27/03/2024.
+// ItemFlagable.swift
+// Proton Pass - Created on 27/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,21 +17,32 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public enum ItemFlags {
-    // Define other flags with different bits, e.g., `static let anotherFlag = 1 << 1`
+public protocol ItemFlagable: Sendable {
+    var flags: Int { get }
+}
 
-    case skipHealthCheckOrMonitoring
-    case isBreached
-
-    public var intValue: Int {
-        switch self {
-        case .skipHealthCheckOrMonitoring:
-            1 << 0
-        case .isBreached:
-            1 << 1
-        }
+private extension ItemFlagable {
+    var itemFlags: ItemFlags {
+        .init(rawValue: flags)
     }
+}
+
+public extension ItemFlagable {
+    var monitoringDisabled: Bool {
+        itemFlags.contains(.monitoringDisabled)
+    }
+
+    var isBreached: Bool {
+        itemFlags.contains(.isBreached)
+    }
+}
+
+private struct ItemFlags: Sendable, OptionSet {
+    let rawValue: Int
+    static let monitoringDisabled = ItemFlags(rawValue: 1 << 0)
+    static let isBreached = ItemFlags(rawValue: 1 << 1)
 }
