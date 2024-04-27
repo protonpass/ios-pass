@@ -108,7 +108,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                     return nil
                 }
 
-                if !encryptedItem.item.skipHealthCheck, !loginItem.password.isEmpty {
+                if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
                     reusedPasswords[loginItem.password, default: 0] += 1
                 }
                 return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
@@ -126,7 +126,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         for item in loginItems {
             var weaknesses = [SecurityWeakness]()
 
-            if item.encrypted.item.skipHealthCheck {
+            if item.encrypted.item.monitoringDisabled {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
@@ -166,14 +166,14 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         let encryptedItems = try await itemRepository.getActiveLogInItems()
 
         return encryptedItems.compactMap { encryptedItem in
-            guard let decriptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  !decriptedItem.item.skipHealthCheck,
-                  let loginItem = decriptedItem.loginItem,
-                  decriptedItem.ids != item.ids,
+            guard let decryptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+                  !decryptedItem.item.monitoringDisabled,
+                  let loginItem = decryptedItem.loginItem,
+                  decryptedItem.ids != item.ids,
                   !loginItem.password.isEmpty, loginItem.password == login.password else {
                 return nil
             }
-            return decriptedItem
+            return decryptedItem
         }
     }
 
@@ -259,7 +259,7 @@ public extension PassMonitorRepository {
 
     func toggleMonitoringForAlias(sharedId: String, itemId: String, shouldMonitor: Bool) async throws {
         try Task.checkCancellation()
-        return try await itemRepository.updateItemFlags(flags: [.skipHealthCheck(!shouldMonitor)],
+        return try await itemRepository.updateItemFlags(flags: [.skipHealthCheck(shouldMonitor)],
                                                         shareId: sharedId,
                                                         itemId: itemId)
     }
