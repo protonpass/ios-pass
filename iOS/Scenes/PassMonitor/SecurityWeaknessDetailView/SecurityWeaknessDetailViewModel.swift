@@ -32,10 +32,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     @Published private(set) var sectionedData = [SecuritySectionHeaderKey: [ItemContent]]()
     @Published private(set) var loading = true
 
-    let title: String
-    let info: String
-
-    private let type: SecurityWeakness
+    let type: SecurityWeakness
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
     private var cancellables = Set<AnyCancellable>()
@@ -65,8 +62,6 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
 
     init(type: SecurityWeakness) {
         self.type = type
-        title = type.title
-        info = type.subtitleInfo
         setUp()
     }
 

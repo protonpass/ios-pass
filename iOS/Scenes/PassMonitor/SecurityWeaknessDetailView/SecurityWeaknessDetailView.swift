@@ -41,20 +41,25 @@ struct SecurityWeaknessDetailView: View {
 private extension SecurityWeaknessDetailView {
     var mainContainer: some View {
         VStack {
-            Text(viewModel.info)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .font(.body)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical)
+            if let subtitleInfo = viewModel.type.subtitleInfo {
+                Text(subtitleInfo)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical)
+            }
+
             if viewModel.isEmpty {
+                Spacer()
                 Image(uiImage: PassIcon.securityEmptyState)
                     .resizable()
+                    .scaledToFit()
                     .frame(width: 195)
-                    .padding(.top, 52)
                 Text(viewModel.nothingWrongMessage)
                     .foregroundStyle(PassColor.textHint.toColor)
                     .fontWeight(.medium)
                     .multilineTextAlignment(.center)
+                Spacer()
+                Spacer()
             } else {
                 LazyVStack(spacing: 0) {
                     if viewModel.showSections {
@@ -69,10 +74,12 @@ private extension SecurityWeaknessDetailView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
-        .scrollViewEmbeded(maxWidth: .infinity)
+        .if(!viewModel.isEmpty) { view in
+            view.scrollViewEmbeded(maxWidth: .infinity)
+        }
         .background(PassColor.backgroundNorm.toColor)
         .showSpinner(viewModel.loading)
-        .navigationTitle(viewModel.title)
+        .navigationTitle(viewModel.type.title)
     }
 }
 
@@ -124,8 +131,8 @@ private extension SecurityWeaknessDetailView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: isSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
-                         iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close") {
                 viewModel.dismiss(isSheet: isSheet)
             }
