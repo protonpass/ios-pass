@@ -17657,6 +17657,9 @@
         }
       }
     },
+    "Breaches resolved" : {
+
+    },
     "Camera permission required for this feature to be available" : {
       "comment" : "No camera permission page",
       "localizations" : {
@@ -40374,6 +40377,26 @@
         }
       }
     },
+    "Hide-my-email aliases monitoring disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email aliases monitoring disabled"
+          }
+        }
+      }
+    },
+    "Hide-my-email aliases monitoring enabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email aliases monitoring enabled"
+          }
+        }
+      }
+    },
     "History" : {
       "localizations" : {
         "be" : {
@@ -51514,6 +51537,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Övervakning inaktiverad"
+          }
+        }
+      }
+    },
+    "Monitoring disabled for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoring disabled for %@"
+          }
+        }
+      }
+    },
+    "Monitoring enabled for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoring enabled for %@"
           }
         }
       }
@@ -63210,6 +63253,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton adresleri"
+          }
+        }
+      }
+    },
+    "Proton addresses monitoring disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton addresses monitoring disabled"
+          }
+        }
+      }
+    },
+    "Proton addresses monitoring enabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton addresses monitoring enabled"
           }
         }
       }

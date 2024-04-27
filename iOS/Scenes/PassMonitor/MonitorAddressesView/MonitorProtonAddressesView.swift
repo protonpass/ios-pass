@@ -112,7 +112,7 @@ private extension MonitorProtonAddressesView {
             .foregroundStyle(PassColor.textNorm.toColor)
             .padding(.vertical)
         ForEach(viewModel.allAddresses) { address in
-            MonitorExcludedEmailView(address: address, action: { select(address) })
+            MonitorExcludedEmailView(address: address)
                 .padding(.bottom)
         }
     }
