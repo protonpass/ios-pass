@@ -296,7 +296,7 @@ private extension PassMonitorView {
                         .toColor : PassColor.textNorm.toColor)
                     .multilineTextAlignment(isBreached ? .leading : .center)
 
-                if isBreached, let latestBreach = breaches.latestBreach {
+                if isBreached, let latestBreach = viewModel.latestBreachInfo {
                     HStack {
                         Image(uiImage: PassIcon.lightning)
                             .resizable()
@@ -311,7 +311,7 @@ private extension PassMonitorView {
                             Text(latestBreach.domain)
                                 .font(.body)
                                 .foregroundStyle(PassColor.textNorm.toColor)
-                            Text(latestBreach.formattedDateDescription)
+                            Text(latestBreach.date)
                                 .font(.footnote)
                                 .foregroundStyle(PassColor.textWeak.toColor)
                         }
