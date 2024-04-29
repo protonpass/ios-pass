@@ -368,6 +368,7 @@ extension UseCasesContainer {
         self { RefreshAccessAndMonitorState(accessRepository: self.accessRepository,
                                             passMonitorRepository: self.passMonitorRepository,
                                             getAllAliases: SharedUseCasesContainer.shared.getAllAliases(),
+                                            getBreachesForAlias: self.getBreachesForAlias(),
                                             stream: DataStreamContainer.shared.monitorStateStream()) }
     }
 }
@@ -463,6 +464,10 @@ extension UseCasesContainer {
     var getItemsLinkedToBreach: Factory<GetItemsLinkedToBreachUseCase> {
         self { GetItemsLinkedToBreach(symmetricKeyProvider: self.symmetricKeyProvider,
                                       repository: self.itemRepository) }
+    }
+
+    var getBreachesForAlias: Factory<GetBreachesForAliasUseCase> {
+        self { GetBreachesForAlias(repository: self.passMonitorRepository) }
     }
 }
 
