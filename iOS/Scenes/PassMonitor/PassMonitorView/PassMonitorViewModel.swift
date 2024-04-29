@@ -73,6 +73,10 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     private var cancellables = Set<AnyCancellable>()
 
+    var isBreached: Bool {
+        numberOfBreaches > 0
+    }
+
     init() {
         setUp()
     }
