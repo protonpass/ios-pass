@@ -5797,25 +5797,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Še %lld dni, da preizkusite vrhunske funkcije"
+                  "value" : "Še %lld dni, da preizkusite premijske funkcije"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Še %lld dan za preizkus premium funkcij"
+                  "value" : "Še %lld dan za preizkus premijskih funkcij"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Še %lld dni, da preizkusite vrhunske funkcije"
+                  "value" : "Še %lld dni, da preizkusite premijske funkcije"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Še %lld dni, da preizkusite vrhunske funkcije"
+                  "value" : "Še %lld dni, da preizkusite premijske funkcije"
                 }
               }
             }
@@ -7144,7 +7144,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "7 dni, da brezplačno preizkusite vrhunske funkcije. Samo v prvem tednu Proton Pass."
+            "value" : "7 dni, da brezplačno preizkusite premijske funkcije. Samo v prvem tednu Proton Pass."
           }
         },
         "sv" : {
@@ -8588,6 +8588,12 @@
             "value" : "Дадаць карыстальніцкі адрас электроннай пошты"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzerdefinierte E-Mail Adresse hinzufügen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8636,6 +8642,12 @@
             "value" : "Aggiungi un indirizzo email personalizzato"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მომხმარებლის ელფოსტის მისამართის დამატება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8646,6 +8658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Legg til tilpasset e-postadresse"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voeg aangepast e-mailadres toe"
           }
         },
         "pl" : {
@@ -12984,7 +13002,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псеўданім запісу ўваходу элемента \"%@\""
+            "value" : "Псеўданім элемента ўваходу \"%@\""
           }
         },
         "cs" : {
@@ -13781,10 +13799,76 @@
     },
     "Aliases with custom domains are not monitored, please add them as a custom email for monitoring." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псеўданімы з карыстальніцкіх даменаў не адсочваюцца. Дадайце іх як карыстальніцкія адрасы электроннай пошты для назірання."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aliases with custom domains are not monitored, please add them as a custom email for monitoring."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los alias con dominios personalizados no son monitoreados. Añádelos como correo electrónico personalizado para monitorearlos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los alias con dominios personalizados no son monitoreados. Añádalos como correo electrónico personalizado para monitorearlos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omia verkkotunnuksiasi käyttäviä aliaksia ei valvota. Lisää ne valvontaan mukautettuina sähköpostiosoitteina."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les alias avec des domaines personnalisés ne sont pas surveillés. Ajoutez-les comme e-mails personnalisés pour la surveillance."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias dengan domain khusus tidak dipantau. Silakan tambahkan alias ini sebagai email khusus untuk keperluan pemantauan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gli alias con domini personalizzati non vengono monitorati, aggiungili come email personalizzata per il monitoraggio."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "커스텀 도메인을 사용한 별칭은 모니터링 대상이 아니므로, 커스텀 이메일로 모니터링에 추가해 주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliaser med egendefinerte domener overvåkes ikke, vennligst legg dem til som en tilpasset e-post for overvåking."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasy z niestandardowymi domenami nie są monitorowane. Dodaj je jako niestandardowy adres e-mail do monitorowania."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias med anpassade domäner övervakas inte, lägg till dem som en anpassad e-post för övervakning."
           }
         }
       }
@@ -14894,10 +14978,70 @@
     },
     "All your login items have two-factor authentication enabled" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усе вашы элементы ўваходу маюць уключаную двухфактарную аўтэнтыфікацыю"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "All your login items have two-factor authentication enabled"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los elementos de inicio de sesión tienen autenticación de dos factores activada."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los elementos de inicio de sesión tienen autenticación de dos factores activada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaikille kirjautumistiedoillesi on määritetty kaksivaiheinen todennus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'authentification à deux facteurs est activée pour tous vos éléments de connexion."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seluruh item entri masuk Anda memiliki autentikasi dua-faktor yang aktif"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutti i tuoi elementi di login hanno l'autenticazione a due fattori abilitata"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 로그인 항목에 2단계 인증이 활성화되어 있습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle påloggingselementene dine har tofaktorautentisering aktivert"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wszystkie dane logowania mają włączone uwierzytelnianie dwustopniowe"
           }
         }
       }
@@ -16614,7 +16758,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA-koodin automaattinen kopiointi vaatii biometrisen lukituksen tai PIN-koodin määrittämistä"
+            "value" : "Todennuskoodien automaattinen kopiointi edellyttää biometrisen lukituksen tai PIN-koodin määritystä"
           }
         },
         "fr" : {
@@ -17037,6 +17181,12 @@
             "value" : "Aktionsmenü für die Einzelheiten des Datenlecks"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μενού ενεργειών λεπτομερειών παραβίασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17061,6 +17211,12 @@
             "value" : "Tietomurron tietojen toimintovalikko"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu des actions détaillées des fuites de données"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17073,6 +17229,12 @@
             "value" : "Menu di azione dei dettagli della violazione di dati"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაჟონვის დეტალის ქმედების მენიუ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17083,6 +17245,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Handlingsmeny for brudddetaljer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actiemenu inbreuk details"
           }
         },
         "pl" : {
@@ -17123,6 +17291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Datenlecks entdeckt für"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εντοπίστηκε παραβίαση για"
           }
         },
         "en" : {
@@ -17167,6 +17341,12 @@
             "value" : "Violazione di dati rilevata per"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აღმოჩენილია გაჟონვები ვისთვის"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17177,6 +17357,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brudd oppdaget for"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inbreuken gedetecteerd voor"
           }
         },
         "pl" : {
@@ -17415,6 +17601,12 @@
             "value" : "Violazioni di dati"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაჟონვები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17425,6 +17617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brudd"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inbreuken"
           }
         },
         "pl" : {
@@ -21283,6 +21481,12 @@
             "value" : "Код"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kód"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21347,6 +21551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "コード"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კოდი"
           }
         },
         "ko" : {
@@ -22129,7 +22339,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bevestig je e-mailadres"
+            "value" : "Bevestig uw e-mailadres"
           }
         },
         "pl" : {
@@ -28687,6 +28897,12 @@
             "value" : "Sicurezza dei dati"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონაცემების უსაფრთხოება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28697,6 +28913,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Datasikkerhet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gegevensbeveiliging"
           }
         },
         "pl" : {
@@ -29860,6 +30082,12 @@
             "value" : "Падрабязнасці"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podrobnosti"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29918,6 +30146,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dettagli"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დეტალები"
           }
         },
         "ko" : {
@@ -30030,6 +30264,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disabilita il monitoraggio"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონიტორინგის გათიშვა"
           }
         },
         "ko" : {
@@ -32830,6 +33070,12 @@
             "value" : "Abilita il monitoraggio"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონიტორინგის ჩართვა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32882,10 +33128,76 @@
     },
     "Enable monitoring to get notified if your aliases were leaked." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уключыце назіранне для таго, каб быць у курсе пры выяўленні ўцечкі вашых псеўданімаў."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable monitoring to get notified if your aliases were leaked."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activa el monitoreo para recibir notificaciones si los alias fueron filtrados."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active el monitoreo para recibir notificaciones si los alias fueron filtrados."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä valvontaa saadaksesi ilmoituksen, jos aliaksiasi on vuotanut."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activez la surveillance pour savoir si vos alias ont été divulgués."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktifkan pemantauan untuk memperoleh notifikasi apabila alias Anda dibocorkan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita il monitoraggio per ricevere una notifica qualora i tuoi alias vengano resi pubblici."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "별칭이 유출되었을 때 알림을 받으려면 모니터링을 활성화하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver overvåking for å bli varslet hvis aliasene dine ble lekket."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz monitoring, aby otrzymać powiadomienie o ujawnieniu aliasów."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera övervakning för att bli aviserad om dina alias läckt."
           }
         }
       }
@@ -32916,6 +33228,12 @@
             "value" : "Active el monitoreo para recibir notificaciones si las direcciones de Proton fueron filtradas."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä valvontaa saadaksesi ilmoituksen, jos Proton-osoitteitasi on vuotanut."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32934,6 +33252,12 @@
             "value" : "Abilita il monitoraggio per ricevere una notifica qualora i tuoi indirizzi Proton vengano resi pubblici."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 주소가 유출되었을 때 알림을 받으려면 모니터링을 활성화하세요."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32944,6 +33268,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Włącz monitoring, aby otrzymać powiadomienie o ujawnieniu adresów Proton."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera övervakning för att bli aviserad om dina Proton-adresser läckt."
           }
         }
       }
@@ -34533,6 +34863,12 @@
             "value" : "Excluido del monitoreo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poistettu valvonnasta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35399,7 +35735,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tunnistautuminen epäonnistui"
+            "value" : "Todennus epäonnistui"
           }
         },
         "fr" : {
@@ -40792,7 +41128,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Želim prijaviti težavo z..."
+            "value" : "Želim prijaviti težavo z ..."
           }
         },
         "sv" : {
@@ -41728,7 +42064,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Neplatná e-mailová adresa"
+            "value" : "Neplatná emailová adresa"
           }
         },
         "sl" : {
@@ -45084,6 +45420,12 @@
             "value" : "Ключ"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klíč"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45918,6 +46260,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ultimo controllo: %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ბოლო შემოწმება: %@"
           }
         },
         "ko" : {
@@ -47973,7 +48321,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Элементы запісу ўваходу"
+            "value" : "Элементы ўваходу"
           }
         },
         "da" : {
@@ -50908,6 +51256,12 @@
             "value" : "Назіранне адрасоў электроннай пошты з разнастайных даменаў. Вы можаце назіраць максімум за 10 карыстальніцкімі адрасамі."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überwache E-Mail-Adressen von verschiedenen Domains. Du kannst bis zu 10 benutzerdefinierte Adressen überwachen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51008,10 +51362,76 @@
     },
     "Monitored" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назіраюцца"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitored"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoreado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoreado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valvonnassa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Surveillé"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dipantau"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitorati"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모니터링됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overvåket"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitorowane"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Övervakad"
           }
         }
       }
@@ -51048,10 +51468,22 @@
             "value" : "El monitoreo fue desactivado."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valvonta poistettiin käytöstä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "La surveillance a été désactivée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pemantauan dinonaktifkan"
           }
         },
         "it" : {
@@ -53294,6 +53726,12 @@
             "value" : "Keine Tresore"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν υπάρχουν κρύπτες"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53406,20 +53844,140 @@
     },
     "No weak passwords were found in your login items" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ненадзейныя паролі не былі знойдзены ў вашых элементах уваходу"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No weak passwords were found in your login items"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado contraseñas débiles en los elementos de inicio de sesión."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron contraseñas débiles en los elementos de inicio de sesión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun mot de passe faible n'a été trouvé dans les éléments de connexion."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada kata sandi yang lemah yang ditemukan pada item login Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuno dei tuoi elementi di login utilizza password deboli"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그인 항목에서 약한 비밀번호를 찾을 수 없었습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen svake passord ble funnet i påloggingselementene dine"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak słabych haseł w danych logowania"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inga svaga lösenord hittades i dina inloggningsobjekt"
           }
         }
       }
     },
     "None of your email addresses or aliases appear in a data breach" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ніводны вас адрас электроннай пошты або псеўданім не з'явіўся ва ўцечцы даных"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "None of your email addresses or aliases appear in a data breach"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguna de las direcciones o alias aparecen en una vulneración de datos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguna de las direcciones o alias aparecen en una vulneración de datos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune de vos adresses e-mail ou de vos alias n'apparait dans une fuite de données."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada alamat email atau alias milik Anda yang muncul dalam insiden kebocoran data"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuno dei tuoi indirizzi email o alias compare in una violazione di dati"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일 주소나 별칭을 데이터 침해에서 찾을 수 없었습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen av e-postadressene eller aliasene dine vises i et datainnbrudd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak ujawnionych adresów e-mail lub aliasów w wyciekach danych"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen av dina e-postadresser eller alias visas i ett dataintrång"
           }
         }
       }
@@ -55642,10 +56200,76 @@
     },
     "One of your email addresses or aliases appear in a data breach" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адзін з вашых адрасоў электроннай пошты або псеўданімы з'явіліся ва ўцечцы даных"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "One of your email addresses or aliases appear in a data breach"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una de las direcciones o alias aparecen en una vulneración de datos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una de las direcciones o alias aparecen en una vulneración de datos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joku sähköpostiosoitteesi tai aliaksesi on havaittu tietovuodossa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'une de vos adresses e-mail ou l'un de vos alias apparait dans une fuite de données."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salah satu alamat email atau alias milik Anda muncul dalam insiden kebocoran data"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uno dei tuoi indirizzi email o alias compare in una violazione di dati"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하나의 이메일 주소나 별칭을 데이터 침해에서 찾았습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En av e-postadressene eller aliasene dine vises i et datainnbrudd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeden z Twoich adresów e-mail lub aliasów został ujawniony w wycieku danych"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En av dina e-postadresser eller alias visas i ett dataintrång"
           }
         }
       }
@@ -56755,6 +57379,12 @@
             "value" : "Параметры"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Možnosti"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56789,6 +57419,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Options"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilihan"
           }
         },
         "it" : {
@@ -57606,6 +58242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ключ доступу"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přístupový klíč"
           }
         },
         "da" : {
@@ -62555,7 +63197,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Naslov Proton"
+            "value" : "Naslovi Proton"
           }
         },
         "sv" : {
@@ -62608,6 +63250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton nunca comparte su información con terceros. Todos los datos provienen de búsquedas de la presencia de dominios de Proton en la dark web."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton ei koskaan jaa tietojasi ulkopuolisille tahoille. Kaikki tiedot ovat peräisin pimeässä verkossa suoritettavasta Proton-verkkotunnusten valvonnasta."
           }
         },
         "fr" : {
@@ -62724,7 +63372,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Хутка выбірайце элемент з запісам уваходу прапанаваны над клавіятурай"
+            "value" : "Хутка выбірайце элемент уваходу прапанаваны над клавіятурай"
           }
         },
         "cs" : {
@@ -64569,7 +65217,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prijavi težavo"
+            "value" : "Prijavite težavo"
           }
         },
         "sv" : {
@@ -64766,6 +65414,18 @@
             "value" : "Адправіць код яшчэ раз"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znovu odeslat kód"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code erneut senden"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64812,6 +65472,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reinvia il codice"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კოდის თავიდან გაგზავნა"
           }
         },
         "ko" : {
@@ -64878,6 +65544,12 @@
             "value" : "Send kode igen om %@"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code in %@ erneut senden"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64902,6 +65574,12 @@
             "value" : "Reenviar el código en %@"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lähetä koodi uudelleen %@ kuluttua"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64918,6 +65596,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reinvia il codice tra %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კოდის ხელახლა გადმოგზავნა %@"
           }
         },
         "ko" : {
@@ -65287,6 +65971,12 @@
             "value" : "Gelöste Datenlecks"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιλυμένες παραβιάσεις"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65327,6 +66017,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Violazioni di dati risolte"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამოხსნილი გაჟონვები"
           }
         },
         "ko" : {
@@ -84722,6 +85418,12 @@
             "value" : "Неправераны"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neověřený"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84780,6 +85482,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Non verificato"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადაუმოწმებელი"
           }
         },
         "ko" : {
@@ -87161,7 +87869,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usato in"
+            "value" : "Utilizzato in"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამოყენებულია სად"
           }
         },
         "ko" : {
@@ -89745,7 +90459,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trezorji ne smejo vsebovati več kot 3 uporabnike z brezplačnim načrtom."
+            "value" : "Trezorji ne smejo vsebovati več kot 3 uporabnike z brezplačnim paketom."
           }
         },
         "sv" : {
@@ -91929,6 +92643,12 @@
             "value" : "Мы адправілі вам праверачны код на %@. Увядзіце яго ніжэй:"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Στείλαμε έναν κωδικό επαλήθευσης στη διεύθυνση %@. Παρακαλούμε εισάγετε τον παρακάτω:"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91945,6 +92665,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hemos enviado un código de verificación a %@. Ingrese el código abajo:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vahvistuskoodi lähetettiin osoitteeseen %@. Syötä se alle:"
           }
         },
         "fr" : {
@@ -95218,7 +95944,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У дадзены момант у вас няма элементаў з запісамі ўваходу"
+            "value" : "У дадзены момант у вас няма элементаў уваходу"
           }
         },
         "cs" : {
@@ -95375,10 +96101,76 @@
     },
     "You don't have any excluded login items from monitoring" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас адсутнічаюць выключаныя элементы ўваходу з назірання"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You don't have any excluded login items from monitoring"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No has excluido ningún elemento de inicio de sesión para el monitoreo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No ha excluido ningún elemento de inicio de sesión para el monitoreo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Et ole sulkenut yhtään kirjautumistietoa valvonnan ulkopuolelle"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez pas d'éléments de connexion exclus de la surveillance."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda tidak memiliki item entri masuk yang dikecualikan dari pemantauan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non hai elementi di login esclusi dal monitoraggio"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모니터링에서 제외한 로그인 항목이 없습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ingen ekskluderte påloggingselementer fra overvåking"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie masz wykluczonych danych logowania z monitoringu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har inga exkluderade inloggningsobjekt från övervakning"
           }
         }
       }
@@ -95521,10 +96313,76 @@
     },
     "You have no reused passwords in your login items" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас адсутнічаюць паўторна выкарыстаныя паролі ў вашых элементах уваходу"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You have no reused passwords in your login items"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No has reusado contraseñas en los elementos de inicio de sesión."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No ha reusado contraseñas en los elementos de inicio de sesión."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirjautumistiedoissasi ei ole toistuvia salasanoja"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez pas réutilisé de mots de passe dans vos éléments de connexion."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda tidak memiliki kata sandi yang digunakan ulang pada item entri masuk Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non hai password riutilizzate nei tuoi elementi di login"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "재사용한 로그인 항목이 없습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ingen gjenbrukte passord i påloggingselementene dine"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie masz identycznych haseł w danych logowania"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har inga återanvända lösenord i dina inloggningsobjekt"
           }
         }
       }
@@ -97001,6 +97859,12 @@
             "value" : "Вашы звесткі былі ва ўцечцы даных і знойдзены **%@**"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι πληροφορίες σας ήταν σε παραβίαση δεδομένων και εντοπίστηκαν στις **%@**"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97019,6 +97883,12 @@
             "value" : "Sus datos estaban en una vulneración de datos y se encontraron en **%@**."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietojasi sisältyi tietovuotoon, joka havaittiin **%@**"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97034,13 +97904,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le tue informazioni hanno subito una violazione di dati e sono state trovate su **%@**"
+            "value" : "Le tue informazioni sono finite in una violazione di dati e sono state trovate il **%@**"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사용자의 정보가 데이터 유출되었으며 **%@**(에)서 발견되었습니다."
+            "value" : "**%@**에서 유출된 데이터에서 내 정보가 발견되었습니다."
           }
         },
         "nb" : {
@@ -97052,7 +97922,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Je informatie zat in een datalek en gevonden op **%@**"
+            "value" : "Uw informatie zat in een datalek en gevonden op **%@**"
           }
         },
         "pl" : {
@@ -97337,7 +98207,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaš načrt dovoljuje samo uporabo predmetov iz vaših prvih trezorjev za namene samodejnega izpolnjevanja.\n​"
+            "value" : "Vaš paket dovoljuje samo uporabo predmetov iz vaših prvih trezorjev za namene samodejnega izpolnjevanja.\n​"
           }
         },
         "sv" : {
@@ -97362,10 +98232,70 @@
     },
     "Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш уліковы запіс Proton застаўся ў бяспецы і зашыфраваны. [Даведацца больш](https://proton.me/blog/breach-recommendations)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La información de la cuenta Proton se mantiene segura y cifrada. [Más información](https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La información de la cuenta de Proton se mantiene segura y cifrada. [Más información](https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-tilisi tiedot ovat edelleen turvassa ja salattuina. [Lue lisää](https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les informations de votre compte Proton restent sécurisées et chiffrées. [En savoir plus] (https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informasi Akun Proton Anda tetap aman dan terenkripsi. [Pelajari lebih lanjut](https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le informazioni del tuo account Proton rimangono sicure e crittografate. [Scopri di più](https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-kontoinformasjonen din forblir sikker og kryptert. [Lær mer](https://proton.me/blog/breach-recommendations)."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informacje konta Proton pozostają bezpieczne i zaszyfrowane. [Dowiedz się więcej]\n(https://proton.me/blog/breach-recommendations)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din Proton-kontoinformation förblir säker och krypterad. [Lär dig mer](https://proton.me/blog/breach-recommendations)"
           }
         }
       }
