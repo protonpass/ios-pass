@@ -20,6 +20,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct CreatePasskeyResponse: Hashable, Sendable {
     public let passkey: Data
@@ -34,6 +35,10 @@ public struct CreatePasskeyResponse: Hashable, Sendable {
     public let clientDataHash: Data
     public let userHandle: Data?
     public let attestationObject: Data
+    public let osName: String
+    public let osVersion: String
+    public let deviceName: String
+    public let appVersion: String
 
     public init(passkey: Data,
                 keyId: String,
@@ -46,7 +51,11 @@ public struct CreatePasskeyResponse: Hashable, Sendable {
                 credentialId: Data,
                 clientDataHash: Data,
                 userHandle: Data?,
-                attestationObject: Data) {
+                attestationObject: Data,
+                osName: String,
+                osVersion: String,
+                deviceName: String,
+                appVersion: String) {
         self.passkey = passkey
         self.keyId = keyId
         self.domain = domain
@@ -59,6 +68,10 @@ public struct CreatePasskeyResponse: Hashable, Sendable {
         self.clientDataHash = clientDataHash
         self.userHandle = userHandle
         self.attestationObject = attestationObject
+        self.osName = osName
+        self.osVersion = osVersion
+        self.deviceName = deviceName
+        self.appVersion = appVersion
     }
 }
 
@@ -76,6 +89,12 @@ public extension CreatePasskeyResponse {
         passkey.createTime = UInt32(Date.now.timeIntervalSince1970)
         passkey.credentialID = credentialId
         passkey.userHandle = userHandle ?? .init()
+        var metadata = ProtonPassItemV1_PasskeyCreationData()
+        metadata.osVersion = osVersion
+        metadata.osName = osName
+        metadata.deviceName = deviceName
+        metadata.appVersion = appVersion
+        passkey.creationData = metadata
         return passkey
     }
 }
