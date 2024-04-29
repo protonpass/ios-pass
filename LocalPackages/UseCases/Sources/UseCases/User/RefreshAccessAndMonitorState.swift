@@ -68,8 +68,10 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
             latestBreach = LatestBreachDomainInfo(domain: info.domain, date: info.formattedDateDescription)
         } else if let alias = breachedAliases.first {
             let breachInfo = try await getBreachesForAlias(shareId: alias.shareId, itemId: alias.itemId)
-            latestBreach = LatestBreachDomainInfo(domain: breachInfo.breaches.first?.name ?? "",
-                                                  date: breachInfo.breaches.first?.breachDate ?? "")
+            if let firstBreach = breachInfo.breaches.first {
+                latestBreach = LatestBreachDomainInfo(domain: firstBreach.name,
+                                                      date: firstBreach.breachDate)
+            }
         }
 
         let state = switch (access.plan.isFreeUser, breachCount > 0, hasWeaknesses) {

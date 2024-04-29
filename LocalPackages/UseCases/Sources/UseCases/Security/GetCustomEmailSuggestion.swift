@@ -22,12 +22,12 @@ import Client
 import Entities
 
 public protocol GetCustomEmailSuggestionUseCase: Sendable {
-    func execute(monitoredCustomEmail: [CustomEmail]) async throws -> [SuggestedEmail]
+    func execute(monitoredCustomEmails: [CustomEmail]) async throws -> [SuggestedEmail]
 }
 
 public extension GetCustomEmailSuggestionUseCase {
-    func callAsFunction(monitoredCustomEmail: [CustomEmail]) async throws -> [SuggestedEmail] {
-        try await execute(monitoredCustomEmail: monitoredCustomEmail)
+    func callAsFunction(monitoredCustomEmails: [CustomEmail]) async throws -> [SuggestedEmail] {
+        try await execute(monitoredCustomEmails: monitoredCustomEmails)
     }
 }
 
@@ -44,8 +44,8 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
         self.validateEmailUseCase = validateEmailUseCase
     }
 
-    public func execute(monitoredCustomEmail: [CustomEmail]) async throws -> [SuggestedEmail] {
-        guard monitoredCustomEmail.count < 10 else {
+    public func execute(monitoredCustomEmails: [CustomEmail]) async throws -> [SuggestedEmail] {
+        guard monitoredCustomEmails.count < 10 else {
             return []
         }
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
@@ -55,7 +55,7 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
                       let loginItem = item.loginItem,
                       validateEmailUseCase(email: loginItem.username),
-                      !monitoredCustomEmail.map({ $0.email.lowercased() })
+                      !monitoredCustomEmails.map({ $0.email.lowercased() })
                       .contains(loginItem.username.lowercased())
                 else {
                     return nil
