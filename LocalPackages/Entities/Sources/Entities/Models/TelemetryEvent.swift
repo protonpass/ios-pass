@@ -141,6 +141,30 @@ public enum TelemetryEventType: Sendable, Equatable {
             self = .passkeyAuth
         case "passkey.display":
             self = .passkeyDisplay
+        case "monitor.display.home":
+            self = .monitorDisplayHome
+        case "monitor.display.weak.passwords":
+            self = .monitorDisplayWeakPasswords
+        case "monitor.display.reused.passwords":
+            self = .monitorDisplayReusedPasswords
+        case "monitor.display.missing.2fa":
+            self = .monitorDisplayMissing2FA
+        case "monitor.display.excluded.items":
+            self = .monitorDisplayExcludedItems
+        case "monitor.display.dark.web.monitoring":
+            self = .monitorDisplayDarkWebMonitoring
+        case "monitor.display.monitoring.proton.addresses":
+            self = .monitorDisplayMonitoringProtonAddresses
+        case "monitor.display.monitoring.email.aliases":
+            self = .monitorDisplayMonitoringEmailAliases
+        case "monitor.add.custom.email.from.suggestion":
+            self = .monitorAddCustomEmailFromSuggestion
+        case "monitor.item.detail.from.weak.password":
+            self = .monitorItemDetailFromWeakPassword
+        case "monitor.item.detail.from.missing.2fa":
+            self = .monitorItemDetailFromMissing2FA
+        case "monitor.item.detail.from.reused.password":
+            self = .monitorItemDetailFromReusedPassword
         default:
             if let crudEvent = Self.crudEvent(rawValue: rawValue) {
                 self = crudEvent
