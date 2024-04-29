@@ -32,7 +32,7 @@ public struct TelemetryEvent: Sendable {
     }
 }
 
-public enum TelemetryEventType: Sendable {
+public enum TelemetryEventType: Sendable, Equatable {
     case create(ItemContentType)
     case read(ItemContentType)
     case update(ItemContentType)
@@ -47,7 +47,20 @@ public enum TelemetryEventType: Sendable {
     case passkeyCreate
     case passkeyAuth
     case passkeyDisplay
+    case monitorDisplayHome
+    case monitorDisplayWeakPasswords
+    case monitorDisplayReusedPasswords
+    case monitorDisplayMissing2FA
+    case monitorDisplayExcludedItems
+    case monitorDisplayDarkWebMonitoring
+    case monitorDisplayMonitoringProtonAddresses
+    case monitorDisplayMonitoringEmailAliases
+    case monitorAddCustomEmailFromSuggestion
+    case monitorItemDetailFromWeakPassword
+    case monitorItemDetailFromMissing2FA
+    case monitorItemDetailFromReusedPassword
 
+    /// For local storage only as we store events locally before sending to the BE in batch
     public var rawValue: String {
         switch self {
         case let .create(type):
@@ -78,6 +91,30 @@ public enum TelemetryEventType: Sendable {
             "passkey.auth"
         case .passkeyDisplay:
             "passkey.display"
+        case .monitorDisplayHome:
+            "monitor.display.home"
+        case .monitorDisplayWeakPasswords:
+            "monitor.display.weak.passwords"
+        case .monitorDisplayReusedPasswords:
+            "monitor.display.reused.passwords"
+        case .monitorDisplayMissing2FA:
+            "monitor.display.missing.2fa"
+        case .monitorDisplayExcludedItems:
+            "monitor.display.excluded.items"
+        case .monitorDisplayDarkWebMonitoring:
+            "monitor.display.dark.web.monitoring"
+        case .monitorDisplayMonitoringProtonAddresses:
+            "monitor.display.monitoring.proton.addresses"
+        case .monitorDisplayMonitoringEmailAliases:
+            "monitor.display.monitoring.email.aliases"
+        case .monitorAddCustomEmailFromSuggestion:
+            "monitor.add.custom.email.from.suggestion"
+        case .monitorItemDetailFromWeakPassword:
+            "monitor.item.detail.from.weak.password"
+        case .monitorItemDetailFromMissing2FA:
+            "monitor.item.detail.from.missing.2fa"
+        case .monitorItemDetailFromReusedPassword:
+            "monitor.item.detail.from.reused.password"
         }
     }
 
@@ -104,6 +141,30 @@ public enum TelemetryEventType: Sendable {
             self = .passkeyAuth
         case "passkey.display":
             self = .passkeyDisplay
+        case "monitor.display.home":
+            self = .monitorDisplayHome
+        case "monitor.display.weak.passwords":
+            self = .monitorDisplayWeakPasswords
+        case "monitor.display.reused.passwords":
+            self = .monitorDisplayReusedPasswords
+        case "monitor.display.missing.2fa":
+            self = .monitorDisplayMissing2FA
+        case "monitor.display.excluded.items":
+            self = .monitorDisplayExcludedItems
+        case "monitor.display.dark.web.monitoring":
+            self = .monitorDisplayDarkWebMonitoring
+        case "monitor.display.monitoring.proton.addresses":
+            self = .monitorDisplayMonitoringProtonAddresses
+        case "monitor.display.monitoring.email.aliases":
+            self = .monitorDisplayMonitoringEmailAliases
+        case "monitor.add.custom.email.from.suggestion":
+            self = .monitorAddCustomEmailFromSuggestion
+        case "monitor.item.detail.from.weak.password":
+            self = .monitorItemDetailFromWeakPassword
+        case "monitor.item.detail.from.missing.2fa":
+            self = .monitorItemDetailFromMissing2FA
+        case "monitor.item.detail.from.reused.password":
+            self = .monitorItemDetailFromReusedPassword
         default:
             if let crudEvent = Self.crudEvent(rawValue: rawValue) {
                 self = crudEvent
@@ -131,34 +192,6 @@ public enum TelemetryEventType: Sendable {
             return .delete(itemType)
         default:
             return nil
-        }
-    }
-}
-
-extension TelemetryEventType: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case let (.create(lhsType), .create(rhsType)):
-            lhsType == rhsType
-        case let (.read(lhsType), .read(rhsType)):
-            lhsType == rhsType
-        case let (.update(lhsType), .update(rhsType)):
-            lhsType == rhsType
-        case let (.delete(lhsType), .delete(rhsType)):
-            lhsType == rhsType
-        case (.autofillDisplay, .autofillDisplay),
-             (.autofillTriggeredFromApp, .autofillTriggeredFromApp),
-             (.autofillTriggeredFromSource, .autofillTriggeredFromSource),
-             (.passkeyAuth, .passkeyAuth),
-             (.passkeyCreate, .passkeyCreate),
-             (.passkeyDisplay, .passkeyDisplay),
-             (.searchClick, .searchClick),
-             (.searchTriggered, .searchTriggered),
-             (.twoFaCreation, .twoFaCreation),
-             (.twoFaUpdate, .twoFaUpdate):
-            true
-        default:
-            false
         }
     }
 }
