@@ -98,3 +98,13 @@ public extension Breach {
         return formatter.string(for: publishedAtDate) ?? ""
     }
 }
+
+public extension [Breach] {
+    var allResolvedBreaches: [Breach] {
+        filter(\.isResolved)
+    }
+
+    var allUnresolvedBreaches: [Breach] {
+        filter { !$0.isResolved }
+    }
+}
