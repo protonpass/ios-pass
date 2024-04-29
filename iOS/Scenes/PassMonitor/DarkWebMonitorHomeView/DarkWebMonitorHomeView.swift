@@ -252,7 +252,7 @@ private extension DarkWebMonitorHomeView {
                 ForEach(infos.topBreaches) { item in
                     darkWebMonitorHomeRow(title: item.alias.item.aliasEmail ?? "",
                                           subTitle: item.latestBreach,
-                                          count: item.breaches?.count,
+                                          count: item.breaches?.breaches.allUnresolvedBreaches.count,
                                           hasBreaches: hasBreaches,
                                           isDetail: true,
                                           action: { router.navigate(to: .breachDetail(.alias(item))) })
