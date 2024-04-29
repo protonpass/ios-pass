@@ -35,6 +35,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     @Published private(set) var aliasBreachesState: FetchableObject<[AliasMonitorInfo]> = .fetching
     @Published private(set) var customEmailsState: FetchableObject<[CustomEmail]> = .fetching
     @Published private(set) var suggestedEmailsState: FetchableObject<[SuggestedEmail]> = .fetching
+    @Published private(set) var updatingStateOfCustomEmail = false
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
@@ -106,7 +107,8 @@ extension DarkWebMonitorHomeViewModel {
                 if suggestedEmailsState.isError {
                     suggestedEmailsState = .fetching
                 }
-                let emails = try await getCustomEmailSuggestion(breaches: userBreaches)
+                let emails = try await getCustomEmailSuggestion(monitoredCustomEmails: customEmailsState
+                    .fetchedObject ?? [])
                 suggestedEmailsState = .fetched(emails)
             } catch {
                 suggestedEmailsState = .error(error)
@@ -119,9 +121,9 @@ extension DarkWebMonitorHomeViewModel {
             guard let self else {
                 return
             }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            defer { updatingStateOfCustomEmail = false }
             do {
-                router.display(element: .globalLoading(shouldShow: true))
+                updatingStateOfCustomEmail = true
                 try await removeEmailFromBreachMonitoring(email: email)
             } catch {
                 handle(error: error)
@@ -130,14 +132,15 @@ extension DarkWebMonitorHomeViewModel {
     }
 
     func addCustomEmail(email: String) async -> CustomEmail? {
-        defer { router.display(element: .globalLoading(shouldShow: false)) }
         do {
-            router.display(element: .globalLoading(shouldShow: true))
+            updatingStateOfCustomEmail = true
             let customEmail = try await addCustomEmailToMonitoring(email: email)
             fetchSuggestedEmails()
+            updatingStateOfCustomEmail = false
             return customEmail
         } catch {
             handle(error: error)
+            updatingStateOfCustomEmail = false
             return nil
         }
     }

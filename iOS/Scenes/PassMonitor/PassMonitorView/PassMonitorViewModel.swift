@@ -58,6 +58,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published var isSentinelActive = false
     @Published private(set) var updatingSentinel = false
     @Published var showSentinelSheet = false
+    @Published private(set) var latestBreachInfo: LatestBreachDomainInfo?
 
     private let logger = resolve(\SharedToolingContainer.logger)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
@@ -72,6 +73,10 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     private var cancellables = Set<AnyCancellable>()
+
+    var isBreached: Bool {
+        numberOfBreaches > 0
+    }
 
     init() {
         setUp()
@@ -176,6 +181,7 @@ private extension PassMonitorViewModel {
             .sink { [weak self] state in
                 guard let self, let breachCount = state.breachCount else { return }
                 numberOfBreaches = breachCount
+                latestBreachInfo = state.latestBreachDomainInfo
             }.store(in: &cancellables)
     }
 
