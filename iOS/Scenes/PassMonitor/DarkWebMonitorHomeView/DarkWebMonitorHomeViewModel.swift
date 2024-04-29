@@ -98,7 +98,7 @@ extension DarkWebMonitorHomeViewModel {
         }
     }
 
-    func fetchSuggestedEmails(_ updatedEmails: [CustomEmail]? = nil) {
+    func fetchSuggestedEmails() {
         fetchSuggestedEmailsTask?.cancel()
         fetchSuggestedEmailsTask = Task { [weak self] in
             guard let self else { return }
