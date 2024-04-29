@@ -57,7 +57,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
     /// Flags for this item. Possible values:
     /// - SkipHealthCheck: 1<<0 = 1, if first bit of Int is 1 then the item should not be monitored in `Pass
     /// Monitor`
-    public let flags: Int64
+    public let flags: Int
 
     /// Enum representation of `state`
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
@@ -75,7 +75,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
                 modifyTime: Int64,
                 lastUseTime: Int64?,
                 revisionTime: Int64,
-                flags: Int64) {
+                flags: Int) {
         self.itemID = itemID
         self.revision = revision
         self.contentFormatVersion = contentFormatVersion
@@ -93,30 +93,4 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
     }
 }
 
-public extension Item {
-    var skipHealthCheck: Bool {
-        isFlagActive(ItemFlags.skipHealthCheckOrMonitoring)
-    }
-
-    var isBreached: Bool {
-        isFlagActive(ItemFlags.isBreached)
-    }
-
-    func isFlagActive(_ flag: ItemFlags) -> Bool {
-        (Int(flags) & flag.intValue) != 0
-    }
-
-    func areAllFlagsActive(_ flagsToCheck: [ItemFlags]) -> Bool {
-        for flag in flagsToCheck where (Int(flags) & flag.intValue) == 0 {
-            return false // If any flag is not set, return false
-        }
-        return true // All flags are set
-    }
-
-    func isAnyFlagActive(_ flagsToCheck: [ItemFlags]) -> Bool {
-        for flag in flagsToCheck where (Int(flags) & flag.intValue) != 0 {
-            return true // If any flag is set, return true
-        }
-        return false // No flags are set
-    }
-}
+extension Item: ItemFlagable {}

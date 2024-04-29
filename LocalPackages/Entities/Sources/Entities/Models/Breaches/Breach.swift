@@ -95,6 +95,6 @@ public extension Breach {
     var breachDate: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d, yyyy"
-        return formatter.string(for: publishedAt) ?? ""
+        return formatter.string(for: publishedAtDate) ?? ""
     }
 }

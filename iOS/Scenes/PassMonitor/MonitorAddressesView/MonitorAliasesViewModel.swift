@@ -22,6 +22,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 
 @MainActor
 final class MonitorAliasesViewModel: ObservableObject {
@@ -39,15 +40,15 @@ final class MonitorAliasesViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     var breachedAliases: [AliasMonitorInfo] {
-        infos.filter { $0.breaches != nil && !$0.alias.item.skipHealthCheck }
+        infos.filter { $0.breaches != nil && !$0.alias.item.monitoringDisabled }
     }
 
     var notBreachedAliases: [AliasMonitorInfo] {
-        infos.filter { $0.breaches == nil && !$0.alias.item.skipHealthCheck }
+        infos.filter { $0.breaches == nil && !$0.alias.item.monitoringDisabled }
     }
 
     var notMonitoredAliases: [AliasMonitorInfo] {
-        infos.filter(\.alias.item.skipHealthCheck)
+        infos.filter(\.alias.item.monitoringDisabled)
     }
 
     init(infos: [AliasMonitorInfo]) {
@@ -81,8 +82,17 @@ extension MonitorAliasesViewModel {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                try await accessRepository.updateAliasesMonitor(!access.monitor.aliases)
+                let enabled = !access.monitor.aliases
+                try await accessRepository.updateAliasesMonitor(enabled)
                 try await refreshAccessAndMonitorState()
+
+                if enabled {
+                    let message = #localized("Hide-my-email aliases monitoring enabled")
+                    router.display(element: .successMessage(message))
+                } else {
+                    let message = #localized("Hide-my-email aliases monitoring disabled")
+                    router.display(element: .infosMessage(message))
+                }
             } catch {
                 handle(error: error)
             }

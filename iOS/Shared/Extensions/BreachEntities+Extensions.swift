@@ -23,22 +23,16 @@ import Entities
 import Foundation
 import Macro
 
-extension ProtonAddress {
-    var isMonitored: Bool {
-        !flags.isFlagActive(.skipHealthCheckOrMonitoring)
-    }
-}
-
 extension UserBreaches {
     var topBreachedAddresses: [ProtonAddress] {
         Array(addresses
-            .filter { $0.isMonitored && $0.isBreached }
+            .filter { !$0.monitoringDisabled && $0.isBreached }
             .sorted { $0.breachCounter > $1.breachCounter }
             .prefix(DesignConstant.previewBreachItemCount))
     }
 
     var numberOfBreachedProtonAddresses: Int {
-        addresses.filter { $0.isMonitored && $0.isBreached }.count
+        addresses.filter { !$0.monitoringDisabled && $0.isBreached }.count
     }
 }
 

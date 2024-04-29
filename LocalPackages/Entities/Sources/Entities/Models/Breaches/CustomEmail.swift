@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiable, Breachable {
+public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiable {
     public let customEmailID, email: String
     public let verified: Bool
     public let breachCounter: Int
@@ -45,3 +45,5 @@ public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiabl
         customEmailID
     }
 }
+
+extension CustomEmail: Breachable, ItemFlagable {}

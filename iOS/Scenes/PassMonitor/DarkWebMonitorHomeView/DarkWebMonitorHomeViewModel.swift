@@ -30,7 +30,6 @@ import UseCases
 
 @MainActor
 final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
-    @Published private(set) var updateDate: Date?
     @Published private(set) var access: Access?
     @Published private(set) var userBreaches: UserBreaches
     @Published private(set) var aliasBreachesState: FetchableObject<[AliasMonitorInfo]> = .fetching
@@ -75,7 +74,6 @@ extension DarkWebMonitorHomeViewModel {
                 }
                 let infos = try await getAllAliasMonitorInfos()
                 aliasBreachesState = .fetched(infos)
-                updateDate = .now
             } catch {
                 aliasBreachesState = .error(error)
             }
@@ -154,7 +152,6 @@ private extension DarkWebMonitorHomeViewModel {
                 guard let self else {
                     return
                 }
-                defer { updateDate = .now }
                 switch section {
                 case let .aliases(newValue):
                     aliasBreachesState = .fetched(newValue)

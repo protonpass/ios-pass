@@ -34,7 +34,7 @@ public extension Item {
                        keyRotation: Int64 = .random(in: 0...100),
                        lastUseTime: Int64 = .random(in: 0...1_000_000),
                        modifyTime: Int64 = .random(in: 0...1_000_000),
-                       flags: Int64 = .random(in: 0...1_000_000)) -> Item {
+                       flags: Int = .random(in: 0...1_000_000)) -> Item {
         .init(itemID: itemId ?? .random(),
               revision: .random(in: 0...100),
               contentFormatVersion: .random(in: 0...100),

@@ -111,7 +111,7 @@ private extension MonitorAliasesView {
             .foregroundStyle(PassColor.textNorm.toColor)
             .padding(.vertical)
         ForEach(viewModel.infos) { info in
-            MonitorExcludedEmailView(address: info, action: { select(info) })
+            MonitorExcludedEmailView(address: info)
                 .padding(.bottom)
         }
     }

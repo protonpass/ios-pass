@@ -38,11 +38,11 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     var monitoredAddresses: [ProtonAddress] {
-        allAddresses.filter(\.isMonitored)
+        allAddresses.filter { !$0.monitoringDisabled }
     }
 
     var excludedAddresses: [ProtonAddress] {
-        allAddresses.filter { !$0.isMonitored }
+        allAddresses.filter(\.monitoringDisabled)
     }
 
     init(addresses: [ProtonAddress]) {
@@ -63,8 +63,17 @@ extension MonitorProtonAddressesViewModel {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                try await accessRepository.updateProtonAddressesMonitor(!access.monitor.protonAddress)
+                let enabled = !access.monitor.protonAddress
+                try await accessRepository.updateProtonAddressesMonitor(enabled)
                 try await refreshAccessAndMonitorState()
+
+                if enabled {
+                    let message = #localized("Proton addresses monitoring enabled")
+                    router.display(element: .successMessage(message))
+                } else {
+                    let message = #localized("Proton addresses monitoring disabled")
+                    router.display(element: .infosMessage(message))
+                }
             } catch {
                 handle(error: error)
             }
