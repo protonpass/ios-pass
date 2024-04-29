@@ -48,7 +48,9 @@ private extension BreachDetailView {
             headerInfo
             exposedInfos
             detailsInfos
-            recommendedActions
+            if !breach.actions.isEmpty {
+                recommendedActions
+            }
             footer
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -146,12 +148,23 @@ private extension BreachDetailView {
         Section {
             VStack(spacing: 12) {
                 ForEach(breach.actions, id: \.self) { item in
-                    Text(item.name)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(DesignConstant.sectionPadding)
-                        .background(PassColor.inputBackgroundNorm.toColor)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    HStack {
+                        VStack {
+                            Spacer()
+                            Image(uiImage: item.knownCode.icon)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20)
+                                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            Spacer()
+                        }
+                        Text(item.name)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(DesignConstant.sectionPadding)
+                    .background(PassColor.inputBackgroundNorm.toColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
         } header: {
@@ -190,6 +203,23 @@ private extension BreachDetailView {
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
+        }
+    }
+}
+
+private extension BreachActionCode {
+    var icon: UIImage {
+        switch self {
+        case .stayAlert:
+            IconProvider.checkmark
+        case .passwordAll, .passwordExposed, .passwordSource:
+            IconProvider.key
+        case .twoFA:
+            IconProvider.locks
+        case .aliases:
+            IconProvider.alias
+        case .unknown:
+            IconProvider.infoCircle
         }
     }
 }
