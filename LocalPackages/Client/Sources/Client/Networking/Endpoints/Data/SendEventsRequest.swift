@@ -67,6 +67,7 @@ public extension EventInfo {
 }
 
 private extension TelemetryEvent {
+    // The event name sent to the BE
     var eventName: String {
         switch type {
         case .create:
@@ -95,6 +96,30 @@ private extension TelemetryEvent {
             "passkey.auth_done"
         case .passkeyDisplay:
             "passkey.display_all_passkeys"
+        case .monitorDisplayHome:
+            "pass_monitor.display_home"
+        case .monitorDisplayWeakPasswords:
+            "pass_monitor.display_weak_passwords"
+        case .monitorDisplayReusedPasswords:
+            "pass_monitor.display_reused_passwords"
+        case .monitorDisplayMissing2FA:
+            "pass_monitor.display_missing_2fa"
+        case .monitorDisplayExcludedItems:
+            "pass_monitor.display_excluded_items"
+        case .monitorDisplayDarkWebMonitoring:
+            "pass_monitor.display_dark_web_monitoring"
+        case .monitorDisplayMonitoringProtonAddresses:
+            "pass_monitor.display_monitoring_proton_addresses"
+        case .monitorDisplayMonitoringEmailAliases:
+            "pass_monitor.display_monitoring_email_aliases"
+        case .monitorAddCustomEmailFromSuggestion:
+            "pass_monitor.add_custom_email_from_suggestion"
+        case .monitorItemDetailFromWeakPassword:
+            "pass_monitor.item_detail_from_weak_password"
+        case .monitorItemDetailFromMissing2FA:
+            "pass_monitor.item_detail_from_missing_2fa"
+        case .monitorItemDetailFromReusedPassword:
+            "pass_monitor.item_detail_from_reused_password"
         }
     }
 

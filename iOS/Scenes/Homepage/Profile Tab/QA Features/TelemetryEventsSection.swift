@@ -155,6 +155,20 @@ private extension TelemetryEventType {
             UIImage(systemName: "2.circle")!
         case .passkeyAuth, .passkeyCreate, .passkeyDisplay:
             PassIcon.passkey
+        case .monitorAddCustomEmailFromSuggestion,
+             .monitorDisplayDarkWebMonitoring,
+             .monitorDisplayExcludedItems,
+             .monitorDisplayHome,
+             .monitorDisplayMissing2FA,
+             .monitorDisplayMonitoringEmailAliases,
+             .monitorDisplayMonitoringProtonAddresses,
+             .monitorDisplayReusedPasswords,
+             .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromMissing2FA,
+             .monitorItemDetailFromReusedPassword,
+             .monitorItemDetailFromWeakPassword:
+            // swiftlint:disable:next force_unwrapping
+            UIImage(systemName: "person.badge.shield.checkmark.fill")!
         }
     }
 
@@ -179,6 +193,19 @@ private extension TelemetryEventType {
             PassColor.signalDanger
         case .twoFaCreation, .twoFaUpdate:
             ItemContentType.login.normMajor1Color
+        case .monitorAddCustomEmailFromSuggestion,
+             .monitorDisplayDarkWebMonitoring,
+             .monitorDisplayExcludedItems,
+             .monitorDisplayHome,
+             .monitorDisplayMissing2FA,
+             .monitorDisplayMonitoringEmailAliases,
+             .monitorDisplayMonitoringProtonAddresses,
+             .monitorDisplayReusedPasswords,
+             .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromMissing2FA,
+             .monitorItemDetailFromReusedPassword,
+             .monitorItemDetailFromWeakPassword:
+            ItemContentType.note.normMajor1Color
         }
     }
 
@@ -203,6 +230,19 @@ private extension TelemetryEventType {
             PassColor.signalDanger.withAlphaComponent(0.16)
         case .twoFaCreation, .twoFaUpdate:
             ItemContentType.login.normMinor1Color
+        case .monitorAddCustomEmailFromSuggestion,
+             .monitorDisplayDarkWebMonitoring,
+             .monitorDisplayExcludedItems,
+             .monitorDisplayHome,
+             .monitorDisplayMissing2FA,
+             .monitorDisplayMonitoringEmailAliases,
+             .monitorDisplayMonitoringProtonAddresses,
+             .monitorDisplayReusedPasswords,
+             .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromMissing2FA,
+             .monitorItemDetailFromReusedPassword,
+             .monitorItemDetailFromWeakPassword:
+            ItemContentType.note.normMinor1Color
         }
     }
 
@@ -236,6 +276,30 @@ private extension TelemetryEventType {
             "Authenticate with passkey"
         case .passkeyDisplay:
             "Display passkeys"
+        case .monitorDisplayHome:
+            "Display monitor homepage"
+        case .monitorDisplayWeakPasswords:
+            "Display weak passwords"
+        case .monitorDisplayReusedPasswords:
+            "Display reused passwords"
+        case .monitorDisplayMissing2FA:
+            "Display missing 2FA"
+        case .monitorDisplayExcludedItems:
+            "Display exluced items"
+        case .monitorDisplayDarkWebMonitoring:
+            "Display dark web monitoring"
+        case .monitorDisplayMonitoringProtonAddresses:
+            "Display monitored Proton addresses"
+        case .monitorDisplayMonitoringEmailAliases:
+            "Display monitored aliases"
+        case .monitorAddCustomEmailFromSuggestion:
+            "Add custom email from suggestion"
+        case .monitorItemDetailFromWeakPassword:
+            "View item detail from weak password list"
+        case .monitorItemDetailFromMissing2FA:
+            "View item detail from missing 2FA list"
+        case .monitorItemDetailFromReusedPassword:
+            "View item detail from reused password list"
         }
     }
 }

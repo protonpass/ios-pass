@@ -32,7 +32,7 @@ public enum TelemetryEventSendResult: Sendable {
 
 // MARK: - TelemetryEventRepositoryProtocol
 
-public protocol TelemetryEventRepositoryProtocol {
+public protocol TelemetryEventRepositoryProtocol: Sendable {
     var scheduler: any TelemetrySchedulerProtocol { get }
 
     func getAllEvents(userId: String) async throws -> [TelemetryEvent]
