@@ -399,7 +399,7 @@ private extension DarkWebMonitorHomeView {
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
-                if viewModel.suggestedEmailsState.isFetching {
+                if viewModel.suggestedEmailsState.isFetching || viewModel.updatingStateOfCustomEmail {
                     ProgressView()
                 }
             }
