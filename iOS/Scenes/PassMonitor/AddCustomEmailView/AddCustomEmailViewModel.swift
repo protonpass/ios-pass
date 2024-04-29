@@ -40,7 +40,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     private let logger = resolve(\SharedToolingContainer.logger)
 
     private var timerTask: Task<Void, Never>?
-    private let totalSeconds = 120
+    private let totalSeconds = 30
 
     var canContinue: Bool {
         if customEmail != nil {
