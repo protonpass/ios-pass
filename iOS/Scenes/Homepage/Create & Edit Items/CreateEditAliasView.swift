@@ -164,13 +164,7 @@ struct CreateEditAliasView: View {
                                   canScanDocuments: viewModel.canScanDocuments,
                                   itemContentType: viewModel.itemContentType(),
                                   shouldUpgrade: viewModel.shouldUpgrade,
-                                  onGoBack: {
-                                      if viewModel.didEditSomething {
-                                          isShowingDiscardAlert.toggle()
-                                      } else {
-                                          dismiss()
-                                      }
-                                  },
+                                  onGoBack: { isShowingDiscardAlert.toggle() },
                                   onUpgrade: { viewModel.upgrade() },
                                   onScan: { viewModel.openScanner() },
                                   onSave: { viewModel.save() })
