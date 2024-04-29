@@ -50,15 +50,7 @@ private extension DarkWebMonitorHomeView {
         VStack {
             mainTitle
                 .padding(.top)
-            if let updateDate = viewModel.updateDate {
-                let dateString = DateFormatter(format: "MMM dd yyyy, HH:mm").string(from: updateDate)
-                Text("Last check: \(dateString)")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical)
-            }
-
-            LazyVStack(spacing: DesignConstant.sectionPadding) {
+            VStack(spacing: DesignConstant.sectionPadding) {
                 protonAddressesSection
                 aliasesSection
                 customEmailsSection
@@ -68,7 +60,6 @@ private extension DarkWebMonitorHomeView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: viewModel.updateDate)
         .animation(.default, value: viewModel.aliasBreachesState)
         .animation(.default, value: viewModel.customEmailsState)
         .animation(.default, value: viewModel.suggestedEmailsState)
@@ -145,6 +136,7 @@ private extension DarkWebMonitorHomeView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+        .contentShape(Rectangle())
     }
 }
 
@@ -510,7 +502,7 @@ private extension DarkWebMonitorHomeView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.cross,
+            CircleButton(icon: IconProvider.chevronDown,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close",
@@ -549,11 +541,11 @@ private extension Int {
 
 private extension [AliasMonitorInfo] {
     var breachCount: Int {
-        filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }.count
+        filter { !$0.alias.item.monitoringDisabled && $0.alias.item.isBreached }.count
     }
 
     var topBreaches: [AliasMonitorInfo] {
-        Array(filter { !$0.alias.item.skipHealthCheck && $0.alias.item.isBreached }
+        Array(filter { !$0.alias.item.monitoringDisabled && $0.alias.item.isBreached }
             .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
             .prefix(DesignConstant.previewBreachItemCount))
     }

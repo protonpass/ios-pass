@@ -68,3 +68,9 @@ private extension MonitorIncludedEmailView {
                               width: 15)
     }
 }
+
+private extension Breachable {
+    var isBreached: Bool {
+        breachCounter > 0
+    }
+}

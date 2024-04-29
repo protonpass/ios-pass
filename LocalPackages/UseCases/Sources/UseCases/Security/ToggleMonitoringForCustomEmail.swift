@@ -42,8 +42,7 @@ public final class ToggleMonitoringForCustomEmail: ToggleMonitoringForCustomEmai
 
     public func execute(email: CustomEmail) async throws -> CustomEmail {
         let email = try await repository.toggleMonitoringFor(email: email,
-                                                             shouldMonitor: !email.flags
-                                                                 .isFlagActive(.skipHealthCheckOrMonitoring))
+                                                             shouldMonitor: email.monitoringDisabled)
         let emails = try await repository.getAllCustomEmailForUser()
         repository.darkWebDataSectionUpdate.send(.customEmails(emails))
         return email
