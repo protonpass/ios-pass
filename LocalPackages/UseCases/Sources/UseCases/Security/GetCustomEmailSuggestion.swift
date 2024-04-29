@@ -80,9 +80,3 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
         return counts
     }
 }
-
-private extension String {
-    func contains(_ strings: [String]) -> Bool {
-        strings.contains { contains($0) }
-    }
-}
