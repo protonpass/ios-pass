@@ -393,8 +393,7 @@ private extension PassMonitorView {
     func weakPasswordsRow(_ weakPasswords: Int) -> some View {
         passMonitorRow(rowType: weakPasswords > 0 ? .warning : .success,
                        title: "Weak Passwords",
-                       subTitle: weakPasswords > 0 ? "Create strong passwords" :
-                           "You don't have any weak passwords",
+                       subTitle: "Change your passwords",
                        info: "\(weakPasswords)",
                        action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
     }
@@ -404,7 +403,7 @@ private extension PassMonitorView {
     func reusedPasswordsRow(_ reusedPasswords: Int) -> some View {
         passMonitorRow(rowType: reusedPasswords > 0 ? .warning : .success,
                        title: "Reused passwords",
-                       subTitle: "Create unique passwords",
+                       subTitle: "Generate unique passwords",
                        info: "\(reusedPasswords)",
                        action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
     }
@@ -413,8 +412,8 @@ private extension PassMonitorView {
 private extension PassMonitorView {
     func missing2FARow(_ missing2FA: Int) -> some View {
         passMonitorRow(rowType: .info,
-                       title: "Missing two-factor authentication",
-                       subTitle: missing2FA > 0 ? "Increase your security" : "You're security is on point",
+                       title: "Inactive 2FA authentication",
+                       subTitle: "Set up 2FA for more security",
                        info: "\(missing2FA)",
                        action: { viewModel.showSecurityWeakness(type: .missing2FA) })
     }

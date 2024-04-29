@@ -106,7 +106,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     /// To be overidden with super call by subclasses
     func bindValues() {
-        isMonitored = !itemContent.item.skipHealthCheck
+        isMonitored = !itemContent.item.monitoringDisabled
         superBindValuesCalled = true
     }
 

@@ -41,38 +41,56 @@ struct SecurityWeaknessDetailView: View {
 private extension SecurityWeaknessDetailView {
     var mainContainer: some View {
         VStack {
-            Text(viewModel.info)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .font(.body)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical)
-            if viewModel.isEmpty {
-                Image(uiImage: PassIcon.securityEmptyState)
-                    .resizable()
-                    .frame(width: 195)
-                    .padding(.top, 52)
-                Text(viewModel.nothingWrongMessage)
-                    .foregroundStyle(PassColor.textHint.toColor)
-                    .fontWeight(.medium)
-                    .multilineTextAlignment(.center)
-            } else {
-                LazyVStack(spacing: 0) {
-                    if viewModel.showSections {
-                        itemsSections(sections: viewModel.sectionedData)
-                    } else {
-                        itemsList(items: viewModel.sectionedData.flatMap(\.value))
-                    }
-                    Spacer()
+            switch viewModel.state {
+            case .fetching:
+                ProgressView()
+
+            case let .fetched(data):
+                if let subtitleInfo = viewModel.type.subtitleInfo {
+                    Text(subtitleInfo)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical)
                 }
+
+                if data.isEmpty {
+                    Spacer()
+                    Image(uiImage: PassIcon.securityEmptyState)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 195)
+                    Text(viewModel.nothingWrongMessage)
+                        .foregroundStyle(PassColor.textHint.toColor)
+                        .fontWeight(.medium)
+                        .multilineTextAlignment(.center)
+                    Spacer()
+                    Spacer()
+                } else {
+                    LazyVStack(spacing: 0) {
+                        if viewModel.showSections {
+                            itemsSections(sections: data)
+                        } else {
+                            itemsList(items: data.flatMap(\.value))
+                        }
+                        Spacer()
+                    }
+                }
+
+            case let .error(error):
+                Text(error.localizedDescription)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.state)
         .toolbar { toolbarContent }
-        .scrollViewEmbeded(maxWidth: .infinity)
+        .if(viewModel.state.fetchedObject?.isEmpty == false) { view in
+            view.scrollViewEmbeded(maxWidth: .infinity)
+        }
         .background(PassColor.backgroundNorm.toColor)
-        .showSpinner(viewModel.loading)
-        .navigationTitle(viewModel.title)
+        .navigationTitle(viewModel.type.title)
     }
 }
 
@@ -124,8 +142,8 @@ private extension SecurityWeaknessDetailView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: isSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
-                         iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close") {
                 viewModel.dismiss(isSheet: isSheet)
             }

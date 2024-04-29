@@ -107,6 +107,16 @@ private extension DetailMonitoredItemView {
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
 
+            if !viewModel.isMonitored {
+                Text("Excluded from monitoring")
+                    .font(.caption2)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(PassColor.textDisabled.toColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+            }
+
             if !isFullyResolved {
                 CapsuleTextButton(title: #localized("Mark as resolved"),
                                   titleColor: PassColor.interactionNormMajor2,
