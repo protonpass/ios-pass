@@ -35,6 +35,7 @@ struct DarkWebMonitorHomeView: View {
     @State private var showNoBreachesAlert = false
     @State private var showBreachesFoundAlert = false
     @StateObject var router = resolve(\RouterContainer.darkWebRouter)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     var body: some View {
         mainContainer
@@ -179,11 +180,13 @@ private extension DarkWebMonitorHomeView {
 
     func pushProtonAddressesList() {
         router.navigate(to: .protonAddressesList(viewModel.userBreaches.addresses))
+        addTelemetryEvent(with: .monitorDisplayMonitoringProtonAddresses)
     }
 
     func pushAliasesList() {
         if let infos = viewModel.aliasBreachesState.fetchedObject {
             router.navigate(to: .aliasesList(infos))
+            addTelemetryEvent(with: .monitorDisplayMonitoringEmailAliases)
         }
     }
 }
@@ -436,6 +439,7 @@ private extension DarkWebMonitorHomeView {
                 Task {
                     let customEmail = await viewModel.addCustomEmail(email: email.email)
                     router.present(sheet: .addCustomEmail(customEmail))
+                    addTelemetryEvent(with: .monitorAddCustomEmailFromSuggestion)
                 }
             }
             .fixedSize(horizontal: true, vertical: true)
