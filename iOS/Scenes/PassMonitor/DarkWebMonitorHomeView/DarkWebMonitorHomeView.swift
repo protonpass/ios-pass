@@ -50,15 +50,7 @@ private extension DarkWebMonitorHomeView {
         VStack {
             mainTitle
                 .padding(.top)
-            if let updateDate = viewModel.updateDate {
-                let dateString = DateFormatter(format: "MMM dd yyyy, HH:mm").string(from: updateDate)
-                Text("Last check: \(dateString)")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical)
-            }
-
-            LazyVStack(spacing: DesignConstant.sectionPadding) {
+            VStack(spacing: DesignConstant.sectionPadding) {
                 protonAddressesSection
                 aliasesSection
                 customEmailsSection
@@ -68,7 +60,6 @@ private extension DarkWebMonitorHomeView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: viewModel.updateDate)
         .animation(.default, value: viewModel.aliasBreachesState)
         .animation(.default, value: viewModel.customEmailsState)
         .animation(.default, value: viewModel.suggestedEmailsState)
