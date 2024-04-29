@@ -132,6 +132,8 @@ extension PassMonitorViewModel {
             do {
                 updatingSentinel = true
                 isSentinelActive = try await toggleSentinel()
+            } catch PassError.sentinelNotEligible {
+                router.present(for: .upselling(.default))
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
