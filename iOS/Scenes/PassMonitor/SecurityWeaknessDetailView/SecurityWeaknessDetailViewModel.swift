@@ -42,6 +42,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     let type: SecurityWeakness
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private var cancellables = Set<AnyCancellable>()
 
     var showSections: Bool {
@@ -70,6 +71,19 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
 
     func showDetail(item: ItemContent) {
         router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
+        let eventType: TelemetryEventType? = switch type {
+        case .weakPasswords:
+            .monitorItemDetailFromWeakPassword
+        case .missing2FA:
+            .monitorItemDetailFromMissing2FA
+        case .reusedPasswords:
+            .monitorItemDetailFromReusedPassword
+        default:
+            nil
+        }
+        if let eventType {
+            addTelemetryEvent(with: eventType)
+        }
     }
 
     func dismiss(isSheet: Bool) {

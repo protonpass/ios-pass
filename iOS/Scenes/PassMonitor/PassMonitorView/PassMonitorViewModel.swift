@@ -69,6 +69,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -78,10 +79,12 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func refresh() async throws {
         try await refreshAccessAndMonitorState()
+        addTelemetryEvent(with: .monitorDisplayHome)
     }
 
     func showSecurityWeakness(type: SecurityWeakness) {
         router.present(for: .securityDetail(type))
+        addTelemetryEvent(with: type.telemetryEventType)
     }
 
     func sentinelSheetAction() {
@@ -193,5 +196,22 @@ private extension PassMonitorViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
+    }
+}
+
+private extension SecurityWeakness {
+    var telemetryEventType: TelemetryEventType {
+        switch self {
+        case .weakPasswords:
+            .monitorDisplayWeakPasswords
+        case .reusedPasswords:
+            .monitorDisplayReusedPasswords
+        case .breaches:
+            .monitorDisplayDarkWebMonitoring
+        case .missing2FA:
+            .monitorDisplayMissing2FA
+        case .excludedItems:
+            .monitorDisplayExcludedItems
+        }
     }
 }
