@@ -64,7 +64,7 @@ private extension DetailMonitoredItemView {
     func content(_ uiModel: DetailMonitoredItemUiModel) -> some View {
         VStack {
             header(email: uiModel.email,
-                   breachCount: uiModel.breachCount,
+                   breachCount: uiModel.unresolvedBreaches.count,
                    isFullyResolved: uiModel.isFullyResolved)
             LazyVStack {
                 if !uiModel.unresolvedBreaches.isEmpty {
@@ -105,6 +105,7 @@ private extension DetailMonitoredItemView {
                             .passwordInteractionNormMajor2).toColor)
                 Text(email)
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .multilineTextAlignment(.center)
             }
 
             if !viewModel.isMonitored {
