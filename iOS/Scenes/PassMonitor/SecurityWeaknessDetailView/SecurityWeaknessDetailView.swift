@@ -41,44 +41,55 @@ struct SecurityWeaknessDetailView: View {
 private extension SecurityWeaknessDetailView {
     var mainContainer: some View {
         VStack {
-            if let subtitleInfo = viewModel.type.subtitleInfo {
-                Text(subtitleInfo)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical)
-            }
+            switch viewModel.state {
+            case .fetching:
+                ProgressView()
 
-            if viewModel.isEmpty {
-                Spacer()
-                Image(uiImage: PassIcon.securityEmptyState)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 195)
-                Text(viewModel.nothingWrongMessage)
-                    .foregroundStyle(PassColor.textHint.toColor)
-                    .fontWeight(.medium)
-                    .multilineTextAlignment(.center)
-                Spacer()
-                Spacer()
-            } else {
-                LazyVStack(spacing: 0) {
-                    if viewModel.showSections {
-                        itemsSections(sections: viewModel.sectionedData)
-                    } else {
-                        itemsList(items: viewModel.sectionedData.flatMap(\.value))
-                    }
-                    Spacer()
+            case let .fetched(data):
+                if let subtitleInfo = viewModel.type.subtitleInfo {
+                    Text(subtitleInfo)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical)
                 }
+
+                if data.isEmpty {
+                    Spacer()
+                    Image(uiImage: PassIcon.securityEmptyState)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 195)
+                    Text(viewModel.nothingWrongMessage)
+                        .foregroundStyle(PassColor.textHint.toColor)
+                        .fontWeight(.medium)
+                        .multilineTextAlignment(.center)
+                    Spacer()
+                    Spacer()
+                } else {
+                    LazyVStack(spacing: 0) {
+                        if viewModel.showSections {
+                            itemsSections(sections: data)
+                        } else {
+                            itemsList(items: data.flatMap(\.value))
+                        }
+                        Spacer()
+                    }
+                }
+
+            case let .error(error):
+                Text(error.localizedDescription)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.state)
         .toolbar { toolbarContent }
-        .if(!viewModel.isEmpty) { view in
+        .if(viewModel.state.fetchedObject?.isEmpty == false) { view in
             view.scrollViewEmbeded(maxWidth: .infinity)
         }
         .background(PassColor.backgroundNorm.toColor)
-        .showSpinner(viewModel.loading)
         .navigationTitle(viewModel.type.title)
     }
 }

@@ -1,5 +1,5 @@
 //
-// DateFromatter+Extensions.swift
+// DateFormatter+Extensions.swift
 // Proton Pass - Created on 22/04/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// periphery:ignore:all
 import Foundation
 
 extension DateFormatter {
