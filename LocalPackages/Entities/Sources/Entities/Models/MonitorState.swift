@@ -37,18 +37,45 @@ public enum MonitorState: Sendable, Equatable {
             state.breachCount
         }
     }
+
+    public var latestBreachDomainInfo: LatestBreachDomainInfo? {
+        switch self {
+        case let .active(state):
+            state.latestBreachDomainInfo
+        case let .inactive(state):
+            state.latestBreachDomainInfo
+        }
+    }
 }
 
 public enum MonitorBreachState: Sendable, Equatable {
     case noBreaches
     case noBreachesButWeakOrReusedPasswords
-    case breachesFound(Int)
+    case breachesFound(Int, LatestBreachDomainInfo?)
 
     public var breachCount: Int? {
-        if case let .breachesFound(count) = self {
+        if case let .breachesFound(count, _) = self {
             count
         } else {
             nil
         }
+    }
+
+    public var latestBreachDomainInfo: LatestBreachDomainInfo? {
+        if case let .breachesFound(_, info) = self {
+            info
+        } else {
+            nil
+        }
+    }
+}
+
+public struct LatestBreachDomainInfo: Sendable, Equatable {
+    public let domain: String
+    public let date: String
+
+    public init(domain: String, date: String) {
+        self.domain = domain
+        self.date = date
     }
 }
