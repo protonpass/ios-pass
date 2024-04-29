@@ -30,4 +30,37 @@ public struct BreachAction: Decodable, Equatable, Sendable, Hashable {
         self.desc = desc
         self.urls = urls
     }
+
+    public var knownCode: BreachActionCode {
+        .init(code: code)
+    }
+}
+
+public enum BreachActionCode: Sendable {
+    case stayAlert
+    case passwordExposed
+    case passwordSource
+    case passwordAll
+    case twoFA
+    case aliases
+    case unknown
+
+    init(code: String) {
+        switch code.lowercased() {
+        case "stay_alert":
+            self = .stayAlert
+        case "password_exposed":
+            self = .passwordExposed
+        case "password_source":
+            self = .passwordSource
+        case "passwords_all":
+            self = .passwordAll
+        case "2fa":
+            self = .twoFA
+        case "aliases":
+            self = .aliases
+        default:
+            self = .unknown
+        }
+    }
 }
