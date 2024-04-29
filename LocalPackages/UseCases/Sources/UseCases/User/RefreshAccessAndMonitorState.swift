@@ -37,15 +37,18 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
     private let accessRepository: any AccessRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let getAllAliases: any GetAllAliasesUseCase
+    private let getBreachesForAlias: any GetBreachesForAliasUseCase
     private let stream: MonitorStateStream
 
     public init(accessRepository: any AccessRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
                 getAllAliases: any GetAllAliasesUseCase,
+                getBreachesForAlias: any GetBreachesForAliasUseCase,
                 stream: MonitorStateStream) {
         self.accessRepository = accessRepository
         self.passMonitorRepository = passMonitorRepository
         self.getAllAliases = getAllAliases
+        self.getBreachesForAlias = getBreachesForAlias
         self.stream = stream
     }
 
@@ -59,6 +62,17 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         let breachedAliases = aliases.filter(\.item.isBreached)
         let breachCount = userBreaches.emailsCount + breachedAliases.count
         let hasWeaknesses = passMonitorRepository.weaknessStats.value.hasWeakOrReusedPasswords
+        var latestBreach: LatestBreachDomainInfo?
+
+        if let info = userBreaches.latestBreach {
+            latestBreach = LatestBreachDomainInfo(domain: info.domain, date: info.formattedDateDescription)
+        } else if let alias = breachedAliases.first {
+            let breachInfo = try await getBreachesForAlias(shareId: alias.shareId, itemId: alias.itemId)
+            if let firstBreach = breachInfo.breaches.first {
+                latestBreach = LatestBreachDomainInfo(domain: firstBreach.name,
+                                                      date: firstBreach.breachDate)
+            }
+        }
 
         let state = switch (access.plan.isFreeUser, breachCount > 0, hasWeaknesses) {
         case (true, false, false):
@@ -66,13 +80,13 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         case (true, false, true):
             MonitorState.inactive(.noBreachesButWeakOrReusedPasswords)
         case (true, true, _):
-            MonitorState.inactive(.breachesFound(breachCount))
+            MonitorState.inactive(.breachesFound(breachCount, latestBreach))
         case (false, false, false):
             MonitorState.active(.noBreaches)
         case (false, false, true):
             MonitorState.active(.noBreachesButWeakOrReusedPasswords)
         case (false, true, _):
-            MonitorState.active(.breachesFound(breachCount))
+            MonitorState.active(.breachesFound(breachCount, latestBreach))
         }
         stream.send(state)
     }

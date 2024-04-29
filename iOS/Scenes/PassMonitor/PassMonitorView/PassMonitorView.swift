@@ -276,26 +276,27 @@ private extension PassMonitorView {
         .buttonStyle(.plain)
     }
 
+    @ViewBuilder
     func upsellRow(breaches: UserBreaches) -> some View {
+        let isBreached = viewModel.isBreached
         ZStack(alignment: .topTrailing) {
-            VStack(alignment: breaches.breached ? .leading : .center, spacing: DesignConstant.sectionPadding) {
-                Text(breaches.breached ? "Breached Detected" : "Dark Web Monitoring")
+            VStack(alignment: isBreached ? .leading : .center, spacing: DesignConstant.sectionPadding) {
+                Text(isBreached ? "Breached Detected" : "Dark Web Monitoring")
                     .font(.title)
                     .fontWeight(.medium)
-                    .foregroundStyle(breaches.breached ? PassColor.passwordInteractionNormMajor2
+                    .foregroundStyle(isBreached ? PassColor.passwordInteractionNormMajor2
                         .toColor : PassColor.textNorm.toColor)
                     .padding(.top, DesignConstant.sectionPadding + 15)
-                    .multilineTextAlignment(breaches.breached ? .leading : .center)
+                    .multilineTextAlignment(isBreached ? .leading : .center)
 
-                Text(breaches
-                    .breached ? "Your email addresses were leaked in at least 1 data breach." :
+                Text(isBreached ? "Your email addresses were leaked in at least 1 data breach." :
                     "Get notified if your email, password or other personal data was leaked.")
                     .font(.body)
-                    .foregroundStyle(breaches.breached ? PassColor.passwordInteractionNormMajor2
+                    .foregroundStyle(isBreached ? PassColor.passwordInteractionNormMajor2
                         .toColor : PassColor.textNorm.toColor)
-                    .multilineTextAlignment(breaches.breached ? .leading : .center)
+                    .multilineTextAlignment(isBreached ? .leading : .center)
 
-                if breaches.breached, let latestBreach = breaches.latestBreach {
+                if isBreached, let latestBreach = viewModel.latestBreachInfo {
                     HStack {
                         Image(uiImage: PassIcon.lightning)
                             .resizable()
@@ -310,7 +311,7 @@ private extension PassMonitorView {
                             Text(latestBreach.domain)
                                 .font(.body)
                                 .foregroundStyle(PassColor.textNorm.toColor)
-                            Text(latestBreach.formattedDateDescription)
+                            Text(latestBreach.date)
                                 .font(.footnote)
                                 .foregroundStyle(PassColor.textWeak.toColor)
                         }
@@ -356,9 +357,9 @@ private extension PassMonitorView {
                         borderColor: .clear)
                 }
 
-                CapsuleTextButton(title: breaches.breached ? "View Details" : "Enable",
+                CapsuleTextButton(title: isBreached ? "View Details" : "Enable",
                                   titleColor: PassColor.textInvert,
-                                  backgroundColor: breaches.breached ? PassColor
+                                  backgroundColor: isBreached ? PassColor
                                       .passwordInteractionNormMajor2 : PassColor.interactionNormMajor2,
                                   action: { viewModel.upsell(entryPoint: .darkWebMonitorNoBreach) })
                     .padding(.bottom, DesignConstant.sectionPadding)
