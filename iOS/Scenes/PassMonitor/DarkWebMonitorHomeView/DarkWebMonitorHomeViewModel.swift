@@ -107,7 +107,7 @@ extension DarkWebMonitorHomeViewModel {
                 if suggestedEmailsState.isError {
                     suggestedEmailsState = .fetching
                 }
-                let emails = try await getCustomEmailSuggestion(monitoredCustomEmail: customEmailsState
+                let emails = try await getCustomEmailSuggestion(monitoredCustomEmails: customEmailsState
                     .fetchedObject ?? [])
                 suggestedEmailsState = .fetched(emails)
             } catch {
