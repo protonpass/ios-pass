@@ -27,10 +27,17 @@ import Foundation
 import Macro
 import UseCases
 
+typealias SecuritySectionedData = [SecuritySectionHeaderKey: [ItemContent]]
+
+extension SecuritySectionedData {
+    var isEmpty: Bool {
+        values.flatMap { $0 }.isEmpty
+    }
+}
+
 @MainActor
 final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
-    @Published private(set) var sectionedData = [SecuritySectionHeaderKey: [ItemContent]]()
-    @Published private(set) var loading = true
+    @Published private(set) var state: FetchableObject<SecuritySectionedData> = .fetching
 
     let type: SecurityWeakness
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -39,10 +46,6 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
 
     var showSections: Bool {
         type.hasSections
-    }
-
-    var isEmpty: Bool {
-        sectionedData.values.flatMap { $0 }.isEmpty
     }
 
     var nothingWrongMessage: String {
@@ -83,24 +86,20 @@ private extension SecurityWeaknessDetailViewModel {
                 guard let self else {
                     return
                 }
-                switch completion {
-                case .finished:
-                    return
-                case let .failure(error):
-                    router.display(element: .displayErrorBanner(error))
+                if case let .failure(error) = completion {
+                    state = .error(error)
                 }
             } receiveValue: { [weak self] logins in
                 guard let self else {
                     return
                 }
-                loading = false
 
                 var data = [SecuritySectionHeaderKey: [ItemContent]]()
 
                 for (key, value) in logins {
                     data[key.toSecuritySectionHeaderKey] = value
                 }
-                sectionedData = data
+                state = .fetched(data)
             }
             .store(in: &cancellables)
     }
