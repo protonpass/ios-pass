@@ -33,14 +33,12 @@ public extension SecurityWeakness {
         case .breaches:
             #localized("Dark Web Monitoring")
         case .missing2FA:
-            #localized("Missing two-factor authentication")
+            #localized("Inactive 2FA authentication")
         }
     }
 
-    var subtitleInfo: String {
+    var subtitleInfo: String? {
         switch self {
-        case .excludedItems:
-            #localized("The following items are excluded from")
         case .weakPasswords:
             #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
         case .reusedPasswords:
@@ -48,7 +46,7 @@ public extension SecurityWeakness {
         case .missing2FA:
             #localized("Logins with sites that have two-factor authentication available but you haven’t set it up yet.")
         default:
-            ""
+            nil
         }
     }
 

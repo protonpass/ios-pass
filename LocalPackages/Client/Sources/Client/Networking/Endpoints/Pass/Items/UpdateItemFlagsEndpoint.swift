@@ -52,7 +52,7 @@ struct UpdateItemFlagsEndpoint: Endpoint {
     var body: UpdateItemFlagsRequest?
 
     init(shareId: String, itemId: String, request: UpdateItemFlagsRequest) {
-        debugDescription = "Create item"
+        debugDescription = "Update item flags"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/flags"
         method = .put
         body = request

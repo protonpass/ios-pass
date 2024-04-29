@@ -28,10 +28,6 @@ public protocol Breachable {
 }
 
 public extension Breachable {
-    var isBreached: Bool {
-        breachCounter > 0
-    }
-
     var lastBreachDate: String? {
         guard let lastBreachTime else { return nil }
         let formatter = DateFormatter()

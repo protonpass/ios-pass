@@ -23,6 +23,7 @@
 import Combine
 import Entities
 import Factory
+import Macro
 
 struct DetailMonitoredItemUiModel: Sendable, Hashable {
     let breachCount: Int
@@ -52,14 +53,7 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
 
     var isMonitored: Bool {
-        switch infos {
-        case let .alias(aliasInfos):
-            !aliasInfos.alias.item.skipHealthCheck
-        case let .customEmail(email):
-            !email.flags.isFlagActive(.skipHealthCheckOrMonitoring)
-        case let .protonAddress(address):
-            !address.flags.isFlagActive(.skipHealthCheckOrMonitoring)
-        }
+        infos.isMonitored
     }
 
     var isCustomEmail: Bool {
@@ -106,6 +100,7 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
                 }
                 let uiModel = try await refreshUiModel()
                 state = .fetched(uiModel)
+                router.display(element: .successMessage(#localized("Breaches resolved")))
             } catch {
                 handle(error: error)
             }
@@ -144,6 +139,13 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
                     _ = try await toggleMonitoringForCustomEmail(email: email)
                 case let .protonAddress(address):
                     try await toggleMonitoringForProtonAddress(address: address)
+                }
+                if !infos.isMonitored {
+                    let message = #localized("Monitoring enabled for %@", infos.email)
+                    router.display(element: .successMessage(message))
+                } else {
+                    let message = #localized("Monitoring disabled for %@", infos.email)
+                    router.display(element: .infosMessage(message))
                 }
                 shouldDismiss = true
             } catch {

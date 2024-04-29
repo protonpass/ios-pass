@@ -20,13 +20,32 @@
 
 import DesignSystem
 import Entities
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct MonitorExcludedEmailView: View {
     let address: Breachable
-    let action: () -> Void
+    var action: (() -> Void)?
 
     var body: some View {
+        HStack {
+            leadingView
+            if action != nil {
+                Spacer()
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                      color: PassColor.textWeak,
+                                      width: 15)
+            }
+        }
+        .contentShape(Rectangle())
+        .buttonEmbeded {
+            action?()
+        }
+    }
+}
+
+private extension MonitorExcludedEmailView {
+    var leadingView: some View {
         VStack(alignment: .leading) {
             Text(address.email)
                 .foregroundStyle(PassColor.textNorm.toColor)
@@ -41,7 +60,5 @@ struct MonitorExcludedEmailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
-        .buttonEmbeded(action)
     }
 }

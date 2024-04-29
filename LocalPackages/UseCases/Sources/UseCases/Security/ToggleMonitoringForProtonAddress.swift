@@ -42,8 +42,7 @@ public final class ToggleMonitoringForProtonAddress: ToggleMonitoringForProtonAd
 
     public func execute(address: ProtonAddress) async throws {
         try await repository.toggleMonitoringFor(address: address,
-                                                 shouldMonitor: !address.flags
-                                                     .isFlagActive(.skipHealthCheckOrMonitoring))
+                                                 shouldMonitor: address.monitoringDisabled)
         let refreshUserBreaches = try await repository.refreshUserBreaches()
         repository.darkWebDataSectionUpdate.send(.protonAddresses(refreshUserBreaches))
     }
