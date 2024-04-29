@@ -285,7 +285,7 @@ private extension TelemetryEventType {
         case .monitorDisplayMissing2FA:
             "Display missing 2FA"
         case .monitorDisplayExcludedItems:
-            "Display exluced items"
+            "Display excluded items"
         case .monitorDisplayDarkWebMonitoring:
             "Display dark web monitoring"
         case .monitorDisplayMonitoringProtonAddresses:
