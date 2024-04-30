@@ -28,9 +28,9 @@ struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
     private let theme = resolve(\SharedToolingContainer.theme)
-    let completion: (Result<String, Error>) -> Void
+    let completion: (Result<String, any Error>) -> Void
 
-    init(completion: @escaping (Result<String, Error>) -> Void) {
+    init(completion: @escaping (Result<String, any Error>) -> Void) {
         self.completion = completion
     }
 

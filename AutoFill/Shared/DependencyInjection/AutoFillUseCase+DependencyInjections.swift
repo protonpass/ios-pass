@@ -35,7 +35,7 @@ final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
 }
 
 private extension AutoFillUseCaseContainer {
-    var logManager: LogManagerProtocol {
+    var logManager: any LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
 
@@ -65,11 +65,11 @@ private extension AutoFillUseCaseContainer {
 }
 
 extension AutoFillUseCaseContainer {
-    var mapServiceIdentifierToURL: Factory<MapASCredentialServiceIdentifierToURLUseCase> {
+    var mapServiceIdentifierToURL: Factory<any MapASCredentialServiceIdentifierToURLUseCase> {
         self { MapASCredentialServiceIdentifierToURL() }
     }
 
-    var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
+    var copyTotpTokenAndNotify: Factory<any CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(logManager: self.logManager,
                                       generateTotpToken: SharedUseCasesContainer.shared.generateTotpToken(),
                                       getSharedPreferences: SharedUseCasesContainer.shared.getSharedPreferences(),
@@ -78,7 +78,7 @@ extension AutoFillUseCaseContainer {
                                       upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
 
-    var fetchCredentials: Factory<FetchCredentialsUseCase> {
+    var fetchCredentials: Factory<any FetchCredentialsUseCase> {
         self { FetchCredentials(symmetricKeyProvider: self.symmetricKeyProvider,
                                 accessRepository: self.accessRepository,
                                 itemRepository: self.itemRepository,
@@ -87,58 +87,58 @@ extension AutoFillUseCaseContainer {
                                 logManager: self.logManager) }
     }
 
-    var getItemsForPasskeyCreation: Factory<GetItemsForPasskeyCreationUseCase> {
+    var getItemsForPasskeyCreation: Factory<any GetItemsForPasskeyCreationUseCase> {
         self { GetItemsForPasskeyCreation(symmetricKeyProvider: self.symmetricKeyProvider,
                                           shareRepository: self.shareRepository,
                                           itemRepositiry: self.itemRepository,
                                           accessRepository: self.accessRepository) }
     }
 
-    var createAndAssociatePasskey: Factory<CreateAndAssociatePasskeyUseCase> {
+    var createAndAssociatePasskey: Factory<any CreateAndAssociatePasskeyUseCase> {
         self { CreateAndAssociatePasskey(itemRepository: self.itemRepository,
                                          createPasskey: self.createPasskey,
                                          updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                          completePasskeyRegistration: self.completePasskeyRegistration()) }
     }
 
-    var generateAuthorizationCredential: Factory<GenerateAuthorizationCredentialUseCase> {
+    var generateAuthorizationCredential: Factory<any GenerateAuthorizationCredentialUseCase> {
         self { GenerateAuthorizationCredential(itemRepository: self.itemRepository,
                                                resolvePasskeyChallenge: self.resolvePasskeyChallenge) }
     }
 
-    var completePasskeyRegistration: Factory<CompletePasskeyRegistrationUseCase> {
+    var completePasskeyRegistration: Factory<any CompletePasskeyRegistrationUseCase> {
         self { CompletePasskeyRegistration(addTelemetryEvent: SharedUseCasesContainer.shared.addTelemetryEvent(),
                                            resetFactory: self.resetFactory()) }
     }
 
-    var checkAndAutoFill: Factory<CheckAndAutoFillUseCase> {
+    var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
         self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
                                 completeAutoFill: self.completeAutoFill()) }
     }
 
-    var autoFillPassword: Factory<AutoFillPasswordUseCase> {
+    var autoFillPassword: Factory<any AutoFillPasswordUseCase> {
         self { AutoFillPassword(itemRepository: self.itemRepository,
                                 completeAutoFill: self.completeAutoFill()) }
     }
 
-    var autoFillPasskey: Factory<AutoFillPasskeyUseCase> {
+    var autoFillPasskey: Factory<any AutoFillPasskeyUseCase> {
         self { AutoFillPasskey(resolveChallenge: self.resolvePasskeyChallenge,
                                completeAutoFill: self.completeAutoFill()) }
     }
 
-    var associateUrlAndAutoFillPassword: Factory<AssociateUrlAndAutoFillPasswordUseCase> {
+    var associateUrlAndAutoFillPassword: Factory<any AssociateUrlAndAutoFillPasswordUseCase> {
         self { AssociateUrlAndAutoFillPassword(itemRepository: self.itemRepository,
                                                completeAutoFill: self.completeAutoFill()) }
     }
 
-    var cancelAutoFill: Factory<CancelAutoFillUseCase> {
+    var cancelAutoFill: Factory<any CancelAutoFillUseCase> {
         self { CancelAutoFill(saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs(),
                               resetFactory: self.resetFactory()) }
     }
 
-    var completeAutoFill: Factory<CompleteAutoFillUseCase> {
+    var completeAutoFill: Factory<any CompleteAutoFillUseCase> {
         self { CompleteAutoFill(logManager: self.logManager,
                                 telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
@@ -146,20 +146,20 @@ extension AutoFillUseCaseContainer {
                                 resetFactory: self.resetFactory()) }
     }
 
-    var completeConfiguration: Factory<CompleteConfigurationUseCase> {
+    var completeConfiguration: Factory<any CompleteConfigurationUseCase> {
         self { CompleteConfiguration(resetFactory: self.resetFactory()) }
     }
 
-    var resetFactory: Factory<ResetFactoryUseCase> {
+    var resetFactory: Factory<any ResetFactoryUseCase> {
         self { ResetFactory() }
     }
 
-    var reindexLoginItem: Factory<ReindexLoginItemUseCase> {
+    var reindexLoginItem: Factory<any ReindexLoginItemUseCase> {
         self { ReindexLoginItem(manager: SharedServiceContainer.shared.credentialManager(),
                                 mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
 
-    var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
+    var updateLastUseTimeAndReindex: Factory<any UpdateLastUseTimeAndReindexUseCase> {
         self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
                                            reindexLoginItem: self.reindexLoginItem()) }
     }

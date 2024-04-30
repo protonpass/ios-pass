@@ -121,13 +121,13 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     let profileTabViewModel: ProfileTabViewModel
     let passMonitorViewModel: PassMonitorViewModel
     weak var homepageCoordinator: HomepageCoordinator?
-    weak var delegate: HomepageTabBarControllerDelegate?
+    weak var delegate: (any HomepageTabBarControllerDelegate)?
 
     init(itemsTabViewModel: ItemsTabViewModel,
          profileTabViewModel: ProfileTabViewModel,
          passMonitorViewModel: PassMonitorViewModel,
          homepageCoordinator: HomepageCoordinator? = nil,
-         delegate: HomepageTabBarControllerDelegate? = nil) {
+         delegate: (any HomepageTabBarControllerDelegate)? = nil) {
         self.itemsTabViewModel = itemsTabViewModel
         self.profileTabViewModel = profileTabViewModel
         self.homepageCoordinator = homepageCoordinator
@@ -191,7 +191,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
+    weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
 
     private var tabIndexes = [HomepageTab: Int]()
     private var cancellables = Set<AnyCancellable>()

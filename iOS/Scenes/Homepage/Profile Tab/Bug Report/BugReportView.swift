@@ -28,11 +28,11 @@ struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
     @StateObject private var viewModel = BugReportViewModel()
-    var onError: (Error) -> Void
+    var onError: (any Error) -> Void
     var onSuccess: () -> Void
     @State var isShowing = false
 
-    init(onError: @escaping (Error) -> Void,
+    init(onError: @escaping (any Error) -> Void,
          onSuccess: @escaping () -> Void) {
         self.onError = onError
         self.onSuccess = onSuccess

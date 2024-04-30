@@ -47,7 +47,7 @@ final class SharedViewContainer: SharedContainer, AutoRegistering {
 }
 
 extension SharedViewContainer {
-    var bannerManager: Factory<BannerDisplayProtocol> {
+    var bannerManager: Factory<any BannerDisplayProtocol> {
         self { BannerManager(container: self.rootViewController()) }
     }
 

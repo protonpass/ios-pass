@@ -69,17 +69,17 @@ extension CredentialProviderViewController {
         coordinator.setUpAndStart(mode: .showAllLogins(serviceIdentifiers, requestParameters))
     }
 
-    override func provideCredentialWithoutUserInteraction(for credentialRequest: ASCredentialRequest) {
+    override func provideCredentialWithoutUserInteraction(for credentialRequest: any ASCredentialRequest) {
         guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
         coordinator.setUpAndStart(mode: .checkAndAutoFill(autoFillRequest))
     }
 
-    override func prepareInterfaceToProvideCredential(for credentialRequest: ASCredentialRequest) {
+    override func prepareInterfaceToProvideCredential(for credentialRequest: any ASCredentialRequest) {
         guard let autoFillRequest = credentialRequest.autoFillRequest else { return }
         coordinator.setUpAndStart(mode: .authenticateAndAutofill(autoFillRequest))
     }
 
-    override func prepareInterface(forPasskeyRegistration registrationRequest: ASCredentialRequest) {
+    override func prepareInterface(forPasskeyRegistration registrationRequest: any ASCredentialRequest) {
         guard let passkeyCredentialRequest = registrationRequest.passkeyCredentialRequest else {
             return
         }

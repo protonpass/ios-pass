@@ -64,7 +64,7 @@ struct DataUrl: Transferable {
 final class BugReportViewModel: ObservableObject {
     @Published var object: BugReportObject?
     @Published var description = ""
-    @Published private(set) var error: Error?
+    @Published private(set) var error: (any Error)?
     @Published private(set) var hasSent = false
     @Published private(set) var actionInProcess = false
     @Published var shouldSendLogs = true
@@ -118,7 +118,7 @@ final class BugReportViewModel: ObservableObject {
         }
     }
 
-    func addFiles(files: Result<[URL], Error>) {
+    func addFiles(files: Result<[URL], any Error>) {
         switch files {
         case let .success(fileUrls):
             do {
