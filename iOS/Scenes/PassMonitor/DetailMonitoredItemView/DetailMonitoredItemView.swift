@@ -31,6 +31,7 @@ struct DetailMonitoredItemView: View {
     @StateObject var viewModel: DetailMonitoredItemViewModel
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var router: PathRouter
+    @State private var showResolveExplanation = false
 
     var body: some View {
         ZStack {
@@ -57,6 +58,18 @@ struct DetailMonitoredItemView: View {
         .onChange(of: viewModel.shouldDismiss) { _ in
             dismiss()
         }
+        .alert("Mark as resolved",
+               isPresented: $showResolveExplanation,
+               actions: {
+                   Button(action: { viewModel.markAsResolved() },
+                          label: { Text("Confirm") })
+                   Button(role: .cancel,
+                          label: { Text("Cancel") })
+               },
+               message: {
+                   // swiftlint:disable:next line_length
+                   Text("All current breaches will be marked as resolved. In case of future data breaches, you'll be notified.")
+               })
     }
 }
 
@@ -122,7 +135,7 @@ private extension DetailMonitoredItemView {
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   height: 48,
-                                  action: { viewModel.markAsResolved() })
+                                  action: { showResolveExplanation.toggle() })
             }
         }
     }
