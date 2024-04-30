@@ -50,7 +50,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
 
-    weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
+    weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
 
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         canCreateAlias = options.canCreateAlias

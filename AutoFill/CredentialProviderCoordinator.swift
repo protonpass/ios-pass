@@ -20,7 +20,7 @@
 
 @preconcurrency import AuthenticationServices
 import Client
-import Combine
+@preconcurrency import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -82,7 +82,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
-    private var customCoordinator: CustomCoordinator?
+    private var customCoordinator: (any CustomCoordinator)?
 
     private var topMostViewController: UIViewController? {
         rootViewController?.topMostViewController
@@ -319,9 +319,9 @@ private extension CredentialProviderCoordinator {
             .store(in: &cancellables)
     }
 
-    func handle(error: Error) {
+    func handle(error: any Error) {
         guard let context else { return }
-        let defaultHandler: (Error) -> Void = { [weak self] error in
+        let defaultHandler: (any Error) -> Void = { [weak self] error in
             guard let self else { return }
             logger.error(error)
             alert(error: error) { [weak self] in
@@ -356,7 +356,7 @@ private extension CredentialProviderCoordinator {
         addTelemetryEvent(with: type)
     }
 
-    func logOut(error: Error? = nil,
+    func logOut(error: (any Error)? = nil,
                 sessionId: String? = nil,
                 completion: (() -> Void)? = nil) {
         Task { [weak self] in
@@ -413,7 +413,7 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
+    func showGeneratePasswordView(delegate: any GeneratePasswordViewModelDelegate) {
         let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
                                                       mode: .createLogin)
         coordinator.delegate = self
@@ -473,7 +473,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                        delegate: SortTypeListViewModelDelegate) {
+                                                        delegate: any SortTypeListViewModelDelegate) {
         guard let rootViewController else {
             return
         }
@@ -516,7 +516,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         present(viewController, dismissible: true)
     }
 
-    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate) {
         guard let rootViewController else {
             return
         }
@@ -526,7 +526,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: CustomFieldEditionDelegate) {
+                                                            delegate: any CustomFieldEditionDelegate) {
         guard let rootViewController else {
             return
         }
@@ -568,7 +568,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
-                                                      delegate: AliasCreationLiteInfoDelegate) {
+                                                      delegate: any AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
         let view = CreateAliasLiteView(viewModel: viewModel)
@@ -578,7 +578,7 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         present(viewController, dismissible: true)
     }
 
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
     }
 }

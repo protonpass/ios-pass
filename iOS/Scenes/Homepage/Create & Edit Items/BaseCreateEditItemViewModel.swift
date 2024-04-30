@@ -30,9 +30,9 @@ import ProtonCoreLogin
 
 @MainActor
 protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: CustomFieldEditionDelegate)
+                                                            delegate: any CustomFieldEditionDelegate)
 }
 
 enum ItemMode: Equatable, Hashable {
@@ -90,11 +90,11 @@ class BaseCreateEditItemViewModel {
 
     // Scanning
     @Published var isShowingScanner = false
-    let scanResponsePublisher: PassthroughSubject<ScanResult?, Error> = .init()
+    let scanResponsePublisher: PassthroughSubject<(any ScanResult)?, any Error> = .init()
 
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    let upgradeChecker: UpgradeCheckerProtocol
+    let upgradeChecker: any UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -106,11 +106,11 @@ class BaseCreateEditItemViewModel {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
 
-    weak var delegate: CreateEditItemViewModelDelegate?
+    weak var delegate: (any CreateEditItemViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
 
     init(mode: ItemMode,
-         upgradeChecker: UpgradeCheckerProtocol,
+         upgradeChecker: any UpgradeCheckerProtocol,
          vaults: [Vault]) throws {
         let vaultShareId: String
         switch mode {
