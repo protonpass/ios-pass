@@ -26,7 +26,6 @@ import Factory
 import Macro
 
 struct DetailMonitoredItemUiModel: Sendable, Hashable {
-    let breachCount: Int
     let email: String
     let unresolvedBreaches: [Breach]
     let resolvedBreaches: [Breach]
@@ -192,8 +191,7 @@ private extension DetailMonitoredItemViewModel {
         default:
             try await getItemsLinkedToBreach(email: infos.email)
         }
-        return .init(breachCount: breaches.count,
-                     email: infos.email,
+        return .init(email: infos.email,
                      unresolvedBreaches: breaches.breaches.allUnresolvedBreaches,
                      resolvedBreaches: breaches.breaches.allResolvedBreaches,
                      linkedItems: linkedItems)
@@ -202,16 +200,6 @@ private extension DetailMonitoredItemViewModel {
     func handle(error: Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-private extension [Breach] {
-    var allResolvedBreaches: [Breach] {
-        filter(\.isResolved)
-    }
-
-    var allUnresolvedBreaches: [Breach] {
-        filter { !$0.isResolved }
     }
 }
 

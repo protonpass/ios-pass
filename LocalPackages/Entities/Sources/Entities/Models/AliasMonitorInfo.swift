@@ -40,7 +40,7 @@ extension AliasMonitorInfo: Breachable {
     }
 
     public var breachCounter: Int {
-        breaches?.count ?? 0
+        breaches?.breaches.allUnresolvedBreaches.count ?? 0
     }
 
     public var lastBreachTime: Int? {

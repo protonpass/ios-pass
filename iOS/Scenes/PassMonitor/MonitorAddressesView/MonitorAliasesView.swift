@@ -55,6 +55,7 @@ private extension MonitorAliasesView {
     var enabledView: some View {
         if !viewModel.dismissedCustomDomainExplanation {
             customDomainExplanation
+                .padding(.vertical)
         }
 
         ForEach(viewModel.breachedAliases) { info in
