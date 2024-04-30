@@ -157,8 +157,8 @@ private extension DarkWebMonitorHomeView {
     var monitoredProtonAddressesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Proton addresses"),
-                                  subTitle: viewModel.userBreaches.numberOfBreachedProtonAddresses
-                                      .breachDescription,
+                                  subTitle: viewModel.userBreaches.breachedAddresses
+                                      .count.breachDescription,
                                   hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                   isDetail: false,
                                   action: { pushProtonAddressesList() })
