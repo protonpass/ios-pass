@@ -68,6 +68,6 @@ public struct UserBreaches: Decodable, Equatable, Sendable, Hashable {
     }
 
     public var breachedAddresses: [ProtonAddress] {
-        addresses.filter { $0.breachCounter > 0 }
+        addresses.filter { $0.breachCounter > 0 && !$0.monitoringDisabled }
     }
 }
