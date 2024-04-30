@@ -82,7 +82,6 @@ private extension ItemDetailCoordinator {
                                              itemContent: itemContent,
                                              upgradeChecker: upgradeChecker,
                                              showSecurityIssues: showSecurityIssues)
-        viewModel.logInDetailViewModelDelegate = self
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
     }
 
@@ -105,13 +104,5 @@ private extension ItemDetailCoordinator {
                                                   itemContent: itemContent,
                                                   upgradeChecker: upgradeChecker)
         return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
-    }
-}
-
-// MARK: - LogInDetailViewModelDelegate
-
-extension ItemDetailCoordinator: LogInDetailViewModelDelegate {
-    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
-        showDetail(for: itemContent, asSheet: true)
     }
 }
