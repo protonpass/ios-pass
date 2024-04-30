@@ -56,6 +56,7 @@ public extension View {
     func buttonEmbeded(_ action: @escaping () -> Void) -> some View {
         Button(action: action) {
             self
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }
