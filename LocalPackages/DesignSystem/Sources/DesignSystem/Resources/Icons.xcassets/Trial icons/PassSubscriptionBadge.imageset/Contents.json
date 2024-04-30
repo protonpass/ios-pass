@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Pass subscription badge.svg",
+      "filename" : "PassSubscriptionBadgeLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "PassSubscriptionBadgeDark.svg",
       "idiom" : "universal"
     }
   ],
