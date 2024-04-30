@@ -55,8 +55,16 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     init(userBreaches: UserBreaches) {
         access = accessRepository.access.value
         self.userBreaches = userBreaches
-        customEmailsState = .fetched(userBreaches.customEmails.sorted())
+        customEmailsState = .fetched(userBreaches.customEmails)
         setUp()
+        fetchAliasBreaches()
+        fetchCustomEmails()
+        fetchSuggestedEmails()
+    }
+
+    func refresh() async throws {
+        userBreaches = try await passMonitorRepository.refreshUserBreaches()
+        customEmailsState = .fetched(userBreaches.customEmails)
         fetchAliasBreaches()
         fetchCustomEmails()
         fetchSuggestedEmails()
@@ -91,7 +99,7 @@ extension DarkWebMonitorHomeViewModel {
                     customEmailsState = .fetching
                 }
                 let emails = try await getAllCustomEmails()
-                customEmailsState = .fetched(emails.sorted())
+                customEmailsState = .fetched(emails)
             } catch {
                 customEmailsState = .error(error)
             }
@@ -159,7 +167,7 @@ private extension DarkWebMonitorHomeViewModel {
                 case let .aliases(newValue):
                     aliasBreachesState = .fetched(newValue)
                 case let .customEmails(newValue):
-                    customEmailsState = .fetched(newValue.sorted())
+                    customEmailsState = .fetched(newValue)
                     fetchSuggestedEmails()
                 case let .protonAddresses(updatedUserBreaches):
                     userBreaches = updatedUserBreaches
@@ -179,11 +187,5 @@ private extension DarkWebMonitorHomeViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-private extension [CustomEmail] {
-    func sorted() -> Self {
-        sorted(by: { $0.breachCounter > $1.breachCounter })
     }
 }
