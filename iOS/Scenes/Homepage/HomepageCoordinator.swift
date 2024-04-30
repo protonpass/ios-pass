@@ -96,7 +96,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var customCoordinator: CustomCoordinator?
+    private var customCoordinator: (any CustomCoordinator)?
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Navigation Router
@@ -107,8 +107,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     private var theme: Theme { getSharedPreferences().theme }
 
-    weak var delegate: HomepageCoordinatorDelegate?
-    weak var homepageTabDelegate: HomepageTabDelegate?
+    weak var delegate: (any HomepageCoordinatorDelegate)?
+    weak var homepageTabDelegate: (any HomepageTabDelegate)?
 
     override init() {
         super.init()
@@ -674,7 +674,7 @@ extension HomepageCoordinator {
     }
 
     func presentSortTypeList(selectedSortType: SortType,
-                             delegate: SortTypeListViewModelDelegate) {
+                             delegate: any SortTypeListViewModelDelegate) {
         let viewModel = SortTypeListViewModel(sortType: selectedSortType)
         viewModel.delegate = delegate
         let view = SortTypeListView(viewModel: viewModel)
@@ -1277,7 +1277,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func presentBugReportView() {
-        let errorHandler: (Error) -> Void = { [weak self] error in
+        let errorHandler: (any Error) -> Void = { [weak self] error in
             guard let self else { return }
             handle(error: error)
         }
@@ -1453,14 +1453,14 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         present(viewController)
     }
 
-    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate) {
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
 
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: CustomFieldEditionDelegate) {
+                                                            delegate: any CustomFieldEditionDelegate) {
         customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
                                                           delegate: delegate,
                                                           uiModel: uiModel)
@@ -1504,7 +1504,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
-                                                      delegate: AliasCreationLiteInfoDelegate) {
+                                                      delegate: any AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
         let view = CreateAliasLiteView(viewModel: viewModel)
@@ -1514,7 +1514,7 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
         present(viewController)
     }
 
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
         let coordinator = makeCreateEditItemCoordinator()
         coordinator.presentGeneratePasswordForLoginItem(delegate: delegate)
     }
@@ -1537,7 +1537,7 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
 
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
-                                                        delegate: DeleteVaultAlertHandlerDelegate) {
+                                                        delegate: any DeleteVaultAlertHandlerDelegate) {
         let handler = DeleteVaultAlertHandler(rootViewController: topMostViewController,
                                               vault: vault,
                                               delegate: delegate)
@@ -1591,7 +1591,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
 extension HomepageCoordinator: SearchViewModelDelegate {
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                   delegate: SortTypeListViewModelDelegate) {
+                                                   delegate: any SortTypeListViewModelDelegate) {
         presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
     }
 }
@@ -1654,7 +1654,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         }
     }
 
-    nonisolated func syncEventLoopDidFailLoop(error: Error) {
+    nonisolated func syncEventLoopDidFailLoop(error: any Error) {
         // Silently fail & not show error to users
         logger.error(error)
     }
@@ -1667,7 +1667,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Finished executing additional task \(label)")
     }
 
-    nonisolated func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
+    nonisolated func syncEventLoopDidFailedAdditionalTask(label: String, error: any Error) {
         logger.error(message: "Failed to execute additional task \(label)", error: error)
     }
 }
