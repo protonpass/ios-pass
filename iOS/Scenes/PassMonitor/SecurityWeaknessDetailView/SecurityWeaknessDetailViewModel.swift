@@ -45,10 +45,6 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private var cancellables = Set<AnyCancellable>()
 
-    var showSections: Bool {
-        type.hasSections
-    }
-
     var nothingWrongMessage: String {
         switch type {
         case .weakPasswords:
@@ -126,17 +122,6 @@ private extension SecuritySection {
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime.numberOfTimeReused))
         case .excludedItems, .missing2fa, .weakPasswords:
             SecuritySectionHeaderKey(title: "")
-        }
-    }
-}
-
-private extension SecurityWeakness {
-    var hasSections: Bool {
-        switch self {
-        case .excludedItems, .missing2FA, .weakPasswords:
-            false
-        default:
-            true
         }
     }
 }
