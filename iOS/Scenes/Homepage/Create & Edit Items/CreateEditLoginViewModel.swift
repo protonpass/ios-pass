@@ -150,13 +150,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     @MainActor
-    override func generateItemContent() -> ItemContentProtobuf? {
+    override func generateItemContent() async -> ItemContentProtobuf? {
         do {
             let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
             let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
                                                                 editedUri: totpUri)
             var passkeys = passkeys
-            if let newPasskey = try newPasskey() {
+            if let newPasskey = try await newPasskey() {
                 passkeys.append(newPasskey.toPasskey)
             }
             let logInData = ItemContentData.login(.init(username: username,
@@ -176,9 +176,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    override func newPasskey() throws -> CreatePasskeyResponse? {
+    override func newPasskey() async throws -> CreatePasskeyResponse? {
         if let passkeyRequest, passkeyResponse == nil {
-            passkeyResponse = try createPasskey(passkeyRequest)
+            passkeyResponse = try await createPasskey(passkeyRequest,
+                                                      bundle: .main,
+                                                      device: .current)
         }
         return passkeyResponse
     }

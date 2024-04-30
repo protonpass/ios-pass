@@ -95,7 +95,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         ScanInterpreter(type: .card)
     }
 
-    override func generateItemContent() -> ItemContentProtobuf {
+    override func generateItemContent() async -> ItemContentProtobuf {
         let month = month ?? Calendar.current.component(.month, from: .now)
         let year = year ?? Calendar.current.component(.year, from: .now)
         let data = CreditCardData(cardholderName: cardholderName,
