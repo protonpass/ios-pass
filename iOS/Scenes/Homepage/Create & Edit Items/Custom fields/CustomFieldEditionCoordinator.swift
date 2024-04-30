@@ -47,11 +47,11 @@ final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {
     deinit { print(deinitMessage) }
 
     weak var rootViewController: UIViewController!
-    let delegate: CustomFieldEditionDelegate
+    let delegate: any CustomFieldEditionDelegate
     let uiModel: CustomFieldUiModel
 
     init(rootViewController: UIViewController,
-         delegate: CustomFieldEditionDelegate,
+         delegate: any CustomFieldEditionDelegate,
          uiModel: CustomFieldUiModel) {
         self.rootViewController = rootViewController
         self.delegate = delegate

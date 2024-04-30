@@ -48,10 +48,10 @@ final class APIManager {
     private let appData = resolve(\SharedDataContainer.appData)
     private let doh = resolve(\SharedToolingContainer.doh)
     private let theme = resolve(\SharedToolingContainer.theme)
-    private let trustKitDelegate: TrustKitDelegate
-    let authHelper: AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
+    private let trustKitDelegate: any TrustKitDelegate
+    let authHelper: any AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
 
-    private(set) var apiService: APIService
+    private(set) var apiService: any APIService
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
@@ -110,7 +110,7 @@ final class APIManager {
 // MARK: - Utils
 
 private extension APIManager {
-    static func setUpCertificatePinning(trustKitDelegate: TrustKitDelegate) {
+    static func setUpCertificatePinning(trustKitDelegate: any TrustKitDelegate) {
         TrustKitWrapper.setUp(delegate: trustKitDelegate)
         let trustKit = TrustKitWrapper.current
         PMAPIService.trustKit = trustKit

@@ -33,7 +33,7 @@ import SwiftUI
 enum VaultManagerState {
     case loading
     case loaded(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel])
-    case error(Error)
+    case error(any Error)
 }
 
 final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {

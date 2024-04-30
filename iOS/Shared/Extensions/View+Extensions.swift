@@ -28,8 +28,8 @@ import SwiftUI
 
 extension View {
     func scannerSheet(isPresented: Binding<Bool>,
-                      interpreter: ScanInterpreting,
-                      resultStream: PassthroughSubject<ScanResult?, Error>) -> some View {
+                      interpreter: any ScanInterpreting,
+                      resultStream: PassthroughSubject<(any ScanResult)?, any Error>) -> some View {
         sheet(isPresented: isPresented) {
             DocScanner(with: interpreter, resultStream: resultStream)
         }

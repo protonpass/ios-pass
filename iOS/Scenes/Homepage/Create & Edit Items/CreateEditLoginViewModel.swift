@@ -32,9 +32,9 @@ import SwiftUI
 protocol CreateEditLoginViewModelDelegate: AnyObject {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
-                                                      delegate: AliasCreationLiteInfoDelegate)
+                                                      delegate: any AliasCreationLiteInfoDelegate)
 
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate)
 }
 
 @MainActor
@@ -73,7 +73,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
     var isAlias: Bool { aliasCreationLiteInfo != nil }
 
-    weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
+    weak var createEditLoginViewModelDelegate: (any CreateEditLoginViewModelDelegate)?
 
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
@@ -85,7 +85,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     override init(mode: ItemMode,
-                  upgradeChecker: UpgradeCheckerProtocol,
+                  upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
         emailAddress = try userDataProvider.getUnwrappedUserData().addresses.first?.email ?? ""
         try super.init(mode: mode,
@@ -288,7 +288,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         username = ""
     }
 
-    func handleScanResult(_ result: Result<String, Error>, customField: CustomFieldUiModel? = nil) {
+    func handleScanResult(_ result: Result<String, any Error>, customField: CustomFieldUiModel? = nil) {
         switch result {
         case let .success(scanResult):
             if let customField {

@@ -48,17 +48,17 @@ extension CompleteAutoFillUseCase {
 
 final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let logger: Logger
-    private let logManager: LogManagerProtocol
-    private let telemetryRepository: TelemetryEventRepositoryProtocol
-    private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
-    private let updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase
-    private let resetFactory: ResetFactoryUseCase
+    private let logManager: any LogManagerProtocol
+    private let telemetryRepository: any TelemetryEventRepositoryProtocol
+    private let copyTotpTokenAndNotify: any CopyTotpTokenAndNotifyUseCase
+    private let updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase
+    private let resetFactory: any ResetFactoryUseCase
 
-    init(logManager: LogManagerProtocol,
-         telemetryRepository: TelemetryEventRepositoryProtocol,
-         copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
-         updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase,
-         resetFactory: ResetFactoryUseCase) {
+    init(logManager: any LogManagerProtocol,
+         telemetryRepository: any TelemetryEventRepositoryProtocol,
+         copyTotpTokenAndNotify: any CopyTotpTokenAndNotifyUseCase,
+         updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
+         resetFactory: any ResetFactoryUseCase) {
         logger = .init(manager: logManager)
         self.logManager = logManager
         self.telemetryRepository = telemetryRepository

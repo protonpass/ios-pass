@@ -89,7 +89,7 @@ final class ShareCoordinator {
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
     private var createEditItemViewModel: BaseCreateEditItemViewModel?
-    private var customCoordinator: CustomCoordinator?
+    private var customCoordinator: (any CustomCoordinator)?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var cancellables = Set<AnyCancellable>()
@@ -320,7 +320,7 @@ private extension ShareCoordinator {
         context?.completeRequest(returningItems: nil)
     }
 
-    func logOut(error: Error? = nil,
+    func logOut(error: (any Error)? = nil,
                 sessionId: String? = nil,
                 completion: (() -> Void)? = nil) {
         Task { [weak self] in
@@ -389,7 +389,7 @@ extension ShareCoordinator: ExtensionCoordinator {
 // MARK: CreateEditItemViewModelDelegate
 
 extension ShareCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate) {
         guard let topMostViewController else { return }
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: topMostViewController,
                                                            delegate: delegate)
@@ -397,7 +397,7 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: CustomFieldEditionDelegate) {
+                                                            delegate: any CustomFieldEditionDelegate) {
         guard let rootViewController else { return }
         customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
                                                           delegate: delegate,
@@ -421,7 +421,7 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
 extension ShareCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
-                                                      delegate: AliasCreationLiteInfoDelegate) {
+                                                      delegate: any AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
         let view = CreateAliasLiteView(viewModel: viewModel)
@@ -431,7 +431,7 @@ extension ShareCoordinator: CreateEditLoginViewModelDelegate {
         topMostViewController?.present(viewController, animated: true)
     }
 
-    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
+    func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
         let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
                                                       mode: .createLogin)
         coordinator.delegate = self
