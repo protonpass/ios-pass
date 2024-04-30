@@ -157,8 +157,8 @@ private extension DarkWebMonitorHomeView {
     var monitoredProtonAddressesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             darkWebMonitorHomeRow(title: #localized("Proton addresses"),
-                                  subTitle: viewModel.userBreaches.numberOfBreachedProtonAddresses
-                                      .breachDescription,
+                                  subTitle: viewModel.userBreaches.breachedAddresses
+                                      .count.breachDescription,
                                   hasBreaches: viewModel.userBreaches.hasBreachedAddresses,
                                   isDetail: false,
                                   action: { pushProtonAddressesList() })
@@ -398,6 +398,7 @@ private extension DarkWebMonitorHomeView {
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .opacity(viewModel.suggestedEmailsState.fetchedObject?.isEmpty == true ? 0 : 1)
                 Spacer()
                 if viewModel.suggestedEmailsState.isFetching || viewModel.updatingStateOfCustomEmail {
                     ProgressView()
