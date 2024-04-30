@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 
 public protocol ToggleSentinelUseCase: Sendable {
     func execute() async throws -> Bool
@@ -44,6 +45,10 @@ public final class ToggleSentinel: ToggleSentinelUseCase {
 
     public func execute() async throws -> Bool {
         let userId = try userDataProvider.getUserId()
+        let userSettings = await settingsService.getSettings(for: userId)
+        guard userSettings.highSecurity.eligible else {
+            throw PassError.sentinelNotEligible
+        }
         return try await settingsService.toggleSentinel(for: userId)
     }
 }
