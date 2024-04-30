@@ -26,11 +26,11 @@ import UseCases
 
 /// Retrieve username/password or resolve passkey challenge
 protocol GenerateAuthorizationCredentialUseCase: Sendable {
-    func execute(_ request: AutoFillRequest) async throws -> (ItemContent, ASAuthorizationCredential)
+    func execute(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential)
 }
 
 extension GenerateAuthorizationCredentialUseCase {
-    func callAsFunction(_ request: AutoFillRequest) async throws -> (ItemContent, ASAuthorizationCredential) {
+    func callAsFunction(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential) {
         try await execute(request)
     }
 }
@@ -45,7 +45,7 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
         self.resolvePasskeyChallenge = resolvePasskeyChallenge
     }
 
-    func execute(_ request: AutoFillRequest) async throws -> (ItemContent, ASAuthorizationCredential) {
+    func execute(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential) {
         guard let recordIdentifier = request.recordIdentifier else {
             throw ASExtensionError(.credentialIdentityNotFound)
         }
