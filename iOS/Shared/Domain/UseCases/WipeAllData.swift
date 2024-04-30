@@ -36,30 +36,30 @@ extension WipeAllDataUseCase {
 
 final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
-    private let appData: AppDataProtocol
+    private let appData: any AppDataProtocol
     private let apiManager: APIManager
-    private let preferencesManager: PreferencesManagerProtocol
-    private let databaseService: DatabaseServiceProtocol
-    private let syncEventLoop: SyncEventLoopProtocol
+    private let preferencesManager: any PreferencesManagerProtocol
+    private let databaseService: any DatabaseServiceProtocol
+    private let syncEventLoop: any SyncEventLoopProtocol
     private let vaultsManager: VaultsManager
     private let vaultSyncEventStream: VaultSyncEventStream
-    private let credentialManager: CredentialManagerProtocol
-    private let userDataProvider: UserDataProvider
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    private let passMonitorRepository: PassMonitorRepositoryProtocol
+    private let credentialManager: any CredentialManagerProtocol
+    private let userDataProvider: any UserDataProvider
+    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
+    private let passMonitorRepository: any PassMonitorRepositoryProtocol
 
-    init(logManager: LogManagerProtocol,
-         appData: AppDataProtocol,
+    init(logManager: any LogManagerProtocol,
+         appData: any AppDataProtocol,
          apiManager: APIManager,
-         preferencesManager: PreferencesManagerProtocol,
-         databaseService: DatabaseServiceProtocol,
-         syncEventLoop: SyncEventLoopProtocol,
+         preferencesManager: any PreferencesManagerProtocol,
+         databaseService: any DatabaseServiceProtocol,
+         syncEventLoop: any SyncEventLoopProtocol,
          vaultsManager: VaultsManager,
          vaultSyncEventStream: VaultSyncEventStream,
-         credentialManager: CredentialManagerProtocol,
-         userDataProvider: UserDataProvider,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         passMonitorRepository: PassMonitorRepositoryProtocol) {
+         credentialManager: any CredentialManagerProtocol,
+         userDataProvider: any UserDataProvider,
+         featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
+         passMonitorRepository: any PassMonitorRepositoryProtocol) {
         logger = .init(manager: logManager)
         self.appData = appData
         self.apiManager = apiManager

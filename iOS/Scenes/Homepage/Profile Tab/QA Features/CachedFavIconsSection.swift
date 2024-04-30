@@ -33,7 +33,7 @@ struct CachedFavIconsSection: View {
 @MainActor
 final class CachedFavIconsViewModel: ObservableObject {
     @Published private(set) var icons = [FavIcon]()
-    @Published private(set) var error: Error?
+    @Published private(set) var error: (any Error)?
 
     private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
 

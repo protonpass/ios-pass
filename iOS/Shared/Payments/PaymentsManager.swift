@@ -27,7 +27,7 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 
 final class PaymentsManager {
-    typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
+    typealias PaymentsResult = Result<InAppPurchasePlan?, any Error>
 
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
@@ -40,7 +40,7 @@ final class PaymentsManager {
     private var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
     private let theme = resolve(\SharedToolingContainer.theme)
-    private let inMemoryTokenStorage: PaymentTokenStorage
+    private let inMemoryTokenStorage: any PaymentTokenStorage
 
     // swiftlint:disable:next todo
     // TODO: should we provide the actual BugAlertHandler?
@@ -86,7 +86,7 @@ final class PaymentsManager {
         }
     }
 
-    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
+    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
         guard !Bundle.main.isBetaBuild else { return }
 
         let paymentsUI = createPaymentsUI()
@@ -96,7 +96,7 @@ final class PaymentsManager {
         }
     }
 
-    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
+    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
         guard !Bundle.main.isBetaBuild else { return }
 
         let paymentsUI = createPaymentsUI()
@@ -108,7 +108,7 @@ final class PaymentsManager {
     }
 
     private func handlePaymentsResponse(result: PaymentsUIResultReason,
-                                        completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
+                                        completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
         switch result {
         case let .purchasedPlan(accountPlan: plan):
             logger.trace("Purchased plan: \(plan.protonName)")
@@ -134,7 +134,7 @@ final class PaymentsManager {
 }
 
 extension PaymentsManager: StoreKitManagerDelegate {
-    var tokenStorage: PaymentTokenStorage? {
+    var tokenStorage: (any PaymentTokenStorage)? {
         inMemoryTokenStorage
     }
 

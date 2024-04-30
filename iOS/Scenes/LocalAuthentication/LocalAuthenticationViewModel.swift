@@ -146,7 +146,7 @@ private extension LocalAuthenticationViewModel {
         }
     }
 
-    func recordFailure(_ error: Error?) {
+    func recordFailure(_ error: (any Error)?) {
         Task { [weak self] in
             guard let self else { return }
             do {

@@ -49,7 +49,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
 
-    let upgradeChecker: UpgradeCheckerProtocol
+    let upgradeChecker: any UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
         didSet {
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
@@ -83,11 +83,11 @@ class BaseItemDetailViewModel: ObservableObject {
         return canUserPerformActionOnVault(for: vault.vault)
     }
 
-    weak var delegate: ItemDetailViewModelDelegate?
+    weak var delegate: (any ItemDetailViewModelDelegate)?
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         upgradeChecker: UpgradeCheckerProtocol) {
+         upgradeChecker: any UpgradeCheckerProtocol) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
@@ -315,7 +315,7 @@ private extension BaseItemDetailViewModel {
         }
     }
 
-    func getItemTask(item: any ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
+    func getItemTask(item: any ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, any Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PassError.deallocatedSelf

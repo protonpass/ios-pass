@@ -72,7 +72,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
 
-    weak var delegate: CreateEditVaultViewModelDelegate?
+    weak var delegate: (any CreateEditVaultViewModelDelegate)?
 
     var saveButtonTitle: String {
         switch mode {

@@ -44,12 +44,12 @@ protocol GeneratePasswordCoordinatorDelegate: AnyObject {
 final class GeneratePasswordCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private weak var generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?
+    private weak var generatePasswordViewModelDelegate: (any GeneratePasswordViewModelDelegate)?
     private let mode: GeneratePasswordViewMode
-    weak var delegate: GeneratePasswordCoordinatorDelegate?
+    weak var delegate: (any GeneratePasswordCoordinatorDelegate)?
     private var sheetPresentationController: UISheetPresentationController?
 
-    init(generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?,
+    init(generatePasswordViewModelDelegate: (any GeneratePasswordViewModelDelegate)?,
          mode: GeneratePasswordViewMode) {
         self.generatePasswordViewModelDelegate = generatePasswordViewModelDelegate
         self.mode = mode

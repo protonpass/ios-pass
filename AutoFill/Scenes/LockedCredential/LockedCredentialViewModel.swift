@@ -22,7 +22,7 @@
 import Entities
 import Factory
 
-typealias LockedCredentialResult = Result<(any ASAuthorizationCredential, ItemContent), Error>
+typealias LockedCredentialResult = Result<(any ASAuthorizationCredential, ItemContent), any Error>
 
 @MainActor
 final class LockedCredentialViewModel: ObservableObject {

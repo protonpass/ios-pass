@@ -291,7 +291,7 @@ private extension AppCoordinator {
         }
     }
 
-    func captureErrorAndLogOut(_ error: Error, sessionId: String) {
+    func captureErrorAndLogOut(_ error: any Error, sessionId: String) {
         sendErrorToSentry(error, sessionId: sessionId)
         appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
     }

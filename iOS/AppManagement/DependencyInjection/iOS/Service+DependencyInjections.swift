@@ -40,15 +40,15 @@ extension ServiceContainer {
         self { .init(storage: kSharedUserDefaults) }
     }
 
-    var shareInviteService: Factory<ShareInviteServiceProtocol> {
+    var shareInviteService: Factory<any ShareInviteServiceProtocol> {
         self { ShareInviteService() }
     }
 
-    var authenticator: Factory<AuthenticatorInterface> {
+    var authenticator: Factory<any AuthenticatorInterface> {
         self { Authenticator(api: SharedToolingContainer.shared.apiManager().apiService) }
     }
 
-    var pushNotificationService: Factory<PushNotificationServiceProtocol> {
+    var pushNotificationService: Factory<any PushNotificationServiceProtocol> {
         self { PushNotificationService(apiService: SharedToolingContainer.shared.apiManager().apiService) }
     }
 }

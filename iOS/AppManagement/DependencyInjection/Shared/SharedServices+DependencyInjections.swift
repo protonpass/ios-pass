@@ -32,25 +32,25 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
 }
 
 private extension SharedServiceContainer {
-    var logManager: LogManagerProtocol {
+    var logManager: any LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
 
-    var currentDateProvider: CurrentDateProviderProtocol {
+    var currentDateProvider: any CurrentDateProviderProtocol {
         SharedToolingContainer.shared.currentDateProvider()
     }
 }
 
 extension SharedServiceContainer {
-    var notificationService: Factory<LocalNotificationServiceProtocol> {
+    var notificationService: Factory<any LocalNotificationServiceProtocol> {
         self { NotificationService(logManager: self.logManager) }
     }
 
-    var credentialManager: Factory<CredentialManagerProtocol> {
+    var credentialManager: Factory<any CredentialManagerProtocol> {
         self { CredentialManager(logManager: self.logManager) }
     }
 
-    var eventSynchronizer: Factory<EventSynchronizerProtocol> {
+    var eventSynchronizer: Factory<any EventSynchronizerProtocol> {
         self { EventSynchronizer(shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                  itemRepository: SharedRepositoryContainer.shared.itemRepository(),
                                  shareKeyRepository: SharedRepositoryContainer.shared.shareKeyRepository(),
@@ -77,29 +77,29 @@ extension SharedServiceContainer {
         self { VaultsManager() }
     }
 
-    var upgradeChecker: Factory<UpgradeCheckerProtocol> {
+    var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
         self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                               counter: self.vaultsManager(),
                               totpChecker: SharedRepositoryContainer.shared.itemRepository()) }
     }
 
-    var databaseService: Factory<DatabaseServiceProtocol> {
+    var databaseService: Factory<any DatabaseServiceProtocol> {
         self { DatabaseService(logManager: self.logManager) }
     }
 
-    var reachabilityService: Factory<ReachabilityServicing> {
+    var reachabilityService: Factory<any ReachabilityServicing> {
         self { ReachabilityService() }
     }
 
-    var userDefaultService: Factory<UserDefaultPersistency> {
+    var userDefaultService: Factory<any UserDefaultPersistency> {
         self { UserDefaultService(appGroup: Constants.appGroup) }
     }
 
-    var totpService: Factory<TOTPServiceProtocol> {
+    var totpService: Factory<any TOTPServiceProtocol> {
         self { TOTPService(currentDateProvider: self.currentDateProvider) }
     }
 
-    var totpManager: Factory<TOTPManagerProtocol> {
+    var totpManager: Factory<any TOTPManagerProtocol> {
         self { TOTPManager(logManager: SharedToolingContainer.shared.logManager(),
                            totpService: self.totpService()) }
             .unique

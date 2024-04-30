@@ -25,7 +25,7 @@ import SwiftUI
 struct HighlightText: View {
     let texts: [Text]
 
-    init(highlightableText: HighlightableText) {
+    init(highlightableText: any HighlightableText) {
         var texts = [Text]()
 
         if !highlightableText.isLeadingText {
