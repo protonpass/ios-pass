@@ -384,13 +384,11 @@ private extension PassMonitorView {
     func breachedRow(_ breaches: UserBreaches) -> some View {
         passMonitorRow(rowType: viewModel.numberOfBreaches > 0 ? .danger : .success,
                        title: "Dark Web Monitoring",
-                       subTitle: viewModel
-                           .numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches) breaches detected" :
+                       subTitle: viewModel.numberOfBreaches > 0 ?
+                           "\(viewModel.numberOfBreaches) breaches detected" :
                            "No breaches detected",
                        info: viewModel.numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches)" : nil,
-                       action: {
-                           viewModel.showSecurityWeakness(type: .breaches(breaches))
-                       })
+                       action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
     }
 }
 
@@ -452,6 +450,7 @@ private extension PassMonitorView {
                         .scaledToFit()
                         .foregroundColor(rowType.iconColor.toColor)
                         .frame(width: DesignConstant.Icons.defaultIconSize)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
