@@ -27,11 +27,6 @@ import Macro
 import SwiftUI
 import UIKit
 
-@MainActor
-protocol LogInDetailViewModelDelegate: AnyObject {
-    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent)
-}
-
 enum TOTPTokenState {
     case loading
     case allowed
@@ -65,8 +60,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
     private var cancellables = Set<AnyCancellable>()
-
-    weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
@@ -186,7 +179,9 @@ extension LogInDetailViewModel {
         guard let aliasItem else { return }
         do {
             let itemContent = try aliasItem.getItemContent(symmetricKey: getSymmetricKey())
-            logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
+            router.present(for: .itemDetail(itemContent,
+                                            automaticDisplay: true,
+                                            showSecurityIssues: false))
         } catch {
             handle(error)
         }
