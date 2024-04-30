@@ -31,15 +31,26 @@ struct MonitorAliasesView: View {
 
     var body: some View {
         LazyVStack {
-            if viewModel.access?.monitor.aliases == true {
-                enabledView
+            if viewModel.infos.isEmpty {
+                Spacer()
+                Image(uiImage: PassIcon.securityEmptyState)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 195)
             } else {
-                disabledView
+                if viewModel.access?.monitor.aliases == true {
+                    enabledView
+                } else {
+                    disabledView
+                }
             }
             Spacer()
         }
         .padding(.horizontal)
-        .scrollViewEmbeded()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .if(!viewModel.infos.isEmpty) { view in
+            view.scrollViewEmbeded()
+        }
         .animation(.default, value: viewModel.access)
         .animation(.default, value: viewModel.dismissedCustomDomainExplanation)
         .background(PassColor.backgroundNorm.toColor)
