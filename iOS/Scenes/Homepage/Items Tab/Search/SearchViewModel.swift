@@ -40,13 +40,13 @@ enum SearchViewState {
     /// Results with a given search query
     case results(ItemCount, any SearchResults)
     /// Error
-    case error(Error)
+    case error(any Error)
 }
 
 @MainActor
 protocol SearchViewModelDelegate: AnyObject {
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                   delegate: SortTypeListViewModelDelegate)
+                                                   delegate: any SortTypeListViewModelDelegate)
 }
 
 @MainActor
@@ -80,7 +80,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var results = [ItemSearchResult]()
     private var cancellables = Set<AnyCancellable>()
 
-    weak var delegate: SearchViewModelDelegate?
+    weak var delegate: (any SearchViewModelDelegate)?
 
     var searchBarPlaceholder: String {
         searchMode.searchBarPlacehoder

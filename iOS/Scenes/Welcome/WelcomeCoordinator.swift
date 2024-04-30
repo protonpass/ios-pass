@@ -40,13 +40,13 @@ final class WelcomeCoordinator: DeinitPrintable {
     private lazy var welcomeViewController = makeWelcomeViewController()
     private lazy var logInAndSignUp = makeLoginAndSignUp()
 
-    private let apiService: APIService
+    private let apiService: any APIService
     private let preferences: Preferences
 
-    weak var delegate: WelcomeCoordinatorDelegate?
+    weak var delegate: (any WelcomeCoordinatorDelegate)?
     var rootViewController: UIViewController { welcomeViewController }
 
-    init(apiService: APIService, preferences: Preferences) {
+    init(apiService: any APIService, preferences: Preferences) {
         self.apiService = apiService
         self.preferences = preferences
     }

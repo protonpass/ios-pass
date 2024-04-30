@@ -197,7 +197,7 @@ private extension DetailMonitoredItemViewModel {
                      linkedItems: linkedItems)
     }
 
-    func handle(error: Error) {
+    func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
