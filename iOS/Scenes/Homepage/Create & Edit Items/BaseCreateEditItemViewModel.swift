@@ -106,18 +106,6 @@ class BaseCreateEditItemViewModel {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
 
-    var didEditSomething: Bool {
-        switch mode {
-        case .clone, .create:
-            return true
-        case let .edit(oldItemContent):
-            if let newItemContent = generateItemContent() {
-                return !oldItemContent.protobuf.isLooselyEqual(to: newItemContent)
-            }
-            return true
-        }
-    }
-
     weak var delegate: CreateEditItemViewModelDelegate?
     var cancellables = Set<AnyCancellable>()
 
@@ -160,12 +148,12 @@ class BaseCreateEditItemViewModel {
     }
 
     // swiftlint:disable:next unavailable_function
-    func generateItemContent() -> ItemContentProtobuf? {
+    func generateItemContent() async -> ItemContentProtobuf? {
         fatalError("Must be overridden by subclasses")
     }
 
     /// The new passkey associated with this item
-    func newPasskey() throws -> CreatePasskeyResponse? { nil }
+    func newPasskey() async throws -> CreatePasskeyResponse? { nil }
 
     func saveButtonTitle() -> String {
         switch mode {
@@ -221,7 +209,7 @@ private extension BaseCreateEditItemViewModel {
 
     func createItem(for type: ItemContentType) async throws -> SymmetricallyEncryptedItem? {
         let shareId = selectedVault.shareId
-        guard let itemContent = generateItemContent() else {
+        guard let itemContent = await generateItemContent() else {
             logger.warning("No item content")
             return nil
         }
@@ -265,7 +253,7 @@ private extension BaseCreateEditItemViewModel {
                                                              itemId: itemId) else {
             throw PassError.itemNotFound(oldItemContent)
         }
-        guard let newItemContent = generateItemContent() else {
+        guard let newItemContent = await generateItemContent() else {
             logger.warning("No new item content")
             return false
         }
@@ -312,9 +300,10 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
-                        try router.present(for: .createItem(item: createdItem,
-                                                            type: itemContentType(),
-                                                            createPasskeyResponse: newPasskey()))
+                        let passkey = try await newPasskey()
+                        router.present(for: .createItem(item: createdItem,
+                                                        type: itemContentType(),
+                                                        createPasskeyResponse: passkey))
                     }
                 }
 

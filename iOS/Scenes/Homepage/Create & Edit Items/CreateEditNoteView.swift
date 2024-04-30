@@ -93,13 +93,7 @@ struct CreateEditNoteView: View {
                                       canScanDocuments: viewModel.canScanDocuments,
                                       itemContentType: viewModel.itemContentType(),
                                       shouldUpgrade: false,
-                                      onGoBack: {
-                                          if viewModel.didEditSomething {
-                                              isShowingDiscardAlert.toggle()
-                                          } else {
-                                              dismiss()
-                                          }
-                                      },
+                                      onGoBack: { isShowingDiscardAlert.toggle() },
                                       onUpgrade: { /* Not applicable */ },
                                       onScan: { viewModel.openScanner() },
                                       onSave: { viewModel.save() })
