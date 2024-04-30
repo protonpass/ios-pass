@@ -22,7 +22,7 @@ import Foundation
 
 public struct UserSettings: Sendable {
     public let telemetry: Bool
-    public let highSecurity: HighSecurity
+    public var highSecurity: HighSecurity
     public let password: Password
     public let twoFactor: TwoFactor
 
@@ -131,7 +131,7 @@ extension UserSettings: Codable {
 
 public struct HighSecurity: Sendable {
     public let eligible: Bool
-    public let value: Bool
+    public var value: Bool
 
     public init(eligible: Bool, value: Bool) {
         self.value = value
