@@ -3858,7 +3858,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.10.2;
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
@@ -4214,7 +4214,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.10.2;
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
@@ -4782,7 +4782,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.10.2;
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4919,7 +4919,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.10.2;
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
