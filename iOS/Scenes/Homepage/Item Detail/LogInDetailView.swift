@@ -202,7 +202,7 @@ private extension LogInDetailView {
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(viewModel.passwordStrength.sectionTitle)
+                Text(viewModel.passwordStrength.sectionTitle(reuseCount: viewModel.reusedItems?.count))
                     .font(.footnote)
                     .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
 
