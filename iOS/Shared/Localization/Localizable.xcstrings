@@ -14033,6 +14033,16 @@
         }
       }
     },
+    "All current breaches will be marked as resolved. In case of future data breaches, you'll be notified." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All current breaches will be marked as resolved. In case of future data breaches, you'll be notified."
+          }
+        }
+      }
+    },
     "All except sensitive data" : {
       "localizations" : {
         "be" : {
