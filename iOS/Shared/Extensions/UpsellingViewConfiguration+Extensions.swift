@@ -28,26 +28,48 @@ extension UpsellingViewConfiguration {
         UpsellingViewConfiguration(icon: PassIcon.passPlus,
                                    title: #localized("Stay safer online"),
                                    description: UpsellEntry.generic.description,
-                                   upsellElements: UpsellElement.baseCurrentUpsells)
+                                   upsellElements: .default,
+                                   ctaTitle: #localized("Get Pass Plus"))
+    }
+
+    static var essentials: UpsellingViewConfiguration {
+        UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                   title: #localized("Stay safer online"),
+                                   description: UpsellEntry.generic.description,
+                                   upsellElements: .essentials,
+                                   ctaTitle: #localized("Get Pass Business"))
     }
 }
 
-extension UpsellElement {
-    static var baseCurrentUpsells: [UpsellElement] {
-        var upsellElements = [UpsellElement]()
+extension [UpsellElement] {
+    static var `default`: Self {
+        [
+            UpsellElement(icon: IconProvider.user,
+                          title: #localized("Proton Sentinel"),
+                          color: PassColor.interactionNormMajor2),
+            UpsellElement(icon: IconProvider.lock,
+                          title: #localized("Integrated 2FA authenticator"),
+                          color: PassColor.interactionNormMajor2),
+            UpsellElement(icon: IconProvider.alias,
+                          title: #localized("Unlimited hide-my-email aliases"),
+                          color: PassColor.interactionNormMajor2),
+            UpsellElement(icon: IconProvider.usersPlus,
+                          title: #localized("Vault sharing (up to 10 people)"),
+                          color: PassColor.interactionNormMajor2)
+        ]
+    }
 
-        upsellElements.append(UpsellElement(icon: IconProvider.user,
-                                            title: #localized("Proton Sentinel"),
-                                            color: PassColor.interactionNormMajor2))
-        upsellElements.append(UpsellElement(icon: IconProvider.lock,
-                                            title: #localized("Integrated 2FA authenticator"),
-                                            color: PassColor.interactionNormMajor2))
-        upsellElements.append(UpsellElement(icon: IconProvider.alias,
-                                            title: #localized("Unlimited hide-my-email aliases"),
-                                            color: PassColor.interactionNormMajor2))
-        upsellElements.append(UpsellElement(icon: IconProvider.usersPlus,
-                                            title: #localized("Vault sharing (up to 10 people)"),
-                                            color: PassColor.interactionNormMajor2))
-        return upsellElements
+    static var essentials: Self {
+        [
+            UpsellElement(icon: IconProvider.user,
+                          title: #localized("Proton Sentinel"),
+                          color: PassColor.interactionNormMajor2),
+            UpsellElement(icon: IconProvider.lock,
+                          title: #localized("Require 2FA for organization"),
+                          color: PassColor.interactionNormMajor2),
+            UpsellElement(icon: IconProvider.checkmark,
+                          title: #localized("SSO integration (coming soon)"),
+                          color: PassColor.interactionNormMajor2)
+        ]
     }
 }
