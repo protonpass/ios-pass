@@ -177,6 +177,9 @@ struct PassMonitorView: View {
                     sentinelSheet(noBackgroundSheet: false)
                 }
             }
+            .refreshable {
+                try? await viewModel.refresh()
+            }
             .navigationStackEmbeded()
             .task {
                 try? await viewModel.refresh()

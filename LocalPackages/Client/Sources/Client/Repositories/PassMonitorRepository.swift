@@ -190,14 +190,19 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
 public extension PassMonitorRepository {
     func refreshUserBreaches() async throws -> UserBreaches {
-        let breaches = try await remoteDataSource.getAllBreachesForUser()
+        let unsortedBreaches = try await remoteDataSource.getAllBreachesForUser()
+        let breaches = UserBreaches(emailsCount: unsortedBreaches.emailsCount,
+                                    domainsPeek: unsortedBreaches.domainsPeek,
+                                    addresses: unsortedBreaches.addresses.sorted(),
+                                    customEmails: unsortedBreaches.customEmails.sorted(),
+                                    hasCustomDomains: unsortedBreaches.hasCustomDomains)
         userBreaches.send(breaches)
         return breaches
     }
 
     func getAllCustomEmailForUser() async throws -> [CustomEmail] {
         let emails = try await remoteDataSource.getAllCustomEmailForUser()
-        return emails
+        return emails.sorted()
     }
 
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail {
@@ -292,5 +297,17 @@ private extension PassMonitorRepository {
             }
             .store(in: &cancellable)
         refresh()
+    }
+}
+
+private extension [ProtonAddress] {
+    func sorted() -> Self {
+        sorted(by: { $0.breachCounter > $1.breachCounter })
+    }
+}
+
+private extension [CustomEmail] {
+    func sorted() -> Self {
+        sorted(by: { $0.breachCounter > $1.breachCounter })
     }
 }
