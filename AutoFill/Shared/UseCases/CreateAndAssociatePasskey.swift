@@ -63,7 +63,9 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
             throw PassError.itemNotFound(item)
         }
 
-        let passkeyResponse = try createPasskey(request)
+        let passkeyResponse = try await createPasskey(request,
+                                                      bundle: .main,
+                                                      device: .current)
 
         let newPasskeys = oldLoginData.passkeys.appending(passkeyResponse.toPasskey)
         let username = oldLoginData.username.isEmpty ? request.userName : oldLoginData.username
