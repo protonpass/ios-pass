@@ -196,7 +196,7 @@ private extension PassMonitorView {
                     passMonitorRow(rowType: .upsell,
                                    title: "Proton Sentinel",
                                    subTitle: "Advanced account protection program",
-                                   badge: PassIcon.passSubscriptionBadge,
+                                   badge: true,
                                    action: { viewModel.showSentinelSheet = true })
                 } else {
                     sentinelRow(rowType: .info,
@@ -233,6 +233,13 @@ private extension PassMonitorView {
                           mainAction: { viewModel.sentinelSheetAction() },
                           secondaryAction: { viewModel.showSentinelInformation() })
             .presentationDetents([.height(520)])
+    }
+
+    var passPlusBadge: some View {
+        Image(uiImage: PassIcon.passSubscriptionBadge)
+            .resizable()
+            .scaledToFit()
+            .frame(height: 24)
     }
 }
 
@@ -364,10 +371,7 @@ private extension PassMonitorView {
                                   action: { viewModel.upsell(entryPoint: .darkWebMonitorNoBreach) })
                     .padding(.bottom, DesignConstant.sectionPadding)
             }
-            Image(uiImage: PassIcon.passSubscriptionBadge)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 24)
+            passPlusBadge
                 .padding(.top, 10)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -380,13 +384,11 @@ private extension PassMonitorView {
     func breachedRow(_ breaches: UserBreaches) -> some View {
         passMonitorRow(rowType: viewModel.numberOfBreaches > 0 ? .danger : .success,
                        title: "Dark Web Monitoring",
-                       subTitle: viewModel
-                           .numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches) breaches detected" :
+                       subTitle: viewModel.numberOfBreaches > 0 ?
+                           "\(viewModel.numberOfBreaches) breaches detected" :
                            "No breaches detected",
                        info: viewModel.numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches)" : nil,
-                       action: {
-                           viewModel.showSecurityWeakness(type: .breaches(breaches))
-                       })
+                       action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
     }
 }
 
@@ -437,7 +439,7 @@ private extension PassMonitorView {
                         title: LocalizedStringKey,
                         subTitle: LocalizedStringKey?,
                         info: String? = nil,
-                        badge: UIImage? = nil,
+                        badge: Bool = false,
                         action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: DesignConstant.sectionPadding) {
@@ -448,6 +450,7 @@ private extension PassMonitorView {
                         .scaledToFit()
                         .foregroundColor(rowType.iconColor.toColor)
                         .frame(width: DesignConstant.Icons.defaultIconSize)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
@@ -480,14 +483,12 @@ private extension PassMonitorView {
                         .clipShape(Capsule())
                 }
 
-                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
-                                      color: rowType.infoForeground,
-                                      width: 12)
-
-                if let badge {
-                    ItemDetailSectionIcon(icon: badge,
+                if badge {
+                    passPlusBadge
+                } else {
+                    ItemDetailSectionIcon(icon: IconProvider.chevronRight,
                                           color: rowType.infoForeground,
-                                          width: 24)
+                                          width: 12)
                 }
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
