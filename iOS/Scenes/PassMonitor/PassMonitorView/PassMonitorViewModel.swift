@@ -67,7 +67,6 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
     private let toggleSentinel = resolve(\SharedUseCasesContainer.toggleSentinel)
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
@@ -103,17 +102,16 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func upsell(entryPoint: UpsellEntry) {
         var upsellElements = [UpsellElement]()
-        if getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1) {
-            upsellElements.append(UpsellElement(icon: PassIcon.shield2,
-                                                title: #localized("Dark Web Monitoring"),
-                                                color: PassColor.interactionNormMajor2))
-        }
-        upsellElements.append(contentsOf: UpsellElement.baseCurrentUpsells)
+        upsellElements.append(UpsellElement(icon: PassIcon.shield2,
+                                            title: #localized("Dark Web Monitoring"),
+                                            color: PassColor.interactionNormMajor2))
+        upsellElements.append(contentsOf: [UpsellElement].default)
 
         let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
                                                        title: #localized("Stay safer online"),
                                                        description: entryPoint.description,
-                                                       upsellElements: upsellElements)
+                                                       upsellElements: upsellElements,
+                                                       ctaTitle: #localized("Get Pass Plus"))
         router.present(for: .upselling(configuration))
     }
 }
@@ -133,7 +131,7 @@ extension PassMonitorViewModel {
                 updatingSentinel = true
                 isSentinelActive = try await toggleSentinel()
             } catch PassError.sentinelNotEligible {
-                router.present(for: .upselling(.default))
+                router.present(for: .upselling(.essentials))
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
