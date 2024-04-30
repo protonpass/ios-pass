@@ -398,6 +398,7 @@ private extension DarkWebMonitorHomeView {
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .opacity(viewModel.suggestedEmailsState.fetchedObject?.isEmpty == true ? 0 : 1)
                 Spacer()
                 if viewModel.suggestedEmailsState.isFetching || viewModel.updatingStateOfCustomEmail {
                     ProgressView()
