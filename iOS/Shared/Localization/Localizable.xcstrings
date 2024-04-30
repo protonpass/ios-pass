@@ -38028,6 +38028,86 @@
         }
       }
     },
+    "Get Pass Business" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Pass Business"
+          }
+        }
+      }
+    },
+    "Get Pass Plus" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Атрымаць Pass Plus"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Pass Plus"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtener Pass Plus"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtener Pass Plus"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanki Pass Plus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtenez Pass Plus"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dapatkan Pass Plus"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni Pass Plus"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få Pass Plus"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz plan Pass Plus"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skaffa Pass Plus"
+          }
+        }
+      }
+    },
     "Go back" : {
       "comment" : "accessibility",
       "localizations" : {
@@ -64832,6 +64912,16 @@
         }
       }
     },
+    "Require 2FA for organization" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Require 2FA for organization"
+          }
+        }
+      }
+    },
     "Resend code" : {
       "localizations" : {
         "be" : {
@@ -75963,6 +76053,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öne çıkanlar"
+          }
+        }
+      }
+    },
+    "SSO integration (coming soon)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSO integration (coming soon)"
           }
         }
       }
