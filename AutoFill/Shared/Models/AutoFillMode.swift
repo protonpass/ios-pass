@@ -47,7 +47,7 @@ enum AutoFillRequest: Sendable {
 /// Possible entry points when autofilling
 enum AutoFillMode {
     /// User wants to manually select an item to autofill
-    case showAllLogins([ASCredentialServiceIdentifier], PasskeyRequestParametersProtocol?)
+    case showAllLogins([ASCredentialServiceIdentifier], (any PasskeyRequestParametersProtocol)?)
 
     /// When user picks a proposed email from QuickType bar
     /// Check if user has local authentication enabled (Face ID/Touch ID/PIN)

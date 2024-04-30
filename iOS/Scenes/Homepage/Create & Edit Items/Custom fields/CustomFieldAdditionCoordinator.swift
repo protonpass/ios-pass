@@ -36,9 +36,9 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
 
     private let theme = resolve(\SharedToolingContainer.theme)
     weak var rootViewController: UIViewController?
-    weak var delegate: CustomFieldAdditionDelegate?
+    weak var delegate: (any CustomFieldAdditionDelegate)?
 
-    init(rootViewController: UIViewController, delegate: CustomFieldAdditionDelegate) {
+    init(rootViewController: UIViewController, delegate: any CustomFieldAdditionDelegate) {
         self.rootViewController = rootViewController
         self.delegate = delegate
     }

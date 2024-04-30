@@ -103,7 +103,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     enum State {
         case loading
         case loaded
-        case error(Error)
+        case error(any Error)
 
         var isLoading: Bool {
             switch self {
@@ -132,7 +132,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override init(mode: ItemMode,
-                  upgradeChecker: UpgradeCheckerProtocol,
+                  upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
@@ -266,7 +266,7 @@ extension CreateEditAliasViewModel {
 // MARK: - Private supporting tasks
 
 private extension CreateEditAliasViewModel {
-    func getAliasOptionsTask(shareId: String) -> Task<AliasOptions, Error> {
+    func getAliasOptionsTask(shareId: String) -> Task<AliasOptions, any Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PassError.deallocatedSelf
@@ -277,7 +277,7 @@ private extension CreateEditAliasViewModel {
 
     func changeMailboxesTask(shareId: String,
                              itemId: String,
-                             mailboxIDs: [Int]) -> Task<Void, Error> {
+                             mailboxIDs: [Int]) -> Task<Void, any Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PassError.deallocatedSelf

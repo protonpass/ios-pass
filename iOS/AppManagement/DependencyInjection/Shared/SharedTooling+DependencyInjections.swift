@@ -52,13 +52,13 @@ extension SharedToolingContainer {
             .unique
     }
 
-    var logManager: Factory<LogManagerProtocol> {
+    var logManager: Factory<any LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
             .onArg(PassModule.shareExtension) { LogManager(module: .shareExtension) }
     }
 
-    var logFormatter: Factory<LogFormatterProtocol> {
+    var logFormatter: Factory<any LogFormatterProtocol> {
         self { LogFormatter(format: .txt) }
     }
 
@@ -74,7 +74,7 @@ extension SharedToolingContainer {
 // MARK: Data tools
 
 extension SharedToolingContainer {
-    var doh: Factory<DoHInterface> {
+    var doh: Factory<any DoHInterface> {
         self { ProtonPassDoH() }
     }
 
@@ -111,11 +111,11 @@ extension SharedToolingContainer {
             .unique
     }
 
-    var currentDateProvider: Factory<CurrentDateProviderProtocol> {
+    var currentDateProvider: Factory<any CurrentDateProviderProtocol> {
         self { CurrentDateProvider() }
     }
 
-    var preferencesManager: Factory<PreferencesManagerProtocol> {
+    var preferencesManager: Factory<any PreferencesManagerProtocol> {
         self {
             let currentUserIdProvider = SharedDataContainer.shared.currentUserIdProvider()
             let cont = SharedRepositoryContainer.shared
@@ -136,11 +136,11 @@ extension SharedToolingContainer {
         self { PPKeychain() }
     }
 
-    var keychain: Factory<KeychainProtocol> {
+    var keychain: Factory<any KeychainProtocol> {
         self { self.baseKeychain() }
     }
 
-    var settingsProvider: Factory<SettingsProvider> {
+    var settingsProvider: Factory<any SettingsProvider> {
         self { self.baseKeychain() }
     }
 
@@ -148,7 +148,7 @@ extension SharedToolingContainer {
         self { Autolocker(lockTimeProvider: self.settingsProvider()) }
     }
 
-    var mainKeyProvider: Factory<MainKeyProvider> {
+    var mainKeyProvider: Factory<any MainKeyProvider> {
         self { Keymaker(autolocker: self.autolocker(),
                         keychain: self.baseKeychain()) }
     }
@@ -157,7 +157,7 @@ extension SharedToolingContainer {
 // MARK: Authentication
 
 extension SharedToolingContainer {
-    var authManager: Factory<AuthManagerProtocol> {
+    var authManager: Factory<any AuthManagerProtocol> {
         self { AuthManager(credentialProvider: SharedDataContainer.shared.credentialProvider()) }
     }
 

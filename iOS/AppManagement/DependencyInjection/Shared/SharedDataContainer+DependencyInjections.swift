@@ -40,7 +40,7 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
 }
 
 private extension SharedDataContainer {
-    var migrationStateProvider: CredentialsMigrationStateProvider {
+    var migrationStateProvider: any CredentialsMigrationStateProvider {
         SharedToolingContainer.shared.preferences()
     }
 }
@@ -50,7 +50,7 @@ extension SharedDataContainer {
         self { LoginMethodFlow() }
     }
 
-    var appData: Factory<AppDataProtocol> {
+    var appData: Factory<any AppDataProtocol> {
         self { AppData(module: .hostApp,
                        migrationStateProvider: self.migrationStateProvider) }
             .onArg(PassModule.autoFillExtension) { AppData(module: .autoFillExtension,
@@ -59,19 +59,19 @@ extension SharedDataContainer {
                                                         migrationStateProvider: self.migrationStateProvider) }
     }
 
-    var userDataProvider: Factory<UserDataProvider> {
+    var userDataProvider: Factory<any UserDataProvider> {
         self { self.appData() }
     }
 
-    var credentialProvider: Factory<CredentialProvider> {
+    var credentialProvider: Factory<any CredentialProvider> {
         self { self.appData() }
     }
 
-    var symmetricKeyProvider: Factory<SymmetricKeyProvider> {
+    var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {
         self { self.appData() }
     }
 
-    var currentUserIdProvider: Factory<CurrentUserIdProvider> {
+    var currentUserIdProvider: Factory<any CurrentUserIdProvider> {
         self { self.appData() }
     }
 }

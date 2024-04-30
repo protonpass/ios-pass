@@ -105,8 +105,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @AppStorage("includingNumbers", store: kSharedUserDefaults)
     var includingNumbers = true { didSet { regenerate(forceRefresh: false) } }
 
-    weak var delegate: GeneratePasswordViewModelDelegate?
-    weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
+    weak var delegate: (any GeneratePasswordViewModelDelegate)?
+    weak var uiDelegate: (any GeneratePasswordViewModelUiDelegate)?
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
