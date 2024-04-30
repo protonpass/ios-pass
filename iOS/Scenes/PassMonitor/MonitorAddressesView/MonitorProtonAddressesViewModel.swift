@@ -47,7 +47,7 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
 
     init(addresses: [ProtonAddress]) {
         access = accessRepository.access.value
-        allAddresses = addresses.sorted()
+        allAddresses = addresses
         setUp()
     }
 }
@@ -99,7 +99,7 @@ private extension MonitorProtonAddressesViewModel {
             .sink { [weak self] update in
                 guard let self else { return }
                 if case let .protonAddresses(userBreaches) = update {
-                    allAddresses = userBreaches.addresses.sorted()
+                    allAddresses = userBreaches.addresses
                 }
             }
             .store(in: &cancellables)
@@ -110,7 +110,7 @@ private extension MonitorProtonAddressesViewModel {
             .compactMap { $0 }
             .sink { [weak self] userBreaches in
                 guard let self else { return }
-                allAddresses = userBreaches.addresses.sorted()
+                allAddresses = userBreaches.addresses
             }
             .store(in: &cancellables)
     }
@@ -118,11 +118,5 @@ private extension MonitorProtonAddressesViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-private extension [ProtonAddress] {
-    func sorted() -> Self {
-        sorted(by: { $0.breachCounter > $1.breachCounter })
     }
 }
