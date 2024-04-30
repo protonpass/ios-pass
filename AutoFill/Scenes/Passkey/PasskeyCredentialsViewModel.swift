@@ -27,7 +27,7 @@ import Foundation
 enum PasskeyCredentialsViewModelState {
     case loading
     case loaded([SearchableItem], [ItemUiModel])
-    case error(Error)
+    case error(any Error)
 }
 
 @MainActor

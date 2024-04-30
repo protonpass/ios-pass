@@ -21,7 +21,7 @@
 import CoreData
 import Entities
 
-public protocol LocalSearchEntryDatasourceProtocol {
+public protocol LocalSearchEntryDatasourceProtocol: Sendable {
     /// Get entries of all vaults if `shareId` is `null`
     func getAllEntries(shareId: String?) async throws -> [SearchEntry]
     func upsert(item: any ItemIdentifiable, date: Date) async throws

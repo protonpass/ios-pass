@@ -29,7 +29,7 @@ import Macro
 @MainActor
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
-                                                        delegate: DeleteVaultAlertHandlerDelegate)
+                                                        delegate: any DeleteVaultAlertHandlerDelegate)
 }
 
 @MainActor
@@ -53,7 +53,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         vaultsManager.getItemCount(for: .trash) > 0
     }
 
-    weak var delegate: EditableVaultListViewModelDelegate?
+    weak var delegate: (any EditableVaultListViewModelDelegate)?
 
     init() {
         setUp()

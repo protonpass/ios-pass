@@ -34,10 +34,10 @@ extension CancelAutoFillUseCase {
 }
 
 final class CancelAutoFill: @unchecked Sendable, CancelAutoFillUseCase {
-    private let saveAllLogs: SaveAllLogsUseCase
-    private let resetFactory: ResetFactoryUseCase
+    private let saveAllLogs: any SaveAllLogsUseCase
+    private let resetFactory: any ResetFactoryUseCase
 
-    init(saveAllLogs: SaveAllLogsUseCase, resetFactory: ResetFactoryUseCase) {
+    init(saveAllLogs: any SaveAllLogsUseCase, resetFactory: any ResetFactoryUseCase) {
         self.saveAllLogs = saveAllLogs
         self.resetFactory = resetFactory
     }

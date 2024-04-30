@@ -44,14 +44,14 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let getCurrentSelectedShareId = resolve(\SharedUseCasesContainer.getCurrentSelectedShareId)
 
-    private weak var createEditItemDelegates: CreateEditItemDelegates?
+    private weak var createEditItemDelegates: (any CreateEditItemDelegates)?
 
     private var currentViewModel: BaseCreateEditItemViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
-    weak var delegate: CreateEditItemCoordinatorDelegate?
+    weak var delegate: (any CreateEditItemCoordinatorDelegate)?
 
-    init(createEditItemDelegates: CreateEditItemDelegates?) {
+    init(createEditItemDelegates: (any CreateEditItemDelegates)?) {
         self.createEditItemDelegates = createEditItemDelegates
     }
 }
@@ -111,7 +111,7 @@ extension CreateEditItemCoordinator {
         }
     }
 
-    func presentGeneratePasswordForLoginItem(delegate: GeneratePasswordViewModelDelegate) {
+    func presentGeneratePasswordForLoginItem(delegate: any GeneratePasswordViewModelDelegate) {
         presentGeneratePasswordView(mode: .createLogin, generatePasswordViewModelDelegate: delegate)
     }
 }
@@ -166,7 +166,7 @@ private extension CreateEditItemCoordinator {
     }
 
     func presentGeneratePasswordView(mode: GeneratePasswordViewMode,
-                                     generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?) {
+                                     generatePasswordViewModelDelegate: (any GeneratePasswordViewModelDelegate)?) {
         assert(delegate != nil, "delegate is not set")
         guard delegate != nil else { return }
         Task { [weak self] in

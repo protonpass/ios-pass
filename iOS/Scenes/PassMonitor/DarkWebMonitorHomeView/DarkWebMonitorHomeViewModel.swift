@@ -176,7 +176,7 @@ private extension DarkWebMonitorHomeViewModel {
             .store(in: &cancellables)
     }
 
-    func handle(error: Error) {
+    func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }

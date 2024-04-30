@@ -67,7 +67,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         upgradeChecker: UpgradeCheckerProtocol,
+         upgradeChecker: any UpgradeCheckerProtocol,
          showSecurityIssues: Bool) {
         self.showSecurityIssues = showSecurityIssues
         super.init(isShownAsSheet: isShownAsSheet,

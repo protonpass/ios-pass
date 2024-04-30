@@ -37,18 +37,18 @@ extension CopyTotpTokenAndNotifyUseCase {
 
 final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyUseCase {
     private let logger: Logger
-    private let generateTotpToken: GenerateTotpTokenUseCase
-    private let getSharedPreferences: GetSharedPreferencesUseCase
-    private let copyToClipboard: CopyToClipboardUseCase
-    private let notificationService: LocalNotificationServiceProtocol
-    private let upgradeChecker: UpgradeCheckerProtocol
+    private let generateTotpToken: any GenerateTotpTokenUseCase
+    private let getSharedPreferences: any GetSharedPreferencesUseCase
+    private let copyToClipboard: any CopyToClipboardUseCase
+    private let notificationService: any LocalNotificationServiceProtocol
+    private let upgradeChecker: any UpgradeCheckerProtocol
 
-    init(logManager: LogManagerProtocol,
-         generateTotpToken: GenerateTotpTokenUseCase,
-         getSharedPreferences: GetSharedPreferencesUseCase,
-         copyToClipboard: CopyToClipboardUseCase,
-         notificationService: LocalNotificationServiceProtocol,
-         upgradeChecker: UpgradeCheckerProtocol) {
+    init(logManager: any LogManagerProtocol,
+         generateTotpToken: any GenerateTotpTokenUseCase,
+         getSharedPreferences: any GetSharedPreferencesUseCase,
+         copyToClipboard: any CopyToClipboardUseCase,
+         notificationService: any LocalNotificationServiceProtocol,
+         upgradeChecker: any UpgradeCheckerProtocol) {
         logger = .init(manager: logManager)
         self.generateTotpToken = generateTotpToken
         self.getSharedPreferences = getSharedPreferences

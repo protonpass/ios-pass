@@ -126,7 +126,7 @@ private final class TrashItemsViewModel: ObservableObject {
     enum State {
         case loading
         case loaded([VaultListUiModel])
-        case error(Error)
+        case error(any Error)
     }
 
     @Published private(set) var state = State.loading

@@ -37,7 +37,7 @@ final class RepositoryContainer: SharedContainer, AutoRegistering, Sendable {
 // MARK: - Computed properties
 
 private extension RepositoryContainer {
-    var apiService: APIService {
+    var apiService: any APIService {
         SharedToolingContainer.shared.apiManager().apiService
     }
 
@@ -45,25 +45,25 @@ private extension RepositoryContainer {
         SharedDataStreamContainer.shared.corruptedSessionEventStream()
     }
 
-    var logManager: LogManagerProtocol {
+    var logManager: any LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
 }
 
 private extension RepositoryContainer {
-    var remoteInviteDatasource: Factory<RemoteInviteDatasourceProtocol> {
+    var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
         self { RemoteInviteDatasource(apiService: self.apiService,
                                       eventStream: self.corruptedSessionEventStream) }
     }
 }
 
 extension RepositoryContainer {
-    var reportRepository: Factory<ReportRepositoryProtocol> {
+    var reportRepository: Factory<any ReportRepositoryProtocol> {
         self { ReportRepository(apiService: self.apiService,
                                 userDataProvider: SharedDataContainer.shared.userDataProvider()) }
     }
 
-    var inviteRepository: Factory<InviteRepositoryProtocol> {
+    var inviteRepository: Factory<any InviteRepositoryProtocol> {
         self { InviteRepository(remoteInviteDatasource: self.remoteInviteDatasource(),
                                 logManager: self.logManager) }
     }

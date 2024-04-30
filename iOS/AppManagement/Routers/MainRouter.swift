@@ -107,7 +107,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
 
 enum UIElementDisplay: Sendable {
     case globalLoading(shouldShow: Bool)
-    case displayErrorBanner(Error)
+    case displayErrorBanner(any Error)
     case errorMessage(String)
     case successMessage(String? = nil, config: NavigationConfiguration? = nil)
     case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
@@ -125,12 +125,12 @@ enum ActionDestination: Sendable {
 enum DeeplinkDestination: Sendable {
     case totp(String)
     case spotlightItemDetail(ItemContent)
-    case error(Error)
+    case error(any Error)
 }
 
 final actor MainUIKitSwiftUIRouter: Sendable {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
-    let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
+    nonisolated let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
     let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
     let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()

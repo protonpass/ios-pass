@@ -163,7 +163,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
 }
 
 private extension AddCustomEmailViewModel {
-    func handle(error: Error) {
+    func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }

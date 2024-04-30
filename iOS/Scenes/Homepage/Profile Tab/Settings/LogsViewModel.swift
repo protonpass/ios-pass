@@ -39,7 +39,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     @Published private(set) var isLoading = true
     @Published private(set) var entries = [LogEntry]()
-    @Published private(set) var error: Error?
+    @Published private(set) var error: (any Error)?
     @Published private(set) var sharingLogs = false
     @Published var logLevel: LogLevel?
 
@@ -54,10 +54,10 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     private var fileToDelete: URL?
 
-    private let logFormatter: LogFormatterProtocol
+    private let logFormatter: any LogFormatterProtocol
     let module: PassModule
 
-    weak var delegate: LogsViewModelDelegate?
+    weak var delegate: (any LogsViewModelDelegate)?
 
     private let getLogEntries = resolve(\UseCasesContainer.getLogEntries)
     private let extractLogsToFile = resolve(\UseCasesContainer.extractLogsToFile)

@@ -67,11 +67,11 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.shareExtensionCredential, defaultValue: nil)
     private var shareExtensionCredential: AuthCredential?
 
-    private let migrationStateProvider: CredentialsMigrationStateProvider
+    private let migrationStateProvider: any CredentialsMigrationStateProvider
 
     private let module: PassModule
 
-    init(module: PassModule, migrationStateProvider: CredentialsMigrationStateProvider) {
+    init(module: PassModule, migrationStateProvider: any CredentialsMigrationStateProvider) {
         self.module = module
         self.migrationStateProvider = migrationStateProvider
         migrateToSeparatedCredentialsIfNeccessary()
