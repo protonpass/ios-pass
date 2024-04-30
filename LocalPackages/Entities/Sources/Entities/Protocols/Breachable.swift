@@ -30,9 +30,7 @@ public protocol Breachable {
 public extension Breachable {
     var lastBreachDate: String? {
         guard let lastBreachTime else { return nil }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM dd yyyy"
         let date = Date(timeIntervalSince1970: TimeInterval(lastBreachTime))
-        return formatter.string(from: date)
+        return date.formatted(date: .abbreviated, time: .omitted)
     }
 }
