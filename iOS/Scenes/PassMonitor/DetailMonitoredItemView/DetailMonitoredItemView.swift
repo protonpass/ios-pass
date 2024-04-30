@@ -225,13 +225,14 @@ private extension DetailMonitoredItemView {
         if viewModel.state.isFetched {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
-                    ToggleMonitorButton(monitored: viewModel.isMonitored,
-                                        action: { viewModel.toggleMonitoring() })
                     if viewModel.isCustomEmail {
                         Button { viewModel.removeCustomMailFromMonitor() } label: {
                             Label(title: { Text("Remove") },
                                   icon: { Image(uiImage: IconProvider.trash) })
                         }
+                    } else {
+                        ToggleMonitorButton(monitored: viewModel.isMonitored,
+                                            action: { viewModel.toggleMonitoring() })
                     }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
