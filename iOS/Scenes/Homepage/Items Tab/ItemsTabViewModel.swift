@@ -80,7 +80,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    weak var delegate: ItemsTabViewModelDelegate?
+    weak var delegate: (any ItemsTabViewModelDelegate)?
     private var inviteRefreshTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
@@ -236,7 +236,7 @@ private extension ItemsTabViewModel {
         }
     }
 
-    func handle(error: Error) {
+    func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }

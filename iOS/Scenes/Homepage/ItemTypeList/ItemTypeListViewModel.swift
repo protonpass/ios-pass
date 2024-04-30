@@ -58,7 +58,7 @@ final class ItemTypeListViewModel: ObservableObject {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    weak var delegate: ItemTypeListViewModelDelegate?
+    weak var delegate: (any ItemTypeListViewModelDelegate)?
 
     init() {
         Task { [weak self] in

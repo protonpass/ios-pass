@@ -32,9 +32,9 @@ extension CompleteConfigurationUseCase {
 }
 
 final class CompleteConfiguration: CompleteConfigurationUseCase {
-    private let resetFactory: ResetFactoryUseCase
+    private let resetFactory: any ResetFactoryUseCase
 
-    init(resetFactory: ResetFactoryUseCase) {
+    init(resetFactory: any ResetFactoryUseCase) {
         self.resetFactory = resetFactory
     }
 

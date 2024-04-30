@@ -34,11 +34,11 @@ final class DeleteVaultAlertHandler: DeinitPrintable {
 
     private let rootViewController: UIViewController
     private let vault: Vault
-    private let delegate: DeleteVaultAlertHandlerDelegate
+    private let delegate: any DeleteVaultAlertHandlerDelegate
 
     init(rootViewController: UIViewController,
          vault: Vault,
-         delegate: DeleteVaultAlertHandlerDelegate) {
+         delegate: any DeleteVaultAlertHandlerDelegate) {
         self.rootViewController = rootViewController
         self.vault = vault
         self.delegate = delegate

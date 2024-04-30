@@ -34,7 +34,7 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToCancel()
     func credentialsViewModelWantsToLogOut()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                        delegate: SortTypeListViewModelDelegate)
+                                                        delegate: any SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(url: URL?)
 }
 
@@ -44,7 +44,7 @@ enum CredentialsViewState: Equatable {
     case searching
     case searchResults([ItemSearchResult])
     case loading
-    case error(Error)
+    case error(any Error)
 
     static func == (lhs: CredentialsViewState, rhs: CredentialsViewState) -> Bool {
         switch (lhs, rhs) {
@@ -112,7 +112,7 @@ final class CredentialsViewModel: ObservableObject {
 
     private var vaults = [Vault]()
 
-    weak var delegate: CredentialsViewModelDelegate?
+    weak var delegate: (any CredentialsViewModelDelegate)?
     private(set) weak var context: ASCredentialProviderExtensionContext?
 
     var domain: String {
@@ -265,7 +265,7 @@ private extension CredentialsViewModel {
     }
 
     func handlePasskeySelection(for item: any ItemIdentifiable,
-                                params: PasskeyRequestParametersProtocol) async throws {
+                                params: any PasskeyRequestParametersProtocol) async throws {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),

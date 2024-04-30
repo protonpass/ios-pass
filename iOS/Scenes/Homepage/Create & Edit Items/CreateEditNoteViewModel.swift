@@ -35,7 +35,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     var isSaveable: Bool { !title.isEmpty }
 
     override init(mode: ItemMode,
-                  upgradeChecker: UpgradeCheckerProtocol,
+                  upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
@@ -72,7 +72,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override func itemContentType() -> ItemContentType { .note }
 
-    var interpretor: ScanInterpreting { ScanInterpreter() }
+    var interpretor: any ScanInterpreting { ScanInterpreter() }
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,

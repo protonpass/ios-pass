@@ -50,7 +50,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
 
     @Published private(set) var uiModels = [TelemetryEventUiModel]()
     @Published private(set) var relativeThreshold = ""
-    @Published private(set) var error: Error?
+    @Published private(set) var error: (any Error)?
 
     init() {
         refresh()
