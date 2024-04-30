@@ -22,14 +22,19 @@
 import Entities
 import Foundation
 import PassRustCore
+import UIKit
 
 public protocol CreatePasskeyUseCase: Sendable {
-    func execute(_ request: PasskeyCredentialRequest) throws -> Entities.CreatePasskeyResponse
+    func execute(_ request: PasskeyCredentialRequest,
+                 bundle: Bundle,
+                 device: UIDevice) async throws -> Entities.CreatePasskeyResponse
 }
 
 public extension CreatePasskeyUseCase {
-    func callAsFunction(_ request: PasskeyCredentialRequest) throws -> Entities.CreatePasskeyResponse {
-        try execute(request)
+    func callAsFunction(_ request: PasskeyCredentialRequest,
+                        bundle: Bundle,
+                        device: UIDevice) async throws -> Entities.CreatePasskeyResponse {
+        try await execute(request, bundle: bundle, device: device)
     }
 }
 
@@ -40,7 +45,9 @@ public final class CreatePasskey: CreatePasskeyUseCase {
         self.managerProvider = managerProvider
     }
 
-    public func execute(_ request: PasskeyCredentialRequest) throws -> Entities.CreatePasskeyResponse {
+    public func execute(_ request: PasskeyCredentialRequest,
+                        bundle: Bundle,
+                        device: UIDevice) async throws -> Entities.CreatePasskeyResponse {
         let supportedAlgorithms = request.supportedAlgorithms.map { Int64($0.rawValue) }
         let createRequest = CreatePasskeyIosRequest(serviceIdentifier: request.serviceIdentifier.identifier,
                                                     rpId: request.relyingPartyIdentifier,
@@ -49,23 +56,29 @@ public final class CreatePasskey: CreatePasskeyUseCase {
                                                     clientDataHash: request.clientDataHash,
                                                     supportedAlgorithms: supportedAlgorithms)
         let response = try managerProvider.manager.generateIosPasskey(request: createRequest)
-        return .from(response)
+        return await .from(response, bundle: bundle, device: device)
     }
 }
 
 private extension Entities.CreatePasskeyResponse {
-    static func from(_ response: CreatePasskeyIosResponse) -> Self {
-        .init(passkey: response.passkey,
-              keyId: response.keyId,
-              domain: response.domain,
-              rpId: response.rpId,
-              rpName: response.rpName,
-              userName: response.userName,
-              userDisplayName: response.userDisplayName,
-              userId: response.userId,
-              credentialId: response.credentialId,
-              clientDataHash: response.clientDataHash,
-              userHandle: response.userHandle,
-              attestationObject: response.attestationObject)
+    static func from(_ response: CreatePasskeyIosResponse,
+                     bundle: Bundle,
+                     device: UIDevice) async -> Self {
+        await .init(passkey: response.passkey,
+                    keyId: response.keyId,
+                    domain: response.domain,
+                    rpId: response.rpId,
+                    rpName: response.rpName,
+                    userName: response.userName,
+                    userDisplayName: response.userDisplayName,
+                    userId: response.userId,
+                    credentialId: response.credentialId,
+                    clientDataHash: response.clientDataHash,
+                    userHandle: response.userHandle,
+                    attestationObject: response.attestationObject,
+                    osName: device.systemName,
+                    osVersion: device.systemVersion,
+                    deviceName: device.name,
+                    appVersion: "ios-pass@\(bundle.fullAppVersionName)")
     }
 }
