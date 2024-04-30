@@ -41,10 +41,10 @@ extension URL {
 
 final class DeepLinkRoutingService {
     private let router: MainUIKitSwiftUIRouter
-    private let getItemContentFromBase64IDs: GetItemContentFromBase64IDsUseCase
+    private let getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase
 
     init(router: MainUIKitSwiftUIRouter,
-         getItemContentFromBase64IDs: GetItemContentFromBase64IDsUseCase) {
+         getItemContentFromBase64IDs: any GetItemContentFromBase64IDsUseCase) {
         self.router = router
         self.getItemContentFromBase64IDs = getItemContentFromBase64IDs
     }

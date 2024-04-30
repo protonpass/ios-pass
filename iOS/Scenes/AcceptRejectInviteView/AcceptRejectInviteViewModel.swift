@@ -119,7 +119,7 @@ private extension AcceptRejectInviteViewModel {
         }
     }
 
-    func display(error: Error) {
+    func display(error: any Error) {
         router.display(element: .displayErrorBanner(error))
     }
 }

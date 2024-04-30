@@ -55,7 +55,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var passwordMode: UserSettings.Password.PasswordMode = .singlePassword
     private(set) var accountRecovery: AccountRecovery?
 
-    weak var delegate: AccountViewModelDelegate?
+    weak var delegate: (any AccountViewModelDelegate)?
 
     var username: String { userDataProvider.getUserData()?.user.email ?? "" }
 

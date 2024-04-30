@@ -50,7 +50,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     }
 
     override init(mode: ItemMode,
-                  upgradeChecker: UpgradeCheckerProtocol,
+                  upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
@@ -91,7 +91,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .store(in: &cancellables)
     }
 
-    var interpretor: ScanInterpreting {
+    var interpretor: any ScanInterpreting {
         ScanInterpreter(type: .card)
     }
 
