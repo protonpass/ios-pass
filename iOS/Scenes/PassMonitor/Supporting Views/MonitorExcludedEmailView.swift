@@ -24,7 +24,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct MonitorExcludedEmailView: View {
-    let address: Breachable
+    let address: any Breachable
     var action: (() -> Void)?
 
     var body: some View {

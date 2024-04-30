@@ -69,9 +69,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var plan: Plan?
 
     private var cancellables = Set<AnyCancellable>()
-    weak var delegate: ProfileTabViewModelDelegate?
+    weak var delegate: (any ProfileTabViewModelDelegate)?
 
-    init(childCoordinatorDelegate: ChildCoordinatorDelegate) {
+    init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
@@ -326,7 +326,7 @@ private extension ProfileTabViewModel {
         logger.info("Reindexed credentials")
     }
 
-    func handle(error: Error) {
+    func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }

@@ -67,7 +67,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
     @Published private(set) var spotlightVaults: [Vault]?
 
-    weak var delegate: SettingsViewModelDelegate?
+    weak var delegate: (any SettingsViewModelDelegate)?
     private var cancellables = Set<AnyCancellable>()
 
     init(isShownAsSheet: Bool) {
@@ -329,7 +329,7 @@ private extension SettingsViewModel {
         }
     }
 
-    func handle(_ error: Error) {
+    func handle(_ error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }

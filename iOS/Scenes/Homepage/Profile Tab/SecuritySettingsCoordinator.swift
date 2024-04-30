@@ -36,7 +36,7 @@ final class SecuritySettingsCoordinator {
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
 
-    weak var delegate: ChildCoordinatorDelegate?
+    weak var delegate: (any ChildCoordinatorDelegate)?
 
     private var preferences: SharedPreferences { getSharedPreferences() }
 
