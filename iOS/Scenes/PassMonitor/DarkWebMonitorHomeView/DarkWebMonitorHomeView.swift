@@ -41,6 +41,9 @@ struct DarkWebMonitorHomeView: View {
         mainContainer
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
+            .refreshable {
+                try? await viewModel.refresh()
+            }
             .navigationStackEmbeded($router.path)
             .environmentObject(router)
     }
