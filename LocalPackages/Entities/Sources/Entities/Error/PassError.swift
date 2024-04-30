@@ -52,6 +52,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case organizationNotFound
     case preferences(PreferencesFailureReason)
     case mainKeyNotFound
+    case sentinelNotEligible
 
     public var debugDescription: String {
         switch self {
@@ -113,6 +114,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             reason.debugDescription
         case .mainKeyNotFound:
             "Main key not found"
+        case .sentinelNotEligible:
+            "Sentinel not eligible"
         }
     }
 }

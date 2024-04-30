@@ -41,15 +41,18 @@ public struct UpsellingViewConfiguration: Sendable, Hashable {
     let title: String
     let description: String
     let upsellElements: [UpsellElement]
+    let ctaTitle: String
 
     public init(icon: UIImage,
                 title: String,
                 description: String,
-                upsellElements: [UpsellElement]) {
+                upsellElements: [UpsellElement],
+                ctaTitle: String) {
         self.icon = icon
         self.title = title
         self.description = description
         self.upsellElements = upsellElements
+        self.ctaTitle = ctaTitle
     }
 }
 
@@ -103,7 +106,7 @@ private extension UpsellingView {
                 .roundedDetailSection()
                 Spacer()
 
-                CapsuleTextButton(title: #localized("Get Pass Plus", bundle: .module),
+                CapsuleTextButton(title: configuration.ctaTitle,
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNormMajor2,
                                   height: 48,
@@ -130,7 +133,7 @@ private extension UpsellingView {
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 20)
-                .foregroundColor(element.color?.toColor ?? PassColor.interactionNormMajor2.toColor)
+                .foregroundStyle((element.color ?? PassColor.interactionNormMajor2).toColor)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }
