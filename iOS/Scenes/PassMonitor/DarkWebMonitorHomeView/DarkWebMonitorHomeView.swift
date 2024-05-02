@@ -187,7 +187,7 @@ private extension DarkWebMonitorHomeView {
     }
 
     func pushAliasesList() {
-        if let infos = viewModel.aliasBreachesState.fetchedObject {
+        if let infos = viewModel.aliasBreachesState.fetchedObject, !infos.isEmpty {
             router.navigate(to: .aliasesList(infos))
             addTelemetryEvent(with: .monitorDisplayMonitoringEmailAliases)
         }
@@ -441,9 +441,10 @@ private extension DarkWebMonitorHomeView {
                               titleColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1) {
                 Task {
-                    let customEmail = await viewModel.addCustomEmail(email: email.email)
-                    router.present(sheet: .addCustomEmail(customEmail))
-                    addTelemetryEvent(with: .monitorAddCustomEmailFromSuggestion)
+                    if let customEmail = await viewModel.addCustomEmail(email: email.email) {
+                        router.present(sheet: .addCustomEmail(customEmail))
+                        addTelemetryEvent(with: .monitorAddCustomEmailFromSuggestion)
+                    }
                 }
             }
             .fixedSize(horizontal: true, vertical: true)
