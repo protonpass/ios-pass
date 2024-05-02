@@ -37616,137 +37616,137 @@
         }
       }
     },
-    "Generate unique passwords to increase your security." : {
+    "Generate unique passwords for each account to increase your security." : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Генерыраваць унікальныя паролі для павелічэння вашай бяспекі."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generer unikke adgangskoder for at øge din sikkerhed."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generiere eindeutige Passwörter, um deine Sicherheit zu erhöhen."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Δημιουργήστε μοναδικούς κωδικούς πρόσβασης για να αυξήσετε την ασφάλειά σας."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generate unique passwords to increase your security."
+            "value" : "Generate unique passwords for each account to increase your security."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genera contraseñas únicas para aumentar tu seguridad."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genere contraseñas únicas para incrementar su seguridad."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Luo ainutlaatuisia salasanoja turvallisuuden lisäämiseksi."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Générez un mot de passe unique pour améliorer votre sécurité."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Hasilkan rangkaian kata sandi unik untuk meningkatkan keamanan Anda."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genera password univoche per aumentare la tua sicurezza."
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "შექმენით უნიკალური პაროლები თქვენი უსაფრთხოების გასაზრდელად."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "보안을 강화하기 위해 고유한 비밀번호를 생성하십시오."
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generer unike passord for å øke sikkerheten."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genereer unieke wachtwoorden om uw veiligheid te verhogen."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Wygeneruj unikalne hasła, aby zwiększyć swoje bezpieczeństwo."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Gere senhas únicas para aumentar sua segurança."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generați parole unice pentru a vă spori securitatea."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generujte jedinečné heslá na zvýšenie zabezpečenia."
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Ustvarite edinstvena gesla in zvišajte raven varnosti."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generera unika lösenord för att öka din säkerhet."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Güvenliğinizi artırmak için benzersiz parolalar oluşturun."
           }
         }
@@ -44368,6 +44368,142 @@
         }
       }
     },
+    "Items from your vaults that use this password." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Спіс усіх іншых элементаў з вашага сховішча, якія выкарыстоўваць гэты пароль."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste over alle andre elementer fra dine bokse, der bruger denne adgangskode."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste aller anderen Artikel aus deinen Tresoren, die dieses Kennwort verwenden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Λίστα με όλα τα άλλα στοιχεία από τις κρύπτες σας που χρησιμοποιούν αυτόν τον κωδικό πρόσβασης."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items from your vaults that use this password."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista de todos los demás elementos de tus cajas fuertes que usan esta contraseña."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista de todos los demás elementos de sus bóvedas que usan esta contraseña."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Listaa holviesi kaikki muut tätä salasanaa käyttävät kohteet."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste de tous les éléments de vos coffres-forts qui utilisent le même mot de passe."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Daftar seluruh item pada brankas Anda yang menggunakan kata sandi ini."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Elenco di tutti gli altri elementi delle tue casseforti che utilizzano questa password."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ყველა სხვა ელემენტის სია თქვენი საცავებიდან, რომლებიც ამ პაროლს იყენებს."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이 비밀번호를 사용하는 금고 내 다른 모든 항목의 목록입니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste over alle andre elementer fra hvelvene dine som bruker dette passordet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lijst van alle andere items uit je kluis die dit wachtwoord gebruiken."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista innych danych logowania w sejfie, które używają tego hasła."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista de todos os outros itens dos seus cofres que usam esta senha."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista celorlalte articole din seifuri care folosesc această parolă."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zoznam všetkých ostatných položiek z vašich trezorov, ktoré používajú toto heslo."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seznam vseh drugih predmetov iz vaših trezorjev, ki uporabljajo to geslo."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista över alla andra objekt från dina valv som använder detta lösenord."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kasalarınızda bu parolayı kullanan diğer tüm ögelerin listesi."
+          }
+        }
+      }
+    },
     "Items moved to trash appear here" : {
       "localizations" : {
         "be" : {
@@ -47044,142 +47180,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sáng"
-          }
-        }
-      }
-    },
-    "List of all other items from your vaults that use this password." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Спіс усіх іншых элементаў з вашага сховішча, якія выкарыстоўваць гэты пароль."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste over alle andre elementer fra dine bokse, der bruger denne adgangskode."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste aller anderen Artikel aus deinen Tresoren, die dieses Kennwort verwenden."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Λίστα με όλα τα άλλα στοιχεία από τις κρύπτες σας που χρησιμοποιούν αυτόν τον κωδικό πρόσβασης."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "List of all other items from your vaults that use this password."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista de todos los demás elementos de tus cajas fuertes que usan esta contraseña."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista de todos los demás elementos de sus bóvedas que usan esta contraseña."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Listaa holviesi kaikki muut tätä salasanaa käyttävät kohteet."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste de tous les éléments de vos coffres-forts qui utilisent le même mot de passe."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daftar seluruh item pada brankas Anda yang menggunakan kata sandi ini."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elenco di tutti gli altri elementi delle tue casseforti che utilizzano questa password."
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ყველა სხვა ელემენტის სია თქვენი საცავებიდან, რომლებიც ამ პაროლს იყენებს."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 비밀번호를 사용하는 금고 내 다른 모든 항목의 목록입니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste over alle andre elementer fra hvelvene dine som bruker dette passordet."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lijst van alle andere items uit je kluis die dit wachtwoord gebruiken."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista innych danych logowania w sejfie, które używają tego hasła."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista de todos os outros itens dos seus cofres que usam esta senha."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista celorlalte articole din seifuri care folosesc această parolă."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zoznam všetkých ostatných položiek z vašich trezorov, ktoré používajú toto heslo."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seznam vseh drugih predmetov iz vaših trezorjev, ki uporabljajo to geslo."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista över alla andra objekt från dina valv som använder detta lösenord."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kasalarınızda bu parolayı kullanan diğer tüm ögelerin listesi."
           }
         }
       }
@@ -96335,137 +96335,137 @@
         }
       }
     },
-    "Your email addresses were leaked in at least 1 data breach." : {
+    "Your email address was leaked in at least 1 data breach." : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Ваш адрас электроннай пошты выяўлены прынамсі ў 1 уцечцы даных."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Dine e-mailadresser blev lækket i mindst 1 databrud."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Deine E-Mail-Adressen sind bei mindestens 1 Datendiebstahl veröffentlicht worden."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Οι διευθύνσεις ηλεκτρονικού ταχυδρομείου σας διέρρευσαν σε τουλάχιστον 1 παραβίαση δεδομένων."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your email addresses were leaked in at least 1 data breach."
+            "value" : "Your email address was leaked in at least 1 data breach."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Tus direcciones de correo fueron filtradas en al menos una filtración de datos."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Las direcciones de correo fueron filtradas en al menos una filtración de datos."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Sähköpostiosoitteesi ovat paljastuneet ainakin yhdessä tietovuodossa."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vos adresses e-mail ont été divulguées dans au moins 1 fuite de données."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Alamat email Anda telah dibocorkan pada setidaknya 1 insiden kebocoran data."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "I tuoi indirizzi email sono stati resi pubblici in almeno 1 violazione di dati."
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "თქვენი ელფოსტის მისამართები, სულ ცოტა, 1 მონაცემების გაჟონვაში გამოჩნდა."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "사용자의 이메일 주소가 하나 이상의 데이터 침해에 처해있습니다."
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "E-postadressene dine ble lekket i minst 1 datainnbrudd."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Je e-mailadressen zijn gelekt in ten minste 1 datalek."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Twoje adresy e-mail zostały ujawnione w co najmniej 1 wycieku danych."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Seus endereços de email foram vazados em pelo menos 1 violação de dados."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Adresele de e-mail v-au fost divulgate în cel puțin o compromitere a datelor."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vaše emailové adresy unikli najmenej v 1 prípade porušenia ochrany osobných údajov."
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vaši e-poštni naslovi so pricurljali zaradi vsaj 1 kršitve podatkov."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Dina e-postadresser läckte vid minst 1 dataintrång."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "E-posta adresleriniz en az 1 verilerin ele geçirilmesi olayında açığa çıkmış."
           }
         }
