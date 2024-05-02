@@ -20,17 +20,6 @@
 
 import SwiftUI
 
-public extension View {
-    func navigate(isActive: Binding<Bool>,
-                  destination: (some View)?) -> some View {
-        background(NavigationLink(destination: destination,
-                                  isActive: isActive,
-                                  label: EmptyView.init)
-                .isDetailLink(false)
-                .hidden())
-    }
-}
-
 // MARK: - ViewBuilders
 
 public extension View {
