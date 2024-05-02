@@ -33,10 +33,6 @@ final class RouterContainer: SharedContainer, AutoRegistering, Sendable {
 // MARK: Main Router
 
 extension RouterContainer {
-    var mainNavViewRouter: Factory<MainNavViewRouter> {
-        self { MainNavViewRouter() }
-    }
-
     var deepLinkRoutingService: Factory<DeepLinkRoutingService> {
         self { DeepLinkRoutingService(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
                                       getItemContentFromBase64IDs: UseCasesContainer.shared
