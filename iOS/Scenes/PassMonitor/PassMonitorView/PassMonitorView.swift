@@ -418,7 +418,7 @@ private extension PassMonitorView {
 private extension PassMonitorView {
     func missing2FARow(_ missing2FA: Int) -> some View {
         passMonitorRow(rowType: .info,
-                       title: "Inactive 2FA authentication",
+                       title: "Inactive 2FA",
                        subTitle: "Set up 2FA for more security",
                        info: "\(missing2FA)",
                        action: { viewModel.showSecurityWeakness(type: .missing2FA) })
