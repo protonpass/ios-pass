@@ -299,7 +299,7 @@ private extension PassMonitorView {
                     .padding(.top, DesignConstant.sectionPadding + 15)
                     .multilineTextAlignment(isBreached ? .leading : .center)
 
-                Text(isBreached ? "Your email addresses were leaked in at least 1 data breach." :
+                Text(isBreached ? "Your email address was leaked in at least 1 data breach." :
                     "Get notified if your email, password or other personal data was leaked.")
                     .font(.body)
                     .foregroundStyle(isBreached ? PassColor.passwordInteractionNormMajor2
@@ -418,7 +418,7 @@ private extension PassMonitorView {
 private extension PassMonitorView {
     func missing2FARow(_ missing2FA: Int) -> some View {
         passMonitorRow(rowType: .info,
-                       title: "Inactive 2FA authentication",
+                       title: "Inactive 2FA",
                        subTitle: "Set up 2FA for more security",
                        info: "\(missing2FA)",
                        action: { viewModel.showSecurityWeakness(type: .missing2FA) })

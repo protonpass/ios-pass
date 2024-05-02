@@ -79,7 +79,7 @@ private extension DarkWebMonitorHomeView {
                actions: { Button("OK", action: {}) },
                message: {
                    // swiftlint:disable:next line_length
-                   Text("Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses.")
+                   Text("You can also monitor up to 10 email addresses that aren't Proton or email aliases. They will be sent to HIBP for monitoring - no other data will be shared to HIBP.")
                })
         .alert(Text("Data Security"),
                isPresented: $showDataSecurityExplanation,

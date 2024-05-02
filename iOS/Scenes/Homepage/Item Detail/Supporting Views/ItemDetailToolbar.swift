@@ -91,7 +91,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         if viewModel.itemContent.type == .login {
                             let title = viewModel.isMonitored ?
                                 #localized("Exclude from monitoring") :
-                                #localized("Add to monitoring")
+                                #localized("Include for monitoring")
                             let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye
 
                             Button(action: { viewModel.toggleMonitoring() },
