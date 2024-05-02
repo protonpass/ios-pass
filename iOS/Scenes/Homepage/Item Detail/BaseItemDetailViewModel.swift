@@ -199,9 +199,13 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .globalLoading(shouldShow: true))
                 try await toggleItemMonitoring(item: itemContent, shouldNotMonitor: isMonitored)
                 logger.trace("Toggled monitor to \(!isMonitored) for \(itemContent.debugDescription)")
-                let message = isMonitored ? #localized("Item excluded from monitoring") :
-                    #localized("Item added to monitoring")
-                router.display(element: .infosMessage(message, config: nil))
+                if isMonitored {
+                    let message = #localized("Item excluded from monitoring")
+                    router.display(element: .infosMessage(message))
+                } else {
+                    let message = #localized("Item included for monitoring")
+                    router.display(element: .successMessage(message))
+                }
                 refresh()
             } catch {
                 handle(error)
