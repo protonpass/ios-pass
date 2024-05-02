@@ -413,7 +413,7 @@ private extension CreateEditLoginView {
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(viewModel.passwordStrength.sectionTitle)
+                Text(viewModel.passwordStrength.sectionTitle(reuseCount: nil))
                     .font(.footnote)
                     .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
 

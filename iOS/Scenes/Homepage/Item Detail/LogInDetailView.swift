@@ -202,7 +202,7 @@ private extension LogInDetailView {
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(viewModel.passwordStrength.sectionTitle)
+                Text(viewModel.passwordStrength.sectionTitle(reuseCount: viewModel.reusedItems?.count))
                     .font(.footnote)
                     .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
 
@@ -369,17 +369,20 @@ private extension LogInDetailView {
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(weakness.title)
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .foregroundStyle(rowType.iconColor.toColor)
+                if let title = weakness.detailTitle {
+                    Text(title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(rowType.iconColor.toColor)
+                }
                 if weakness == .reusedPasswords {
                     reusedList(rowType: rowType)
                         .padding(.vertical, DesignConstant.sectionPadding / 4)
                 }
-                Text(weakness.infos)
-                    .font(.callout)
-                    .foregroundColor(rowType.iconColor.toColor)
+                if let infos = weakness.infos {
+                    Text(infos)
+                        .font(.callout)
+                        .foregroundColor(rowType.iconColor.toColor)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -391,25 +394,25 @@ private extension LogInDetailView {
     @ViewBuilder
     func reusedList(rowType: SecureRowType) -> some View {
         if let reusedItems = viewModel.reusedItems, !reusedItems.isEmpty {
+            let reuseText: () -> Text = {
+                Text("\(reusedItems.count) other logins use this password")
+                    .fontWeight(.bold)
+                    .foregroundColor(rowType.iconColor.toColor)
+            }
             if reusedItems.count > 5 {
-                Button { viewModel.showItemList() } label: {
-                    Text("\(reusedItems.count) other logins use this password")
-                        .underline()
-                        .font(.callout)
-                        .fontWeight(.medium)
-                        .minimumScaleFactor(0.75)
-                        .foregroundColor(rowType.iconColor.toColor)
-                        .lineLimit(1)
+                reuseText()
+                HStack {
+                    CapsuleTextButton(title: #localized("See all"),
+                                      titleColor: rowType.iconColor,
+                                      backgroundColor: rowType.iconColor.withAlphaComponent(0.2),
+                                      action: { viewModel.showItemList() })
+                        .fixedSize(horizontal: true, vertical: true)
+                    Spacer()
                 }
-                .buttonStyle(.plain)
-                .padding(4)
-                .background(PassColor.noteInteractionNormMinor1.toColor)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(alignment: .leading) {
-                    Text("\(reusedItems.count) other logins use this password")
-                        .font(.callout)
-                        .foregroundColor(rowType.iconColor.toColor)
+                    reuseText()
                     ReusedItemsPassListView(reusedPasswordItems: reusedItems,
                                             action: { viewModel.showDetail(for: $0) })
                 }
