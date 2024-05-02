@@ -99,38 +99,33 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         selectedEmails.removeAll(where: { $0 == email })
     }
 
-    func `continue`() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer {
-                isChecking = false
-            }
-            do {
-                isChecking = true
-                guard appendCurrentEmail() else { return }
+    func `continue`() async -> Bool {
+        defer { isChecking = false }
+        do {
+            isChecking = true
+            guard appendCurrentEmail() else { return false }
 
-                guard let vault else {
-                    throw PassError.sharing(.incompleteInformation)
-                }
-
-                let result = try await checkAddressesForInvite(shareId: vault.shareId,
-                                                               emails: selectedEmails)
-                if case let .invalid(invalidEmails) = result {
-                    self.invalidEmails = invalidEmails
-                    let message =
-                        #localized("You can't invite people outside of your organization, contact admin for more info.")
-                    router.display(element: .errorMessage(message))
-                    return
-                }
-
-                try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
-                highlightedEmail = nil
-                goToNextStep = true
-            } catch {
-                router.display(element: .displayErrorBanner(error))
+            guard let vault else {
+                throw PassError.sharing(.incompleteInformation)
             }
+
+            let result = try await checkAddressesForInvite(shareId: vault.shareId,
+                                                           emails: selectedEmails)
+            if case let .invalid(invalidEmails) = result {
+                self.invalidEmails = invalidEmails
+                let message =
+                    #localized("You can't invite people outside of your organization, contact admin for more info.")
+                router.display(element: .errorMessage(message))
+                return false
+            }
+
+            try await setShareInvitesUserEmailsAndKeys(with: selectedEmails)
+            highlightedEmail = nil
+            goToNextStep = true
+            return true
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+            return false
         }
     }
 
