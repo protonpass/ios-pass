@@ -68,10 +68,10 @@ extension MonitorProtonAddressesViewModel {
                 try await refreshAccessAndMonitorState()
 
                 if enabled {
-                    let message = #localized("Proton addresses monitoring enabled")
+                    let message = #localized("Proton addresses monitoring resumed")
                     router.display(element: .successMessage(message))
                 } else {
-                    let message = #localized("Proton addresses monitoring disabled")
+                    let message = #localized("Proton addresses monitoring paused")
                     router.display(element: .infosMessage(message))
                 }
             } catch {
