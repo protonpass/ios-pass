@@ -97238,72 +97238,72 @@
         }
       }
     },
-    "Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)" : {
+    "Your Proton Account information remains secure and encrypted." : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ваш уліковы запіс Proton застаўся ў бяспецы і зашыфраваны. [Даведацца больш](https://proton.me/blog/breach-recommendations)"
+            "value" : "Ваш уліковы запіс Proton застаўся ў бяспецы і зашыфраваны."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)"
+            "value" : "Your Proton Account information remains secure and encrypted."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La información de la cuenta Proton se mantiene segura y cifrada. [Más información](https://proton.me/blog/breach-recommendations)"
+            "value" : "La información de la cuenta Proton se mantiene segura y cifrada."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La información de la cuenta de Proton se mantiene segura y cifrada. [Más información](https://proton.me/blog/breach-recommendations)"
+            "value" : "La información de la cuenta de Proton se mantiene segura y cifrada."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton-tilisi tiedot ovat edelleen turvassa ja salattuina. [Lue lisää](https://proton.me/blog/breach-recommendations)"
+            "value" : "Proton-tilisi tiedot ovat edelleen turvassa ja salattuina."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les informations de votre compte Proton restent sécurisées et chiffrées. [En savoir plus] (https://proton.me/blog/breach-recommendations)"
+            "value" : "Les informations de votre compte Proton restent sécurisées et chiffrées."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Informasi Akun Proton Anda tetap aman dan terenkripsi. [Pelajari lebih lanjut](https://proton.me/blog/breach-recommendations)"
+            "value" : "Informasi Akun Proton Anda tetap aman dan terenkripsi."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le informazioni del tuo account Proton rimangono sicure e crittografate. [Scopri di più](https://proton.me/blog/breach-recommendations)"
+            "value" : "Le informazioni del tuo account Proton rimangono sicure e crittografate."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton-kontoinformasjonen din forblir sikker og kryptert. [Lær mer](https://proton.me/blog/breach-recommendations)."
+            "value" : "Proton-kontoinformasjonen din forblir sikker og kryptert."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Informacje konta Proton pozostają bezpieczne i zaszyfrowane. [Dowiedz się więcej]\n(https://proton.me/blog/breach-recommendations)"
+            "value" : "Informacje konta Proton pozostają bezpieczne i zaszyfrowane."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Din Proton-kontoinformation förblir säker och krypterad. [Lär dig mer](https://proton.me/blog/breach-recommendations)"
+            "value" : "Din Proton-kontoinformation förblir säker och krypterad."
           }
         }
       }
