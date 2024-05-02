@@ -28,58 +28,11 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
     @Binding var title: String
     let focusedField: FocusState<Field?>.Binding
     let field: Field
-    let selectedVault: Vault
     let itemContentType: ItemContentType
     let isEditMode: Bool
-    var onChangeVault: () -> Void
     var onSubmit: (() -> Void)?
 
     var body: some View {
-        switch itemContentType {
-        case .note:
-            if isEditMode {
-                EmptyView()
-            } else {
-                vaultRow
-                    .roundedEditableSection()
-            }
-
-        default:
-            if isEditMode {
-                titleRow
-                    .roundedEditableSection()
-            } else {
-                VStack(spacing: 0) {
-                    vaultRow
-                    PassSectionDivider()
-                    titleRow
-                }
-                .roundedEditableSection()
-            }
-        }
-    }
-
-    private var vaultRow: some View {
-        Button(action: onChangeVault) {
-            HStack {
-                VaultThumbnail(vault: selectedVault)
-                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                    Text("Vault")
-                        .sectionTitleText()
-                    Text(selectedVault.name)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                ItemDetailSectionIcon(icon: IconProvider.chevronDown)
-            }
-            .padding(DesignConstant.sectionPadding)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-    }
-
-    private var titleRow: some View {
         HStack {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Title")
@@ -104,5 +57,6 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
         }
         .padding(DesignConstant.sectionPadding)
         .animation(.default, value: title.isEmpty)
+        .roundedEditableSection()
     }
 }

@@ -84,10 +84,8 @@ struct CreateEditAliasView: View {
                     CreateEditItemTitleSection(title: $viewModel.title,
                                                focusedField: $focusedField,
                                                field: .title,
-                                               selectedVault: viewModel.selectedVault,
                                                itemContentType: viewModel.itemContentType(),
                                                isEditMode: viewModel.mode.isEditMode,
-                                               onChangeVault: { viewModel.changeVault() },
                                                onSubmit: {
                                                    if case .create = viewModel.mode, isShowingAdvancedOptions {
                                                        focusedField = .prefix
@@ -162,8 +160,10 @@ struct CreateEditAliasView: View {
                                   isSaveable: viewModel.isSaveable,
                                   isSaving: viewModel.isSaving,
                                   canScanDocuments: viewModel.canScanDocuments,
+                                  vault: viewModel.editableVault,
                                   itemContentType: viewModel.itemContentType(),
                                   shouldUpgrade: viewModel.shouldUpgrade,
+                                  onSelectVault: { viewModel.changeVault() },
                                   onGoBack: { isShowingDiscardAlert.toggle() },
                                   onUpgrade: { viewModel.upgrade() },
                                   onScan: { viewModel.openScanner() },

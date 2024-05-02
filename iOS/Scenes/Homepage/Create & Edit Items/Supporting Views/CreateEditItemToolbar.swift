@@ -28,8 +28,10 @@ struct CreateEditItemToolbar: ToolbarContent {
     let isSaveable: Bool
     let isSaving: Bool
     let canScanDocuments: Bool
+    let vault: Vault?
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
+    let onSelectVault: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
     let onScan: () -> Void
@@ -62,6 +64,10 @@ struct CreateEditItemToolbar: ToolbarContent {
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
+            if let vault {
+                vaultButton(vault)
+            }
+
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
                 case .creditCard, .note:
@@ -83,5 +89,26 @@ private extension CreateEditItemToolbar {
                                         disabled: !isSaveable,
                                         action: onSave)
         }
+    }
+
+    func vaultButton(_ vault: Vault) -> some View {
+        HStack {
+            Image(uiImage: vault.displayPreferences.icon.icon.bigImage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18)
+            Text(vault.name)
+            Image(systemName: "chevron.down")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 12)
+        }
+        .frame(height: 40)
+        .foregroundStyle(vault.displayPreferences.color.color.color.toColor)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .background(vault.displayPreferences.color.color.color.toColor.opacity(0.16))
+        .clipShape(Capsule())
+        .fixedSize(horizontal: false, vertical: false)
+        .buttonEmbeded(onSelectVault)
     }
 }
