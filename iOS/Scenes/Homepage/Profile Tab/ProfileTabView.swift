@@ -359,6 +359,7 @@ private extension Plan {
     }
 }
 
+@MainActor
 struct SentinelSheetView: View {
     @Binding var isPresented: Bool
     let noBackgroundSheet: Bool
@@ -395,38 +396,51 @@ struct SentinelSheetView: View {
         .preferredColorScheme(.light)
     }
 
+    @ViewBuilder
     private var mainSentinelSheet: some View {
-        VStack {
+        let isIpad = UIDevice.current.isIpad
+        VStack(spacing: DesignConstant.sectionPadding) {
+            if isIpad {
+                Spacer()
+            }
             Image(uiImage: PassIcon.netShield)
                 .resizable()
                 .scaledToFit()
+            if isIpad {
+                Spacer()
+            }
+            VStack(spacing: 8) {
+                Text("Proton Sentinel")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textInvert.toColor)
 
-            Text("Proton Sentinel")
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textInvert.toColor)
+                Text("Sentinel description")
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(PassColor.textInvert.toColor)
+                    .frame(maxWidth: .infinity, alignment: .top)
+                    .padding(.bottom, 8)
+            }
+            VStack(spacing: 8) {
+                CapsuleTextButton(title: sentinelActive ? #localized("Disable Proton Sentinel") :
+                    #localized("Enable Proton Sentinel"),
+                    titleColor: PassColor.interactionNormMinor1,
+                    backgroundColor: PassColor.interactionNormMajor2,
+                    height: 48,
+                    action: mainAction)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
 
-            Text("Sentinel description")
-                .font(.body)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textInvert.toColor)
-                .frame(maxWidth: .infinity, alignment: .top)
-                .padding(.bottom, 8)
-
-            CapsuleTextButton(title: sentinelActive ? #localized("Disable Proton Sentinel") :
-                #localized("Enable Proton Sentinel"),
-                titleColor: PassColor.interactionNormMinor1,
-                backgroundColor: PassColor.interactionNormMajor2,
-                height: 48,
-                action: mainAction)
-                .padding(.horizontal, DesignConstant.sectionPadding)
-
-            CapsuleTextButton(title: #localized("Learn more"),
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              height: 48,
-                              action: secondaryAction)
-                .padding(.horizontal, DesignConstant.sectionPadding)
+                CapsuleTextButton(title: #localized("Learn more"),
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: PassColor.interactionNormMinor1,
+                                  height: 48,
+                                  action: secondaryAction)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
+            }
+            if isIpad {
+                Spacer()
+            }
         }
     }
 
