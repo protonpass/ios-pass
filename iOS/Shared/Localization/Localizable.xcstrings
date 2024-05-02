@@ -39722,22 +39722,22 @@
         }
       }
     },
-    "Hide-my-email aliases monitoring disabled" : {
+    "Hide-my-email aliases monitoring paused" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hide-my-email aliases monitoring disabled"
+            "value" : "Hide-my-email aliases monitoring paused"
           }
         }
       }
     },
-    "Hide-my-email aliases monitoring enabled" : {
+    "Hide-my-email aliases monitoring resumed" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hide-my-email aliases monitoring enabled"
+            "value" : "Hide-my-email aliases monitoring resumed"
           }
         }
       }
@@ -49924,104 +49924,32 @@
         }
       }
     },
-    "Monitoring disabled" : {
+    "Monitoring paused" : {
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Назіранне адключана"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitorering deaktiveret"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monitoring disabled"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El monitoreo ha sido desactivado."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El monitoreo fue desactivado."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valvonta poistettiin käytöstä"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La surveillance a été désactivée."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pemantauan dinonaktifkan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoraggio disabilitato"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모니터링 비활성화됨"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Overvåking deaktivert"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoring został wyłączony"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Övervakning inaktiverad"
+            "value" : "Monitoring paused"
           }
         }
       }
     },
-    "Monitoring disabled for %@" : {
+    "Monitoring paused for %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monitoring disabled for %@"
+            "value" : "Monitoring paused for %@"
           }
         }
       }
     },
-    "Monitoring enabled for %@" : {
+    "Monitoring resumed for %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monitoring enabled for %@"
+            "value" : "Monitoring resumed for %@"
           }
         }
       }
@@ -61732,22 +61660,22 @@
         }
       }
     },
-    "Proton addresses monitoring disabled" : {
+    "Proton addresses monitoring paused" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton addresses monitoring disabled"
+            "value" : "Proton addresses monitoring paused"
           }
         }
       }
     },
-    "Proton addresses monitoring enabled" : {
+    "Proton addresses monitoring resumed" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton addresses monitoring enabled"
+            "value" : "Proton addresses monitoring resumed"
           }
         }
       }
