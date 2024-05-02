@@ -106,6 +106,15 @@ class BaseCreateEditItemViewModel {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
 
+    /// Only able to select vault when creating items
+    var editableVault: Vault? {
+        if case .create = mode {
+            selectedVault
+        } else {
+            nil
+        }
+    }
+
     weak var delegate: (any CreateEditItemViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
 
