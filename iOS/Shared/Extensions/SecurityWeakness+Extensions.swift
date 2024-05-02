@@ -37,6 +37,16 @@ public extension SecurityWeakness {
         }
     }
 
+    /// Title used in login detail page
+    var detailTitle: String? {
+        switch self {
+        case .reusedPasswords:
+            nil
+        default:
+            title
+        }
+    }
+
     var subtitleInfo: String? {
         switch self {
         case .weakPasswords:
@@ -50,19 +60,16 @@ public extension SecurityWeakness {
         }
     }
 
-    var infos: String {
+    var infos: String? {
         switch self {
         case .excludedItems:
             #localized("This item is not being monitored")
         case .weakPasswords:
             #localized("This account is vulnerable, visit the service and change your password")
-        case .reusedPasswords:
-            #localized("Visit the website and generate a unique password for this item")
         case .missing2FA:
             #localized("It would be more secure to set up 2FA for this item")
-
         default:
-            ""
+            nil
         }
     }
 }
