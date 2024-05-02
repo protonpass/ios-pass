@@ -75,7 +75,7 @@ enum SecureRowType {
         case .success:
             PassColor.cardInteractionNormMinor2
         case .info:
-            PassColor.backgroundNorm
+            PassColor.inputBackgroundNorm
         case .upsell:
             PassColor.interactionNormMinor2
         }
