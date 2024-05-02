@@ -59,9 +59,13 @@ extension PasswordStrength {
 }
 
 extension PasswordStrength? {
-    var sectionTitle: String {
+    func sectionTitle(reuseCount: Int?) -> String {
         if let self {
-            #localized("Password") + " • " + self.title
+            if let reuseCount {
+                #localized("Password") + " • " + self.title + " • " + "Reused" + " (\(reuseCount))"
+            } else {
+                #localized("Password") + " • " + self.title
+            }
         } else {
             #localized("Password")
         }
