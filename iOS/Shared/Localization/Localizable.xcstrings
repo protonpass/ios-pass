@@ -36229,6 +36229,16 @@
         }
       }
     },
+    "For added security, set up two-factor authentication on the following accounts." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For added security, set up two-factor authentication on the following accounts."
+          }
+        }
+      }
+    },
     "Force synchronization" : {
       "localizations" : {
         "be" : {
@@ -41173,12 +41183,12 @@
         }
       }
     },
-    "Inactive 2FA authentication" : {
+    "Inactive 2FA" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inactive 2FA authentication"
+            "value" : "Inactive 2FA"
           }
         }
       }
@@ -42611,142 +42621,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "mời bạn truy cập nội dung trong"
-          }
-        }
-      }
-    },
-    "It would be more secure to set up 2FA for this item" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Будзе больш бяспечна наладзіць 2ФА для гэтага элемента"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Det ville være mere sikkert at opsætte 2FA for dette element."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es wäre sicherer, 2FA für dieses Element einzurichten."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Θα ήταν πιο ασφαλές να ρυθμίσετε το 2FA για αυτό το στοιχείο"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "It would be more secure to set up 2FA for this item"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podría mejorar tu seguridad al configurar 2FA para este elemento."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podría mejorar su seguridad al configurar 2FA para este elemento"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kohteelle olisi turvallisempaa määrittää kaksivaiheinen tunnistautuminen"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il serait plus sûr d'activer l'A2F pour cet élément."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item ini akan lebih aman dengan pengaturan 2FA"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sarebbe più sicuro impostare la 2FA per questo elemento"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "უფრო უსაფრთხო იქნება, თუ ამ ელემენტისთვის 2FA-ს მოარგებთ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 항목은 2단계 인증을 설정하는 것이 더욱 안전합니다"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Det ville være sikrere å sette opp 2FA for dette elementet"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het zou veiliger zijn om 2FA op te zetten voor dit item"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zalecamy skonfigurowanie uwierzytelniania dwustopniowego"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seria mais seguro configurar A2F para este item"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Va fi mult mai sigură setarea A2F pentru acest articol"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pre túto položku by bolo bezpečnejšie nastaviť 2FA"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Za ta predmet bi bilo varneje vključiti 2FA."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Det skulle vara säkrare att ställa in 2FA för detta objekt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu öge için 2 adımlı doğrulamayı ayarlamak daha güvenli olur"
           }
         }
       }
@@ -48870,142 +48744,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đăng nhập"
-          }
-        }
-      }
-    },
-    "Logins with sites that have two-factor authentication available but you haven’t set it up yet." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Запісы ўваходу з сайтаў, якія маюць двухфактарную аўтэнтыфікацыю даступны, але вы іх пакуль не наладзілі."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logins på sider, der har to-faktor-godkendelse, men som du ikke har indstillet endnu."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anmeldungen bei Websites, die über eine Zwei-Faktor-Authentifizierung verfügen, die du aber noch nicht eingerichtet hast."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Συνδέσεις με ιστότοπους που διαθέτουν έλεγχο ταυτότητας δύο παραγόντων, αλλά δεν τον έχετε ρυθμίσει ακόμα."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los inicios de sesión en sitios que disponen de autenticación de dos factores pero que aún no has configurado."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los inicios de sesión en sitios que disponen de autenticación de dos factores pero que aún no ha configurado."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kirjautumistiedot sivustoille, joilla kaksivaiheinen tunnistautuminen on käytettävissä, mutta et ole vielä ottanut sitä käyttöön."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il s'agit de connexions disponibles à des sites disposant de l'authentification à deux facteurs (A2F) mais que vous n'avez pas configuré."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entri masuk bagi situs yang memiliki autentikasi dua faktor telah tersedia, namun Anda belum mengatur hal ini."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Login che supportano l'autenticazione a due fattori ma in cui non la hai ancora impostata."
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შესვლის ჩანაწერები საიტებით, რომლებსაც 2FA-სთან წვდომა აქვთ, მორგებული კი - ჯერ არა."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "2단계 인증으로 로그인을 지원하지만 아직 설정하지 않은 사이트들입니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pålogginger med nettsteder som har tofaktorautentisering tilgjengelig, men som du ikke har konfigurert enda."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logins met websites met tweevoudige verificatie zijn beschikbaar, maar u hebt dit nog niet ingesteld."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dane logowania na stronach z dostępnym uwierzytelnianiem dwustopniowym, które nie zostało jeszcze skonfigurowane."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inícios de sessão em sites que possuem autenticação em duas etapas disponíveis, mas você ainda não configurou."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Autentificări cu site-uri care au disponibilă autentificarea cu doi factori, dar încă nu ați configurat-o."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prihlásenia na stránky, ktoré majú k dvojstupňové overenie, ale vy ste ho ešte nenastavili."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prijave v spletna mesta, ki imajo na voljo dvojno preverjanje pristnosti, vendar ga še niste nastavili."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inloggningar med webbplatser som har tvåfaktorsautentisering tillgänglig men som du inte har ställt in än."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İki adımlı kimlik doğrulaması bulunan ancak henüz ayarlamadığınız sitelerdeki oturumlar."
           }
         }
       }
@@ -80209,6 +79947,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Điều này có thể mất một vài phút."
+          }
+        }
+      }
+    },
+    "This service offers 2FA. Enable it for added account security." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This service offers 2FA. Enable it for added account security."
           }
         }
       }
