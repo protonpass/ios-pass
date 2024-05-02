@@ -29,7 +29,7 @@ import SwiftUI
 
 struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
-    private let router = resolve(\RouterContainer.mainNavViewRouter)
+    @EnvironmentObject private var router: PathRouter
     @StateObject private var viewModel = UserPermissionViewModel()
 
     var body: some View {
@@ -47,7 +47,6 @@ struct UserPermissionView: View {
             }
             Spacer()
         }
-        .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .shareSummary))
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(DesignConstant.sectionPadding)
@@ -236,7 +235,7 @@ private extension UserPermissionView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.arrowLeft,
+            CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Go back",
@@ -250,7 +249,7 @@ private extension UserPermissionView {
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: !viewModel.canContinue,
-                                        action: { viewModel.goToNextStep = true })
+                                        action: { router.navigate(to: .shareSummary) })
         }
     }
 }
