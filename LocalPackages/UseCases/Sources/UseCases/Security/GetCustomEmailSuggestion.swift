@@ -22,12 +22,15 @@ import Client
 import Entities
 
 public protocol GetCustomEmailSuggestionUseCase: Sendable {
-    func execute(monitoredCustomEmails: [CustomEmail]) async throws -> [SuggestedEmail]
+    func execute(monitoredCustomEmails: [CustomEmail],
+                 protonAddresses: [ProtonAddress]) async throws -> [SuggestedEmail]
 }
 
 public extension GetCustomEmailSuggestionUseCase {
-    func callAsFunction(monitoredCustomEmails: [CustomEmail]) async throws -> [SuggestedEmail] {
-        try await execute(monitoredCustomEmails: monitoredCustomEmails)
+    func callAsFunction(monitoredCustomEmails: [CustomEmail],
+                        protonAddresses: [ProtonAddress]) async throws -> [SuggestedEmail] {
+        try await execute(monitoredCustomEmails: monitoredCustomEmails,
+                          protonAddresses: protonAddresses)
     }
 }
 
@@ -44,23 +47,29 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
         self.validateEmailUseCase = validateEmailUseCase
     }
 
-    public func execute(monitoredCustomEmails: [CustomEmail]) async throws -> [SuggestedEmail] {
+    public func execute(monitoredCustomEmails: [CustomEmail],
+                        protonAddresses: [ProtonAddress]) async throws -> [SuggestedEmail] {
         guard monitoredCustomEmails.count < 10 else {
             return []
         }
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
-        let emails = try await itemRepository.getActiveLogInItems()
+        let items = try await itemRepository.getAllItems()
+        let activeLoginItems = items.filter { $0.isLogInItem && $0.item.itemState == .active }
+        let aliasAddresses = items.compactMap { $0.item.aliasEmail?.lowercased() }
+        var excludedEmails = monitoredCustomEmails.map { $0.email.lowercased() }
+        excludedEmails.append(contentsOf: aliasAddresses)
+        excludedEmails.append(contentsOf: protonAddresses.map { $0.email.lowercased() })
+
+        let emails = activeLoginItems
             .compactMap { encryptedItem -> String? in
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                      let loginItem = item.loginItem,
-                      validateEmailUseCase(email: loginItem.username),
-                      !monitoredCustomEmails.map({ $0.email.lowercased() })
-                      .contains(loginItem.username.lowercased())
-                else {
+                      let email = item.loginItem?.username.lowercased(),
+                      validateEmailUseCase(email: email),
+                      !excludedEmails.contains(email) else {
                     return nil
                 }
-                return loginItem.username
+                return email
             }
 
         let counts = countOccurrences(of: emails)
@@ -69,7 +78,9 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
             .map { SuggestedEmail(email: $0.key, count: $0.value) }
         return Array(sortedCounts.prefix(3))
     }
+}
 
+private extension GetCustomEmailSuggestion {
     func countOccurrences(of array: [String]) -> [String: Int] {
         var counts = [String: Int]()
 
