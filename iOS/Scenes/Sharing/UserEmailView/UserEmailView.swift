@@ -31,7 +31,7 @@ import SwiftUI
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()
-    private var router = resolve(\RouterContainer.mainNavViewRouter)
+    @StateObject private var router = resolve(\RouterContainer.sharingRouter)
     @State private var isFocused = false
 
     var body: some View {
@@ -88,13 +88,13 @@ struct UserEmailView: View {
         }
         .animation(.default, value: viewModel.selectedEmails)
         .animation(.default, value: viewModel.recommendationsState)
-        .navigate(isActive: $viewModel.goToNextStep,
-                  destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
-        .navigationStackEmbeded()
+        .routingProvided
+        .navigationStackEmbeded($router.path)
+        .environmentObject(router)
         .ignoresSafeArea(.keyboard)
     }
 }
@@ -245,7 +245,13 @@ private extension UserEmailView {
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: !viewModel.canContinue,
-                                            action: { viewModel.continue() })
+                                            action: {
+                                                Task {
+                                                    if await viewModel.continue() {
+                                                        router.navigate(to: .userSharePermission)
+                                                    }
+                                                }
+                                            })
             }
         }
     }

@@ -47,4 +47,9 @@ extension RouterContainer {
         self { PathRouter() }
             .unique
     }
+
+    var sharingRouter: Factory<PathRouter> {
+        self { PathRouter() }
+            .unique
+    }
 }
