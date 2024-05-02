@@ -87,10 +87,10 @@ extension MonitorAliasesViewModel {
                 try await refreshAccessAndMonitorState()
 
                 if enabled {
-                    let message = #localized("Hide-my-email aliases monitoring enabled")
+                    let message = #localized("Hide-my-email aliases monitoring resumed")
                     router.display(element: .successMessage(message))
                 } else {
-                    let message = #localized("Hide-my-email aliases monitoring disabled")
+                    let message = #localized("Hide-my-email aliases monitoring paused")
                     router.display(element: .infosMessage(message))
                 }
             } catch {

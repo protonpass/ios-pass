@@ -126,7 +126,7 @@ private extension DarkWebMonitorHomeView {
             VStack(alignment: .leading) {
                 Text(title)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                Text("Monitoring disabled")
+                Text("Monitoring paused")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
             }
