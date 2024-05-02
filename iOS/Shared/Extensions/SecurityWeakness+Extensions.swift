@@ -33,7 +33,7 @@ public extension SecurityWeakness {
         case .breaches:
             #localized("Dark Web Monitoring")
         case .missing2FA:
-            #localized("Inactive 2FA authentication")
+            #localized("Set up 2FA for more security")
         }
     }
 
@@ -52,9 +52,9 @@ public extension SecurityWeakness {
         case .weakPasswords:
             #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
         case .reusedPasswords:
-            #localized("Generate unique passwords to increase your security.")
+            #localized("Generate unique passwords for each account to increase your security.")
         case .missing2FA:
-            #localized("Logins with sites that have two-factor authentication available but you haven’t set it up yet.")
+            #localized("For added security, set up two-factor authentication on the following accounts.")
         default:
             nil
         }
@@ -67,7 +67,7 @@ public extension SecurityWeakness {
         case .weakPasswords:
             #localized("This account is vulnerable, visit the service and change your password")
         case .missing2FA:
-            #localized("It would be more secure to set up 2FA for this item")
+            #localized("This service offers 2FA. Enable it for added account security.")
         default:
             nil
         }
