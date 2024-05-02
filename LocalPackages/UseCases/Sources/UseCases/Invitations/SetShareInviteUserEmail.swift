@@ -23,7 +23,7 @@
 import Client
 import Entities
 
-public protocol SetShareInvitesUserEmailsAndKeysUseCase {
+public protocol SetShareInvitesUserEmailsAndKeysUseCase: Sendable {
     func execute(with emails: [String]) async throws
 }
 
