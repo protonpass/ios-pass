@@ -29,7 +29,6 @@ final class UserPermissionViewModel: ObservableObject, Sendable {
     @Published private(set) var selectedUserRole: ShareRole = .read
     @Published private(set) var emails = [String: ShareRole]()
     @Published private(set) var canContinue = false
-    @Published var goToNextStep = false
 
     private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)

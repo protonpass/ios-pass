@@ -27,6 +27,14 @@ struct CreateEditVaultView: View {
     @StateObject var viewModel: CreateEditVaultViewModel
     @FocusState private var isFocusedOnTitle
 
+    private let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
@@ -37,10 +45,10 @@ struct CreateEditVaultView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 colorsAndIcons
             }
-            .showSpinner(viewModel.loading)
             .animation(.default, value: viewModel.canCreateOrEdit)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(DesignConstant.sectionPadding)
+            .showSpinner(viewModel.loading)
             .navigationBarTitleDisplayMode(.inline)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
@@ -140,41 +148,31 @@ struct CreateEditVaultView: View {
     private var colorsAndIcons: some View {
         GeometryReader { proxy in
             let itemPerRow = 5
-            let rowSpacing: CGFloat = 16
-            let rowWidth = rowWidth(size: proxy.size, itemPerRow: itemPerRow, rowSpacing: rowSpacing)
-            VStack(spacing: rowSpacing) {
-                ForEach(VaultColorIcon.allCases.chunked(into: itemPerRow), id: \.self) { chunkedColorIcons in
-                    HStack {
-                        ForEach(chunkedColorIcons, id: \.self) { colorIcon in
-                            switch colorIcon {
-                            case let .color(color):
-                                VaultColorView(color: color, selectedColor: $viewModel.selectedColor)
-                                    .frame(width: rowWidth, height: rowWidth)
-                            case let .icon(icon):
-                                VaultIconView(icon: icon, selectedIcon: $viewModel.selectedIcon)
-                                    .frame(width: rowWidth, height: rowWidth)
-                            }
-
-                            if colorIcon != chunkedColorIcons.last {
-                                Spacer()
-                            }
-                        }
+            let rowSpacing: CGFloat = DesignConstant.sectionPadding
+            let itemSize = itemSize(size: proxy.size, itemPerRow: itemPerRow, rowSpacing: rowSpacing)
+            LazyVGrid(columns: columns, spacing: rowSpacing) {
+                ForEach(VaultColorIcon.allCases, id: \.self) { colorIcon in
+                    switch colorIcon {
+                    case let .color(color):
+                        VaultColorView(color: color, selectedColor: $viewModel.selectedColor)
+                            .frame(width: itemSize, height: itemSize)
+                    case let .icon(icon):
+                        VaultIconView(icon: icon, selectedIcon: $viewModel.selectedIcon)
+                            .frame(width: itemSize, height: itemSize)
                     }
                 }
-
-                Spacer()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
-    private func rowWidth(size: CGSize, itemPerRow: Int, rowSpacing: CGFloat) -> CGFloat {
+    private func itemSize(size: CGSize, itemPerRow: Int, rowSpacing: CGFloat) -> CGFloat {
         let rowSpacing = Int(rowSpacing)
         let rowCount = VaultColorIcon.allCases.count / itemPerRow
         let columSpacing = 26
         let rowHeight = (Int(size.height) - (rowCount - 1) * rowSpacing) / rowCount
         let rowWidth = (Int(size.width) - (itemPerRow - 1) * columSpacing) / itemPerRow
-        return CGFloat(min(rowHeight, rowWidth))
+        return CGFloat(max(min(rowHeight, rowWidth), 0))
     }
 }
 
