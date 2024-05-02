@@ -30,6 +30,7 @@ import SwiftUI
 struct BreachDetailView: View {
     private let breach: Breach
     @Environment(\.dismiss) private var dismiss
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init(breach: Breach) {
         self.breach = breach
@@ -43,6 +44,7 @@ struct BreachDetailView: View {
 }
 
 private extension BreachDetailView {
+    @MainActor
     var mainContainer: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             headerInfo
@@ -52,6 +54,9 @@ private extension BreachDetailView {
                 recommendedActions
             }
             footer
+                .onTapGesture {
+                    router.navigate(to: .urlPage(urlString: "https://proton.me/blog/breach-recommendations"))
+                }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
@@ -175,12 +180,14 @@ private extension BreachDetailView {
 
 private extension BreachDetailView {
     var footer: some View {
-        Text("Your Proton Account information remains secure and encrypted. [Learn more](https://proton.me/blog/breach-recommendations)")
+        Text("Your Proton Account information remains secure and encrypted.")
             .font(.callout)
             .fontWeight(.regular)
-            .foregroundStyle(PassColor.textWeak.toColor)
-            .tint(PassColor.interactionNormMajor2.toColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(PassColor.textWeak.toColor) +
+            Text(verbatim: " ") +
+            Text("Learn more")
+            .foregroundColor(PassColor.interactionNormMajor2.toColor)
+            .underline()
     }
 }
 
