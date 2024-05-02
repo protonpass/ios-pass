@@ -308,6 +308,6 @@ private extension [ProtonAddress] {
 
 private extension [CustomEmail] {
     func sorted() -> Self {
-        sorted(by: { $0.breachCounter > $1.breachCounter })
+        sorted(by: { $0.breachCounter > $1.breachCounter || ($0.verified && !$1.verified) })
     }
 }
