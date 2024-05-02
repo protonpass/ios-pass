@@ -27,7 +27,7 @@ struct ToggleMonitorButton: View {
 
     var body: some View {
         Button(action: action) {
-            let label = monitored ? #localized("Disable monitoring") : #localized("Enable monitoring")
+            let label = monitored ? #localized("Pause monitoring") : #localized("Resume monitoring")
             let icon = monitored ? "eye.slash" : "eye"
             Label(label, systemImage: icon)
         }
