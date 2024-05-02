@@ -52,7 +52,7 @@ public extension SecurityWeakness {
         case .weakPasswords:
             #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
         case .reusedPasswords:
-            #localized("Generate unique passwords to increase your security.")
+            #localized("Generate unique passwords for each account to increase your security.")
         case .missing2FA:
             #localized("For added security, set up two-factor authentication on the following accounts.")
         default:
