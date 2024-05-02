@@ -168,7 +168,7 @@ private extension SharingSummaryView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.arrowLeft,
+            CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Go back",
