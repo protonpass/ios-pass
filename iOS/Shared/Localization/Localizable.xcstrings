@@ -50462,118 +50462,6 @@
         }
       }
     },
-    "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Назіранне адрасоў электроннай пошты з разнастайных даменаў. Вы можаце назіраць максімум за 10 карыстальніцкімі адрасамі."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Überwache E-Mail-Adressen von verschiedenen Domains. Du kannst bis zu 10 benutzerdefinierte Adressen überwachen."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Παρακολουθήστε διευθύνσεις ηλεκτρονικού ταχυδρομείου από διαφορετικούς τομείς. Μπορείτε να παρακολουθείτε έως και 10 προσαρμοσμένες διευθύνσεις."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitorea direcciones de correo de dominios diferentes. Puedes monitorear un máximo de 10 direcciones personalizadas."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoree direcciones de correo de dominios diferentes. Puede monitorear un máximo de 10 direcciones personalizadas."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valvo eri verkkotunnusten sähköpostiosoitteita. Voit valvoa enintään 10 mukautettua osoitetta."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Surveillez les adresses e-mail provenant d'autres domaines. Vous pouvez surveiller jusqu'à 10 adresses e-mail personnalisées."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pantau alamat email dari berbagai domain berbeda. Anda dapat memantau hingga 10 alamat khusus."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitora gli indirizzi email di diversi domini. Puoi monitorare fino a 10 indirizzi personalizzati."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다른 도메인의 이메일 주소를 모니터링 하세요. 최대 10개의 커스텀 주소에 대한 모니터링이 가능합니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Overvåk e-postadresser fra forskjellige domener. Du kan overvåke maksimalt 10 egendefinerte adresser."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitor e-mailadressen vanuit verschillende domeinen. U kunt maximaal 10 aangepaste adressen controleren."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoruj adresy e-mail z innych domen. Możesz dodać do 10 niestandardowych adresów."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitorizați adresele de e-mail din diferite domenii. Puteți monitoriza maxim 10 adrese personale."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitorovanie emailových adries z rôznych domén. Monitorovať môžete maximálne 10 vlastných adries."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Övervaka e-postadresser från olika domäner. Du kan övervaka högst 10 anpassade adresser."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Farklı etki alanlarındaki e-posta adreslerini izleyin. En fazla 10 özel adresi izleyebilirsiniz."
-          }
-        }
-      }
-    },
     "Monitored" : {
       "localizations" : {
         "be" : {
@@ -94821,6 +94709,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn sẽ xóa nội dung này mà không thể quay lại được, bạn chắc chứ?"
+          }
+        }
+      }
+    },
+    "You can also monitor up to 10 email addresses that aren't Proton or email aliases. They will be sent to HIBP for monitoring - no other data will be shared to HIBP." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can also monitor up to 10 email addresses that aren't Proton or email aliases. They will be sent to HIBP for monitoring - no other data will be shared to HIBP."
           }
         }
       }
