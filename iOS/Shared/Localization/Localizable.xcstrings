@@ -9481,142 +9481,6 @@
         }
       }
     },
-    "Add to monitoring" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Дадаць у назіранне"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tilføj til monitorering"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zur Überwachung hinzufügen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Προσθήκη στην παρακολούθηση"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add to monitoring"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir al monitoreo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir al monitoreo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lisää valvontaan"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter à la surveillance"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tambahkan ke pemantauan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi al monitoraggio"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მონიტორინგში დამატება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모니터링에 추가"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Legg til overvåking"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toevoegen aan monitoring"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dodaj do monitoringu"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adicionar aos monitorados"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adăugare la monitorizare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pridať na monitorovanie"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dodaj v spremljanje"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lägg till att övervaka"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İzlemeye ekle"
-          }
-        }
-      }
-    },
     "Add username or email address" : {
       "comment" : "Login item create/edit page",
       "localizations" : {
@@ -29950,124 +29814,6 @@
         }
       }
     },
-    "Disable monitoring" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Адключыць назіранне"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Überwachung deaktivieren"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Απενεργοποίηση παρακολούθησης"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disable monitoring"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desactivar el monitoreo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desactivar monitoreo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poista valvonta käytöstä"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Désactiver la surveillance"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nonaktifkan pemantauan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disabilita il monitoraggio"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მონიტორინგის გათიშვა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모니터링 비활성화"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deaktiver overvåking"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoren uitschakelen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wyłącz monitoring"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dezactivare monitorizare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vypnúť monitorovanie"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inaktivera övervakning"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İzlemeyi kapat"
-          }
-        }
-      }
-    },
     "Disable Proton Sentinel" : {
       "localizations" : {
         "be" : {
@@ -32754,124 +32500,6 @@
         }
       }
     },
-    "Enable monitoring" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Уключыць назіранне"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Überwachung aktivieren"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ενεργοποίηση παρακολούθησης"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable monitoring"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activar el monitoreo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activar monitoreo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ota valvonta käyttöön"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activer la surveillance"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktifkan pemantauan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abilita il monitoraggio"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მონიტორინგის ჩართვა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모니터링 활성화"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiver overvåking"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoren inschakelen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Włącz monitoring"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activare monitorizare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zapnúť monitorovanie"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktivera övervakning"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İzlemeyi aç"
-          }
-        }
-      }
-    },
     "Enable monitoring to get notified if your aliases were leaked." : {
       "localizations" : {
         "be" : {
@@ -34449,136 +34077,10 @@
     },
     "Exclude from monitoring" : {
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выключыць з назірання"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Undtag fra overvågning"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Von der Überwachung ausschließen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Εξαίρεση από την παρακολούθηση"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exclude from monitoring"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Excluir del monitoreo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Excluir del monitoreo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poista valvonnasta"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exclure de la surveillance"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kecualikan dari pemantauan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Escludi dal monitoraggio"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მონიტორინგიდან ამოღება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모니터링에서 제외"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ekskluder fra overvåking"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uitsluiten van controle"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wyklucz z monitoringu"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Excluir do monitoramento"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Excludere de la monitorizare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vylúčiť z monitorovania"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Izključi iz spremljanja"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exkludera från övervakning"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İzlemeye katmama"
           }
         }
       }
@@ -36229,6 +35731,16 @@
         }
       }
     },
+    "For added security, set up two-factor authentication on the following accounts." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For added security, set up two-factor authentication on the following accounts."
+          }
+        }
+      }
+    },
     "Force synchronization" : {
       "localizations" : {
         "be" : {
@@ -37606,137 +37118,137 @@
         }
       }
     },
-    "Generate unique passwords to increase your security." : {
+    "Generate unique passwords for each account to increase your security." : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Генерыраваць унікальныя паролі для павелічэння вашай бяспекі."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generer unikke adgangskoder for at øge din sikkerhed."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generiere eindeutige Passwörter, um deine Sicherheit zu erhöhen."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Δημιουργήστε μοναδικούς κωδικούς πρόσβασης για να αυξήσετε την ασφάλειά σας."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generate unique passwords to increase your security."
+            "value" : "Generate unique passwords for each account to increase your security."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genera contraseñas únicas para aumentar tu seguridad."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genere contraseñas únicas para incrementar su seguridad."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Luo ainutlaatuisia salasanoja turvallisuuden lisäämiseksi."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Générez un mot de passe unique pour améliorer votre sécurité."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Hasilkan rangkaian kata sandi unik untuk meningkatkan keamanan Anda."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genera password univoche per aumentare la tua sicurezza."
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "შექმენით უნიკალური პაროლები თქვენი უსაფრთხოების გასაზრდელად."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "보안을 강화하기 위해 고유한 비밀번호를 생성하십시오."
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generer unike passord for å øke sikkerheten."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Genereer unieke wachtwoorden om uw veiligheid te verhogen."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Wygeneruj unikalne hasła, aby zwiększyć swoje bezpieczeństwo."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Gere senhas únicas para aumentar sua segurança."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generați parole unice pentru a vă spori securitatea."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generujte jedinečné heslá na zvýšenie zabezpečenia."
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Ustvarite edinstvena gesla in zvišajte raven varnosti."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Generera unika lösenord för att öka din säkerhet."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Güvenliğinizi artırmak için benzersiz parolalar oluşturun."
           }
         }
@@ -41173,12 +40685,22 @@
         }
       }
     },
-    "Inactive 2FA authentication" : {
+    "Inactive 2FA" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inactive 2FA authentication"
+            "value" : "Inactive 2FA"
+          }
+        }
+      }
+    },
+    "Include for monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include for monitoring"
           }
         }
       }
@@ -42615,278 +42137,6 @@
         }
       }
     },
-    "It would be more secure to set up 2FA for this item" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Будзе больш бяспечна наладзіць 2ФА для гэтага элемента"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Det ville være mere sikkert at opsætte 2FA for dette element."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es wäre sicherer, 2FA für dieses Element einzurichten."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Θα ήταν πιο ασφαλές να ρυθμίσετε το 2FA για αυτό το στοιχείο"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "It would be more secure to set up 2FA for this item"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podría mejorar tu seguridad al configurar 2FA para este elemento."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podría mejorar su seguridad al configurar 2FA para este elemento"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kohteelle olisi turvallisempaa määrittää kaksivaiheinen tunnistautuminen"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il serait plus sûr d'activer l'A2F pour cet élément."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item ini akan lebih aman dengan pengaturan 2FA"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sarebbe più sicuro impostare la 2FA per questo elemento"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "უფრო უსაფრთხო იქნება, თუ ამ ელემენტისთვის 2FA-ს მოარგებთ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 항목은 2단계 인증을 설정하는 것이 더욱 안전합니다"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Det ville være sikrere å sette opp 2FA for dette elementet"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het zou veiliger zijn om 2FA op te zetten voor dit item"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zalecamy skonfigurowanie uwierzytelniania dwustopniowego"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seria mais seguro configurar A2F para este item"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Va fi mult mai sigură setarea A2F pentru acest articol"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pre túto položku by bolo bezpečnejšie nastaviť 2FA"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Za ta predmet bi bilo varneje vključiti 2FA."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Det skulle vara säkrare att ställa in 2FA för detta objekt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu öge için 2 adımlı doğrulamayı ayarlamak daha güvenli olur"
-          }
-        }
-      }
-    },
-    "Item added to monitoring" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Элемент дададзены ў назіранне"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Element tilføjet til monitorering"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Element zur Überwachung hinzugefügt"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Στοιχείο που προστέθηκε στην παρακολούθηση"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item added to monitoring"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El elemento ha sido añadido al monitoreo."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elemento añadido al monitoreo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kohde lisättiin valvontaan"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L'élément a été ajouté à la surveillance."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item ditambahkan dalam pemantauan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elemento aggiunto al monitoraggio"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელემენტი დამატებულია მონიტორინგში"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "항목을 모니터링에 추가함"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Element lagt til i overvåking"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item toegevoegd aan monitoring"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Element został uwzględniony w monitoringu"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Item adicionado ao monitoramento"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Articol adăugat la monitorizare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Položka pridaná do monitorovania"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Predmet dodan spremljanju"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Objekt tillagt till övervakning"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öge izlemeye eklendi"
-          }
-        }
-      }
-    },
     "Item excluded from monitoring" : {
       "localizations" : {
         "be" : {
@@ -43303,6 +42553,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge kimliği kopyalandı"
+          }
+        }
+      }
+    },
+    "Item included for monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item included for monitoring"
           }
         }
       }
@@ -44490,6 +43750,142 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các nội dung từ « %@ » đã chuyển tới kho lưu trữ « %@ »"
+          }
+        }
+      }
+    },
+    "Items from your vaults that use this password." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Спіс усіх іншых элементаў з вашага сховішча, якія выкарыстоўваць гэты пароль."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste over alle andre elementer fra dine bokse, der bruger denne adgangskode."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste aller anderen Artikel aus deinen Tresoren, die dieses Kennwort verwenden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Λίστα με όλα τα άλλα στοιχεία από τις κρύπτες σας που χρησιμοποιούν αυτόν τον κωδικό πρόσβασης."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items from your vaults that use this password."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista de todos los demás elementos de tus cajas fuertes que usan esta contraseña."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista de todos los demás elementos de sus bóvedas que usan esta contraseña."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Listaa holviesi kaikki muut tätä salasanaa käyttävät kohteet."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste de tous les éléments de vos coffres-forts qui utilisent le même mot de passe."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Daftar seluruh item pada brankas Anda yang menggunakan kata sandi ini."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Elenco di tutti gli altri elementi delle tue casseforti che utilizzano questa password."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ყველა სხვა ელემენტის სია თქვენი საცავებიდან, რომლებიც ამ პაროლს იყენებს."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이 비밀번호를 사용하는 금고 내 다른 모든 항목의 목록입니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liste over alle andre elementer fra hvelvene dine som bruker dette passordet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lijst van alle andere items uit je kluis die dit wachtwoord gebruiken."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista innych danych logowania w sejfie, które używają tego hasła."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista de todos os outros itens dos seus cofres que usam esta senha."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista celorlalte articole din seifuri care folosesc această parolă."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zoznam všetkých ostatných položiek z vašich trezorov, ktoré používajú toto heslo."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seznam vseh drugih predmetov iz vaših trezorjev, ki uporabljajo to geslo."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lista över alla andra objekt från dina valv som använder detta lösenord."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kasalarınızda bu parolayı kullanan diğer tüm ögelerin listesi."
           }
         }
       }
@@ -47174,142 +46570,6 @@
         }
       }
     },
-    "List of all other items from your vaults that use this password." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Спіс усіх іншых элементаў з вашага сховішча, якія выкарыстоўваць гэты пароль."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste over alle andre elementer fra dine bokse, der bruger denne adgangskode."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste aller anderen Artikel aus deinen Tresoren, die dieses Kennwort verwenden."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Λίστα με όλα τα άλλα στοιχεία από τις κρύπτες σας που χρησιμοποιούν αυτόν τον κωδικό πρόσβασης."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "List of all other items from your vaults that use this password."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista de todos los demás elementos de tus cajas fuertes que usan esta contraseña."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista de todos los demás elementos de sus bóvedas que usan esta contraseña."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Listaa holviesi kaikki muut tätä salasanaa käyttävät kohteet."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste de tous les éléments de vos coffres-forts qui utilisent le même mot de passe."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daftar seluruh item pada brankas Anda yang menggunakan kata sandi ini."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elenco di tutti gli altri elementi delle tue casseforti che utilizzano questa password."
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ყველა სხვა ელემენტის სია თქვენი საცავებიდან, რომლებიც ამ პაროლს იყენებს."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 비밀번호를 사용하는 금고 내 다른 모든 항목의 목록입니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liste over alle andre elementer fra hvelvene dine som bruker dette passordet."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lijst van alle andere items uit je kluis die dit wachtwoord gebruiken."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista innych danych logowania w sejfie, które używają tego hasła."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista de todos os outros itens dos seus cofres que usam esta senha."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista celorlalte articole din seifuri care folosesc această parolă."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zoznam všetkých ostatných položiek z vašich trezorov, ktoré používajú toto heslo."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seznam vseh drugih predmetov iz vaših trezorjev, ki uporabljajo to geslo."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lista över alla andra objekt från dina valv som använder detta lösenord."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kasalarınızda bu parolayı kullanan diğer tüm ögelerin listesi."
-          }
-        }
-      }
-    },
     "Log in to apps instantly" : {
       "localizations" : {
         "be" : {
@@ -48870,142 +48130,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đăng nhập"
-          }
-        }
-      }
-    },
-    "Logins with sites that have two-factor authentication available but you haven’t set it up yet." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Запісы ўваходу з сайтаў, якія маюць двухфактарную аўтэнтыфікацыю даступны, але вы іх пакуль не наладзілі."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logins på sider, der har to-faktor-godkendelse, men som du ikke har indstillet endnu."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anmeldungen bei Websites, die über eine Zwei-Faktor-Authentifizierung verfügen, die du aber noch nicht eingerichtet hast."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Συνδέσεις με ιστότοπους που διαθέτουν έλεγχο ταυτότητας δύο παραγόντων, αλλά δεν τον έχετε ρυθμίσει ακόμα."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logins with sites that have two-factor authentication available but you haven’t set it up yet."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los inicios de sesión en sitios que disponen de autenticación de dos factores pero que aún no has configurado."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los inicios de sesión en sitios que disponen de autenticación de dos factores pero que aún no ha configurado."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kirjautumistiedot sivustoille, joilla kaksivaiheinen tunnistautuminen on käytettävissä, mutta et ole vielä ottanut sitä käyttöön."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il s'agit de connexions disponibles à des sites disposant de l'authentification à deux facteurs (A2F) mais que vous n'avez pas configuré."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entri masuk bagi situs yang memiliki autentikasi dua faktor telah tersedia, namun Anda belum mengatur hal ini."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Login che supportano l'autenticazione a due fattori ma in cui non la hai ancora impostata."
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შესვლის ჩანაწერები საიტებით, რომლებსაც 2FA-სთან წვდომა აქვთ, მორგებული კი - ჯერ არა."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "2단계 인증으로 로그인을 지원하지만 아직 설정하지 않은 사이트들입니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pålogginger med nettsteder som har tofaktorautentisering tilgjengelig, men som du ikke har konfigurert enda."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logins met websites met tweevoudige verificatie zijn beschikbaar, maar u hebt dit nog niet ingesteld."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dane logowania na stronach z dostępnym uwierzytelnianiem dwustopniowym, które nie zostało jeszcze skonfigurowane."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inícios de sessão em sites que possuem autenticação em duas etapas disponíveis, mas você ainda não configurou."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Autentificări cu site-uri care au disponibilă autentificarea cu doi factori, dar încă nu ați configurat-o."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prihlásenia na stránky, ktoré majú k dvojstupňové overenie, ale vy ste ho ešte nenastavili."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prijave v spletna mesta, ki imajo na voljo dvojno preverjanje pristnosti, vendar ga še niste nastavili."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inloggningar med webbplatser som har tvåfaktorsautentisering tillgänglig men som du inte har ställt in än."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İki adımlı kimlik doğrulaması bulunan ancak henüz ayarlamadığınız sitelerdeki oturumlar."
           }
         }
       }
@@ -50720,118 +49844,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lần cuối sửa đổi"
-          }
-        }
-      }
-    },
-    "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Назіранне адрасоў электроннай пошты з разнастайных даменаў. Вы можаце назіраць максімум за 10 карыстальніцкімі адрасамі."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Überwache E-Mail-Adressen von verschiedenen Domains. Du kannst bis zu 10 benutzerdefinierte Adressen überwachen."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Παρακολουθήστε διευθύνσεις ηλεκτρονικού ταχυδρομείου από διαφορετικούς τομείς. Μπορείτε να παρακολουθείτε έως και 10 προσαρμοσμένες διευθύνσεις."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitor email addresses from different domains. You can monitor a maximum of 10 custom addresses."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitorea direcciones de correo de dominios diferentes. Puedes monitorear un máximo de 10 direcciones personalizadas."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoree direcciones de correo de dominios diferentes. Puede monitorear un máximo de 10 direcciones personalizadas."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valvo eri verkkotunnusten sähköpostiosoitteita. Voit valvoa enintään 10 mukautettua osoitetta."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Surveillez les adresses e-mail provenant d'autres domaines. Vous pouvez surveiller jusqu'à 10 adresses e-mail personnalisées."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pantau alamat email dari berbagai domain berbeda. Anda dapat memantau hingga 10 alamat khusus."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitora gli indirizzi email di diversi domini. Puoi monitorare fino a 10 indirizzi personalizzati."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다른 도메인의 이메일 주소를 모니터링 하세요. 최대 10개의 커스텀 주소에 대한 모니터링이 가능합니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Overvåk e-postadresser fra forskjellige domener. Du kan overvåke maksimalt 10 egendefinerte adresser."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitor e-mailadressen vanuit verschillende domeinen. U kunt maximaal 10 aangepaste adressen controleren."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitoruj adresy e-mail z innych domen. Możesz dodać do 10 niestandardowych adresów."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitorizați adresele de e-mail din diferite domenii. Puteți monitoriza maxim 10 adrese personale."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monitorovanie emailových adries z rôznych domén. Monitorovať môžete maximálne 10 vlastných adries."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Övervaka e-postadresser från olika domäner. Du kan övervaka högst 10 anpassade adresser."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Farklı etki alanlarındaki e-posta adreslerini izleyin. En fazla 10 özel adresi izleyebilirsiniz."
           }
         }
       }
@@ -58474,6 +57486,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yapıştır"
+          }
+        }
+      }
+    },
+    "Pause monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause monitoring"
           }
         }
       }
@@ -66863,6 +65885,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kết quả"
+          }
+        }
+      }
+    },
+    "Resume monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resume monitoring"
           }
         }
       }
@@ -80209,6 +79241,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Điều này có thể mất một vài phút."
+          }
+        }
+      }
+    },
+    "This service offers 2FA. Enable it for added account security." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This service offers 2FA. Enable it for added account security."
           }
         }
       }
@@ -95077,6 +94119,16 @@
         }
       }
     },
+    "You can also monitor up to 10 email addresses that aren't Proton or email aliases. They will be sent to HIBP for monitoring - no other data will be shared to HIBP." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can also monitor up to 10 email addresses that aren't Proton or email aliases. They will be sent to HIBP for monitoring - no other data will be shared to HIBP."
+          }
+        }
+      }
+    },
     "You can't invite people outside of your organization, contact admin for more info." : {
       "localizations" : {
         "be" : {
@@ -96587,137 +95639,137 @@
         }
       }
     },
-    "Your email addresses were leaked in at least 1 data breach." : {
+    "Your email address was leaked in at least 1 data breach." : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Ваш адрас электроннай пошты выяўлены прынамсі ў 1 уцечцы даных."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Dine e-mailadresser blev lækket i mindst 1 databrud."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Deine E-Mail-Adressen sind bei mindestens 1 Datendiebstahl veröffentlicht worden."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Οι διευθύνσεις ηλεκτρονικού ταχυδρομείου σας διέρρευσαν σε τουλάχιστον 1 παραβίαση δεδομένων."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your email addresses were leaked in at least 1 data breach."
+            "value" : "Your email address was leaked in at least 1 data breach."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Tus direcciones de correo fueron filtradas en al menos una filtración de datos."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Las direcciones de correo fueron filtradas en al menos una filtración de datos."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Sähköpostiosoitteesi ovat paljastuneet ainakin yhdessä tietovuodossa."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vos adresses e-mail ont été divulguées dans au moins 1 fuite de données."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Alamat email Anda telah dibocorkan pada setidaknya 1 insiden kebocoran data."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "I tuoi indirizzi email sono stati resi pubblici in almeno 1 violazione di dati."
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "თქვენი ელფოსტის მისამართები, სულ ცოტა, 1 მონაცემების გაჟონვაში გამოჩნდა."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "사용자의 이메일 주소가 하나 이상의 데이터 침해에 처해있습니다."
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "E-postadressene dine ble lekket i minst 1 datainnbrudd."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Je e-mailadressen zijn gelekt in ten minste 1 datalek."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Twoje adresy e-mail zostały ujawnione w co najmniej 1 wycieku danych."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Seus endereços de email foram vazados em pelo menos 1 violação de dados."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Adresele de e-mail v-au fost divulgate în cel puțin o compromitere a datelor."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vaše emailové adresy unikli najmenej v 1 prípade porušenia ochrany osobných údajov."
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vaši e-poštni naslovi so pricurljali zaradi vsaj 1 kršitve podatkov."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Dina e-postadresser läckte vid minst 1 dataintrång."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "E-posta adresleriniz en az 1 verilerin ele geçirilmesi olayında açığa çıkmış."
           }
         }
