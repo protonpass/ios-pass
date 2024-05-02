@@ -140,10 +140,10 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
                     try await toggleMonitoringForProtonAddress(address: address)
                 }
                 if !infos.isMonitored {
-                    let message = #localized("Monitoring enabled for %@", infos.email)
+                    let message = #localized("Monitoring resumed for %@", infos.email)
                     router.display(element: .successMessage(message))
                 } else {
-                    let message = #localized("Monitoring disabled for %@", infos.email)
+                    let message = #localized("Monitoring paused for %@", infos.email)
                     router.display(element: .infosMessage(message))
                 }
                 shouldDismiss = true
