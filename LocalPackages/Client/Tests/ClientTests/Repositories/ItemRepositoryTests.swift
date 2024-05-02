@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import Combine
 import ClientMocks
 import Core
 import CoreMocks
@@ -34,6 +35,7 @@ final class ItemRepositoryTests: XCTestCase {
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
     var sut: ItemRepositoryProtocol!
+    private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
@@ -44,6 +46,7 @@ final class ItemRepositoryTests: XCTestCase {
          shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
          passKeyManager = PassKeyManagerProtocolMock()
          logManager = LogManagerProtocolMock()
+        cancellables = []
     }
 
     override func tearDown() {
@@ -64,18 +67,29 @@ extension ItemRepositoryTests {
     
     func testGetAllPinnedItem() async throws {
         localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(item:.random(pinned: true)))
+        
         sut = ItemRepository(userDataSymmetricKeyProvider: userDataSymmetricKeyProvider,
                              localDatasource: localDatasource,
                              remoteDatasource: remoteDatasource,
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)
-        let expectation = XCTestExpectation(description: "Should receive currentlyPinnedItems")
-        let pinnedItems = try await sut.getAllPinnedItems()
+        let expectation = self.expectation(description: "Init of ItemRepository")
         
+        let pinnedItems = try await sut.getAllPinnedItems()
+        var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
+        sut.currentlyPinnedItems
+            .sink { value in
+                currentlyPinnedItems = value
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        await fulfillment(of: [expectation], timeout: 1, enforceOrder: true)
+
         XCTAssertFalse(pinnedItems.isEmpty)
         XCTAssertEqual(pinnedItems.count, 10)
-        XCTAssertEqual(sut.currentlyPinnedItems.value?.count, 10)
+        XCTAssertEqual(currentlyPinnedItems?.count, 10)
         XCTAssertTrue(localDatasource.invokedGetAllPinnedItemsfunction)
         XCTAssertEqual(localDatasource.invokedGetAllPinnedItemsCount, 2)
     }
