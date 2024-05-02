@@ -20,7 +20,6 @@
 
 @testable import Client
 import ClientMocks
-import Combine
 import Core
 import CoreMocks
 import Entities
@@ -29,25 +28,22 @@ import XCTest
 
 final class ItemRepositoryTests: XCTestCase {
     var userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider!
-    var localDatasource: LocalItemDatasourceProtocol!
+    var localDatasource: LocalItemDatasourceProtocolMock!
     var remoteDatasource: RemoteItemDatasourceProtocol!
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
     var sut: ItemRepositoryProtocol!
-    var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
          userDataSymmetricKeyProvider = UserDataSymmetricKeyProviderMock()
          localDatasource = LocalItemDatasourceProtocolMock()
-         (localDatasource as? LocalItemDatasourceProtocolMock)?.stubbedGetAllPinnedItemsResult = []
+         localDatasource.stubbedGetAllPinnedItemsResult = []
          remoteDatasource = RemoteItemDatasourceProtocolMock()
          shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
          passKeyManager = PassKeyManagerProtocolMock()
          logManager = LogManagerProtocolMock()
-        cancellables = .init()
-
     }
 
     override func tearDown() {
@@ -58,8 +54,6 @@ final class ItemRepositoryTests: XCTestCase {
         passKeyManager = nil
         logManager = nil
         sut = nil
-        cancellables = nil
-
         super.tearDown()
     }
 }
@@ -69,7 +63,7 @@ final class ItemRepositoryTests: XCTestCase {
 extension ItemRepositoryTests {
     
     func testGetAllPinnedItem() async throws {
-        (localDatasource as? LocalItemDatasourceProtocolMock)?.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(item:.random(pinned: true)))
+        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(item:.random(pinned: true)))
         sut = ItemRepository(userDataSymmetricKeyProvider: userDataSymmetricKeyProvider,
                              localDatasource: localDatasource,
                              remoteDatasource: remoteDatasource,
@@ -78,19 +72,11 @@ extension ItemRepositoryTests {
                              logManager: logManager)
         let expectation = XCTestExpectation(description: "Should receive currentlyPinnedItems")
         let pinnedItems = try await sut.getAllPinnedItems()
-
-        sut.currentlyPinnedItems
-            .compactMap { $0 }
-            .sink { _ in
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
         
         XCTAssertFalse(pinnedItems.isEmpty)
         XCTAssertEqual(pinnedItems.count, 10)
         XCTAssertEqual(sut.currentlyPinnedItems.value?.count, 10)
-        XCTAssertTrue((localDatasource as? LocalItemDatasourceProtocolMock)!.invokedGetAllPinnedItemsfunction)
-        XCTAssertEqual((localDatasource as? LocalItemDatasourceProtocolMock)?.invokedGetAllPinnedItemsCount, 2)
-        await fulfillment(of: [expectation], timeout: 1)
+        XCTAssertTrue(localDatasource.invokedGetAllPinnedItemsfunction)
+        XCTAssertEqual(localDatasource.invokedGetAllPinnedItemsCount, 2)
     }
 }
