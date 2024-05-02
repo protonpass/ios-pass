@@ -122,9 +122,21 @@ private extension PasskeyDetailView {
                     .sectionContentText()
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(2)
+                if Bundle.main.isQaBuild {
+                    Text(passkey.description)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+}
+
+private extension Passkey {
+    var description: String {
+        let data = creationData
+        return "\(data.deviceName) - \(data.osName) \(data.osVersion) (\(data.appVersion))"
     }
 }
