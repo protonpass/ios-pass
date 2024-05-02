@@ -45,15 +45,6 @@ struct CreateEditNoteView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack {
-                        CreateEditItemTitleSection(title: .constant(""),
-                                                   focusedField: $focusedField,
-                                                   field: .title,
-                                                   selectedVault: viewModel.selectedVault,
-                                                   itemContentType: viewModel.itemContentType(),
-                                                   isEditMode: viewModel.mode.isEditMode,
-                                                   onChangeVault: { viewModel.changeVault() })
-                            .padding(.bottom, 18)
-
                         TextEditorWithPlaceholder(text: $viewModel.title,
                                                   focusedField: $focusedField,
                                                   field: .title,
@@ -91,8 +82,10 @@ struct CreateEditNoteView: View {
                                       isSaveable: viewModel.isSaveable,
                                       isSaving: viewModel.isSaving,
                                       canScanDocuments: viewModel.canScanDocuments,
+                                      vault: viewModel.editableVault,
                                       itemContentType: viewModel.itemContentType(),
                                       shouldUpgrade: false,
+                                      onSelectVault: { viewModel.changeVault() },
                                       onGoBack: { isShowingDiscardAlert.toggle() },
                                       onUpgrade: { /* Not applicable */ },
                                       onScan: { viewModel.openScanner() },
