@@ -74,23 +74,6 @@ enum GeneralSheetDestination: Identifiable, Hashable {
     }
 }
 
-final class MainNavViewRouter {
-    @MainActor @ViewBuilder
-    func navigate(to destination: GeneralRouterDestination) -> some View {
-        switch destination {
-        case .userSharePermission:
-            UserPermissionView()
-        case .shareSummary:
-            SharingSummaryView()
-        case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
-            DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
-                                                                pastRevision: pastRevision))
-        default:
-            EmptyView()
-        }
-    }
-}
-
 @MainActor
 extension View {
     var routingProvided: some View {
