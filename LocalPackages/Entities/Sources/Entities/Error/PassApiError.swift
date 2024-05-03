@@ -45,4 +45,10 @@ public enum PassApiError: Int, Error {
 
     /// This session is locked. You need to call the unlock route before.
     case sessionLocked = 300_008
+
+    /// Invalid validation (e.g custom email validation)
+    case invalidValidation = 2_001
+
+    /// Not allowed (e.g custom email is removed or too many failed verifications)
+    case notAllowed = 2_011
 }

@@ -31,6 +31,7 @@ struct AddCustomEmailView: View {
     @StateObject var viewModel: AddCustomEmailViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
+    @State private var showErrorAlert = false
 
     var body: some View {
         VStack {
@@ -86,6 +87,21 @@ struct AddCustomEmailView: View {
             }
             dismiss()
         }
+        .onReceive(viewModel.$verificationError) { error in
+            showErrorAlert = error != nil
+        }
+        .alert("Error occured",
+               isPresented: $showErrorAlert,
+               actions: {
+                   Button(action: dismiss.callAsFunction) {
+                       Text("OK")
+                   }
+               },
+               message: {
+                   if let message = viewModel.verificationError?.localizedDescription {
+                       Text(message)
+                   }
+               })
         .onAppear { focused = true }
         .navigationTitle(viewModel.customEmail != nil ? "Confirm your email" : "Custom email monitoring")
         .navigationStackEmbeded()
