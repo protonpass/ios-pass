@@ -57,6 +57,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var isShowingNoCameraPermissionView = false
     @Published var isShowingCodeScanner = false
     @Published private(set) var loading = false
+    @Published var showUsernameField = false
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
 
