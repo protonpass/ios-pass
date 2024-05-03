@@ -70,6 +70,8 @@ private extension MonitorIncludedEmailView {
 }
 
 private extension Breachable {
+    // swiftlint:disable:next todo
+    // TODO: Should update Breachable protocol to not only rely on breach count but more towards flags
     var isBreached: Bool {
         breachCounter > 0
     }
