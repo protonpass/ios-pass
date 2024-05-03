@@ -141,15 +141,12 @@ extension DarkWebMonitorHomeViewModel {
     }
 
     func addCustomEmail(email: String) async -> CustomEmail? {
+        defer { updatingStateOfCustomEmail = false }
         do {
             updatingStateOfCustomEmail = true
-            let customEmail = try await addCustomEmailToMonitoring(email: email)
-            fetchSuggestedEmails()
-            updatingStateOfCustomEmail = false
-            return customEmail
+            return try await addCustomEmailToMonitoring(email: email)
         } catch {
             handle(error: error)
-            updatingStateOfCustomEmail = false
             return nil
         }
     }
