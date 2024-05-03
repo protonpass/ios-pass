@@ -1516,6 +1516,12 @@
             "value" : "Cerca tra gli elementi fissati"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ピン留めされたアイテムを検索"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1592,6 +1598,12 @@
             "value" : "Абагуліць журнал пашырэння"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdílet logy rozšíření"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1650,6 +1662,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Condividi i log dell'estensione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拡張機能ログを共有"
           }
         },
         "ka" : {
