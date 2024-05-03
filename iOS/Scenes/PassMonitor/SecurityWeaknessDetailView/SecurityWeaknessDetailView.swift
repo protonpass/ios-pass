@@ -100,7 +100,7 @@ private extension SecurityWeaknessDetailView {
 
 private extension SecurityWeaknessDetailView {
     func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
-        ForEach(sections.keys.sorted(by: >)) { key in
+        ForEach(sections.sortedMostWeakness) { key in
             Section(content: {
                 if !collapsedSections.contains(key), let items = sections[key] {
                     itemsList(items: items)
@@ -194,5 +194,13 @@ private extension SecurityWeakness {
             return true
         }
         return false
+    }
+}
+
+private extension [SecuritySectionHeaderKey: [ItemContent]] {
+    var sortedMostWeakness: [SecuritySectionHeaderKey] {
+        self.keys.sorted {
+            (self[$0]?.count ?? 0) > (self[$1]?.count ?? 0)
+        }
     }
 }
