@@ -111,7 +111,7 @@ struct CreateEditVaultView: View {
                     .foregroundStyle(viewModel.selectedColor.color.toColor)
                     .padding(previewWidth / 4)
                     .frame(width: previewWidth, height: previewWidth)
-                    .background(viewModel.selectedColor.color.toColor).opacity(0.16)
+                    .background(viewModel.selectedColor.color.toColor.opacity(0.16))
                     .clipShape(Circle())
                     .animation(.default, value: viewModel.selectedIcon)
                     .animation(.default, value: viewModel.selectedColor)
