@@ -23,6 +23,7 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 struct CreateEditItemToolbar: ToolbarContent {
     let saveButtonTitle: String
     let isSaveable: Bool
@@ -37,6 +38,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let onScan: () -> Void
     let onSave: () -> Void
 
+    @MainActor
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
@@ -62,6 +64,7 @@ struct CreateEditItemToolbar: ToolbarContent {
 }
 
 private extension CreateEditItemToolbar {
+    @MainActor
     var buttons: some View {
         HStack {
             if let vault {
@@ -91,6 +94,7 @@ private extension CreateEditItemToolbar {
         }
     }
 
+    @MainActor
     func vaultButton(_ vault: Vault) -> some View {
         HStack {
             Image(uiImage: vault.displayPreferences.icon.icon.bigImage)
@@ -108,6 +112,9 @@ private extension CreateEditItemToolbar {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(vault.displayPreferences.color.color.color.toColor.opacity(0.16))
         .clipShape(Capsule())
+        .if(UIDevice.current.userInterfaceIdiom == .phone) { view in
+            view.frame(maxWidth: 150, alignment: .trailing)
+        }
         .fixedSize(horizontal: false, vertical: false)
         .buttonEmbeded(onSelectVault)
     }
