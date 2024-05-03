@@ -39,6 +39,10 @@ public extension ItemFlagable {
     var isBreached: Bool {
         itemFlags.contains(.isBreached)
     }
+
+    var isBreachedAndMonitored: Bool {
+        isBreached && !monitoringDisabled
+    }
 }
 
 private struct ItemFlags: Sendable, OptionSet {
