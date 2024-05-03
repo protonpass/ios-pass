@@ -25,6 +25,7 @@ import TipKit
 enum PassTip: String {
     case itemForceTouch
     case spotlight
+    case username
 
     var id: String { rawValue }
 }
