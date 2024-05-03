@@ -43,4 +43,4 @@ public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifia
     }
 }
 
-extension ProtonAddress: Breachable, ItemFlagable {}
+extension ProtonAddress: Breachable, AddressFlagable {}

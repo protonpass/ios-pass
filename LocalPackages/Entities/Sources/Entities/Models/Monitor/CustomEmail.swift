@@ -46,4 +46,4 @@ public struct CustomEmail: Decodable, Equatable, Sendable, Hashable, Identifiabl
     }
 }
 
-extension CustomEmail: Breachable, ItemFlagable {}
+extension CustomEmail: Breachable, AddressFlagable {}
