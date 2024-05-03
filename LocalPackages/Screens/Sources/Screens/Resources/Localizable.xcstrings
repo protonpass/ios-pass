@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Add username field" : {
+
+    },
     "Cancel" : {
       "comment" : "Accessibility label",
       "localizations" : {
@@ -3479,6 +3482,9 @@
           }
         }
       }
+    },
+    "Tap here to add a field for a username." : {
+
     },
     "Try searching using different spelling or keywords" : {
       "localizations" : {

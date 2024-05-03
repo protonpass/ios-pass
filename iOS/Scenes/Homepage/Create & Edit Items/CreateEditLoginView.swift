@@ -25,7 +25,9 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
+import TipKit
 
 struct CreateEditLoginView: View {
     private let theme = resolve(\SharedToolingContainer.theme)
@@ -39,6 +41,13 @@ struct CreateEditLoginView: View {
     @Namespace private var websitesID
     @Namespace private var noteID
     @Namespace private var bottomID
+
+    private var shouldApplyTip: Bool {
+        guard #available(iOS 17, *) else {
+            return true
+        }
+        return false
+    }
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -325,6 +334,9 @@ private extension CreateEditLoginView {
             if !viewModel.username.isEmpty, viewModel.isAlias {
                 pendingAliasRow
             } else {
+                emailRow
+            }
+            if viewModel.showUsernameField {
                 usernameRow
             }
             PassSectionDivider()
@@ -340,13 +352,71 @@ private extension CreateEditLoginView {
         .roundedEditableSection()
     }
 
-    var usernameRow: some View {
+    var emailRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.user)
+            ZStack(alignment: .topTrailing) {
+                if #available(iOS 17, *) {
+                    Button { viewModel.showUsernameField.toggle() } label: {
+                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+                    }.buttonStyle(.plain)
+                        .popoverTip(UsernameTip())
+                } else {
+                    Button { viewModel.showUsernameField.toggle() } label: {
+                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+                    }.buttonStyle(.plain)
+                }
+                CircleButton(icon: IconProvider.plus,
+                             iconColor: PassColor.interactionNormMajor2,
+                             backgroundColor: PassColor.interactionNormMinor1,
+                             accessibilityLabel: "Cancel",
+                             action: {})
+                    .frame(width: 13, height: 13)
+                    .border(Color.black, width: 2)
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Username or email address")
                     .sectionTitleText()
+
+                TextField("Add username or email address", text: $viewModel.username)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .username)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .password }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !viewModel.username.isEmpty {
+                Button(action: {
+                    viewModel.username = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
+                })
+            }
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.username.isEmpty)
+        .animation(.default, value: focusedField)
+        .id(usernameID)
+    }
+
+    var usernameRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            if #available(iOS 17, *) {
+                Button {} label: {
+                    ItemDetailSectionIcon(icon: IconProvider.user)
+                }.buttonStyle(.plain)
+                    .popoverTip(UsernameTip())
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.user)
+            }
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Username or email address")
+                    .sectionTitleText()
+
                 TextField("Add username or email address", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -600,3 +670,18 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
+
+// private extension CreateEditLoginView {
+//    @ViewBuilder
+//    var usernameTip: some View {
+//        if #available(iOS 17, *) {
+//            VStack {
+//                Spacer()
+//                TipView(UsernameTip())
+//                    .passTipView()
+//                    .padding()
+//            }
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        }
+//    }
+// }
