@@ -1,6 +1,6 @@
 //
-// ProtonAddress.swift
-// Proton Pass - Created on 10/04/2024.
+// AddressFlagable.swift
+// Proton Pass - Created on 03/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,30 +17,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public struct ProtonAddress: Decodable, Equatable, Sendable, Hashable, Identifiable {
-    public let addressID, email: String
-    public let breachCounter: Int
-    public let flags: Int
-    public let lastBreachTime: Int?
+public protocol AddressFlagable: Sendable {
+    var flags: Int { get }
+}
 
-    public init(addressID: String,
-                email: String,
-                breachCounter: Int,
-                flags: Int,
-                lastBreachTime: Int?) {
-        self.addressID = addressID
-        self.email = email
-        self.breachCounter = breachCounter
-        self.flags = flags
-        self.lastBreachTime = lastBreachTime
-    }
-
-    public var id: String {
-        addressID
+private extension AddressFlagable {
+    var addressFlags: AddressFlags {
+        .init(rawValue: flags)
     }
 }
 
-extension ProtonAddress: Breachable, AddressFlagable {}
+public extension AddressFlagable {
+    var monitoringDisabled: Bool {
+        addressFlags.contains(.monitoringDisabled)
+    }
+}
+
+private struct AddressFlags: Sendable, OptionSet {
+    let rawValue: Int
+    static let monitoringDisabled = AddressFlags(rawValue: 1 << 0)
+}
