@@ -71,10 +71,11 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
+    private var refreshingTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
     var isBreached: Bool {
-        numberOfBreaches > 0
+        !monitorStateStream.value.noBreaches
     }
 
     init() {
@@ -82,6 +83,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     }
 
     func refresh() async throws {
+        try Task.checkCancellation()
         try await refreshAccessAndMonitorState()
         addTelemetryEvent(with: .monitorDisplayHome)
     }
@@ -179,9 +181,26 @@ private extension PassMonitorViewModel {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
-                guard let self, let breachCount = state.breachCount else { return }
-                numberOfBreaches = breachCount
+                guard let self else { return }
+                numberOfBreaches = state.breachCount ?? 0
                 latestBreachInfo = state.latestBreachDomainInfo
+            }.store(in: &cancellables)
+
+        passMonitorRepository.darkWebDataSectionUpdate
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                refreshingTask?.cancel()
+                refreshingTask = Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    if Task.isCancelled {
+                        return
+                    }
+                    try? await refresh()
+                }
             }.store(in: &cancellables)
     }
 
