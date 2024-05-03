@@ -1,3 +1,20 @@
+## Version 1.11.0
+Features:
+- Introducing Pass Monitor: Dark Web Monitoring, password health analytics, and more
+
+Improvements:
+- Addressed occasional crashes 
+
+Others:
+- Bumped core version to 24.0.0
+- Bumped Rust library version to 0.7.8
+- Migrated preferences storage from Keychain to Core Data
+- Displayed item content format version for QA builds
+- Handled Pass Essentials upgrade
+- Added Passkeys metadata
+- Moved vault picker to navigation bar when creating new items
+- Able to change password (behind core's feature flags)
+
 ## Version 1.10.2
 Improvements:
 - Preserved item history when moving between vaults
