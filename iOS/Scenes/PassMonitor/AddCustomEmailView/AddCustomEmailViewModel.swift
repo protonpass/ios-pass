@@ -31,11 +31,13 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @Published private(set) var finishedVerification = false
     @Published private(set) var canResendCode = false
     @Published private(set) var customEmail: CustomEmail?
+    @Published private(set) var verificationError: (any Error)?
     @Published private var secondsRemaining: Int
 
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
     private let verifyCustomEmail = resolve(\UseCasesContainer.verifyCustomEmail)
+    private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
 
@@ -111,7 +113,16 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
                 try await verifyCustomEmail(email: customEmail, code: code)
                 finishedVerification = true
             } catch {
-                handle(error: error)
+                if let apiError = error.asPassApiError,
+                   case .notAllowed = apiError {
+                    // Custom email is removed or too many failed verifications
+                    if let customEmails = try? await getAllCustomEmails() {
+                        passMonitorRepository.darkWebDataSectionUpdate.send(.customEmails(customEmails))
+                    }
+                    verificationError = error
+                } else {
+                    handle(error: error)
+                }
             }
         }
     }
