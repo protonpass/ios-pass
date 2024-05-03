@@ -1123,6 +1123,12 @@
             "value" : "У гэтым элеменце адбыліся змены. Вяртанне на папярэднюю старонку."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U této položky došlo k některým změnám, které vedou zpět na předchozí stránku."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
