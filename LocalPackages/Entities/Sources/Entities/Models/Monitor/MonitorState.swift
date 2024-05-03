@@ -38,6 +38,15 @@ public enum MonitorState: Sendable, Equatable {
         }
     }
 
+    public var noBreaches: Bool {
+        switch self {
+        case let .active(state):
+            state == .noBreaches || state == .noBreachesButWeakOrReusedPasswords
+        case let .inactive(state):
+            state == .noBreaches || state == .noBreachesButWeakOrReusedPasswords
+        }
+    }
+
     public var latestBreachDomainInfo: LatestBreachDomainInfo? {
         switch self {
         case let .active(state):
