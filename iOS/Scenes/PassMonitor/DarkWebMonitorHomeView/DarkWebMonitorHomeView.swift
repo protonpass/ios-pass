@@ -562,6 +562,6 @@ private extension [AliasMonitorInfo] {
 
 private extension [CustomEmail] {
     var breachCount: Int {
-        filter(\.isBreached).count
+        filter { $0.breachCounter > 0 }.count
     }
 }
