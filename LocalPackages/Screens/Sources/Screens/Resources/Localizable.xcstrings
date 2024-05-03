@@ -1331,6 +1331,24 @@
             "value" : "Потым"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nyní ne"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke nu"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Όχι Τώρα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1373,10 +1391,28 @@
             "value" : "Non adesso"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ახლა არა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나중에"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ikke nå"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet Nu"
           }
         },
         "pl" : {
@@ -1385,10 +1421,34 @@
             "value" : "Nie teraz"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora não"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu acum"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teraz nie"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inte nu"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi değil"
           }
         }
       }
@@ -1833,7 +1893,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Za uporabo razširitve Proton Pass AutoFill se prijavite"
+            "value" : "Za uporabo razširitve Proton Pass AutoFill se prijavite."
           }
         },
         "sv" : {
@@ -1969,7 +2029,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Za uporabo razširitve Proton Pass Share se prijavite"
+            "value" : "Za uporabo razširitve Proton Pass Share se prijavite."
           }
         },
         "sv" : {
@@ -3113,6 +3173,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oturum kapatıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви вийшли"
           }
         }
       }
