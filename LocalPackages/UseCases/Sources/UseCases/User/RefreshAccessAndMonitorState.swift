@@ -59,8 +59,13 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         async let getAllAliases = getAllAliases()
         let (access, userBreaches, aliases, _) = try await (getAccess, refreshUserBreaches, getAllAliases,
                                                             refreshSecurityChecks)
-        let breachedAliases = aliases.filter(\.item.isBreached)
-        let breachCount = userBreaches.emailsCount + breachedAliases.count
+        let breachedAliases = aliases.filter(\.item.isBreachedAndMonitored)
+        var breachCount = userBreaches.emailsCount
+
+        if access.monitor.aliases {
+            breachCount += breachedAliases.count
+        }
+
         let hasWeaknesses = passMonitorRepository.weaknessStats.value.hasWeakOrReusedPasswords
         var latestBreach: LatestBreachDomainInfo?
 
@@ -74,7 +79,19 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
             }
         }
 
-        let state = switch (access.plan.isFreeUser, breachCount > 0, hasWeaknesses) {
+        updateState(isFreeUser: access.plan.isFreeUser,
+                    breachCount: breachCount,
+                    hasWeaknesses: hasWeaknesses,
+                    latestBreach: latestBreach)
+    }
+}
+
+private extension RefreshAccessAndMonitorState {
+    func updateState(isFreeUser: Bool,
+                     breachCount: Int,
+                     hasWeaknesses: Bool,
+                     latestBreach: LatestBreachDomainInfo?) {
+        let state = switch (isFreeUser, breachCount > 0, hasWeaknesses) {
         case (true, false, false):
             MonitorState.inactive(.noBreaches)
         case (true, false, true):

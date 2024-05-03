@@ -385,12 +385,12 @@ private extension PassMonitorView {
     }
 
     func breachedRow(_ breaches: UserBreaches) -> some View {
-        passMonitorRow(rowType: viewModel.numberOfBreaches > 0 ? .danger : .success,
+        passMonitorRow(rowType: viewModel.isBreached ? .danger : .success,
                        title: "Dark Web Monitoring",
-                       subTitle: viewModel.numberOfBreaches > 0 ?
+                       subTitle: viewModel.isBreached ?
                            "\(viewModel.numberOfBreaches) breaches detected" :
                            "No breaches detected",
-                       info: viewModel.numberOfBreaches > 0 ? "\(viewModel.numberOfBreaches)" : nil,
+                       info: viewModel.isBreached ? "\(viewModel.numberOfBreaches)" : nil,
                        action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
     }
 }
