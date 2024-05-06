@@ -44,7 +44,12 @@ public final class MatchUrls: MatchUrlsUseCase {
         guard let leftScheme = leftUrl.scheme,
               let rightScheme = rightUrl.scheme,
               let leftHost = leftUrl.host,
-              let rightHost = rightUrl.host else { return .notMatched }
+              let rightHost = rightUrl.host else {
+            if leftUrl.absoluteString == rightUrl.absoluteString {
+                return .matched(1_000)
+            }
+            return .notMatched
+        }
 
         let httpHttps = ["http", "https"]
         if httpHttps.contains(leftScheme), httpHttps.contains(rightScheme) {
