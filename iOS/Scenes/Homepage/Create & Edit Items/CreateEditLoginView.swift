@@ -107,6 +107,7 @@ struct CreateEditLoginView: View {
                     .padding()
                     .animation(.default, value: viewModel.customFieldUiModels.count)
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
+                    .animation(.default, value: viewModel.showUsernameField)
                     .animation(.default, value: viewModel.passkeys.count)
                     .showSpinner(viewModel.loading)
                 }
@@ -337,6 +338,7 @@ private extension CreateEditLoginView {
                 emailRow
             }
             if viewModel.showUsernameField {
+                PassSectionDivider()
                 usernameRow
             }
             PassSectionDivider()
@@ -365,20 +367,29 @@ private extension CreateEditLoginView {
                         ItemDetailSectionIcon(icon: IconProvider.envelope)
                     }.buttonStyle(.plain)
                 }
-                CircleButton(icon: IconProvider.plus,
-                             iconColor: PassColor.interactionNormMajor2,
-                             backgroundColor: PassColor.interactionNormMinor1,
-                             accessibilityLabel: "Cancel",
-                             action: {})
-                    .frame(width: 13, height: 13)
-                    .border(Color.black, width: 2)
+                if !viewModel.showUsernameField {
+                    Image(uiImage: IconProvider.plus)
+                        .resizable()
+                        .renderingMode(.template)
+                        .frame(width: 9, height: 9)
+                        .foregroundStyle(PassColor.loginInteractionNormMajor1.toColor)
+                        .padding(2)
+                        .background(PassColor.loginInteractionNormMinor1.toColor)
+                        .clipShape(.circle)
+                        .overlay(/// apply a rounded border
+                            Circle()
+                                .stroke(UIColor.secondarySystemGroupedBackground
+                                    .toColor /* PassColor.inputBorderNorm.toColor */,
+                                    lineWidth: 2))
+                        .offset(x: 5, y: -2)
+                }
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username or email address")
+                Text("Email address")
                     .sectionTitleText()
 
-                TextField("Add username or email address", text: $viewModel.username)
+                TextField("Add email address", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
@@ -390,7 +401,7 @@ private extension CreateEditLoginView {
 
             if !viewModel.username.isEmpty {
                 Button(action: {
-                    viewModel.username = ""
+                    viewModel.email = ""
                 }, label: {
                     ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
@@ -404,20 +415,13 @@ private extension CreateEditLoginView {
 
     var usernameRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            if #available(iOS 17, *) {
-                Button {} label: {
-                    ItemDetailSectionIcon(icon: IconProvider.user)
-                }.buttonStyle(.plain)
-                    .popoverTip(UsernameTip())
-            } else {
-                ItemDetailSectionIcon(icon: IconProvider.user)
-            }
+            ItemDetailSectionIcon(icon: IconProvider.user)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username or email address")
+                Text("Username")
                     .sectionTitleText()
 
-                TextField("Add username or email address", text: $viewModel.username)
+                TextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
