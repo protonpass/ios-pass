@@ -55,7 +55,7 @@ private extension EditSpotlightSearchableVaultsView {
                             height: .compact,
                             content: {
                                 Text(vaults.title)
-                                    .foregroundColor(PassColor.textNorm.toColor)
+                                    .foregroundStyle(PassColor.textNorm.toColor)
                             },
                             isSelected: vaults == selection)
     }

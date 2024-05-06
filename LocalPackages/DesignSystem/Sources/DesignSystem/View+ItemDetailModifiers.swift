@@ -41,30 +41,30 @@ public extension View {
 public extension Text {
     func sectionTitleText(isValid: Bool = true) -> Text {
         font(.footnote)
-            .foregroundColor(isValid ? PassColor.textWeak.toColor : PassColor.signalDanger.toColor)
+            .adaptiveForegroundStyle(isValid ? PassColor.textWeak.toColor : PassColor.signalDanger.toColor)
     }
 
     func sectionContentText() -> Text {
-        foregroundColor(PassColor.textNorm.toColor)
+        adaptiveForegroundStyle(PassColor.textNorm.toColor)
     }
 
     func sectionHeaderText() -> Text {
-        foregroundColor(PassColor.textWeak.toColor)
+        adaptiveForegroundStyle(PassColor.textWeak.toColor)
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        font(.body.italic()).foregroundColor(PassColor.textWeak.toColor)
+        font(.body.italic()).adaptiveForegroundStyle(PassColor.textWeak.toColor)
     }
 
     func navigationTitleText() -> Text {
         font(.callout.bold())
-            .foregroundColor(PassColor.textNorm.toColor)
+            .adaptiveForegroundStyle(PassColor.textNorm.toColor)
     }
 
     func monitorSectionTitleText(maxWidth: CGFloat? = .infinity) -> some View {
         font(.callout.bold())
-            .foregroundStyle(PassColor.textNorm.toColor)
+            .adaptiveForegroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: maxWidth, alignment: .leading)
     }
 }

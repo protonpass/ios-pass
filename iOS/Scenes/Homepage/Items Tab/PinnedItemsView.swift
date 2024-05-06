@@ -40,7 +40,7 @@ struct PinnedItemsView: View {
                                                   alternativeBackground: true)
                             Text(item.title)
                                 .lineLimit(1)
-                                .foregroundColor(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding(.trailing, 8)
                         }
                         .padding(8)

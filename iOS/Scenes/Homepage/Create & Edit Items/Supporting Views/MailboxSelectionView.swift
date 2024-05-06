@@ -51,7 +51,7 @@ struct MailboxSelectionView: View {
 
                                 if isSelected(mailbox) {
                                     Image(uiImage: IconProvider.checkmark)
-                                        .foregroundColor(viewModel.mode.tintColor)
+                                        .foregroundStyle(viewModel.mode.tintColor)
                                 }
                             }
                             .contentShape(Rectangle())
@@ -109,7 +109,7 @@ struct MailboxSelectionView: View {
                     .frame(maxWidth: 20)
             }
             .contentShape(Rectangle())
-            .foregroundColor(viewModel.mode.tintColor)
+            .foregroundStyle(viewModel.mode.tintColor)
         }
         .frame(height: OptionRowHeight.compact.value)
     }

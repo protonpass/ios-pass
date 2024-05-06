@@ -55,7 +55,7 @@ private extension EditSpotlightSearchableContentView {
                             height: .compact,
                             content: {
                                 Text(content.title)
-                                    .foregroundColor(PassColor.textNorm.toColor)
+                                    .foregroundStyle(PassColor.textNorm.toColor)
                             },
                             isSelected: content == selection)
     }
