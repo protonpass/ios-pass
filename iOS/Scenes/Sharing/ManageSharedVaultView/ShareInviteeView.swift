@@ -65,7 +65,6 @@ private extension ShareInviteeView {
                 HStack {
                     if isCurrentUser {
                         Text("You")
-                            .font(.body)
                             .foregroundColor(PassColor.textNorm.toColor)
                             .padding(.vertical, 2)
                             .padding(.horizontal, 8)

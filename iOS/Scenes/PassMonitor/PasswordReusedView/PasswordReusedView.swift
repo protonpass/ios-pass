@@ -37,7 +37,6 @@ struct PasswordReusedView: View {
         VStack {
             Text("Items from your vaults that use this password.")
                 .foregroundStyle(PassColor.textNorm.toColor)
-                .font(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
 

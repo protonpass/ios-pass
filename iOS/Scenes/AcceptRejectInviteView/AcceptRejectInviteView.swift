@@ -75,7 +75,6 @@ private extension AcceptRejectInviteView {
                 .fontWeight(.bold)
             Text("invites you to access items in")
         }
-        .font(.body)
         .foregroundColor(PassColor.textNorm.toColor)
     }
 }

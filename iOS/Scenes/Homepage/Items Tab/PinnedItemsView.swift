@@ -39,7 +39,6 @@ struct PinnedItemsView: View {
                                                   size: .small,
                                                   alternativeBackground: true)
                             Text(item.title)
-                                .font(.body)
                                 .lineLimit(1)
                                 .foregroundColor(PassColor.textNorm.toColor)
                                 .padding(.trailing, 8)
