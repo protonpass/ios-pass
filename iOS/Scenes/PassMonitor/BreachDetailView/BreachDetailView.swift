@@ -180,7 +180,6 @@ private extension BreachDetailView {
     var footer: some View {
         Text("Your Proton Account information remains secure and encrypted.")
             .font(.callout)
-            .fontWeight(.regular)
             .adaptiveForegroundStyle(PassColor.textWeak.toColor) +
             Text(verbatim: " ") +
             Text("Learn more")
