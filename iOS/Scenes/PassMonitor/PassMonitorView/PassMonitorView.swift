@@ -218,7 +218,6 @@ private extension PassMonitorView {
                 } header: {
                     HStack {
                         Text("Passwords Health")
-                            .font(.body)
                             .fontWeight(.bold)
                             .foregroundColor(PassColor.textNorm.toColor)
                         Spacer()
@@ -264,7 +263,6 @@ private extension PassMonitorView {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(title)
-                        .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
                     if let subTitle {
                         Text(subTitle)
@@ -301,7 +299,6 @@ private extension PassMonitorView {
 
                 Text(isBreached ? "Your email address was leaked in at least 1 data breach." :
                     "Get notified if your email, password or other personal data was leaked.")
-                    .font(.body)
                     .foregroundStyle(isBreached ? PassColor.passwordInteractionNormMajor2
                         .toColor : PassColor.textNorm.toColor)
                     .multilineTextAlignment(isBreached ? .leading : .center)
@@ -319,7 +316,6 @@ private extension PassMonitorView {
 
                         VStack(alignment: .leading) {
                             Text(latestBreach.domain)
-                                .font(.body)
                                 .foregroundStyle(PassColor.textNorm.toColor)
                             Text(latestBreach.date)
                                 .font(.footnote)
@@ -330,13 +326,11 @@ private extension PassMonitorView {
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
                         VStack(alignment: .leading) {
                             Text("Email address")
-                                .font(.body)
                                 .fontWeight(.bold)
                                 .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                             Text(verbatim: "Thisisafakeemail@proton.me")
-                                .font(.body)
                                 .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                                 .blur(radius: 5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -346,13 +340,11 @@ private extension PassMonitorView {
 
                         VStack(alignment: .leading) {
                             Text("Password")
-                                .font(.body)
                                 .fontWeight(.bold)
                                 .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                             Text(verbatim: "Thisisafakepassword")
-                                .font(.body)
                                 .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                                 .blur(radius: 5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -387,25 +379,22 @@ private extension PassMonitorView {
     @ViewBuilder
     func breachedRow(_ breaches: UserBreaches) -> some View {
         if !viewModel.isBreached {
-            passMonitorRow(rowType: viewModel.isBreached ? .danger : .success,
+            passMonitorRow(rowType: .success,
                            title: "Dark Web Monitoring",
-                           subTitle: viewModel.isBreached ?
-                               "\(viewModel.numberOfBreaches) breaches detected" :
-                               "No breaches detected",
-                           info: viewModel.isBreached ? "\(viewModel.numberOfBreaches)" : nil,
+                           subTitle: "No breaches detected",
+                           info: nil,
                            action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
         } else {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
                 HStack {
                     Text("Breaches detected")
-                        .font(.title)
-                        .fontWeight(.medium)
+                        .font(.title3)
+                        .fontWeight(.bold)
                         .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                         .multilineTextAlignment(.leading)
                     Spacer()
 
                     Text(verbatim: "\(viewModel.numberOfBreaches)")
-                        .font(.body)
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)
@@ -415,9 +404,7 @@ private extension PassMonitorView {
                 }
 
                 Text("Your email address was leaked in \(viewModel.numberOfBreaches) breaches")
-                    .font(.body)
-                    .foregroundStyle(PassColor.passwordInteractionNormMajor2
-                        .toColor)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
                     .multilineTextAlignment(.leading)
 
                 if let latestBreach = viewModel.latestBreachInfo, viewModel.numberOfBreaches == 1 {
@@ -433,7 +420,6 @@ private extension PassMonitorView {
 
                         VStack(alignment: .leading) {
                             Text(latestBreach.domain)
-                                .font(.body)
                                 .foregroundStyle(PassColor.textNorm.toColor)
                             Text(latestBreach.date)
                                 .font(.footnote)
@@ -519,7 +505,6 @@ private extension PassMonitorView {
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(title)
-                        .font(.body)
                         .lineLimit(1)
                         .foregroundStyle(rowType.titleColor.toColor)
                         .minimumScaleFactor(0.5)
@@ -538,7 +523,6 @@ private extension PassMonitorView {
 
                 if let info {
                     Text(info)
-                        .font(.body)
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)
