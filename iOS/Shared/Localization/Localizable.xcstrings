@@ -17747,6 +17747,16 @@
         }
       }
     },
+    "Breaches detected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breaches detected"
+          }
+        }
+      }
+    },
     "Breaches resolved" : {
       "localizations" : {
         "be" : {
@@ -98021,6 +98031,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullandığınız uygulama sürümü artık desteklenmiyor. Lütfen son sürüme güncelleyin."
+          }
+        }
+      }
+    },
+    "Your email address was leaked in %lld breaches" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your email address was leaked in %lld breach"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your email address was leaked in %lld breaches"
+                }
+              }
+            }
           }
         }
       }
