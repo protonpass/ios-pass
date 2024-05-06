@@ -91,7 +91,7 @@ struct TOTPCircularTimer: View {
             Text(verbatim: "\(Int(viewModel.remainingSeconds))")
                 .font(.caption)
                 .fontWeight(.light)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .animationsDisabled()
         }
         .frame(width: 32, height: 32)

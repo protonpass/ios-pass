@@ -37,7 +37,7 @@ struct SharingSummaryView: View {
             Text("Review and share")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
             if viewModel.hasSingleInvite, let info = viewModel.infos.first {
                 emailInfo(infos: info)
                 vaultInfo(infos: info)
@@ -67,7 +67,7 @@ private extension SharingSummaryView {
         VStack(alignment: .leading, spacing: 0) {
             Text("Vault")
                 .font(.callout)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
             VaultRow(thumbnail: {
                          CircleButton(icon: infos.displayPreferences.icon.icon.bigImage,
@@ -89,7 +89,7 @@ private extension SharingSummaryView {
         VStack(alignment: .leading, spacing: 0) {
             Text("Share with")
                 .font(.callout)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
             HStack(spacing: DesignConstant.sectionPadding) {
                 SquircleThumbnail(data: .initials(infos.email.initials()),
@@ -97,7 +97,7 @@ private extension SharingSummaryView {
                                   backgroundColor: ItemType.login.backgroundColor)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(infos.email)
-                        .foregroundColor(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
                 }
             }
             .frame(height: 60)
@@ -110,13 +110,13 @@ private extension SharingSummaryView {
         VStack(alignment: .leading, spacing: 10) {
             Text("Access level")
                 .font(.callout)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
             VStack(alignment: .leading, spacing: 2) {
                 Text(infos.role.title)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                 Text(infos.role.description)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cornerRadius(16)
@@ -134,7 +134,7 @@ private extension SharingSummaryView {
             VStack(alignment: .leading, spacing: 0) {
                 Text("Share with")
                     .font(.callout)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(height: 20)
 
                 LazyVStack {
@@ -145,10 +145,10 @@ private extension SharingSummaryView {
                                               backgroundColor: ItemType.login.backgroundColor)
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(info.email)
-                                    .foregroundColor(PassColor.textNorm.toColor)
+                                    .foregroundStyle(PassColor.textNorm.toColor)
                                 HStack {
                                     Text(info.role.title)
-                                        .foregroundColor(PassColor.textWeak.toColor)
+                                        .foregroundStyle(PassColor.textWeak.toColor)
                                 }
                             }
 

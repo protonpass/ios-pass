@@ -219,7 +219,7 @@ private extension PassMonitorView {
                     HStack {
                         Text("Passwords Health")
                             .fontWeight(.bold)
-                            .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                         Spacer()
                     }.padding(.top, DesignConstant.sectionPadding)
                 }
@@ -267,7 +267,7 @@ private extension PassMonitorView {
                     if let subTitle {
                         Text(subTitle)
                             .font(.footnote)
-                            .foregroundColor(PassColor.textWeak.toColor)
+                            .foregroundStyle(PassColor.textWeak.toColor)
                             .lineLimit(1)
                     }
                 }
@@ -498,7 +498,7 @@ private extension PassMonitorView {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .foregroundColor(rowType.iconColor.toColor)
+                        .foregroundStyle(rowType.iconColor.toColor)
                         .frame(width: DesignConstant.Icons.defaultIconSize)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
@@ -513,7 +513,7 @@ private extension PassMonitorView {
                         Text(subTitle)
                             .font(.callout)
                             .lineLimit(1)
-                            .foregroundColor(rowType.subtitleColor.toColor)
+                            .foregroundStyle(rowType.subtitleColor.toColor)
                             .layoutPriority(1)
                             .minimumScaleFactor(0.25)
                     }
@@ -526,7 +526,7 @@ private extension PassMonitorView {
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)
-                        .foregroundColor(rowType.infoForeground.toColor)
+                        .foregroundStyle(rowType.infoForeground.toColor)
                         .background(rowType.infoBackground.toColor)
                         .clipShape(Capsule())
                 }

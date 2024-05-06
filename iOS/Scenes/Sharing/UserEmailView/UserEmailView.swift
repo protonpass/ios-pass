@@ -39,7 +39,7 @@ struct UserEmailView: View {
             Text("Share with")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
@@ -168,7 +168,7 @@ private extension UserEmailView {
                 .lineLimit(1)
         }
         .font(.callout)
-        .foregroundColor(textColor().toColor)
+        .foregroundStyle(textColor().toColor)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .background(backgroundColor().toColor)

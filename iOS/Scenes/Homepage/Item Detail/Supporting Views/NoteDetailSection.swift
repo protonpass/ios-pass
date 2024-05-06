@@ -40,6 +40,7 @@ struct NoteDetailSection: View {
 
                 TextView(.constant(itemContent.note))
                     .autoDetectDataTypes(.all)
+                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
                     .foregroundColor(PassColor.textNorm)
                     .isEditable(false)
                     .onTapGesture {
@@ -78,6 +79,7 @@ private struct FullNoteView: View {
                         .sectionTitleText()
                     TextView(.constant(itemContent.note))
                         .autoDetectDataTypes(.all)
+                        // swiftlint:disable:next deprecated_foregroundcolor_modifier
                         .foregroundColor(PassColor.textNorm)
                         .isEditable(false)
                 }

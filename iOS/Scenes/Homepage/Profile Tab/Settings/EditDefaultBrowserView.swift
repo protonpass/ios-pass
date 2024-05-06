@@ -36,7 +36,7 @@ struct EditDefaultBrowserView: View {
                                             height: .compact,
                                             content: {
                                                 Text(browser.description)
-                                                    .foregroundColor(PassColor.textNorm.toColor)
+                                                    .foregroundStyle(PassColor.textNorm.toColor)
                                             },
                                             isSelected: browser == selection)
 
