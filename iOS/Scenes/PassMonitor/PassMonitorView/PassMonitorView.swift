@@ -384,14 +384,75 @@ private extension PassMonitorView {
                 .interactionNormMinor1)
     }
 
+    @ViewBuilder
     func breachedRow(_ breaches: UserBreaches) -> some View {
-        passMonitorRow(rowType: viewModel.isBreached ? .danger : .success,
-                       title: "Dark Web Monitoring",
-                       subTitle: viewModel.isBreached ?
-                           "\(viewModel.numberOfBreaches) breaches detected" :
-                           "No breaches detected",
-                       info: viewModel.isBreached ? "\(viewModel.numberOfBreaches)" : nil,
-                       action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
+        if !viewModel.isBreached {
+            passMonitorRow(rowType: viewModel.isBreached ? .danger : .success,
+                           title: "Dark Web Monitoring",
+                           subTitle: viewModel.isBreached ?
+                               "\(viewModel.numberOfBreaches) breaches detected" :
+                               "No breaches detected",
+                           info: viewModel.isBreached ? "\(viewModel.numberOfBreaches)" : nil,
+                           action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
+        } else {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
+                HStack {
+                    Text("Breaches detected")
+                        .font(.title)
+                        .fontWeight(.medium)
+                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+
+                    Text(verbatim: "\(viewModel.numberOfBreaches)")
+                        .font(.body)
+                        .fontWeight(.medium)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 11)
+                        .foregroundStyle(SecureRowType.danger.infoForeground.toColor)
+                        .background(SecureRowType.danger.infoBackground.toColor)
+                        .clipShape(Capsule())
+                }
+
+                Text("Your email address was leaked in \(viewModel.numberOfBreaches) breaches")
+                    .font(.body)
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2
+                        .toColor)
+                    .multilineTextAlignment(.leading)
+
+                if let latestBreach = viewModel.latestBreachInfo, viewModel.numberOfBreaches == 1 {
+                    HStack {
+                        Image(uiImage: PassIcon.lightning)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 24)
+                            .padding(10)
+                            .roundedDetailSection(backgroundColor: PassColor
+                                .passwordInteractionNormMinor1,
+                                borderColor: .clear)
+
+                        VStack(alignment: .leading) {
+                            Text(latestBreach.domain)
+                                .font(.body)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                            Text(latestBreach.date)
+                                .font(.footnote)
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                        }
+                    }
+                }
+
+                CapsuleTextButton(title: "View details",
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: PassColor.passwordInteractionNormMajor2,
+                                  action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
+            }
+            .padding(24)
+            .roundedDetailSection(backgroundColor: breaches.breached ? PassColor
+                .passwordInteractionNormMinor2 : PassColor.interactionNormMinor2,
+                borderColor: breaches.breached ? PassColor.passwordInteractionNormMinor1 : PassColor
+                    .interactionNormMinor1)
+        }
     }
 }
 
