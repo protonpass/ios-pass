@@ -223,6 +223,11 @@ custom_rules:
     message: "Prefer implicit body font"
     regex: "(\\.font\\(\\.body\\))"
 
+  deprecated_foregroundcolor_modifier:
+    name: "Deprecated foregroundColor modifier"
+    message: "Prefer foregroundStyle over deprecated foregroundColor"
+    regex: "(foregroundColor\\()"
+
   nil_if_empty:
     name: "Nil if empty"
     message: "Use Collection's computed property nilIfEmpty"

@@ -77,6 +77,7 @@ extension DetailHistoryView {
             } else {
                 TextView(.constant(item.note))
                     .autoDetectDataTypes(.all)
+                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
                     .foregroundColor(PassColor.textNorm)
                     .isEditable(false)
             }
@@ -95,7 +96,7 @@ extension DetailHistoryView {
                     .fontWeight(.bold)
                     .textSelection(.enabled)
                     .lineLimit(1)
-                    .foregroundColor(textColor(for: \.name).toColor)
+                    .foregroundStyle(textColor(for: \.name).toColor)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

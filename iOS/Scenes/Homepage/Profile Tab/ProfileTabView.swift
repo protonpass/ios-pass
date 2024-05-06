@@ -114,7 +114,7 @@ struct ProfileTabView: View {
                                       .sectionTitleText()
 
                                   Text(viewModel.localAuthenticationMethod.title)
-                                      .foregroundColor(PassColor.textNorm.toColor)
+                                      .foregroundStyle(PassColor.textNorm.toColor)
                               }
                           },
                           trailing: { ChevronRight() })
@@ -130,7 +130,7 @@ struct ProfileTabView: View {
                                           .sectionTitleText()
 
                                       Text(viewModel.appLockTime.description)
-                                          .foregroundColor(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm.toColor)
                                   }
                               },
                               trailing: {
@@ -168,7 +168,7 @@ struct ProfileTabView: View {
                                                    backgroundColor: PassColor.interactionNormMinor1,
                                                    action: nil)
                                   }
-                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                                  .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                               })
                 }
             }
@@ -182,7 +182,7 @@ struct ProfileTabView: View {
             OptionRow(height: .medium) {
                 HStack {
                     Text("AutoFill disabled")
-                        .foregroundColor(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
 
                     Spacer()
 
@@ -190,7 +190,7 @@ struct ProfileTabView: View {
                         Label(ProcessInfo.processInfo.isiOSAppOnMac ? "Show me how" : "Open Settings",
                               systemImage: "arrow.up.right.square")
                             .font(.callout.weight(.semibold))
-                            .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                     }
                 }
             }
@@ -238,7 +238,7 @@ struct ProfileTabView: View {
                       content: {
                           HStack {
                               Text("Account")
-                                  .foregroundColor(PassColor.textNorm.toColor)
+                                  .foregroundStyle(PassColor.textNorm.toColor)
 
                               Spacer()
 
@@ -252,7 +252,7 @@ struct ProfileTabView: View {
                                           .scaledToFit()
                                           .frame(maxWidth: associatedPlanInfo.iconWidth)
                                   })
-                                  .foregroundColor(associatedPlanInfo.tintColor.toColor)
+                                  .foregroundStyle(associatedPlanInfo.tintColor.toColor)
                                   .padding(.horizontal)
                               }
                           }
@@ -299,14 +299,14 @@ struct ProfileTabView: View {
                 OptionRow(action: { viewModel.showTutorial() },
                           content: {
                               Text("How to use Proton Pass")
-                                  .foregroundColor(PassColor.textNorm.toColor)
+                                  .foregroundStyle(PassColor.textNorm.toColor)
                           },
                           trailing: {
                               Image(uiImage: IconProvider.arrowOutSquare)
                                   .resizable()
                                   .scaledToFit()
                                   .frame(height: 16)
-                                  .foregroundColor(PassColor.textHint.toColor)
+                                  .foregroundStyle(PassColor.textHint.toColor)
                           })
             }
             .roundedEditableSection()
@@ -325,7 +325,7 @@ struct ProfileTabView: View {
 
 private extension View {
     func profileSectionTitle() -> some View {
-        foregroundColor(PassColor.textNorm.toColor)
+        foregroundStyle(PassColor.textNorm.toColor)
             .font(.callout.weight(.bold))
             .frame(maxWidth: .infinity, alignment: .leading)
     }

@@ -124,7 +124,7 @@ private extension SearchResultsView {
         return HStack {
             Text(attributedString)
                 .font(.callout)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
 
             Spacer()
 

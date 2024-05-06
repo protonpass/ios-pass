@@ -114,11 +114,11 @@ struct CreateAliasLiteView: View {
             Text(viewModel.prefix)
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                 Text(viewModel.suffixSelection.selectedSuffixString)
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(PassColor.loginInteractionNormMajor1.toColor)
+                .adaptiveForegroundStyle(PassColor.loginInteractionNormMajor1.toColor)
         }
     }
 

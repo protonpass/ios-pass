@@ -204,7 +204,7 @@ private extension LogInDetailView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(viewModel.passwordStrength.sectionTitle(reuseCount: viewModel.reusedItems?.count))
                     .font(.footnote)
-                    .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
+                    .foregroundStyle(viewModel.passwordStrength.sectionTitleColor)
 
                 if viewModel.password.isEmpty {
                     Text("Empty")
@@ -316,12 +316,12 @@ private extension LogInDetailView {
         Group {
             Text("View and edit details for this alias on the separate alias page.")
                 .font(.callout)
-                .foregroundColor(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                 Text(verbatim: " ")
                 .font(.callout) +
                 Text("View")
                 .font(.callout)
-                .foregroundColor(viewModel.itemContent.type.normMajor2Color.toColor)
+                .adaptiveForegroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
                 .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
         }
         .padding(DesignConstant.sectionPadding)
@@ -361,7 +361,7 @@ private extension LogInDetailView {
                         .renderingMode(.template)
                         .scaledToFit()
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundColor(rowType.iconColor.toColor)
+                        .foregroundStyle(rowType.iconColor.toColor)
                         .frame(width: 28)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                     Spacer()
@@ -381,7 +381,7 @@ private extension LogInDetailView {
                 if let infos = weakness.infos {
                     Text(infos)
                         .font(.callout)
-                        .foregroundColor(rowType.iconColor.toColor)
+                        .foregroundStyle(rowType.iconColor.toColor)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -397,7 +397,7 @@ private extension LogInDetailView {
             let reuseText: () -> Text = {
                 Text("\(reusedItems.count) other logins use this password")
                     .fontWeight(.bold)
-                    .foregroundColor(rowType.iconColor.toColor)
+                    .adaptiveForegroundStyle(rowType.iconColor.toColor)
             }
             if reusedItems.count > 5 {
                 reuseText()
@@ -438,7 +438,7 @@ struct ReusedItemsPassListView: View {
                                                   alternativeBackground: true)
                             Text(item.title)
                                 .lineLimit(1)
-                                .foregroundColor(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding(.trailing, 8)
                         }
                         .padding(8)
