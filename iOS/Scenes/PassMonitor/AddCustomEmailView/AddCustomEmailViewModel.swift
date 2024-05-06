@@ -29,7 +29,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published var code = ""
     @Published private(set) var finishedVerification = false
-    @Published private(set) var customEmail: CustomEmail?
+    @Published private var customEmail: CustomEmail?
     @Published private(set) var verificationError: (any Error)?
 
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
@@ -45,6 +45,10 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
         } else {
             !email.isEmpty && email.isValidEmail()
         }
+    }
+
+    var isVerificationMode: Bool {
+        customEmail != nil
     }
 
     init(email: CustomEmail?) {
