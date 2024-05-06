@@ -74,7 +74,10 @@ struct AddCustomEmailView: View {
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .labelStyle(.rightIcon)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .buttonEmbeded { showResendCodeButton.toggle() }
+                    .buttonEmbeded {
+                        showResendCodeButton.toggle()
+                        focused = !showResendCodeButton
+                    }
 
                 if showResendCodeButton {
                     // swiftlint:disable:next line_length
@@ -133,7 +136,7 @@ private extension AddCustomEmailView {
         }
     }
 
-    func handleURL(_ url: URL) -> OpenURLAction.Result {
+    func handleURL(_: URL) -> OpenURLAction.Result {
         viewModel.sendVerificationCode()
         return .handled
     }
