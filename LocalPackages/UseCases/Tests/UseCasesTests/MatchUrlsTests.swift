@@ -42,10 +42,6 @@ final class MatchUrlsTests: XCTestCase {
 extension MatchUrlsTests {
     func testNoSchemesShouldNotMatched() throws {
         XCTAssertEqual(try sut(XCTUnwrap(URL(string: "example.com")),
-                               with: XCTUnwrap(URL(string: "example.com"))),
-                       .notMatched)
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "example.com")),
                                with: XCTUnwrap(URL(string: "https:/example.com"))),
                        .notMatched)
 
@@ -59,6 +55,10 @@ extension MatchUrlsTests {
         XCTAssertEqual(try sut(XCTUnwrap(URL(string: "https://example.com")),
                                with: XCTUnwrap(URL(string: "http://example.com"))),
                        .notMatched)
+
+        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "example.com")),
+                               with: XCTUnwrap(URL(string: "example.com"))),
+                       .matched(1_000))
 
         XCTAssertEqual(try sut(XCTUnwrap(URL(string: "https://example.co.uk/dsjdh?sajjs")),
                                with: XCTUnwrap(URL(string: "https://example.co.uk"))),
