@@ -52,7 +52,7 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail
     func verifyCustomEmail(email: CustomEmail, code: String) async throws
     func removeEmailFromBreachMonitoring(email: CustomEmail) async throws
-    func resendEmailVerification(emailId: String) async throws
+    func resendEmailVerification(email: CustomEmail) async throws
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
     func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches
     func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches
@@ -218,8 +218,8 @@ public extension PassMonitorRepository {
         try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: email.customEmailID)
     }
 
-    func resendEmailVerification(emailId: String) async throws {
-        try await remoteDataSource.resendEmailVerification(emailId: emailId)
+    func resendEmailVerification(email: CustomEmail) async throws {
+        try await remoteDataSource.resendEmailVerification(emailId: email.customEmailID)
     }
 
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
