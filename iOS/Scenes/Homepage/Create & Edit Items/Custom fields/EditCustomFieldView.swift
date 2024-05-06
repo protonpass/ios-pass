@@ -64,7 +64,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                                            focusedField: focusedField,
                                            field: field,
                                            font: .body.monospacedFont(for: uiModel.customField.content))
-                            .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
@@ -74,7 +74,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                                            placeholder: placeholder,
                                            focusedField: focusedField,
                                            field: field)
-                            .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                     }
                 }
             }

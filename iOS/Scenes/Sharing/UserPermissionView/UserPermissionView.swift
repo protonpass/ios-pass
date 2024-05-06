@@ -37,7 +37,7 @@ struct UserPermissionView: View {
             Text("Set access level")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
             if viewModel.hasOnlyOneInvite,
                let email = viewModel.emails.keys.first {
                 emailDisplayView(email: email)
@@ -108,7 +108,7 @@ private extension UserPermissionView {
         } label: {
             Label("Set access level", systemImage: "chevron.down")
                 .labelStyle(.rightIcon)
-                .foregroundColor(PassColor.interactionNorm.toColor)
+                .foregroundStyle(PassColor.interactionNorm.toColor)
                 .padding(12)
                 .overlay(RoundedRectangle(cornerRadius: 8)
                     .strokeBorder(PassColor.interactionNorm.toColor, lineWidth: 1))
@@ -124,11 +124,11 @@ private extension UserPermissionView {
                                       backgroundColor: PassColor.interactionNormMinor1)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(email)
-                            .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                         if let currentRole = viewModel.emails[email] {
                             HStack {
                                 Text(currentRole.title)
-                                    .foregroundColor(PassColor.textWeak.toColor)
+                                    .foregroundStyle(PassColor.textWeak.toColor)
                             }
                         }
                     }
@@ -165,7 +165,7 @@ private extension UserPermissionView {
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundColor(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak.toColor)
         })
     }
 }
@@ -180,7 +180,7 @@ private extension UserPermissionView {
                               backgroundColor: PassColor.interactionNormMinor1)
             VStack(alignment: .leading, spacing: 4) {
                 Text(email)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
             }
         }
         .frame(height: 60)
@@ -197,11 +197,11 @@ private extension UserPermissionView {
                     HStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(role.title)
-                                .foregroundColor(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding(.bottom, 2)
 
                             Text(role.description)
-                                .foregroundColor(PassColor.textWeak.toColor)
+                                .foregroundStyle(PassColor.textWeak.toColor)
                         }
                         Spacer()
 

@@ -83,7 +83,7 @@ private extension AutoFillInstructionsView {
         Label(title: {
             VStack(alignment: .leading) {
                 Text(title)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .fontWeight(.bold)
                 if let images {
                     ForEach(0..<images.count, id: \.self) { index in

@@ -30,7 +30,7 @@ struct PasswordStrengthIcon: View {
             .resizable()
             .renderingMode(.template)
             .scaledToFit()
-            .foregroundColor(strength.color)
+            .foregroundStyle(strength.color)
             .frame(width: width)
     }
 }

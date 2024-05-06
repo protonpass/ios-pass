@@ -224,9 +224,9 @@ struct CreateEditAliasView: View {
 
                     default:
                         Text(viewModel.prefix)
-                            .foregroundColor(PassColor.textNorm.toColor) +
+                            .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                             Text(viewModel.suffix)
-                            .foregroundColor(viewModel.itemContentType().normMajor2Color.toColor)
+                            .adaptiveForegroundStyle(viewModel.itemContentType().normMajor2Color.toColor)
                     }
                 }
             }

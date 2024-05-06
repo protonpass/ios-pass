@@ -77,7 +77,7 @@ private extension ItemHistoryView {
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(lastUsed)
                     .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
             }
             .contentShape(Rectangle())
         }
@@ -115,7 +115,7 @@ private extension ItemHistoryView {
                 verticalLine
 
                 Circle()
-                    .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                    .background(Circle().foregroundStyle(PassColor.textWeak.toColor))
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
                 Spacer(minLength: ElementSizes.minSpacerSize)
@@ -153,7 +153,7 @@ private extension ItemHistoryView {
                 verticalLine
 
                 Circle()
-                    .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                    .background(Circle().foregroundStyle(PassColor.textWeak.toColor))
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
                 verticalLine
@@ -189,7 +189,7 @@ private extension ItemHistoryView {
                 if let infos {
                     Text(infos)
                         .font(.footnote)
-                        .foregroundColor(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 }
             }
             .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
@@ -223,7 +223,7 @@ private extension ItemHistoryView {
 private extension ItemHistoryView {
     var verticalLine: some View {
         Rectangle()
-            .foregroundColor(.clear)
+            .foregroundStyle(.clear)
             .frame(maxWidth: ElementSizes.line, maxHeight: .infinity)
             .background(PassColor.textWeak.toColor)
     }

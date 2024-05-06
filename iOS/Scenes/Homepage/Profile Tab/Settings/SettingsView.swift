@@ -174,7 +174,7 @@ private extension SettingsView {
                                           .sectionTitleText()
 
                                       Text(viewModel.spotlightSearchableContent.title)
-                                          .foregroundColor(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm.toColor)
                                   }
                               },
                               trailing: { ChevronRight() })
@@ -189,7 +189,7 @@ private extension SettingsView {
                                           .sectionTitleText()
 
                                       Text(viewModel.spotlightSearchableVaults.title)
-                                          .foregroundColor(PassColor.textNorm.toColor)
+                                          .foregroundStyle(PassColor.textNorm.toColor)
                                   }
                               },
                               trailing: { ChevronRight() })

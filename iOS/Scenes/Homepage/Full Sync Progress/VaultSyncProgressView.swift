@@ -71,7 +71,7 @@ private extension VaultSyncProgressView {
                 Image(uiImage: IconProvider.checkmark)
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(PassColor.interactionNorm.toColor)
+                    .foregroundStyle(PassColor.interactionNorm.toColor)
                     .frame(maxHeight: 20)
             }
         }
@@ -96,7 +96,7 @@ private extension VaultSyncProgressView {
         VStack(alignment: .leading, spacing: 0) {
             Text(vault.name)
                 .font(.headline)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
 
             Spacer()
 
@@ -117,7 +117,7 @@ private extension VaultSyncProgressView {
                     emptyText
                 } else if progress.isDone {
                     Text("\(total) item(s)")
-                        .foregroundColor(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 } else {
                     spinnerLabel(text: #localized("%@%% decrypted...",
                                                   percentage(done: decrypted, total: total)))
@@ -132,7 +132,7 @@ private extension VaultSyncProgressView {
     var emptyText: some View {
         Text("Empty")
             .font(.body.italic())
-            .foregroundColor(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak.toColor)
     }
 }
 
@@ -142,7 +142,7 @@ private extension VaultSyncProgressView {
             ProgressView()
             Text(text)
         }
-        .foregroundColor(PassColor.textWeak.toColor)
+        .foregroundStyle(PassColor.textWeak.toColor)
     }
 }
 

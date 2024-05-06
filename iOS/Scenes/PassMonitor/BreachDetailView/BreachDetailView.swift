@@ -181,10 +181,10 @@ private extension BreachDetailView {
         Text("Your Proton Account information remains secure and encrypted.")
             .font(.callout)
             .fontWeight(.regular)
-            .foregroundColor(PassColor.textWeak.toColor) +
+            .adaptiveForegroundStyle(PassColor.textWeak.toColor) +
             Text(verbatim: " ") +
             Text("Learn more")
-            .foregroundColor(PassColor.interactionNormMajor2.toColor)
+            .adaptiveForegroundStyle(PassColor.interactionNormMajor2.toColor)
             .underline()
     }
 }
