@@ -242,19 +242,19 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         closureRemoveEmailFromBreachMonitoring()
     }
     // MARK: - resendEmailVerification
-    public var resendEmailVerificationEmailIdThrowableError9: Error?
+    public var resendEmailVerificationEmailThrowableError9: Error?
     public var closureResendEmailVerification: () -> () = {}
     public var invokedResendEmailVerificationfunction = false
     public var invokedResendEmailVerificationCount = 0
-    public var invokedResendEmailVerificationParameters: (emailId: String, Void)?
-    public var invokedResendEmailVerificationParametersList = [(emailId: String, Void)]()
+    public var invokedResendEmailVerificationParameters: (email: CustomEmail, Void)?
+    public var invokedResendEmailVerificationParametersList = [(email: CustomEmail, Void)]()
 
-    public func resendEmailVerification(emailId: String) async throws {
+    public func resendEmailVerification(email: CustomEmail) async throws {
         invokedResendEmailVerificationfunction = true
         invokedResendEmailVerificationCount += 1
-        invokedResendEmailVerificationParameters = (emailId, ())
-        invokedResendEmailVerificationParametersList.append((emailId, ()))
-        if let error = resendEmailVerificationEmailIdThrowableError9 {
+        invokedResendEmailVerificationParameters = (email, ())
+        invokedResendEmailVerificationParametersList.append((email, ()))
+        if let error = resendEmailVerificationEmailThrowableError9 {
             throw error
         }
         closureResendEmailVerification()
