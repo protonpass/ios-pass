@@ -1343,6 +1343,12 @@
             "value" : "Ikke nu"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht jetzt"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
