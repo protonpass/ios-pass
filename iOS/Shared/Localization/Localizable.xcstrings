@@ -39054,6 +39054,16 @@
         }
       }
     },
+    "Haven't received the code?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haven't received the code?"
+          }
+        }
+      }
+    },
     "Help center" : {
       "localizations" : {
         "be" : {
@@ -61399,6 +61409,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vui lòng xác thực"
+          }
+        }
+      }
+    },
+    "Please check in your Spam for an email called \"Please confirm your email address for Proton Pass\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please check in your Spam for an email called \"Please confirm your email address for Proton Pass\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)."
           }
         }
       }
