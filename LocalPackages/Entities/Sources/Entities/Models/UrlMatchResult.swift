@@ -33,14 +33,3 @@ public enum UrlMatchResult: Sendable, Equatable {
         return 0
     }
 }
-
-/// `https://proton.me` has `me` as `tld` and `proton.me` as domain
-public struct DomainComponents: Sendable, Equatable {
-    public let tld: String
-    public let domain: String
-
-    public init(tld: String, domain: String) {
-        self.tld = tld
-        self.domain = domain
-    }
-}

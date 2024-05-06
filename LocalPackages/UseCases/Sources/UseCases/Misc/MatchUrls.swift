@@ -34,10 +34,10 @@ public extension MatchUrlsUseCase {
 }
 
 public final class MatchUrls: MatchUrlsUseCase {
-    private let getDomainComponents: any GetDomainComponentsUseCase
+    private let getRootDomain: any GetRootDomainUseCase
 
-    public init(getDomainComponents: any GetDomainComponentsUseCase) {
-        self.getDomainComponents = getDomainComponents
+    public init(getRootDomain: any GetRootDomainUseCase) {
+        self.getRootDomain = getRootDomain
     }
 
     public func execute(_ leftUrl: URL, with rightUrl: URL) throws -> UrlMatchResult {
@@ -51,9 +51,9 @@ public final class MatchUrls: MatchUrlsUseCase {
             if leftScheme == "https", rightScheme == "http" {
                 return .notMatched
             } else {
-                guard let leftComponents = try? getDomainComponents(of: leftUrl),
-                      let rightComponents = try? getDomainComponents(of: rightUrl),
-                      leftComponents == rightComponents else {
+                guard let leftRootDomain = try? getRootDomain(of: leftUrl),
+                      let rightRootDomain = try? getRootDomain(of: rightUrl),
+                      leftRootDomain == rightRootDomain else {
                     return .notMatched
                 }
 

@@ -1,5 +1,5 @@
 //
-// GetDomainComponents.swift
+// GetRootDomain.swift
 // Proton Pass - Created on 02/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -19,31 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Entities
 import Foundation
 @preconcurrency import PassRustCore
 
-public protocol GetDomainComponentsUseCase: Sendable {
-    func execute(of url: URL) throws -> DomainComponents
+public protocol GetRootDomainUseCase: Sendable {
+    func execute(of url: URL) throws -> String
 }
 
-public extension GetDomainComponentsUseCase {
-    func callAsFunction(of url: URL) throws -> DomainComponents {
+public extension GetRootDomainUseCase {
+    func callAsFunction(of url: URL) throws -> String {
         try execute(of: url)
     }
 }
 
-public final class GetDomainComponents: GetDomainComponentsUseCase {
+public final class GetRootDomain: GetRootDomainUseCase {
     private let domainManager: any DomainManagerProtocol
 
     public init(domainManager: any DomainManagerProtocol = DomainManager()) {
         self.domainManager = domainManager
     }
 
-    public func execute(of url: URL) throws -> DomainComponents {
-        let urlString = url.absoluteString
-        let tld = try domainManager.getRootDomain(input: urlString)
-        let domain = try domainManager.getDomain(input: urlString)
-        return DomainComponents(tld: tld, domain: domain)
+    public func execute(of url: URL) throws -> String {
+        try domainManager.getRootDomain(input: url.absoluteString)
     }
 }
