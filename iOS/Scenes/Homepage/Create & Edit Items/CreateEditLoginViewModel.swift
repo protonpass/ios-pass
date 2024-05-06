@@ -44,6 +44,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var canAddOrEdit2FAURI = true
     @Published var title = ""
     @Published private(set) var passkeys: [Passkey] = []
+    @Published var email = ""
     @Published var username = ""
     @Published var password = ""
     @Published private(set) var passwordStrength: PasswordStrength?
@@ -100,6 +101,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
+                email = data.email
                 username = data.username
                 password = data.password
                 originalTotpUri = data.totpUri
@@ -117,6 +119,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 passkeyRequest = request
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
+                // TODO: Add email
                 username = request?.userName ?? ""
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
@@ -160,6 +163,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if let newPasskey = try await newPasskey() {
                 passkeys.append(newPasskey.toPasskey)
             }
+            // TODO: Add email
             let logInData = ItemContentData.login(.init(username: username,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
@@ -257,6 +261,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
+    // TODO: Add email
     func useRealEmailAddress() {
         username = emailAddress
     }
@@ -284,6 +289,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
+    // TODO: Add email
     func removeAlias() {
         aliasCreationLiteInfo = nil
         username = ""
@@ -338,6 +344,7 @@ private extension CreateEditLoginViewModel {
                     aliasOptions = nil
                     aliasCreationLiteInfo = nil
                     username = ""
+                    email = ""
                 }
             }
             .store(in: &cancellables)
@@ -373,6 +380,7 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
 // MARK: - AliasCreationLiteInfoDelegate
 
 extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
+    // TODO: Add email
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info
         username = info.aliasAddress

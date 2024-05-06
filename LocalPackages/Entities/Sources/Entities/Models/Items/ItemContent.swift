@@ -42,19 +42,22 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
 }
 
 public struct LogInItemData: Sendable, Equatable, Hashable {
-    public let username: String
+    public let email: String
+    public let username: String?
     public let password: String
     public let totpUri: String
     public let urls: [String]
     public let allowedAndroidApps: [AllowedAndroidApp]
     public let passkeys: [Passkey]
 
-    public init(username: String,
+    public init(email: String,
+                username: String?,
                 password: String,
                 totpUri: String,
                 urls: [String],
                 allowedAndroidApps: [AllowedAndroidApp],
                 passkeys: [Passkey]) {
+        self.email = email
         self.username = username
         self.password = password
         self.totpUri = totpUri
@@ -290,7 +293,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                               pin: data.pin))
 
         case let .login(data):
-            .login(.init(username: data.username,
+                .login(.init(email: data.email,
+                             username: data.username,
                          password: data.password,
                          totpUri: data.totpUri,
                          urls: data.urls,
