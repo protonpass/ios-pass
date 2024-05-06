@@ -219,7 +219,7 @@ public extension PassMonitorRepository {
     }
 
     func resendEmailVerification(emailId: String) async throws {
-        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: emailId)
+        try await remoteDataSource.resendEmailVerification(emailId: emailId)
     }
 
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {

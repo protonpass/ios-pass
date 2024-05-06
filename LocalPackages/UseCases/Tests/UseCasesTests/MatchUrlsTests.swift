@@ -22,18 +22,18 @@
 @testable import UseCases
 import XCTest
 
-final class MatchUrlsTests: XCTest {
-    var getDomainComponents: (any GetDomainComponentsUseCase)!
+final class MatchUrlsTests: XCTestCase {
+    var getRootDomain: (any GetRootDomainUseCase)!
     var sut: (any MatchUrlsUseCase)!
 
     override func setUp() {
         super.setUp()
-        getDomainComponents = GetDomainComponents()
-        sut = MatchUrls(getDomainComponents: getDomainComponents)
+        getRootDomain = GetRootDomain()
+        sut = MatchUrls(getRootDomain: getRootDomain)
     }
 
     override func tearDown() {
-        getDomainComponents = nil
+        getRootDomain = nil
         sut = nil
         super.tearDown()
     }
