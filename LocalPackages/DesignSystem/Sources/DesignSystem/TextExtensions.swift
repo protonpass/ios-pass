@@ -31,7 +31,7 @@ public extension Text {
 
     func adaptiveForegroundStyle(_ color: Color) -> Text {
         if #available(iOS 17, *) {
-            self.foregroundStyle(color)
+            foregroundStyle(color)
         } else {
             // swiftlint:disable:next deprecated_foregroundcolor_modifier
             foregroundColor(color)
