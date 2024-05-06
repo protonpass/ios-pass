@@ -23,6 +23,7 @@
 import Entities
 import Factory
 import Foundation
+import Macro
 
 @MainActor
 final class AddCustomEmailViewModel: ObservableObject, Sendable {
@@ -75,7 +76,9 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                try await passMonitorRepository.resendEmailVerification(emailId: customEmail.customEmailID)
+                try await passMonitorRepository.resendEmailVerification(email: customEmail)
+                let message = #localized("New verification code sent")
+                router.display(element: .successMessage(message))
             } catch {
                 handle(error: error)
             }
