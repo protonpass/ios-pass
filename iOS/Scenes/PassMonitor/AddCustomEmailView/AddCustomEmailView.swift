@@ -32,12 +32,12 @@ struct AddCustomEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
     @State private var showErrorAlert = false
+    @State private var showResendCodeButton = false
 
     var body: some View {
-        VStack {
-            if viewModel.customEmail != nil {
-                Text("We’ve sent a verification code to \(viewModel.email). Please enter it below:")
-                    .font(.body)
+        VStack(spacing: DesignConstant.sectionPadding * 2) {
+            if viewModel.isVerificationMode {
+                Text("We sent a verification code to \(viewModel.email). Enter it below:")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 8)
@@ -49,22 +49,6 @@ struct AddCustomEmailView: View {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .tint(PassColor.interactionNorm.toColor)
                     .frame(height: 64)
-
-                if viewModel.canResendCode {
-                    HStack {
-                        CapsuleTextButton(title: #localized("Resend code"),
-                                          titleColor: PassColor.interactionNormMajor2,
-                                          backgroundColor: PassColor.interactionNormMinor1,
-                                          action: { viewModel.sendVerificationCode() })
-                            .fixedSize(horizontal: true, vertical: true)
-                        Spacer()
-                    }
-                } else {
-                    Text("Resend code in \(viewModel.timeRemaining)")
-                        .font(.body)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
             } else {
                 TextField("Email address", text: $viewModel.email)
                     .focused($focused)
@@ -74,11 +58,43 @@ struct AddCustomEmailView: View {
                     .tint(PassColor.interactionNorm.toColor)
                     .frame(height: 64)
             }
+
+            DisablableCapsuleTextButton(title: #localized("Continue"),
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: PassColor.interactionNormMajor1,
+                                        disableBackgroundColor: PassColor.interactionNormMinor1,
+                                        disabled: !viewModel.canContinue,
+                                        height: 44,
+                                        action: { viewModel.nextStep() })
+
+            if viewModel.isVerificationMode {
+                Label("Haven't received the code?",
+                      systemImage: showResendCodeButton ? "chevron.up" : "chevron.down")
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .labelStyle(.rightIcon)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .buttonEmbeded {
+                        showResendCodeButton.toggle()
+                        focused = !showResendCodeButton
+                    }
+
+                if showResendCodeButton {
+                    // swiftlint:disable:next line_length
+                    Text("Please check in your Spam for an email called \"Please confirm your email address for Proton Pass\"\n\nIf you can't find such email, you can [request a new code](https://proton.me).")
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .tint(PassColor.interactionNormMajor1.toColor)
+                        .environment(\.openURL, OpenURLAction(handler: handleURL))
+                }
+            }
+
             Spacer()
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: viewModel.canResendCode)
+        .scrollViewEmbeded()
+        .animation(.default, value: viewModel.canContinue)
+        .animation(.default, value: viewModel.isVerificationMode)
+        .animation(.default, value: showResendCodeButton)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm.toColor)
         .onChange(of: viewModel.finishedVerification) { isVerificationFinished in
@@ -103,7 +119,7 @@ struct AddCustomEmailView: View {
                    }
                })
         .onAppear { focused = true }
-        .navigationTitle(viewModel.customEmail != nil ? "Confirm your email" : "Custom email monitoring")
+        .navigationTitle(viewModel.isVerificationMode ? "Confirm your email" : "Custom email monitoring")
         .navigationStackEmbeded()
     }
 }
@@ -118,18 +134,10 @@ private extension AddCustomEmailView {
                          accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
         }
+    }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button { viewModel.nextStep() } label: {
-                Text("Continue")
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 15)
-            }
-            .buttonStyle(.plain)
-            .background(PassColor.interactionNormMinor1.toColor)
-            .clipShape(Capsule())
-            .disabled(!viewModel.canContinue)
-        }
+    func handleURL(_: URL) -> OpenURLAction.Result {
+        viewModel.sendVerificationCode()
+        return .handled
     }
 }
