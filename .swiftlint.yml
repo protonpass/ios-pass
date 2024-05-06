@@ -222,6 +222,11 @@ custom_rules:
     name: "Discouraged body font"
     message: "Prefer implicit body font"
     regex: "(\\.font\\(\\.body\\))"
+  
+  discouraged_regular_font_weight:
+    name: "Discouraged regular font weight"
+    message: "Prefer implicit regular font weight"
+    regex: "(\\.fontWeight\\(\\.regular\\))"
 
   deprecated_foregroundcolor_modifier:
     name: "Deprecated foregroundColor modifier"
