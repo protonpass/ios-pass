@@ -62,6 +62,10 @@ private extension AutoFillUseCaseContainer {
     var resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase {
         SharedUseCasesContainer.shared.resolvePasskeyChallenge()
     }
+
+    var matchUrls: any MatchUrlsUseCase {
+        SharedUseCasesContainer.shared.matchUrls()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -83,6 +87,7 @@ extension AutoFillUseCaseContainer {
                                 accessRepository: self.accessRepository,
                                 itemRepository: self.itemRepository,
                                 shareRepository: self.shareRepository,
+                                matchUrls: self.matchUrls,
                                 mapServiceIdentifierToURL: self.mapServiceIdentifierToURL(),
                                 logManager: self.logManager) }
     }
@@ -156,6 +161,7 @@ extension AutoFillUseCaseContainer {
 
     var reindexLoginItem: Factory<any ReindexLoginItemUseCase> {
         self { ReindexLoginItem(manager: SharedServiceContainer.shared.credentialManager(),
+                                matchUrls: self.matchUrls,
                                 mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
 
