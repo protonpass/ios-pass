@@ -74,7 +74,6 @@ private extension ItemHistoryView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Last autofill")
-                    .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(lastUsed)
                     .font(.footnote)
@@ -86,7 +85,6 @@ private extension ItemHistoryView {
         .frame(maxWidth: .infinity, alignment: .leading)
 
         Text("Changelog")
-            .font(.body)
             .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -187,7 +185,6 @@ private extension ItemHistoryView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
-                    .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
                 if let infos {
                     Text(infos)

@@ -416,7 +416,6 @@ struct SentinelSheetView: View {
                     .foregroundStyle(PassColor.textInvert.toColor)
 
                 Text("Sentinel description")
-                    .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(PassColor.textInvert.toColor)
                     .frame(maxWidth: .infinity, alignment: .top)

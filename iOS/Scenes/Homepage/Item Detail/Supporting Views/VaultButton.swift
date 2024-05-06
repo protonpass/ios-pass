@@ -41,7 +41,6 @@ struct VaultButton: View {
                 })
                 .foregroundColor(vault.mainColor)
                 Text(verbatim: "•")
-                    .font(.body)
                     .foregroundColor(PassColor.textNorm.toColor)
                 Text(verbatim: "\(vault.members)")
                     .font(.footnote)
