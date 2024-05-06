@@ -125,14 +125,14 @@ final class PathRouter: ObservableObject {
         path.append(destination)
     }
 
-    @MainActor
     // periphery:ignore
+    @MainActor
     func popToRoot() {
         path = NavigationPath()
     }
 
-    @MainActor
     // periphery:ignore
+    @MainActor
     func back(to numberOfScreen: Int = 1) {
         path.removeLast(numberOfScreen)
     }
@@ -142,8 +142,8 @@ final class PathRouter: ObservableObject {
         presentedSheet = sheet
     }
 
-    @MainActor
     // periphery:ignore
+    @MainActor
     func dismissSheet() {
         presentedSheet = nil
     }
