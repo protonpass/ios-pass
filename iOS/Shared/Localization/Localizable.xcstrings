@@ -52580,6 +52580,16 @@
         }
       }
     },
+    "New verification code sent" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New verification code sent"
+          }
+        }
+      }
+    },
     "Next" : {
       "localizations" : {
         "be" : {
