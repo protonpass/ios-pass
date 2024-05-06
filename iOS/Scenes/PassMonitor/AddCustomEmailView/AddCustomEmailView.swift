@@ -36,7 +36,7 @@ struct AddCustomEmailView: View {
     var body: some View {
         VStack {
             if viewModel.customEmail != nil {
-                Text("We’ve sent a verification code to \(viewModel.email). Please enter it below:")
+                Text("We sent a verification code to \(viewModel.email). Enter it below:")
                     .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -49,22 +49,6 @@ struct AddCustomEmailView: View {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .tint(PassColor.interactionNorm.toColor)
                     .frame(height: 64)
-
-                if viewModel.canResendCode {
-                    HStack {
-                        CapsuleTextButton(title: #localized("Resend code"),
-                                          titleColor: PassColor.interactionNormMajor2,
-                                          backgroundColor: PassColor.interactionNormMinor1,
-                                          action: { viewModel.sendVerificationCode() })
-                            .fixedSize(horizontal: true, vertical: true)
-                        Spacer()
-                    }
-                } else {
-                    Text("Resend code in \(viewModel.timeRemaining)")
-                        .font(.body)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
             } else {
                 TextField("Email address", text: $viewModel.email)
                     .focused($focused)
@@ -74,11 +58,21 @@ struct AddCustomEmailView: View {
                     .tint(PassColor.interactionNorm.toColor)
                     .frame(height: 64)
             }
+
+            DisablableCapsuleTextButton(title: #localized("Continue"),
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: PassColor.interactionNormMajor1,
+                                        disableBackgroundColor: PassColor.interactionNormMinor1,
+                                        disabled: !viewModel.canContinue,
+                                        height: 44,
+                                        action: { viewModel.nextStep() })
+
             Spacer()
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: viewModel.canResendCode)
+        .animation(.default, value: viewModel.canContinue)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm.toColor)
         .onChange(of: viewModel.finishedVerification) { isVerificationFinished in
@@ -117,19 +111,6 @@ private extension AddCustomEmailView {
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
-        }
-
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button { viewModel.nextStep() } label: {
-                Text("Continue")
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 15)
-            }
-            .buttonStyle(.plain)
-            .background(PassColor.interactionNormMinor1.toColor)
-            .clipShape(Capsule())
-            .disabled(!viewModel.canContinue)
         }
     }
 }

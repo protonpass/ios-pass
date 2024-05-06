@@ -29,10 +29,8 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published var code = ""
     @Published private(set) var finishedVerification = false
-    @Published private(set) var canResendCode = false
     @Published private(set) var customEmail: CustomEmail?
     @Published private(set) var verificationError: (any Error)?
-    @Published private var secondsRemaining: Int
 
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
     private let addCustomEmailToMonitoring = resolve(\UseCasesContainer.addCustomEmailToMonitoring)
@@ -40,9 +38,6 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
-
-    private var timerTask: Task<Void, Never>?
-    private let totalSeconds = 30
 
     var canContinue: Bool {
         if customEmail != nil {
@@ -52,24 +47,9 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
         }
     }
 
-    var timeRemaining: String {
-        let minutes = secondsRemaining / 60
-        let seconds = secondsRemaining % 60
-        return String(format: "%02d:%02d", minutes, seconds)
-    }
-
     init(email: CustomEmail?) {
         customEmail = email
         self.email = email?.email ?? ""
-        secondsRemaining = totalSeconds
-        if customEmail != nil {
-            startTimer()
-        }
-    }
-
-    deinit {
-        timerTask?.cancel()
-        timerTask = nil
     }
 
     func nextStep() {
@@ -92,7 +72,6 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 try await passMonitorRepository.resendEmailVerification(emailId: customEmail.customEmailID)
-                resetTimer()
             } catch {
                 handle(error: error)
             }
@@ -139,37 +118,10 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 customEmail = try await addCustomEmailToMonitoring(email: email.lowercased())
-                startTimer()
             } catch {
                 handle(error: error)
             }
         }
-    }
-
-    func startTimer() {
-        canResendCode = false
-        timerTask = Task { [weak self] in
-            guard let self else {
-                return
-            }
-            while secondsRemaining > 0 {
-                try? await Task.sleep(seconds: 1)
-                secondsRemaining -= 1
-            }
-            stopTimer()
-        }
-    }
-
-    func stopTimer() {
-        timerTask?.cancel()
-        timerTask = nil
-        canResendCode = true
-    }
-
-    func resetTimer() {
-        stopTimer() // Ensure any existing timer is stopped before restarting
-        secondsRemaining = totalSeconds
-        startTimer()
     }
 }
 
