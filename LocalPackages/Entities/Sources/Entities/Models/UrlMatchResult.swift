@@ -1,6 +1,6 @@
 //
-// CurrentUserIdProvider.swift
-// Proton Pass - Created on 07/04/2024.
+// UrlMatchResult.swift
+// Proton Pass - Created on 02/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,7 +21,15 @@
 
 import Foundation
 
-// sourcery: AutoMockable
-public protocol CurrentUserIdProvider: Sendable {
-    func getCurrentUserId() async throws -> String?
+/// `matched` case associates an `Int` as match score
+public enum UrlMatchResult: Sendable, Equatable {
+    case matched(Int)
+    case notMatched
+
+    public var score: Int {
+        if case let .matched(score) = self {
+            return score
+        }
+        return 0
+    }
 }

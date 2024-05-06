@@ -1,6 +1,6 @@
 //
-// CurrentUserIdProvider.swift
-// Proton Pass - Created on 07/04/2024.
+// GetRootDomain.swift
+// Proton Pass - Created on 02/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,8 +20,26 @@
 //
 
 import Foundation
+@preconcurrency import PassRustCore
 
-// sourcery: AutoMockable
-public protocol CurrentUserIdProvider: Sendable {
-    func getCurrentUserId() async throws -> String?
+public protocol GetRootDomainUseCase: Sendable {
+    func execute(of url: URL) throws -> String
+}
+
+public extension GetRootDomainUseCase {
+    func callAsFunction(of url: URL) throws -> String {
+        try execute(of: url)
+    }
+}
+
+public final class GetRootDomain: GetRootDomainUseCase {
+    private let domainManager: any DomainManagerProtocol
+
+    public init(domainManager: any DomainManagerProtocol = DomainManager()) {
+        self.domainManager = domainManager
+    }
+
+    public func execute(of url: URL) throws -> String {
+        try domainManager.getRootDomain(input: url.absoluteString)
+    }
 }

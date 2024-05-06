@@ -21,7 +21,6 @@
 
 import AuthenticationServices
 import Client
-import Core
 import Entities
 import Foundation
 
@@ -44,11 +43,14 @@ public extension ReindexLoginItemUseCase {
 
 public final class ReindexLoginItem: ReindexLoginItemUseCase {
     private let manager: any CredentialManagerProtocol
+    private let matchUrls: any MatchUrlsUseCase
     private let mapServiceIdentifierToUrl: any MapASCredentialServiceIdentifierToURLUseCase
 
     public init(manager: any CredentialManagerProtocol,
+                matchUrls: any MatchUrlsUseCase,
                 mapServiceIdentifierToUrl: any MapASCredentialServiceIdentifierToURLUseCase) {
         self.manager = manager
+        self.matchUrls = matchUrls
         self.mapServiceIdentifierToUrl = mapServiceIdentifierToUrl
     }
 
@@ -71,16 +73,15 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
 
         // Then we insert updated credentials
         let givenUrls = identifiers.compactMap(mapServiceIdentifierToUrl.callAsFunction)
-        let parser = try DomainParser()
 
         var passwords = [CredentialIdentity]()
         if !data.username.isEmpty, !data.password.isEmpty {
             passwords = data.urls.map { url -> CredentialIdentity in
                 let isMatched = givenUrls.map { givenUrl -> Bool in
-                    guard let url = URL(string: url) else {
+                    guard let url = URL(string: url),
+                          let result = try? matchUrls(url, with: givenUrl) else {
                         return false
                     }
-                    let result = URLUtils.Matcher.compare(url, givenUrl, domainParser: parser)
                     return switch result {
                     case .matched:
                         true
