@@ -218,6 +218,11 @@ custom_rules:
     message: "Avoid using AnyView for better performance"
     regex: "(AnyView)"
 
+  discouraged_body_font:
+    name: "Discouraged body font"
+    message: "Prefer implicit body font"
+    regex: "(\\.font\\(\\.body\\))"
+
   nil_if_empty:
     name: "Nil if empty"
     message: "Use Collection's computed property nilIfEmpty"

@@ -114,10 +114,8 @@ private extension SharingSummaryView {
                 .frame(height: 20)
             VStack(alignment: .leading, spacing: 2) {
                 Text(infos.role.title)
-                    .font(.body)
                     .foregroundColor(PassColor.textNorm.toColor)
                 Text(infos.role.description)
-                    .font(.body)
                     .foregroundColor(PassColor.textWeak.toColor)
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)

@@ -125,7 +125,6 @@ private extension BreachDetailView {
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(breach.email)
-                        .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -136,7 +135,6 @@ private extension BreachDetailView {
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Text(passwordLastChars)
-                            .font(.body)
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
