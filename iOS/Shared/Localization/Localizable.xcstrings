@@ -8710,6 +8710,9 @@
         }
       }
     },
+    "Add email address" : {
+
+    },
     "Add login details for an app or site" : {
       "localizations" : {
         "be" : {
@@ -9493,8 +9496,12 @@
         }
       }
     },
+    "Add username" : {
+
+    },
     "Add username or email address" : {
       "comment" : "Login item create/edit page",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
