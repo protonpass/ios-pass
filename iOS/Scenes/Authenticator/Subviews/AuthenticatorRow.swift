@@ -82,7 +82,6 @@ struct AuthenticatorRow<ThumbnailView: View>: View {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
                     .lineLimit(1)
-                    .font(.body)
                     .foregroundColor(PassColor.textWeak.toColor)
                 switch viewModel.state {
                 case .empty:

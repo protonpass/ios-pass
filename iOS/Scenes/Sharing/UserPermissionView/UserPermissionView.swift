@@ -197,12 +197,10 @@ private extension UserPermissionView {
                     HStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(role.title)
-                                .font(.body)
                                 .foregroundColor(PassColor.textNorm.toColor)
                                 .padding(.bottom, 2)
 
                             Text(role.description)
-                                .font(.body)
                                 .foregroundColor(PassColor.textWeak.toColor)
                         }
                         Spacer()
