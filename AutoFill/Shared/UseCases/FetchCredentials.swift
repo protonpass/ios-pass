@@ -44,6 +44,7 @@ final class FetchCredentials: FetchCredentialsUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
+    private let matchUrls: any MatchUrlsUseCase
     private let mapServiceIdentifierToURL: any MapASCredentialServiceIdentifierToURLUseCase
     private let logger: Logger
 
@@ -51,12 +52,14 @@ final class FetchCredentials: FetchCredentialsUseCase {
          accessRepository: any AccessRepositoryProtocol,
          itemRepository: any ItemRepositoryProtocol,
          shareRepository: any ShareRepositoryProtocol,
+         matchUrls: any MatchUrlsUseCase,
          mapServiceIdentifierToURL: any MapASCredentialServiceIdentifierToURLUseCase,
          logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.accessRepository = accessRepository
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
+        self.matchUrls = matchUrls
         self.mapServiceIdentifierToURL = mapServiceIdentifierToURL
         logger = .init(manager: logManager)
     }
@@ -105,7 +108,6 @@ private extension FetchCredentials {
                         encryptedItems: [SymmetricallyEncryptedItem],
                         plan: Plan) async throws -> CredentialsFetchResult {
         let urls = identifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
-        let domainParser = try DomainParser()
         var searchableItems = [SearchableItem]()
         var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
         var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
@@ -121,10 +123,10 @@ private extension FetchCredentials {
             searchableItems.append(SearchableItem(from: decryptedItem, allVaults: vaults))
 
             let itemUrls = data.urls.compactMap { URL(string: $0) }
-            var matchResults = [URLUtils.Matcher.MatchResult]()
+            var matchResults = [UrlMatchResult]()
             for itemUrl in itemUrls {
                 for url in urls {
-                    let result = URLUtils.Matcher.compare(itemUrl, url, domainParser: domainParser)
+                    let result = try matchUrls(itemUrl, with: url)
                     if case .matched = result {
                         matchResults.append(result)
                     }
