@@ -62,7 +62,7 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
 
         switch request {
         case .password:
-            credential = ASPasswordCredential(user: logInData.username, password: logInData.password)
+            credential = ASPasswordCredential(user: logInData.indexableUsername, password: logInData.password)
         case let .passkey(credentialRequest):
             guard let key = logInData.passkeys.key(for: credentialRequest) else {
                 throw ASExtensionError(.credentialIdentityNotFound)
@@ -81,7 +81,7 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
                                                           credentialID: response.credentialId)
             } else {
                 assertionFailure("Should be on iOS 17 and above when entering this case")
-                credential = ASPasswordCredential(user: logInData.username,
+                credential = ASPasswordCredential(user: logInData.indexableUsername,
                                                   password: logInData.password)
             }
         }

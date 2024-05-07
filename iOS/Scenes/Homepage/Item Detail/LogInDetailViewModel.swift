@@ -39,7 +39,8 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     @Published private(set) var passkeys = [Passkey]()
     @Published private(set) var name = ""
-    @Published private(set) var username = ""
+    @Published private(set) var email = ""
+    @Published private(set) var itemUsername = ""
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var totpUri = ""
@@ -102,13 +103,14 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             passkeys = data.passkeys
             name = itemContent.name
             note = itemContent.note
-            username = data.username
+            email = data.email
+            itemUsername = data.itemUsername
             password = data.password
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
             totpUri = data.totpUri
             totpManager.bind(uri: data.totpUri)
-            getAliasItem(username: data.username)
+            getAliasItem(email: data.email)
 
             if !data.totpUri.isEmpty {
                 checkTotpState()
@@ -124,11 +126,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 // MARK: - Private APIs
 
 private extension LogInDetailViewModel {
-    func getAliasItem(username: String) {
+    func getAliasItem(email: String) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                aliasItem = try await itemRepository.getAliasItem(email: username)
+                aliasItem = try await itemRepository.getAliasItem(email: email)
             } catch {
                 handle(error)
             }
@@ -158,8 +160,12 @@ extension LogInDetailViewModel {
         router.present(for: .passkeyDetail(passkey))
     }
 
-    func copyUsername() {
-        copyToClipboard(text: username, message: #localized("Username copied"))
+    func copyEmail() {
+        copyToClipboard(text: email, message: #localized("Username copied"))
+    }
+
+    func copyItemUsername() {
+        copyToClipboard(text: itemUsername, message: #localized("Username copied"))
     }
 
     func copyPassword() {

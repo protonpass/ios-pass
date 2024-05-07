@@ -28,6 +28,7 @@ import SwiftUI
 enum ItemContextMenu {
     case login(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
+               onCopyEmail: () -> Void,
                onCopyUsername: () -> Void,
                onCopyPassword: () -> Void,
                onEdit: () -> Void,
@@ -70,6 +71,7 @@ enum ItemContextMenu {
         switch self {
         case let .login(item,
                         isEditable,
+                        onCopyEmail,
                         onCopyUsername,
                         onCopyPassword,
                         onEdit,
@@ -307,7 +309,8 @@ extension View {
             case .login:
                 itemContextMenu(.login(item: item,
                                        isEditable: isEditable,
-                                       onCopyUsername: { handler.copyUsername(item) },
+                                       onCopyEmail: { handler.copyEmail(item) },
+                                       onCopyUsername: { handler.copyItemUsername(item) },
                                        onCopyPassword: { handler.copyPassword(item) },
                                        onEdit: { handler.edit(item) },
                                        onPinToggle: { handler.toggleItemPinning(item) },
