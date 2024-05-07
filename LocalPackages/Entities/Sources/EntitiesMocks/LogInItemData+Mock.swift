@@ -29,7 +29,7 @@ public extension LogInItemData {
                      urls: [String] = ["https://example.com"],
                      allowedAndroidApps: [AllowedAndroidApp] = [],
                      passkeys: [Passkey] = []) -> LogInItemData {
-        LogInItemData(email: email, 
+        LogInItemData(email: email,
                       username: username,
                       password: password,
                       totpUri: totpUri,
