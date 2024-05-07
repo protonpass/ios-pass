@@ -120,7 +120,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 passkeyRequest = request
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
-                // TODO: Add email
                 itemUsername = request?.userName ?? ""
                 showUsernameField = !itemUsername.isEmpty
                 if let totpUri {
@@ -165,7 +164,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if let newPasskey = try await newPasskey() {
                 passkeys.append(newPasskey.toPasskey)
             }
-            // TODO: Add email
             let logInData = ItemContentData.login(.init(email: email,
                                                         username: itemUsername,
                                                         password: password,
@@ -264,7 +262,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    // TODO: Add email
     func useRealEmailAddress() {
         email = emailAddress
     }
@@ -292,7 +289,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    // TODO: Add email
     func removeAlias() {
         aliasCreationLiteInfo = nil
         email = ""
@@ -383,7 +379,6 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
 // MARK: - AliasCreationLiteInfoDelegate
 
 extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
-    // TODO: Add email
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info
         email = info.aliasAddress
