@@ -30,7 +30,8 @@ extension ItemContentData {
         case 1:
             return .note
         default:
-            return .login(.init(username: .random(),
+            return .login(.init(email: .random(), 
+                                username: .random(),
                                 password: .random(),
                                 totpUri: .random(),
                                 urls: .random(randomElement: .random()),
