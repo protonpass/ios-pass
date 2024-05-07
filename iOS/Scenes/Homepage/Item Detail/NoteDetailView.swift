@@ -57,6 +57,7 @@ struct NoteDetailView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .isEditable(false)
+                            // swiftlint:disable:next deprecated_foregroundcolor_modifier
                             .foregroundColor(PassColor.textNorm)
                     }
                     .animation(.default, value: itemContent.item.pinned)

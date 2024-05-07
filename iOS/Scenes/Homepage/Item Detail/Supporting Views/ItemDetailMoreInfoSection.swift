@@ -94,7 +94,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
                 }
                 .font(.caption)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(maxWidth: .infinity)
             }
         }
@@ -118,7 +118,7 @@ private extension ItemDetailMoreInfoSection {
             .resizable()
             .scaledToFit()
             .frame(width: 16)
-            .foregroundColor(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak.toColor)
     }
 
     func title(_ text: String) -> some View {

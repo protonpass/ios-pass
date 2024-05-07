@@ -36,10 +36,10 @@ struct LimitedVaultOperationsBanner: View {
 
     private var texts: some View {
         Text("To interact with your other vaults, you need to upgrade your account.")
-            .foregroundColor(PassColor.textNorm.toColor) +
+            .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
             Text(verbatim: " ") +
             Text("Upgrade now")
             .underline(color: PassColor.interactionNormMajor1.toColor)
-            .foregroundColor(PassColor.interactionNormMajor1.toColor)
+            .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
     }
 }

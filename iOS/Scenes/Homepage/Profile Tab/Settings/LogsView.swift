@@ -45,9 +45,9 @@ struct LogsView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80)
-                            .foregroundColor(.secondary.opacity(0.5))
+                            .foregroundStyle(.secondary.opacity(0.5))
                         Text("No logs")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
@@ -145,7 +145,7 @@ private extension LogsView {
         })
         .animationsDisabled()
         .buttonStyle(.plain)
-        .foregroundColor(PassColor.interactionNormMajor2.toColor)
+        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
     }
 
     var noFilteredLogsMessage: some View {

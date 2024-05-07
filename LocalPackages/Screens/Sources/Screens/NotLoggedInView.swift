@@ -64,7 +64,7 @@ public struct NotLoggedInView: View {
                 Text(variant.message)
             }
             .multilineTextAlignment(.center)
-            .foregroundColor(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm.toColor)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()

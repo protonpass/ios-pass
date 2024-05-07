@@ -55,7 +55,7 @@ private extension ShareInviteeView {
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
                 Text(invitee.email)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .lineLimit(isExpanded ? nil : 1)
                     .onTapGesture {
                         isExpanded = true
@@ -65,14 +65,13 @@ private extension ShareInviteeView {
                 HStack {
                     if isCurrentUser {
                         Text("You")
-                            .font(.body)
-                            .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                             .padding(.vertical, 2)
                             .padding(.horizontal, 8)
                             .background(Capsule().fill(PassColor.interactionNorm.toColor))
                     }
                     Text(invitee.subtitle)
-                        .foregroundColor(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 }
             }
 
@@ -138,7 +137,7 @@ private extension ShareInviteeView {
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundColor(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak.toColor)
         })
     }
 
@@ -151,7 +150,7 @@ private extension ShareInviteeView {
             }, icon: {
                 Image(uiImage: image)
                     .renderingMode(.template)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
             })
         })
     }

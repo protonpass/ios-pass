@@ -1,3 +1,10 @@
+# Version 1.11.1
+Fixes:
+- Resolved issue where users were unable to request a new verification code for custom emails
+
+Others:
+- Implemented retrieval of root domains of URLs using Rust library
+
 ## Version 1.11.0
 Features:
 - Introducing Pass Monitor: Dark Web Monitoring, password health analytics, and more

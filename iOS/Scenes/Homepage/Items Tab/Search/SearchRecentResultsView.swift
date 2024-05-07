@@ -36,10 +36,10 @@ struct SearchRecentResultsView: View {
                 Text("Recent searches")
                     .font(.callout)
                     .fontWeight(.bold)
-                    .foregroundColor(PassColor.textNorm.toColor) +
+                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                     Text(verbatim: " (\(results.count))")
                     .font(.callout)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
 
                 Spacer()
 

@@ -31,6 +31,6 @@ public struct InvalidInputLabel: View {
     public var body: some View {
         Label(text, systemImage: "exclamationmark.circle.fill")
             .font(.caption.bold())
-            .foregroundColor(PassColor.signalDanger.toColor)
+            .foregroundStyle(PassColor.signalDanger.toColor)
     }
 }
