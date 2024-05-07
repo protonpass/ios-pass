@@ -144,7 +144,7 @@ struct AccountView: View {
                           height: .tall,
                           content: {
                               Text("Sign out")
-                                  .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                                  .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                           },
                           trailing: {
                               CircleButton(icon: IconProvider.arrowOutFromRectangle,

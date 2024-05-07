@@ -1,6 +1,6 @@
 import SwiftUI
 
-// swiftlint:disable discouraged_optional_boolean
+// swiftlint:disable discouraged_optional_boolean deprecated_foregroundcolor_modifier
 public extension TextView {
     /// Specifies whether or not this view allows rich text
     /// - Parameter enabled: If `true`, rich text editing controls will be enabled for the user
@@ -161,4 +161,4 @@ public extension TextView {
     }
 }
 
-// swiftlint:enable discouraged_optional_boolean
+// swiftlint:enable discouraged_optional_boolean deprecated_foregroundcolor_modifier

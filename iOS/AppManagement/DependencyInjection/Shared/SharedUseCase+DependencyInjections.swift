@@ -275,6 +275,16 @@ extension SharedUseCasesContainer {
     var validateAliasPrefix: Factory<any ValidateAliasPrefixUseCase> {
         self { ValidateAliasPrefix() }
     }
+
+    var getRootDomain: Factory<any GetRootDomainUseCase> {
+        // Register as `cached` because the list of root domain is long
+        self { GetRootDomain() }
+            .cached
+    }
+
+    var matchUrls: Factory<any MatchUrlsUseCase> {
+        self { MatchUrls(getRootDomain: self.getRootDomain()) }
+    }
 }
 
 // MARK: - Session
