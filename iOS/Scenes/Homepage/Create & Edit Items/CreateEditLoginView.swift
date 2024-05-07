@@ -444,7 +444,7 @@ private extension CreateEditLoginView {
                 Text("Username or email address")
                     .sectionTitleText()
                 Text(viewModel.email)
-                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
