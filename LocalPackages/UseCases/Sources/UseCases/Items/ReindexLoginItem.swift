@@ -62,7 +62,7 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
         // First we remove existing indexed credentials
         let oldPasswords = data.urls.map { CredentialIdentity.password(.init(shareId: item.shareId,
                                                                              itemId: item.item.itemID,
-                                                                             username: data.username,
+                                                                             username: data.indexableUsername,
                                                                              url: $0,
                                                                              lastUseTime: item.item
                                                                                  .lastUseTime ?? 0)) }
@@ -74,7 +74,7 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
         let parser = try DomainParser()
 
         var passwords = [CredentialIdentity]()
-        if !data.username.isEmpty, !data.password.isEmpty {
+        if !data.indexableUsername.isEmpty, !data.password.isEmpty {
             passwords = data.urls.map { url -> CredentialIdentity in
                 let isMatched = givenUrls.map { givenUrl -> Bool in
                     guard let url = URL(string: url) else {
@@ -98,7 +98,7 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
 
                 return CredentialIdentity.password(.init(shareId: item.shareId,
                                                          itemId: item.itemId,
-                                                         username: data.username,
+                                                         username: data.indexableUsername,
                                                          url: url,
                                                          lastUseTime: lastUseTime))
             }
