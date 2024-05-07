@@ -42,13 +42,6 @@ struct CreateEditLoginView: View {
     @Namespace private var noteID
     @Namespace private var bottomID
 
-    private var shouldApplyTip: Bool {
-        guard #available(iOS 17, *) else {
-            return true
-        }
-        return false
-    }
-
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -378,9 +371,7 @@ private extension CreateEditLoginView {
                         .clipShape(.circle)
                         .overlay(/// apply a rounded border
                             Circle()
-                                .stroke(UIColor.secondarySystemGroupedBackground
-                                    .toColor /* PassColor.inputBorderNorm.toColor */,
-                                    lineWidth: 2))
+                                .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
                         .offset(x: 5, y: -2)
                 }
             }
