@@ -38,7 +38,8 @@ public enum ItemContentProtobufFactory {
             
         case let .login(logInData):
             itemContentProtobuf.content.login = .init()
-            itemContentProtobuf.content.login.username = logInData.username
+            itemContentProtobuf.content.login.itemEmail = logInData.email
+            itemContentProtobuf.content.login.itemUsername = logInData.itemUsername
             itemContentProtobuf.content.login.password = logInData.password
             itemContentProtobuf.content.login.totpUri = logInData.totpUri
             itemContentProtobuf.content.login.urls = logInData.urls

@@ -22,13 +22,15 @@ import Entities
 import Foundation
 
 public extension LogInItemData {
-    static func mock(username: String = "Mock User",
+    static func mock(email: String = "MockEmail@proton.me",
+                     username: String = "Mock User",
                      password: String = "password123",
                      totpUri: String = "otpauth://totp/Example:email@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Example",
                      urls: [String] = ["https://example.com"],
                      allowedAndroidApps: [AllowedAndroidApp] = [],
                      passkeys: [Passkey] = []) -> LogInItemData {
-        LogInItemData(username: username,
+        LogInItemData(email: email, 
+                      username: username,
                       password: password,
                       totpUri: totpUri,
                       urls: urls,
