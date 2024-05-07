@@ -66,6 +66,8 @@ private extension DetailHistoryView {
 
     func usernamePassword2FaSection(logItem: LogInItemData) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
+            emailRow(logItem: logItem)
+            PassSectionDivider()
             usernameRow(logItem: logItem)
             PassSectionDivider()
             passwordRow(logItem: logItem)
@@ -81,21 +83,40 @@ private extension DetailHistoryView {
         .roundedDetailSection()
     }
 
+    func emailRow(logItem: LogInItemData) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.user,
+                                  color: viewModel.currentRevision.type.normColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Email address")
+                    .sectionTitleText()
+
+                Text(logItem.email)
+                    .foregroundStyle(textColor(for: \.loginItem?.email).toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture { viewModel.copyEmail() }
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+
     func usernameRow(logItem: LogInItemData) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user,
                                   color: viewModel.currentRevision.type.normColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username or email address")
+                Text("Username")
                     .sectionTitleText()
 
-                Text(logItem.username)
-                    .foregroundStyle(textColor(for: \.loginItem?.username).toColor)
+                Text(logItem.itemUsername)
+                    .foregroundStyle(textColor(for: \.loginItem?.itemUsername).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture { viewModel.copyUsername() }
+            .onTapGesture { viewModel.copyItemUsername() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }

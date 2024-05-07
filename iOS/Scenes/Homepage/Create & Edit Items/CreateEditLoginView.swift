@@ -332,7 +332,7 @@ private extension CreateEditLoginView {
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            if !viewModel.username.isEmpty, viewModel.isAlias {
+            if !viewModel.email.isEmpty, viewModel.isAlias {
                 pendingAliasRow
             } else {
                 emailRow
@@ -389,7 +389,7 @@ private extension CreateEditLoginView {
                 Text("Email address")
                     .sectionTitleText()
 
-                TextField("Add email address", text: $viewModel.username)
+                TextField("Add email address", text: $viewModel.email)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
@@ -399,7 +399,7 @@ private extension CreateEditLoginView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !viewModel.username.isEmpty {
+            if !viewModel.email.isEmpty {
                 Button(action: {
                     viewModel.email = ""
                 }, label: {
@@ -408,7 +408,7 @@ private extension CreateEditLoginView {
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.username.isEmpty)
+        .animation(.default, value: viewModel.email.isEmpty)
         .animation(.default, value: focusedField)
         .id(usernameID)
     }
@@ -421,7 +421,7 @@ private extension CreateEditLoginView {
                 Text("Username")
                     .sectionTitleText()
 
-                TextField("Add username", text: $viewModel.username)
+                TextField("Add username", text: $viewModel.itemUsername)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
@@ -431,16 +431,16 @@ private extension CreateEditLoginView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !viewModel.username.isEmpty {
+            if !viewModel.itemUsername.isEmpty {
                 Button(action: {
-                    viewModel.username = ""
+                    viewModel.itemUsername = ""
                 }, label: {
                     ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.username.isEmpty)
+        .animation(.default, value: viewModel.itemUsername.isEmpty)
         .animation(.default, value: focusedField)
         .id(usernameID)
     }
@@ -452,7 +452,7 @@ private extension CreateEditLoginView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Username or email address")
                     .sectionTitleText()
-                Text(viewModel.username)
+                Text(viewModel.email)
                     .foregroundColor(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -475,7 +475,7 @@ private extension CreateEditLoginView {
             })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.username.isEmpty)
+        .animation(.default, value: viewModel.email.isEmpty)
     }
 
     var passwordRow: some View {

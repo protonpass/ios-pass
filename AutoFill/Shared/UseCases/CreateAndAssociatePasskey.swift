@@ -68,8 +68,9 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                                                       device: .current)
 
         let newPasskeys = oldLoginData.passkeys.appending(passkeyResponse.toPasskey)
-        let username = oldLoginData.username.isEmpty ? request.userName : oldLoginData.username
-        let newLoginData = ItemContentData.login(.init(username: username,
+        let username = oldLoginData.itemUsername.isEmpty ? request.userName : oldLoginData.itemUsername
+        let newLoginData = ItemContentData.login(.init(email: oldLoginData.email,
+                                                       username: username,
                                                        password: oldLoginData.password,
                                                        totpUri: oldLoginData.totpUri,
                                                        urls: oldLoginData.urls,
