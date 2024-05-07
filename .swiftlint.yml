@@ -218,6 +218,21 @@ custom_rules:
     message: "Avoid using AnyView for better performance"
     regex: "(AnyView)"
 
+  discouraged_body_font:
+    name: "Discouraged body font"
+    message: "Prefer implicit body font"
+    regex: "(\\.font\\(\\.body\\))"
+  
+  discouraged_regular_font_weight:
+    name: "Discouraged regular font weight"
+    message: "Prefer implicit regular font weight"
+    regex: "(\\.fontWeight\\(\\.regular\\))"
+
+  deprecated_foregroundcolor_modifier:
+    name: "Deprecated foregroundColor modifier"
+    message: "Prefer foregroundStyle over deprecated foregroundColor"
+    regex: "(foregroundColor\\()"
+
   nil_if_empty:
     name: "Nil if empty"
     message: "Use Collection's computed property nilIfEmpty"

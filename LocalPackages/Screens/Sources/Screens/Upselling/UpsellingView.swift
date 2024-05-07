@@ -70,7 +70,7 @@ public struct UpsellingView: View {
         mainContainer
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding()
-            .foregroundColor(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm.toColor)
             .background(PassColor.backgroundNorm.toColor)
             .edgesIgnoringSafeArea(.top)
     }

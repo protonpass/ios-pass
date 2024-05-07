@@ -36,24 +36,24 @@ struct SetPINCodeView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text(viewModel.state.title)
                     .font(.largeTitle.bold())
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 Text(viewModel.state.description)
                     .font(.callout)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
 
                 SecureField(viewModel.state.placeholder,
                             text: viewModel.state == .definition ?
                                 $viewModel.definedPIN : $viewModel.confirmedPIN)
                     .keyboardType(.numberPad)
                     .font(.title)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(.top, 50)
                     .focused($isFocused)
 
                 if let error = viewModel.error {
                     Text(error.description)
-                        .foregroundColor(PassColor.signalDanger.toColor)
+                        .foregroundStyle(PassColor.signalDanger.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 

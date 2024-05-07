@@ -103,17 +103,17 @@ private extension ManageSharedVaultView {
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundColor(viewModel.vault.mainColor)
+                    .foregroundStyle(viewModel.vault.mainColor)
                     .frame(width: 28, height: 28)
             }
             .frame(width: 64, height: 64)
 
             Text(viewModel.vault.name)
                 .font(.title2.bold())
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
             Text("\(viewModel.itemsNumber) item(s)")
                 .font(.title3)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
         }
     }
 }
@@ -140,7 +140,7 @@ private extension ManageSharedVaultView {
         VStack {
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
 
             LazyVStack {
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
@@ -189,7 +189,7 @@ private extension ManageSharedVaultView {
                             .scaledToFit()
                             .frame(width: 16)
                     }
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
                 }
                 .buttonStyle(.plain)
             }
@@ -201,11 +201,11 @@ private extension ManageSharedVaultView {
     var vaultLimitReachedMessage: some View {
         ZStack {
             Text("You have reached the limit of users in this vault.")
-                .foregroundColor(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                 Text(verbatim: " ") +
                 Text("Upgrade now to share with more people")
                 .underline(color: PassColor.interactionNormMajor1.toColor)
-                .foregroundColor(PassColor.interactionNormMajor1.toColor)
+                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
         }
         .padding()
         .background(PassColor.interactionNormMinor1.toColor)
