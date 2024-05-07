@@ -49,10 +49,10 @@ private extension CredentialSearchResultView {
             Text("Results")
                 .font(.callout)
                 .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                 Text(verbatim: " (\(results.count))")
                 .font(.callout)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .adaptiveForegroundStyle(PassColor.textWeak.toColor)
 
             Spacer()
 

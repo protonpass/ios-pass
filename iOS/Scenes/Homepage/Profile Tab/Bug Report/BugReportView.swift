@@ -123,10 +123,10 @@ private extension BugReportView {
             HStack {
                 if let object = viewModel.object {
                     Text(object.description)
-                        .foregroundColor(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
                 } else {
                     Text("I want to report a problem with...")
-                        .foregroundColor(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
                 }
 
                 Spacer()
@@ -152,14 +152,14 @@ private extension BugReportView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
                     .font(.footnote)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 // iOS 16 doesn't seem to support multiline placeholder
                 // workaround by using a ZStack
                 ZStack(alignment: .topLeading) {
                     if viewModel.description.isEmpty {
                         Text(placeholder)
-                            .foregroundColor(PassColor.textHint.toColor)
+                            .foregroundStyle(PassColor.textHint.toColor)
                     }
 
                     TextEditorWithPlaceholder(text: $viewModel.description,
@@ -185,7 +185,7 @@ private extension BugReportView {
     var includeLogsSection: some View {
         VStack {
             Toggle("Send logs", isOn: $viewModel.shouldSendLogs)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(DesignConstant.sectionPadding)
                 .roundedEditableSection()
             // swiftlint:disable:next line_length
@@ -214,7 +214,7 @@ private extension BugReportView {
                              maxSelectionCount: 2,
                              photoLibrary: .shared())
                     .font(.callout)
-                    .foregroundColor(PassColor.textInvert.toColor)
+                    .foregroundStyle(PassColor.textInvert.toColor)
                     .frame(height: 40)
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal, 16)
@@ -222,7 +222,7 @@ private extension BugReportView {
                     .clipShape(Capsule())
                     .buttonStyle(.plain)
             }
-            .foregroundColor(PassColor.textNorm.toColor)
+            .foregroundStyle(PassColor.textNorm.toColor)
             .padding(DesignConstant.sectionPadding)
             .roundedEditableSection()
 
@@ -248,7 +248,7 @@ private extension BugReportView {
                                        .lineLimit(1)
                                }
                                .font(.callout)
-                               .foregroundColor(PassColor.textNorm.toColor)
+                               .foregroundStyle(PassColor.textNorm.toColor)
                                .padding(.horizontal, 10)
                                .padding(.vertical, 8)
                                .background(PassColor.interactionNormMinor1.toColor)
@@ -262,7 +262,7 @@ private extension BugReportView {
                               backgroundColor: PassColor.interactionNorm,
                               action: { viewModel.clearAllAddedFiles() })
         }
-        .foregroundColor(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm.toColor)
         .frame(maxHeight: .infinity)
     }
 }

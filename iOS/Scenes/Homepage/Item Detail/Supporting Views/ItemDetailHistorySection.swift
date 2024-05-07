@@ -118,11 +118,10 @@ private extension ItemDetailHistorySection {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
-                    .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(infos)
                     .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())

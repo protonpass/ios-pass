@@ -194,7 +194,7 @@ extension LogInDetailViewModel {
     }
 
     func showDetail(for item: ItemContent) {
-        router.present(for: .itemDetail(item))
+        router.present(for: .itemDetail(item, automaticDisplay: false))
     }
 
     func showItemList() {

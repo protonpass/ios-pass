@@ -76,7 +76,7 @@ struct CachedFavIconsView: View {
                 if viewModel.icons.isEmpty {
                     Text(verbatim: "Empty cache")
                         .font(.body.italic())
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 } else {
                     cachedIcons
                 }

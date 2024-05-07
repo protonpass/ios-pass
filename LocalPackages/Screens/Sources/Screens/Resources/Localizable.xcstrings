@@ -1346,6 +1346,12 @@
             "value" : "Ikke nu"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht jetzt"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1440,6 +1446,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Teraz nie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne zdaj"
           }
         },
         "sv" : {

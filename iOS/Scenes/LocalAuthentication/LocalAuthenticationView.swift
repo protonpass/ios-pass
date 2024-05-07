@@ -54,7 +54,7 @@ struct LocalAuthenticationView: View {
 
             Button { viewModel.logOut() } label: {
                 Image(uiImage: IconProvider.arrowOutFromRectangle)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .padding()
             }
             .padding()

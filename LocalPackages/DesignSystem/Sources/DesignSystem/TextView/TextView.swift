@@ -96,7 +96,7 @@ public struct TextView: View {
             .frame(minHeight: isScrollingEnabled ? 0 : calculatedHeight,
                    maxHeight: isScrollingEnabled ? .infinity : calculatedHeight)
             .background(placeholderView?
-                .foregroundColor(Color(.placeholderText))
+                .foregroundStyle(Color(.placeholderText))
                 .multilineTextAlignment(multilineTextAlignment)
                 .font(Font(font))
                 .padding(.horizontal, isScrollingEnabled ? 5 : 0)

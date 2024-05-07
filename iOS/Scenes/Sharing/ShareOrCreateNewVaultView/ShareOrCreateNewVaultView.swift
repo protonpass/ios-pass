@@ -36,12 +36,12 @@ struct ShareOrCreateNewVaultView: View {
         VStack(alignment: .center, spacing: 0) {
             Text("Share")
                 .font(.body.bold())
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
 
             Text("Use vaults to share this item with another person")
                 .frame(maxWidth: .infinity, alignment: .center)
                 .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .padding(.top, 8)
                 .padding(.bottom, 16)
                 .fixedSize(horizontal: false, vertical: true)
@@ -56,7 +56,7 @@ struct ShareOrCreateNewVaultView: View {
             Text("The item will be moved to the new vault")
                 .frame(maxWidth: .infinity, alignment: .center)
                 .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
                 .font(.callout)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -105,7 +105,7 @@ private extension ShareOrCreateNewVaultView {
         Button { viewModel.createNewVault() } label: {
             Label(title: {
                 Text("Create a new vault to share")
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
             }, icon: {
                 CircleButton(icon: IconProvider.plus,
                              iconColor: PassColor.interactionNormMajor2,

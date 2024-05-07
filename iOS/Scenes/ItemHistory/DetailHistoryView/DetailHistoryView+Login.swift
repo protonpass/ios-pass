@@ -164,7 +164,7 @@ private extension DetailHistoryView {
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach(logItem.urls, id: \.self) { url in
                         Text(url)
-                            .foregroundColor(viewModel.currentRevision.type.normMajor2Color.toColor)
+                            .foregroundStyle(viewModel.currentRevision.type.normMajor2Color.toColor)
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)
                     }
@@ -194,7 +194,7 @@ private extension DetailHistoryView {
                             .sectionTitleText()
 
                         Text(content)
-                            .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }

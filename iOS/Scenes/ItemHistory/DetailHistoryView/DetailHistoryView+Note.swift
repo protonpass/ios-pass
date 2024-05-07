@@ -34,7 +34,7 @@ extension DetailHistoryView {
                 Text(itemContent.name)
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(DesignConstant.sectionPadding)
                     .roundedDetailSection(borderColor: borderColor(for: \.name))
                 Spacer()

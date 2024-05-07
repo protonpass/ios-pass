@@ -93,7 +93,7 @@ private extension TotpLoginsView {
                     Text("Login items")
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundColor(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
 
                     Spacer()
 
@@ -239,7 +239,7 @@ struct ResultItemRow: View {
                             if !eachDetail.fullText.isEmpty {
                                 HighlightText(highlightableText: eachDetail)
                                     .font(.callout)
-                                    .foregroundColor(Color(.secondaryLabel))
+                                    .foregroundStyle(Color(.secondaryLabel))
                                     .lineLimit(1)
                             }
                         }
@@ -276,7 +276,7 @@ struct SmallSortTypeButton: View {
     private func sortTypeLabel() -> some View {
         Label(selectedSortType.title, systemImage: "arrow.up.arrow.down")
             .font(.callout.weight(.medium))
-            .foregroundColor(PassColor.interactionNormMajor2.toColor)
+            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
             .animationsDisabled()
     }
 }
