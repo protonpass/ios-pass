@@ -1445,6 +1445,12 @@
             "value" : "Teraz nie"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne zdaj"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
