@@ -142,7 +142,7 @@ public enum ProtonPassVaultV1_VaultIcon: SwiftProtobuf.Enum {
 
 extension ProtonPassVaultV1_VaultIcon: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  public static var allCases: [ProtonPassVaultV1_VaultIcon] = [
+  public static let allCases: [ProtonPassVaultV1_VaultIcon] = [
     .iconUnspecified,
     .iconCustom,
     .icon1,
@@ -242,7 +242,7 @@ public enum ProtonPassVaultV1_VaultColor: SwiftProtobuf.Enum {
 
 extension ProtonPassVaultV1_VaultColor: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  public static var allCases: [ProtonPassVaultV1_VaultColor] = [
+  public static let allCases: [ProtonPassVaultV1_VaultColor] = [
     .colorUnspecified,
     .colorCustom,
     .color1,
