@@ -60,13 +60,13 @@ struct VaultRow<Thumbnail: View>: View {
                     Image(uiImage: IconProvider.users)
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(maxHeight: 20)
                     if showBadge {
                         Image(uiImage: IconProvider.exclamationCircleFilled)
                             .resizable()
                             .scaledToFit()
-                            .foregroundColor(PassColor.signalDanger.toColor)
+                            .foregroundStyle(PassColor.signalDanger.toColor)
                             .frame(maxHeight: 16)
                             .offset(y: -10)
                     }

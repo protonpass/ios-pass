@@ -444,7 +444,7 @@ private extension CreateEditLoginView {
                 Text("Username or email address")
                     .sectionTitleText()
                 Text(viewModel.email)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -480,7 +480,7 @@ private extension CreateEditLoginView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(viewModel.passwordStrength.sectionTitle(reuseCount: nil))
                     .font(.footnote)
-                    .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
+                    .foregroundStyle(viewModel.passwordStrength.sectionTitleColor)
 
                 SensitiveTextField(text: $viewModel.password,
                                    placeholder: #localized("Add password"),
@@ -491,7 +491,7 @@ private extension CreateEditLoginView {
                     .keyboardType(.asciiCapable)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

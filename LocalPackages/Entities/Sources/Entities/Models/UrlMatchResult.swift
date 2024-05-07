@@ -1,7 +1,7 @@
 //
-// InvalidInputLabel.swift
-// Proton Pass - Created on 27/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// UrlMatchResult.swift
+// Proton Pass - Created on 02/05/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,18 +19,17 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import SwiftUI
+import Foundation
 
-public struct InvalidInputLabel: View {
-    let text: String
+/// `matched` case associates an `Int` as match score
+public enum UrlMatchResult: Sendable, Equatable {
+    case matched(Int)
+    case notMatched
 
-    public init(_ text: String) {
-        self.text = text
-    }
-
-    public var body: some View {
-        Label(text, systemImage: "exclamationmark.circle.fill")
-            .font(.caption.bold())
-            .foregroundStyle(PassColor.signalDanger.toColor)
+    public var score: Int {
+        if case let .matched(score) = self {
+            return score
+        }
+        return 0
     }
 }
