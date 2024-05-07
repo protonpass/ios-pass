@@ -45,7 +45,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published private(set) var passkeys: [Passkey] = []
     @Published var email = ""
-    @Published var username = ""
+    @Published var itemUsername = ""
     @Published var password = ""
     @Published private(set) var passwordStrength: PasswordStrength?
     private var originalTotpUri = ""
@@ -102,7 +102,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
                 email = data.email
-                username = data.username
+                itemUsername = data.itemUsername
+                showUsernameField = !itemUsername.isEmpty
                 password = data.password
                 originalTotpUri = data.totpUri
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
@@ -120,7 +121,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
                 // TODO: Add email
-                username = request?.userName ?? ""
+                itemUsername = request?.userName ?? ""
+                showUsernameField = !itemUsername.isEmpty
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
                 }
@@ -164,7 +166,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 passkeys.append(newPasskey.toPasskey)
             }
             // TODO: Add email
-            let logInData = ItemContentData.login(.init(username: username,
+            let logInData = ItemContentData.login(.init(email: email,
+                                                        username: itemUsername,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
                                                         urls: sanitizedUrls,
@@ -263,7 +266,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     // TODO: Add email
     func useRealEmailAddress() {
-        username = emailAddress
+        email = emailAddress
     }
 
     func generatePassword() {
@@ -292,7 +295,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     // TODO: Add email
     func removeAlias() {
         aliasCreationLiteInfo = nil
-        username = ""
+        email = ""
     }
 
     func handleScanResult(_ result: Result<String, any Error>, customField: CustomFieldUiModel? = nil) {
@@ -343,7 +346,7 @@ private extension CreateEditLoginViewModel {
                 if aliasOptions != nil {
                     aliasOptions = nil
                     aliasCreationLiteInfo = nil
-                    username = ""
+                    itemUsername = ""
                     email = ""
                 }
             }
@@ -383,6 +386,6 @@ extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
     // TODO: Add email
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info
-        username = info.aliasAddress
+        email = info.aliasAddress
     }
 }

@@ -56,7 +56,7 @@ final class AutoFillPassword: AutoFillPasswordUseCase {
             throw PassError.itemNotFound(item)
         }
 
-        let credential = ASPasswordCredential(user: loginData.username,
+        let credential = ASPasswordCredential(user: loginData.indexableUsername,
                                               password: loginData.password)
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
