@@ -48,7 +48,7 @@ public final class GetItemsLinkedToBreach: GetItemsLinkedToBreachUseCase {
         let encryptedItems = try await repository.getAllItems()
         return encryptedItems.compactMap { element in
             guard let uimodel = try? element.toItemUiModel(symmetricKey),
-                  uimodel.type == .login || uimodel.type == .alias,
+                  uimodel.type == .login,
                   uimodel.description.contains(email) else {
                 return nil
             }
