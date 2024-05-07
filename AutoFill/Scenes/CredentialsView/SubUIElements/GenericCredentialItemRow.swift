@@ -51,7 +51,7 @@ struct GenericCredentialItemRow: View {
                                 if !eachDetail.fullText.isEmpty {
                                     HighlightText(highlightableText: eachDetail)
                                         .font(.callout)
-                                        .foregroundColor(Color(.secondaryLabel))
+                                        .foregroundStyle(Color(.secondaryLabel))
                                         .lineLimit(1)
                                 }
                             }

@@ -69,7 +69,7 @@ private extension InfoBannerView {
                     Spacer()
                 }
             }
-            .foregroundColor(banner.detail.foregroundColor)
+            .foregroundStyle(banner.detail.foregroundColor)
             .padding(.vertical, 16)
 
             Spacer()
@@ -92,7 +92,7 @@ private extension InfoBannerView {
                 .frame(width: 12, height: 12)
                 .padding()
                 .scaledToFit()
-                .foregroundColor(PassColor.textInvert.toColor)
+                .foregroundStyle(PassColor.textInvert.toColor)
         }
     }
 }

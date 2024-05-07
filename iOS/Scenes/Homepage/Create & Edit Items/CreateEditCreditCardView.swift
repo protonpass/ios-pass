@@ -137,7 +137,7 @@ private extension CreateEditCreditCardView {
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .cardholderName)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .cardNumber }
             }
@@ -169,7 +169,7 @@ private extension CreateEditCreditCardView {
                     }
                     focusedField = .verificationNumber
                 }.focused($focusedField, equals: .cardNumber)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -199,7 +199,7 @@ private extension CreateEditCreditCardView {
                                    field: .verificationNumber)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .pin }
             }
@@ -231,7 +231,7 @@ private extension CreateEditCreditCardView {
                                    field: .pin)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .note }
             }

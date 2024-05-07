@@ -44,13 +44,13 @@ struct BiometricAuthenticationView: View {
                 case .lastAttempt:
                     Text("This is your last attempt. You will be logged out after failing to authenticate again.")
                         .multilineTextAlignment(.center)
-                        .foregroundColor(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
                     retryButton
                         .padding(.top)
 
                 case let .remainingAttempts(count):
                     Text("\(count) remaining attempt(s)")
-                        .foregroundColor(PassColor.textNorm.toColor)
+                        .foregroundStyle(PassColor.textNorm.toColor)
                     retryButton
                         .padding(.top)
                 }
@@ -86,7 +86,7 @@ private extension BiometricAuthenticationView {
     var retryButton: some View {
         Button(action: viewModel.biometricallyAuthenticate) {
             Text("Try again")
-                .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
         }
     }
 }

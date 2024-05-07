@@ -179,7 +179,6 @@ private extension DetailMonitoredItemView {
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                     Text(breach.name)
-                        .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
 
                     Text(breach.breachDate)

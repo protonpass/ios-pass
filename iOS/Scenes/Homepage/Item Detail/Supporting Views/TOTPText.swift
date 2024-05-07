@@ -32,11 +32,11 @@ struct TOTPText: View {
             texts.append(Text(segment)
                 .font(font)
                 .fontWeight(.medium)
-                .foregroundColor(textColor.toColor))
+                .adaptiveForegroundStyle(textColor.toColor))
             if index != segments.count - 1 {
                 texts.append(Text(verbatim: " • ")
                     .font(font)
-                    .foregroundColor(PassColor.textHint.toColor))
+                    .adaptiveForegroundStyle(PassColor.textHint.toColor))
             }
         }
         self.texts = texts

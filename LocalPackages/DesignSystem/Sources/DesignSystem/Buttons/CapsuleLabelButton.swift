@@ -72,7 +72,7 @@ public struct CapsuleLabelButton: View {
                 }
             }
             .padding(.horizontal)
-            .foregroundColor(titleColor.toColor)
+            .foregroundStyle(titleColor.toColor)
             .frame(height: height)
             .frame(maxWidth: maxWidth)
             .background(backgroundColor.toColor.opacity(isDisabled ? 0.4 : 1.0))

@@ -43,7 +43,7 @@ public struct GradientRoundedButton: View {
     public var body: some View {
         Button(action: action) {
             Text(title)
-                .foregroundColor(titleColor)
+                .foregroundStyle(titleColor)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(12)
         }

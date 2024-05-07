@@ -36,7 +36,7 @@ struct AcceptRejectInviteView: View {
                     if viewModel.userInvite.fromNewUser {
                         Text("Congratulations,\n your access has been confirmed")
                             .font(.title2.bold())
-                            .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                             .multilineTextAlignment(.center)
                     } else {
                         senderEmailInfo
@@ -75,8 +75,7 @@ private extension AcceptRejectInviteView {
                 .fontWeight(.bold)
             Text("invites you to access items in")
         }
-        .font(.body)
-        .foregroundColor(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm.toColor)
     }
 }
 
@@ -91,17 +90,17 @@ private extension AcceptRejectInviteView {
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundColor(infos.display.color.color.color.toColor)
+                    .foregroundStyle(infos.display.color.color.color.toColor)
                     .frame(width: 28, height: 28)
             }
             .frame(width: 64, height: 64)
 
             Text(infos.name)
                 .font(.title2.bold())
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
             Text(viewModel.userInvite.vaultsCountInfos)
                 .font(.title3)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
         }
     }
 }

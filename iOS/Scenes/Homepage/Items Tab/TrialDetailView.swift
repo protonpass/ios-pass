@@ -66,7 +66,7 @@ struct TrialDetailView: View {
                     Text("Upgrade now")
                         .font(.title3)
                         .padding(16)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                 }
                 .background(LinearGradient(colors: [
@@ -84,7 +84,7 @@ struct TrialDetailView: View {
                 Button(action: onLearnMore) {
                     Text("Learn more")
                         .font(.callout)
-                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                         .underline(color: PassColor.interactionNormMajor2.toColor)
                 }
             }
@@ -114,7 +114,10 @@ struct TrialDetailView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 32)
-                .foregroundColor(iconTintColor?.toColor)
+                .if(iconTintColor) { view, color in
+                    view
+                        .foregroundStyle(color.toColor)
+                }
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }

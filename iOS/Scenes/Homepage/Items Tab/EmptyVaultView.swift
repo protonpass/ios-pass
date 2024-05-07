@@ -43,7 +43,7 @@ struct EmptyVaultView: View {
                     .padding(.bottom, 8)
 
                 Text("Let's get started by creating your first item")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 32)
 
@@ -83,7 +83,7 @@ private struct CreateItemButton: View {
             .frame(height: 122)
             .frame(maxWidth: .infinity, alignment: .top)
             .padding(.horizontal)
-            .foregroundColor(type.normColor.toColor)
+            .foregroundStyle(type.normColor.toColor)
             .background(type.normMinor1Color.toColor)
             .clipShape(RoundedRectangle(cornerRadius: 32))
         }

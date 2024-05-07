@@ -110,7 +110,7 @@ private extension CredentialsView {
                             Spacer()
                             Text("You currently have no login items")
                                 .multilineTextAlignment(.center)
-                                .foregroundColor(PassColor.textNorm.toColor)
+                                .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding()
                             Spacer()
                         }
@@ -197,13 +197,13 @@ private extension CredentialsView {
                 Text("No suggestions")
                     .font(.callout.italic())
                     .padding(.horizontal)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
                     .plainListRow()
             }, header: {
                 Text(sectionTitle)
                     .font(.callout)
                     .fontWeight(.bold)
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
             })
         } else {
             section(for: items,
@@ -220,10 +220,10 @@ private extension CredentialsView {
                 Text("Other items")
                     .font(.callout)
                     .fontWeight(.bold)
-                    .foregroundColor(PassColor.textNorm.toColor) +
+                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                     Text(verbatim: " (\(items.count))")
                     .font(.callout)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
 
                 Spacer()
 
@@ -239,11 +239,11 @@ private extension CredentialsView {
     var mainVaultsOnlyMessage: some View {
         ZStack {
             Text("Your plan only allows to use items from your first vaults for autofill purposes.")
-                .foregroundColor(PassColor.textNorm.toColor) +
+                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                 Text(verbatim: " ") +
                 Text("Upgrade now")
                 .underline(color: PassColor.interactionNormMajor1.toColor)
-                .foregroundColor(PassColor.interactionNormMajor1.toColor)
+                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
         }
         .padding()
         .background(PassColor.interactionNormMinor1.toColor)
@@ -273,7 +273,7 @@ private extension CredentialsView {
                 Text(headerTitle)
                     .font(.callout)
                     .fontWeight(headerFontWeight)
-                    .foregroundColor(headerColor.toColor)
+                    .foregroundStyle(headerColor.toColor)
             })
         }
     }

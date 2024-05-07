@@ -40,7 +40,7 @@ public struct TextBanner: View {
     public var body: some View {
         Text(text)
             .padding()
-            .foregroundColor(foregroundColor.toColor)
+            .foregroundStyle(foregroundColor.toColor)
             .background(backgroundColor.toColor)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .multilineTextAlignment(.leading)
