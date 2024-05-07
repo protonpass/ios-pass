@@ -88,20 +88,20 @@ private extension FullSyncProgressView {
             Text("Syncing items...")
                 .font(.title3.bold())
                 .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.bottom, 8)
 
             Text("We are downloading and decrypting your items.")
                 .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
 
             Text("This might take a few minutes.")
                 .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
 
             Text("Please keep the app open.")
                 .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.top, 8)
                 .padding(.bottom, 16)
 
@@ -131,7 +131,7 @@ private extension FullSyncProgressView {
                 Label(title: { Text(verbatim: "") },
                       icon: { Image(systemName: "chevron.down") })
             }
-            .foregroundColor(PassColor.textWeak.toColor)
+            .foregroundStyle(PassColor.textWeak.toColor)
         })
         .buttonStyle(.plain)
         .disabled(viewModel.progresses.isEmpty)
@@ -168,12 +168,12 @@ private extension FullSyncProgressView {
 
             Text("Sync complete")
                 .font(.title2.bold())
-                .foregroundColor(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.vertical)
 
             if !viewModel.mode.isFullSync {
                 Text("The app is now ready to use")
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
             }
 
             Spacer()

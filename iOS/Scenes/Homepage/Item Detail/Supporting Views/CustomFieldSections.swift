@@ -86,6 +86,7 @@ struct TextCustomFieldSection: View {
                     UpgradeButtonLite(action: onUpgrade)
                 } else {
                     TextView(.constant(content))
+                        // swiftlint:disable:next deprecated_foregroundcolor_modifier
                         .foregroundColor(PassColor.textNorm)
                         .isEditable(false)
                 }
@@ -122,6 +123,7 @@ struct HiddenCustomFieldSection: View {
                 } else {
                     if isShowingText {
                         TextView(.constant(content))
+                            // swiftlint:disable:next deprecated_foregroundcolor_modifier
                             .foregroundColor(PassColor.textNorm)
                             .isEditable(false)
                     } else {

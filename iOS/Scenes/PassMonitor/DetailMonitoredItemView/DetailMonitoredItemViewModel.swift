@@ -23,6 +23,7 @@
 import Combine
 import Entities
 import Factory
+import Foundation
 import Macro
 
 struct DetailMonitoredItemUiModel: Sendable, Hashable {
@@ -51,6 +52,9 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
 
+    private var cancellables = Set<AnyCancellable>()
+    private var currentTask: Task<Void, Never>?
+
     var isMonitored: Bool {
         infos.isMonitored
     }
@@ -67,11 +71,20 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
 
     init(infos: BreachDetailsInfo) {
         self.infos = infos
+        setup()
+    }
+
+    deinit {
+        currentTask?.cancel()
+        currentTask = nil
     }
 
     func fetchData() async {
         do {
             state = .fetching
+            if Task.isCancelled {
+                return
+            }
             let uiModel = try await refreshUiModel()
             state = .fetched(uiModel)
         } catch {
@@ -116,7 +129,7 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
                                                                             itemId: item.itemId) else {
                     return
                 }
-                router.present(for: .itemDetail(content, automaticDisplay: true, showSecurityIssues: true))
+                router.present(for: .itemDetail(content, automaticDisplay: false, showSecurityIssues: true))
             } catch {
                 handle(error: error)
             }
@@ -173,6 +186,27 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
 }
 
 private extension DetailMonitoredItemViewModel {
+    func setup() {
+        itemRepository.itemsWereUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
+                currentTask?.cancel()
+                currentTask = Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    if Task.isCancelled {
+                        return
+                    }
+                    await fetchData()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
     func refreshUiModel() async throws -> DetailMonitoredItemUiModel {
         let breaches: EmailBreaches
         switch infos {

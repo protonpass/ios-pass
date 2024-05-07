@@ -148,7 +148,7 @@ private struct FullScreenTextView: View {
                     .font(.title)
             }
         }
-        .foregroundColor(PassColor.textNorm.toColor)
+        .foregroundStyle(PassColor.textNorm.toColor)
     }
 }
 
