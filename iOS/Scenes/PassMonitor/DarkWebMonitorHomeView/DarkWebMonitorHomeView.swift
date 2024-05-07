@@ -425,7 +425,6 @@ private extension DarkWebMonitorHomeView {
 
             VStack(alignment: .leading) {
                 Text(email.email)
-                    .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 

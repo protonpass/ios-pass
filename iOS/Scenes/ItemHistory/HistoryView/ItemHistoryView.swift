@@ -74,11 +74,10 @@ private extension ItemHistoryView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Last autofill")
-                    .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(lastUsed)
                     .font(.footnote)
-                    .foregroundColor(PassColor.textWeak.toColor)
+                    .foregroundStyle(PassColor.textWeak.toColor)
             }
             .contentShape(Rectangle())
         }
@@ -86,7 +85,6 @@ private extension ItemHistoryView {
         .frame(maxWidth: .infinity, alignment: .leading)
 
         Text("Changelog")
-            .font(.body)
             .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -117,7 +115,7 @@ private extension ItemHistoryView {
                 verticalLine
 
                 Circle()
-                    .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                    .background(Circle().foregroundStyle(PassColor.textWeak.toColor))
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
                 Spacer(minLength: ElementSizes.minSpacerSize)
@@ -155,7 +153,7 @@ private extension ItemHistoryView {
                 verticalLine
 
                 Circle()
-                    .background(Circle().foregroundColor(PassColor.textWeak.toColor))
+                    .background(Circle().foregroundStyle(PassColor.textWeak.toColor))
                     .frame(width: ElementSizes.circleSize, height: ElementSizes.circleSize)
 
                 verticalLine
@@ -187,12 +185,11 @@ private extension ItemHistoryView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
-                    .font(.body)
                     .foregroundStyle(PassColor.textNorm.toColor)
                 if let infos {
                     Text(infos)
                         .font(.footnote)
-                        .foregroundColor(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 }
             }
             .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
@@ -226,7 +223,7 @@ private extension ItemHistoryView {
 private extension ItemHistoryView {
     var verticalLine: some View {
         Rectangle()
-            .foregroundColor(.clear)
+            .foregroundStyle(.clear)
             .frame(maxWidth: ElementSizes.line, maxHeight: .infinity)
             .background(PassColor.textWeak.toColor)
     }

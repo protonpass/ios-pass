@@ -125,7 +125,6 @@ private extension BreachDetailView {
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(breach.email)
-                        .font(.body)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -136,7 +135,6 @@ private extension BreachDetailView {
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Text(passwordLastChars)
-                            .font(.body)
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -182,11 +180,10 @@ private extension BreachDetailView {
     var footer: some View {
         Text("Your Proton Account information remains secure and encrypted.")
             .font(.callout)
-            .fontWeight(.regular)
-            .foregroundColor(PassColor.textWeak.toColor) +
+            .adaptiveForegroundStyle(PassColor.textWeak.toColor) +
             Text(verbatim: " ") +
             Text("Learn more")
-            .foregroundColor(PassColor.interactionNormMajor2.toColor)
+            .adaptiveForegroundStyle(PassColor.interactionNormMajor2.toColor)
             .underline()
     }
 }
