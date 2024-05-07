@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Add username field" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add username field"
+          }
+        }
+      }
     },
     "Cancel" : {
       "comment" : "Accessibility label",
@@ -3496,7 +3503,14 @@
       }
     },
     "Tap here to add a field for a username." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap here to add a field for a username."
+          }
+        }
+      }
     },
     "Try searching using different spelling or keywords" : {
       "localizations" : {
