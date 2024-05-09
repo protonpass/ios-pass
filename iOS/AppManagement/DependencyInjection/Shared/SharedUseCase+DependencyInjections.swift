@@ -113,6 +113,13 @@ extension SharedUseCasesContainer {
     var setCoreLoggerEnvironment: Factory<any SetCoreLoggerEnvironmentUseCase> {
         self { SetCoreLoggerEnvironment() }
     }
+
+    var setUpCoreTelemetry: Factory<any SetUpCoreTelemetryUseCase> {
+        self { SetUpCoreTelemetry(apiService: SharedToolingContainer.shared.apiManager().apiService,
+                                  logManager: self.logManager,
+                                  userSettingsRepository: self.userSettingsRepository,
+                                  userDataProvider: self.userDataProvider) }
+    }
 }
 
 // MARK: AutoFill
