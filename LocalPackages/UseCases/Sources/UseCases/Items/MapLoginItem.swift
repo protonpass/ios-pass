@@ -48,10 +48,10 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
         }
 
         var passwords = [CredentialIdentity]()
-        if !data.indexableUsername.isEmpty, !data.password.isEmpty {
+        if !data.authIdentifier.isEmpty, !data.password.isEmpty {
             passwords = data.urls.map { CredentialIdentity.password(.init(shareId: itemContent.shareId,
                                                                           itemId: itemContent.item.itemID,
-                                                                          username: data.indexableUsername,
+                                                                          username: data.authIdentifier,
                                                                           url: $0,
                                                                           lastUseTime: itemContent.item
                                                                               .lastUseTime ?? 0)) }

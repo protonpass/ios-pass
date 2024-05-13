@@ -34,7 +34,7 @@ final class ItemContentTests: XCTestCase {
                                            allowedAndroidApps: [],
                                            passkeys: [])
         
-        XCTAssertEqual(onlyEmailLogin.indexableUsername, email)
+        XCTAssertEqual(onlyEmailLogin.authIdentifier, email)
         
         
         let usernameLogin = LogInItemData(email: email,
@@ -45,6 +45,6 @@ final class ItemContentTests: XCTestCase {
                                            allowedAndroidApps: [],
                                            passkeys: [])
         
-        XCTAssertEqual(usernameLogin.indexableUsername, username)
+        XCTAssertEqual(usernameLogin.authIdentifier, username)
     }
 }
