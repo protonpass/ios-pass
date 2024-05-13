@@ -83,8 +83,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
+    private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+
+    var usernameFlagActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit)
+    }
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
@@ -101,9 +107,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
-                email = data.email
-                itemUsername = data.itemUsername
-                showUsernameField = !itemUsername.isEmpty
+                parseAndSetUpEmailAndUsername(data: data)
                 password = data.password
                 originalTotpUri = data.totpUri
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
@@ -322,6 +326,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return invalidURLs.isEmpty
     }
 
+    func checkEmail() -> Bool {
+        guard getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) else {
+            return true
+        }
+        if !email.isEmpty, !validateEmail(email: email) {
+            router.display(element: .errorMessage("Invalid email address"))
+            return false
+        }
+        return true
+    }
+
     func remove(passkey: Passkey) {
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
@@ -365,6 +380,24 @@ private extension CreateEditLoginViewModel {
                 passwordStrength = getPasswordStrength(password: passwordValue)
             }
             .store(in: &cancellables)
+    }
+
+    func parseAndSetUpEmailAndUsername(data: LogInItemData) {
+        guard getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) else {
+            email = data.email
+            return
+        }
+        if data.itemUsername.isEmpty {
+            if validateEmail(email: data.email) {
+                email = data.email
+            } else {
+                itemUsername = data.email
+            }
+        } else {
+            email = data.email
+            itemUsername = data.itemUsername
+        }
+        showUsernameField = !itemUsername.isEmpty
     }
 }
 
