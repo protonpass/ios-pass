@@ -31,7 +31,7 @@ public extension ItemContent {
 
         switch contentData {
         case let .login(data):
-            note = data.email
+            note = data.authIdentifier
             url = data.urls.first
             hasTotpUri = !data.totpUri.isEmpty
 

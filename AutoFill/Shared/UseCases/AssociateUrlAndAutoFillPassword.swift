@@ -81,7 +81,7 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
         try await itemRepository.updateItem(oldItem: oldContent.item,
                                             newItemContent: newContent,
                                             shareId: oldContent.shareId)
-        let credential = ASPasswordCredential(user: oldData.indexableUsername,
+        let credential = ASPasswordCredential(user: oldData.authIdentifier,
                                               password: oldData.password)
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
