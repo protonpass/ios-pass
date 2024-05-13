@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-#if canImport(AuthenticationServices)
 import AuthenticationServices
 
 public protocol MapASCredentialServiceIdentifierToURLUseCase: Sendable {
@@ -36,18 +35,9 @@ public final class MapASCredentialServiceIdentifierToURL: MapASCredentialService
     public init() {}
 
     public func execute(identifier: ASCredentialServiceIdentifier) -> URL? {
-        // ".domain" means in app context where identifiers don't have protocol,
-        // so we manually add https as protocol otherwise URL comparison would not work without protocol.
-        let urlString = switch identifier.type {
-        case .domain:
-            "https://\(identifier.identifier)"
-        case .URL:
-            identifier.identifier
-        @unknown default:
-            identifier.identifier
+        if let url = URL(string: identifier.identifier), url.scheme != nil {
+            return url
         }
-        return URL(string: urlString)
+        return URL(string: "https://\(identifier.identifier)")
     }
 }
-
-#endif
