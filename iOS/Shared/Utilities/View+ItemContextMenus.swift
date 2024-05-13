@@ -81,6 +81,9 @@ enum ItemContextMenu {
             var sections: [ItemContextMenuOptionSection] = []
 
             sections.append(.init(options: [
+                .init(title: #localized("Copy email"),
+                      icon: IconProvider.envelope,
+                      action: onCopyEmail),
                 .init(title: #localized("Copy username"),
                       icon: IconProvider.user,
                       action: onCopyUsername),
