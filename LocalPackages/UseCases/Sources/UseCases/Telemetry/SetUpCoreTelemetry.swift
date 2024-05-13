@@ -57,12 +57,15 @@ public final class SetUpCoreTelemetry: SetUpCoreTelemetryUseCase {
     public func execute() {
         Task { [weak self] in
             guard let self else { return }
-            TelemetryService.shared.setApiService(apiService: apiService)
+            telemetryService.setApiService(apiService: apiService)
             var telemetry = true
-            if let userId = try? userDataProvider.getUserId() {
+            do {
+                let userId = try userDataProvider.getUserId()
                 telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
+            } catch {
+                logger.error(error)
             }
-            TelemetryService.shared.setTelemetryEnabled(telemetry)
+            telemetryService.setTelemetryEnabled(telemetry)
         }
     }
 }
