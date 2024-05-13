@@ -66,6 +66,9 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
         self.passkeys = passkeys
     }
 
+    /// This variable should be used as the new main user username
+    /// It returns either the new username or the email
+    /// This should be user for indexing login items
     public var indexableUsername: String {
         if itemUsername.isEmpty {
             return email
