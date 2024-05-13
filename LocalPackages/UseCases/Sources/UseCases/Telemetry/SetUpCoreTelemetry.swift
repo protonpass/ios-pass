@@ -36,15 +36,18 @@ public extension SetUpCoreTelemetryUseCase {
 }
 
 public final class SetUpCoreTelemetry: SetUpCoreTelemetryUseCase {
+    private let telemetryService: any TelemetryServiceProtocol
     private let apiService: any APIService
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
     private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
-    public init(apiService: any APIService,
+    public init(telemetryService: any TelemetryServiceProtocol = TelemetryService.shared,
+                apiService: any APIService,
                 logManager: any LogManagerProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
                 userDataProvider: any UserDataProvider) {
+        self.telemetryService = telemetryService
         self.apiService = apiService
         self.userSettingsRepository = userSettingsRepository
         self.userDataProvider = userDataProvider
