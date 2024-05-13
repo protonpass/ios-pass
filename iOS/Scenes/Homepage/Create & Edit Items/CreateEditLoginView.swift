@@ -151,7 +151,8 @@ struct CreateEditLoginView: View {
                                       onUpgrade: { /* Not applicable */ },
                                       onScan: { viewModel.openScanner() },
                                       onSave: {
-                                          if viewModel.validateURLs() {
+                                          if viewModel.validateURLs(),
+                                             viewModel.checkEmail() {
                                               viewModel.save()
                                           }
                                       })
@@ -350,7 +351,7 @@ private extension CreateEditLoginView {
     var emailRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ZStack(alignment: .topTrailing) {
-                if #available(iOS 17, *) {
+                if #available(iOS 17, *), viewModel.usernameFlagActive {
                     Button { viewModel.showUsernameField.toggle() } label: {
                         ItemDetailSectionIcon(icon: IconProvider.envelope)
                     }.buttonStyle(.plain)
