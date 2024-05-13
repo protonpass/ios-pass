@@ -39,6 +39,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let userDefaults: UserDefaults = .standard
     @LazyInjected(\ServiceContainer
         .pushNotificationService) private var pushNotificationService: any PushNotificationServiceProtocol
+    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
+    @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -46,7 +48,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
         setCoreLoggerEnvironment()
+        refreshFeatureFlags()
         configureTipKit()
+        setUpCoreTelemetry()
         return true
     }
 
