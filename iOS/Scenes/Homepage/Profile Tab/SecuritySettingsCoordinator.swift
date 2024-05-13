@@ -47,7 +47,10 @@ final class SecuritySettingsCoordinator {
 
 extension SecuritySettingsCoordinator {
     func editMethod() {
-        showListOfAvailableMethods()
+        Task { [weak self] in
+            guard let self else { return }
+            await showListOfAvailableMethods()
+        }
     }
 
     func editAppLockTime() {
@@ -62,7 +65,7 @@ extension SecuritySettingsCoordinator {
 // MARK: - Private APIs
 
 private extension SecuritySettingsCoordinator {
-    func showListOfAvailableMethods() {
+    func showListOfAvailableMethods() async {
         do {
             let update: (LocalAuthenticationMethod) -> Void = { [weak self] newMethod in
                 guard let self else { return }
@@ -75,7 +78,7 @@ private extension SecuritySettingsCoordinator {
                     }
                 }
             }
-            let methods = try getMethods(policy: enablingPolicy)
+            let methods = try await getMethods(policy: enablingPolicy)
             let view = LocalAuthenticationMethodsView(selectedMethod: preferences.localAuthenticationMethod,
                                                       supportedMethods: methods,
                                                       onSelect: { update($0.method) })
