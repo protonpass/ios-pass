@@ -62,7 +62,8 @@ let package = Package(name: "UseCases",
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "PassRustCore", package: "PassRustCore"),
                                       .product(name: "Sentry", package: "sentry-cocoa"),
-                                      .product(name: "ProtonCoreFeatureFlags", package: "protoncore_ios")
+                                      .product(name: "ProtonCoreFeatureFlags", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreTelemetry", package: "protoncore_ios")
                                   ],
                                   resources: [],
                                   swiftSettings: swiftSettings
