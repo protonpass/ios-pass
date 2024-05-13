@@ -154,7 +154,7 @@ private extension LogInDetailView {
 
     var emailRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
+            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.envelope,
                                   color: iconTintColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
