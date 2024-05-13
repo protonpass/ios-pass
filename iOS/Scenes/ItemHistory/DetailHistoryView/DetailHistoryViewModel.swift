@@ -105,7 +105,7 @@ extension DetailHistoryViewModel {
     }
 
     func copyEmail() {
-        copy(\.loginItem?.email, message: #localized("Username copied"))
+        copy(\.loginItem?.email, message: #localized("Email address copied"))
     }
 
     func copyItemUsername() {

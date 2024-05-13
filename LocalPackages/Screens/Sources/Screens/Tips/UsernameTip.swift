@@ -25,15 +25,6 @@ import TipKit
 public struct UsernameTip: Tip {
     public var id: String { PassTip.username.id }
 
-    /// Any actions that is accessible via context menu like copy username/password, pin/unpin or trash, etc...
-    public static let didPerformEligibleQuickAction = Event(id: "didPerformEligibleQuickAction")
-
-    public var rules: [Rule] {
-        [
-            #Rule(Self.didPerformEligibleQuickAction) { $0.donations.count >= 10 }
-        ]
-    }
-
     public var title: Text {
         Text("Add username field")
             .foregroundStyle(PassColor.textNorm.toColor)
@@ -50,7 +41,7 @@ public struct UsernameTip: Tip {
 
     public var options: [TipOption] {
         // Show this tip once
-        Tips.MaxDisplayCount(100)
+        Tips.MaxDisplayCount(1)
     }
 
     public init() {}
