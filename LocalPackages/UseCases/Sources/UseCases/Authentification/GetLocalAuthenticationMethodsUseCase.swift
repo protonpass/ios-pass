@@ -24,27 +24,44 @@ import LocalAuthentication
 
 /// Get supported local authentication  methods
 public protocol GetLocalAuthenticationMethodsUseCase: Sendable {
-    func execute(policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel]
+    func execute(policy: LAPolicy) async throws -> [LocalAuthenticationMethodUiModel]
 }
 
 public extension GetLocalAuthenticationMethodsUseCase {
-    func callAsFunction(policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel] {
-        try execute(policy: policy)
+    func callAsFunction(policy: LAPolicy) async throws -> [LocalAuthenticationMethodUiModel] {
+        try await execute(policy: policy)
     }
 }
 
 public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsUseCase {
     private let checkBiometryType: any CheckBiometryTypeUseCase
+    private let accessRepository: any AccessRepositoryProtocol
+    private let organizationRepository: any OrganizationRepositoryProtocol
 
-    public init(checkBiometryType: any CheckBiometryTypeUseCase) {
+    public init(checkBiometryType: any CheckBiometryTypeUseCase,
+                accessRepository: any AccessRepositoryProtocol,
+                organizationRepository: any OrganizationRepositoryProtocol) {
         self.checkBiometryType = checkBiometryType
+        self.accessRepository = accessRepository
+        self.organizationRepository = organizationRepository
     }
 
-    public func execute(policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel] {
+    public func execute(policy: LAPolicy) async throws -> [LocalAuthenticationMethodUiModel] {
+        var supportedTypes = [LocalAuthenticationMethodUiModel]()
+
+        if accessRepository.access.value?.plan.isBusinessUser == true {
+            if let organization = try await organizationRepository.getOrganization(),
+               organization.settings?.appLockTime == nil {
+                supportedTypes.append(.none)
+            }
+        } else {
+            supportedTypes.append(.none)
+        }
+
         do {
             let biometryType = try checkBiometryType(policy: policy)
             if biometryType.usable {
-                return [.none, .biometric(biometryType), .pin]
+                supportedTypes.append(.biometric(biometryType))
             }
         } catch {
             // We only want to throw unexpected errors
@@ -55,13 +72,15 @@ public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsU
                      .biometryNotAvailable,
                      .biometryNotEnrolled,
                      .passcodeNotSet:
-                    return [.none, .pin]
+                    break
                 default:
                     throw error
                 }
             }
             throw error
         }
-        return [.none, .pin]
+
+        supportedTypes.append(.pin)
+        return supportedTypes
     }
 }
