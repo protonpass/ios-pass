@@ -47,12 +47,13 @@ public final class GetItemsLinkedToBreach: GetItemsLinkedToBreachUseCase {
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let encryptedItems = try await repository.getAllItems()
         return encryptedItems.compactMap { element in
-            guard let uimodel = try? element.toItemUiModel(symmetricKey),
-                  uimodel.type == .login,
-                  uimodel.description.contains(email) else {
+            guard let model = try? element.getItemContent(symmetricKey: symmetricKey),
+                  model.type == .login,
+                  let login = model.loginItem,
+                  login.email.contains(email) else {
                 return nil
             }
-            return uimodel
+            return model.toItemUiModel
         }
     }
 }

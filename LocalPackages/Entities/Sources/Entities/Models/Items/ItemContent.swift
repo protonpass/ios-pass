@@ -66,10 +66,10 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
         self.passkeys = passkeys
     }
 
-    /// This variable should be used as the new main user username
-    /// It returns either the new username or the email
+    /// This variable should be used as the new main authentication variable
+    /// It returns either the user's username or the email
     /// This should be user for indexing login items
-    public var indexableUsername: String {
+    public var authIdentifier: String {
         if itemUsername.isEmpty {
             return email
         }
