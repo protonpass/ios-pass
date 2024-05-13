@@ -64,6 +64,10 @@ private extension SharedUseCasesContainer {
     var userSettingsRepository: any UserSettingsRepositoryProtocol {
         SharedRepositoryContainer.shared.userSettingsRepository()
     }
+
+    var accessRepository: any AccessRepositoryProtocol {
+        SharedRepositoryContainer.shared.accessRepository()
+    }
 }
 
 // MARK: Permission
@@ -86,7 +90,10 @@ extension SharedUseCasesContainer {
     }
 
     var getLocalAuthenticationMethods: Factory<any GetLocalAuthenticationMethodsUseCase> {
-        self { GetLocalAuthenticationMethods(checkBiometryType: self.checkBiometryType()) }
+        self { GetLocalAuthenticationMethods(checkBiometryType: self.checkBiometryType(),
+                                             accessRepository: self.accessRepository,
+                                             organizationRepository: SharedRepositoryContainer.shared
+                                                 .organizationRepository()) }
     }
 
     var saveAllLogs: Factory<any SaveAllLogsUseCase> {
@@ -132,7 +139,7 @@ extension SharedUseCasesContainer {
     var indexAllLoginItems: Factory<any IndexAllLoginItemsUseCase> {
         self { IndexAllLoginItems(itemRepository: self.itemRepository,
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
-                                  accessRepository: SharedRepositoryContainer.shared.accessRepository(),
+                                  accessRepository: self.accessRepository,
                                   credentialManager: self.credentialManager,
                                   mapLoginItem: self.mapLoginItem(),
                                   logManager: self.logManager) }
