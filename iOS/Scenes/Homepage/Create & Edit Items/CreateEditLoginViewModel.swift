@@ -45,7 +45,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published private(set) var passkeys: [Passkey] = []
     @Published var email = ""
-    @Published var itemUsername = ""
+    @Published var username = ""
     @Published var password = ""
     @Published private(set) var passwordStrength: PasswordStrength?
     private var originalTotpUri = ""
@@ -85,6 +85,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let setUpEmailAndUsername = resolve(\SharedUseCasesContainer.setUpEmailAndUsername)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
@@ -124,8 +125,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 passkeyRequest = request
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
-                itemUsername = request?.userName ?? ""
-                showUsernameField = !itemUsername.isEmpty
+                username = request?.userName ?? ""
+                showUsernameField = !username.isEmpty
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
                 }
@@ -169,7 +170,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 passkeys.append(newPasskey.toPasskey)
             }
             let logInData = ItemContentData.login(.init(email: email,
-                                                        username: itemUsername,
+                                                        username: username,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
                                                         urls: sanitizedUrls,
@@ -357,7 +358,7 @@ private extension CreateEditLoginViewModel {
                 if aliasOptions != nil {
                     aliasOptions = nil
                     aliasCreationLiteInfo = nil
-                    itemUsername = ""
+                    username = ""
                     email = ""
                 }
             }
@@ -383,21 +384,10 @@ private extension CreateEditLoginViewModel {
     }
 
     func parseAndSetUpEmailAndUsername(data: LogInItemData) {
-        guard getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) else {
-            email = data.email
-            return
-        }
-        if data.itemUsername.isEmpty {
-            if validateEmail(email: data.email) {
-                email = data.email
-            } else {
-                itemUsername = data.email
-            }
-        } else {
-            email = data.email
-            itemUsername = data.itemUsername
-        }
-        showUsernameField = !itemUsername.isEmpty
+        let result = setUpEmailAndUsername(container: data)
+        email = result.email
+        username = result.username
+        showUsernameField = !username.isEmpty
     }
 }
 

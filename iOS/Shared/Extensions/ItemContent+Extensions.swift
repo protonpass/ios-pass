@@ -26,7 +26,7 @@ extension ItemContent {
             return self
         }
         let updatedData = LogInItemData(email: data.email,
-                                        username: data.itemUsername,
+                                        username: data.username,
                                         password: data.password,
                                         totpUri: uri,
                                         urls: data.urls,

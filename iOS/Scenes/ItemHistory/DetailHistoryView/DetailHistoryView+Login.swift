@@ -111,8 +111,8 @@ private extension DetailHistoryView {
                 Text("Username")
                     .sectionTitleText()
 
-                Text(logItem.itemUsername)
-                    .foregroundStyle(textColor(for: \.loginItem?.itemUsername).toColor)
+                Text(logItem.username)
+                    .foregroundStyle(textColor(for: \.loginItem?.username).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())

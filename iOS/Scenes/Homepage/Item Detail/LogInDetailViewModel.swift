@@ -40,7 +40,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var passkeys = [Passkey]()
     @Published private(set) var name = ""
     @Published private(set) var email = ""
-    @Published private(set) var itemUsername = ""
+    @Published private(set) var username = ""
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var totpUri = ""
@@ -57,8 +57,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let setUpEmailAndUsername = resolve(\SharedUseCasesContainer.setUpEmailAndUsername)
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
@@ -154,20 +153,9 @@ private extension LogInDetailViewModel {
     }
 
     func parseAndSetUpEmailAndUsername(data: LogInItemData) {
-        guard getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) else {
-            email = data.email
-            return
-        }
-        if data.itemUsername.isEmpty {
-            if validateEmail(email: data.email) {
-                email = data.email
-            } else {
-                itemUsername = data.email
-            }
-        } else {
-            email = data.email
-            itemUsername = data.itemUsername
-        }
+        let result = setUpEmailAndUsername(container: data)
+        email = result.email
+        username = result.username
     }
 }
 
@@ -183,7 +171,7 @@ extension LogInDetailViewModel {
     }
 
     func copyItemUsername() {
-        copyToClipboard(text: itemUsername, message: #localized("Username copied"))
+        copyToClipboard(text: username, message: #localized("Username copied"))
     }
 
     func copyPassword() {

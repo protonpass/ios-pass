@@ -122,7 +122,7 @@ private extension LogInDetailView {
         VStack(spacing: DesignConstant.sectionPadding) {
             emailRow
             PassSectionDivider()
-            if !viewModel.itemUsername.isEmpty {
+            if !viewModel.username.isEmpty {
                 usernameRow
                 PassSectionDivider()
             }
@@ -206,11 +206,11 @@ private extension LogInDetailView {
                 Text("Username")
                     .sectionTitleText()
 
-                if viewModel.itemUsername.isEmpty {
+                if viewModel.username.isEmpty {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    Text(viewModel.itemUsername)
+                    Text(viewModel.username)
                         .sectionContentText()
 
                     if viewModel.isAlias {
@@ -235,7 +235,7 @@ private extension LogInDetailView {
             }
 
             Button {
-                viewModel.showLarge(.text(viewModel.itemUsername))
+                viewModel.showLarge(.text(viewModel.username))
             } label: {
                 Text("Show large")
             }

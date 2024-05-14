@@ -126,7 +126,7 @@ extension ItemContextMenuHandler {
     func copyItemUsername(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.loginItem?.itemUsername, message: #localized("Username copied"))
+            copy(itemContent.loginItem?.username, message: #localized("Username copied"))
         }
     }
 

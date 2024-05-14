@@ -67,7 +67,7 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
         }
 
         let newLoginData = ItemContentData.login(.init(email: oldData.email,
-                                                       username: oldData.itemUsername,
+                                                       username: oldData.username,
                                                        password: oldData.password,
                                                        totpUri: oldData.totpUri,
                                                        urls: oldData.urls + [newUrl],
