@@ -352,20 +352,20 @@ private extension CreateEditLoginView {
 
     var emailRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ZStack(alignment: .topTrailing) {
-                if #available(iOS 17, *), viewModel.usernameFlagActive {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.showUsernameField.toggle()
-                        }
-                        .popoverTip(UsernameTip())
-                } else {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.showUsernameField.toggle()
-                        }
-                }
-                if viewModel.usernameFlagActive {
+            if viewModel.usernameFlagActive {
+                ZStack(alignment: .topTrailing) {
+                    if #available(iOS 17, *) {
+                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+                            .buttonEmbeded {
+                                viewModel.showUsernameField.toggle()
+                            }
+                            .popoverTip(UsernameTip())
+                    } else {
+                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+                            .buttonEmbeded {
+                                viewModel.showUsernameField.toggle()
+                            }
+                    }
                     Image(uiImage: viewModel.showUsernameField ? IconProvider.minus : IconProvider.plus)
                         .resizable()
                         .renderingMode(.template)
@@ -379,6 +379,8 @@ private extension CreateEditLoginView {
                                 .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
                         .offset(x: 5, y: -2)
                 }
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
