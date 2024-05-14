@@ -174,7 +174,7 @@ private extension CreateEditLoginView {
         ToolbarItemGroup(placement: .keyboard) {
             switch focusedField {
             case .email:
-                usernameTextFieldToolbar
+                emailTextFieldToolbar
             case .totp:
                 totpTextFieldToolbar
             case let .custom(model) where model?.customField.type == .totp:
@@ -187,7 +187,7 @@ private extension CreateEditLoginView {
         }
     }
 
-    var usernameTextFieldToolbar: some View {
+    var emailTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
                 toolbarButton("Hide my email",
