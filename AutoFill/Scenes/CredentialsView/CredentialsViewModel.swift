@@ -215,7 +215,9 @@ extension CredentialsViewModel {
             }
             do {
                 if let passkeyRequestParams {
-                    try await handlePasskeySelection(for: item, params: passkeyRequestParams)
+                    try await handlePasskeySelection(for: item,
+                                                     params: passkeyRequestParams,
+                                                     results: results)
                 } else {
                     try await handlePasswordSelection(for: item, with: results)
                 }
@@ -265,7 +267,8 @@ private extension CredentialsViewModel {
     }
 
     func handlePasskeySelection(for item: any ItemIdentifiable,
-                                params: any PasskeyRequestParametersProtocol) async throws {
+                                params: any PasskeyRequestParametersProtocol,
+                                results: CredentialsFetchResult) async throws {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
@@ -274,7 +277,9 @@ private extension CredentialsViewModel {
         }
 
         guard !loginData.passkeys.isEmpty else {
-            throw PassError.passkey(.noPasskeys(item))
+            // Fallback to password autofill when no passkeys
+            try await handlePasswordSelection(for: item, with: results)
+            return
         }
 
         if loginData.passkeys.count == 1,
