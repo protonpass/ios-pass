@@ -45,7 +45,9 @@ public final class SetUpSentry: SetUpSentryUseCase {
             options.enableFileIOTracing = true
             options.enableCoreDataTracing = true
             options.attachViewHierarchy = true // EXPERIMENTAL
-            options.environment = ProtonPassDoH(bundle: bundle).environment.name
+            let environment = ProtonPassDoH(bundle: bundle).environment
+            options.environment = environment.name
+            options.enableCaptureFailedRequests = environment.isProd
         }
     }
 }
