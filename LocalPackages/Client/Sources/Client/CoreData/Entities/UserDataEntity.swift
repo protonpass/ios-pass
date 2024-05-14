@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+// Remove later
+// periphery:ignore:all
 import CoreData
 import CryptoKit
 import Entities
@@ -37,6 +39,7 @@ extension UserDataEntity {
     }
 
     @NSManaged var userID: String
+    @NSManaged var updateTime: Int64
     /// Symmetrically encrypted
     @NSManaged var encryptedData: Data
 }
@@ -52,6 +55,7 @@ extension UserDataEntity {
     func hydrate(userData: UserData, key: SymmetricKey) throws {
         let data = try JSONEncoder().encode(userData)
         userID = userData.user.ID
+        updateTime = Int64(Date.now.timeIntervalSince1970)
         encryptedData = try key.encrypt(data)
     }
 }
