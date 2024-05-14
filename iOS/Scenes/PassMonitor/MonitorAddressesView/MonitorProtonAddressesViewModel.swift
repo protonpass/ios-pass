@@ -98,7 +98,7 @@ private extension MonitorProtonAddressesViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] update in
                 guard let self else { return }
-                if case let .protonAddresses(userBreaches) = update {
+                if case let .protonAddresses(userBreaches) = update, allAddresses != userBreaches.addresses {
                     allAddresses = userBreaches.addresses
                 }
             }
