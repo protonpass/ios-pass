@@ -25,7 +25,8 @@ extension ItemContent {
         guard let data = loginItem else {
             return self
         }
-        let updatedData = LogInItemData(username: data.username,
+        let updatedData = LogInItemData(email: data.email,
+                                        username: data.username,
                                         password: data.password,
                                         totpUri: uri,
                                         urls: data.urls,

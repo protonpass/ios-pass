@@ -64,7 +64,7 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
         let emails = activeLoginItems
             .compactMap { encryptedItem -> String? in
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                      let email = item.loginItem?.username.lowercased(),
+                      let email = item.loginItem?.email.lowercased(),
                       validateEmailUseCase(email: email),
                       !excludedEmails.contains(email) else {
                     return nil

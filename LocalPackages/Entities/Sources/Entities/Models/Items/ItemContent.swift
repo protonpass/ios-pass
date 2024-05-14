@@ -42,6 +42,7 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
 }
 
 public struct LogInItemData: Sendable, Equatable, Hashable {
+    public let email: String
     public let username: String
     public let password: String
     public let totpUri: String
@@ -49,18 +50,31 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
     public let allowedAndroidApps: [AllowedAndroidApp]
     public let passkeys: [Passkey]
 
-    public init(username: String,
+    public init(email: String,
+                username: String,
                 password: String,
                 totpUri: String,
                 urls: [String],
                 allowedAndroidApps: [AllowedAndroidApp],
                 passkeys: [Passkey]) {
+        self.email = email
         self.username = username
         self.password = password
         self.totpUri = totpUri
         self.urls = urls
         self.allowedAndroidApps = allowedAndroidApps
         self.passkeys = passkeys
+    }
+
+    /// This variable should be used as the new main authentication variable
+    /// It returns either the user's username or the email
+    /// This should be user for indexing login items
+    public var authIdentifier: String {
+        if username.isEmpty {
+            return email
+        }
+
+        return username
     }
 }
 
@@ -230,7 +244,7 @@ public extension ItemContent {
             case .alias:
                 contents.append(aliasEmail)
             case let .login(data):
-                contents.append(contentsOf: [data.username] + data.urls)
+                contents.append(contentsOf: [data.email, data.username] + data.urls)
             case let .creditCard(data):
                 contents.append(data.cardholderName)
             case .note:
@@ -257,6 +271,7 @@ public extension ItemContent {
         fields.append(title)
         fields.append(note)
         if let data = loginItem {
+            fields.append(data.email)
             fields.append(data.username)
             fields.append(contentsOf: data.urls)
             fields.append(contentsOf: data.passkeys.map(\.domain))
@@ -290,7 +305,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                               pin: data.pin))
 
         case let .login(data):
-            .login(.init(username: data.username,
+            .login(.init(email: data.itemEmail,
+                         username: data.itemUsername,
                          password: data.password,
                          totpUri: data.totpUri,
                          urls: data.urls,
@@ -328,7 +344,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
 
         case let .login(logInData):
             content.login = .init()
-            content.login.username = logInData.username
+            content.login.itemEmail = logInData.email
+            content.login.itemUsername = logInData.username
             content.login.password = logInData.password
             content.login.totpUri = logInData.totpUri
             content.login.urls = logInData.urls
@@ -370,3 +387,5 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         }
     }
 }
+
+extension LogInItemData: UsernameEmailContainer {}

@@ -66,7 +66,8 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
             throw PassError.itemNotFound(item)
         }
 
-        let newLoginData = ItemContentData.login(.init(username: oldData.username,
+        let newLoginData = ItemContentData.login(.init(email: oldData.email,
+                                                       username: oldData.username,
                                                        password: oldData.password,
                                                        totpUri: oldData.totpUri,
                                                        urls: oldData.urls + [newUrl],
@@ -80,7 +81,7 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
         try await itemRepository.updateItem(oldItem: oldContent.item,
                                             newItemContent: newContent,
                                             shareId: oldContent.shareId)
-        let credential = ASPasswordCredential(user: oldData.username,
+        let credential = ASPasswordCredential(user: oldData.authIdentifier,
                                               password: oldData.password)
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,

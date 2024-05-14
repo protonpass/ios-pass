@@ -44,6 +44,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var canAddOrEdit2FAURI = true
     @Published var title = ""
     @Published private(set) var passkeys: [Passkey] = []
+    @Published var email = ""
     @Published var username = ""
     @Published var password = ""
     @Published private(set) var passwordStrength: PasswordStrength?
@@ -57,6 +58,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var isShowingNoCameraPermissionView = false
     @Published var isShowingCodeScanner = false
     @Published private(set) var loading = false
+    @Published var showUsernameField = false
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
 
@@ -81,8 +83,15 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
+    private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let setUpEmailAndUsername = resolve(\SharedUseCasesContainer.setUpEmailAndUsername)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+
+    var usernameFlagActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit)
+    }
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
@@ -99,7 +108,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
-                username = data.username
+                parseAndSetUpEmailAndUsername(data: data)
                 password = data.password
                 originalTotpUri = data.totpUri
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
@@ -117,6 +126,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
                 username = request?.userName ?? ""
+                showUsernameField = !username.isEmpty
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
                 }
@@ -159,7 +169,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if let newPasskey = try await newPasskey() {
                 passkeys.append(newPasskey.toPasskey)
             }
-            let logInData = ItemContentData.login(.init(username: username,
+            let logInData = ItemContentData.login(.init(email: email,
+                                                        username: username,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
                                                         urls: sanitizedUrls,
@@ -257,7 +268,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func useRealEmailAddress() {
-        username = emailAddress
+        email = emailAddress
     }
 
     func generatePassword() {
@@ -285,7 +296,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func removeAlias() {
         aliasCreationLiteInfo = nil
-        username = ""
+        email = ""
     }
 
     func handleScanResult(_ result: Result<String, any Error>, customField: CustomFieldUiModel? = nil) {
@@ -316,6 +327,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return invalidURLs.isEmpty
     }
 
+    func checkEmail() -> Bool {
+        guard getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) else {
+            return true
+        }
+        if !email.isEmpty, !validateEmail(email: email) {
+            router.display(element: .errorMessage("Invalid email address"))
+            return false
+        }
+        return true
+    }
+
     func remove(passkey: Passkey) {
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
@@ -337,6 +359,7 @@ private extension CreateEditLoginViewModel {
                     aliasOptions = nil
                     aliasCreationLiteInfo = nil
                     username = ""
+                    email = ""
                 }
             }
             .store(in: &cancellables)
@@ -359,6 +382,13 @@ private extension CreateEditLoginViewModel {
             }
             .store(in: &cancellables)
     }
+
+    func parseAndSetUpEmailAndUsername(data: LogInItemData) {
+        let result = setUpEmailAndUsername(container: data)
+        email = result.email
+        username = result.username
+        showUsernameField = !username.isEmpty
+    }
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
@@ -374,6 +404,6 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
 extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info
-        username = info.aliasAddress
+        email = info.aliasAddress
     }
 }

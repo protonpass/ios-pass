@@ -104,7 +104,11 @@ extension DetailHistoryViewModel {
         copy(\.aliasEmail, message: #localized("Alias copied"))
     }
 
-    func copyUsername() {
+    func copyEmail() {
+        copy(\.loginItem?.email, message: #localized("Email address copied"))
+    }
+
+    func copyItemUsername() {
         copy(\.loginItem?.username, message: #localized("Username copied"))
     }
 
