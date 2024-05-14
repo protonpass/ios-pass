@@ -605,7 +605,7 @@ extension HomepageCoordinator {
 
     func presentPasswordReusedListView(for itemContent: ItemContent) {
         let view = PasswordReusedView(viewModel: .init(itemContent: itemContent))
-        present(view)
+        present(view, uniquenessTag: UniqueSheet.reusedPasswordList)
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
@@ -888,11 +888,15 @@ extension HomepageCoordinator {
         }
     }
 
-    func present(_ view: some View, animated: Bool = true, dismissible: Bool = true) {
+    func present(_ view: some View,
+                 animated: Bool = true,
+                 dismissible: Bool = true,
+                 uniquenessTag: (any RawRepresentable<Int>)? = nil) {
         present(UIHostingController(rootView: view),
                 userInterfaceStyle: theme.userInterfaceStyle,
                 animated: animated,
-                dismissible: dismissible)
+                dismissible: dismissible,
+                uniquenessTag: uniquenessTag)
     }
 
     func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
