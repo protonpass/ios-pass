@@ -109,7 +109,7 @@ extension DetailHistoryViewModel {
     }
 
     func copyItemUsername() {
-        copy(\.loginItem?.itemUsername, message: #localized("Username copied"))
+        copy(\.loginItem?.username, message: #localized("Username copied"))
     }
 
     func copyPassword() {

@@ -46,14 +46,20 @@ public final class GetItemsLinkedToBreach: GetItemsLinkedToBreachUseCase {
     public func execute(email: String) async throws -> [ItemUiModel] {
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let encryptedItems = try await repository.getAllItems()
+
         return encryptedItems.compactMap { element in
             guard let model = try? element.getItemContent(symmetricKey: symmetricKey),
-                  model.type == .login,
                   let login = model.loginItem,
-                  login.email.contains(email) else {
+                  login.authIds.contains(email) else {
                 return nil
             }
             return model.toItemUiModel
         }
+    }
+}
+
+private extension LogInItemData {
+    var authIds: [String] {
+        [email, username]
     }
 }
