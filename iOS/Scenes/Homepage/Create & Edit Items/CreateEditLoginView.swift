@@ -173,8 +173,8 @@ private extension CreateEditLoginView {
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             switch focusedField {
-            case .username:
-                usernameTextFieldToolbar
+            case .email:
+                emailTextFieldToolbar
             case .totp:
                 totpTextFieldToolbar
             case let .custom(model) where model?.customField.type == .totp:
@@ -187,7 +187,7 @@ private extension CreateEditLoginView {
         }
     }
 
-    var usernameTextFieldToolbar: some View {
+    var emailTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
                 toolbarButton("Hide my email",
@@ -352,21 +352,21 @@ private extension CreateEditLoginView {
 
     var emailRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ZStack(alignment: .topTrailing) {
-                if #available(iOS 17, *), viewModel.usernameFlagActive {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.showUsernameField.toggle()
-                        }
-                        .popoverTip(UsernameTip())
-                } else {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.showUsernameField.toggle()
-                        }
-                }
-                if !viewModel.showUsernameField {
-                    Image(uiImage: IconProvider.plus)
+            if viewModel.usernameFlagActive {
+                ZStack(alignment: .topTrailing) {
+                    if #available(iOS 17, *) {
+                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+                            .buttonEmbeded {
+                                viewModel.showUsernameField.toggle()
+                            }
+                            .popoverTip(UsernameTip())
+                    } else {
+                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+                            .buttonEmbeded {
+                                viewModel.showUsernameField.toggle()
+                            }
+                    }
+                    Image(uiImage: viewModel.showUsernameField ? IconProvider.minus : IconProvider.plus)
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 9, height: 9)
@@ -379,6 +379,8 @@ private extension CreateEditLoginView {
                                 .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
                         .offset(x: 5, y: -2)
                 }
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {

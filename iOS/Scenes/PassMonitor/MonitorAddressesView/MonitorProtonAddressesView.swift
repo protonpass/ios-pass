@@ -37,16 +37,18 @@ struct MonitorProtonAddressesView: View {
             } else {
                 disabledView
             }
+            Spacer()
         }
+        .id(UUID())
         .padding(.horizontal)
         .scrollViewEmbeded()
         .animation(.default, value: viewModel.access)
         .animation(.default, value: viewModel.allAddresses)
         .background(PassColor.backgroundNorm.toColor)
+        .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle("Proton addresses")
         .navigationBarBackButtonHidden()
-        .toolbar { toolbarContent }
     }
 }
 
