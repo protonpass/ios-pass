@@ -26,6 +26,7 @@ import Core
 import Entities
 import Factory
 import Macro
+import Screens
 import SwiftUI
 
 @MainActor
@@ -381,6 +382,11 @@ private extension CreateEditLoginViewModel {
                 passwordStrength = getPasswordStrength(password: passwordValue)
             }
             .store(in: &cancellables)
+
+        if #available(iOS 17, *),
+           getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) {
+            UsernameTip.enabled = true
+        }
     }
 
     func parseAndSetUpEmailAndUsername(data: LogInItemData) {
