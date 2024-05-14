@@ -37,6 +37,7 @@ struct CreateEditLoginView: View {
     @State private var lastFocusedField: Field?
     @State private var isShowingDiscardAlert = false
     @Namespace private var usernameID
+    @Namespace private var emailID
     @Namespace private var passwordID
     @Namespace private var websitesID
     @Namespace private var noteID
@@ -47,7 +48,7 @@ struct CreateEditLoginView: View {
     }
 
     enum Field: CustomFieldTypes {
-        case title, username, password, totp, websites, note
+        case title, email, username, password, totp, websites, note
         case custom(CustomFieldUiModel?)
 
         static func == (lhs: Field, rhs: Field) -> Bool {
@@ -70,7 +71,7 @@ struct CreateEditLoginView: View {
                                                    field: .title,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
-                                                   onSubmit: { focusedField = .username })
+                                                   onSubmit: { focusedField = .email })
                             .padding(.bottom, DesignConstant.sectionPadding / 2)
                         editablePasskeySection
                         readOnlyPasskeySection
@@ -108,7 +109,8 @@ struct CreateEditLoginView: View {
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?
                     switch focusedField {
-                    case .title: id = usernameID
+                    case .title: id = emailID
+                    case .email: id = viewModel.showUsernameField ? usernameID : passwordID
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
@@ -352,21 +354,30 @@ private extension CreateEditLoginView {
         HStack(spacing: DesignConstant.sectionPadding) {
             ZStack(alignment: .topTrailing) {
                 if #available(iOS 17, *), viewModel.usernameFlagActive {
-                    Button { viewModel.showUsernameField.toggle() } label: {
-                        ItemDetailSectionIcon(icon: IconProvider.envelope)
-                    }.buttonStyle(.plain)
+                    ItemDetailSectionIcon(icon: IconProvider.envelope)
+                        .buttonEmbeded {
+                            viewModel.showUsernameField.toggle()
+                        }
                         .popoverTip(UsernameTip())
+//                    Button { viewModel.showUsernameField.toggle() } label: {
+//                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+//                    }.buttonStyle(.plain)
+//                        .popoverTip(UsernameTip())
                 } else {
-                    Button { viewModel.showUsernameField.toggle() } label: {
-                        ItemDetailSectionIcon(icon: IconProvider.envelope)
-                    }.buttonStyle(.plain)
+                    ItemDetailSectionIcon(icon: IconProvider.envelope)
+                        .buttonEmbeded {
+                            viewModel.showUsernameField.toggle()
+                        }
+//                    Button { viewModel.showUsernameField.toggle() } label: {
+//                        ItemDetailSectionIcon(icon: IconProvider.envelope)
+//                    }.buttonStyle(.plain)
                 }
                 if !viewModel.showUsernameField {
                     Image(uiImage: IconProvider.plus)
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 9, height: 9)
-                        .foregroundStyle(PassColor.loginInteractionNormMajor1.toColor)
+                        .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
                         .padding(2)
                         .background(PassColor.loginInteractionNormMinor1.toColor)
                         .clipShape(.circle)
@@ -384,10 +395,10 @@ private extension CreateEditLoginView {
                 TextField("Add email address", text: $viewModel.email)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .focused($focusedField, equals: .username)
+                    .focused($focusedField, equals: .email)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.next)
-                    .onSubmit { focusedField = .password }
+                    .onSubmit { focusedField = viewModel.showUsernameField ? .username : .password }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -402,7 +413,7 @@ private extension CreateEditLoginView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.email.isEmpty)
         .animation(.default, value: focusedField)
-        .id(usernameID)
+        .id(emailID)
     }
 
     var usernameRow: some View {
@@ -413,7 +424,7 @@ private extension CreateEditLoginView {
                 Text("Username")
                     .sectionTitleText()
 
-                TextField("Add username", text: $viewModel.itemUsername)
+                TextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
@@ -423,16 +434,16 @@ private extension CreateEditLoginView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !viewModel.itemUsername.isEmpty {
+            if !viewModel.username.isEmpty {
                 Button(action: {
-                    viewModel.itemUsername = ""
+                    viewModel.username = ""
                 }, label: {
                     ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.itemUsername.isEmpty)
+        .animation(.default, value: viewModel.username.isEmpty)
         .animation(.default, value: focusedField)
         .id(usernameID)
     }
@@ -442,7 +453,7 @@ private extension CreateEditLoginView {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username or email address")
+                Text("Email address")
                     .sectionTitleText()
                 Text(viewModel.email)
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -666,18 +677,3 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
-
-// private extension CreateEditLoginView {
-//    @ViewBuilder
-//    var usernameTip: some View {
-//        if #available(iOS 17, *) {
-//            VStack {
-//                Spacer()
-//                TipView(UsernameTip())
-//                    .passTipView()
-//                    .padding()
-//            }
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        }
-//    }
-// }
