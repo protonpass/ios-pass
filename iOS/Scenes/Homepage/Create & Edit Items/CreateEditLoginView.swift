@@ -25,7 +25,9 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
+import TipKit
 
 struct CreateEditLoginView: View {
     private let theme = resolve(\SharedToolingContainer.theme)
@@ -35,6 +37,7 @@ struct CreateEditLoginView: View {
     @State private var lastFocusedField: Field?
     @State private var isShowingDiscardAlert = false
     @Namespace private var usernameID
+    @Namespace private var emailID
     @Namespace private var passwordID
     @Namespace private var websitesID
     @Namespace private var noteID
@@ -45,7 +48,7 @@ struct CreateEditLoginView: View {
     }
 
     enum Field: CustomFieldTypes {
-        case title, username, password, totp, websites, note
+        case title, email, username, password, totp, websites, note
         case custom(CustomFieldUiModel?)
 
         static func == (lhs: Field, rhs: Field) -> Bool {
@@ -68,7 +71,7 @@ struct CreateEditLoginView: View {
                                                    field: .title,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
-                                                   onSubmit: { focusedField = .username })
+                                                   onSubmit: { focusedField = .email })
                             .padding(.bottom, DesignConstant.sectionPadding / 2)
                         editablePasskeySection
                         readOnlyPasskeySection
@@ -98,6 +101,7 @@ struct CreateEditLoginView: View {
                     .padding()
                     .animation(.default, value: viewModel.customFieldUiModels.count)
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
+                    .animation(.default, value: viewModel.showUsernameField)
                     .animation(.default, value: viewModel.passkeys.count)
                     .showSpinner(viewModel.loading)
                 }
@@ -105,7 +109,8 @@ struct CreateEditLoginView: View {
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?
                     switch focusedField {
-                    case .title: id = usernameID
+                    case .title: id = emailID
+                    case .email: id = viewModel.showUsernameField ? usernameID : passwordID
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
@@ -148,7 +153,8 @@ struct CreateEditLoginView: View {
                                       onUpgrade: { /* Not applicable */ },
                                       onScan: { viewModel.openScanner() },
                                       onSave: {
-                                          if viewModel.validateURLs() {
+                                          if viewModel.validateURLs(),
+                                             viewModel.checkEmail() {
                                               viewModel.save()
                                           }
                                       })
@@ -322,9 +328,13 @@ private extension CreateEditLoginView {
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            if !viewModel.username.isEmpty, viewModel.isAlias {
+            if !viewModel.email.isEmpty, viewModel.isAlias {
                 pendingAliasRow
             } else {
+                emailRow
+            }
+            if viewModel.showUsernameField {
+                PassSectionDivider()
                 usernameRow
             }
             PassSectionDivider()
@@ -340,14 +350,74 @@ private extension CreateEditLoginView {
         .roundedEditableSection()
     }
 
+    var emailRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ZStack(alignment: .topTrailing) {
+                if #available(iOS 17, *), viewModel.usernameFlagActive {
+                    ItemDetailSectionIcon(icon: IconProvider.envelope)
+                        .buttonEmbeded {
+                            viewModel.showUsernameField.toggle()
+                        }
+                        .popoverTip(UsernameTip())
+                } else {
+                    ItemDetailSectionIcon(icon: IconProvider.envelope)
+                        .buttonEmbeded {
+                            viewModel.showUsernameField.toggle()
+                        }
+                }
+                if !viewModel.showUsernameField {
+                    Image(uiImage: IconProvider.plus)
+                        .resizable()
+                        .renderingMode(.template)
+                        .frame(width: 9, height: 9)
+                        .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
+                        .padding(2)
+                        .background(PassColor.loginInteractionNormMinor1.toColor)
+                        .clipShape(.circle)
+                        .overlay(/// apply a rounded border
+                            Circle()
+                                .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
+                        .offset(x: 5, y: -2)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Email address")
+                    .sectionTitleText()
+
+                TextField("Add email address", text: $viewModel.email)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .email)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = viewModel.showUsernameField ? .username : .password }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !viewModel.email.isEmpty {
+                Button(action: {
+                    viewModel.email = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
+                })
+            }
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.email.isEmpty)
+        .animation(.default, value: focusedField)
+        .id(emailID)
+    }
+
     var usernameRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username or email address")
+                Text("Username")
                     .sectionTitleText()
-                TextField("Add username or email address", text: $viewModel.username)
+
+                TextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
@@ -376,9 +446,9 @@ private extension CreateEditLoginView {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username or email address")
+                Text("Email address")
                     .sectionTitleText()
-                Text(viewModel.username)
+                Text(viewModel.email)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -401,7 +471,7 @@ private extension CreateEditLoginView {
             })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.username.isEmpty)
+        .animation(.default, value: viewModel.email.isEmpty)
     }
 
     var passwordRow: some View {

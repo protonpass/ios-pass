@@ -1,6 +1,6 @@
 //
-// PassTip.swift
-// Proton Pass - Created on 22/03/2024.
+// UsernameEmailContainer.swift
+// Proton Pass - Created on 14/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,39 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import Macro
-import TipKit
 
-enum PassTip: String {
-    case itemForceTouch
-    case spotlight
-    case username
-
-    var id: String { rawValue }
-}
-
-public enum PassTipAction: String {
-    /// Open Pass settings, not iOS settings
-    case openSettings
-
-    public var id: String { rawValue }
-
-    public var title: String {
-        switch self {
-        case .openSettings:
-            #localized("Open Settings")
-        }
-    }
-
-    @available(iOS 17, *)
-    public func toAction() -> Tip.Action {
-        .init(id: id, title: title)
-    }
-}
-
-@available(iOS 17, *)
-public extension Tip.Action {
-    func `is`(_ action: PassTipAction) -> Bool {
-        id == action.id
-    }
+public protocol UsernameEmailContainer: Sendable {
+    var email: String { get }
+    var username: String { get }
 }

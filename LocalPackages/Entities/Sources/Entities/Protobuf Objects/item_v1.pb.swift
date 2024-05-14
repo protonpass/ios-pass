@@ -62,7 +62,7 @@ public enum ProtonPassItemV1_CardType: SwiftProtobuf.Enum {
 
 extension ProtonPassItemV1_CardType: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  public static var allCases: [ProtonPassItemV1_CardType] = [
+  public static let allCases: [ProtonPassItemV1_CardType] = [
     .unspecified,
     .other,
     .visa,
@@ -151,7 +151,7 @@ public struct ProtonPassItemV1_ItemLogin {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var username: String = String()
+  public var itemEmail: String = String()
 
   public var password: String = String()
 
@@ -160,6 +160,8 @@ public struct ProtonPassItemV1_ItemLogin {
   public var totpUri: String = String()
 
   public var passkeys: [ProtonPassItemV1_Passkey] = []
+
+  public var itemUsername: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -707,11 +709,12 @@ extension ProtonPassItemV1_Passkey: SwiftProtobuf.Message, SwiftProtobuf._Messag
 extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemLogin"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "username"),
+    1: .standard(proto: "item_email"),
     2: .same(proto: "password"),
     3: .same(proto: "urls"),
     4: .standard(proto: "totp_uri"),
     5: .same(proto: "passkeys"),
+    6: .standard(proto: "item_username"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -720,19 +723,20 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.username) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self.itemEmail) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.password) }()
       case 3: try { try decoder.decodeRepeatedStringField(value: &self.urls) }()
       case 4: try { try decoder.decodeSingularStringField(value: &self.totpUri) }()
       case 5: try { try decoder.decodeRepeatedMessageField(value: &self.passkeys) }()
+      case 6: try { try decoder.decodeSingularStringField(value: &self.itemUsername) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.username.isEmpty {
-      try visitor.visitSingularStringField(value: self.username, fieldNumber: 1)
+    if !self.itemEmail.isEmpty {
+      try visitor.visitSingularStringField(value: self.itemEmail, fieldNumber: 1)
     }
     if !self.password.isEmpty {
       try visitor.visitSingularStringField(value: self.password, fieldNumber: 2)
@@ -746,15 +750,19 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
     if !self.passkeys.isEmpty {
       try visitor.visitRepeatedMessageField(value: self.passkeys, fieldNumber: 5)
     }
+    if !self.itemUsername.isEmpty {
+      try visitor.visitSingularStringField(value: self.itemUsername, fieldNumber: 6)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: ProtonPassItemV1_ItemLogin, rhs: ProtonPassItemV1_ItemLogin) -> Bool {
-    if lhs.username != rhs.username {return false}
+    if lhs.itemEmail != rhs.itemEmail {return false}
     if lhs.password != rhs.password {return false}
     if lhs.urls != rhs.urls {return false}
     if lhs.totpUri != rhs.totpUri {return false}
     if lhs.passkeys != rhs.passkeys {return false}
+    if lhs.itemUsername != rhs.itemUsername {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

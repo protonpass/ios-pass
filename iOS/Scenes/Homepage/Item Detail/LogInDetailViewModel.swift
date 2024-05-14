@@ -39,6 +39,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     @Published private(set) var passkeys = [Passkey]()
     @Published private(set) var name = ""
+    @Published private(set) var email = ""
     @Published private(set) var username = ""
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
@@ -56,6 +57,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
+    private let setUpEmailAndUsername = resolve(\SharedUseCasesContainer.setUpEmailAndUsername)
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
@@ -102,13 +104,13 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             passkeys = data.passkeys
             name = itemContent.name
             note = itemContent.note
-            username = data.username
+            parseAndSetUpEmailAndUsername(data: data)
             password = data.password
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
             totpUri = data.totpUri
             totpManager.bind(uri: data.totpUri)
-            getAliasItem(username: data.username)
+            getAliasItem(email: data.email)
 
             if !data.totpUri.isEmpty {
                 checkTotpState()
@@ -124,11 +126,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 // MARK: - Private APIs
 
 private extension LogInDetailViewModel {
-    func getAliasItem(username: String) {
+    func getAliasItem(email: String) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                aliasItem = try await itemRepository.getAliasItem(email: username)
+                aliasItem = try await itemRepository.getAliasItem(email: email)
             } catch {
                 handle(error)
             }
@@ -149,6 +151,12 @@ private extension LogInDetailViewModel {
             }
         }
     }
+
+    func parseAndSetUpEmailAndUsername(data: LogInItemData) {
+        let result = setUpEmailAndUsername(container: data)
+        email = result.email
+        username = result.username
+    }
 }
 
 // MARK: - Public actions
@@ -158,7 +166,11 @@ extension LogInDetailViewModel {
         router.present(for: .passkeyDetail(passkey))
     }
 
-    func copyUsername() {
+    func copyEmail() {
+        copyToClipboard(text: email, message: #localized("Username copied"))
+    }
+
+    func copyItemUsername() {
         copyToClipboard(text: username, message: #localized("Username copied"))
     }
 

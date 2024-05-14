@@ -67,7 +67,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
         switch itemContent.contentData {
         case let .login(data):
             url = data.urls.first
-            requiredExtras = [data.username]
+            requiredExtras = [data.email, data.username]
             optionalExtras = data.urls
         default:
             url = nil
