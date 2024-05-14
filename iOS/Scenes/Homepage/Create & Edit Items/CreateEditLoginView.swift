@@ -359,18 +359,11 @@ private extension CreateEditLoginView {
                             viewModel.showUsernameField.toggle()
                         }
                         .popoverTip(UsernameTip())
-//                    Button { viewModel.showUsernameField.toggle() } label: {
-//                        ItemDetailSectionIcon(icon: IconProvider.envelope)
-//                    }.buttonStyle(.plain)
-//                        .popoverTip(UsernameTip())
                 } else {
                     ItemDetailSectionIcon(icon: IconProvider.envelope)
                         .buttonEmbeded {
                             viewModel.showUsernameField.toggle()
                         }
-//                    Button { viewModel.showUsernameField.toggle() } label: {
-//                        ItemDetailSectionIcon(icon: IconProvider.envelope)
-//                    }.buttonStyle(.plain)
                 }
                 if !viewModel.showUsernameField {
                     Image(uiImage: IconProvider.plus)
