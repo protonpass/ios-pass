@@ -173,6 +173,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
 
     func testUserDataEntity() {
         let sut = entity(byName: "UserDataEntity")
+        verifyAttribute(named: "updateTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "encryptedData", on: sut, hasType: .binaryData)
     }

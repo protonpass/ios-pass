@@ -19,14 +19,17 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+// Remove later
+// periphery:ignore:all
 import CoreData
 import Foundation
 import ProtonCoreLogin
 
 public protocol LocalUserDataDatasourceProtocol: Sendable {
+    /// Get all users sorted by `updateTime` from least to most recent (the last one is the latest)
     func getAll() async throws -> [UserData]
     func remove(userId: String) async throws
-    func upsert(userData: UserData) async throws
+    func upsert(_ userData: UserData) async throws
 }
 
 public final class LocalUserDataDatasource: LocalDatasource, LocalUserDataDatasourceProtocol {
@@ -43,6 +46,7 @@ public extension LocalUserDataDatasource {
     func getAll() async throws -> [UserData] {
         let context = newTaskContext(type: .fetch)
         let request = UserDataEntity.fetchRequest()
+        request.sortDescriptors = [.init(key: "updateTime", ascending: true)]
         let entities = try await execute(fetchRequest: request, context: context)
         let key = try symmetricKeyProvider.getSymmetricKey()
         return try entities.map { try $0.toUserData(key) }
@@ -55,7 +59,8 @@ public extension LocalUserDataDatasource {
         try await execute(batchDeleteRequest: .init(fetchRequest: request), context: context)
     }
 
-    func upsert(userData: UserData) async throws {
+    func upsert(_ userData: UserData) async throws {
+        try await remove(userId: userData.user.ID)
         let context = newTaskContext(type: .insert)
         let key = try symmetricKeyProvider.getSymmetricKey()
         var hydrationError: (any Error)?
