@@ -891,6 +891,12 @@
             "state" : "translated",
             "value" : "Geçiş anahtarı oluştur"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити ключ доступу"
+          }
         }
       }
     },
@@ -1190,7 +1196,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Даведацца больш пра Pass"
+            "value" : "Даведацца больш аб Pass"
           }
         },
         "cs" : {
@@ -1807,7 +1813,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Log ind for at bruge Proton Pass Autofyld-udvidelsen"
+            "value" : "Log på for at bruge Proton Pass AutoFill-udvidelse"
           }
         },
         "de" : {
@@ -2306,6 +2312,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rýchle akcie v položkách"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hitra dejanja na predmetih"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snabba åtgärder på objekt"
           }
         },
         "tr" : {
@@ -3022,7 +3040,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecione uma seção existente ou crie uma nova."
+            "value" : "Selecione um início de sessão existente ou crie um novo."
           }
         },
         "ro" : {

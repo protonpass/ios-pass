@@ -79,6 +79,15 @@ public enum ProtonPassEnvironment {
             "custom"
         }
     }
+
+    public var isProd: Bool {
+        switch self {
+        case .prod:
+            true
+        default:
+            false
+        }
+    }
 }
 
 public struct DoHParameters {
