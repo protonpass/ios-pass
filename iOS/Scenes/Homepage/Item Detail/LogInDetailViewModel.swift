@@ -167,7 +167,7 @@ extension LogInDetailViewModel {
     }
 
     func copyEmail() {
-        copyToClipboard(text: email, message: #localized("Username copied"))
+        copyToClipboard(text: email, message: #localized("Email copied"))
     }
 
     func copyItemUsername() {
