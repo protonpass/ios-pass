@@ -54,6 +54,21 @@ public extension UIViewController {
         return topMostViewController
     }
 
+    func containsUniqueSheet(_ tag: any RawRepresentable<Int>) -> Bool {
+        var topMostViewController = self
+        while true {
+            if let presentedViewController = topMostViewController.presentedViewController {
+                if presentedViewController.view.tag == tag.rawValue {
+                    return true
+                }
+                topMostViewController = presentedViewController
+            } else {
+                break
+            }
+        }
+        return false
+    }
+
     /// Override `userInterfaceStyle` of the current view controller as well as its presented view controllers
     func setUserInterfaceStyle(_ userInterfaceStyle: UIUserInterfaceStyle) {
         overrideUserInterfaceStyle = userInterfaceStyle
