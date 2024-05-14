@@ -120,8 +120,12 @@ private extension LogInDetailView {
 private extension LogInDetailView {
     var usernamePassword2FaSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            usernameRow
+            emailRow
             PassSectionDivider()
+            if !viewModel.username.isEmpty {
+                usernameRow
+                PassSectionDivider()
+            }
             passwordRow
 
             switch viewModel.totpTokenState {
@@ -148,13 +152,58 @@ private extension LogInDetailView {
         .animation(.default, value: viewModel.totpTokenState)
     }
 
+    var emailRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.envelope,
+                                  color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Email address")
+                    .sectionTitleText()
+
+                if viewModel.email.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
+                } else {
+                    Text(viewModel.email)
+                        .sectionContentText()
+
+                    if viewModel.isAlias {
+                        Button { viewModel.showAliasDetail() } label: {
+                            Text("View alias")
+                                .font(.callout)
+                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
+                                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
+                        }
+                        .padding(.top, 8)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: { viewModel.copyEmail() })
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .contextMenu {
+            Button { viewModel.copyEmail() } label: {
+                Text("Copy")
+            }
+
+            Button {
+                viewModel.showLarge(.text(viewModel.email))
+            } label: {
+                Text("Show large")
+            }
+        }
+    }
+
     var usernameRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
                                   color: iconTintColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Username or email address")
+                Text("Username")
                     .sectionTitleText()
 
                 if viewModel.username.isEmpty {
@@ -177,11 +226,11 @@ private extension LogInDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: { viewModel.copyUsername() })
+            .onTapGesture(perform: { viewModel.copyItemUsername() })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
-            Button { viewModel.copyUsername() } label: {
+            Button { viewModel.copyItemUsername() } label: {
                 Text("Copy")
             }
 

@@ -1,6 +1,6 @@
 //
-// PassTip.swift
-// Proton Pass - Created on 22/03/2024.
+// UsernameTip.swift
+// Proton Pass - Created on 03/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,40 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import Macro
+import DesignSystem
 import TipKit
 
-enum PassTip: String {
-    case itemForceTouch
-    case spotlight
-    case username
-
-    var id: String { rawValue }
-}
-
-public enum PassTipAction: String {
-    /// Open Pass settings, not iOS settings
-    case openSettings
-
-    public var id: String { rawValue }
-
-    public var title: String {
-        switch self {
-        case .openSettings:
-            #localized("Open Settings")
-        }
-    }
-
-    @available(iOS 17, *)
-    public func toAction() -> Tip.Action {
-        .init(id: id, title: title)
-    }
-}
-
 @available(iOS 17, *)
-public extension Tip.Action {
-    func `is`(_ action: PassTipAction) -> Bool {
-        id == action.id
+public struct UsernameTip: Tip {
+    public var id: String { PassTip.username.id }
+
+    public var title: Text {
+        Text("Add username field")
+            .foregroundStyle(PassColor.textNorm.toColor)
     }
+
+    public var message: Text? {
+        Text("Tap here to add a field for a username.")
+            .foregroundStyle(PassColor.textWeak.toColor)
+    }
+
+    public var image: Image? {
+        nil
+    }
+
+    public var options: [TipOption] {
+        // Show this tip once
+        Tips.MaxDisplayCount(1)
+    }
+
+    public init() {}
 }
