@@ -382,6 +382,11 @@ extension SharedUseCasesContainer {
     var copyToClipboard: Factory<any CopyToClipboardUseCase> {
         self { CopyToClipboard(getSharedPreferences: self.getSharedPreferences()) }
     }
+
+    var setUpEmailAndUsername: Factory<any SetUpEmailAndUsernameUseCase> {
+        self { SetUpEmailAndUsername(featureFlags: self.getFeatureFlagStatus(),
+                                     emailValidator: self.validateEmail()) }
+    }
 }
 
 // MARK: - Dark web monitor

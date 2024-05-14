@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Add username field" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add username field"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "comment" : "Accessibility label",
       "localizations" : {
@@ -3506,6 +3516,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öneriler"
+          }
+        }
+      }
+    },
+    "Tap here to add a field for a username." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap here to add a field for a username."
           }
         }
       }
