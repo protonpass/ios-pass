@@ -20,6 +20,6 @@
 
 import LocalAuthentication
 
-public enum LocalAuthenticationMethodUiModel {
+public enum LocalAuthenticationMethodUiModel: Sendable {
     case none, biometric(LABiometryType), pin
 }
