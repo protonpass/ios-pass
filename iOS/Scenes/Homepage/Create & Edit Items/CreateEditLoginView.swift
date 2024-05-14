@@ -173,7 +173,7 @@ private extension CreateEditLoginView {
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             switch focusedField {
-            case .username:
+            case .email:
                 usernameTextFieldToolbar
             case .totp:
                 totpTextFieldToolbar
@@ -365,8 +365,8 @@ private extension CreateEditLoginView {
                             viewModel.showUsernameField.toggle()
                         }
                 }
-                if !viewModel.showUsernameField {
-                    Image(uiImage: IconProvider.plus)
+                if viewModel.usernameFlagActive {
+                    Image(uiImage: viewModel.showUsernameField ? IconProvider.minus : IconProvider.plus)
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 9, height: 9)
