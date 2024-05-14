@@ -36,7 +36,7 @@ public extension LocalPublicKeyDatasource {
         fetchRequest.predicate = .init(format: "email = %@", email)
         let publicKeyEntities = try await execute(fetchRequest: fetchRequest,
                                                   context: taskContext)
-        return publicKeyEntities.compactMap { try? $0.toPublicKey() }
+        return try publicKeyEntities.map { try $0.toPublicKey() }
     }
 
     func insertPublicKeys(_ publicKeys: [PublicKey], email: String) async throws {
