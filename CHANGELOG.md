@@ -3,7 +3,9 @@ Fixes:
 - Resolved issue where users were unable to request a new verification code for custom emails
 
 Others:
+- Bumped core version to 25.0.0
 - Implemented retrieval of root domains of URLs using Rust library
+- Added support for separate username
 
 ## Version 1.11.0
 Features:
