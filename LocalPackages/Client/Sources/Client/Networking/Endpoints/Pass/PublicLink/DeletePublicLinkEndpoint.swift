@@ -31,7 +31,7 @@ struct DeletePublicLinkEndpoint: Endpoint {
     var method: HTTPMethod
 
     init(publicLinkId: String) {
-        debugDescription = "Create new public link"
+        debugDescription = "Delete public link"
         path = "/pass/v1/public_link/\(publicLinkId)"
         method = .delete
     }
