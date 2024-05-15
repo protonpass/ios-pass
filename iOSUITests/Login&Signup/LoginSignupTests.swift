@@ -43,7 +43,7 @@ class LoginSignupTests: LoginBaseTestCase {
     override func setUp() {
         super.setUp()
         mainRobot
-            .changeEnvironmentToCustomIfDomainHereBlackOtherwise(dynamicDomainAvailable)
+            .changeEnvironmentToCustomIfDomainHereBlackOtherwise(dynamicDomain != nil)
     }
 
     private func readLocalFile(forName name: String) -> String? {
