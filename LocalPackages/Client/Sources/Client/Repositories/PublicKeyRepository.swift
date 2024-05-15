@@ -19,9 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import CoreData
 import Entities
-import ProtonCoreServices
 
 // sourcery: AutoMockable
 public protocol PublicKeyRepositoryProtocol: Sendable {
