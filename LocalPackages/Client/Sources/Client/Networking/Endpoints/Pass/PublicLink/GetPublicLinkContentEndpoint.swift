@@ -36,7 +36,7 @@ struct GetPublicLinkContentEndpoint: Endpoint {
     var method: HTTPMethod
 
     init(publicLinkToken: String) {
-        debugDescription = "Create new public link"
+        debugDescription = "Get content for public link"
         path = "/pass/v1/public_link/content/\(publicLinkToken)"
         method = .get
     }
