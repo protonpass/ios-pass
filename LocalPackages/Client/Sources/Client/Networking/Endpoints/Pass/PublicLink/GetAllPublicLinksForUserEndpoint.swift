@@ -39,9 +39,9 @@ struct GetAllPublicLinksForUserEndpoint: Endpoint {
     var path: String
     var method: HTTPMethod
 
-    init(publicLinkId: String) {
-        debugDescription = "Create new public link"
-        path = "/pass/v1/public_link/\(publicLinkId)"
+    init() {
+        debugDescription = "Get all public links for current user"
+        path = "/pass/v1/public_link"
         method = .get
     }
 }
