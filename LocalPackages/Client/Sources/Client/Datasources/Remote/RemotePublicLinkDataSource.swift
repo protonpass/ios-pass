@@ -1,4 +1,4 @@
-//  
+//
 // RemotePublicLinkDataSource.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
@@ -36,7 +36,7 @@ public protocol RemotePublicLinkDataSourceProtocol: Sendable {
 public final class RemotePublicLinkDataSource: RemoteDatasource, RemotePublicLinkDataSourceProtocol {}
 
 public extension RemotePublicLinkDataSource {
-    func createPublicLink(shareId: String, 
+    func createPublicLink(shareId: String,
                           itemId: String,
                           revision: Int,
                           expirationTime: Int,
@@ -50,18 +50,18 @@ public extension RemotePublicLinkDataSource {
         let response = try await exec(endpoint: endpoint)
         return response.publicLink
     }
-    
+
     func deletePublicLink(publicLinkId: String) async throws {
         let endpoint = DeletePublicLinkEndpoint(publicLinkId: publicLinkId)
         _ = try await exec(endpoint: endpoint)
     }
-    
+
     func getAllPublicLinksForUser() async throws -> [PublicLink] {
         let endpoint = GetAllPublicLinksForUserEndpoint()
         let response = try await exec(endpoint: endpoint)
         return response.publicLinks.publicLinks
     }
-    
+
     func getPublicLinkContent(publicLinkToken: String) async throws -> PublicLinkContent {
         let endpoint = GetPublicLinkContentEndpoint(publicLinkToken: publicLinkToken)
         let response = try await exec(endpoint: endpoint)
