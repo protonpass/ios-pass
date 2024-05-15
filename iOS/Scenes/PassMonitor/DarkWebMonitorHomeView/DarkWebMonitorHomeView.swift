@@ -31,7 +31,6 @@ struct DarkWebMonitorHomeView: View {
     @StateObject var viewModel: DarkWebMonitorHomeViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showDataSecurityExplanation = false
-    @State private var showCustomEmailExplanation = false
     @State private var showNoBreachesAlert = false
     @State private var showBreachesFoundAlert = false
     @StateObject var router = resolve(\RouterContainer.darkWebRouter)
@@ -74,13 +73,6 @@ private extension DarkWebMonitorHomeView {
         .toolbarBackground(PassColor.backgroundNorm.toColor,
                            for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
-        .alert(Text("Custom email address"),
-               isPresented: $showCustomEmailExplanation,
-               actions: { Button("OK", action: {}) },
-               message: {
-                   // swiftlint:disable:next line_length
-                   Text("You can also monitor up to 10 email addresses that aren't Proton or email aliases. They will be sent to HIBP for monitoring - no other data will be shared to HIBP.")
-               })
         .alert(Text("Data Security"),
                isPresented: $showDataSecurityExplanation,
                actions: { Button("OK", action: {}) },
@@ -296,19 +288,12 @@ private extension DarkWebMonitorHomeView {
                 Text("Custom email address")
                     .monitorSectionTitleText(maxWidth: nil)
 
+                Spacer()
+
                 switch viewModel.customEmailsState {
                 case .fetching:
-                    Spacer()
                     ProgressView()
                 case .fetched:
-                    Image(uiImage: IconProvider.questionCircle)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 16)
-                        .padding(10)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .buttonEmbeded { showCustomEmailExplanation.toggle() }
-                    Spacer()
                     CircleButton(icon: IconProvider.plus,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
@@ -316,7 +301,7 @@ private extension DarkWebMonitorHomeView {
                                  type: .small,
                                  action: { router.present(sheet: .addCustomEmail(nil)) })
                 case .error:
-                    Spacer()
+                    EmptyView()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
