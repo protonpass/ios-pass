@@ -60,7 +60,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "\"%1$@\" disalin ke papan klip. Kedaluwarsa dalam %2$lld detik."
+            "value" : "\"%1$@\" disalin ke papan klip. Kode ini akan kedaluwarsa dalam %2$lld detik."
           }
         },
         "it" : {
@@ -8342,10 +8342,76 @@
     },
     "Add email address" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадаць адрас электроннай пошты"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj e-mailadresse"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add email address"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir una dirección de correo electrónico"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir una dirección de correo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää sähköpostiosoite"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une adresse e-mail"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambah alamat email"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi indirizzo email"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til e-postadresse"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj adres e-mail"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lägg till e-postadress"
           }
         }
       }
@@ -9050,7 +9116,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tambahkan berkas atau gambar yang relevan ke laporan"
+            "value" : "Tambahkan berkas atau gambar yang terkait ke laporan"
           }
         },
         "it" : {
@@ -9141,10 +9207,70 @@
     },
     "Add username" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадаць імя карыстальніка"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj bruger"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add username"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un nombre de usuario"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un nombre de usuario"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää käyttäjätunnus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un nom d'utilisateur"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi nome utente"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til brukernavn"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj nazwę użytkownika"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lägg till användarnamn"
           }
         }
       }
@@ -16427,7 +16553,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salinan otomatis kode 2FA memerlukan kunci biometrik atau kode PIN untuk dipasang terlebih dahulu"
+            "value" : "Salinan otomatis kode 2FA memerlukan kunci biometrik atau kode PIN untuk dapat diatur"
           }
         },
         "it" : {
@@ -16889,7 +17015,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menu tindakan detail pemberantasan"
+            "value" : "Menu tindakan rincian kebocoran"
           }
         },
         "it" : {
@@ -20351,7 +20477,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Log Perubahan"
+            "value" : "Riwayat perubahan"
           }
         },
         "it" : {
@@ -23912,10 +24038,76 @@
     },
     "Copy email" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скапіяваць электронную пошту"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier e-mail"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy email"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar el correo electrónico"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar el correo electrónico"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi sähköpostiosoite"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier l'adresse e-mail"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin email"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia email"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier e-post"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj adres e-mail"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera e-post"
           }
         }
       }
@@ -27967,6 +28159,12 @@
             "value" : "Monitoring niestandardowego adresu e-mail"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoramento de e-mail personalizado"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28551,7 +28749,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mørk webovervåking"
+            "value" : "Overvåking av mørkt nett"
           }
         },
         "nl" : {
@@ -32086,10 +32284,76 @@
     },
     "Email copied" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Электронная пошта скапіявана"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail kopieret"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email copied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El correo electrónico ha sido copiado."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correo electrónico copiado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sähköpostiosoite kopioitiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'adresse e-mail a été copiée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email disalin"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email copiata"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-post kopiert"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres e-mail został skopiowany"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-post kopierad"
           }
         }
       }
@@ -36515,7 +36779,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "향상된 보안을 위해, 다음 계정에 이중 인증을 설정하세요."
+            "value" : "향상된 보안을 위해 다음 계정에 2단계 인증을 설정하세요."
           }
         },
         "nb" : {
@@ -44017,7 +44281,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item dikeluarkan dari pemantauan"
+            "value" : "Item dikecualikan dari pemantauan"
           }
         },
         "it" : {
@@ -44826,6 +45090,12 @@
             "state" : "translated",
             "value" : "Öge sabitlendi"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Елемент успішно прикріплено"
+          }
         }
       }
     },
@@ -44975,6 +45245,12 @@
             "state" : "translated",
             "value" : "Ögenin sabitlemesi kaldırıldı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Елемент успішно відкріплено"
+          }
         }
       }
     },
@@ -45110,6 +45386,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ögenin işlem menüsü"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню дії елемента"
           }
         }
       }
@@ -45407,6 +45689,12 @@
             "state" : "translated",
             "value" : "Ögeleri süzme menüleri"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню фільтра елементів"
+          }
         }
       }
     },
@@ -45543,6 +45831,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ögeleri süzme ve sıralama menüsü"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню сортування та фільтрації елементів"
           }
         }
       }
@@ -45815,6 +46109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasalarınızda bu parolayı kullanan ögeler."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Елементи з вашого сховища, які використовують цей пароль"
           }
         }
       }
@@ -46611,6 +46911,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ключ"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chìa khóa"
           }
         }
       }
@@ -47867,6 +48173,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Son ele geçirilme: %@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Останній витік %@"
           }
         }
       }
@@ -49125,6 +49437,12 @@
             "state" : "translated",
             "value" : "%@ hesabı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вхід для %@"
+          }
         }
       }
     },
@@ -49267,6 +49585,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oturum açma ögeleri"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Елементи входу"
           }
         }
       }
@@ -50540,6 +50864,12 @@
             "state" : "translated",
             "value" : "Hesap yönetimi"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Керування обліковим записом"
+          }
         }
       }
     },
@@ -50841,6 +51171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çözümlenmiş olarak işaretle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Позначити як вирішене"
           }
         }
       }
@@ -51150,6 +51486,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Üye sayısı sınırı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ліміт учасників"
           }
         },
         "vi" : {
@@ -51626,6 +51968,12 @@
             "state" : "translated",
             "value" : "AA / YY"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MM / РР"
+          }
         }
       }
     },
@@ -51854,7 +52202,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monitorati"
+            "value" : "Monitorato"
           }
         },
         "ka" : {
@@ -51921,6 +52269,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İzlendi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відстежується"
           }
         }
       }
@@ -52040,6 +52394,12 @@
             "state" : "translated",
             "value" : "İzleme duraklatıldı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відстеження призупинено"
+          }
         }
       }
     },
@@ -52079,6 +52439,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoreo pausado para %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohteen %@ valvonta keskeytettiin"
           }
         },
         "fr" : {
@@ -52152,6 +52518,12 @@
             "state" : "translated",
             "value" : "%@ için izleme duraklatıldı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відстеження призупинено для %@"
+          }
         }
       }
     },
@@ -52191,6 +52563,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoreo reanudado para %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohteen %@ valvonta palautettiin"
           }
         },
         "fr" : {
@@ -52263,6 +52641,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ için izleme sürdürüldü"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відстеження відновлено для %@"
           }
         }
       }
@@ -53510,6 +53894,12 @@
             "state" : "translated",
             "value" : "Yeni doğrulama kodu gönderildi"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новий код підтвердження відправлено"
+          }
         }
       }
     },
@@ -53818,6 +54208,12 @@
             "state" : "translated",
             "value" : "Herhangi bir veri ele geçirilmemiş"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Витоків не виявлено"
+          }
         }
       }
     },
@@ -53953,6 +54349,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Şunun için herhangi bir verilerin ele geçirilme olayı yok"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не виявлено витоків для"
           }
         }
       }
@@ -54255,6 +54657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ için bir günlük kaydı bulunamadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає журналів для %@"
           }
         },
         "vi" : {
@@ -54718,6 +55126,12 @@
             "state" : "translated",
             "value" : "Henüz bir kasa yok"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає сховищ"
+          }
         }
       }
     },
@@ -54836,6 +55250,12 @@
             "state" : "translated",
             "value" : "Oturum açma kayıtlarınızda zayıf bir parola bulunamadı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У ваших елементах входу не знайдено слабких паролів"
+          }
         }
       }
     },
@@ -54953,6 +55373,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir e-posta adresinize verilerin ele geçirilmesi olaylarında rastlanmadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жодна з ваших адрес пошти не з'являлася у витоку даних"
           }
         }
       }
@@ -55729,6 +56155,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ notu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Примітка для %@"
           }
         }
       }
@@ -57288,6 +57720,12 @@
             "state" : "translated",
             "value" : "Bir e-posta adresinize verilerin ele geçirilmesi olaylarında rastlandı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Одна з ваших адрес пошти чи псевдонімів з'явилися у витоку даних"
+          }
         }
       }
     },
@@ -58533,6 +58971,12 @@
             "state" : "translated",
             "value" : "Seçenekler"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштування"
+          }
         }
       }
     },
@@ -59194,7 +59638,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass-Monitor"
+            "value" : "Pass Monitor"
           }
         },
         "el" : {
@@ -59309,6 +59753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass izleyicisi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Monitor"
           }
         }
       }
@@ -59457,6 +59907,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçiş anahtarı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ключ доступу"
           }
         }
       }
@@ -59834,7 +60290,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "État des mots de passe"
+            "value" : "Sécurité des mots de passe"
           }
         },
         "id" : {
@@ -59913,6 +60369,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parolaların sağlığı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Якість паролів"
           }
         }
       }
@@ -60062,6 +60524,12 @@
             "state" : "translated",
             "value" : "Yapıştır"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вставити"
+          }
         }
       }
     },
@@ -60191,6 +60659,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İzlemeyi duraklat"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Призупинити відстеження"
           }
         }
       }
@@ -60660,6 +61134,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kalıcı olarak sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Остаточно видалити"
           }
         },
         "vi" : {
@@ -62456,6 +62936,12 @@
             "value" : "Revise la carpeta spam y busque un correo electrónico que contenga «Confirme su dirección de correo electrónico para Proton Pass»\n\nSi no puede encontrar el correo electrónico, puede [solicitar un código nuevo](https://proton.me)."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varmista, ettei roskapostistasi löydy viestiä otsikolla “Vahvista sähköpostiosoitteen lisäys Proton Passiin“.\n\nJos et löydä sellaista viestiä, voit [pyytää uuden koodin](https://proton.me)."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62514,6 +63000,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İstenmeyenler klasöründe \"Lütfen Proton Pass için e-posta adresinizi doğrulayın\" konulu bir e-posta olup olmadığına bakın.\n\nBöyle bir e-posta bulamazsanız [yeni bir kod isteğinde bulunabilirsiniz](https://proton.me)."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будь ласка, перевірте у теці «Спам» лист з назвою «Будь ласка, підтвердіть свою електронну адресу для Proton Pass»\n\nЯкщо ви не можете знайти такий лист, ви можете [запросити новий код](https://proton.me)."
           }
         }
       }
@@ -62650,6 +63142,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorunu araştırmamız için lütfen bizimle görüşün"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будь ласка, зв'яжіться з нами, щоб дослідити проблему"
           }
         }
       }
@@ -63112,6 +63610,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen yeniden oturum açın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будь ласка, увійдіть ще раз"
           }
         },
         "vi" : {
@@ -64542,6 +65046,12 @@
             "state" : "translated",
             "value" : "Proton adresleri"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адреси Proton"
+          }
         }
       }
     },
@@ -64659,6 +65169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton adreslerinin izlenmesi duraklatıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відстеження адрес Proton призупинено"
           }
         }
       }
@@ -64778,6 +65294,12 @@
             "state" : "translated",
             "value" : "Proton adreslerinin izlenmesi sürdürüldü"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відстеження адрес Proton відновлено"
+          }
         }
       }
     },
@@ -64895,6 +65417,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton bilgilerinizi asla üçüncü taraflarla paylaşmaz. Tüm veriler, karanlık ağda Proton etki alanlarının görülmesine yönelik aramalardan geliyor."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton ніколи не передає вашу інформацію третім особам. Всі дані отримані з пошуків появи доменів Proton в dark web."
           }
         }
       }
@@ -65860,6 +66388,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parolayı yeniden oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити пароль знову"
           }
         }
       }
@@ -67439,6 +67973,12 @@
             "state" : "translated",
             "value" : "Süzgeçleri sıfırla"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скинути фільтри"
+          }
         }
       }
     },
@@ -67574,6 +68114,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çözümlenmiş verilerin ele geçirilmesi olayları"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вирішені витоки"
           }
         }
       }
@@ -68965,6 +69511,12 @@
             "state" : "translated",
             "value" : "İzlemeyi sürdür"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відновити відстеження"
+          }
         }
       }
     },
@@ -69542,6 +70094,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeniden kullanılan parolalar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторювальні паролі"
           }
         }
       }
@@ -70322,6 +70880,12 @@
             "state" : "translated",
             "value" : "%@ tara"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканувати %@"
+          }
         }
       }
     },
@@ -70705,7 +71269,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cari dalam 2 brankas terlawas Anda"
+            "value" : "Cari di 2 brankas terlawas"
           }
         },
         "it" : {
@@ -70778,6 +71342,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "En eski 2 kasanızda arayın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пошук у 2 найстаріших сховищах"
           }
         },
         "vi" : {
@@ -74180,7 +74750,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Siapkan 2FA"
+            "value" : "Atur 2FA"
           }
         },
         "it" : {
@@ -76020,7 +76590,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tampilkan semua brankas"
+            "value" : "Tampilkan seluruh brankas"
           }
         },
         "it" : {
@@ -78253,7 +78823,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spotlight"
+            "value" : "Sorotan"
           }
         },
         "it" : {
@@ -81018,7 +81588,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brugertilpasset tekstfelt"
+            "value" : "Brugerdefineret tekstfelt"
           }
         },
         "de" : {
@@ -82703,7 +83273,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 서비스는 이중 인증을 지원합니다. 향상된 계정 보안을 위해 활성화 하십시오."
+            "value" : "이 서비스는 2단계 인증을 지원합니다. 향상된 계정 보안을 위해 활성화 하십시오."
           }
         },
         "nb" : {
@@ -87576,7 +88146,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menu tindakan email tidak terverifikasi"
+            "value" : "Menu tindakan email yang tidak terverifikasi"
           }
         },
         "it" : {
