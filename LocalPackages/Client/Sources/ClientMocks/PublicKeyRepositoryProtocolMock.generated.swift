@@ -20,9 +20,7 @@
 
 import Client
 import Core
-import CoreData
 import Entities
-import ProtonCoreServices
 
 public final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicKeyRepositoryProtocol {
 

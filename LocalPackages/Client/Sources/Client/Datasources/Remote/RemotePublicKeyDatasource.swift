@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import ProtonCoreServices
 
 public protocol RemotePublicKeyDatasourceProtocol: Sendable {
     func getPublicKeys(email: String) async throws -> [PublicKey]
