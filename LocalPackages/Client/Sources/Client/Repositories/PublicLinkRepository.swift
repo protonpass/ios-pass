@@ -18,18 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@preconcurrency import Combine
+// swiftlint:disable:next todo
+// TODO: Remove later on
+// periphery:ignore:all
+
 import Entities
 import Foundation
 
 // sourcery: AutoMockable
 public protocol PublicLinkRepositoryProtocol: Sendable {
-    func createPublicLink(shareId: String,
-                          itemId: String,
-                          revision: Int,
-                          expirationTime: Int,
-                          encryptedItemKey: String,
-                          maxReadCount: Int?) async throws -> SharedPublicLink
+    func createPublicLink(configuration: PublicLinkCreationConfiguration) async throws -> SharedPublicLink
     func deletePublicLink(publicLinkId: String) async throws
     func getAllPublicLinksForUser() async throws -> [PublicLink]
     func getPublicLinkContent(publicLinkToken: String) async throws -> PublicLinkContent
@@ -38,14 +36,7 @@ public protocol PublicLinkRepositoryProtocol: Sendable {
 public actor PublicLinkRepository: PublicLinkRepositoryProtocol {
     private let remoteDataSource: any RemotePublicLinkDataSourceProtocol
 
-    private var cancellable = Set<AnyCancellable>()
-    private var refreshTask: Task<Void, Never>?
-
-    public init(itemRepository: any ItemRepositoryProtocol,
-                remoteDataSource: any RemotePublicLinkDataSourceProtocol,
-                symmetricKeyProvider: any SymmetricKeyProvider) {
-        //        self.itemRepository = itemRepository
-        //        self.symmetricKeyProvider = symmetricKeyProvider
+    public init(remoteDataSource: any RemotePublicLinkDataSourceProtocol) {
         self.remoteDataSource = remoteDataSource
     }
 }
@@ -53,18 +44,8 @@ public actor PublicLinkRepository: PublicLinkRepositoryProtocol {
 // MARK: - Public link
 
 public extension PublicLinkRepository {
-    func createPublicLink(shareId: String,
-                          itemId: String,
-                          revision: Int,
-                          expirationTime: Int,
-                          encryptedItemKey: String,
-                          maxReadCount: Int?) async throws -> SharedPublicLink {
-        try await remoteDataSource.createPublicLink(shareId: shareId,
-                                                    itemId: itemId,
-                                                    revision: revision,
-                                                    expirationTime: expirationTime,
-                                                    encryptedItemKey: encryptedItemKey,
-                                                    maxReadCount: maxReadCount)
+    func createPublicLink(configuration: PublicLinkCreationConfiguration) async throws -> SharedPublicLink {
+        try await remoteDataSource.createPublicLink(configuration: configuration)
     }
 
     func deletePublicLink(publicLinkId: String) async throws {

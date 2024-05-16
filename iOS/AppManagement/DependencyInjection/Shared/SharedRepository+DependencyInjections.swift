@@ -193,6 +193,12 @@ private extension SharedRepositoryContainer {
         self { RemoteBreachDataSource(apiService: self.apiService,
                                       eventStream: self.corruptedSessionEventStream) }
     }
+
+    // periphery:ignore
+    var remotePublicLinkDataSource: Factory<any RemotePublicLinkDataSourceProtocol> {
+        self { RemotePublicLinkDataSource(apiService: self.apiService,
+                                          eventStream: self.corruptedSessionEventStream) }
+    }
 }
 
 // MARK: Public datasources
@@ -351,6 +357,11 @@ extension SharedRepositoryContainer {
 
     var networkRepository: Factory<any NetworkRepositoryProtocol> {
         self { NetworkRepository(apiService: self.apiService) }
+    }
+
+    // periphery:ignore
+    var publicLinkRepository: Factory<any PublicLinkRepositoryProtocol> {
+        self { PublicLinkRepository(remoteDataSource: self.remotePublicLinkDataSource()) }
     }
 }
 

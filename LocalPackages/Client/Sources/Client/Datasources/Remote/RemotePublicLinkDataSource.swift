@@ -18,16 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable:next todo
+// TODO: Remove later on
+// periphery:ignore:all
+
 import Entities
 
 // sourcery: AutoMockable
 public protocol RemotePublicLinkDataSourceProtocol: Sendable {
-    func createPublicLink(shareId: String,
-                          itemId: String,
-                          revision: Int,
-                          expirationTime: Int,
-                          encryptedItemKey: String,
-                          maxReadCount: Int?) async throws -> SharedPublicLink
+    func createPublicLink(configuration: PublicLinkCreationConfiguration) async throws -> SharedPublicLink
     func deletePublicLink(publicLinkId: String) async throws
     func getAllPublicLinksForUser() async throws -> [PublicLink]
     func getPublicLinkContent(publicLinkToken: String) async throws -> PublicLinkContent
@@ -36,17 +35,14 @@ public protocol RemotePublicLinkDataSourceProtocol: Sendable {
 public final class RemotePublicLinkDataSource: RemoteDatasource, RemotePublicLinkDataSourceProtocol {}
 
 public extension RemotePublicLinkDataSource {
-    func createPublicLink(shareId: String,
-                          itemId: String,
-                          revision: Int,
-                          expirationTime: Int,
-                          encryptedItemKey: String,
-                          maxReadCount: Int?) async throws -> SharedPublicLink {
-        let request = CreatePublicLinkRequest(revision: revision,
-                                              expirationTime: expirationTime,
-                                              maxReadCount: maxReadCount,
-                                              encryptedItemKey: encryptedItemKey)
-        let endpoint = CreatePublicLinkEndpoint(shareId: shareId, itemId: itemId, request: request)
+    func createPublicLink(configuration: PublicLinkCreationConfiguration) async throws -> SharedPublicLink {
+        let request = CreatePublicLinkRequest(revision: configuration.revision,
+                                              expirationTime: configuration.expirationTime,
+                                              maxReadCount: configuration.maxReadCount,
+                                              encryptedItemKey: configuration.encryptedItemKey)
+        let endpoint = CreatePublicLinkEndpoint(shareId: configuration.shareId,
+                                                itemId: configuration.itemId,
+                                                request: request)
         let response = try await exec(endpoint: endpoint)
         return response.publicLink
     }
