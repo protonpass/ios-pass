@@ -183,6 +183,12 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .double)
+    }
+    
+    func testAuthCredentialEntity() {
+        let sut = entity(byName: "AuthCredentialEntity")
+        verifyAttribute(named: "encryptedData", on: sut, hasType: .date)
+        verifyAttribute(named: "module", on: sut, hasType: .string)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 }
