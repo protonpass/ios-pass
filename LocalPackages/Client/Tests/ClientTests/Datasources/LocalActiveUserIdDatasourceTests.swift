@@ -1,6 +1,6 @@
 //
-// LocalAppPreferencesDatasourceTests.swift
-// Proton Pass - Created on 03/04/2024.
+// LocalActiveUserIdDatasourceTests.swift
+// Proton Pass - Created on 16/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,18 +20,16 @@
 //
 
 @testable import Client
-import Entities
-import Foundation
 import XCTest
 
-final class LocalAppPreferencesDatasourceTests: XCTestCase {
-    var sut: LocalAppPreferencesDatasourceProtocol!
+final class LocalActiveUserIdDatasourceTests: XCTestCase {
+    var sut: LocalActiveUserIdDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
         let userDefaults = UserDefaults.standard
         userDefaults.removeAllObjects()
-        sut = LocalAppPreferencesDatasource(userDefault: userDefaults)
+        sut = LocalActiveUserIdDatasource(userDefault: userDefaults)
     }
 
     override func tearDown() {
@@ -40,22 +38,19 @@ final class LocalAppPreferencesDatasourceTests: XCTestCase {
     }
 }
 
-extension LocalAppPreferencesDatasourceTests {
-    func testGetAndUpsertPreferences() throws {
-        try XCTAssertNil(sut.getPreferences())
+extension LocalActiveUserIdDatasourceTests {
+    func testGetUpdateRemoveActiveUserId() {
+        XCTAssertNil(sut.getActiveUserId())
 
-        let givenPrefs = AppPreferences.random()
-        try sut.upsertPreferences(givenPrefs)
+        let id1 = String.random()
+        sut.updateActiveUserId(id1)
+        XCTAssertEqual(sut.getActiveUserId(), id1)
 
-        let result1 = try XCTUnwrap(sut.getPreferences())
-        XCTAssertEqual(result1, givenPrefs)
+        let id2 = String.random()
+        sut.updateActiveUserId(id2)
+        XCTAssertEqual(sut.getActiveUserId(), id2)
 
-        let updatedPrefs = AppPreferences.random()
-        try sut.upsertPreferences(updatedPrefs)
-        let result2 = try XCTUnwrap(sut.getPreferences())
-        XCTAssertEqual(result2, updatedPrefs)
-
-        sut.removePreferences()
-        try XCTAssertNil(sut.getPreferences())
+        sut.removeActiveUserId()
+        XCTAssertNil(sut.getActiveUserId())
     }
 }
