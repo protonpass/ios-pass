@@ -359,7 +359,6 @@ extension SharedRepositoryContainer {
         self { NetworkRepository(apiService: self.apiService) }
     }
 
-    // periphery:ignore
     var publicLinkRepository: Factory<any PublicLinkRepositoryProtocol> {
         self { PublicLinkRepository(remoteDataSource: self.remotePublicLinkDataSource()) }
     }
