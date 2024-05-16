@@ -171,39 +171,12 @@ extension UserManagerTests {
         XCTAssertEqual(sut.activeUserId.value, userData.user.ID)
     }
 
-    func testRemoveLastUser_ReturnNoOtherActiveUser() async throws {
-        // Given
-        let singleActiveUserData = UserData.random()
-        let singleActiveUserId = singleActiveUserData.user.ID
-        var allUserDatas: [UserData] = [singleActiveUserData]
-
-        userDataDatasource.closureGetAll = { [weak self] in
-            guard let self else { return }
-            userDataDatasource.stubbedGetAllResult = allUserDatas
-        }
-        userDataDatasource.closureRemove = { [weak self] in
-            guard let self else { return }
-            if let userId = userDataDatasource.invokedRemoveParameters?.0 {
-                allUserDatas.removeAll { $0.user.ID == userId }
-            }
-        }
-
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = singleActiveUserId
-        try await sut.setUp()
-
-        // When
-        let result = try await sut.remove(userId: singleActiveUserId)
-
-        // Then
-        XCTAssertNil(result)
-    }
-
-    func testRemoveUser_ReturnAnotherActiveUser() async throws {
+    func testRemoveActiveUser() async throws {
         // Given
         let activeUserData = UserData.random()
         let activeUserId = activeUserData.user.ID
-        let inactiveUserData = UserData.random()
-        var allUserDatas: [UserData] = [activeUserData, inactiveUserData]
+        var allUserDatas = [UserData].random(randomElement: .random())
+        allUserDatas.append(activeUserData)
 
         userDataDatasource.closureGetAll = { [weak self] in
             guard let self else { return }
@@ -220,10 +193,43 @@ extension UserManagerTests {
         try await sut.setUp()
 
         // When
-        let result = try await sut.remove(userId: activeUserId)
+        try await sut.remove(userId: activeUserId)
 
         // Then
-        XCTAssertEqual(result?.user.ID, inactiveUserData.user.ID)
+        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
+        XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == activeUserId }))
+        XCTAssertNil(sut.activeUserId.value)
+    }
+
+    func testRemoveInactiveUser() async throws {
+        // Given
+        let inactiveUserData = UserData.random()
+        let inactiveUserId = inactiveUserData.user.ID
+        var allUserDatas = [UserData].random(randomElement: .random())
+        allUserDatas.append(inactiveUserData)
+
+        userDataDatasource.closureGetAll = { [weak self] in
+            guard let self else { return }
+            userDataDatasource.stubbedGetAllResult = allUserDatas
+        }
+        userDataDatasource.closureRemove = { [weak self] in
+            guard let self else { return }
+            if let userId = userDataDatasource.invokedRemoveParameters?.0 {
+                allUserDatas.removeAll { $0.user.ID == userId }
+            }
+        }
+
+        let activeUserId = String.random()
+        activeUserIdDatasource.stubbedGetActiveUserIdResult = activeUserId
+        try await sut.setUp()
+
+        // When
+        try await sut.remove(userId: inactiveUserId)
+
+        // Then
+        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
+        XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == inactiveUserId }))
+        XCTAssertEqual(sut.activeUserId.value, activeUserId)
     }
 }
 
