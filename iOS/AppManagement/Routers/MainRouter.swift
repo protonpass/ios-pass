@@ -103,6 +103,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case securityDetail(SecurityWeakness)
     case passwordReusedItemList(ItemContent)
     case changePassword(PasswordChangeModule.PasswordChangeMode)
+    case publicLink(ItemContent)
 }
 
 enum UIElementDisplay: Sendable {
