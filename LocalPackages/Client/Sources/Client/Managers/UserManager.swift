@@ -34,9 +34,7 @@ public protocol UserManagerProtocol: Sendable {
     func setUp() async throws
     func getActiveUserData() async throws -> UserData?
     func addAndMarkAsActive(userData: UserData) async throws
-    /// Remove the user with given `userId`
-    /// If this user is active, mark the latest user as active and return if any
-    func remove(userId: String) async throws -> UserData?
+    func remove(userId: String) async throws
 }
 
 public actor UserManager: Sendable, UserManagerProtocol {
@@ -102,19 +100,17 @@ public extension UserManager {
         activeUserId.send(id)
     }
 
-    func remove(userId: String) async throws -> UserData? {
+    func remove(userId: String) async throws {
         assertDidSetUp()
 
         try await userDataDatasource.remove(userId: userId)
         let userDatas = try await userDataDatasource.getAll()
         self.userDatas.send(userDatas)
 
-        guard activeUserIdDatasource.getActiveUserId() == userId,
-              let newActiveUser = userDatas.last else {
-            return nil
+        if activeUserId.value == userId {
+            activeUserIdDatasource.removeActiveUserId()
+            activeUserId.send(nil)
         }
-        activeUserIdDatasource.updateActiveUserId(newActiveUser.user.ID)
-        return newActiveUser
     }
 }
 
