@@ -52,7 +52,6 @@ extension LocalUserDataDatasourceTests {
         XCTAssertEqual(all1.count, 1)
         XCTAssertEqual(all1.first?.user.ID, userData1.user.ID)
 
-        try await Task.sleep(seconds: 1)
         let userData2 = UserData.random()
         try await sut.upsert(userData2)
         let all2 = try await sut.getAll()

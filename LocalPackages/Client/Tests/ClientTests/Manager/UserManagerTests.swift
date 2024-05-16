@@ -60,6 +60,7 @@ extension UserManagerTests {
         try await sut.setUp()
         let userIds = sut.userDatas.value.map(\.user.ID)
         XCTAssertEqual(userIds, mockedUserIds)
+        XCTAssertEqual(sut.activeUserId.value, mockedActiveUserId)
     }
 
     func testGetActiveUserData_ThrowUserDatasAvailableButNoActiveUserId() async throws {
