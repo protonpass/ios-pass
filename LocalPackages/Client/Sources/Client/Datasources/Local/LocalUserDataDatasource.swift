@@ -25,6 +25,7 @@ import CoreData
 import Foundation
 import ProtonCoreLogin
 
+// sourcery: AutoMockable
 public protocol LocalUserDataDatasourceProtocol: Sendable {
     /// Get all users sorted by `updateTime` from least to most recent (the last one is the latest)
     func getAll() async throws -> [UserData]
