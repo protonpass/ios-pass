@@ -53,7 +53,7 @@ public extension LocalAuthCredentialDatasource {
             .init(format: "module = %@", module.rawValue)
         ])
         let credentials = try await execute(fetchRequest: request, context: context)
-        assert(credentials.count == 1, "Should only have 1 credential per user id and per type")
+        assert(credentials.count <= 1, "Max 1 credential per user id and per type")
         let key = try symmetricKeyProvider.getSymmetricKey()
         return try credentials.first.map { try $0.toAuthCredential(key) }
     }
@@ -65,7 +65,7 @@ public extension LocalAuthCredentialDatasource {
         let key = try symmetricKeyProvider.getSymmetricKey()
         var hydrationError: (any Error)?
         let request =
-            newBatchInsertRequest(entity: TelemetryEventEntity.entity(context: context),
+            newBatchInsertRequest(entity: AuthCredentialEntity.entity(context: context),
                                   sourceItems: [credential]) { managedObject, credential in
                 do {
                     try (managedObject as? AuthCredentialEntity)?.hydrate(userId: userId,
