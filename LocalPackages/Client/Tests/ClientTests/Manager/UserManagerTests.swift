@@ -74,6 +74,8 @@ extension UserManagerTests {
         } catch {
             if error.isEqual(to: .userDatasAvailableButNoActiveUserId) {
                 expectation.fulfill()
+            } else {
+                XCTFail("Unexpected error")
             }
         }
 
@@ -92,6 +94,8 @@ extension UserManagerTests {
         } catch {
             if error.isEqual(to: .activeUserIdAvailableButNoUserDataFound) {
                 expectation.fulfill()
+            } else {
+                XCTFail("Unexpected error")
             }
         }
 
@@ -110,6 +114,8 @@ extension UserManagerTests {
         } catch {
             if error.isEqual(to: .activeUserDataNotFound) {
                 expectation.fulfill()
+            } else {
+                XCTFail("Unexpected error")
             }
         }
 
