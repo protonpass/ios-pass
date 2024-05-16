@@ -55,7 +55,7 @@ public extension RemotePublicLinkDataSource {
     func getAllPublicLinksForUser() async throws -> [PublicLink] {
         let endpoint = GetAllPublicLinksForUserEndpoint()
         let response = try await exec(endpoint: endpoint)
-        return response.publicLinks.publicLinks
+        return response.publicLinks
     }
 
     func getPublicLinkContent(publicLinkToken: String) async throws -> PublicLinkContent {
