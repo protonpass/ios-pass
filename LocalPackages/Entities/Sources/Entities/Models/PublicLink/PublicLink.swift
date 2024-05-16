@@ -26,7 +26,11 @@ public struct PublicLink: Decodable, Equatable, Sendable, Identifiable {
     public let expirationTime: Int
     public let shareID, itemID: String
 
-    public init(linkID: String, readCount: Int?, maxReadCount: Int?, expirationTime: Int, shareID: String,
+    public init(linkID: String,
+                readCount: Int?,
+                maxReadCount: Int?,
+                expirationTime: Int,
+                shareID: String,
                 itemID: String) {
         self.linkID = linkID
         self.readCount = readCount

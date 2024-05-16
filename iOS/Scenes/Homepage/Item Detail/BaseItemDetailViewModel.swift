@@ -68,6 +68,11 @@ class BaseItemDetailViewModel: ObservableObject {
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+
+    var isPublicLinkActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+    }
 
     var isAllowedToShare: Bool {
         guard let vault else {
@@ -163,6 +168,10 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func moveToAnotherVault() {
         router.present(for: .moveItemsBetweenVaults(.singleItem(itemContent)))
+    }
+
+    func publicLinkSharing() {
+        router.present(for: .publicLink(itemContent))
     }
 
     func toggleItemPinning() {
