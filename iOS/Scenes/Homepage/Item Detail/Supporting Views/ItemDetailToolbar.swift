@@ -71,7 +71,7 @@ struct ItemDetailToolbar: ToolbarContent {
 
                         if viewModel.isPublicLinkActive {
                             Button { viewModel.publicLinkSharing() }
-                                label: { Label(title: { Text("Share with public link") },
+                                label: { Label(title: { Text(verbatim: "Share with public link") },
                                                icon: { Image(systemName: "square.and.arrow.up") }) }
                         }
 
