@@ -471,6 +471,8 @@ extension HomepageCoordinator {
                     presentPasswordReusedListView(for: content)
                 case let .changePassword(mode):
                     presentChangePassword(mode: mode)
+                case let .publicLink(item):
+                    publicLink(item: item)
                 }
             }
             .store(in: &cancellables)
@@ -804,6 +806,17 @@ extension HomepageCoordinator {
 
         let customHeight = 66 * allVaults.count + 300
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+
+    func publicLink(item: ItemContent) {
+        let view = Text(verbatim: "New public link sharing view \(item.name)")
+        let viewController = UIHostingController(rootView: view)
+
+        viewController.setDetentType(.large,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
