@@ -52,6 +52,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case preferences(PreferencesFailureReason)
     case mainKeyNotFound
     case sentinelNotEligible
+    case userManager(UserManagerFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -113,6 +114,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             "Main key not found"
         case .sentinelNotEligible:
             "Sentinel not eligible"
+        case let .userManager(reason):
+            reason.debugDescription
         }
     }
 }
