@@ -30,9 +30,7 @@ final class LocalAppPreferencesDatasourceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let userDefaults = UserDefaults.standard
-        for key in userDefaults.dictionaryRepresentation().keys {
-            userDefaults.removeObject(forKey: key)
-        }
+        userDefaults.removeAllObjects()
         sut = LocalAppPreferencesDatasource(userDefault: userDefaults)
     }
 
