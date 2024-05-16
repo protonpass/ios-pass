@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 struct CreatePublicLinkResponse: Decodable, Equatable, Sendable {
-    let code: Int
     let publicLink: SharedPublicLink
 }
 

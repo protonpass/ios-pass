@@ -46,8 +46,7 @@ final class GetPublicLinkKeys: GetPublicLinkKeysUseCase {
         self.passKeyManager = passKeyManager
     }
 
-    /// Generates link and encoded item key following
-    /// https://confluence.protontech.ch/pages/viewpage.action?pageId=182006359 specs
+    /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
     func execute(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String) {
