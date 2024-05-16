@@ -23,10 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 struct GetAllPublicLinksForUserResponse: Decodable, Equatable, Sendable {
-    let publicLinks: PublicLinks
-}
-
-struct PublicLinks: Decodable, Equatable, Sendable {
     let publicLinks: [PublicLink]
 }
 
