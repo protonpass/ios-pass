@@ -69,6 +69,12 @@ struct ItemDetailToolbar: ToolbarContent {
                                            icon: { Image(uiImage: IconProvider.folderArrowIn) }) }
                             .hidden(!viewModel.isAllowedToEdit)
 
+                        if viewModel.isPublicLinkActive {
+                            Button { viewModel.publicLinkSharing() }
+                                label: { Label(title: { Text(verbatim: "Share with public link") },
+                                               icon: { Image(systemName: "square.and.arrow.up") }) }
+                        }
+
                         Button { viewModel.toggleItemPinning() }
                             label: {
                                 Label(title: { Text(viewModel.itemContent.item.pinTitle) },
