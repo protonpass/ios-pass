@@ -123,7 +123,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animationsDisabled()
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .onTapGesture(perform: onSelectSuffix)
     }
 }

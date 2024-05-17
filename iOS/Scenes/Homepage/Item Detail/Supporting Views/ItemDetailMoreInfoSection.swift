@@ -98,7 +98,7 @@ struct ItemDetailMoreInfoSection: View {
                 .frame(maxWidth: .infinity)
             }
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .onTapGesture { isExpanded.toggle() }
         .animation(.default, value: isExpanded)
     }

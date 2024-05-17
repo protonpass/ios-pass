@@ -132,7 +132,7 @@ private extension DarkWebMonitorHomeView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
 }
 
@@ -486,7 +486,7 @@ private extension DarkWebMonitorHomeView {
                                   width: 15)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .buttonEmbeded(action)
     }
 }

@@ -186,7 +186,7 @@ private extension DetailMonitoredItemView {
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
                 .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
-                .contentShape(Rectangle())
+                .contentShape(.rect)
             }
         }
         .buttonStyle(.plain)

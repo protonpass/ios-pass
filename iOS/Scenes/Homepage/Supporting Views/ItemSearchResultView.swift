@@ -62,7 +62,7 @@ struct ItemSearchResultView: View, Equatable {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
 
     static func == (lhs: ItemSearchResultView, rhs: ItemSearchResultView) -> Bool {

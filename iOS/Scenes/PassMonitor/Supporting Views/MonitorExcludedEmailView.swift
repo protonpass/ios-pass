@@ -37,7 +37,7 @@ struct MonitorExcludedEmailView: View {
                                       width: 15)
             }
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .buttonEmbeded {
             action?()
         }
