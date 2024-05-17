@@ -109,7 +109,7 @@ struct AliasDetailView: View {
                     .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyAliasEmail() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -140,7 +140,7 @@ struct AliasDetailView: View {
                         Text(mailbox.email)
                             .sectionContentText()
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(Rectangle())
+                            .contentShape(.rect)
                             .contextMenu {
                                 Button(action: {
                                     viewModel.copyMailboxEmail(mailbox.email)

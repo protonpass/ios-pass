@@ -175,7 +175,7 @@ private extension UserEmailView {
         .cornerRadius(9)
         .animation(.default, value: highlighted)
         .animation(.default, value: invalid)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .onTapGesture { viewModel.toggleHighlight(email) }
         .overlay {
             // Dummy invisible text field to allow removing a token with backspace

@@ -74,7 +74,7 @@ private extension SelectPasskeyView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .onTapGesture {
             viewModel.autoFill(with: passkey)
         }
