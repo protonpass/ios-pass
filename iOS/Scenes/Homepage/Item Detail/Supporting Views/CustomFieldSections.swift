@@ -133,7 +133,7 @@ struct HiddenCustomFieldSection: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture {
                 if !isFreeUser {
                     onSelect()
@@ -236,7 +236,7 @@ struct TotpCustomFieldSection: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture {
                 if !isFreeUser, let code = viewModel.code {
                     onSelectTotpToken(code)

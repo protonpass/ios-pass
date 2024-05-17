@@ -53,7 +53,7 @@ struct PasskeyDetailRow: View {
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection(backgroundColor: ItemContentType.login.normMinor2Color,
                               borderColor: borderColor)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .onTapGesture(perform: onTap)
     }
 }

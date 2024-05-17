@@ -120,7 +120,7 @@ private extension CreditCardDetailView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyCardholderName() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -159,7 +159,7 @@ private extension CreditCardDetailView {
                     .animation(.default, value: isShowingCardNumber)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyCardNumber() }
 
             Spacer()
@@ -212,7 +212,7 @@ private extension CreditCardDetailView {
                     onUpgrade: { viewModel.upgrade() })
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyVerificationNumber() }
             .animation(.default, value: isShowingVerificationNumber)
 
@@ -265,7 +265,7 @@ private extension CreditCardDetailView {
                     onUpgrade: { viewModel.upgrade() })
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .animation(.default, value: isShowingPIN)
 
             Spacer()
@@ -310,7 +310,7 @@ private extension CreditCardDetailView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyExpirationDate() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
