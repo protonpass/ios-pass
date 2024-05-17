@@ -180,7 +180,7 @@ private extension LogInDetailView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture(perform: { viewModel.copyEmail() })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -225,7 +225,7 @@ private extension LogInDetailView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture(perform: { viewModel.copyItemUsername() })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -269,7 +269,7 @@ private extension LogInDetailView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyPassword() }
 
             Spacer()

@@ -215,7 +215,7 @@ private extension UserPermissionView {
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cornerRadius(16)
-                    .contentShape(Rectangle())
+                    .contentShape(.rect)
                     .overlay(RoundedRectangle(cornerRadius: 16)
                         .strokeBorder(viewModel.selectedUserRole == role ? PassColor
                             .interactionNormMajor1

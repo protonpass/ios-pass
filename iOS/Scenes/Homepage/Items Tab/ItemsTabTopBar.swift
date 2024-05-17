@@ -95,7 +95,7 @@ private extension ItemsTabTopBar {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .frame(height: DesignConstant.searchBarHeight)
             .onTapGesture(perform: onSearch)
 

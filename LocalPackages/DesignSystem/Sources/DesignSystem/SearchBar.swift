@@ -75,7 +75,7 @@ public struct SearchBar: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .containerShape(Rectangle())
+            .contentShape(.rect)
             if !hideCancel || (hideCancel && !query.isEmpty) {
                 Button(action: onCancel) {
                     Text("Cancel", bundle: .module)

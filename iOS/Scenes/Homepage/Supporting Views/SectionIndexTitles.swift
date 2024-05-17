@@ -38,7 +38,7 @@ struct SectionIndexTitles: View {
                     .foregroundStyle(PassColor.interactionNorm.toColor)
                     .multilineTextAlignment(.trailing)
                     .padding(.leading)
-                    .contentShape(Rectangle())
+                    .contentShape(.rect)
                     .background(dragObserver(title: letter.character))
             }
         }

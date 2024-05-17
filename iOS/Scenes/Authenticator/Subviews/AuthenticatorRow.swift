@@ -99,7 +99,7 @@ struct AuthenticatorRow<ThumbnailView: View>: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture {
                 if let code = viewModel.code {
                     onCopyTotpToken(code)
@@ -113,7 +113,7 @@ struct AuthenticatorRow<ThumbnailView: View>: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .padding(.horizontal)
         .onAppear {
             viewModel.bind(uri: uri)

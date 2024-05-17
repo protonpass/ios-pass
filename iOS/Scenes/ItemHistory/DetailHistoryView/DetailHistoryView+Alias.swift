@@ -61,7 +61,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.aliasEmail).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyAlias() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
