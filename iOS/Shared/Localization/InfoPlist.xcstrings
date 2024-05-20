@@ -165,6 +165,12 @@
             "value" : "Scansiona il codice 2FA, la carta di credito e la nota scritta a mano"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2要素認証コードとクレジットカード、手書きメモをスキャンする"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -312,6 +318,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limita l'accesso indesiderato al tuo account Proton Pass su questo dispositivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このデバイス上のProton Passアカウントへの不要なアクセスを制限する"
           }
         },
         "ka" : {
