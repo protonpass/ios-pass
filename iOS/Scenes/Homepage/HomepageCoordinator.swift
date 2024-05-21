@@ -875,7 +875,10 @@ extension HomepageCoordinator {
                                            passphrases: userData.passphrases,
                                            addresses: userInfo.userAddresses,
                                            scopes: userData.scopes))
-        dismissTopMostViewController()
+        dismissTopMostViewController { [weak self] in
+            guard let self else { return }
+            bannerManager.displayBottomInfoMessage(#localized("Password changed successfully"))
+        }
     }
 
     // MARK: - UI Helper presentation functions
