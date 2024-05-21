@@ -502,7 +502,7 @@ private extension CreateEditLoginView {
                     .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
 
             if !viewModel.password.isEmpty {
                 Button(action: {
@@ -557,7 +557,7 @@ private extension CreateEditLoginView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
 
             if !viewModel.totpUri.isEmpty {
                 Button(action: {
@@ -650,7 +650,7 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
 
     private func isValid(_ url: IdentifiableObject<String>) -> Bool {

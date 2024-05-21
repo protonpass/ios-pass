@@ -57,6 +57,6 @@ struct MailboxSection: View {
         .animation(.default, value: mailboxSelection.selectedMailboxes)
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
 }

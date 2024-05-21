@@ -92,7 +92,7 @@ public struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: V
 
             trailing
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .frame(height: height.value)
     }
 }

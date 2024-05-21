@@ -72,7 +72,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.creditCardItem?.cardholderName).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyCardholderName() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -92,7 +92,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.creditCardItem?.number).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyCardNumber() }
 
             Spacer()
@@ -121,7 +121,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.creditCardItem?.verificationNumber).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .animation(.default, value: isShowingVerificationNumber)
             .onTapGesture { viewModel.copySecurityCode() }
 
@@ -152,7 +152,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.creditCardItem?.verificationNumber).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .animation(.default, value: isShowingPIN)
 
             Spacer()
@@ -179,7 +179,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.creditCardItem?.expirationDate).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyExpirationDate() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
