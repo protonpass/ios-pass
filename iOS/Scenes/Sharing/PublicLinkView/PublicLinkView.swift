@@ -57,7 +57,6 @@ private extension PublicLinkView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.link)
-        .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
@@ -94,6 +93,7 @@ private extension PublicLinkView {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
                 Text("Link expires after") + Text(verbatim: ":")
+                    .foregroundColor(PassColor.textNorm.toColor)
 
                 Spacer()
                 Picker("Link expires after", selection: $viewModel.selectedTime) {
@@ -103,7 +103,7 @@ private extension PublicLinkView {
                             .foregroundStyle(PassColor.textNorm.toColor)
                     }
                 }
-                .tint(PassColor.interactionNormMajor2.toColor)
+                .tint(viewModel.itemContent.contentData.type.normMajor2Color.toColor)
             }
 
             VStack {
@@ -112,6 +112,7 @@ private extension PublicLinkView {
 
                 if viewModel.addNumberOfReads {
                     TextField("Max number of reads", text: $viewModel.maxNumber)
+                        .foregroundStyle(PassColor.textNorm.toColor)
                         .keyboardType(.numberPad)
                         .padding(DesignConstant.sectionPadding)
                         .roundedDetailSection()
@@ -134,6 +135,7 @@ private extension PublicLinkView {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack(spacing: DesignConstant.sectionPadding) {
                 Text(verbatim: link.url)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -161,19 +163,6 @@ private extension PublicLinkView {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-        }
-    }
-}
-
-private extension PublicLinkView {
-    @ToolbarContentBuilder
-    var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.chevronDown,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Close",
-                         action: dismiss.callAsFunction)
         }
     }
 }
