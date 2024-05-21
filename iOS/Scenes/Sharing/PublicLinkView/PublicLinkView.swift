@@ -92,8 +92,11 @@ private extension PublicLinkView {
     var createLink: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
-                Text("Link expires after") + Text(verbatim: ":")
-                // swiftlint:disable:next deprecated_foregroundcolor_modifier
+                Text("Link expires after")
+                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
+                    .foregroundColor(PassColor.textNorm.toColor)
+                    + Text(verbatim: ":")
+                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
                     .foregroundColor(PassColor.textNorm.toColor)
 
                 Spacer()
