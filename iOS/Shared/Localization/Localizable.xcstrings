@@ -60995,6 +60995,16 @@
         }
       }
     },
+    "Password changed successfully" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password changed successfully"
+          }
+        }
+      }
+    },
     "Password copied" : {
       "localizations" : {
         "be" : {
