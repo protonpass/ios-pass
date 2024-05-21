@@ -96,7 +96,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.loginItem?.email).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyEmail() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -115,7 +115,7 @@ private extension DetailHistoryView {
                     .foregroundStyle(textColor(for: \.loginItem?.username).toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyItemUsername() }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -138,7 +138,7 @@ private extension DetailHistoryView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture { viewModel.copyPassword() }
 
             Spacer()

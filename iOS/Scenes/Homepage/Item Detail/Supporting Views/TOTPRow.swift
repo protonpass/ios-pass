@@ -92,7 +92,7 @@ struct TOTPRow: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture {
                 if let code = viewModel.code {
                     onCopyTotpToken(code)

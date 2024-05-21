@@ -50,7 +50,7 @@ struct SuggestedEmailView: View {
 
             RoundedCircleCheckbox(isChecked: isSelected)
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .onTapGesture(perform: onSelect)
     }
 }

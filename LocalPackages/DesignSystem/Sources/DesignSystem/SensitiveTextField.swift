@@ -68,7 +68,7 @@ public struct SensitiveTextField<Field: Hashable>: View {
                 }, label: {
                     Text(String(repeating: "•", count: min(20, text.count)))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(Rectangle())
+                        .contentShape(.rect)
                 })
                 .opacity(isFocused ? 0 : 1)
                 .buttonStyle(.plain)
