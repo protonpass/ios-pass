@@ -406,3 +406,16 @@ extension SharedUseCasesContainer {
         self { GetAllAliases(itemRepository: self.itemRepository) }
     }
 }
+
+// MARK: - Public link
+
+extension SharedUseCasesContainer {
+    var createItemSharingPublicLink: Factory<any CreateItemSharingPublicLinkUseCase> {
+        self { CreateItemSharingPublicLink(repository: SharedRepositoryContainer.shared.publicLinkRepository(),
+                                           getPublicLinkKeys: self.getPublicLinkKeys()) }
+    }
+
+    var getPublicLinkKeys: Factory<any GetPublicLinkKeysUseCase> {
+        self { GetPublicLinkKeys(passKeyManager: SharedRepositoryContainer.shared.passKeyManager()) }
+    }
+}
