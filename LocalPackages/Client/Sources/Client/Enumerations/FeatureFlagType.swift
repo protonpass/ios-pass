@@ -29,4 +29,5 @@ public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
     case passSentinelV1 = "PassSentinelV1"
     case passUsernameSplit = "PassUsernameSplit"
     case passPublicLinkV1 = "PassPublicLinkV1"
+    case passIdentityV1 = "PassIdentityV1"
 }
