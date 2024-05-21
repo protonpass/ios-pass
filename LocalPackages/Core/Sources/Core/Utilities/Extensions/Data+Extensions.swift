@@ -31,4 +31,16 @@ public extension Data {
         }
         return data
     }
+
+    /// Url secure base 64 encoding of data this follows the base 64 url standard
+    /// https://base64.guru/standards/base64url
+    /// - Returns: A string that is url safe
+    func base64URLSafeEncodedString() -> String {
+        let base64String = base64EncodedString()
+        let urlSafeBase64String = base64String
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+        return urlSafeBase64String
+    }
 }
