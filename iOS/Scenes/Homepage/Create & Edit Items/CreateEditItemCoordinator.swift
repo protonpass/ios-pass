@@ -108,6 +108,9 @@ extension CreateEditItemCoordinator {
         case .password:
             presentGeneratePasswordView(mode: .random,
                                         generatePasswordViewModelDelegate: createEditItemDelegates)
+        case .identity:
+            // TODO: Replace this
+            try presentCreateEditCreditCardView(mode: .create(shareId: shareId, type: .creditCard))
         }
     }
 

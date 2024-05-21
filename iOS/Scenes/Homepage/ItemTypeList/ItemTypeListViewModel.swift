@@ -28,7 +28,7 @@ import ProtonCoreUIFoundations
 import UIKit
 
 enum ItemType: CaseIterable {
-    case login, alias, creditCard, note, password
+    case login, alias, creditCard, note, password, identity
 }
 
 extension ItemContentType {
@@ -90,6 +90,8 @@ extension ItemType {
             IconProvider.fileLines
         case .password:
             IconProvider.key
+        case .identity:
+            IconProvider.cardIdentity
         }
     }
 
@@ -105,6 +107,8 @@ extension ItemType {
             ItemContentType.note.normMajor2Color
         case .password:
             PassColor.passwordInteractionNormMajor2
+        case .identity:
+            PassColor.interactionNormMajor2
         }
     }
 
@@ -120,6 +124,8 @@ extension ItemType {
             ItemContentType.note.normMinor1Color
         case .password:
             PassColor.passwordInteractionNormMinor1
+        case .identity:
+            PassColor.interactionNormMinor1
         }
     }
 
@@ -135,6 +141,8 @@ extension ItemType {
             #localized("Card")
         case .password:
             #localized("Password")
+        case .identity:
+            #localized("Identity")
         }
     }
 
@@ -150,6 +158,8 @@ extension ItemType {
             #localized("Jot down a PIN, code, or note to self")
         case .password:
             #localized("Generate a secure password")
+        case .identity:
+            #localized("Fill in your personal data")
         }
     }
 }
