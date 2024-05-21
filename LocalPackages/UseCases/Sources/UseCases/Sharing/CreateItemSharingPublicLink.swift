@@ -29,7 +29,8 @@ public protocol CreateItemSharingPublicLinkUseCase: Sendable {
 }
 
 public extension CreateItemSharingPublicLinkUseCase {
-    func callAsFunction(item: ItemContent, expirationTime: Int,
+    func callAsFunction(item: ItemContent,
+                        expirationTime: Int,
                         maxReadCount: Int? = nil) async throws -> SharedPublicLink {
         try await execute(item: item, expirationTime: expirationTime, maxReadCount: maxReadCount)
     }
@@ -45,7 +46,8 @@ public final class CreateItemSharingPublicLink: CreateItemSharingPublicLinkUseCa
         self.getPublicLinkKeys = getPublicLinkKeys
     }
 
-    public func execute(item: ItemContent, expirationTime: Int,
+    public func execute(item: ItemContent,
+                        expirationTime: Int,
                         maxReadCount: Int?) async throws -> SharedPublicLink {
         let keyResults = try await getPublicLinkKeys(item: item)
         let configuration = PublicLinkCreationConfiguration(shareId: item.shareId,

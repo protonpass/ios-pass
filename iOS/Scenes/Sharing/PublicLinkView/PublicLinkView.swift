@@ -43,7 +43,7 @@ struct PublicLinkView: View {
 
 private extension PublicLinkView {
     var mainContainer: some View {
-        VStack {
+        VStack(spacing: DesignConstant.sectionPadding) {
             itemHeader
 
             if let link = viewModel.link {
@@ -51,59 +51,19 @@ private extension PublicLinkView {
             } else {
                 createLink
             }
-
-//            VStack {
-//                Text("Link expires after:")
-//
-//                Picker("Link expires after", selection: $viewModel.selectedTime) {
-//                    ForEach(viewModel.timeOptions) { option in
-//                        Text(option.label).tag(option)
-//                    }
-//                }
-//                .pickerStyle(.menu)
-//
-            ////                Text("Selected Time in Seconds: \(viewModel.selectedTime.seconds)")
-//            }
-//            mainTitle
-//                .padding(.top)
-//            VStack(spacing: DesignConstant.sectionPadding) {
-//                protonAddressesSection
-//                aliasesSection
-//                customEmailsSection
-//                suggestedEmailsSection
-//            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.link)
-//        .animation(.default, value: viewModel.customEmailsState)
-//        .animation(.default, value: viewModel.suggestedEmailsState)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor,
                            for: .navigationBar)
-//        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(viewModel.link != nil ? "Share a link to this item" : "Create a public link to this item")
-//        .alert(Text("Data Security"),
-//               isPresented: $showDataSecurityExplanation,
-//               actions: { Button("OK", action: {}) },
-//               message: {
-//            // swiftlint:disable:next line_length
-//            Text("Proton never shares your information with third parties. All data comes from searches for the
-//            appearance of Proton domains on the dark web.")
-//        })
-//        .alert(Text(verbatim: "✅"),
-//               isPresented: $showNoBreachesAlert,
-//               actions: { Button("OK", action: {}) },
-//               message: { Text("None of your email addresses or aliases appear in a data breach") })
-//        .alert(Text(verbatim: "⚠️"),
-//               isPresented: $showBreachesFoundAlert,
-//               actions: { Button("OK", action: {}) },
-//               message: { Text("One of your email addresses or aliases appear in a data breach") })
     }
 }
 
@@ -125,90 +85,83 @@ private extension PublicLinkView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 60)
-        .padding(.bottom, 40)
+        .padding(.vertical, 20)
     }
 }
 
 private extension PublicLinkView {
-    @ViewBuilder
     var createLink: some View {
-        VStack {
-            Text("Link expires after:")
+        VStack(spacing: DesignConstant.sectionPadding) {
+            HStack {
+                Text("Link expires after:")
 
-            Picker("Link expires after", selection: $viewModel.selectedTime) {
-                ForEach(viewModel.timeOptions) { option in
-                    Text(option.label).tag(option)
+                Spacer()
+                Picker("Link expires after", selection: $viewModel.selectedTime) {
+                    ForEach(viewModel.timeOptions) { option in
+                        Text(option.label).tag(option)
+                            .fontWeight(.medium)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                    }
+                }
+                .tint(PassColor.interactionNormMajor2.toColor)
+            }
+
+            VStack {
+                Toggle("Add a maximum number of reads", isOn: $viewModel.addNumberOfReads)
+                    .toggleStyle(SwitchToggleStyle.pass)
+
+                if viewModel.addNumberOfReads {
+                    TextField("Max number of reads", text: $viewModel.maxNumber)
+                        .keyboardType(.numberPad)
+                        .padding(DesignConstant.sectionPadding)
+                        .roundedDetailSection()
                 }
             }
-            .pickerStyle(.menu)
 
             Spacer()
             CapsuleTextButton(title: "Create link",
                               titleColor: viewModel.itemContent.contentData.type.normMajor2Color,
                               backgroundColor: viewModel.itemContent.contentData.type.normMinor1Color,
                               action: { viewModel.createLink() })
-                .padding(.horizontal, DesignConstant.sectionPadding)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 private extension PublicLinkView {
     @ViewBuilder
-    func shareLink(link: String) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            Text(verbatim: link)
-//            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.envelope,
-//                                  color: iconTintColor)
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                Text("Email address")
-//                    .sectionTitleText()
-//
-//                if viewModel.email.isEmpty {
-//                    Text("Empty")
-//                        .placeholderText()
-//                } else {
-//                    Text(viewModel.email)
-//                        .sectionContentText()
-//
-//                    if viewModel.isAlias {
-//                        Button { viewModel.showAliasDetail() } label: {
-//                            Text("View alias")
-//                                .font(.callout)
-//                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-//                                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
-//                        }
-//                        .padding(.top, 8)
-//                    }
-//                }
-//            }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
-                .onTapGesture(perform: { viewModel.copyLink() })
+    func shareLink(link: SharedPublicLink) -> some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                Text(verbatim: link.url)
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: { viewModel.copyLink() })
+                    .roundedDetailSection()
+
+                Button { viewModel.copyLink() } label: {
+                    Text("Copy Link")
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .padding()
+                        .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor1)
+                }
+                .buttonStyle(.plain)
+
+                ShareLink(item: link.url) {
+                    Image(systemName: "square.and.arrow.up")
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                }
+            }
+            if let relativeTimeRemaining = link.relativeTimeRemaining {
+                Text("This link is available for the next \(relativeTimeRemaining)")
+                    .fontWeight(.medium)
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .roundedDetailSection()
-//        VStack {
-//
-//
-//
-//
-//            Text("Link expires after:")
-//
-//            Picker("Link expires after", selection: $viewModel.selectedTime) {
-//                ForEach(viewModel.timeOptions) { option in
-//                    Text(option.label).tag(option)
-//                }
-//            }
-//            .pickerStyle(.menu)
-//
-//            Spacer()
-//            CapsuleTextButton(title: "Create link",
-//                              titleColor: viewModel.itemContent.contentData.type.normMajor2Color,
-//                              backgroundColor:  viewModel.itemContent.contentData.type.normMinor1Color,
-//                              action: { viewModel.createLink() })
-//                .padding(.horizontal, DesignConstant.sectionPadding)
-//        }
     }
 }
 
@@ -222,33 +175,5 @@ private extension PublicLinkView {
                          accessibilityLabel: "Close",
                          action: dismiss.callAsFunction)
         }
-//
-//        if let aliasBreaches = viewModel.aliasBreachesState.fetchedObject,
-//           let customEmailBreaches = viewModel.customEmailsState.fetchedObject {
-//            let totalBreaches = aliasBreaches.breachCount + customEmailBreaches.breachCount + viewModel
-//                .userBreaches.emailsCount
-//            let noBreaches = totalBreaches == 0
-//            let icon: UIImage = noBreaches ? IconProvider.checkmarkCircleFilled : IconProvider
-//                .exclamationCircleFilled
-//            let iconColor = noBreaches ? PassColor.cardInteractionNormMajor2 : PassColor
-//                .passwordInteractionNormMajor2
-//            let backgroundColor = noBreaches ? PassColor.cardInteractionNormMinor2 : PassColor
-//                .passwordInteractionNormMinor2
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//                CircleButton(icon: icon, iconColor: iconColor, backgroundColor: backgroundColor) {
-//                    if noBreaches {
-//                        showNoBreachesAlert.toggle()
-//                    } else {
-//                        showBreachesFoundAlert.toggle()
-//                    }
-//                }
-//            }
-//        }
     }
 }
-
-// struct PublicLinkView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PublicLinkView()
-//    }
-// }
