@@ -816,7 +816,7 @@ extension HomepageCoordinator {
         let view = PublicLinkView(viewModel: .init(itemContent: item))
         let viewController = UIHostingController(rootView: view)
 
-        viewController.setDetentType(.large,
+        viewController.setDetentType(.medium,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
