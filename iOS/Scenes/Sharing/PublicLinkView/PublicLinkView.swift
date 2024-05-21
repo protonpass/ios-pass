@@ -143,7 +143,7 @@ private extension PublicLinkView {
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                    .contentShape(Rectangle())
+                    .contentShape(.rect)
                     .onTapGesture(perform: { viewModel.copyLink() })
                     .roundedDetailSection()
 
