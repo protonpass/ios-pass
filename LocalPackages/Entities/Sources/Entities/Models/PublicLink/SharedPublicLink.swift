@@ -31,3 +31,10 @@ public struct SharedPublicLink: Decodable, Equatable, Sendable {
         self.expirationTime = expirationTime
     }
 }
+
+public extension SharedPublicLink {
+    func update(with linkKey: String) -> SharedPublicLink {
+        let newUrl = "\(url)#\(linkKey)"
+        return SharedPublicLink(url: newUrl, publicLinkID: publicLinkID, expirationTime: expirationTime)
+    }
+}
