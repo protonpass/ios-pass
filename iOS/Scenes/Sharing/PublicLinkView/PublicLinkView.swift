@@ -29,7 +29,6 @@ import SwiftUI
 
 struct PublicLinkView: View {
     @StateObject private var viewModel: PublicLinkViewModel
-    @Environment(\.dismiss) private var dismiss
 
     init(viewModel: PublicLinkViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
