@@ -37029,6 +37029,16 @@
         }
       }
     },
+    "Fill in your personal data" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fill in your personal data"
+          }
+        }
+      }
+    },
     "Find an alias, login, or note" : {
       "comment" : "Search page",
       "localizations" : {
@@ -43128,6 +43138,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mình muốn báo cáo một vấn đề với..."
+          }
+        }
+      }
+    },
+    "Identity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity"
           }
         }
       }
