@@ -813,10 +813,10 @@ extension HomepageCoordinator {
     }
 
     func publicLink(item: ItemContent) {
-        let view = Text(verbatim: "New public link sharing view \(item.name)")
+        let view = PublicLinkView(viewModel: .init(itemContent: item))
         let viewController = UIHostingController(rootView: view)
 
-        viewController.setDetentType(.large,
+        viewController.setDetentType(.medium,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true

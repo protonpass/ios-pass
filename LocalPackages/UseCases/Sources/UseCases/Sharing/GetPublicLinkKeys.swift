@@ -20,36 +20,33 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// swiftlint:disable:next todo
-// TODO: Remove later on
-// periphery:ignore:all
-
 import Client
+import Core
 import CryptoKit
 import Entities
 import Foundation
 
-protocol GetPublicLinkKeysUseCase: Sendable {
+public protocol GetPublicLinkKeysUseCase: Sendable {
     func execute(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String)
 }
 
-extension GetPublicLinkKeysUseCase {
+public extension GetPublicLinkKeysUseCase {
     func callAsFunction(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String) {
         try await execute(item: item)
     }
 }
 
-final class GetPublicLinkKeys: GetPublicLinkKeysUseCase {
+public final class GetPublicLinkKeys: GetPublicLinkKeysUseCase {
     private let passKeyManager: any PassKeyManagerProtocol
 
-    init(passKeyManager: any PassKeyManagerProtocol) {
+    public init(passKeyManager: any PassKeyManagerProtocol) {
         self.passKeyManager = passKeyManager
     }
 
     /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
-    func execute(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String) {
+    public func execute(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String) {
         let itemKeyInfo = try await passKeyManager.getLatestItemKey(shareId: item.shareId, itemId: item.itemId)
         let linkKey = try Data.random()
 
@@ -61,6 +58,6 @@ final class GetPublicLinkKeys: GetPublicLinkKeysUseCase {
             throw PassError.crypto(.failedToBase64Encode)
         }
 
-        return (linkKey.base64EncodedString(), itemKeyEncoded)
+        return (linkKey.base64URLSafeEncodedString(), itemKeyEncoded)
     }
 }
