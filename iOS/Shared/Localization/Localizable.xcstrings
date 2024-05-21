@@ -49739,16 +49739,6 @@
         }
       }
     },
-    "Link expires after:" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Link expires after:"
-          }
-        }
-      }
-    },
     "Log in to apps instantly" : {
       "localizations" : {
         "be" : {
