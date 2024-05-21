@@ -133,7 +133,7 @@ private extension BugReportView {
 
                 ItemDetailSectionIcon(icon: IconProvider.chevronDown)
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .frame(maxWidth: .infinity, alignment: .leading)
         })
         .padding(DesignConstant.sectionPadding)
@@ -171,7 +171,7 @@ private extension BugReportView {
                 .animation(.default, value: viewModel.description.isEmpty)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .onTapGesture {
                 focused = true
             }
@@ -253,7 +253,7 @@ private extension BugReportView {
                                .padding(.vertical, 8)
                                .background(PassColor.interactionNormMinor1.toColor)
                                .cornerRadius(9)
-                               .contentShape(Rectangle())
+                               .contentShape(.rect)
                            })
             }
 

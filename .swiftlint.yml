@@ -228,6 +228,11 @@ custom_rules:
     message: "Prefer implicit regular font weight"
     regex: "(\\.fontWeight\\(\\.regular\\))"
 
+  discouraged_verbose_contentshape_rectangle:
+    name: "Discouraged verbose .contentShape(Rectangle())"
+    message: "Prefer static member lookup version .contentShape(.rectangle)"
+    regex: "(\\.contentShape\\(Rectangle\\(\\))"
+
   deprecated_foregroundcolor_modifier:
     name: "Deprecated foregroundColor modifier"
     message: "Prefer foregroundStyle over deprecated foregroundColor"

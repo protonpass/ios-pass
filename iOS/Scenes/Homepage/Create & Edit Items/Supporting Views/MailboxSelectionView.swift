@@ -54,7 +54,7 @@ struct MailboxSelectionView: View {
                                         .foregroundStyle(viewModel.mode.tintColor)
                                 }
                             }
-                            .contentShape(Rectangle())
+                            .contentShape(.rect)
                             .background(Color.clear)
                             .padding(.horizontal)
                             .frame(height: OptionRowHeight.compact.value)
@@ -108,7 +108,7 @@ struct MailboxSelectionView: View {
                     .scaledToFit()
                     .frame(maxWidth: 20)
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .foregroundStyle(viewModel.mode.tintColor)
         }
         .frame(height: OptionRowHeight.compact.value)

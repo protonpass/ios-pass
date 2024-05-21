@@ -56,7 +56,7 @@ struct SuffixSelectionView: View {
                                         .foregroundStyle(tintColor.toColor)
                                 }
                             }
-                            .contentShape(Rectangle())
+                            .contentShape(.rect)
                             .background(Color.clear)
                             .padding(.horizontal)
                             .frame(height: OptionRowHeight.compact.value)
@@ -100,7 +100,7 @@ struct SuffixSelectionView: View {
                     .scaledToFit()
                     .frame(maxWidth: 20)
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .foregroundStyle(tintColor.toColor)
         }
         .frame(height: OptionRowHeight.compact.value)
