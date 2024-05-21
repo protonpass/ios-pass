@@ -977,6 +977,50 @@
         }
       }
     },
+    "%lld Day" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld Day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Days"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld Hour" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Hour"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Hours"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld invite remaining" : {
       "localizations" : {
         "be" : {
@@ -8166,6 +8210,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додати файл"
+          }
+        }
+      }
+    },
+    "Add a maximum number of reads" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a maximum number of reads"
           }
         }
       }
@@ -24752,6 +24806,16 @@
         }
       }
     },
+    "Copy Link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Link"
+          }
+        }
+      }
+    },
     "Copy note content" : {
       "localizations" : {
         "be" : {
@@ -26510,6 +26574,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo ghi chú"
+          }
+        }
+      }
+    },
+    "Create a public link to this item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a public link to this item"
           }
         }
       }
@@ -49645,6 +49719,36 @@
         }
       }
     },
+    "Link copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link copied"
+          }
+        }
+      }
+    },
+    "Link expires after" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link expires after"
+          }
+        }
+      }
+    },
+    "Link expires after:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link expires after:"
+          }
+        }
+      }
+    },
     "Log in to apps instantly" : {
       "localizations" : {
         "be" : {
@@ -52165,6 +52269,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Theo hệ thống"
+          }
+        }
+      }
+    },
+    "Max number of reads" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max number of reads"
           }
         }
       }
@@ -76403,6 +76517,16 @@
         }
       }
     },
+    "Share a link to this item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share a link to this item"
+          }
+        }
+      }
+    },
     "Share clipboard between devices" : {
       "localizations" : {
         "be" : {
@@ -84142,6 +84266,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цей елемент не відстежується"
+          }
+        }
+      }
+    },
+    "This link is available for the next %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This link is available for the next %@"
           }
         }
       }
