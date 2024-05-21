@@ -93,7 +93,7 @@ private extension PublicLinkView {
     var createLink: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
-                Text("Link expires after:")
+                Text("Link expires after") + Text(verbatim: ":")
 
                 Spacer()
                 Picker("Link expires after", selection: $viewModel.selectedTime) {
