@@ -15,6 +15,12 @@
             "value" : "Tilføj brugernavn-felt"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προσθήκη πεδίου ονόματος χρήστη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45,10 +51,28 @@
             "value" : "Ajouter un champ Nom d’utilisateur"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambahkan kolom nama pengguna"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi il campo nome utente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー名フィールドを追加"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 이름 입력란 추가"
           }
         },
         "nb" : {
@@ -57,16 +81,40 @@
             "value" : "Legg til brukernavnfelt"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veld gebruikersnaam toevoegen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dodaj pole nazwy użytkownika"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar um campo de nome de usuário"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridať pole mena používateľa"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lägg till fält för användarnamn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı adı alanı ekle"
           }
         }
       }
@@ -377,6 +425,12 @@
             "state" : "translated",
             "value" : "\"%@\" bulunamadı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося знайти «%@»"
+          }
         }
       }
     },
@@ -519,6 +573,12 @@
             "state" : "translated",
             "value" : "\"%@\" çöp kutusunda bulunamadı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося знайти «%@» в смітнику"
+          }
         }
       }
     },
@@ -590,6 +650,12 @@
             "value" : "Impossibile trovare \"%1$@\" in %2$@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ で \"%1$@\" が見つかりませんでした"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -654,6 +720,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%1$@\", %2$@ içinde bulunamadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося знайти «%1$@» в %2$@"
           }
         }
       }
@@ -824,6 +896,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Стварыць ключ доступу"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytvořit přístupový klíč"
           }
         },
         "da" : {
@@ -1026,6 +1104,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abilita la ricerca Spotlight"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スポットライト検索を有効にする"
           }
         },
         "ka" : {
@@ -1325,6 +1409,12 @@
             "value" : "Scopri di più su Pass"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passについて詳しくはこちら"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1389,6 +1479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass hakkında ayrıntılı bilgi alın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дізнайтеся більше про Pass"
           }
         },
         "vi" : {
@@ -1473,6 +1569,12 @@
             "value" : "Non adesso"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今じゃない"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1537,6 +1639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Şimdi değil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не зараз"
           }
         }
       }
@@ -1930,6 +2038,12 @@
             "value" : "Effettua l'accesso per usare l'estensione di compilazione automatica di Proton Pass"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass AutoFill 拡張機能を使用するにはサインインしてください"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1994,6 +2108,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass Otomatik Doldurma eklentisini kullanabilmek için oturum açın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увійдіть, щоби використовувати розширення для автозаповнення Proton Pass"
           }
         }
       }
@@ -2066,6 +2186,12 @@
             "value" : "Effettua l'accesso per usare l'estensione di condivisione di Proton Pass"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass Share 拡張機能を使用するにはサインインしてください"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2130,6 +2256,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass Paylaşma eklentisini kullanabilmek için oturum açın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увійдіть, щоби використовувати розширення Proton Pass Share"
           }
         }
       }
@@ -2202,6 +2334,12 @@
             "value" : "Tieni premuto un elemento per visualizzare le opzioni aggiuntive."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目を長押しすると、追加のオプションが表示されます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2250,10 +2388,22 @@
             "value" : "Stlačením a podržaním položky zobrazíte ďalšie možnosti."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryck och håll på ett objekt för att visa extra alternativ."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ek seçenekleri görüntülemek için bir ögeye basılı tutun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натисніть і утримуйте елемент для перегляду додаткових параметрів."
           }
         }
       }
@@ -2390,6 +2540,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ögelerin hızlı işlemleri"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Швидкі дії по елементах"
           }
         }
       }
@@ -2621,6 +2777,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerca facilmente gli elementi tramite la schermata iniziale. Apri Impostazioni → Spotlight per abilitare la funzionalità."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホーム画面からアイテムをシームレスに検索します。 設定 → スポットライトを開いて有効にします。"
           }
         },
         "ko" : {
@@ -3067,6 +3229,12 @@
             "value" : "Seleziona un login esistente o creane uno nuovo."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "既存のログインを選択するか、新しいログインを作成します。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3131,6 +3299,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Var olan bir oturum açma kaydı seçin ya da yeni bir tane oluşturun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оберіть чинний вхід або створіть новий."
           }
         }
       }
@@ -3207,6 +3381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disconnesso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サインアウト"
           }
         },
         "ka" : {
@@ -3512,6 +3692,12 @@
             "value" : "Suggerimenti"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提案"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3577,6 +3763,12 @@
             "state" : "translated",
             "value" : "Öneriler"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пропозиції"
+          }
         }
       }
     },
@@ -3592,6 +3784,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tryk her for at tilføje et felt til et brugernavn."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tippe hier, um ein Feld für einen Benutzernamen hinzuzufügen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πατήστε εδώ για να προσθέσετε ένα πεδίο για ένα όνομα χρήστη."
           }
         },
         "en" : {
@@ -3624,10 +3828,28 @@
             "value" : "Appuyez ici pour ajouter un champ pour un nom d'utilisateur."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ketuk di sini untuk menambahkan kolom untuk nama pengguna."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tocca qui per aggiungere un campo per il nome utente."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ここをタップしてユーザー名のフィールドを追加します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 이름에 대한 입력란을 추가하려면 여기를 탭하세요."
           }
         },
         "nb" : {
@@ -3636,10 +3858,40 @@
             "value" : "Trykk her for å legge til et felt for et brukernavn."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tik hier om een veld toe te voegen voor een gebruikersnaam."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kliknij, aby dodać pole nazwy użytkownika."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque aqui para adicionar um campo para um nome de usuário."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ťuknite sem pre pridanie poľa s používateľským menom"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tryck här för att lägga till ett fält för ett användarnamn."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı adı alanı eklemek için buraya dokunun."
           }
         }
       }
