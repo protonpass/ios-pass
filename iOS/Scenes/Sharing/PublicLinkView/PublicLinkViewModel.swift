@@ -23,6 +23,7 @@
 import Combine
 import Entities
 import Factory
+import Foundation
 import Macro
 
 struct TimeOption: Identifiable, Hashable {
@@ -33,13 +34,23 @@ struct TimeOption: Identifiable, Hashable {
     static var `default`: TimeOption {
         TimeOption(label: #localized("%lld Day", 7), seconds: 7 * 86_400)
     }
+
+    static var secondsInHour: Int {
+        3_600
+    }
+
+    static var secondsInDay: Int {
+        86_400
+    }
 }
 
 @MainActor
 final class PublicLinkViewModel: ObservableObject, Sendable {
-    @Published private(set) var link: String?
+    @Published private(set) var link: SharedPublicLink?
     @Published var selectedTime: TimeOption = .default
     @Published var loading = false
+    @Published var addNumberOfReads = false
+    @Published var maxNumber = ""
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let createItemSharingPublicLink = resolve(\SharedUseCasesContainer.createItemSharingPublicLink)
@@ -49,7 +60,6 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
 
     init(itemContent: ItemContent) {
         self.itemContent = itemContent
-        setUp()
     }
 
     func createLink() {
@@ -61,8 +71,9 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
             do {
                 loading = true
                 let result = try await createItemSharingPublicLink(item: itemContent,
-                                                                   expirationTime: selectedTime.seconds)
-                link = result.url
+                                                                   expirationTime: selectedTime.seconds,
+                                                                   maxReadCount: maxNumber.maxRead)
+                link = result
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
@@ -73,33 +84,59 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
         guard let link else {
             return
         }
-        router.action(.copyToClipboard(text: link, message: #localized("Link copied")))
+        router.action(.copyToClipboard(text: link.url, message: #localized("Link copied")))
     }
-}
-
-private extension PublicLinkViewModel {
-    func setUp() {}
 }
 
 extension TimeOption {
     static var generateTimeOptions: [TimeOption] {
         var options = [TimeOption]()
 
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+
         // Add 30 minutes
-        options.append(TimeOption(label: "30 Minutes", seconds: 1_800))
+        if let formattedLabel = formatter.string(from: TimeInterval(TimeOption.secondsInHour / 2)) {
+            options.append(TimeOption(label: formattedLabel, seconds: 1_800))
+        }
 
         // Add hours from 1 to 12
         for hour in 1...12 {
-            let label = #localized("%lld Hour", hour) // "\(hour) Hour" + (hour > 1 ? "s" : "")
-            options.append(TimeOption(label: label, seconds: hour * 3_600))
+            let label = #localized("%lld Hour", hour)
+            options.append(TimeOption(label: label, seconds: hour * TimeOption.secondsInHour))
         }
 
         // Add days from 1 to 30
         for day in 1...30 {
-            let label = #localized("%lld Day", day) // "\(day) Day" + (day > 1 ? "s" : "")
-            options.append(TimeOption(label: label, seconds: day * 86_400))
+            let label = #localized("%lld Day", day)
+            options.append(TimeOption(label: label, seconds: day * TimeOption.secondsInDay))
         }
 
         return options
+    }
+}
+
+private extension String {
+    var maxRead: Int? {
+        guard !isEmpty, let number = Int(self) else {
+            return nil
+        }
+        return number
+    }
+}
+
+extension SharedPublicLink {
+    var relativeTimeRemaining: String? {
+        guard let expirationTime else {
+            return nil
+        }
+        let expirationDate = Date(timeIntervalSince1970: Double(expirationTime))
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+
+        let currentDate = Date()
+        let relativeTime = formatter.localizedString(for: expirationDate, relativeTo: currentDate)
+
+        return relativeTime
     }
 }

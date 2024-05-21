@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -57,6 +58,6 @@ public final class GetPublicLinkKeys: GetPublicLinkKeysUseCase {
             throw PassError.crypto(.failedToBase64Encode)
         }
 
-        return (linkKey.base64EncodedString(), itemKeyEncoded)
+        return (linkKey.base64URLSafeEncodedString(), itemKeyEncoded)
     }
 }
