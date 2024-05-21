@@ -79,7 +79,7 @@ private extension ItemHistoryView {
                     .font(.footnote)
                     .foregroundStyle(PassColor.textWeak.toColor)
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
         }
         .padding(.bottom, 20)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -193,7 +193,7 @@ private extension ItemHistoryView {
                 }
             }
             .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             if shouldDisplay {
                 ItemDetailSectionIcon(icon: IconProvider.chevronRight,
                                       color: PassColor.textWeak)

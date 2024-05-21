@@ -124,7 +124,7 @@ private extension ItemDetailHistorySection {
                     .foregroundStyle(PassColor.textWeak.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
         }.padding(.horizontal, DesignConstant.sectionPadding)
     }
 }

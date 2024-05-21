@@ -63,7 +63,7 @@ struct UpgradeButtonLite: View {
                     .frame(maxWidth: 16)
             }
             .foregroundStyle(foregroundColor.toColor)
-            .containerShape(Rectangle())
+            .contentShape(.rect)
         }
     }
 }

@@ -271,7 +271,7 @@ private extension PassMonitorView {
                             .lineLimit(1)
                     }
                 }
-                .contentShape(Rectangle())
+                .contentShape(.rect)
                 .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
                 .layoutPriority(1)
 
@@ -519,7 +519,7 @@ private extension PassMonitorView {
                     }
                 }
                 .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
-                .contentShape(Rectangle())
+                .contentShape(.rect)
 
                 if let info {
                     Text(info)
