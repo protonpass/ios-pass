@@ -473,6 +473,8 @@
 		5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */; };
 		5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
+		5B3FD1A42BFCE24E00434294 /* CreateEditIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3FD1A22BFCE24E00434294 /* CreateEditIdentityView.swift */; };
+		5B3FD1A52BFCE24E00434294 /* CreateEditIdentityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3FD1A32BFCE24E00434294 /* CreateEditIdentityViewModel.swift */; };
 		5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */; };
 		5B4E53D52BD651F600E8D54A /* BreachEntities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */; };
 		5B4E53D82BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */; };
@@ -946,6 +948,8 @@
 		5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryViewModel.swift; sourceTree = "<group>"; };
 		5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemUiModel+Extensions.swift"; sourceTree = "<group>"; };
 		5B3E2FFF2AAF01A30002289A /* TestPlans */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestPlans; sourceTree = "<group>"; };
+		5B3FD1A22BFCE24E00434294 /* CreateEditIdentityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditIdentityView.swift; sourceTree = "<group>"; };
+		5B3FD1A32BFCE24E00434294 /* CreateEditIdentityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditIdentityViewModel.swift; sourceTree = "<group>"; };
 		5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LABiometryType+Extensions.swift"; sourceTree = "<group>"; };
 		5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BreachEntities+Extensions.swift"; sourceTree = "<group>"; };
 		5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachEntitiesExtensionsTests.swift; sourceTree = "<group>"; };
@@ -1322,6 +1326,7 @@
 		35603A0029B6587C00021BFB /* Create & Edit Items */ = {
 			isa = PBXGroup;
 			children = (
+				5B3FD1A12BFCE21300434294 /* Identity */,
 				35AC9A552A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift */,
 				35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */,
 				355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */,
@@ -1930,6 +1935,15 @@
 				5B1092DA2B56EA93002621A4 /* DetailHistoryView+Alias.swift */,
 			);
 			path = DetailHistoryView;
+			sourceTree = "<group>";
+		};
+		5B3FD1A12BFCE21300434294 /* Identity */ = {
+			isa = PBXGroup;
+			children = (
+				5B3FD1A22BFCE24E00434294 /* CreateEditIdentityView.swift */,
+				5B3FD1A32BFCE24E00434294 /* CreateEditIdentityViewModel.swift */,
+			);
+			path = Identity;
 			sourceTree = "<group>";
 		};
 		5B4E53D62BD65E3300E8D54A /* Extensions */ = {
@@ -3279,6 +3293,8 @@
 				5B87CC8F2BA4AF5600258D70 /* AuthenticatorView.swift in Sources */,
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				35AC8E382B6A29CB00B06CF4 /* EditSpotlightSearchableVaultsView.swift in Sources */,
+				5B3FD1A42BFCE24E00434294 /* CreateEditIdentityView.swift in Sources */,
+				5B3FD1A52BFCE24E00434294 /* CreateEditIdentityViewModel.swift in Sources */,
 				358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */,
 				355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */,
 				5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */,
