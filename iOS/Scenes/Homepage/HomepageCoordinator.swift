@@ -384,6 +384,18 @@ extension HomepageCoordinator {
             .store(in: &cancellables)
 
         router
+            .genericDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .presentView(view, dismissible):
+                    createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
+                }
+            }
+            .store(in: &cancellables)
+
+        router
             .newSheetDestination
             .receive(on: DispatchQueue.main)
             .sink { [weak self] destination in
@@ -1037,7 +1049,7 @@ extension HomepageCoordinator {
 private extension HomepageCoordinator {
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
         let coordinator = CreateEditItemCoordinator(createEditItemDelegates: self)
-        coordinator.delegate = self
+//        coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator
     }
@@ -1241,14 +1253,6 @@ extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
         } else {
             push(view)
         }
-    }
-}
-
-// MARK: - CreateEditItemCoordinatorDelegate
-
-extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
-    func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
-        present(view, dismissible: dismissable)
     }
 }
 

@@ -24806,6 +24806,9 @@
         }
       }
     },
+    "Copy identity content" : {
+
+    },
     "Copy Link" : {
       "localizations" : {
         "en" : {
@@ -26097,6 +26100,9 @@
           }
         }
       }
+    },
+    "Create a identity" : {
+
     },
     "Create a login" : {
       "localizations" : {
@@ -43216,6 +43222,9 @@
         }
       }
     },
+    "Identities" : {
+
+    },
     "Identity" : {
       "localizations" : {
         "en" : {
@@ -43225,6 +43234,21 @@
           }
         }
       }
+    },
+    "Identity created" : {
+
+    },
+    "Identity moved to trash" : {
+
+    },
+    "Identity permanently deleted" : {
+
+    },
+    "Identity restored" : {
+
+    },
+    "Identity updated" : {
+
     },
     "Immediately" : {
       "localizations" : {
