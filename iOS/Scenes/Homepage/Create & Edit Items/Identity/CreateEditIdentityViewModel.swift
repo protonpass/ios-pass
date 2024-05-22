@@ -1,5 +1,5 @@
 //
-//  
+//
 // CreateEditIdentityViewModel.swift
 // Proton Pass - Created on 21/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
@@ -20,17 +20,28 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
+import Client
+import Combine
+import Core
+import Entities
+import Factory
+import Macro
 
 @MainActor
-final class CreateEditIdentityViewModel: ObservableObject, Sendable {
-        
-    init() {
-        setUp()
+final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, ObservableObject, Sendable {
+    @Published var title = ""
+
+    override init(mode: ItemMode,
+                  upgradeChecker: any UpgradeCheckerProtocol,
+                  vaults: [Vault]) throws {
+        try super.init(mode: mode,
+                       upgradeChecker: upgradeChecker,
+                       vaults: vaults)
     }
+
+    override func itemContentType() -> ItemContentType { .identity }
 }
 
 private extension CreateEditIdentityViewModel {
-    func setUp() {
-    }
+    func setUp() {}
 }
