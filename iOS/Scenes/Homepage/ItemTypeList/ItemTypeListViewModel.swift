@@ -42,6 +42,8 @@ extension ItemContentType {
             .creditCard
         case .note:
             .note
+        case .identity:
+            .identity
         }
     }
 }

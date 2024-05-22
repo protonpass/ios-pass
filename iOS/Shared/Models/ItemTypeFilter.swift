@@ -36,7 +36,8 @@ enum ItemTypeFilterOption: Equatable, Hashable {
             .precise(.login),
             .precise(.alias),
             .precise(.creditCard),
-            .precise(.note)
+            .precise(.note),
+            .precise(.identity)
         ]
         assert(allCases.count == ItemContentType.allCases.count + 1, "Some type is missing")
         return allCases
@@ -70,6 +71,8 @@ private extension ItemContentType {
             itemCount.note
         case .creditCard:
             itemCount.creditCard
+        case .identity:
+            itemCount.identity
         }
         return .init(icon: regularIcon, title: filterTitle, count: count)
     }
