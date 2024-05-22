@@ -63,6 +63,15 @@ enum ItemContextMenu {
               onViewHistory: () -> Void,
               onTrash: () -> Void)
 
+    // TODO: update for use case
+    case identity(item: any PinnableItemTypeIdentifiable,
+                  isEditable: Bool,
+                  onCopyContent: () -> Void,
+                  onEdit: () -> Void,
+                  onPinToggle: () -> Void,
+                  onViewHistory: () -> Void,
+                  onTrash: () -> Void)
+
     case trashedItem(isEditable: Bool,
                      onRestore: () -> Void,
                      onPermanentlyDelete: () -> Void)
@@ -196,6 +205,29 @@ enum ItemContextMenu {
             } else {
                 return []
             }
+
+        // TODO: update for use case identity
+        case let .identity(item,
+                           isEditable,
+                           onCopyContent,
+                           onEdit,
+                           onPinToggle,
+                           onViewHistory,
+                           onTrash):
+            var sections: [ItemContextMenuOptionSection] = []
+
+            sections.append(.init(options: [.init(title: #localized("Copy identity content"),
+                                                  icon: IconProvider.note,
+                                                  action: onCopyContent)]))
+
+            sections += Self.commonLastSections(item: item,
+                                                isEditable: isEditable,
+                                                onEdit: onEdit,
+                                                onPinToggle: onPinToggle,
+                                                onViewHistory: onViewHistory,
+                                                onTrash: onTrash)
+
+            return sections
         }
     }
 }
@@ -348,6 +380,15 @@ extension View {
                                       onPinToggle: { handler.toggleItemPinning(item) },
                                       onViewHistory: { handler.viewHistory(item) },
                                       onTrash: { handler.trash(item) }))
+            case .identity:
+                // TODO: update for use case
+                itemContextMenu(.identity(item: item,
+                                          isEditable: isEditable,
+                                          onCopyContent: {},
+                                          onEdit: { handler.edit(item) },
+                                          onPinToggle: { handler.toggleItemPinning(item) },
+                                          onViewHistory: { handler.viewHistory(item) },
+                                          onTrash: { handler.trash(item) }))
             }
         }
     }
