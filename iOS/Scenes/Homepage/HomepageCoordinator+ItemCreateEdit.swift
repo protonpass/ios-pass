@@ -1,7 +1,6 @@
 //
-//
-// CreateEditIdentityViewModel.swift
-// Proton Pass - Created on 21/05/2024.
+// HomepageCoordinator+ItemCreateEdit.swift
+// Proton Pass - Created on 22/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,30 +17,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
-import Combine
-import Core
-import Entities
-import Factory
-import Macro
+import Foundation
+import SwiftUI
 
-@MainActor
-final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, ObservableObject, Sendable {
-    @Published var title = ""
+// MARK: - CreateEditItemCoordinatorDelegate
 
-    override init(mode: ItemMode,
-                  upgradeChecker: any UpgradeCheckerProtocol,
-                  vaults: [Vault]) throws {
-        try super.init(mode: mode,
-                       upgradeChecker: upgradeChecker,
-                       vaults: vaults)
+extension HomepageCoordinator {
+    func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
+        present(view, dismissible: dismissable)
     }
-
-    override func itemContentType() -> ItemContentType { .identity }
-}
-
-private extension CreateEditIdentityViewModel {
-    func setUp() {}
 }
