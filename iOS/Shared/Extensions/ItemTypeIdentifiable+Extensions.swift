@@ -32,6 +32,8 @@ extension ItemTypeIdentifiable {
             #localized("Credit card moved to trash")
         case .note:
             #localized("Note moved to trash")
+        case .identity:
+            #localized("Identity moved to trash")
         }
     }
 }

@@ -26,6 +26,7 @@ public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
     case alias = 1
     case note = 2
     case creditCard = 3
+    case identity = 4
 }
 
 extension ItemContentType: CustomDebugStringConvertible {
@@ -39,6 +40,8 @@ extension ItemContentType: CustomDebugStringConvertible {
             "note"
         case .creditCard:
             "creditCard"
+        case .identity:
+            "identity"
         }
     }
 }
