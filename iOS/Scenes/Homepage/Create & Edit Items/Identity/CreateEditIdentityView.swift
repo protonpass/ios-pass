@@ -29,6 +29,9 @@ import SwiftUI
 
 struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var isShowingDiscardAlert = false
     @FocusState private var focusedField: Field?
 
     init(viewModel: CreateEditIdentityViewModel) {
@@ -65,17 +68,10 @@ private extension CreateEditIdentityView {
                                            itemContentType: viewModel.itemContentType(),
                                            isEditMode: viewModel.mode.isEditMode,
                                            onSubmit: { focusedField = .email })
-                    .padding(.bottom, DesignConstant.sectionPadding / 2)
+                    .padding(.vertical, DesignConstant.sectionPadding / 2)
+
+                sections()
             }
-//            VStack(spacing: DesignConstant.sectionPadding) {
-//                itemHeader
-//
-//                if let link = viewModel.link {
-//                    shareLink(link: link)
-//                } else {
-//                    createLink
-//                }
-//            }
             .padding(.horizontal, DesignConstant.sectionPadding)
             .padding(.bottom, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,8 +82,6 @@ private extension CreateEditIdentityView {
             .navigationBarBackButtonHidden(true)
             .toolbarBackground(PassColor.backgroundNorm.toColor,
                                for: .navigationBar)
-//            .navigationTitle(viewModel
-//                .link != nil ? "Share a link to this item" : "Create a public link to this item")
         }
         .toolbar {
             CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
@@ -98,7 +92,7 @@ private extension CreateEditIdentityView {
                                   itemContentType: viewModel.itemContentType(),
                                   shouldUpgrade: false,
                                   onSelectVault: { viewModel.changeVault() },
-                                  onGoBack: { /* isShowingDiscardAlert.toggle()*/ },
+                                  onGoBack: { isShowingDiscardAlert.toggle() },
                                   onUpgrade: { /* Not applicable */ },
                                   onScan: { viewModel.openScanner() },
                                   onSave: {
@@ -108,8 +102,374 @@ private extension CreateEditIdentityView {
 //                                                  }
                                   })
         }
+        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
 }
+
+private extension CreateEditIdentityView {
+    func sections() -> some View {
+        ForEach(viewModel.sections.sortedKey) { key in
+            Section(content: {
+                if !viewModel.collapsedSections.contains(key), let items = viewModel.sections[key] {
+//                    switch viewModel.sections[key] {
+//                    case .
+//                    }
+                    personalDetailSection()
+//                    Text("test")
+//                    itemsList(items: items)
+                }
+            }, header: {
+                header(for: key)
+            })
+        }
+    }
+
+    func header(for key: IdentitySectionHeaderKey) -> some View {
+        Label(title: { Text(key.title) },
+              icon: {
+                  Image(systemName: viewModel.collapsedSections.contains(key) ? "chevron.up" : "chevron.down")
+                      .resizable()
+                      .scaledToFit()
+                      .frame(width: 12)
+              })
+              .foregroundStyle(PassColor.textWeak.toColor)
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .padding(.top, DesignConstant.sectionPadding)
+              .buttonEmbeded {
+                  if viewModel.collapsedSections.contains(key) {
+                      viewModel.collapsedSections.remove(key)
+                  } else {
+                      viewModel.collapsedSections.insert(key)
+                  }
+              }
+    }
+}
+
+// MARK: - Personal Detail Section
+
+private extension CreateEditIdentityView {
+    func personalDetailSection() -> some View {
+        VStack(alignment: .leading) {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                identityRow(title: "Full name",
+                            subtitle: "Full name",
+                            value: $viewModel.fullName)
+                PassSectionDivider()
+                identityRow(title: "Email",
+                            subtitle: "Email",
+                            value: $viewModel.fullName,
+                            keyboardType: .emailAddress)
+                PassSectionDivider()
+                identityRow(title: "Phone number",
+                            subtitle: "Phone number",
+                            value: $viewModel.fullName,
+                            keyboardType: .phonePad)
+                //            if !viewModel.email.isEmpty, viewModel.isAlias {
+                //                pendingAliasRow
+                //            } else {
+                //                emailRow
+                //            }
+                //            if viewModel.showUsernameField {
+                //                PassSectionDivider()
+                //                usernameRow
+                //            }
+                //            PassSectionDivider()
+                //            passwordRow
+                //            PassSectionDivider()
+                //            if viewModel.canAddOrEdit2FAURI {
+                //                totpAllowedRow
+                //            } else {
+                //                totpNotAllowedRow
+                //            }
+            }
+            .padding(.vertical, DesignConstant.sectionPadding)
+            .roundedEditableSection()
+            CapsuleLabelButton(icon: IconProvider.plus,
+                               title: "Add more",
+                               titleColor: viewModel.itemContentType().normMajor2Color,
+                               backgroundColor: viewModel.itemContentType().normMinor1Color,
+                               maxWidth: 140) {}
+        }
+    }
+
+//        var usernameRow: some View {
+//            HStack(spacing: DesignConstant.sectionPadding) {
+//                ItemDetailSectionIcon(icon: IconProvider.user)
+//
+//                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+//                    Text("Username")
+//                        .sectionTitleText()
+//
+//                    TextField("Add username", text: $viewModel.username)
+//                        .textInputAutocapitalization(.never)
+//                        .autocorrectionDisabled()
+//                        .focused($focusedField, equals: .username)
+//                        .foregroundStyle(PassColor.textNorm.toColor)
+//                        .submitLabel(.next)
+//                        .onSubmit { focusedField = .password }
+//                }
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//
+//                if !viewModel.username.isEmpty {
+//                    Button(action: {
+//                        viewModel.username = ""
+//                    }, label: {
+//                        ItemDetailSectionIcon(icon: IconProvider.cross)
+//                    })
+//                }
+//            }
+//            .padding(.horizontal, DesignConstant.sectionPadding)
+//            .animation(.default, value: viewModel.username.isEmpty)
+//            .animation(.default, value: focusedField)
+//            .id(usernameID)
+//        }
+
+    func identityRow(title: String,
+                     subtitle: String,
+                     value: Binding<String>,
+                     shouldCapitalize: TextInputAutocapitalization = .never,
+                     keyboardType: UIKeyboardType = .asciiCapable) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(title)
+                    .sectionTitleText()
+
+                TextField(subtitle, text: value)
+                    .textInputAutocapitalization(.never)
+                    .keyboardType(keyboardType)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .username)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .password }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !value.wrappedValue.isEmpty {
+                Button(action: {
+                    value.wrappedValue = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
+                })
+            }
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+//            .animation(.default, value: viewModel.username.isEmpty)
+//            .animation(.default, value: focusedField)
+//            .id(usernameID)
+    }
+}
+
+//// MARK: - Address Detail Section
+// private extension CreateEditIdentityView {
+//    func personalDetailSection () -> some View {
+//    }
+// }
+//
+//// MARK: - Contact Detail Section
+// private extension CreateEditIdentityView {
+//    func personalDetailSection () -> some View {
+//    }
+// }
+//
+//// MARK: - Work Detail Section
+// private extension CreateEditIdentityView {
+//    func personalDetailSection () -> some View {
+//    }
+// }
+//
+//// MARK: - Custom Section
+// private extension CreateEditIdentityView {
+//    func personalDetailSection () -> some View {
+//    }
+// }
+
+// extension Dictionary {
+//    var keysArray: [Key] {
+//        Array(keys)
+//    }
+// }
+
+//
+// struct SecurityWeaknessDetailView: View {
+//    @StateObject var viewModel: SecurityWeaknessDetailViewModel
+//    @State private var collapsedSections = Set<SecuritySectionHeaderKey>()
+//    let isSheet: Bool
+//
+//    var body: some View {
+//        mainContainer.if(isSheet) { view in
+//            NavigationStack {
+//                view
+//            }
+//        }
+//    }
+// }
+//
+// private extension SecurityWeaknessDetailView {
+//    var mainContainer: some View {
+//        VStack {
+//            switch viewModel.state {
+//            case .fetching:
+//                ProgressView()
+//
+//            case let .fetched(data):
+//                if let subtitleInfo = viewModel.type.subtitleInfo {
+//                    Text(subtitleInfo)
+//                        .foregroundStyle(PassColor.textNorm.toColor)
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        .padding(.vertical)
+//                }
+//
+//                if data.isEmpty {
+//                    Spacer()
+//                    Image(uiImage: PassIcon.securityEmptyState)
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 195)
+//                    Text(viewModel.nothingWrongMessage)
+//                        .foregroundStyle(PassColor.textHint.toColor)
+//                        .fontWeight(.medium)
+//                        .multilineTextAlignment(.center)
+//                    Spacer()
+//                    Spacer()
+//                } else {
+//                    LazyVStack(spacing: 0) {
+//                        if viewModel.type.hasSections {
+//                            itemsSections(sections: data)
+//                        } else {
+//                            itemsList(items: data.flatMap(\.value))
+//                        }
+//                        Spacer()
+//                    }
+//                }
+//
+//            case let .error(error):
+//                Text(error.localizedDescription)
+//                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+//                    .frame(maxWidth: .infinity, alignment: .center)
+//            }
+//        }
+//        .padding(.horizontal, DesignConstant.sectionPadding)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .animation(.default, value: viewModel.state)
+//        .animation(.default, value: collapsedSections)
+//        .toolbar { toolbarContent }
+//        .if(viewModel.state.fetchedObject?.isEmpty == false) { view in
+//            view.scrollViewEmbeded(maxWidth: .infinity)
+//        }
+//        .background(PassColor.backgroundNorm.toColor)
+//        .navigationTitle(viewModel.type.title)
+//    }
+// }
+//
+//// MARK: - List of Items
+//
+// private extension SecurityWeaknessDetailView {
+//    func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
+//        ForEach(sections.sortedMostWeakness) { key in
+//            Section(content: {
+//                if !collapsedSections.contains(key), let items = sections[key] {
+//                    itemsList(items: items)
+//                }
+//            }, header: {
+//                header(for: key)
+//            })
+//        }
+//    }
+//
+//    func header(for key: SecuritySectionHeaderKey) -> some View {
+//        Label(title: { Text(key.title) },
+//              icon: {
+//                  if viewModel.type.collapsible {
+//                      Image(systemName: collapsedSections.contains(key) ? "chevron.up" : "chevron.down")
+//                          .resizable()
+//                          .scaledToFit()
+//                          .frame(width: 12)
+//                  }
+//              })
+//              .foregroundStyle(PassColor.textWeak.toColor)
+//              .frame(maxWidth: .infinity, alignment: .leading)
+//              .if(viewModel.type.collapsible) { view in
+//                  view
+//                      .padding(.top, DesignConstant.sectionPadding)
+//                      .buttonEmbeded {
+//                          if collapsedSections.contains(key) {
+//                              collapsedSections.remove(key)
+//                          } else {
+//                              collapsedSections.insert(key)
+//                          }
+//                      }
+//              }
+//    }
+//
+//    func itemsList(items: [ItemContent]) -> some View {
+//        ForEach(items) { item in
+//            itemRow(for: item)
+//        }
+//    }
+//
+//    func itemRow(for item: ItemContent) -> some View {
+//        Button {
+//            viewModel.showDetail(item: item)
+//        } label: {
+//            GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
+//                           title: item.title,
+//                           description: item.toItemUiModel.description)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .padding(.vertical, 3)
+//        }
+//        .buttonStyle(.plain)
+//    }
+// }
+//
+// private extension SecurityWeaknessDetailView {
+//    @ToolbarContentBuilder
+//    var toolbarContent: some ToolbarContent {
+//        ToolbarItem(placement: .navigationBarLeading) {
+//            CircleButton(icon: isSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+//                         iconColor: PassColor.interactionNormMajor2,
+//                         backgroundColor: PassColor.interactionNormMinor1,
+//                         accessibilityLabel: "Close") {
+//                viewModel.dismiss(isSheet: isSheet)
+//            }
+//        }
+//    }
+// }
+//
+// struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
+//    let id = UUID().uuidString
+//    let title: String
+//
+//    static func < (lhs: SecuritySectionHeaderKey, rhs: SecuritySectionHeaderKey) -> Bool {
+//        lhs.title < rhs.title
+//    }
+// }
+//
+// private extension SecurityWeakness {
+//    var hasSections: Bool {
+//        switch self {
+//        case .excludedItems, .missing2FA, .weakPasswords:
+//            false
+//        default:
+//            true
+//        }
+//    }
+//
+//    var collapsible: Bool {
+//        if case .reusedPasswords = self {
+//            return true
+//        }
+//        return false
+//    }
+// }
+//
+// private extension [SecuritySectionHeaderKey: [ItemContent]] {
+//    var sortedMostWeakness: [SecuritySectionHeaderKey] {
+//        self.keys.sorted {
+//            (self[$0]?.count ?? 0) > (self[$1]?.count ?? 0)
+//        }
+//    }
+// }
 
 // struct CreateEditIdentityView_Previews: PreviewProvider {
 //    static var previews: some View {

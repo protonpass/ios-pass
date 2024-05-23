@@ -25,11 +25,57 @@ import Combine
 import Core
 import Entities
 import Factory
+import Foundation
 import Macro
+
+enum BaseIdentitySection: String, CaseIterable {
+    case personalDetails = "Personal details"
+    case address = "Address details"
+    case contact = "Contact details"
+    case workDetail = "Work details"
+
+    var identitySectionHeaderKey: IdentitySectionHeaderKey {
+        IdentitySectionHeaderKey(title: rawValue)
+    }
+}
+
+@Copyable
+struct IdentitySection {
+    let id: String
+    let title: String
+    let order: Int
+
+    let cells: Set<IdentityCellContent>
+}
+
+struct IdentitySectionHeaderKey: Hashable, Comparable, Identifiable {
+    let title: String
+
+    var id: String {
+        title
+    }
+
+    static func < (lhs: IdentitySectionHeaderKey, rhs: IdentitySectionHeaderKey) -> Bool {
+        lhs.title < rhs.title
+    }
+}
+
+@Copyable
+struct IdentityCellContent: Hashable {
+    let id: String
+    let sectionid: String
+    let title: String
+//    let type: Int
+    let value: String
+}
 
 @MainActor
 final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, ObservableObject, Sendable {
     @Published var title = ""
+    @Published var fullName = ""
+
+    @Published var sections = [IdentitySectionHeaderKey: IdentitySection]()
+    @Published var collapsedSections = Set<IdentitySectionHeaderKey>()
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
@@ -37,11 +83,51 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
+        setUp()
     }
 
     override func itemContentType() -> ItemContentType { .identity }
+
+    func udpdateCellContent(newValue: String, sectionKey: IdentitySectionHeaderKey, contentId: String) {
+        guard let cellsContent = sections[sectionKey],
+              let newContent = cellsContent.cells.first(where: { $0.id == contentId })?.copy(value: newValue)
+        else {
+            return
+        }
+        var cells = cellsContent.cells
+        cells.update(with: newContent)
+        sections[sectionKey] = cellsContent.copy(cells: cells)
+    }
 }
 
 private extension CreateEditIdentityViewModel {
-    func setUp() {}
+    func setUp() {
+        mockData()
+        addDefaultCollapsedSection()
+    }
+
+    func addDefaultCollapsedSection() {
+        collapsedSections.insert(BaseIdentitySection.contact.identitySectionHeaderKey)
+        collapsedSections.insert(BaseIdentitySection.workDetail.identitySectionHeaderKey)
+    }
+
+    func mockData() {
+        for (index, key) in BaseIdentitySection.allCases.enumerated() {
+            let sectionkey = key.identitySectionHeaderKey
+            sections[sectionkey] = IdentitySection(id: UUID().uuidString,
+                                                   title: key.rawValue,
+                                                   order: index,
+                                                   cells: [IdentityCellContent(id: UUID().uuidString,
+                                                                               sectionid: sectionkey.id,
+                                                                               title: "First name", value: "")])
+        }
+    }
+}
+
+extension [IdentitySectionHeaderKey: IdentitySection] {
+    var sortedKey: [IdentitySectionHeaderKey] {
+        self.keys.sorted {
+            (self[$0]?.order ?? 0) < (self[$1]?.order ?? 0)
+        }
+    }
 }
