@@ -25,11 +25,6 @@ import ProtonCoreLogin
 import SwiftUI
 import UIKit
 
-// @MainActor
-// protocol CreateEditItemCoordinatorDelegate: AnyObject {
-//    func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool)
-// }
-
 typealias CreateEditItemDelegates =
     CreateEditItemViewModelDelegate &
     CreateEditLoginViewModelDelegate &
@@ -49,8 +44,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 
     private var currentViewModel: BaseCreateEditItemViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
-
-//    weak var delegate: (any CreateEditItemCoordinatorDelegate)?
 
     init(createEditItemDelegates: (any CreateEditItemDelegates)?) {
         self.createEditItemDelegates = createEditItemDelegates
@@ -115,7 +108,7 @@ extension CreateEditItemCoordinator {
                                         generatePasswordViewModelDelegate: createEditItemDelegates)
         case .identity:
             // TODO: Replace this
-            try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .creditCard))
+            try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
         }
     }
 
@@ -128,8 +121,6 @@ extension CreateEditItemCoordinator {
 
 private extension CreateEditItemCoordinator {
     func present(_ view: any View, dismissable: Bool) {
-//        assert(delegate != nil, "delegate is not set")
-//        delegate?.createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissable)
         router.navigate(to: .presentView(view: view, dismissible: dismissable))
     }
 
@@ -138,7 +129,6 @@ private extension CreateEditItemCoordinator {
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
-        viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -175,10 +165,6 @@ private extension CreateEditItemCoordinator {
     }
 
     func presentCreateEditIdentityView(mode: ItemMode) throws {
-//        let viewModel = try CreateEditLoginViewModel(mode: mode,
-//                                                     upgradeChecker: upgradeChecker,
-//                                                     vaults: vaultsManager.getAllVaults())
-
         let viewModel = try CreateEditIdentityViewModel(mode: mode,
                                                         upgradeChecker: upgradeChecker,
                                                         vaults: vaultsManager.getAllVaults())
@@ -191,8 +177,6 @@ private extension CreateEditItemCoordinator {
 
     func presentGeneratePasswordView(mode: GeneratePasswordViewMode,
                                      generatePasswordViewModelDelegate: (any GeneratePasswordViewModelDelegate)?) {
-//        assert(delegate != nil, "delegate is not set")
-//        guard delegate != nil else { return }
         Task { [weak self] in
             guard let self else { return }
             let coordinator =

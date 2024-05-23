@@ -403,7 +403,7 @@ private extension CredentialProviderCoordinator {
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaults)
             viewModel.delegate = self
-            viewModel.createEditLoginViewModelDelegate = self
+//            viewModel.createEditLoginViewModelDelegate = self
             let view = CreateEditLoginView(viewModel: viewModel)
             present(view)
             currentCreateEditItemViewModel = viewModel

@@ -50,6 +50,7 @@ enum ItemMode: Equatable, Hashable {
     }
 }
 
+// TODO: need to add identity
 enum ItemCreationType: Equatable, Hashable {
     case note(title: String, note: String)
     case alias
@@ -62,6 +63,8 @@ enum ItemCreationType: Equatable, Hashable {
                passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
     case creditCard
 
+    case identity
+
     var itemContentType: ItemContentType {
         switch self {
         case .note:
@@ -72,6 +75,8 @@ enum ItemCreationType: Equatable, Hashable {
             .login
         case .creditCard:
             .creditCard
+        case .identity:
+            .identity
         }
     }
 }

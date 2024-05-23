@@ -155,6 +155,9 @@ private extension DetailHistoryView {
                     creditCardView
                 case .alias:
                     aliasView
+                case .identity:
+                    // TODO: add identity history view
+                    EmptyView()
                 }
             }
             .animation(.default, value: viewModel.selectedRevision)

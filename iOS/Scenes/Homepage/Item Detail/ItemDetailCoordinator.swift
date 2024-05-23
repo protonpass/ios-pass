@@ -55,6 +55,8 @@ final class ItemDetailCoordinator: DeinitPrintable {
             makeAliasItemDetailPage(from: itemContent, asSheet: asSheet)
         case .creditCard:
             makeCreditCardDetailPage(from: itemContent, asSheet: asSheet)
+        case .identity:
+            makeIdentityDetailPage(from: itemContent, asSheet: asSheet)
         }
 
         itemDetailPage.viewModel.delegate = itemDetailViewModelDelegate
@@ -100,6 +102,15 @@ private extension ItemDetailCoordinator {
     }
 
     func makeCreditCardDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
+        let viewModel = CreditCardDetailViewModel(isShownAsSheet: asSheet,
+                                                  itemContent: itemContent,
+                                                  upgradeChecker: upgradeChecker)
+        return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
+    }
+
+    func makeIdentityDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
+        // TODO: Make detail view page for identity
+        #warning("THIS NEED TO CHNAGE JUST A PLACE HOLDER")
         let viewModel = CreditCardDetailViewModel(isShownAsSheet: asSheet,
                                                   itemContent: itemContent,
                                                   upgradeChecker: upgradeChecker)

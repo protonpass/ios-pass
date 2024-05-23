@@ -21,11 +21,13 @@
 import CoreSpotlight
 import Foundation
 
+// TODO: Need to add identity in
 public enum ItemContentData: Sendable, Equatable, Hashable {
     case alias
     case login(LogInItemData)
     case note
     case creditCard(CreditCardData)
+    case identity(IdentityData)
 
     public var type: ItemContentType {
         switch self {
@@ -37,6 +39,8 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
             .note
         case .creditCard:
             .creditCard
+        case .identity:
+            .identity
         }
     }
 }
@@ -113,6 +117,227 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
     }
 }
 
+public struct IdentityData: Sendable, Equatable, Hashable {
+    /// Personal details
+    /// Shown
+    public let fullName: String
+    public let email: String
+    public let phoneNumber: String
+
+    /// Additional
+    public let firstName: String
+    public let middleName: String
+    public let lastName: String
+    public let birthdate: String
+    public let gender: String
+    public let extraPersonalDetails: [CustomField]
+
+    /// Address details
+    /// Shown
+    public let organization: String
+    public let streetAddress: String
+    public let zipOrPostalCode: String
+    public let city: String
+    public let stateOrProvince: String
+    public let countryOrRegion: String
+
+    /// Additional
+    public let floor: String
+    public let county: String
+    public let extraAddressDetails: [CustomField]
+
+    /// Contact details
+    /// Shown
+    public let socialSecurityNumber: String
+    public let passportNumber: String
+    public let licenseNumber: String
+    public let website: String
+    public let xHandle: String
+    public let secondPhoneNumber: String
+
+    /// Additional
+    public let linkedin: String
+    public let reddit: String
+    public let facebook: String
+    public let yahoo: String
+    public let instagram: String
+    public let extraContactDetails: [CustomField]
+
+    /// Work details
+    /// Shown
+    public let company: String
+    public let jobTitle: String
+
+    /// Additional
+    public let personalWebsite: String
+    public let workPhoneNumber: String
+    public let workEmail: String
+    public let extraWorkDetails: [CustomField]
+
+    /// Extra sections
+    public let extraSections: [CustomSection]
+
+    public init(from data: ProtonPassItemV1_ItemIdentity) {
+        self.init(fullName: data.fullName,
+                  email: data.email,
+                  phoneNumber: data.phoneNumber,
+                  firstName: data.firstName,
+                  middleName: data.middleName,
+                  lastName: data.lastName,
+                  birthdate: data.birthdate,
+                  gender: data.gender,
+                  extraPersonalDetails: data.extraPersonalDetails.map { CustomField(from: $0) },
+                  organization: data.organization,
+                  streetAddress: data.streetAddress,
+                  zipOrPostalCode: data.zipOrPostalCode,
+                  city: data.city,
+                  stateOrProvince: data.stateOrProvince,
+                  countryOrRegion: data.countryOrRegion,
+                  floor: data.floor,
+                  county: data.county,
+                  extraAddressDetails: data.extraAddressDetails.map { CustomField(from: $0) },
+                  socialSecurityNumber: data.socialSecurityNumber,
+                  passportNumber: data.passportNumber,
+                  licenseNumber: data.licenseNumber,
+                  website: data.website,
+                  xHandle: data.xHandle,
+                  secondPhoneNumber: data.secondPhoneNumber,
+                  linkedin: data.linkedin,
+                  reddit: data.reddit,
+                  facebook: data.facebook,
+                  yahoo: data.yahoo,
+                  instagram: data.instagram,
+                  extraContactDetails: data.extraContactDetails.map { CustomField(from: $0) },
+                  company: data.company,
+                  jobTitle: data.jobTitle,
+                  personalWebsite: data.personalWebsite,
+                  workPhoneNumber: data.workPhoneNumber,
+                  workEmail: data.workEmail,
+                  extraWorkDetails: data.extraWorkDetails.map { CustomField(from: $0) },
+                  extraSections: data.extraSections.map { CustomSection(from: $0) })
+    }
+
+    public init(fullName: String,
+                email: String,
+                phoneNumber: String,
+                firstName: String,
+                middleName: String,
+                lastName: String,
+                birthdate: String,
+                gender: String,
+                extraPersonalDetails: [CustomField],
+                organization: String,
+                streetAddress: String,
+                zipOrPostalCode: String,
+                city: String,
+                stateOrProvince: String,
+                countryOrRegion: String,
+                floor: String,
+                county: String,
+                extraAddressDetails: [CustomField],
+                socialSecurityNumber: String,
+                passportNumber: String,
+                licenseNumber: String,
+                website: String,
+                xHandle: String,
+                secondPhoneNumber: String,
+                linkedin: String,
+                reddit: String,
+                facebook: String,
+                yahoo: String,
+                instagram: String,
+                extraContactDetails: [CustomField],
+                company: String,
+                jobTitle: String,
+                personalWebsite: String,
+                workPhoneNumber: String,
+                workEmail: String,
+                extraWorkDetails: [CustomField],
+                extraSections: [CustomSection]) {
+        self.fullName = fullName
+        self.email = email
+        self.phoneNumber = phoneNumber
+        self.firstName = firstName
+        self.middleName = middleName
+        self.lastName = lastName
+        self.birthdate = birthdate
+        self.gender = gender
+        self.extraPersonalDetails = extraPersonalDetails
+        self.organization = organization
+        self.streetAddress = streetAddress
+        self.zipOrPostalCode = zipOrPostalCode
+        self.city = city
+        self.stateOrProvince = stateOrProvince
+        self.countryOrRegion = countryOrRegion
+        self.floor = floor
+        self.county = county
+        self.extraAddressDetails = extraAddressDetails
+        self.socialSecurityNumber = socialSecurityNumber
+        self.passportNumber = passportNumber
+        self.licenseNumber = licenseNumber
+        self.website = website
+        self.xHandle = xHandle
+        self.secondPhoneNumber = secondPhoneNumber
+        self.linkedin = linkedin
+        self.reddit = reddit
+        self.facebook = facebook
+        self.yahoo = yahoo
+        self.instagram = instagram
+        self.extraContactDetails = extraContactDetails
+        self.company = company
+        self.jobTitle = jobTitle
+        self.personalWebsite = personalWebsite
+        self.workPhoneNumber = workPhoneNumber
+        self.workEmail = workEmail
+        self.extraWorkDetails = extraWorkDetails
+        self.extraSections = extraSections
+    }
+}
+
+private extension IdentityData {
+    var toProtonPassItemV1ItemIdentity: ProtonPassItemV1_ItemIdentity {
+        var item = ProtonPassItemV1_ItemIdentity()
+        item.fullName = fullName
+        item.email = email
+        item.phoneNumber = phoneNumber
+        item.firstName = firstName
+        item.middleName = middleName
+        item.lastName = lastName
+        item.birthdate = birthdate
+        item.gender = gender
+        item.extraPersonalDetails = extraPersonalDetails.toProtonPassItemV1ExtraFields
+        item.organization = organization
+        item.streetAddress = streetAddress
+        item.zipOrPostalCode = zipOrPostalCode
+        item.city = city
+        item.stateOrProvince = stateOrProvince
+        item.countryOrRegion = countryOrRegion
+        item.floor = floor
+        item.county = county
+        item.extraAddressDetails = extraAddressDetails.toProtonPassItemV1ExtraFields
+        item.socialSecurityNumber = socialSecurityNumber
+        item.passportNumber = passportNumber
+        item.licenseNumber = licenseNumber
+        item.website = website
+        item.xHandle = xHandle
+        item.secondPhoneNumber = secondPhoneNumber
+        item.linkedin = linkedin
+        item.reddit = reddit
+        item.facebook = facebook
+        item.yahoo = yahoo
+        item.instagram = instagram
+        item.extraContactDetails = extraContactDetails.toProtonPassItemV1ExtraFields
+        item.company = company
+        item.jobTitle = jobTitle
+        item.personalWebsite = personalWebsite
+        item.workPhoneNumber = workPhoneNumber
+        item.workEmail = workEmail
+        item.extraWorkDetails = extraWorkDetails.toProtonPassItemV1ExtraFields
+        item.extraSections = extraSections.toProtonPassItemV1ExtraIdentitySections
+        return item
+    }
+}
+
 public extension CreditCardData {
     static func expirationDate(month: Int, year: Int) -> String {
         String(format: "%02d / %02d", month, year % 100)
@@ -133,6 +358,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let name: String
     public let note: String
     public let contentData: ItemContentData
+
+    /// Should only be used for item that are not identity for now
     public let customFields: [CustomField]
 
     public var id: String {
@@ -249,6 +476,8 @@ public extension ItemContent {
                 contents.append(data.cardholderName)
             case .note:
                 break
+            case let .identity(data):
+                contents.append(contentsOf: [data.fullName, data.email])
             }
 
             let customFieldValues = customFields
@@ -314,6 +543,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                          passkeys: data.passkeys))
         case .none:
             .note
+        case let .identity(data):
+            .identity(IdentityData(from: data))
         }
     }
 
@@ -363,9 +594,39 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
 
         case .note:
             content.note = .init()
+        case let .identity(data):
+            content.identity = data.toProtonPassItemV1ItemIdentity
         }
 
-        extraFields = customFields.map { customField in
+//        extraFields = customFields.map { customField in
+//            var extraField = ProtonPassItemV1_ExtraField()
+//            extraField.fieldName = customField.title
+//
+//            switch customField.type {
+//            case .text:
+//                extraField.text = .init()
+//                extraField.text.content = customField.content
+//
+//            case .totp:
+//                extraField.totp = .init()
+//                extraField.totp.totpUri = customField.content
+//
+//            case .hidden:
+//                extraField.hidden = .init()
+//                extraField.hidden.content = customField.content
+//            }
+//
+//            return extraField
+//        }
+        extraFields = customFields.toProtonPassItemV1ExtraFields
+    }
+}
+
+extension LogInItemData: UsernameEmailContainer {}
+
+private extension [CustomField] {
+    var toProtonPassItemV1ExtraFields: [ProtonPassItemV1_ExtraField] {
+        self.map { customField in
             var extraField = ProtonPassItemV1_ExtraField()
             extraField.fieldName = customField.title
 
@@ -388,4 +649,13 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     }
 }
 
-extension LogInItemData: UsernameEmailContainer {}
+private extension [CustomSection] {
+    var toProtonPassItemV1ExtraIdentitySections: [ProtonPassItemV1_ExtraIdentitySection] {
+        self.map { section in
+            var extraSection = ProtonPassItemV1_ExtraIdentitySection()
+            extraSection.sectionName = section.title
+            extraSection.sectionFields = section.content.toProtonPassItemV1ExtraFields
+            return extraSection
+        }
+    }
+}
