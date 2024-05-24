@@ -168,7 +168,7 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditIdentityViewModel(mode: mode,
                                                         upgradeChecker: upgradeChecker,
                                                         vaults: vaultsManager.getAllVaults())
-//        viewModel.delegate = createEditItemDelegates
+        viewModel.delegate = createEditItemDelegates
 //        viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
         let view = CreateEditIdentityView(viewModel: viewModel)
         present(view, dismissable: false)
