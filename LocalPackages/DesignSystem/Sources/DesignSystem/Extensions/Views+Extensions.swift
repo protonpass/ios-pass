@@ -42,11 +42,10 @@ public extension View {
         .frame(maxWidth: maxWidth, maxHeight: maxHeight)
     }
 
-    func buttonEmbeded(_ action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            self
-                .contentShape(.rect)
-        }
-        .buttonStyle(.plain)
+    func buttonEmbeded(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
+        Button(role: role,
+               action: action,
+               label: { self.contentShape(.rect) })
+            .buttonStyle(.plain)
     }
 }

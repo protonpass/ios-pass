@@ -50,67 +50,55 @@ struct ItemDetailToolbar: ToolbarContent {
                                        title: #localized("Edit"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: itemContentType.normMajor1Color,
-                                       isDisabled: !viewModel.isAllowedToEdit) {
-                        viewModel.edit()
-                    }
+                                       isDisabled: !viewModel.isAllowedToEdit,
+                                       action: { viewModel.edit() })
 
                     if viewModel.isAllowedToShare {
                         CircleButton(icon: IconProvider.usersPlus,
                                      iconColor: itemContentType.normMajor2Color,
                                      backgroundColor: itemContentType.normMinor1Color,
-                                     accessibilityLabel: "Share") {
-                            viewModel.share()
-                        }
+                                     accessibilityLabel: "Share",
+                                     action: { viewModel.share() })
                     }
 
                     Menu(content: {
-                        Button { viewModel.moveToAnotherVault() }
-                            label: { Label(title: { Text("Move to another vault") },
-                                           icon: { Image(uiImage: IconProvider.folderArrowIn) }) }
+                        Label("Move to another vault", uiImage: IconProvider.folderArrowIn)
+                            .buttonEmbeded { viewModel.moveToAnotherVault() }
                             .hidden(!viewModel.isAllowedToEdit)
 
                         if viewModel.isPublicLinkActive {
-                            Button { viewModel.publicLinkSharing() }
-                                label: { Label(title: { Text(verbatim: "Share with public link") },
-                                               icon: { Image(systemName: "square.and.arrow.up") }) }
+                            Label("Secure link", systemImage: "square.and.arrow.up")
+                                .buttonEmbeded { viewModel.publicLinkSharing() }
                         }
 
-                        Button { viewModel.toggleItemPinning() }
-                            label: {
-                                Label(title: { Text(viewModel.itemContent.item.pinTitle) },
-                                      icon: { Image(uiImage: viewModel.itemContent.item.pinIcon) })
-                            }
+                        Label(viewModel.itemContent.item.pinTitle,
+                              uiImage: viewModel.itemContent.item.pinIcon)
+                            .buttonEmbeded { viewModel.toggleItemPinning() }
 
                         if viewModel.itemContent.type == .note {
-                            Button { viewModel.copyNoteContent() }
-                                label: { Label(title: { Text("Copy note content") },
-                                               icon: { Image(uiImage: IconProvider.note) }) }
+                            Label("Copy note content", image: IconProvider.note)
+                                .buttonEmbeded { viewModel.copyNoteContent() }
                         }
 
                         if viewModel.itemContent.type != .alias {
-                            Button(action: { viewModel.clone() }, label: {
-                                Label(title: { Text("Clone") },
-                                      icon: { Image(uiImage: IconProvider.squares) })
-                            })
+                            Label("Clone", image: IconProvider.squares)
+                                .buttonEmbeded { viewModel.clone() }
                         }
 
                         if viewModel.itemContent.type == .login {
-                            let title = viewModel.isMonitored ?
-                                #localized("Exclude from monitoring") :
-                                #localized("Include for monitoring")
+                            let title: LocalizedStringKey = viewModel.isMonitored ?
+                                "Exclude from monitoring" : "Include for monitoring"
                             let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye
 
-                            Button(action: { viewModel.toggleMonitoring() },
-                                   label: { Label(title: { Text(title) },
-                                                  icon: { Image(uiImage: icon) }) })
+                            Label(title, uiImage: icon)
+                                .buttonEmbeded { viewModel.toggleMonitoring() }
                         }
 
                         Divider()
 
-                        Button(role: .destructive,
-                               action: { viewModel.moveToTrash() },
-                               label: { Label(title: { Text("Move to trash") },
-                                              icon: { Image(uiImage: IconProvider.trash) }) })
+                        Label("Move to trash", image: IconProvider.trash)
+                            .buttonEmbeded(role: .destructive,
+                                           action: { viewModel.moveToTrash() })
                             .hidden(!viewModel.isAllowedToEdit)
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,
@@ -122,16 +110,14 @@ struct ItemDetailToolbar: ToolbarContent {
 
             case .trashed:
                 Menu(content: {
-                    Button { viewModel.restore() }
-                        label: { Label(title: { Text("Restore") },
-                                       icon: { Image(uiImage: IconProvider.clockRotateLeft) }) }
+                    Label("Restore", image: IconProvider.clockRotateLeft)
+                        .buttonEmbeded { viewModel.restore() }
 
                     Divider()
 
-                    Button(role: .destructive,
-                           action: { viewModel.showingDeleteAlert.toggle() },
-                           label: { Label(title: { Text("Delete permanently") },
-                                          icon: { Image(uiImage: IconProvider.trashCross) }) })
+                    Label("Delete permanently", image: IconProvider.trashCross)
+                        .buttonEmbeded(role: .destructive,
+                                       action: { viewModel.showingDeleteAlert.toggle() })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: itemContentType.normMajor2Color,
