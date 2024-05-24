@@ -27,9 +27,69 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+// swiftlint:disable file_length
+
+protocol MultipleSheetDisplaying where Self: Equatable {
+    // This the none displaying modal enum case. Should always be present
+    static var none: Self { get }
+
+    // This is the binding boolean used to toggle the sheet display
+    var shouldDisplay: Bool { get set }
+}
+
+extension MultipleSheetDisplaying {
+    var shouldDisplay: Bool {
+        get {
+            switch self {
+            case .none:
+                false
+            default:
+                true
+            }
+        }
+
+        set(newValue) {
+            self = newValue ? self : .none
+        }
+    }
+}
+
+enum SectionsSheetStates: MultipleSheetDisplaying {
+    case none
+    case personal(CreateEditIdentitySection)
+    case address(CreateEditIdentitySection)
+    case contact(CreateEditIdentitySection)
+    case work(CreateEditIdentitySection)
+
+    var title: String {
+        switch self {
+        case .personal:
+            "Personal Details"
+        case .address:
+            "Address Details"
+        case .contact:
+            "Contact Details"
+        case .work:
+            "Work Details"
+        default:
+            ""
+        }
+    }
+
+    var section: CreateEditIdentitySection? {
+        switch self {
+        case let .address(section), let .contact(section), let .personal(section), let .work(section):
+            section
+        default:
+            nil
+        }
+    }
+}
+
 struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var sheetState: SectionsSheetStates = .none
 
     @State private var isShowingDiscardAlert = false
     @FocusState private var focusedField: Field?
@@ -54,6 +114,18 @@ struct CreateEditIdentityView: View {
 
     var body: some View {
         mainContainer
+            .sheet(isPresented: $sheetState.shouldDisplay) {
+                switch sheetState {
+                default:
+                    ViewThatFits {
+                        sheetContent
+                        ScrollView {
+                            sheetContent
+                        }
+                    }.presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
+                }
+            }
             .navigationStackEmbeded()
     }
 }
@@ -61,7 +133,7 @@ struct CreateEditIdentityView: View {
 private extension CreateEditIdentityView {
     var mainContainer: some View {
         ScrollView {
-            LazyVStack(spacing: DesignConstant.sectionPadding / 2) {
+            LazyVStack(spacing: DesignConstant.sectionPadding) {
                 CreateEditItemTitleSection(title: $viewModel.title,
                                            focusedField: $focusedField,
                                            field: .title,
@@ -71,6 +143,12 @@ private extension CreateEditIdentityView {
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
 
                 sections()
+                PassSectionDivider()
+                CapsuleLabelButton(icon: IconProvider.plus,
+                                   title: "Add a custom section",
+                                   titleColor: viewModel.itemContentType().normMajor2Color,
+                                   backgroundColor: viewModel.itemContentType().normMinor1Color,
+                                   height: 55) {}
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
             .padding(.bottom, DesignConstant.sectionPadding)
@@ -107,27 +185,40 @@ private extension CreateEditIdentityView {
 }
 
 private extension CreateEditIdentityView {
+    @ViewBuilder
     func sections() -> some View {
-        ForEach(viewModel.sections.sortedKey) { key in
+        ForEach(Array(viewModel.sections.enumerated()), id: \.element.id) { index, section in
             Section(content: {
-                if !viewModel.collapsedSections.contains(key), let items = viewModel.sections[key] {
-//                    switch viewModel.sections[key] {
-//                    case .
-//                    }
-                    personalDetailSection()
-//                    Text("test")
-//                    itemsList(items: items)
+                switch index {
+                case 0:
+                    if !section.isCollapsed {
+                        personalDetailSection(section)
+                    }
+                case 1:
+                    if !section.isCollapsed {
+                        addressDetailSection(section)
+                    }
+                case 2:
+                    if !section.isCollapsed {
+                        contactDetailSection(section)
+                    }
+                case 3:
+                    if !section.isCollapsed {
+                        workDetailSection(section)
+                    }
+                default:
+                    EmptyView()
                 }
             }, header: {
-                header(for: key)
+                header(for: section)
             })
         }
     }
 
-    func header(for key: IdentitySectionHeaderKey) -> some View {
-        Label(title: { Text(key.title) },
+    func header(for section: CreateEditIdentitySection) -> some View {
+        Label(title: { Text(section.title) },
               icon: {
-                  Image(systemName: viewModel.collapsedSections.contains(key) ? "chevron.up" : "chevron.down")
+                  Image(systemName: section.isCollapsed ? "chevron.down" : "chevron.up")
                       .resizable()
                       .scaledToFit()
                       .frame(width: 12)
@@ -136,11 +227,7 @@ private extension CreateEditIdentityView {
               .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.top, DesignConstant.sectionPadding)
               .buttonEmbeded {
-                  if viewModel.collapsedSections.contains(key) {
-                      viewModel.collapsedSections.remove(key)
-                  } else {
-                      viewModel.collapsedSections.insert(key)
-                  }
+                  viewModel.toggleCollapsingSection(sectionToToggle: section)
               }
     }
 }
@@ -148,22 +235,91 @@ private extension CreateEditIdentityView {
 // MARK: - Personal Detail Section
 
 private extension CreateEditIdentityView {
-    func personalDetailSection() -> some View {
+    func personalDetailSection(_ section: CreateEditIdentitySection) -> some View {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
+                if viewModel.firstName.shouldShow {
+                    identityRow(title: "First name",
+                                subtitle: "First name",
+                                value: $viewModel.firstName.value)
+                    PassSectionDivider()
+                }
+
+                if viewModel.middleName.shouldShow {
+                    identityRow(title: "Middle name",
+                                subtitle: "Middle name",
+                                value: $viewModel.middleName.value)
+                    PassSectionDivider()
+                }
+
+                if viewModel.lastName.shouldShow {
+                    identityRow(title: "Last name",
+                                subtitle: "Last name",
+                                value: $viewModel.lastName.value)
+                    PassSectionDivider()
+                }
+
                 identityRow(title: "Full name",
                             subtitle: "Full name",
                             value: $viewModel.fullName)
                 PassSectionDivider()
                 identityRow(title: "Email",
                             subtitle: "Email",
-                            value: $viewModel.fullName,
+                            value: $viewModel.email,
                             keyboardType: .emailAddress)
                 PassSectionDivider()
                 identityRow(title: "Phone number",
                             subtitle: "Phone number",
-                            value: $viewModel.fullName,
+                            value: $viewModel.phoneNumber,
                             keyboardType: .phonePad)
+
+                if viewModel.birthdate.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Birthdate",
+                                subtitle: "Birthdate",
+                                value: $viewModel.birthdate.value)
+                }
+
+                if viewModel.gender.shouldShow {
+                    PassSectionDivider()
+
+                    identityRow(title: "Gender",
+                                subtitle: "Gender",
+                                value: $viewModel.gender.value)
+                }
+//
+                ////                // TODO: Custom field
+//                EditCustomFieldSections(focusedField: $focusedField,
+//                                        focusedCustomField: viewModel.recentlyAddedOrEditedField,
+//                                        contentType: .login,
+//                                        uiModels: $viewModel.customFieldUiModels,
+//                                        canAddMore: viewModel.canAddMoreCustomFields,
+//                                        onAddMore: { viewModel.addCustomField() },
+//                                        onEditTitle: { model in viewModel.editCustomFieldTitle(model) },
+//                                        onUpgrade: { viewModel.upgrade() })
+//
+                ForEach($viewModel.extraPersonalDetails) { $field in
+                    VStack {
+                        PassSectionDivider()
+                        EditCustomFieldView(focusedField: $focusedField,
+                                            field: .custom(field),
+                                            contentType: .identity,
+                                            uiModel: $field,
+                                            showIcon: false,
+                                            roundedSection: false,
+                                            onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                            onRemove: {
+                                                // Work around a crash in later versions of iOS 17
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                    viewModel.extraPersonalDetails
+                                                        .removeAll(where: { $0.id == field.id })
+                                                }
+                                            })
+                    }
+                }
+//
+
+//                if vie
                 //            if !viewModel.email.isEmpty, viewModel.isAlias {
                 //                pendingAliasRow
                 //            } else {
@@ -188,44 +344,379 @@ private extension CreateEditIdentityView {
                                title: "Add more",
                                titleColor: viewModel.itemContentType().normMajor2Color,
                                backgroundColor: viewModel.itemContentType().normMinor1Color,
-                               maxWidth: 140) {}
+                               maxWidth: 140) { sheetState = .personal(section) }
         }
     }
+}
 
-//        var usernameRow: some View {
-//            HStack(spacing: DesignConstant.sectionPadding) {
-//                ItemDetailSectionIcon(icon: IconProvider.user)
 //
-//                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                    Text("Username")
-//                        .sectionTitleText()
+// struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
+//    let focusedField: FocusState<Field?>.Binding
+//    let focusedCustomField: CustomFieldUiModel?
+//    let contentType: ItemContentType
+//    @Binding var uiModels: [CustomFieldUiModel]
+//    let canAddMore: Bool
+//    let onAddMore: () -> Void
+//    let onEditTitle: (CustomFieldUiModel) -> Void
+//    let onUpgrade: () -> Void
 //
-//                    TextField("Add username", text: $viewModel.username)
-//                        .textInputAutocapitalization(.never)
-//                        .autocorrectionDisabled()
-//                        .focused($focusedField, equals: .username)
-//                        .foregroundStyle(PassColor.textNorm.toColor)
-//                        .submitLabel(.next)
-//                        .onSubmit { focusedField = .password }
-//                }
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//
-//                if !viewModel.username.isEmpty {
-//                    Button(action: {
-//                        viewModel.username = ""
-//                    }, label: {
-//                        ItemDetailSectionIcon(icon: IconProvider.cross)
-//                    })
-//                }
-//            }
-//            .padding(.horizontal, DesignConstant.sectionPadding)
-//            .animation(.default, value: viewModel.username.isEmpty)
-//            .animation(.default, value: focusedField)
-//            .id(usernameID)
+//    var body: some View {
+//        ForEach($uiModels) { $uiModel in
+//            EditCustomFieldView(focusedField: focusedField,
+//                                field: .custom(uiModel),
+//                                contentType: contentType,
+//                                uiModel: $uiModel,
+//                                onEditTitle: { onEditTitle(uiModel) },
+//                                onRemove: {
+//                                    // Work around a crash in later versions of iOS 17
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                                        uiModels.removeAll(where: { $0.id == uiModel.id })
+//                                    }
+//                                })
 //        }
+//        .onChange(of: focusedCustomField) { newValue in
+//            focusedField.wrappedValue = .custom(newValue)
+//        }
+//
+//        if canAddMore {
+//            addMoreButton
+//        } else {
+//            upgradeButton
+//        }
+//    }
+//
+//    private var addMoreButton: some View {
+//        Button(action: onAddMore) {
+//            Label(title: {
+//                Text("Add more")
+//                    .font(.callout)
+//                    .fontWeight(.medium)
+//            }, icon: {
+//                Image(systemName: "plus")
+//            })
+//            .foregroundStyle(contentType.normMajor2Color.toColor)
+//        }
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//        .padding(.vertical, DesignConstant.sectionPadding)
+//    }
+//
+//    private var upgradeButton: some View {
+//        Button(action: onUpgrade) {
+//            Label(title: {
+//                Text("Upgrade to add custom fields")
+//                    .font(.callout)
+//                    .fontWeight(.medium)
+//            }, icon: {
+//                Image(uiImage: IconProvider.arrowOutSquare)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(maxWidth: 16)
+//            })
+//            .foregroundStyle(contentType.normMajor2Color.toColor)
+//        }
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//        .padding(.vertical, DesignConstant.sectionPadding)
+//    }
+// }
 
+// MARK: - Address Detail Section
+
+private extension CreateEditIdentityView {
+    func addressDetailSection(_ section: CreateEditIdentitySection) -> some View {
+        VStack(alignment: .leading) {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                identityRow(title: "Organization",
+                            subtitle: "Organization",
+                            value: $viewModel.organization)
+                PassSectionDivider()
+                identityRow(title: "Street address, P.O. box",
+                            subtitle: "Street address, P.O. box",
+                            value: $viewModel.streetAddress)
+                PassSectionDivider()
+                identityRow(title: "ZIP or Postal code",
+                            subtitle: "ZIP or Postal code",
+                            value: $viewModel.zipOrPostalCode,
+                            keyboardType: .numberPad)
+                PassSectionDivider()
+
+                identityRow(title: "City",
+                            subtitle: "City",
+                            value: $viewModel.city)
+                PassSectionDivider()
+
+                identityRow(title: "State or province",
+                            subtitle: "State or province",
+                            value: $viewModel.stateOrProvince)
+                PassSectionDivider()
+
+                identityRow(title: "Country or Region",
+                            subtitle: "Country or Region",
+                            value: $viewModel.countryOrRegion)
+
+                if viewModel.floor.shouldShow {
+                    PassSectionDivider()
+
+                    identityRow(title: "Floor",
+                                subtitle: "Floor",
+                                value: $viewModel.floor.value)
+                }
+
+                if viewModel.county.shouldShow {
+                    PassSectionDivider()
+
+                    identityRow(title: "County",
+                                subtitle: "County",
+                                value: $viewModel.county.value)
+                }
+
+                //
+                //                // TODO: Custom field
+//                EditCustomFieldSections(focusedField: $focusedField,
+//                                        focusedCustomField: viewModel.recentlyAddedOrEditedField,
+//                                        contentType: .login,
+//                                        uiModels: $viewModel.customFieldUiModels,
+//                                        canAddMore: viewModel.canAddMoreCustomFields,
+//                                        onAddMore: { viewModel.addCustomField() },
+//                                        onEditTitle: { model in
+//                                            viewModel.editCustomFieldTitle(model)
+//                                        },
+//                                        onUpgrade: { viewModel.upgrade() })
+                //
+                //                ForEach(viewModel.extraPersonalDetails) { field in
+                //                    PassSectionDivider()
+                //                    identityRow(title: field.title,
+                //                                subtitle: field.title,
+                //                                value: $viewModel.gender.value)
+                //                }
+                //
+
+                //                if vie
+                //            if !viewModel.email.isEmpty, viewModel.isAlias {
+                //                pendingAliasRow
+                //            } else {
+                //                emailRow
+                //            }
+                //            if viewModel.showUsernameField {
+                //                PassSectionDivider()
+                //                usernameRow
+                //            }
+                //            PassSectionDivider()
+                //            passwordRow
+                //            PassSectionDivider()
+                //            if viewModel.canAddOrEdit2FAURI {
+                //                totpAllowedRow
+                //            } else {
+                //                totpNotAllowedRow
+                //            }
+            }
+            .padding(.vertical, DesignConstant.sectionPadding)
+            .roundedEditableSection()
+            CapsuleLabelButton(icon: IconProvider.plus,
+                               title: "Add more",
+                               titleColor: viewModel.itemContentType().normMajor2Color,
+                               backgroundColor: viewModel.itemContentType().normMinor1Color,
+                               maxWidth: 140) { sheetState = .address(section) }
+        }
+    }
+}
+
+// MARK: - Contact Detail Section
+
+private extension CreateEditIdentityView {
+    func contactDetailSection(_ section: CreateEditIdentitySection) -> some View {
+        VStack(alignment: .leading) {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                identityRow(title: "Social security number",
+                            value: $viewModel.socialSecurityNumber)
+                PassSectionDivider()
+                identityRow(title: "Passpord number",
+                            value: $viewModel.passportNumber)
+                PassSectionDivider()
+                identityRow(title: "License number",
+                            value: $viewModel.licenseNumber)
+                PassSectionDivider()
+                identityRow(title: "Website",
+                            value: $viewModel.website)
+                PassSectionDivider()
+                identityRow(title: "X handle",
+                            value: $viewModel.xHandle)
+                PassSectionDivider()
+                identityRow(title: "Second phone number",
+                            value: $viewModel.secondPhoneNumber,
+                            keyboardType: .namePhonePad)
+
+                if viewModel.linkedin.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Linkedin",
+                                value: $viewModel.linkedin.value)
+                }
+
+                if viewModel.reddit.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Reddit",
+                                value: $viewModel.reddit.value)
+                }
+
+                if viewModel.facebook.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Facebook",
+                                value: $viewModel.facebook.value)
+                }
+
+                if viewModel.yahoo.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Yahoo",
+                                value: $viewModel.yahoo.value)
+                }
+
+                if viewModel.instagram.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Instagram",
+                                value: $viewModel.instagram.value)
+                }
+
+                //
+                //                // TODO: Custom field
+//                EditCustomFieldSections(focusedField: $focusedField,
+//                                        focusedCustomField: viewModel.recentlyAddedOrEditedField,
+//                                        contentType: .login,
+//                                        uiModels: $viewModel.customFieldUiModels,
+//                                        canAddMore: viewModel.canAddMoreCustomFields,
+//                                        onAddMore: { viewModel.addCustomField() },
+//                                        onEditTitle: { model in
+//                                            viewModel.editCustomFieldTitle(model)
+//                                        },
+//                                        onUpgrade: { viewModel.upgrade() })
+
+                //                ForEach(viewModel.extraPersonalDetails) { field in
+                //                    PassSectionDivider()
+                //                    identityRow(title: field.title,
+                //                                subtitle: field.title,
+                //                                value: $viewModel.gender.value)
+                //                }
+                //
+
+                //                if vie
+                //            if !viewModel.email.isEmpty, viewModel.isAlias {
+                //                pendingAliasRow
+                //            } else {
+                //                emailRow
+                //            }
+                //            if viewModel.showUsernameField {
+                //                PassSectionDivider()
+                //                usernameRow
+                //            }
+                //            PassSectionDivider()
+                //            passwordRow
+                //            PassSectionDivider()
+                //            if viewModel.canAddOrEdit2FAURI {
+                //                totpAllowedRow
+                //            } else {
+                //                totpNotAllowedRow
+                //            }
+            }
+            .padding(.vertical, DesignConstant.sectionPadding)
+            .roundedEditableSection()
+            CapsuleLabelButton(icon: IconProvider.plus,
+                               title: "Add more",
+                               titleColor: viewModel.itemContentType().normMajor2Color,
+                               backgroundColor: viewModel.itemContentType().normMinor1Color,
+                               maxWidth: 140) { sheetState = .contact(section) }
+        }
+    }
+}
+
+// MARK: - Work Detail Section
+
+private extension CreateEditIdentityView {
+    func workDetailSection(_ section: CreateEditIdentitySection) -> some View {
+        VStack(alignment: .leading) {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                identityRow(title: "Company",
+                            value: $viewModel.company)
+                PassSectionDivider()
+                identityRow(title: "Job title",
+                            value: $viewModel.jobTitle)
+
+                if viewModel.personalWebsite.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Personal website",
+                                value: $viewModel.personalWebsite.value)
+                }
+
+                if viewModel.workPhoneNumber.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Work phone number",
+                                value: $viewModel.workPhoneNumber.value,
+                                keyboardType: .namePhonePad)
+                }
+
+                if viewModel.workEmail.shouldShow {
+                    PassSectionDivider()
+                    identityRow(title: "Work email",
+                                value: $viewModel.workEmail.value)
+                }
+
+                //
+                //                // TODO: Custom field
+//                EditCustomFieldSections(focusedField: $focusedField,
+//                                        focusedCustomField: viewModel.recentlyAddedOrEditedField,
+//                                        contentType: .identity,
+//                                        uiModels: $viewModel.customFieldUiModels,
+//                                        canAddMore: viewModel.canAddMoreCustomFields,
+//                                        onAddMore: { viewModel.addCustomField() },
+//                                        onEditTitle: { model in viewModel.editCustomFieldTitle(model) },
+//                                        onUpgrade: { viewModel.upgrade() })
+
+                //                ForEach(viewModel.extraPersonalDetails) { field in
+                //                    PassSectionDivider()
+                //                    identityRow(title: field.title,
+                //                                subtitle: field.title,
+                //                                value: $viewModel.gender.value)
+                //                }
+                //
+
+                //                if vie
+                //            if !viewModel.email.isEmpty, viewModel.isAlias {
+                //                pendingAliasRow
+                //            } else {
+                //                emailRow
+                //            }
+                //            if viewModel.showUsernameField {
+                //                PassSectionDivider()
+                //                usernameRow
+                //            }
+                //            PassSectionDivider()
+                //            passwordRow
+                //            PassSectionDivider()
+                //            if viewModel.canAddOrEdit2FAURI {
+                //                totpAllowedRow
+                //            } else {
+                //                totpNotAllowedRow
+                //            }
+            }
+            .padding(.vertical, DesignConstant.sectionPadding)
+            .roundedEditableSection()
+            CapsuleLabelButton(icon: IconProvider.plus,
+                               title: "Add more",
+                               titleColor: viewModel.itemContentType().normMajor2Color,
+                               backgroundColor: viewModel.itemContentType().normMinor1Color,
+                               maxWidth: 140) { sheetState = .work(section) }
+        }
+    }
+}
+
+//// MARK: - Custom Section
+// private extension CreateEditIdentityView {
+//    func personalDetailSection () -> some View {
+//    }
+// }
+
+// MARK: - Utils
+
+private extension CreateEditIdentityView {
     func identityRow(title: String,
-                     subtitle: String,
+                     subtitle: String? = nil,
                      value: Binding<String>,
                      shouldCapitalize: TextInputAutocapitalization = .never,
                      keyboardType: UIKeyboardType = .asciiCapable) -> some View {
@@ -234,7 +725,7 @@ private extension CreateEditIdentityView {
                 Text(title)
                     .sectionTitleText()
 
-                TextField(subtitle, text: value)
+                TextField(subtitle ?? title, text: value)
                     .textInputAutocapitalization(.never)
                     .keyboardType(keyboardType)
                     .autocorrectionDisabled()
@@ -258,31 +749,201 @@ private extension CreateEditIdentityView {
 //            .animation(.default, value: focusedField)
 //            .id(usernameID)
     }
-}
 
-//// MARK: - Address Detail Section
-// private extension CreateEditIdentityView {
-//    func personalDetailSection () -> some View {
-//    }
-// }
-//
-//// MARK: - Contact Detail Section
-// private extension CreateEditIdentityView {
-//    func personalDetailSection () -> some View {
-//    }
-// }
-//
-//// MARK: - Work Detail Section
-// private extension CreateEditIdentityView {
-//    func personalDetailSection () -> some View {
-//    }
-// }
-//
-//// MARK: - Custom Section
-// private extension CreateEditIdentityView {
-//    func personalDetailSection () -> some View {
-//    }
-// }
+    var sheetContent: some View {
+        VStack {
+            Text("Add field")
+                .font(.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(PassColor.textWeak.toColor)
+                .frame(maxWidth: .infinity)
+                .padding(.top, DesignConstant.sectionPadding)
+
+            Text(sheetState.title)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .frame(maxWidth: .infinity)
+
+            switch sheetState {
+            case .personal:
+                Text("First name")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.firstName.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.firstName.shouldShow)
+                PassSectionDivider()
+
+                Text("Middle name")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.middleName.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.middleName.shouldShow)
+                PassSectionDivider()
+
+                Text("Lastname name")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.lastName.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.lastName.shouldShow)
+                PassSectionDivider()
+
+                Text("Birthdate")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.birthdate.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.birthdate.shouldShow)
+                PassSectionDivider()
+
+                Text("Gender")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.gender.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.gender.shouldShow)
+
+                PassSectionDivider()
+            case .address:
+                Text("Floor")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.floor.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.floor.shouldShow)
+
+                PassSectionDivider()
+
+                Text("County")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.county.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.county.shouldShow)
+
+                PassSectionDivider()
+
+            case .contact:
+                Text("Linkedin")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.linkedin.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.linkedin.shouldShow)
+
+                PassSectionDivider()
+
+                Text("Reddit")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.reddit.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.reddit.shouldShow)
+
+                PassSectionDivider()
+
+                Text("Facebook")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.facebook.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.facebook.shouldShow)
+
+                PassSectionDivider()
+
+                Text("Yahoo")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.yahoo.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.yahoo.shouldShow)
+
+                PassSectionDivider()
+
+                Text("Instagram")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.instagram.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.instagram.shouldShow)
+
+                PassSectionDivider()
+
+            case .work:
+
+                Text("Personal website")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.personalWebsite.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.personalWebsite.shouldShow)
+
+                PassSectionDivider()
+                Text("Work phone number")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.workPhoneNumber.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.workPhoneNumber.shouldShow)
+
+                PassSectionDivider()
+                Text("Work email")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        viewModel.workEmail.shouldShow.toggle()
+                    }
+                    .disabled(viewModel.workEmail.shouldShow)
+
+                PassSectionDivider()
+            default:
+                EmptyView()
+            }
+            Text("Custom field")
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, DesignConstant.sectionPadding)
+                .buttonEmbeded {
+                    if let section = sheetState.section {
+                        viewModel.addCustomField(to: section)
+                    }
+                }
+        }
+        .frame(maxHeight: .infinity)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .background(PassColor.backgroundNorm.toColor)
+    }
+}
 
 // extension Dictionary {
 //    var keysArray: [Key] {
@@ -1154,3 +1815,5 @@ private extension CreateEditIdentityView {
 //        }
 //    }
 // }
+
+// swiftlint:enable file_length
