@@ -144,7 +144,7 @@ struct HiddenCustomFieldSection: View {
                 CircleButton(icon: isShowingText ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: itemContentType.normMajor2Color,
                              backgroundColor: itemContentType.normMinor2Color,
-                             accessibilityLabel: isShowingText ? "Hide custom field" : "Show custom filed",
+                             accessibilityLabel: isShowingText ? "Hide custom field" : "Show custom field",
                              action: { isShowingText.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
