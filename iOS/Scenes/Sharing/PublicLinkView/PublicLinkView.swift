@@ -55,7 +55,6 @@ private extension PublicLinkView {
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.link)
         .animation(.default, value: viewModel.viewCount)
-        .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
     }
