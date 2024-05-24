@@ -8214,16 +8214,6 @@
         }
       }
     },
-    "Add a maximum number of reads" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a maximum number of reads"
-          }
-        }
-      }
-    },
     "Add a prefix" : {
       "localizations" : {
         "be" : {
@@ -52253,12 +52243,12 @@
         }
       }
     },
-    "Max number of reads" : {
+    "Maximum views:" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Max number of reads"
+            "value" : "Maximum views:"
           }
         }
       }
@@ -70302,6 +70292,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Restrict number of views" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restrict number of views"
           }
         }
       }
