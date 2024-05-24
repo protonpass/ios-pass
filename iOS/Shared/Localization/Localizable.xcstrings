@@ -26578,16 +26578,6 @@
         }
       }
     },
-    "Create a public link to this item" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create a public link to this item"
-          }
-        }
-      }
-    },
     "Create login" : {
       "comment" : "AutoFill extension",
       "localizations" : {
@@ -72764,6 +72754,16 @@
         }
       }
     },
+    "Secure link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure link"
+          }
+        }
+      }
+    },
     "Secure password manager and more" : {
       "comment" : "Slogan",
       "localizations" : {
@@ -76507,16 +76507,6 @@
         }
       }
     },
-    "Share a link to this item" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share a link to this item"
-          }
-        }
-      }
-    },
     "Share clipboard between devices" : {
       "localizations" : {
         "be" : {
@@ -76673,6 +76663,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẽ bảng nhớ tạm giữa các thiết bị"
+          }
+        }
+      }
+    },
+    "Share Secure Link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share Secure Link"
           }
         }
       }

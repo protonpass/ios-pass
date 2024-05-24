@@ -58,10 +58,17 @@ private extension PublicLinkView {
         .animation(.default, value: viewModel.link)
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
-        .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor,
-                           for: .navigationBar)
-        .navigationTitle(viewModel.link != nil ? "Share a link to this item" : "Create a public link to this item")
+        .toolbar { toolbarContent }
+    }
+}
+
+private extension PublicLinkView {
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Share Secure Link")
+                .navigationTitleText()
+        }
     }
 }
 
@@ -123,7 +130,7 @@ private extension PublicLinkView {
             }
 
             Spacer()
-            CapsuleTextButton(title: "Create link",
+            CapsuleTextButton(title: "Generate secure link",
                               titleColor: viewModel.itemContent.contentData.type.normMajor2Color,
                               backgroundColor: viewModel.itemContent.contentData.type.normMinor1Color,
                               action: { viewModel.createLink() })
