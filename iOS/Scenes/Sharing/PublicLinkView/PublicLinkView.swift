@@ -43,8 +43,6 @@ struct PublicLinkView: View {
 private extension PublicLinkView {
     var mainContainer: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            itemHeader
-
             if let link = viewModel.link {
                 shareLink(link: link)
             } else {
@@ -73,52 +71,32 @@ private extension PublicLinkView {
 }
 
 private extension PublicLinkView {
-    var itemHeader: some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemSquircleThumbnail(data: viewModel.itemContent.thumbnailData(),
-                                  pinned: viewModel.itemContent.item.pinned,
-                                  size: .large)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(viewModel.itemContent.name)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .textSelection(.enabled)
-                    .lineLimit(1)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 60)
-        .padding(.vertical, 20)
-    }
-}
-
-private extension PublicLinkView {
     var createLink: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
                 Text("Link expires after")
-                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    + Text(verbatim: ":")
-                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 Spacer()
-                Picker("Link expires after", selection: $viewModel.selectedTime) {
-                    ForEach(viewModel.timeOptions) { option in
-                        Text(option.label).tag(option)
-                            .fontWeight(.medium)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+
+                Picker("Link expires after", selection: $viewModel.selectedExpiration) {
+                    ForEach(SecureLinkExpiration.supportedExpirations) { expiration in
+                        Text(expiration.title)
+                            .tag(expiration)
+                            .fontWeight(.bold)
                     }
                 }
-                .tint(viewModel.itemContent.contentData.type.normMajor2Color.toColor)
+                .labelsHidden()
+                .padding(4)
+                .tint(PassColor.textNorm.toColor)
+                .background(PassColor.interactionNormMinor1.toColor)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             }
 
             VStack {
                 Toggle("Add a maximum number of reads", isOn: $viewModel.addNumberOfReads)
                     .toggleStyle(SwitchToggleStyle.pass)
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 if viewModel.addNumberOfReads {
                     TextField("Max number of reads", text: $viewModel.maxNumber)
@@ -130,9 +108,11 @@ private extension PublicLinkView {
             }
 
             Spacer()
+
             CapsuleTextButton(title: "Generate secure link",
-                              titleColor: viewModel.itemContent.contentData.type.normMajor2Color,
-                              backgroundColor: viewModel.itemContent.contentData.type.normMinor1Color,
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNormMajor1,
+                              height: 48,
                               action: { viewModel.createLink() })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

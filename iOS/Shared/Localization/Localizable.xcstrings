@@ -977,21 +977,21 @@
         }
       }
     },
-    "%lld Day" : {
+    "%lld day(s)" : {
       "localizations" : {
         "en" : {
           "variations" : {
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "%lld Day"
+                  "state" : "translated",
+                  "value" : "%lld day"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Days"
+                  "state" : "new",
+                  "value" : "%lld days"
                 }
               }
             }
@@ -999,7 +999,7 @@
         }
       }
     },
-    "%lld Hour" : {
+    "%lld hour(s)" : {
       "localizations" : {
         "en" : {
           "variations" : {
@@ -1007,13 +1007,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld Hour"
+                  "value" : "%lld hour"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Hours"
+                  "state" : "new",
+                  "value" : "%lld hours"
                 }
               }
             }
