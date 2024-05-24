@@ -990,7 +990,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "%lld days"
                 }
               }
@@ -1012,7 +1012,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "%lld hours"
                 }
               }
@@ -5126,6 +5126,28 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld kết quả"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld time(s)" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld times"
                 }
               }
             }
@@ -18343,6 +18365,16 @@
         }
       }
     },
+    "Can be viewed:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can be viewed:"
+          }
+        }
+      }
+    },
     "Can create, edit, delete and export items in this vault" : {
       "localizations" : {
         "be" : {
@@ -24792,16 +24824,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Копіювати термін дії"
-          }
-        }
-      }
-    },
-    "Copy Link" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copy Link"
           }
         }
       }
@@ -36398,6 +36420,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Термін дії скопійовано"
+          }
+        }
+      }
+    },
+    "Expires in:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expires in:"
           }
         }
       }
@@ -78221,7 +78253,7 @@
         }
       }
     },
-    "Show custom filed" : {
+    "Show custom field" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -78250,7 +78282,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show custom filed"
+            "value" : "Show custom field"
           }
         },
         "es" : {
@@ -84256,16 +84288,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цей елемент не відстежується"
-          }
-        }
-      }
-    },
-    "This link is available for the next %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This link is available for the next %@"
           }
         }
       }
