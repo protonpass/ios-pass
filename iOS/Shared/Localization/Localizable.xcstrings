@@ -977,21 +977,21 @@
         }
       }
     },
-    "%lld Day" : {
+    "%lld day(s)" : {
       "localizations" : {
         "en" : {
           "variations" : {
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "%lld Day"
+                  "state" : "translated",
+                  "value" : "%lld day"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld Days"
+                  "value" : "%lld days"
                 }
               }
             }
@@ -999,7 +999,7 @@
         }
       }
     },
-    "%lld Hour" : {
+    "%lld hour(s)" : {
       "localizations" : {
         "en" : {
           "variations" : {
@@ -1007,13 +1007,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld Hour"
+                  "value" : "%lld hour"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld Hours"
+                  "value" : "%lld hours"
                 }
               }
             }
@@ -5133,6 +5133,28 @@
         }
       }
     },
+    "%lld time(s)" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld times"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld trial day(s) left" : {
       "localizations" : {
         "be" : {
@@ -8210,16 +8232,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додати файл"
-          }
-        }
-      }
-    },
-    "Add a maximum number of reads" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a maximum number of reads"
           }
         }
       }
@@ -18353,6 +18365,16 @@
         }
       }
     },
+    "Can be viewed:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can be viewed:"
+          }
+        }
+      }
+    },
     "Can create, edit, delete and export items in this vault" : {
       "localizations" : {
         "be" : {
@@ -24806,16 +24828,6 @@
         }
       }
     },
-    "Copy Link" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copy Link"
-          }
-        }
-      }
-    },
     "Copy note content" : {
       "localizations" : {
         "be" : {
@@ -26574,16 +26586,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo ghi chú"
-          }
-        }
-      }
-    },
-    "Create a public link to this item" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create a public link to this item"
           }
         }
       }
@@ -36418,6 +36420,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Термін дії скопійовано"
+          }
+        }
+      }
+    },
+    "Expires in:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expires in:"
           }
         }
       }
@@ -52263,12 +52275,12 @@
         }
       }
     },
-    "Max number of reads" : {
+    "Maximum views:" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Max number of reads"
+            "value" : "Maximum views:"
           }
         }
       }
@@ -70316,6 +70328,16 @@
         }
       }
     },
+    "Restrict number of views" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restrict number of views"
+          }
+        }
+      }
+    },
     "Results" : {
       "localizations" : {
         "be" : {
@@ -72760,6 +72782,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aranabilir kasalar"
+          }
+        }
+      }
+    },
+    "Secure link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure link"
           }
         }
       }
@@ -76507,16 +76539,6 @@
         }
       }
     },
-    "Share a link to this item" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share a link to this item"
-          }
-        }
-      }
-    },
     "Share clipboard between devices" : {
       "localizations" : {
         "be" : {
@@ -76673,6 +76695,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẽ bảng nhớ tạm giữa các thiết bị"
+          }
+        }
+      }
+    },
+    "Share Secure Link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share Secure Link"
           }
         }
       }
@@ -78221,7 +78253,7 @@
         }
       }
     },
-    "Show custom filed" : {
+    "Show custom field" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -78250,7 +78282,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show custom filed"
+            "value" : "Show custom field"
           }
         },
         "es" : {
@@ -84256,16 +84288,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цей елемент не відстежується"
-          }
-        }
-      }
-    },
-    "This link is available for the next %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This link is available for the next %@"
           }
         }
       }

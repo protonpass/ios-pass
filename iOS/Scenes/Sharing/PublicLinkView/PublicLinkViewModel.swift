@@ -25,41 +25,101 @@ import Entities
 import Factory
 import Foundation
 import Macro
+import UIKit
 
-struct TimeOption: Identifiable, Hashable {
+enum SecureLinkExpiration: Sendable, Hashable, Identifiable {
+    case hour(Int)
+    case day(Int)
+
     var id: Int { seconds }
-    let label: String
-    let seconds: Int
 
-    static var `default`: TimeOption {
-        TimeOption(label: #localized("%lld Day", 7), seconds: 7 * 86_400)
+    var title: String {
+        switch self {
+        case let .hour(hour):
+            #localized("%lld hour(s)", hour)
+        case let .day(day):
+            #localized("%lld day(s)", day)
+        }
     }
 
-    static var secondsInHour: Int {
-        3_600
+    var seconds: Int {
+        switch self {
+        case let .hour(hour):
+            hour * 3_600
+        case let .day(day):
+            day * 24 * 3_600
+        }
     }
 
-    static var secondsInDay: Int {
-        86_400
+    static var supportedExpirations: [SecureLinkExpiration] {
+        [.hour(1), .day(1), .day(7), .day(14), .day(30)]
     }
+}
+
+enum PublicLinkViewModelState {
+    case creationWithoutRestriction
+    case creationWithRestriction
+    case created
+
+    var sheetHeight: CGFloat {
+        switch self {
+        case .creationWithoutRestriction:
+            280
+        case .creationWithRestriction:
+            350
+        case .created:
+            250
+        }
+    }
+
+    static var `default`: Self { .creationWithoutRestriction }
 }
 
 @MainActor
 final class PublicLinkViewModel: ObservableObject, Sendable {
     @Published private(set) var link: SharedPublicLink?
-    @Published var selectedTime: TimeOption = .default
+    @Published var selectedExpiration: SecureLinkExpiration = .day(7)
     @Published var loading = false
-    @Published var addNumberOfReads = false
-    @Published var maxNumber = ""
+    @Published var viewCount = 0
+
+    private var state = PassthroughSubject<PublicLinkViewModelState, Never>()
+    private var cancellables = Set<AnyCancellable>()
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let createItemSharingPublicLink = resolve(\SharedUseCasesContainer.createItemSharingPublicLink)
 
-    let timeOptions: [TimeOption] = TimeOption.generateTimeOptions
     let itemContent: ItemContent
+    weak var sheetPresentation: UISheetPresentationController?
 
     init(itemContent: ItemContent) {
         self.itemContent = itemContent
+
+        Publishers.CombineLatest($link, $viewCount)
+            .sink { [weak self] link, count in
+                guard let self else { return }
+                if link != nil {
+                    state.send(.created)
+                } else if count == 0 { // swiftlint:disable:this empty_count
+                    state.send(.creationWithoutRestriction)
+                } else {
+                    state.send(.creationWithRestriction)
+                }
+            }
+            .store(in: &cancellables)
+
+        state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self else { return }
+                let detent = UISheetPresentationController.Detent.custom { _ in
+                    CGFloat(state.sheetHeight)
+                }
+                sheetPresentation?.animateChanges { [weak self] in
+                    guard let self else { return }
+                    sheetPresentation?.detents = [detent]
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func createLink() {
@@ -70,9 +130,10 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
+                let maxReadCount = viewCount == 0 ? nil : viewCount
                 let result = try await createItemSharingPublicLink(item: itemContent,
-                                                                   expirationTime: selectedTime.seconds,
-                                                                   maxReadCount: maxNumber.maxRead)
+                                                                   expirationTime: selectedExpiration.seconds,
+                                                                   maxReadCount: maxReadCount)
                 link = result
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -85,43 +146,6 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
             return
         }
         router.action(.copyToClipboard(text: link.url, message: #localized("Link copied")))
-    }
-}
-
-extension TimeOption {
-    static var generateTimeOptions: [TimeOption] {
-        var options = [TimeOption]()
-
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-
-        // Add 30 minutes
-        if let formattedLabel = formatter.string(from: TimeInterval(TimeOption.secondsInHour / 2)) {
-            options.append(TimeOption(label: formattedLabel, seconds: 1_800))
-        }
-
-        // Add hours from 1 to 12
-        for hour in 1...12 {
-            let label = #localized("%lld Hour", hour)
-            options.append(TimeOption(label: label, seconds: hour * TimeOption.secondsInHour))
-        }
-
-        // Add days from 1 to 30
-        for day in 1...30 {
-            let label = #localized("%lld Day", day)
-            options.append(TimeOption(label: label, seconds: day * TimeOption.secondsInDay))
-        }
-
-        return options
-    }
-}
-
-private extension String {
-    var maxRead: Int? {
-        guard !isEmpty, let number = Int(self) else {
-            return nil
-        }
-        return number
     }
 }
 

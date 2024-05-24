@@ -33,8 +33,7 @@ struct MonitorIncludedEmailView: View {
             Spacer()
             trailingView
         }
-        .contentShape(.rect)
-        .buttonEmbeded(action)
+        .buttonEmbeded(action: action)
     }
 }
 
