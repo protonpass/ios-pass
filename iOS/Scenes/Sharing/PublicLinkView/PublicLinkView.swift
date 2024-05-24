@@ -43,10 +43,8 @@ struct PublicLinkView: View {
 private extension PublicLinkView {
     var mainContainer: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            itemHeader
-
             if let link = viewModel.link {
-                shareLink(link: link)
+                view(for: link)
             } else {
                 createLink
             }
@@ -56,34 +54,19 @@ private extension PublicLinkView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.link)
-        .scrollViewEmbeded(maxWidth: .infinity)
+        .animation(.default, value: viewModel.viewCount)
         .background(PassColor.backgroundNorm.toColor)
-        .navigationBarBackButtonHidden(true)
-        .toolbarBackground(PassColor.backgroundNorm.toColor,
-                           for: .navigationBar)
-        .navigationTitle(viewModel.link != nil ? "Share a link to this item" : "Create a public link to this item")
+        .toolbar { toolbarContent }
     }
 }
 
 private extension PublicLinkView {
-    var itemHeader: some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemSquircleThumbnail(data: viewModel.itemContent.thumbnailData(),
-                                  pinned: viewModel.itemContent.item.pinned,
-                                  size: .large)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(viewModel.itemContent.name)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .textSelection(.enabled)
-                    .lineLimit(1)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-            }
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Share Secure Link")
+                .navigationTitleText()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 60)
-        .padding(.vertical, 20)
     }
 }
 
@@ -92,50 +75,85 @@ private extension PublicLinkView {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
                 Text("Link expires after")
-                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    + Text(verbatim: ":")
-                    // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                    .foregroundColor(PassColor.textNorm.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
 
                 Spacer()
-                Picker("Link expires after", selection: $viewModel.selectedTime) {
-                    ForEach(viewModel.timeOptions) { option in
-                        Text(option.label).tag(option)
-                            .fontWeight(.medium)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+
+                Picker("Link expires after", selection: $viewModel.selectedExpiration) {
+                    ForEach(SecureLinkExpiration.supportedExpirations) { expiration in
+                        Text(expiration.title)
+                            .tag(expiration)
+                            .fontWeight(.bold)
                     }
                 }
-                .tint(viewModel.itemContent.contentData.type.normMajor2Color.toColor)
+                .labelsHidden()
+                .padding(4)
+                .tint(PassColor.textNorm.toColor)
+                .background(PassColor.interactionNormMinor1.toColor)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             }
 
-            VStack {
-                Toggle("Add a maximum number of reads", isOn: $viewModel.addNumberOfReads)
-                    .toggleStyle(SwitchToggleStyle.pass)
+            PassDivider()
 
-                if viewModel.addNumberOfReads {
-                    TextField("Max number of reads", text: $viewModel.maxNumber)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .keyboardType(.numberPad)
-                        .padding(DesignConstant.sectionPadding)
-                        .roundedDetailSection()
+            Toggle("Restrict number of views", isOn: viewCountBinding)
+                .toggleStyle(SwitchToggleStyle.pass)
+                .foregroundStyle(PassColor.textNorm.toColor)
+
+            if viewModel.viewCount != 0 {
+                HStack {
+                    Text("Maximum views:")
+                    Text(verbatim: "\(viewModel.viewCount)")
+                        .fontWeight(.bold)
+                        .padding(10)
+                        .background(PassColor.textDisabled.toColor)
+                        .clipShape(.circle)
+                    Spacer()
+                    Stepper("Maximum views:",
+                            value: $viewModel.viewCount,
+                            in: 1...Int.max,
+                            step: 1)
+                        .labelsHidden()
                 }
+                .foregroundStyle(PassColor.textNorm.toColor)
             }
 
             Spacer()
-            CapsuleTextButton(title: "Create link",
-                              titleColor: viewModel.itemContent.contentData.type.normMajor2Color,
-                              backgroundColor: viewModel.itemContent.contentData.type.normMinor1Color,
+
+            CapsuleTextButton(title: "Generate secure link",
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNormMajor1,
+                              height: 48,
                               action: { viewModel.createLink() })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    var viewCountBinding: Binding<Bool> {
+        .init(get: {
+            viewModel.viewCount != 0
+        }, set: { newValue in
+            viewModel.viewCount = newValue ? 1 : 0
+        })
     }
 }
 
 private extension PublicLinkView {
     @ViewBuilder
-    func shareLink(link: SharedPublicLink) -> some View {
+    func view(for link: SharedPublicLink) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
+            HStack {
+                if let relativeTimeRemaining = link.relativeTimeRemaining {
+                    infoCell(title: "Expires in:",
+                             description: relativeTimeRemaining,
+                             icon: IconProvider.clock)
+                }
+
+                if viewModel.viewCount != 0 {
+                    infoCell(title: "Can be viewed:",
+                             description: #localized("%lld time(s)", viewModel.viewCount),
+                             icon: IconProvider.eye)
+                }
+            }
             HStack(spacing: DesignConstant.sectionPadding) {
                 Text(verbatim: link.url)
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -143,29 +161,46 @@ private extension PublicLinkView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                     .contentShape(.rect)
-                    .onTapGesture(perform: { viewModel.copyLink() })
-                    .roundedDetailSection()
+                    .onTapGesture { viewModel.copyLink() }
+                    .background(PassColor.interactionNormMinor1.toColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
 
-                Button { viewModel.copyLink() } label: {
-                    Text("Copy Link")
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .padding()
-                        .roundedDetailSection(backgroundColor: PassColor.interactionNormMinor1)
-                }
-                .buttonStyle(.plain)
+                Image(uiImage: IconProvider.squares)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20)
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .buttonEmbeded { viewModel.copyLink() }
 
                 ShareLink(item: link.url) {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                 }
             }
-            if let relativeTimeRemaining = link.relativeTimeRemaining {
-                Text("This link is available for the next \(relativeTimeRemaining)")
-                    .fontWeight(.medium)
-                    .multilineTextAlignment(.leading)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    func infoCell(title: LocalizedStringKey,
+                  description: String,
+                  icon: UIImage) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack {
+                Spacer()
+                Image(uiImage: icon)
+                    .scaledToFit()
+                    .frame(width: 14)
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                Spacer()
             }
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                Text(description)
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

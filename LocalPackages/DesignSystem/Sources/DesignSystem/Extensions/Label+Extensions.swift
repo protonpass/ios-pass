@@ -1,7 +1,7 @@
 //
-// Pinnable+Extensions.swift
-// Proton Pass - Created on 07/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Label+Extensions.swift
+// Proton Pass - Created on 24/05/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,22 +17,18 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import DesignSystem
-import Entities
-import Macro
 import SwiftUI
 
-extension Pinnable {
-    var pinTitle: LocalizedStringKey {
-        pinned ? "Unpin" : "Pin"
+public extension Label where Title == Text, Icon == Image {
+    init(_ titleKey: LocalizedStringKey, uiImage: UIImage) {
+        self.init(title: { Text(titleKey) },
+                  icon: { Image(uiImage: uiImage) })
     }
 
-    var pinIcon: UIImage {
-        pinned ? PassIcon.pinAngledSlash : PassIcon.pinAngled
-    }
-
-    var pinMessage: String {
-        pinned ? #localized("Item successfully pinned") : #localized("Item successfully unpinned")
+    init(_ titleKey: LocalizedStringKey, image: Image) {
+        self.init(title: { Text(titleKey) },
+                  icon: { image })
     }
 }
