@@ -25,6 +25,7 @@ import Entities
 import Factory
 import Foundation
 import Macro
+import UIKit
 
 enum SecureLinkExpiration: Sendable, Hashable, Identifiable {
     case hour(Int)
@@ -55,6 +56,25 @@ enum SecureLinkExpiration: Sendable, Hashable, Identifiable {
     }
 }
 
+enum PublicLinkViewModelState {
+    case creationWithoutRestriction
+    case creationWithRestriction
+    case created
+
+    var sheetHeight: CGFloat {
+        switch self {
+        case .creationWithoutRestriction:
+            280
+        case .creationWithRestriction:
+            350
+        case .created:
+            250
+        }
+    }
+
+    static var `default`: Self { .creationWithoutRestriction }
+}
+
 @MainActor
 final class PublicLinkViewModel: ObservableObject, Sendable {
     @Published private(set) var link: SharedPublicLink?
@@ -62,13 +82,44 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
     @Published var loading = false
     @Published var viewCount = 0
 
+    private var state = PassthroughSubject<PublicLinkViewModelState, Never>()
+    private var cancellables = Set<AnyCancellable>()
+
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let createItemSharingPublicLink = resolve(\SharedUseCasesContainer.createItemSharingPublicLink)
 
     let itemContent: ItemContent
+    weak var sheetPresentation: UISheetPresentationController?
 
     init(itemContent: ItemContent) {
         self.itemContent = itemContent
+
+        Publishers.CombineLatest($link, $viewCount)
+            .sink { [weak self] link, count in
+                guard let self else { return }
+                if link != nil {
+                    state.send(.created)
+                } else if count == 0 { // swiftlint:disable:this empty_count
+                    state.send(.creationWithoutRestriction)
+                } else {
+                    state.send(.creationWithRestriction)
+                }
+            }
+            .store(in: &cancellables)
+
+        state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self else { return }
+                let detent = UISheetPresentationController.Detent.custom { _ in
+                    CGFloat(state.sheetHeight)
+                }
+                sheetPresentation?.animateChanges { [weak self] in
+                    guard let self else { return }
+                    sheetPresentation?.detents = [detent]
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func createLink() {
