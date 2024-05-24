@@ -487,7 +487,7 @@ private extension DarkWebMonitorHomeView {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .contentShape(.rect)
-        .buttonEmbeded(action)
+        .buttonEmbeded(action: action)
     }
 }
 
