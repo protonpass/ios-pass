@@ -54,6 +54,7 @@ private extension PublicLinkView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.link)
+        .animation(.default, value: viewModel.viewCount)
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
@@ -93,17 +94,29 @@ private extension PublicLinkView {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
 
+            PassDivider()
+
             VStack {
-                Toggle("Add a maximum number of reads", isOn: $viewModel.addNumberOfReads)
+                Toggle("Restrict number of views", isOn: viewCountBinding)
                     .toggleStyle(SwitchToggleStyle.pass)
                     .foregroundStyle(PassColor.textNorm.toColor)
 
-                if viewModel.addNumberOfReads {
-                    TextField("Max number of reads", text: $viewModel.maxNumber)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .keyboardType(.numberPad)
-                        .padding(DesignConstant.sectionPadding)
-                        .roundedDetailSection()
+                if viewModel.viewCount != 0 {
+                    HStack {
+                        Text("Maximum views:")
+                        Text(verbatim: "\(viewModel.viewCount)")
+                            .fontWeight(.bold)
+                            .padding(10)
+                            .background(PassColor.textDisabled.toColor)
+                            .clipShape(.circle)
+                        Spacer()
+                        Stepper("Maximum views:",
+                                value: $viewModel.viewCount,
+                                in: 1...Int.max,
+                                step: 1)
+                            .labelsHidden()
+                    }
+                    .foregroundStyle(PassColor.textNorm.toColor)
                 }
             }
 
@@ -116,6 +129,14 @@ private extension PublicLinkView {
                               action: { viewModel.createLink() })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    var viewCountBinding: Binding<Bool> {
+        .init(get: {
+            viewModel.viewCount != 0
+        }, set: { newValue in
+            viewModel.viewCount = newValue ? 1 : 0
+        })
     }
 }
 

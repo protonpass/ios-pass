@@ -60,8 +60,7 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
     @Published private(set) var link: SharedPublicLink?
     @Published var selectedExpiration: SecureLinkExpiration = .day(7)
     @Published var loading = false
-    @Published var addNumberOfReads = false
-    @Published var maxNumber = ""
+    @Published var viewCount = 0
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let createItemSharingPublicLink = resolve(\SharedUseCasesContainer.createItemSharingPublicLink)
@@ -80,9 +79,10 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
+                let maxReadCount = viewCount == 0 ? nil : viewCount
                 let result = try await createItemSharingPublicLink(item: itemContent,
                                                                    expirationTime: selectedExpiration.seconds,
-                                                                   maxReadCount: maxNumber.maxRead)
+                                                                   maxReadCount: maxReadCount)
                 link = result
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -95,15 +95,6 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
             return
         }
         router.action(.copyToClipboard(text: link.url, message: #localized("Link copied")))
-    }
-}
-
-private extension String {
-    var maxRead: Int? {
-        guard !isEmpty, let number = Int(self) else {
-            return nil
-        }
-        return number
     }
 }
 
