@@ -632,6 +632,12 @@
             "state" : "translated",
             "value" : "Сталася помилка"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã có lỗi xảy ra"
+          }
         }
       }
     },
@@ -1260,6 +1266,12 @@
             "state" : "translated",
             "value" : "Bu ögede bazı değişiklikler yapılmış. Önceki sayfaya dönülüyor."
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã có các thay đổi cho nội dung này, quay trở lại trang trước đó."
+          }
         }
       }
     },
@@ -1407,6 +1419,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu öge eskimiş"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nội dung này chưa được đồng bộ"
           }
         }
       }

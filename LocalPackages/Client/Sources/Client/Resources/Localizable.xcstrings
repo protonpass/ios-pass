@@ -1587,6 +1587,12 @@
             "state" : "translated",
             "value" : "Sabitlenmiş ögeleri ara"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tìm kiếm các nội dụng được ghim"
+          }
         }
       }
     },
@@ -1734,6 +1740,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eklenti günlüklerini paylaş"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhật kí của Share extension"
           }
         }
       }

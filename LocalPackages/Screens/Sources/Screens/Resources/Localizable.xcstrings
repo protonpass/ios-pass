@@ -9,6 +9,12 @@
             "value" : "Дадаць поле імя карыстальніка"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat pole uživatelského jména"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -99,10 +105,22 @@
             "value" : "Adicionar um campo de nome de usuário"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Câmp adăugare e-mail"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pridať pole mena používateľa"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodajte polje za uporabniško ime"
           }
         },
         "sv" : {
@@ -115,6 +133,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullanıcı adı alanı ekle"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm trường tùy chỉnh tên tài khoản"
           }
         }
       }
@@ -431,6 +455,12 @@
             "state" : "translated",
             "value" : "Не вдалося знайти «%@»"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể tìm thấy \"%@\""
+          }
         }
       }
     },
@@ -440,6 +470,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Немагчыма знайсці \"%@\" у сметніцы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodařilo se najít \"%@\" v Koši"
           }
         },
         "da" : {
@@ -579,6 +615,12 @@
             "state" : "translated",
             "value" : "Не вдалося знайти «%@» в смітнику"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể tìm thấy \"%@\" trong Thùng rác"
+          }
         }
       }
     },
@@ -588,6 +630,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Немагчыма знайсці \"%1$@\" у %2$@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodařilo se najít \"%1$@\" v %2$@"
           }
         },
         "da" : {
@@ -726,6 +774,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не вдалося знайти «%1$@» в %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể tìm thấy \"%1$@\" trong %2$@"
           }
         }
       }
@@ -949,7 +1003,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Créer une clé d'identification"
+            "value" : "Créer une clé d'accès"
           }
         },
         "id" : {
@@ -962,6 +1016,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea passkey"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスキーを作成"
           }
         },
         "ka" : {
@@ -1035,6 +1095,12 @@
             "state" : "translated",
             "value" : "Створити ключ доступу"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tạo một khóa truy cập"
+          }
         }
       }
     },
@@ -1044,6 +1110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Уключыць пошук Spotlight"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit hledání v centru pozornosti"
           }
         },
         "da" : {
@@ -1170,6 +1242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spotlight aramasını kullanıma al"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bật tìm kiếm Spotlight"
           }
         }
       }
@@ -1646,6 +1724,12 @@
             "state" : "translated",
             "value" : "Не зараз"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không phải bây giờ"
+          }
         }
       }
     },
@@ -1978,6 +2062,12 @@
             "value" : "Увайдзіце, каб скарыстацца пашырэннем для аўтазапаўнення Proton Pass"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro použití rozšíření Proton Pass AutoFill se prosím přihlaste"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2115,6 +2205,12 @@
             "state" : "translated",
             "value" : "Увійдіть, щоби використовувати розширення для автозаповнення Proton Pass"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vui lòng đăng nhập để sử dụng trình mở rộng tự động điền Proton Pass"
+          }
         }
       }
     },
@@ -2124,6 +2220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Увайдзіце, каб скарыстацца пашырэннем Proton Pass Share"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro použití rozšíření Proton Pass Share se prosím přihlaste"
           }
         },
         "da" : {
@@ -2263,6 +2365,12 @@
             "state" : "translated",
             "value" : "Увійдіть, щоби використовувати розширення Proton Pass Share"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vui lòng đăng nhập để sử dụng trình mở rộng chia sẻ Proton Pass"
+          }
         }
       }
     },
@@ -2272,6 +2380,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Націсніце і ўтрымлівайце элемент для паказу дадатковых параметраў."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stiskněte a podržte položku pro zobrazení dodatečných možností."
           }
         },
         "da" : {
@@ -2405,6 +2519,12 @@
             "state" : "translated",
             "value" : "Натисніть і утримуйте елемент для перегляду додаткових параметрів."
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ấn và giữ nội dung để hiển thị các tùy chọn khác."
+          }
         }
       }
     },
@@ -2414,6 +2534,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Хуткія дзеянні па элементах"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rychlé akce položek"
           }
         },
         "da" : {
@@ -2474,6 +2600,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Azioni rapide sugli elementi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムに対するクイックアクション"
           }
         },
         "ka" : {
@@ -2546,6 +2678,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Швидкі дії по елементах"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thao tác nhanh trên các nội dung"
           }
         }
       }
@@ -2719,6 +2857,12 @@
             "value" : "Лёгкі пошук для элементаў праз ваш дамашні экран. Адкрыйце Налады → Spotlight для ўключэння."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Praktické vyhledávání pložek pomocí vaší domovské obrazovky. Pro povolení otevřete Nastavení → Centrum pozornosti."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2837,6 +2981,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Giriş sayfanızdan ögeleri doğrudan arayın. Kullanıma almak için Ayarlar → Spotlight seçeneğini açın."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhanh chóng tìm kiếm các nội dung từ màn hình chính. Vào mục Tùy Chỉnh → Spotligh để bật."
           }
         }
       }
@@ -3169,6 +3319,12 @@
             "value" : "Выберыце бягучы запіс уваходу або стварыце новы."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte stávající přihlášení a nebo vytvořte nové."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3305,6 +3461,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Оберіть чинний вхід або створіть новий."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chọn một đăng nhập có sẵn hoặc tạo một cái mới."
           }
         }
       }
@@ -3460,6 +3622,12 @@
             "state" : "translated",
             "value" : "Ви вийшли"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã đăng xuất"
+          }
         }
       }
     },
@@ -3613,6 +3781,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сортувати"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sắp xếp theo"
           }
         }
       }
@@ -3769,6 +3943,12 @@
             "state" : "translated",
             "value" : "Пропозиції"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các gợi ý"
+          }
         }
       }
     },
@@ -3778,6 +3958,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Націсніце тут, каб дадаць поле для імя карыстальніка."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zde klepněte pro přidání pole pro uživatelské jméno."
           }
         },
         "da" : {
@@ -3876,10 +4062,22 @@
             "value" : "Toque aqui para adicionar um campo para um nome de usuário."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atingeți aici pentru a adăuga un câmp pentru nume utilizator."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ťuknite sem pre pridanie poľa s používateľským menom"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapnite tukaj, če želite dodati polje za uporabniško ime."
           }
         },
         "sv" : {
@@ -3892,6 +4090,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullanıcı adı alanı eklemek için buraya dokunun."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ấn vào đây để thêm trường tên tài khoản"
           }
         }
       }
