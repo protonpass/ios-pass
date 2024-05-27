@@ -20,6 +20,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum Theme: Int, Codable, CaseIterable, Sendable {
     case light = 0
@@ -27,4 +28,15 @@ public enum Theme: Int, Codable, CaseIterable, Sendable {
     case matchSystem = 2
 
     public static var `default`: Self { .dark }
+
+    public var userInterfaceStyle: UIUserInterfaceStyle {
+        switch self {
+        case .light:
+            .light
+        case .dark:
+            .dark
+        case .matchSystem:
+            .unspecified
+        }
+    }
 }
