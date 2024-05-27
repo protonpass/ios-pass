@@ -178,6 +178,8 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     private var customFieldSection: CreateEditIdentitySection?
     @Published var customSectionTitle = ""
 
+    var sectionToDelete: CreateEditIdentitySection?
+
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
@@ -332,6 +334,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
 
     func reset() {
         customSectionTitle = ""
+        sectionToDelete = nil
     }
 
     func addCustomSection() {
@@ -434,6 +437,15 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
                      itemUuid: UUID().uuidString,
                      data: .identity(data),
                      customFields: [])
+    }
+
+    func deleteCustomSection() {
+        guard let sectionToDelete else {
+            return
+        }
+
+        sections = sections.removing(sectionToDelete)
+        self.sectionToDelete = nil
     }
 }
 
