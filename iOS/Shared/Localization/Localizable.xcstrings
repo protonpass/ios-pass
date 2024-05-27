@@ -29102,6 +29102,9 @@
         }
       }
     },
+    "Custom Section" : {
+
+    },
     "Dark" : {
       "localizations" : {
         "be" : {
@@ -34905,6 +34908,9 @@
           }
         }
       }
+    },
+    "Enter a section title" : {
+
     },
     "Enter new name for « %@ »" : {
       "localizations" : {
