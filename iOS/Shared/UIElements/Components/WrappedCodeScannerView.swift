@@ -27,7 +27,6 @@ import SwiftUI
 struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
-    private let theme = resolve(\SharedToolingContainer.theme)
     let completion: (Result<String, any Error>) -> Void
 
     init(completion: @escaping (Result<String, any Error>) -> Void) {
@@ -67,6 +66,5 @@ struct WrappedCodeScannerView: View {
                 }
             }
         }
-        .theme(theme)
     }
 }

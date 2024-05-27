@@ -48,6 +48,7 @@ public extension ExtensionCoordinator {
 
         let viewController = UIHostingController(rootView: view)
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
+        viewController.overrideUserInterfaceStyle = rootViewController.overrideUserInterfaceStyle
         rootViewController.view.addSubview(viewController.view)
         NSLayoutConstraint.activate([
             viewController.view.topAnchor.constraint(equalTo: rootViewController.view.topAnchor),

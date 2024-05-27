@@ -30,7 +30,6 @@ import SwiftUI
 import TipKit
 
 struct CreateEditLoginView: View {
-    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
@@ -162,7 +161,6 @@ struct CreateEditLoginView: View {
             .toolbar { keyboardToolbar }
         }
         .tint(viewModel.itemContentType().normMajor2Color.toColor)
-        .theme(theme)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }

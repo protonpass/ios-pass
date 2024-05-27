@@ -25,7 +25,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct MailboxSelectionView: View {
-    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: MailboxSelectionViewModel
 
@@ -92,7 +91,6 @@ struct MailboxSelectionView: View {
                 }
             }
         }
-        .theme(theme)
     }
 
     private func isSelected(_ mailbox: Mailbox) -> Bool {

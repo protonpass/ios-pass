@@ -23,16 +23,13 @@ import MBProgressHUD
 import SwiftUI
 
 extension Coordinator {
-    func showFullScreen(data: FullScreenData, userInterfaceStyle: UIUserInterfaceStyle) {
+    func showFullScreen(data: FullScreenData) {
         let view = FullScreenView(data: data)
         let viewController = UIHostingController(rootView: view)
         if UIDevice.current.isIpad {
             viewController.modalPresentationStyle = .fullScreen
         }
-        present(viewController,
-                userInterfaceStyle: userInterfaceStyle,
-                animated: true,
-                dismissible: true)
+        present(viewController, animated: true, dismissible: true)
     }
 }
 

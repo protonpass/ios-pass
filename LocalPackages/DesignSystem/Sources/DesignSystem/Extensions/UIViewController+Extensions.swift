@@ -68,15 +68,6 @@ public extension UIViewController {
         }
         return false
     }
-
-    /// Override `userInterfaceStyle` of the current view controller as well as its presented view controllers
-    func setUserInterfaceStyle(_ userInterfaceStyle: UIUserInterfaceStyle) {
-        overrideUserInterfaceStyle = userInterfaceStyle
-        guard let presentationController = presentedViewController else {
-            return
-        }
-        presentationController.overrideUserInterfaceStyle = userInterfaceStyle
-    }
 }
 
 private extension UIViewController {

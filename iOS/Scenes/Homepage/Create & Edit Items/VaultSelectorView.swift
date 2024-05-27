@@ -24,7 +24,6 @@ import Factory
 import SwiftUI
 
 struct VaultSelectorView: View {
-    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     let viewModel: VaultSelectorViewModel
 
@@ -56,7 +55,6 @@ struct VaultSelectorView: View {
                 }
             }
         }
-        .theme(theme)
     }
 
     @MainActor
