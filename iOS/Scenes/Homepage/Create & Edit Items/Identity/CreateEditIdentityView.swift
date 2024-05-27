@@ -27,31 +27,6 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-protocol MultipleSheetDisplaying where Self: Equatable {
-    // This the none displaying modal enum case. Should always be present
-    static var none: Self { get }
-
-    // This is the binding boolean used to toggle the sheet display
-    var shouldDisplay: Bool { get set }
-}
-
-extension MultipleSheetDisplaying {
-    var shouldDisplay: Bool {
-        get {
-            switch self {
-            case .none:
-                false
-            default:
-                true
-            }
-        }
-
-        set(newValue) {
-            self = newValue ? self : .none
-        }
-    }
-}
-
 enum SectionsSheetStates: MultipleSheetDisplaying {
     case none
     case personal(CreateEditIdentitySection)
@@ -76,7 +51,7 @@ enum SectionsSheetStates: MultipleSheetDisplaying {
 
     var height: CGFloat {
         switch self {
-        case .personal, .contact:
+        case .contact, .personal:
             480
         case .address:
             280
@@ -102,6 +77,7 @@ struct CreateEditIdentityView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var sheetState: SectionsSheetStates = .none
     @State private var showCustomTitleAlert = false
+    @State private var showDeleteCustomSectionAlert = false
     @State private var isShowingDiscardAlert = false
     @State private var username = ""
 
@@ -128,16 +104,9 @@ struct CreateEditIdentityView: View {
     var body: some View {
         mainContainer
             .sheet(isPresented: $sheetState.shouldDisplay) {
-                switch sheetState {
-                default:
-                    ViewThatFits {
-                        sheetContent
-                        ScrollView {
-                            sheetContent
-                        }
-                    }.presentationDetents([.height(sheetState.height)])
-                        .presentationDragIndicator(.visible)
-                }
+                sheetContent
+                    .presentationDetents([.height(sheetState.height)])
+                    .presentationDragIndicator(.visible)
             }
             .navigationStackEmbeded()
     }
@@ -169,7 +138,7 @@ private extension CreateEditIdentityView {
             .padding(.bottom, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 //            .showSpinner(viewModel.loading)
-//            .animation(.default, value: viewModel.link)
+            .animation(.default, value: viewModel.sections)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .navigationBarBackButtonHidden(true)
@@ -189,7 +158,7 @@ private extension CreateEditIdentityView {
                                   onUpgrade: { /* Not applicable */ },
                                   onScan: { viewModel.openScanner() },
                                   onSave: {
-                                    viewModel.save()
+                                      viewModel.save()
                                   })
         }
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
@@ -199,6 +168,12 @@ private extension CreateEditIdentityView {
             Button("Cancel", role: .cancel) { viewModel.reset() }
         } message: {
             Text("Enter a section title")
+        }
+        .alert("Remove custom section", isPresented: $showDeleteCustomSectionAlert) {
+            Button("Delete", role: .destructive, action: viewModel.deleteCustomSection)
+            Button("Cancel", role: .cancel) { viewModel.reset() }
+        } message: {
+            Text("Are you sure you want to delete the following section \(viewModel.sectionToDelete?.title ?? "Unknown")")
         }
     }
 }
@@ -237,19 +212,31 @@ private extension CreateEditIdentityView {
     }
 
     func header(for section: CreateEditIdentitySection) -> some View {
-        Label(title: { Text(section.title) },
-              icon: {
-                  Image(systemName: section.isCollapsed ? "chevron.down" : "chevron.up")
-                      .resizable()
-                      .scaledToFit()
-                      .frame(width: 12)
-              })
-              .foregroundStyle(PassColor.textWeak.toColor)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.top, DesignConstant.sectionPadding)
-              .buttonEmbeded {
-                  viewModel.toggleCollapsingSection(sectionToToggle: section)
-              }
+        HStack {
+            Label(title: { Text(section.title) },
+                  icon: {
+                      Image(systemName: section.isCollapsed ? "chevron.down" : "chevron.up")
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 12)
+                  })
+                  .foregroundStyle(PassColor.textWeak.toColor)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                  .padding(.top, DesignConstant.sectionPadding)
+                  .buttonEmbeded {
+                      viewModel.toggleCollapsingSection(sectionToToggle: section)
+                  }
+            Spacer()
+
+            if section.isCustom {
+                IconProvider.crossCircle
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .buttonEmbeded {
+                        viewModel.sectionToDelete = section
+                        showDeleteCustomSectionAlert.toggle()
+                    }
+            }
+        }
     }
 
     func customDetailSection(_ section: CreateEditIdentitySection, index: Int) -> some View {
