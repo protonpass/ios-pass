@@ -102,8 +102,8 @@ struct EditCustomFieldView<Field: Hashable>: View {
                              iconColor: contentType.normMajor1Color,
                              backgroundColor: contentType.normMinor1Color,
                              accessibilityLabel: "Custom field menu")
-                    
-            }).frame(width: 100, height: 100)
+
+            })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .if(roundedSection) { view in
