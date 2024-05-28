@@ -186,22 +186,10 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
-        setUp()
+//        setUp()
     }
 
     override func itemContentType() -> ItemContentType { .identity }
-
-//    func udpdateCellContent(newValue: String, sectionKey: IdentitySectionHeaderKey, contentId: String) {
-    ////        guard let cellsContent = sections[sectionKey],
-    ////              let newContent = cellsContent.cells.first(where: { $0.id == contentId })?.copy(value:
-    /// newValue)
-    ////        else {
-    ////            return
-    ////        }
-    ////        var cells = cellsContent.cells
-    ////        cells.update(with: newContent)
-    ////        sections[sectionKey] = cellsContent.copy(cells: cells)
-//    }
 
     func toggleCollapsingSection(sectionToToggle: CreateEditIdentitySection) {
         sections = sections.map { section in
@@ -350,6 +338,11 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
         switch mode {
         case let .clone(itemContent), let .edit(itemContent):
             guard case let .identity(data) = itemContent.contentData else { return }
+
+            for item in BaseIdentitySection.allCases where item != .custom {
+                sections.append(item.createEditIdentitySection)
+            }
+
             title = itemContent.name
             fullName = data.fullName
             email = data.email
@@ -451,8 +444,8 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
 
 private extension CreateEditIdentityViewModel {
     func setUp() {
-        addBaseSections()
         bindValues()
+//        addBaseSections()
     }
 
     func addBaseSections() {

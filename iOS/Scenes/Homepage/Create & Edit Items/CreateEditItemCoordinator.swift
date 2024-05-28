@@ -107,7 +107,6 @@ extension CreateEditItemCoordinator {
             presentGeneratePasswordView(mode: .random,
                                         generatePasswordViewModelDelegate: createEditItemDelegates)
         case .identity:
-            // TODO: Replace this
             try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
         }
     }
@@ -169,7 +168,6 @@ private extension CreateEditItemCoordinator {
                                                         upgradeChecker: upgradeChecker,
                                                         vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
-//        viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
         let view = CreateEditIdentityView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
