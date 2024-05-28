@@ -35,10 +35,3 @@ extension View {
         }
     }
 }
-
-extension View {
-    func theme(_ theme: Theme) -> some View {
-        colorScheme(theme.colorScheme)
-            .animation(.default, value: theme)
-    }
-}

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Macro
 import ProtonCoreDoh
 import ProtonCoreForceUpgrade
@@ -41,14 +42,14 @@ final class WelcomeCoordinator: DeinitPrintable {
     private lazy var logInAndSignUp = makeLoginAndSignUp()
 
     private let apiService: any APIService
-    private let preferences: Preferences
+    private let theme: Theme
 
     weak var delegate: (any WelcomeCoordinatorDelegate)?
     var rootViewController: UIViewController { welcomeViewController }
 
-    init(apiService: any APIService, preferences: Preferences) {
+    init(apiService: any APIService, theme: Theme) {
         self.apiService = apiService
-        self.preferences = preferences
+        self.theme = theme
     }
 
     private func makeWelcomeViewController() -> UIViewController {
@@ -57,7 +58,6 @@ final class WelcomeCoordinator: DeinitPrintable {
                                   delegate: self,
                                   username: nil,
                                   signupAvailable: true)
-        welcomeViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         return welcomeViewController
     }
 
@@ -82,7 +82,7 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     nonisolated func userWantsToLogIn(username: String?) {
         let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
             guard let self else { return .default }
-            return preferences.theme.inAppTheme
+            return theme.inAppTheme
         })
         Task { @MainActor [weak self] in
             guard let self else {
@@ -106,7 +106,7 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     nonisolated func userWantsToSignUp() {
         let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
             guard let self else { return .default }
-            return preferences.theme.inAppTheme
+            return theme.inAppTheme
         })
         Task { @MainActor [weak self] in
             guard let self else {

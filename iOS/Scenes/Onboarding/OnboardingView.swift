@@ -25,7 +25,6 @@ import SwiftUI
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = OnboardingViewModel()
-    private let theme = resolve(\SharedToolingContainer.theme)
     let onWatchTutorial: () -> Void
 
     var body: some View {
@@ -107,7 +106,6 @@ struct OnboardingView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .background(PassColor.backgroundNorm.toColor)
         .edgesIgnoringSafeArea(.all)
-        .theme(theme)
         .onReceiveBoolean(viewModel.$finished, perform: dismiss.callAsFunction)
     }
 }

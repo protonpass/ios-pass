@@ -34,7 +34,6 @@ protocol CustomFieldAdditionDelegate: AnyObject {
 final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
     deinit { print(deinitMessage) }
 
-    private let theme = resolve(\SharedToolingContainer.theme)
     weak var rootViewController: UIViewController?
     weak var delegate: (any CustomFieldAdditionDelegate)?
 
@@ -61,7 +60,6 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
         }
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
         rootViewController?.topMostViewController.present(viewController, animated: true)
     }
 }

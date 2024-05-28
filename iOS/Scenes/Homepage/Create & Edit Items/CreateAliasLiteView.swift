@@ -26,7 +26,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct CreateAliasLiteView: View {
-    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
     @FocusState private var focusedField: Field?
@@ -101,7 +100,6 @@ struct CreateAliasLiteView: View {
                 }
             }
         }
-        .theme(theme)
     }
 
     @ViewBuilder
