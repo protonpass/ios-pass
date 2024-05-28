@@ -434,6 +434,8 @@
 		57F59FB22AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 57F59FB12AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation */; };
 		5B0783712B1A301C0006424C /* UseCasesMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0783702B1A301C0006424C /* UseCasesMocks */; };
 		5B0783732B1A33F90006424C /* ClientMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0783722B1A33F90006424C /* ClientMocks */; };
+		5B0939182C04DD250046F467 /* IdentityDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0939162C04DD250046F467 /* IdentityDetailView.swift */; };
+		5B0939192C04DD250046F467 /* IdentityDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */; };
 		5B0C74F82A2F4B1200272CE8 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74F72A2F4B1200272CE8 /* Factory */; };
 		5B0C74FD2A2F606C00272CE8 /* SharedServices+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */; };
 		5B0C74FF2A2F617900272CE8 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74FE2A2F617900272CE8 /* Factory */; };
@@ -921,6 +923,8 @@
 		35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListView.swift; sourceTree = "<group>"; };
 		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
 		37BE836F29954C6000E42C89 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		5B0939162C04DD250046F467 /* IdentityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailView.swift; sourceTree = "<group>"; };
+		5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailViewModel.swift; sourceTree = "<group>"; };
 		5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedServices+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedTooling+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B1092D22B5199F1002621A4 /* DetailHistoryView+Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Note.swift"; sourceTree = "<group>"; };
@@ -1367,6 +1371,7 @@
 		3565622529BA760800C43F72 /* Item Detail */ = {
 			isa = PBXGroup;
 			children = (
+				5B0939152C04DD0A0046F467 /* Identity */,
 				356A1F012B88AEA200561950 /* Passkey */,
 				3572E5262994043C00775FAC /* Supporting Views */,
 				35AC9A532A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift */,
@@ -1766,6 +1771,15 @@
 				3562BCF129BDBF0B00564508 /* Supporting Views */,
 			);
 			path = Homepage;
+			sourceTree = "<group>";
+		};
+		5B0939152C04DD0A0046F467 /* Identity */ = {
+			isa = PBXGroup;
+			children = (
+				5B0939162C04DD250046F467 /* IdentityDetailView.swift */,
+				5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */,
+			);
+			path = Identity;
 			sourceTree = "<group>";
 		};
 		5B0C74F92A2F5EDC00272CE8 /* AppManagement */ = {
@@ -3316,6 +3330,8 @@
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,
 				351A96012BAC7E8700D599BB /* TipKitSection.swift in Sources */,
 				3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */,
+				5B0939182C04DD250046F467 /* IdentityDetailView.swift in Sources */,
+				5B0939192C04DD250046F467 /* IdentityDetailViewModel.swift in Sources */,
 				5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */,
 				3585DE522B591035008AFD9F /* ImportExportWebView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,
