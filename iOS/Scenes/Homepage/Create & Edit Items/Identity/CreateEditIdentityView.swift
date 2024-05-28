@@ -27,6 +27,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+// swiftlint:disable file_length
 enum SectionsSheetStates: MultipleSheetDisplaying {
     case none
     case personal(CreateEditIdentitySection)
@@ -183,20 +184,20 @@ private extension CreateEditIdentityView {
     func sections() -> some View {
         ForEach(Array(viewModel.sections.enumerated()), id: \.element.id) { index, section in
             Section(content: {
-                switch index {
-                case 0:
+                switch section.id {
+                case BaseIdentitySection.personalDetails.rawValue:
                     if !section.isCollapsed {
                         personalDetailSection(section)
                     }
-                case 1:
+                case BaseIdentitySection.address.rawValue:
                     if !section.isCollapsed {
                         addressDetailSection(section)
                     }
-                case 2:
+                case BaseIdentitySection.contact.rawValue:
                     if !section.isCollapsed {
                         contactDetailSection(section)
                     }
-                case 3:
+                case BaseIdentitySection.workDetail.rawValue:
                     if !section.isCollapsed {
                         workDetailSection(section)
                     }
@@ -212,7 +213,7 @@ private extension CreateEditIdentityView {
     }
 
     func header(for section: CreateEditIdentitySection) -> some View {
-        HStack {
+        HStack(alignment: .center) {
             Label(title: { Text(section.title) },
                   icon: {
                       Image(systemName: section.isCollapsed ? "chevron.down" : "chevron.up")
@@ -231,6 +232,7 @@ private extension CreateEditIdentityView {
             if section.isCustom {
                 IconProvider.crossCircle
                     .foregroundStyle(PassColor.textWeak.toColor)
+                    .padding(.top, DesignConstant.sectionPadding)
                     .buttonEmbeded {
                         viewModel.sectionToDelete = section
                         showDeleteCustomSectionAlert.toggle()
@@ -338,23 +340,21 @@ private extension CreateEditIdentityView {
                 }
 
                 ForEach($viewModel.extraPersonalDetails) { $field in
-                    VStack {
-                        PassSectionDivider()
-                        EditCustomFieldView(focusedField: $focusedField,
-                                            field: .custom(field),
-                                            contentType: .identity,
-                                            uiModel: $field,
-                                            showIcon: false,
-                                            roundedSection: false,
-                                            onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                            onRemove: {
-                                                // Work around a crash in later versions of iOS 17
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    viewModel.extraPersonalDetails
-                                                        .removeAll(where: { $0.id == field.id })
-                                                }
-                                            })
-                    }
+                    PassSectionDivider()
+                    EditCustomFieldView(focusedField: $focusedField,
+                                        field: .custom(field),
+                                        contentType: .identity,
+                                        uiModel: $field,
+                                        showIcon: false,
+                                        roundedSection: false,
+                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onRemove: {
+                                            // Work around a crash in later versions of iOS 17
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                viewModel.extraPersonalDetails
+                                                    .removeAll(where: { $0.id == field.id })
+                                            }
+                                        })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -419,23 +419,21 @@ private extension CreateEditIdentityView {
                 }
 
                 ForEach($viewModel.extraAddressDetails) { $field in
-                    VStack {
-                        PassSectionDivider()
-                        EditCustomFieldView(focusedField: $focusedField,
-                                            field: .custom(field),
-                                            contentType: .identity,
-                                            uiModel: $field,
-                                            showIcon: false,
-                                            roundedSection: false,
-                                            onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                            onRemove: {
-                                                // Work around a crash in later versions of iOS 17
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    viewModel.extraPersonalDetails
-                                                        .removeAll(where: { $0.id == field.id })
-                                                }
-                                            })
-                    }
+                    PassSectionDivider()
+                    EditCustomFieldView(focusedField: $focusedField,
+                                        field: .custom(field),
+                                        contentType: .identity,
+                                        uiModel: $field,
+                                        showIcon: false,
+                                        roundedSection: false,
+                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onRemove: {
+                                            // Work around a crash in later versions of iOS 17
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                viewModel.extraPersonalDetails
+                                                    .removeAll(where: { $0.id == field.id })
+                                            }
+                                        })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -458,7 +456,7 @@ private extension CreateEditIdentityView {
                 identityRow(title: "Social security number",
                             value: $viewModel.socialSecurityNumber)
                 PassSectionDivider()
-                identityRow(title: "Passpord number",
+                identityRow(title: "Passport number",
                             value: $viewModel.passportNumber)
                 PassSectionDivider()
                 identityRow(title: "License number",
@@ -505,23 +503,21 @@ private extension CreateEditIdentityView {
                 }
 
                 ForEach($viewModel.extraContactDetails) { $field in
-                    VStack {
-                        PassSectionDivider()
-                        EditCustomFieldView(focusedField: $focusedField,
-                                            field: .custom(field),
-                                            contentType: .identity,
-                                            uiModel: $field,
-                                            showIcon: false,
-                                            roundedSection: false,
-                                            onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                            onRemove: {
-                                                // Work around a crash in later versions of iOS 17
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    viewModel.extraPersonalDetails
-                                                        .removeAll(where: { $0.id == field.id })
-                                                }
-                                            })
-                    }
+                    PassSectionDivider()
+                    EditCustomFieldView(focusedField: $focusedField,
+                                        field: .custom(field),
+                                        contentType: .identity,
+                                        uiModel: $field,
+                                        showIcon: false,
+                                        roundedSection: false,
+                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onRemove: {
+                                            // Work around a crash in later versions of iOS 17
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                viewModel.extraPersonalDetails
+                                                    .removeAll(where: { $0.id == field.id })
+                                            }
+                                        })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -567,23 +563,21 @@ private extension CreateEditIdentityView {
                 }
 
                 ForEach($viewModel.extraWorkDetails) { $field in
-                    VStack {
-                        PassSectionDivider()
-                        EditCustomFieldView(focusedField: $focusedField,
-                                            field: .custom(field),
-                                            contentType: .identity,
-                                            uiModel: $field,
-                                            showIcon: false,
-                                            roundedSection: false,
-                                            onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                            onRemove: {
-                                                // Work around a crash in later versions of iOS 17
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    viewModel.extraPersonalDetails
-                                                        .removeAll(where: { $0.id == field.id })
-                                                }
-                                            })
-                    }
+                    PassSectionDivider()
+                    EditCustomFieldView(focusedField: $focusedField,
+                                        field: .custom(field),
+                                        contentType: .identity,
+                                        uiModel: $field,
+                                        showIcon: false,
+                                        roundedSection: false,
+                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onRemove: {
+                                            // Work around a crash in later versions of iOS 17
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                viewModel.extraPersonalDetails
+                                                    .removeAll(where: { $0.id == field.id })
+                                            }
+                                        })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -829,3 +823,5 @@ private extension CreateEditIdentityView {
         .background(PassColor.backgroundNorm.toColor)
     }
 }
+
+// swiftlint:enable file_length

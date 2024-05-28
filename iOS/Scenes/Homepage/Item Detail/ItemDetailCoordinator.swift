@@ -62,6 +62,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
         itemDetailPage.viewModel.delegate = itemDetailViewModelDelegate
         currentViewModel = itemDetailPage.viewModel
 
+        // TODO: add this to router
         delegate?.itemDetailCoordinatorWantsToPresent(view: itemDetailPage.view, asSheet: asSheet)
     }
 
@@ -109,11 +110,8 @@ private extension ItemDetailCoordinator {
     }
 
     func makeIdentityDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
-        // TODO: Make detail view page for identity
-        #warning("THIS NEED TO CHNAGE JUST A PLACE HOLDER")
-        let viewModel = CreditCardDetailViewModel(isShownAsSheet: asSheet,
-                                                  itemContent: itemContent,
-                                                  upgradeChecker: upgradeChecker)
-        return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
+        let viewModel = IdentityDetailViewModel(isShownAsSheet: asSheet, itemContent: itemContent,
+                                                upgradeChecker: upgradeChecker)
+        return .init(viewModel: viewModel, view: IdentityDetailView(viewModel: viewModel))
     }
 }

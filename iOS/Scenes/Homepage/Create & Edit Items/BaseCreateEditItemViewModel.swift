@@ -50,7 +50,6 @@ enum ItemMode: Equatable, Hashable {
     }
 }
 
-// TODO: need to add identity
 enum ItemCreationType: Equatable, Hashable {
     case note(title: String, note: String)
     case alias
