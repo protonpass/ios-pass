@@ -32,7 +32,6 @@ import UIKit
 @MainActor
 final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var title = ""
-
     @Published private(set) var fullName = ""
     @Published private(set) var email = ""
     @Published private(set) var phoneNumber = ""
@@ -69,6 +68,36 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var workPhoneNumber = ""
     @Published private(set) var workEmail = ""
     @Published private(set) var extraWorkDetails: [CustomFieldUiModel] = []
+    @Published private(set) var extraSections: [CustomSection] = []
+
+    var showPersonalSection: Bool {
+        !title.isEmpty || !fullName.isEmpty ||
+            !email.isEmpty || !phoneNumber.isEmpty ||
+            !firstName.isEmpty || !middleName.isEmpty ||
+            !lastName.isEmpty || !birthdate.isEmpty ||
+            !gender.isEmpty || !extraPersonalDetails.isEmpty
+    }
+
+    var showAddressSection: Bool {
+        !organization.isEmpty || !streetAddress.isEmpty ||
+            !zipOrPostalCode.isEmpty || !city.isEmpty ||
+            !stateOrProvince.isEmpty || !countryOrRegion.isEmpty ||
+            !floor.isEmpty || !county.isEmpty || !extraAddressDetails.isEmpty
+    }
+
+    var showContactSection: Bool {
+        !socialSecurityNumber.isEmpty || !passportNumber.isEmpty ||
+            !licenseNumber.isEmpty || !website.isEmpty ||
+            !xHandle.isEmpty || !secondPhoneNumber.isEmpty ||
+            !linkedin.isEmpty || !reddit.isEmpty || !facebook.isEmpty ||
+            !yahoo.isEmpty || !instagram.isEmpty || !extraContactDetails.isEmpty
+    }
+
+    var showWordSection: Bool {
+        !company.isEmpty || !jobTitle.isEmpty ||
+            !personalWebsite.isEmpty || !workPhoneNumber.isEmpty ||
+            !workEmail.isEmpty || !extraWorkDetails.isEmpty
+    }
 
     override func bindValues() {
         super.bindValues()
@@ -114,6 +143,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         workPhoneNumber = data.workPhoneNumber
         workEmail = data.workEmail
         extraWorkDetails = data.extraWorkDetails.map { CustomFieldUiModel(customField: $0) }
+        extraSections = data.extraSections
 //            sections.append(contentsOf: data.extraSections.toCreateEditIdentitySections)
     }
 }
