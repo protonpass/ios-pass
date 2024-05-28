@@ -105,8 +105,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     private var authenticated = false
 
-    private var theme: Theme { getSharedPreferences().theme }
-
     weak var delegate: (any HomepageCoordinatorDelegate)?
     weak var homepageTabDelegate: (any HomepageTabDelegate)?
 
@@ -145,16 +143,6 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 logger.trace("Found new plan, refreshing credential database")
                 homepageTabDelegate?.refreshTabIcons()
-            }
-            .store(in: &cancellables)
-
-        preferencesManager
-            .sharedPreferencesUpdates
-            .receive(on: DispatchQueue.main)
-            .filter(\.theme)
-            .sink { [weak self] theme in
-                guard let self else { return }
-                rootViewController.setUserInterfaceStyle(theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
 
@@ -262,7 +250,6 @@ private extension HomepageCoordinator {
                                  })
 
         start(with: homeView, secondaryView: placeholderView)
-        rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
 
     func synchroniseData() {
@@ -909,17 +896,9 @@ extension HomepageCoordinator {
                  dismissible: Bool = true,
                  uniquenessTag: (any RawRepresentable<Int>)? = nil) {
         present(UIHostingController(rootView: view),
-                userInterfaceStyle: theme.userInterfaceStyle,
                 animated: animated,
                 dismissible: dismissible,
                 uniquenessTag: uniquenessTag)
-    }
-
-    func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
-        present(viewController,
-                userInterfaceStyle: theme.userInterfaceStyle,
-                animated: animated,
-                dismissible: dismissible)
     }
 
     func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>, value: T) {
@@ -1072,7 +1051,6 @@ private extension HomepageCoordinator {
                 presentOnboardView(forced: true)
             }
         }
-        .theme(theme)
         let vc = UIHostingController(rootView: view)
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
@@ -1398,7 +1376,8 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToEditTheme() {
-        let view = EditThemeView { [weak self] newTheme in
+        let theme = getSharedPreferences().theme
+        let view = EditThemeView(currentTheme: theme) { [weak self] newTheme in
             guard let self else { return }
             updateSharedPreferences(\.theme, value: newTheme)
         }
@@ -1581,7 +1560,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
-        showFullScreen(data: data, userInterfaceStyle: theme.userInterfaceStyle)
+        showFullScreen(data: data)
     }
 
     func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable) {

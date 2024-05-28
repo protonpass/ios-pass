@@ -67,6 +67,10 @@ final class AppCoordinator {
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
+    private var theme: Theme {
+        preferencesManager.sharedPreferences.unwrapped().theme
+    }
+
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
@@ -152,6 +156,7 @@ final class AppCoordinator {
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
+                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start()
             } catch {
                 appStateObserver.updateAppState(.loggedOut(.failedToInitializePreferences(error)))
@@ -173,7 +178,7 @@ private extension AppCoordinator {
 
     func showWelcomeScene(reason: LogOutReason) {
         let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
-                                                    preferences: preferences)
+                                                    theme: theme)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         homepageCoordinator = nil
@@ -203,7 +208,6 @@ private extension AppCoordinator {
     func animateUpdateRootViewController(_ newRootViewController: UIViewController,
                                          completion: (() -> Void)? = nil) {
         window.rootViewController = newRootViewController
-        window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         UIView.transition(with: window,
                           duration: 0.35,
                           options: .transitionCrossDissolve,

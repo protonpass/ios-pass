@@ -26,7 +26,6 @@ import SwiftUI
 
 struct AutoFillInstructionsView: View {
     @Environment(\.dismiss) private var dismiss
-    private var theme = resolve(\SharedToolingContainer.theme)
 
     var body: some View {
         NavigationStack {
@@ -65,7 +64,6 @@ private extension AutoFillInstructionsView {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm.toColor)
-        .theme(theme)
     }
 
     @ToolbarContentBuilder

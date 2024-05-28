@@ -26,7 +26,6 @@ import SwiftUI
 
 struct NoCameraPermissionView: View {
     @Environment(\.dismiss) private var dismiss
-    private let theme = resolve(\SharedToolingContainer.theme)
     let onOpenSettings: () -> Void
 
     var body: some View {
@@ -64,6 +63,5 @@ struct NoCameraPermissionView: View {
                 }
             }
         }
-        .theme(theme)
     }
 }
