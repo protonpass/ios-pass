@@ -33,7 +33,6 @@ struct SettingsView: View {
             .if(viewModel.isShownAsSheet) { view in
                 view.navigationStackEmbeded()
             }
-            .theme(viewModel.selectedTheme)
     }
 }
 
