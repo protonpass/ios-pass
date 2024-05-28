@@ -51,11 +51,28 @@ private extension IdentityDetailView {
                         ItemDetailTitleView(itemContent: viewModel.itemContent,
                                             vault: viewModel.vault?.vault,
                                             shouldShowVault: viewModel.shouldShowVault)
-                            .padding(.bottom, 40)
+                            .padding(.bottom, 25)
 
-                        personalDetailSection
-                        addressDetailSection
-                        contactDetailSection
+                        if viewModel.showPersonalSection {
+                            personalDetailSection
+                        }
+
+                        if viewModel.showAddressSection {
+                            addressDetailSection
+                        }
+
+                        if viewModel.showContactSection {
+                            contactDetailSection
+                        }
+
+                        if viewModel.showWordSection {
+                            workDetailSection
+                        }
+
+                        ForEach(viewModel.extraSections) { customSection in
+                            customDetailSection(customSection: customSection)
+                        }
+
 //                        if !viewModel.passkeys.isEmpty {
 //                            ForEach(viewModel.passkeys, id: \.keyID) { passkey in
 //                                PasskeyDetailRow(passkey: passkey,
@@ -103,6 +120,8 @@ private extension IdentityDetailView {
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
+        .toolbarBackground(PassColor.backgroundNorm.toColor,
+                           for: .navigationBar)
     }
 }
 
@@ -179,12 +198,14 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.gender,
                                                            message: #localized("Gender copied"))
                         }
+
                         PassSectionDivider()
                     }
 
                     CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                         uiModels: viewModel.extraPersonalDetails,
                                         isFreeUser: viewModel.isFreeUser,
+                                        isASection: false,
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -196,7 +217,7 @@ private extension IdentityDetailView {
             Text("Personal details")
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, DesignConstant.sectionPadding)
+                .padding(.vertical, DesignConstant.sectionPadding)
         }
     }
 }
@@ -280,6 +301,7 @@ private extension IdentityDetailView {
                     CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                         uiModels: viewModel.extraAddressDetails,
                                         isFreeUser: viewModel.isFreeUser,
+                                        isASection: false,
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -292,6 +314,7 @@ private extension IdentityDetailView {
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, DesignConstant.sectionPadding)
+                .padding(.vertical, DesignConstant.sectionPadding)
         }
     }
 }
@@ -399,6 +422,7 @@ private extension IdentityDetailView {
                     CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                         uiModels: viewModel.extraContactDetails,
                                         isFreeUser: viewModel.isFreeUser,
+                                        isASection: false,
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -411,6 +435,156 @@ private extension IdentityDetailView {
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, DesignConstant.sectionPadding)
+                .padding(.vertical, DesignConstant.sectionPadding)
+        }
+    }
+}
+
+private extension IdentityDetailView {
+    var workDetailSection: some View {
+        Section {
+            VStack(alignment: .leading) {
+                VStack(spacing: DesignConstant.sectionPadding) {
+                    if !viewModel.company.isEmpty {
+                        row(title: "Company", value: viewModel.company) {
+                            viewModel.copyValueToClipboard(value: viewModel.company,
+                                                           message: #localized("Company copied"))
+                        }
+
+                        PassSectionDivider()
+                    }
+
+                    if !viewModel.jobTitle.isEmpty {
+                        row(title: "Job title", value: viewModel.jobTitle) {
+                            viewModel.copyValueToClipboard(value: viewModel.jobTitle,
+                                                           message: #localized("Job title copied"))
+                        }
+
+                        PassSectionDivider()
+                    }
+
+                    if !viewModel.personalWebsite.isEmpty {
+                        row(title: "Personal website", value: viewModel.personalWebsite) {
+                            viewModel.copyValueToClipboard(value: viewModel.personalWebsite,
+                                                           message: #localized("ersonal website copied"))
+                        }
+
+                        PassSectionDivider()
+                    }
+
+                    if !viewModel.workPhoneNumber.isEmpty {
+                        row(title: "Work phone number", value: viewModel.workPhoneNumber) {
+                            viewModel.copyValueToClipboard(value: viewModel.workPhoneNumber,
+                                                           message: #localized("Work phone number copied"))
+                        }
+
+                        PassSectionDivider()
+                    }
+
+                    if !viewModel.workEmail.isEmpty {
+                        row(title: "Work email", value: viewModel.workEmail) {
+                            viewModel.copyValueToClipboard(value: viewModel.workEmail,
+                                                           message: #localized("Work email copied"))
+                        }
+
+                        PassSectionDivider()
+                    }
+
+                    CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                                        uiModels: viewModel.extraWorkDetails,
+                                        isFreeUser: viewModel.isFreeUser,
+                                        isASection: false,
+                                        onSelectHiddenText: { viewModel.copyHiddenText($0) },
+                                        onSelectTotpToken: { viewModel.copyTotpToken($0) },
+                                        onUpgrade: { viewModel.upgrade() })
+                }
+                .padding(.vertical, DesignConstant.sectionPadding)
+                .roundedEditableSection()
+            }
+        } header: {
+            Text("Work details")
+                .foregroundStyle(PassColor.textWeak.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, DesignConstant.sectionPadding)
+                .padding(.vertical, DesignConstant.sectionPadding)
+        }
+    }
+}
+
+private extension IdentityDetailView {
+    func customDetailSection(customSection: CustomSection) -> some View {
+        Section {
+            CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                                uiModels: customSection.content
+                                    .map { CustomFieldUiModel(customField: $0) },
+                                isFreeUser: viewModel.isFreeUser,
+                                onSelectHiddenText: { viewModel.copyHiddenText($0) },
+                                onSelectTotpToken: { viewModel.copyTotpToken($0) },
+                                onUpgrade: { viewModel.upgrade() })
+//            VStack(alignment: .leading) {
+//                VStack(spacing: DesignConstant.sectionPadding) {
+//                    if !viewModel.company.isEmpty {
+//                        row(title: "Company", value: viewModel.company) {
+//                            viewModel.copyValueToClipboard(value: viewModel.company,
+//                                                           message: #localized("Company copied"))
+//                        }
+//
+//                        PassSectionDivider()
+//                    }
+//
+//                    if !viewModel.jobTitle.isEmpty {
+//                        row(title: "Job title", value: viewModel.jobTitle) {
+//                            viewModel.copyValueToClipboard(value: viewModel.jobTitle,
+//                                                           message: #localized("Job title copied"))
+//                        }
+//
+//                        PassSectionDivider()
+//                    }
+//
+//                    if !viewModel.personalWebsite.isEmpty {
+//                        row(title: "Personal website", value: viewModel.personalWebsite) {
+//                            viewModel.copyValueToClipboard(value: viewModel.personalWebsite,
+//                                                           message: #localized("ersonal website copied"))
+//                        }
+//
+//                        PassSectionDivider()
+//                    }
+//
+//                    if !viewModel.workPhoneNumber.isEmpty {
+//                        row(title: "Work phone number", value: viewModel.workPhoneNumber) {
+//                            viewModel.copyValueToClipboard(value: viewModel.workPhoneNumber,
+//                                                           message: #localized("Work phone number copied"))
+//                        }
+//
+//                        PassSectionDivider()
+//                    }
+//
+//                    if !viewModel.workEmail.isEmpty {
+//                        row(title: "Work email", value: viewModel.workEmail) {
+//                            viewModel.copyValueToClipboard(value: viewModel.workEmail,
+//                                                           message: #localized("Work email copied"))
+//                        }
+//
+//                        PassSectionDivider()
+//                    }
+//
+//                    CustomFieldSections(itemContentType: viewModel.itemContent.type,
+//                                        uiModels: viewModel.extraWorkDetails,
+//                                        isFreeUser: viewModel.isFreeUser,
+//                                        isASection: false,
+//                                        onSelectHiddenText: { viewModel.copyHiddenText($0) },
+//                                        onSelectTotpToken: { viewModel.copyTotpToken($0) },
+//                                        onUpgrade: { viewModel.upgrade() })
+//                }
+//                .padding(.vertical, DesignConstant.sectionPadding)
+//                .roundedEditableSection()
+//            }
+        } header: {
+            Text(customSection.title)
+                .foregroundStyle(PassColor.textWeak.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, DesignConstant.sectionPadding)
+                .padding(.vertical, DesignConstant.sectionPadding)
         }
     }
 }
