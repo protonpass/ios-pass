@@ -25,7 +25,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SharedContentView: View {
-    private let theme = resolve(\SharedToolingContainer.theme)
     let content: SharedContent
     let onCreate: (SharedItemType) -> Void
     let onDismiss: () -> Void
@@ -58,7 +57,6 @@ struct SharedContentView: View {
         .toolbar { toolbarContent }
         .navigationTitle("Create")
         .navigationStackEmbeded()
-        .theme(theme)
     }
 }
 
