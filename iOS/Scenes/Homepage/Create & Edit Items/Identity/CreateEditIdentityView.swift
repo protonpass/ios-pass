@@ -127,12 +127,31 @@ private extension CreateEditIdentityView {
 
                 sections()
                 PassSectionDivider()
-                CapsuleLabelButton(icon: IconProvider.plus,
-                                   title: "Add a custom section",
-                                   titleColor: viewModel.itemContentType().normMajor2Color,
-                                   backgroundColor: viewModel.itemContentType().normMinor1Color,
-                                   height: 55) {
-                    showCustomTitleAlert.toggle()
+
+                if viewModel.canAddMoreCustomFields {
+                    CapsuleLabelButton(icon: IconProvider.plus,
+                                       title: "Add a custom section",
+                                       titleColor: viewModel.itemContentType().normMajor2Color,
+                                       backgroundColor: viewModel.itemContentType().normMinor1Color,
+                                       height: 55) {
+                        showCustomTitleAlert.toggle()
+                    }
+                } else {
+                    Button { viewModel.upgrade() } label: {
+                        Label(title: {
+                            Text("Upgrade to add custom sections")
+                                .font(.callout)
+                                .fontWeight(.medium)
+                        }, icon: {
+                            Image(uiImage: IconProvider.arrowOutSquare)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: 16)
+                        })
+                        .foregroundStyle(ItemContentType.identity.normMajor2Color.toColor)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
                 }
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
@@ -146,6 +165,7 @@ private extension CreateEditIdentityView {
             .toolbarBackground(PassColor.backgroundNorm.toColor,
                                for: .navigationBar)
         }
+        .background(PassColor.backgroundNorm.toColor)
         .toolbar {
             CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
                                   isSaveable: true, // viewModel.isSaveable,
@@ -808,15 +828,33 @@ private extension CreateEditIdentityView {
             default:
                 EmptyView()
             }
-            Text("Custom field")
-                .foregroundStyle(PassColor.textNorm.toColor)
+            if viewModel.canAddMoreCustomFields {
+                Text("Custom field")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, DesignConstant.sectionPadding)
+                    .buttonEmbeded {
+                        if let section = sheetState.section {
+                            viewModel.addCustomField(to: section)
+                        }
+                    }
+            } else {
+                Button { viewModel.upgrade() } label: {
+                    Label(title: {
+                        Text("Upgrade to add custom fields")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                    }, icon: {
+                        Image(uiImage: IconProvider.arrowOutSquare)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 16)
+                    })
+                    .foregroundStyle(ItemContentType.identity.normMajor2Color.toColor)
+                }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
-                .buttonEmbeded {
-                    if let section = sheetState.section {
-                        viewModel.addCustomField(to: section)
-                    }
-                }
+            }
         }
         .frame(maxHeight: .infinity)
         .padding(.horizontal, DesignConstant.sectionPadding)

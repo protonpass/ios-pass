@@ -50,10 +50,6 @@ enum BaseIdentitySection: String, CaseIterable {
 }
 
 extension CustomSection {
-//    var identitySectionHeaderKey: IdentitySectionHeaderKey {
-//        IdentitySectionHeaderKey(title: title)
-//    }
-
     var createEditIdentitySection: CreateEditIdentitySection {
         CreateEditIdentitySection(id: UUID().uuidString,
                                   title: title,
@@ -63,27 +59,6 @@ extension CustomSection {
                                   content: content.map { CustomFieldUiModel(customField: $0) })
     }
 }
-
-// @Copyable
-// struct IdentitySection {
-//    let id: String
-//    let title: String
-//    let order: Int
-//
-////    let cells: Set<IdentityCellContent>
-// }
-
-// struct IdentitySectionHeaderKey: Hashable, Comparable, Identifiable {
-//    let title: String
-//
-//    var id: Int {
-//        hashValue
-//    }
-//
-//    static func < (lhs: IdentitySectionHeaderKey, rhs: IdentitySectionHeaderKey) -> Bool {
-//        lhs.title < rhs.title
-//    }
-// }
 
 @Copyable
 struct CreateEditIdentitySection: Hashable, Identifiable {
@@ -104,14 +79,14 @@ struct CreateEditIdentitySection: Hashable, Identifiable {
     }
 }
 
-@Copyable
-struct IdentityCellContent: Hashable {
-    let id: String
-    let sectionid: String
-    let title: String
-//    let type: Int
-    let value: String
-}
+// @Copyable
+// struct IdentityCellContent: Hashable {
+//    let id: String
+//    let sectionid: String
+//    let title: String
+////    let type: Int
+//    let value: String
+// }
 
 @MainActor
 final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, ObservableObject, Sendable {
@@ -383,7 +358,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             extraWorkDetails = data.extraWorkDetails.map { CustomFieldUiModel(customField: $0) }
             sections.append(contentsOf: data.extraSections.toCreateEditIdentitySections)
         case .create:
-            break
+            addBaseSections()
         }
     }
 
