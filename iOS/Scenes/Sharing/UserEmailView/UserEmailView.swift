@@ -109,11 +109,14 @@ private extension UserEmailView {
         }
     }
 
+    @ViewBuilder
     var emailTextField: some View {
+        let placeholder = #localized("Email address")
+        let maxCharCount = max(placeholder.count, viewModel.email.count)
         BackspaceAwareTextField(text: $viewModel.email,
                                 isFocused: $isFocused,
                                 config: .init(font: .body,
-                                              placeholder: #localized("Email address"),
+                                              placeholder: placeholder,
                                               autoCapitalization: .none,
                                               autoCorrection: .no,
                                               keyboardType: .emailAddress,
@@ -122,7 +125,7 @@ private extension UserEmailView {
                                               tintColor: PassColor.interactionNorm),
                                 onBackspace: { viewModel.highlightLastEmail() },
                                 onReturn: { _ = viewModel.appendCurrentEmail() })
-            .frame(width: max(150, CGFloat(viewModel.email.count) * 10), height: 32)
+            .frame(width: max(150, CGFloat(maxCharCount) * 10), height: 32)
             .clipped()
     }
 
