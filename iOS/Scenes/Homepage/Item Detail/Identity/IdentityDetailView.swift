@@ -73,34 +73,6 @@ private extension IdentityDetailView {
                             customDetailSection(customSection: customSection)
                         }
 
-//                        if !viewModel.passkeys.isEmpty {
-//                            ForEach(viewModel.passkeys, id: \.keyID) { passkey in
-//                                PasskeyDetailRow(passkey: passkey,
-//                                                 onTap: { viewModel.viewPasskey(passkey) })
-//                                    .padding(.bottom, 8)
-//                            }
-//                        }
-
-//                        usernamePassword2FaSection
-
-//                        if !viewModel.urls.isEmpty {
-//                            urlsSection
-//                                .padding(.top, 8)
-//                        }
-//
-//                        if !viewModel.itemContent.note.isEmpty {
-//                            NoteDetailSection(itemContent: viewModel.itemContent,
-//                                              vault: viewModel.vault?.vault)
-//                                .padding(.top, 8)
-//                        }
-
-//                        CustomFieldSections(itemContentType: viewModel.itemContent.type,
-//                                            uiModels: viewModel.customFieldUiModels,
-//                                            isFreeUser: viewModel.isFreeUser,
-//                                            onSelectHiddenText: { copyHiddenText($0) },
-//                                            onSelectTotpToken: { copyTOTPToken($0) },
-//                                            onUpgrade: { viewModel.upgrade() })
-
                         ItemDetailHistorySection(itemContent: viewModel.itemContent,
                                                  action: { viewModel.showItemHistory() })
 
@@ -206,6 +178,10 @@ private extension IdentityDetailView {
                                         uiModels: viewModel.extraPersonalDetails,
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
+                                        showIcon: false,
+                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
+                                                                                       message: #localized("Custom field copied"))
+                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -302,6 +278,10 @@ private extension IdentityDetailView {
                                         uiModels: viewModel.extraAddressDetails,
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
+                                        showIcon: false,
+                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
+                                                                                       message: #localized("Custom field copied"))
+                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -423,6 +403,10 @@ private extension IdentityDetailView {
                                         uiModels: viewModel.extraContactDetails,
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
+                                        showIcon: false,
+                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
+                                                                                       message: #localized("Custom field copied"))
+                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -494,6 +478,10 @@ private extension IdentityDetailView {
                                         uiModels: viewModel.extraWorkDetails,
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
+                                        showIcon: false,
+                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
+                                                                                       message: #localized("Custom field copied"))
+                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -518,67 +506,13 @@ private extension IdentityDetailView {
                                 uiModels: customSection.content
                                     .map { CustomFieldUiModel(customField: $0) },
                                 isFreeUser: viewModel.isFreeUser,
+                                showIcon: false,
+                                onSelectText: { viewModel.copyValueToClipboard(value: $0,
+                                                                               message: #localized("Custom field copied"))
+                                },
                                 onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                 onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                 onUpgrade: { viewModel.upgrade() })
-//            VStack(alignment: .leading) {
-//                VStack(spacing: DesignConstant.sectionPadding) {
-//                    if !viewModel.company.isEmpty {
-//                        row(title: "Company", value: viewModel.company) {
-//                            viewModel.copyValueToClipboard(value: viewModel.company,
-//                                                           message: #localized("Company copied"))
-//                        }
-//
-//                        PassSectionDivider()
-//                    }
-//
-//                    if !viewModel.jobTitle.isEmpty {
-//                        row(title: "Job title", value: viewModel.jobTitle) {
-//                            viewModel.copyValueToClipboard(value: viewModel.jobTitle,
-//                                                           message: #localized("Job title copied"))
-//                        }
-//
-//                        PassSectionDivider()
-//                    }
-//
-//                    if !viewModel.personalWebsite.isEmpty {
-//                        row(title: "Personal website", value: viewModel.personalWebsite) {
-//                            viewModel.copyValueToClipboard(value: viewModel.personalWebsite,
-//                                                           message: #localized("ersonal website copied"))
-//                        }
-//
-//                        PassSectionDivider()
-//                    }
-//
-//                    if !viewModel.workPhoneNumber.isEmpty {
-//                        row(title: "Work phone number", value: viewModel.workPhoneNumber) {
-//                            viewModel.copyValueToClipboard(value: viewModel.workPhoneNumber,
-//                                                           message: #localized("Work phone number copied"))
-//                        }
-//
-//                        PassSectionDivider()
-//                    }
-//
-//                    if !viewModel.workEmail.isEmpty {
-//                        row(title: "Work email", value: viewModel.workEmail) {
-//                            viewModel.copyValueToClipboard(value: viewModel.workEmail,
-//                                                           message: #localized("Work email copied"))
-//                        }
-//
-//                        PassSectionDivider()
-//                    }
-//
-//                    CustomFieldSections(itemContentType: viewModel.itemContent.type,
-//                                        uiModels: viewModel.extraWorkDetails,
-//                                        isFreeUser: viewModel.isFreeUser,
-//                                        isASection: false,
-//                                        onSelectHiddenText: { viewModel.copyHiddenText($0) },
-//                                        onSelectTotpToken: { viewModel.copyTotpToken($0) },
-//                                        onUpgrade: { viewModel.upgrade() })
-//                }
-//                .padding(.vertical, DesignConstant.sectionPadding)
-//                .roundedEditableSection()
-//            }
         } header: {
             Text(customSection.title)
                 .foregroundStyle(PassColor.textWeak.toColor)
