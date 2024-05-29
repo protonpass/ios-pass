@@ -1,6 +1,5 @@
 //
-//
-// PublicLinkViewModel.swift
+// CreateSecureLinkViewModel.swift
 // Proton Pass - Created on 16/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -56,7 +55,7 @@ enum SecureLinkExpiration: Sendable, Hashable, Identifiable {
     }
 }
 
-enum PublicLinkViewModelState {
+enum CreateSecureLinkViewModelState {
     case creationWithoutRestriction
     case creationWithRestriction
     case created
@@ -76,17 +75,17 @@ enum PublicLinkViewModelState {
 }
 
 @MainActor
-final class PublicLinkViewModel: ObservableObject, Sendable {
-    @Published private(set) var link: SharedPublicLink?
+final class CreateSecureLinkViewModel: ObservableObject, Sendable {
+    @Published private(set) var link: NewSecureLink?
     @Published var selectedExpiration: SecureLinkExpiration = .day(7)
     @Published var loading = false
     @Published var viewCount = 0
 
-    private var state = PassthroughSubject<PublicLinkViewModelState, Never>()
+    private var state = PassthroughSubject<CreateSecureLinkViewModelState, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let createItemSharingPublicLink = resolve(\SharedUseCasesContainer.createItemSharingPublicLink)
+    let createSecureLink = resolve(\SharedUseCasesContainer.createSecureLink)
 
     let itemContent: ItemContent
     weak var sheetPresentation: UISheetPresentationController?
@@ -131,9 +130,9 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
             do {
                 loading = true
                 let maxReadCount = viewCount == 0 ? nil : viewCount
-                let result = try await createItemSharingPublicLink(item: itemContent,
-                                                                   expirationTime: selectedExpiration.seconds,
-                                                                   maxReadCount: maxReadCount)
+                let result = try await createSecureLink(item: itemContent,
+                                                        expirationTime: selectedExpiration.seconds,
+                                                        maxReadCount: maxReadCount)
                 link = result
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -149,7 +148,7 @@ final class PublicLinkViewModel: ObservableObject, Sendable {
     }
 }
 
-extension SharedPublicLink {
+extension NewSecureLink {
     var relativeTimeRemaining: String? {
         guard let expirationTime else {
             return nil
