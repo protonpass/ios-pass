@@ -103,72 +103,72 @@ private extension IdentityDetailView {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
                     if !viewModel.firstName.isEmpty {
-                        row(title: "First name", value: viewModel.firstName) {
+                        row(title: #localized("First name"), value: viewModel.firstName) {
                             viewModel.copyValueToClipboard(value: viewModel.firstName,
-                                                           message: #localized("First name copied"))
+                                                           message: #localized("First name"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.middleName.isEmpty {
-                        row(title: "Middle name", value: viewModel.middleName) {
+                        row(title: #localized("Middle name"), value: viewModel.middleName) {
                             viewModel.copyValueToClipboard(value: viewModel.middleName,
-                                                           message: #localized("Middle name copied"))
+                                                           message: #localized("Middle name"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.lastName.isEmpty {
-                        row(title: "Last name", value: viewModel.lastName) {
+                        row(title: #localized("Last name"), value: viewModel.lastName) {
                             viewModel.copyValueToClipboard(value: viewModel.lastName,
-                                                           message: #localized("Last name copied"))
+                                                           message: #localized("Last name"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.fullName.isEmpty {
-                        row(title: "Full name", value: viewModel.fullName) {
+                        row(title: #localized("Full name"), value: viewModel.fullName) {
                             viewModel.copyValueToClipboard(value: viewModel.fullName,
-                                                           message: #localized("Full name copied"))
+                                                           message: #localized("Full name"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.email.isEmpty {
-                        row(title: "Email", value: viewModel.email) {
+                        row(title: #localized("Email"), value: viewModel.email) {
                             viewModel.copyValueToClipboard(value: viewModel.email,
-                                                           message: #localized("Email copied"))
+                                                           message: #localized("Email"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.phoneNumber.isEmpty {
-                        row(title: "Phone number", value: viewModel.phoneNumber) {
+                        row(title: #localized("Phone number"), value: viewModel.phoneNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.phoneNumber,
-                                                           message: #localized("Phone number copied"))
+                                                           message: #localized("Phone number"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.birthdate.isEmpty {
-                        row(title: "Birthdate", value: viewModel.birthdate) {
+                        row(title: #localized("Birthdate"), value: viewModel.birthdate) {
                             viewModel.copyValueToClipboard(value: viewModel.birthdate,
-                                                           message: #localized("Birthdate copied"))
+                                                           message: #localized("Birthdate"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.gender.isEmpty {
-                        row(title: "Gender", value: viewModel.gender) {
+                        row(title: #localized("Gender"), value: viewModel.gender) {
                             viewModel.copyValueToClipboard(value: viewModel.gender,
-                                                           message: #localized("Gender copied"))
+                                                           message: #localized("Gender"))
                         }
 
                         PassSectionDivider()
@@ -179,8 +179,9 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
-                                                                                       message: #localized("Custom field copied"))
+                                        onSelectText: {
+                                            viewModel.copyValueToClipboard(value: $0,
+                                                                           message: #localized("Custom field"))
                                         },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
@@ -204,27 +205,27 @@ private extension IdentityDetailView {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
                     if !viewModel.organization.isEmpty {
-                        row(title: "Organization", value: viewModel.organization) {
+                        row(title: #localized("Organization"), value: viewModel.organization) {
                             viewModel.copyValueToClipboard(value: viewModel.organization,
-                                                           message: #localized("Organization copied"))
+                                                           message: #localized("Organization"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.streetAddress.isEmpty {
-                        row(title: "Street address, P.O. box", value: viewModel.streetAddress) {
+                        row(title: #localized("Street address, P.O. box"), value: viewModel.streetAddress) {
                             viewModel.copyValueToClipboard(value: viewModel.streetAddress,
-                                                           message: #localized("Street address, P.O. box copied"))
+                                                           message: #localized("Street address, P.O. box"))
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.zipOrPostalCode.isEmpty {
-                        row(title: "ZIP or Postal code", value: viewModel.zipOrPostalCode) {
+                        row(title: #localized("ZIP or Postal code"), value: viewModel.zipOrPostalCode) {
                             viewModel.copyValueToClipboard(value: viewModel.zipOrPostalCode,
-                                                           message: #localized("ZIP or Postal code copied"))
+                                                           message: #localized("ZIP or Postal code"))
                         }
 
                         PassSectionDivider()
@@ -233,7 +234,7 @@ private extension IdentityDetailView {
                     if !viewModel.city.isEmpty {
                         row(title: "City", value: viewModel.city) {
                             viewModel.copyValueToClipboard(value: viewModel.city,
-                                                           message: #localized("City copied"))
+                                                           message: #localized("City"))
                         }
 
                         PassSectionDivider()
@@ -242,7 +243,7 @@ private extension IdentityDetailView {
                     if !viewModel.stateOrProvince.isEmpty {
                         row(title: "State or province", value: viewModel.stateOrProvince) {
                             viewModel.copyValueToClipboard(value: viewModel.stateOrProvince,
-                                                           message: #localized("State or province copied"))
+                                                           message: #localized("State or province"))
                         }
 
                         PassSectionDivider()
@@ -251,7 +252,7 @@ private extension IdentityDetailView {
                     if !viewModel.countryOrRegion.isEmpty {
                         row(title: "Country or Region", value: viewModel.countryOrRegion) {
                             viewModel.copyValueToClipboard(value: viewModel.countryOrRegion,
-                                                           message: #localized("Country or Region copied"))
+                                                           message: #localized("Country or Region"))
                         }
 
                         PassSectionDivider()
@@ -260,7 +261,7 @@ private extension IdentityDetailView {
                     if !viewModel.floor.isEmpty {
                         row(title: "Floor", value: viewModel.floor) {
                             viewModel.copyValueToClipboard(value: viewModel.floor,
-                                                           message: #localized("Floor copied"))
+                                                           message: #localized("Floor"))
                         }
 
                         PassSectionDivider()
@@ -269,7 +270,7 @@ private extension IdentityDetailView {
                     if !viewModel.county.isEmpty {
                         row(title: "County", value: viewModel.county) {
                             viewModel.copyValueToClipboard(value: viewModel.county,
-                                                           message: #localized("County copied"))
+                                                           message: #localized("County"))
                         }
                         PassSectionDivider()
                     }
@@ -279,8 +280,9 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
-                                                                                       message: #localized("Custom field copied"))
+                                        onSelectText: {
+                                            viewModel.copyValueToClipboard(value: $0,
+                                                                           message: #localized("Custom field"))
                                         },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
@@ -307,7 +309,7 @@ private extension IdentityDetailView {
                     if !viewModel.socialSecurityNumber.isEmpty {
                         row(title: "Social security number", value: viewModel.socialSecurityNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.socialSecurityNumber,
-                                                           message: #localized("Social security number copied"))
+                                                           message: #localized("Social security number"))
                         }
 
                         PassSectionDivider()
@@ -316,7 +318,7 @@ private extension IdentityDetailView {
                     if !viewModel.passportNumber.isEmpty {
                         row(title: "Passport number", value: viewModel.passportNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.passportNumber,
-                                                           message: #localized("Passport number copied"))
+                                                           message: #localized("Passport number"))
                         }
 
                         PassSectionDivider()
@@ -325,7 +327,7 @@ private extension IdentityDetailView {
                     if !viewModel.licenseNumber.isEmpty {
                         row(title: "License number", value: viewModel.licenseNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.licenseNumber,
-                                                           message: #localized("License number copied"))
+                                                           message: #localized("License number"))
                         }
 
                         PassSectionDivider()
@@ -334,7 +336,7 @@ private extension IdentityDetailView {
                     if !viewModel.website.isEmpty {
                         row(title: "Website", value: viewModel.website) {
                             viewModel.copyValueToClipboard(value: viewModel.website,
-                                                           message: #localized("Website copied"))
+                                                           message: #localized("Website"))
                         }
 
                         PassSectionDivider()
@@ -343,7 +345,7 @@ private extension IdentityDetailView {
                     if !viewModel.xHandle.isEmpty {
                         row(title: "X handle", value: viewModel.xHandle) {
                             viewModel.copyValueToClipboard(value: viewModel.xHandle,
-                                                           message: #localized("X handle copied"))
+                                                           message: #localized("X handle"))
                         }
 
                         PassSectionDivider()
@@ -352,7 +354,7 @@ private extension IdentityDetailView {
                     if !viewModel.secondPhoneNumber.isEmpty {
                         row(title: "Second phone number", value: viewModel.secondPhoneNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.secondPhoneNumber,
-                                                           message: #localized("Second phone number copied"))
+                                                           message: #localized("Second phone number"))
                         }
 
                         PassSectionDivider()
@@ -361,7 +363,7 @@ private extension IdentityDetailView {
                     if !viewModel.linkedin.isEmpty {
                         row(title: "Linkedin", value: viewModel.linkedin) {
                             viewModel.copyValueToClipboard(value: viewModel.linkedin,
-                                                           message: #localized("Linkedin copied"))
+                                                           message: #localized("Linkedin"))
                         }
 
                         PassSectionDivider()
@@ -370,7 +372,7 @@ private extension IdentityDetailView {
                     if !viewModel.reddit.isEmpty {
                         row(title: "Reddit", value: viewModel.reddit) {
                             viewModel.copyValueToClipboard(value: viewModel.reddit,
-                                                           message: #localized("Reddit copied"))
+                                                           message: #localized("Reddit"))
                         }
                         PassSectionDivider()
                     }
@@ -378,7 +380,7 @@ private extension IdentityDetailView {
                     if !viewModel.facebook.isEmpty {
                         row(title: "Facebook", value: viewModel.facebook) {
                             viewModel.copyValueToClipboard(value: viewModel.facebook,
-                                                           message: #localized("Facebook copied"))
+                                                           message: #localized("Facebook"))
                         }
                         PassSectionDivider()
                     }
@@ -386,7 +388,7 @@ private extension IdentityDetailView {
                     if !viewModel.yahoo.isEmpty {
                         row(title: "Yahoo", value: viewModel.yahoo) {
                             viewModel.copyValueToClipboard(value: viewModel.yahoo,
-                                                           message: #localized("Yahoo copied"))
+                                                           message: #localized("Yahoo"))
                         }
                         PassSectionDivider()
                     }
@@ -394,7 +396,7 @@ private extension IdentityDetailView {
                     if !viewModel.instagram.isEmpty {
                         row(title: "Instagram", value: viewModel.instagram) {
                             viewModel.copyValueToClipboard(value: viewModel.instagram,
-                                                           message: #localized("Instagram copied"))
+                                                           message: #localized("Instagram"))
                         }
                         PassSectionDivider()
                     }
@@ -404,8 +406,9 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
-                                                                                       message: #localized("Custom field copied"))
+                                        onSelectText: {
+                                            viewModel.copyValueToClipboard(value: $0,
+                                                                           message: #localized("Custom field"))
                                         },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
@@ -432,7 +435,7 @@ private extension IdentityDetailView {
                     if !viewModel.company.isEmpty {
                         row(title: "Company", value: viewModel.company) {
                             viewModel.copyValueToClipboard(value: viewModel.company,
-                                                           message: #localized("Company copied"))
+                                                           message: #localized("Company"))
                         }
 
                         PassSectionDivider()
@@ -441,7 +444,7 @@ private extension IdentityDetailView {
                     if !viewModel.jobTitle.isEmpty {
                         row(title: "Job title", value: viewModel.jobTitle) {
                             viewModel.copyValueToClipboard(value: viewModel.jobTitle,
-                                                           message: #localized("Job title copied"))
+                                                           message: #localized("Job title"))
                         }
 
                         PassSectionDivider()
@@ -450,7 +453,7 @@ private extension IdentityDetailView {
                     if !viewModel.personalWebsite.isEmpty {
                         row(title: "Personal website", value: viewModel.personalWebsite) {
                             viewModel.copyValueToClipboard(value: viewModel.personalWebsite,
-                                                           message: #localized("ersonal website copied"))
+                                                           message: #localized("Personal website"))
                         }
 
                         PassSectionDivider()
@@ -459,7 +462,7 @@ private extension IdentityDetailView {
                     if !viewModel.workPhoneNumber.isEmpty {
                         row(title: "Work phone number", value: viewModel.workPhoneNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.workPhoneNumber,
-                                                           message: #localized("Work phone number copied"))
+                                                           message: #localized("Work phone number"))
                         }
 
                         PassSectionDivider()
@@ -468,7 +471,7 @@ private extension IdentityDetailView {
                     if !viewModel.workEmail.isEmpty {
                         row(title: "Work email", value: viewModel.workEmail) {
                             viewModel.copyValueToClipboard(value: viewModel.workEmail,
-                                                           message: #localized("Work email copied"))
+                                                           message: #localized("Work email"))
                         }
 
                         PassSectionDivider()
@@ -479,8 +482,9 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: { viewModel.copyValueToClipboard(value: $0,
-                                                                                       message: #localized("Custom field copied"))
+                                        onSelectText: {
+                                            viewModel.copyValueToClipboard(value: $0,
+                                                                           message: #localized("Custom field"))
                                         },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
@@ -504,11 +508,11 @@ private extension IdentityDetailView {
         Section {
             CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                 uiModels: customSection.content
-                                    .map { CustomFieldUiModel(customField: $0) },
+                                    .map(\.toCustomFieldUiModel),
                                 isFreeUser: viewModel.isFreeUser,
                                 showIcon: false,
                                 onSelectText: { viewModel.copyValueToClipboard(value: $0,
-                                                                               message: #localized("Custom field copied"))
+                                                                               message: #localized("Custom field"))
                                 },
                                 onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                 onSelectTotpToken: { viewModel.copyTotpToken($0) },
@@ -550,485 +554,3 @@ private extension IdentityDetailView {
         }
     }
 }
-
-//
-// struct LogInDetailView: View {
-//    @StateObject private var viewModel: LogInDetailViewModel
-//    @State private var isShowingPassword = false
-//    @Namespace private var bottomID
-//
-//    private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
-//
-//    init(viewModel: LogInDetailViewModel) {
-//        _viewModel = .init(wrappedValue: viewModel)
-//    }
-//
-//    var body: some View {
-//        if viewModel.isShownAsSheet {
-//            NavigationStack {
-//                realBody
-//            }
-//        } else {
-//            realBody
-//        }
-//    }
-// }
-
-// private extension LogInDetailView {
-//    var realBody: some View {
-//        VStack {
-//            ScrollViewReader { value in
-//                ScrollView {
-//                    VStack(spacing: 0) {
-//                        if viewModel.showSecurityIssues, let issues = viewModel.securityIssues {
-//                            securityIssuesView(issues: issues)
-//                                .padding(.vertical)
-//                        }
-//
-//                        ItemDetailTitleView(itemContent: viewModel.itemContent,
-//                                            vault: viewModel.vault?.vault,
-//                                            shouldShowVault: viewModel.shouldShowVault)
-//                            .padding(.bottom, 40)
-//
-//                        if !viewModel.passkeys.isEmpty {
-//                            ForEach(viewModel.passkeys, id: \.keyID) { passkey in
-//                                PasskeyDetailRow(passkey: passkey,
-//                                                 onTap: { viewModel.viewPasskey(passkey) })
-//                                    .padding(.bottom, 8)
-//                            }
-//                        }
-//
-//                        usernamePassword2FaSection
-//
-//                        if !viewModel.urls.isEmpty {
-//                            urlsSection
-//                                .padding(.top, 8)
-//                        }
-//
-//                        if !viewModel.itemContent.note.isEmpty {
-//                            NoteDetailSection(itemContent: viewModel.itemContent,
-//                                              vault: viewModel.vault?.vault)
-//                                .padding(.top, 8)
-//                        }
-//
-//                        CustomFieldSections(itemContentType: viewModel.itemContent.type,
-//                                            uiModels: viewModel.customFieldUiModels,
-//                                            isFreeUser: viewModel.isFreeUser,
-//                                            onSelectHiddenText: { copyHiddenText($0) },
-//                                            onSelectTotpToken: { copyTOTPToken($0) },
-//                                            onUpgrade: { viewModel.upgrade() })
-//
-//                        ItemDetailHistorySection(itemContent: viewModel.itemContent,
-//                                                 action: { viewModel.showItemHistory() })
-//
-//                        ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
-//                                                  itemContent: viewModel.itemContent,
-//                                                  onCopy: { viewModel.copyToClipboard(text: $0, message: $1) })
-//                            .padding(.top, 24)
-//                            .id(bottomID)
-//                    }
-//                    .padding()
-//                }
-//                .animation(.default, value: viewModel.moreInfoSectionExpanded)
-//                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
-//                    withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
-//                }
-//            }
-//
-//            if viewModel.isAlias {
-//                viewAliasCard
-//                    .padding(.horizontal)
-//            }
-//        }
-//        .animation(.default, value: viewModel.moreInfoSectionExpanded)
-//        .itemDetailSetUp(viewModel)
-//    }
-// }
-//
-//
-//
-//
-//
-// private extension LogInDetailView {
-//    var usernamePassword2FaSection: some View {
-//        VStack(spacing: DesignConstant.sectionPadding) {
-//            emailRow
-//            PassSectionDivider()
-//            if !viewModel.username.isEmpty {
-//                usernameRow
-//                PassSectionDivider()
-//            }
-//            passwordRow
-//
-//            switch viewModel.totpTokenState {
-//            case .loading:
-//                EmptyView()
-//
-//            case .notAllowed:
-//                PassSectionDivider()
-//                totpNotAllowedRow
-//
-//            case .allowed:
-//                if viewModel.totpUri.isEmpty {
-//                    EmptyView()
-//                } else {
-//                    PassSectionDivider()
-//                    TOTPRow(uri: viewModel.totpUri,
-//                            tintColor: iconTintColor,
-//                            onCopyTotpToken: { viewModel.copyTotpToken($0) })
-//                }
-//            }
-//        }
-//        .padding(.vertical, DesignConstant.sectionPadding)
-//        .roundedDetailSection()
-//        .animation(.default, value: viewModel.totpTokenState)
-//    }
-//
-//    var emailRow: some View {
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.envelope,
-//                                  color: iconTintColor)
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                Text("Email address")
-//                    .sectionTitleText()
-//
-//                if viewModel.email.isEmpty {
-//                    Text("Empty")
-//                        .placeholderText()
-//                } else {
-//                    Text(viewModel.email)
-//                        .sectionContentText()
-//
-//                    if viewModel.isAlias {
-//                        Button { viewModel.showAliasDetail() } label: {
-//                            Text("View alias")
-//                                .font(.callout)
-//                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-//                                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
-//                        }
-//                        .padding(.top, 8)
-//                    }
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .contentShape(.rect)
-//            .onTapGesture(perform: { viewModel.copyEmail() })
-//        }
-//        .padding(.horizontal, DesignConstant.sectionPadding)
-//        .contextMenu {
-//            Button { viewModel.copyEmail() } label: {
-//                Text("Copy")
-//            }
-//
-//            Button {
-//                viewModel.showLarge(.text(viewModel.email))
-//            } label: {
-//                Text("Show large")
-//            }
-//        }
-//    }
-//
-//    var usernameRow: some View {
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
-//                                  color: iconTintColor)
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                Text("Username")
-//                    .sectionTitleText()
-//
-//                if viewModel.username.isEmpty {
-//                    Text("Empty")
-//                        .placeholderText()
-//                } else {
-//                    Text(viewModel.username)
-//                        .sectionContentText()
-//
-//                    if viewModel.isAlias {
-//                        Button { viewModel.showAliasDetail() } label: {
-//                            Text("View alias")
-//                                .font(.callout)
-//                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-//                                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
-//                        }
-//                        .padding(.top, 8)
-//                    }
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .contentShape(.rect)
-//            .onTapGesture(perform: { viewModel.copyItemUsername() })
-//        }
-//        .padding(.horizontal, DesignConstant.sectionPadding)
-//        .contextMenu {
-//            Button { viewModel.copyItemUsername() } label: {
-//                Text("Copy")
-//            }
-//
-//            Button {
-//                viewModel.showLarge(.text(viewModel.username))
-//            } label: {
-//                Text("Show large")
-//            }
-//        }
-//    }
-//
-//    var passwordRow: some View {
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            if let passwordStrength = viewModel.passwordStrength {
-//                PasswordStrengthIcon(strength: passwordStrength)
-//            } else {
-//                ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
-//            }
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                Text(viewModel.passwordStrength.sectionTitle(reuseCount: viewModel.reusedItems?.count))
-//                    .font(.footnote)
-//                    .foregroundStyle(viewModel.passwordStrength.sectionTitleColor)
-//
-//                if viewModel.password.isEmpty {
-//                    Text("Empty")
-//                        .placeholderText()
-//                } else {
-//                    if isShowingPassword {
-//                        Text(viewModel.coloredPassword)
-//                            .font(.body.monospaced())
-//                    } else {
-//                        Text(String(repeating: "•", count: 12))
-//                            .sectionContentText()
-//                    }
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .contentShape(.rect)
-//            .onTapGesture { viewModel.copyPassword() }
-//
-//            Spacer()
-//
-//            if !viewModel.password.isEmpty {
-//                CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
-//                             iconColor: viewModel.itemContent.type.normMajor2Color,
-//                             backgroundColor: viewModel.itemContent.type.normMinor2Color,
-//                             accessibilityLabel: isShowingPassword ? "Hide password" : "Show password",
-//                             action: { isShowingPassword.toggle() })
-//                    .fixedSize(horizontal: true, vertical: true)
-//                    .animationsDisabled()
-//            }
-//        }
-//        .padding(.horizontal, DesignConstant.sectionPadding)
-//        .contextMenu {
-//            Button(action: {
-//                withAnimation {
-//                    isShowingPassword.toggle()
-//                }
-//            }, label: {
-//                Text(isShowingPassword ? "Conceal" : "Reveal")
-//            })
-//
-//            Button { viewModel.copyPassword() } label: {
-//                Text("Copy")
-//            }
-//
-//            Button { viewModel.showLargePassword() } label: {
-//                Text("Show large")
-//            }
-//        }
-//    }
-// }
-//
-// private extension LogInDetailView {
-//    var totpNotAllowedRow: some View {
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                Text("2FA limit reached")
-//                    .sectionTitleText()
-//                UpgradeButtonLite { viewModel.upgrade() }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//        }
-//        .padding(.horizontal, DesignConstant.sectionPadding)
-//    }
-//
-//    var urlsSection: some View {
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                Text("Website")
-//                    .sectionTitleText()
-//
-//                VStack(alignment: .leading, spacing: 12) {
-//                    ForEach(viewModel.urls, id: \.self) { url in
-//                        Button(action: {
-//                            viewModel.openUrl(url)
-//                        }, label: {
-//                            Text(url)
-//                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-//                                .multilineTextAlignment(.leading)
-//                                .lineLimit(2)
-//                        })
-//                        .contextMenu {
-//                            Button(action: {
-//                                viewModel.openUrl(url)
-//                            }, label: {
-//                                Text("Open")
-//                            })
-//
-//                            Button(action: {
-//                                viewModel.copyToClipboard(text: url, message: #localized("Website copied"))
-//                            }, label: {
-//                                Text("Copy")
-//                            })
-//                        }
-//                    }
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .animation(.default, value: viewModel.urls)
-//        }
-//        .padding(DesignConstant.sectionPadding)
-//        .roundedDetailSection()
-//    }
-//
-//    var viewAliasCard: some View {
-//        Group {
-//            Text("View and edit details for this alias on the separate alias page.")
-//                .font(.callout)
-//                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
-//                Text(verbatim: " ")
-//                .font(.callout) +
-//                Text("View")
-//                .font(.callout)
-//                .adaptiveForegroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-//                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
-//        }
-//        .padding(DesignConstant.sectionPadding)
-//        .background(PassColor.backgroundMedium.toColor)
-//        .clipShape(RoundedRectangle(cornerRadius: 16))
-//        .onTapGesture(perform: viewModel.showAliasDetail)
-//    }
-// }
-//
-// private extension LogInDetailView {
-//    func copyTOTPToken(_ token: String) {
-//        viewModel.copyToClipboard(text: token, message: #localized("TOTP copied"))
-//    }
-//
-//    func copyHiddenText(_ text: String) {
-//        viewModel.copyToClipboard(text: text, message: #localized("Hidden text copied"))
-//    }
-// }
-//
-// private extension LogInDetailView {
-//    func securityIssuesView(issues: [SecurityWeakness]) -> some View {
-//        VStack {
-//            ForEach(issues, id: \.self) {
-//                securityWeaknessRow(weakness: $0)
-//            }
-//        }
-//    }
-//
-//    @ViewBuilder
-//    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
-//        let rowType = weakness.secureRowType
-//        HStack(spacing: DesignConstant.sectionPadding) {
-//            if let iconName = rowType.detailIcon {
-//                VStack {
-//                    Image(systemName: iconName)
-//                        .resizable()
-//                        .renderingMode(.template)
-//                        .scaledToFit()
-//                        .symbolRenderingMode(.hierarchical)
-//                        .foregroundStyle(rowType.iconColor.toColor)
-//                        .frame(width: 28)
-//                        .clipShape(RoundedRectangle(cornerRadius: 8))
-//                    Spacer()
-//                }
-//            }
-//
-//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-//                if let title = weakness.detailTitle {
-//                    Text(title)
-//                        .fontWeight(.bold)
-//                        .foregroundStyle(rowType.iconColor.toColor)
-//                }
-//                if weakness == .reusedPasswords {
-//                    reusedList(rowType: rowType)
-//                        .padding(.vertical, DesignConstant.sectionPadding / 4)
-//                }
-//                if let infos = weakness.infos {
-//                    Text(infos)
-//                        .font(.callout)
-//                        .foregroundStyle(rowType.iconColor.toColor)
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//        }
-//        .padding(DesignConstant.sectionPadding)
-//        .roundedDetailSection(backgroundColor: rowType.detailBackground,
-//                              borderColor: rowType.border)
-//    }
-//
-//    @ViewBuilder
-//    func reusedList(rowType: SecureRowType) -> some View {
-//        if let reusedItems = viewModel.reusedItems, !reusedItems.isEmpty {
-//            let reuseText: () -> Text = {
-//                Text("\(reusedItems.count) other logins use this password")
-//                    .fontWeight(.bold)
-//                    .adaptiveForegroundStyle(rowType.iconColor.toColor)
-//            }
-//            if reusedItems.count > 5 {
-//                reuseText()
-//                HStack {
-//                    CapsuleTextButton(title: #localized("See all"),
-//                                      titleColor: rowType.iconColor,
-//                                      backgroundColor: rowType.iconColor.withAlphaComponent(0.2),
-//                                      action: { viewModel.showItemList() })
-//                        .fixedSize(horizontal: true, vertical: true)
-//                    Spacer()
-//                }
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//            } else {
-//                VStack(alignment: .leading) {
-//                    reuseText()
-//                    ReusedItemsPassListView(reusedPasswordItems: reusedItems,
-//                                            action: { viewModel.showDetail(for: $0) })
-//                }
-//            }
-//        }
-//    }
-// }
-//
-// struct ReusedItemsPassListView: View {
-//    let reusedPasswordItems: [ItemContent]
-//    let action: (ItemContent) -> Void
-//
-//    var body: some View {
-//        ScrollView(.horizontal, showsIndicators: false) {
-//            HStack(alignment: .center, spacing: 8) {
-//                ForEach(reusedPasswordItems) { item in
-//                    Button {
-//                        action(item)
-//                    } label: {
-//                        HStack(alignment: .center, spacing: 8) {
-//                            ItemSquircleThumbnail(data: item.thumbnailData(),
-//                                                  size: .small,
-//                                                  alternativeBackground: true)
-//                            Text(item.title)
-//                                .lineLimit(1)
-//                                .foregroundStyle(PassColor.textNorm.toColor)
-//                                .padding(.trailing, 8)
-//                        }
-//                        .padding(8)
-//                        .frame(maxWidth: 165, alignment: .leading)
-//                        .background(item.type.normMinor1Color.toColor)
-//                        .cornerRadius(16)
-//                    }
-//                }
-//            }
-//        }
-//    }
-// }

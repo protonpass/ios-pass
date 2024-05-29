@@ -145,7 +145,7 @@ private extension DetailHistoryView {
 private extension DetailHistoryView {
     var mainContainer: some View {
         ZStack(alignment: .bottom) {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 switch viewModel.currentRevision.contentData {
                 case .note:
                     noteView
@@ -156,8 +156,7 @@ private extension DetailHistoryView {
                 case .alias:
                     aliasView
                 case .identity:
-                    // TODO: add identity history view
-                    EmptyView()
+                    identityView
                 }
             }
             .animation(.default, value: viewModel.selectedRevision)
