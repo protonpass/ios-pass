@@ -70,7 +70,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
-    var isPublicLinkActive: Bool {
+    var isSecureLinkActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
     }
 
@@ -170,8 +170,8 @@ class BaseItemDetailViewModel: ObservableObject {
         router.present(for: .moveItemsBetweenVaults(.singleItem(itemContent)))
     }
 
-    func publicLinkSharing() {
-        router.present(for: .publicLink(itemContent))
+    func secureLinkSharing() {
+        router.present(for: .createSecureLink(itemContent))
     }
 
     func toggleItemPinning() {

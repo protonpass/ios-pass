@@ -1,6 +1,5 @@
 //
-//
-// PublicLinkView.swift
+// CreateSecureLinkView.swift
 // Proton Pass - Created on 16/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -27,10 +26,10 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct PublicLinkView: View {
-    @StateObject private var viewModel: PublicLinkViewModel
+struct CreateSecureLinkView: View {
+    @StateObject private var viewModel: CreateSecureLinkViewModel
 
-    init(viewModel: PublicLinkViewModel) {
+    init(viewModel: CreateSecureLinkViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
@@ -40,7 +39,7 @@ struct PublicLinkView: View {
     }
 }
 
-private extension PublicLinkView {
+private extension CreateSecureLinkView {
     var mainContainer: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             if let link = viewModel.link {
@@ -60,7 +59,7 @@ private extension PublicLinkView {
     }
 }
 
-private extension PublicLinkView {
+private extension CreateSecureLinkView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
@@ -70,7 +69,7 @@ private extension PublicLinkView {
     }
 }
 
-private extension PublicLinkView {
+private extension CreateSecureLinkView {
     var createLink: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
@@ -137,9 +136,9 @@ private extension PublicLinkView {
     }
 }
 
-private extension PublicLinkView {
+private extension CreateSecureLinkView {
     @ViewBuilder
-    func view(for link: SharedPublicLink) -> some View {
+    func view(for link: NewSecureLink) -> some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
                 if let relativeTimeRemaining = link.relativeTimeRemaining {

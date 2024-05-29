@@ -1,5 +1,5 @@
 //
-// DeletePublicLinkEndpoint.swift
+// GetAllSecureLinksEndpoint.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -18,21 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-struct DeletePublicLinkEndpoint: Endpoint {
+struct GetAllSecureLinksResponse: Decodable, Equatable, Sendable {
+    let publicLinks: [SecureLink]
+}
+
+struct GetAllPublicLinksForUserEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = CodeOnlyResponse
+    typealias Response = GetAllSecureLinksResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
 
-    init(publicLinkId: String) {
-        debugDescription = "Delete public link"
-        path = "/pass/v1/public_link/\(publicLinkId)"
-        method = .delete
+    init() {
+        debugDescription = "Get all secure links for current user"
+        path = "/pass/v1/public_link"
+        method = .get
     }
 }

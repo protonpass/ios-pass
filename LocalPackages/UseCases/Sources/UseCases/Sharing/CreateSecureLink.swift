@@ -1,6 +1,6 @@
 //
 //
-// CreateItemSharingPublicLink.swift
+// CreateSecureLink.swift
 // Proton Pass - Created on 16/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -24,39 +24,39 @@ import Client
 import Entities
 import Foundation
 
-public protocol CreateItemSharingPublicLinkUseCase: Sendable {
-    func execute(item: ItemContent, expirationTime: Int, maxReadCount: Int?) async throws -> SharedPublicLink
+public protocol CreateSecureLinkUseCase: Sendable {
+    func execute(item: ItemContent, expirationTime: Int, maxReadCount: Int?) async throws -> NewSecureLink
 }
 
-public extension CreateItemSharingPublicLinkUseCase {
+public extension CreateSecureLinkUseCase {
     func callAsFunction(item: ItemContent,
                         expirationTime: Int,
-                        maxReadCount: Int? = nil) async throws -> SharedPublicLink {
+                        maxReadCount: Int? = nil) async throws -> NewSecureLink {
         try await execute(item: item, expirationTime: expirationTime, maxReadCount: maxReadCount)
     }
 }
 
-public final class CreateItemSharingPublicLink: CreateItemSharingPublicLinkUseCase {
-    private let getPublicLinkKeys: any GetPublicLinkKeysUseCase
-    private let repository: any PublicLinkRepositoryProtocol
+public final class CreateSecureLink: CreateSecureLinkUseCase {
+    private let getSecureLinkKeys: any GetSecureLinkKeysUseCase
+    private let datasource: any RemoteSecureLinkDatasourceProtocol
 
-    public init(repository: any PublicLinkRepositoryProtocol,
-                getPublicLinkKeys: any GetPublicLinkKeysUseCase) {
-        self.repository = repository
-        self.getPublicLinkKeys = getPublicLinkKeys
+    public init(datasource: any RemoteSecureLinkDatasourceProtocol,
+                getSecureLinkKeys: any GetSecureLinkKeysUseCase) {
+        self.datasource = datasource
+        self.getSecureLinkKeys = getSecureLinkKeys
     }
 
     public func execute(item: ItemContent,
                         expirationTime: Int,
-                        maxReadCount: Int?) async throws -> SharedPublicLink {
-        let keyResults = try await getPublicLinkKeys(item: item)
-        let configuration = PublicLinkCreationConfiguration(shareId: item.shareId,
+                        maxReadCount: Int?) async throws -> NewSecureLink {
+        let keys = try await getSecureLinkKeys(item: item)
+        let configuration = SecureLinkCreationConfiguration(shareId: item.shareId,
                                                             itemId: item.itemId,
                                                             revision: Int(item.item.revision),
                                                             expirationTime: expirationTime,
-                                                            encryptedItemKey: keyResults.encryptedItemKey,
+                                                            encryptedItemKey: keys.encryptedItemKey,
                                                             maxReadCount: maxReadCount)
-        let link = try await repository.createPublicLink(configuration: configuration)
-        return link.update(with: keyResults.linkKey)
+        let link = try await datasource.createLink(configuration: configuration)
+        return link.update(with: keys.linkKey)
     }
 }
