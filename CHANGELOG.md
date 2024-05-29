@@ -1,3 +1,8 @@
+# Version 1.11.2
+- Fixed theme settings not respected
+- Fixed 2FA code being copied when no local authentication method set
+- Fixed overflowed email textfield when sharing vaults
+
 # Version 1.11.1
 Fixes:
 - Resolved issue where users were unable to request a new verification code for custom emails
