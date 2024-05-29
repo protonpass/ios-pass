@@ -168,7 +168,7 @@ public struct IdentityData: Sendable, Equatable, Hashable {
     public let secondPhoneNumber: String
 
     /// Additional
-    public let linkedin: String
+    public let linkedIn: String
     public let reddit: String
     public let facebook: String
     public let yahoo: String
@@ -214,7 +214,7 @@ public struct IdentityData: Sendable, Equatable, Hashable {
                   website: data.website,
                   xHandle: data.xHandle,
                   secondPhoneNumber: data.secondPhoneNumber,
-                  linkedin: data.linkedin,
+                  linkedIn: data.linkedin,
                   reddit: data.reddit,
                   facebook: data.facebook,
                   yahoo: data.yahoo,
@@ -253,7 +253,7 @@ public struct IdentityData: Sendable, Equatable, Hashable {
                 website: String,
                 xHandle: String,
                 secondPhoneNumber: String,
-                linkedin: String,
+                linkedIn: String,
                 reddit: String,
                 facebook: String,
                 yahoo: String,
@@ -290,7 +290,7 @@ public struct IdentityData: Sendable, Equatable, Hashable {
         self.website = website
         self.xHandle = xHandle
         self.secondPhoneNumber = secondPhoneNumber
-        self.linkedin = linkedin
+        self.linkedIn = linkedIn
         self.reddit = reddit
         self.facebook = facebook
         self.yahoo = yahoo

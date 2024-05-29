@@ -100,6 +100,10 @@ extension DetailHistoryViewModel {
 // MARK: Copy functions
 
 extension DetailHistoryViewModel {
+    func copyValueToClipboard(value: String, message: String) {
+        router.action(.copyToClipboard(text: value, message: #localized("%@ copied", message)))
+    }
+
     func copyAlias() {
         copy(\.aliasEmail, message: #localized("Alias copied"))
     }

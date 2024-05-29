@@ -117,6 +117,13 @@ public extension ItemContent {
         return nil
     }
 
+    var identityItem: IdentityData? {
+        if case let .identity(item) = contentData {
+            return item
+        }
+        return nil
+    }
+
     var hasTotpUri: Bool {
         switch contentData {
         case let .login(data):
