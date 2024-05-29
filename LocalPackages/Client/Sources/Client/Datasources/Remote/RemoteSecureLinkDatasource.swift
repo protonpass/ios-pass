@@ -1,5 +1,5 @@
 //
-// RemotePublicLinkDataSource.swift
+// RemoteSecureLinkDatasource.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -24,19 +24,18 @@
 
 import Entities
 
-// sourcery: AutoMockable
-public protocol RemotePublicLinkDataSourceProtocol: Sendable {
-    func createPublicLink(configuration: PublicLinkCreationConfiguration) async throws -> SharedPublicLink
-    func deletePublicLink(publicLinkId: String) async throws
-    func getAllPublicLinksForUser() async throws -> [PublicLink]
-    func getPublicLinkContent(publicLinkToken: String) async throws -> PublicLinkContent
+public protocol RemoteSecureLinkDatasourceProtocol: Sendable {
+    func createLink(configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink
+    func deleteLink(linkId: String) async throws
+    func getAllLinks() async throws -> [SecureLink]
+    func getLinkContent(linkToken: String) async throws -> SecureLinkContent
 }
 
-public final class RemotePublicLinkDataSource: RemoteDatasource, RemotePublicLinkDataSourceProtocol {}
+public final class RemoteSecureLinkDatasource: RemoteDatasource, RemoteSecureLinkDatasourceProtocol {}
 
-public extension RemotePublicLinkDataSource {
-    func createPublicLink(configuration: PublicLinkCreationConfiguration) async throws -> SharedPublicLink {
-        let request = CreatePublicLinkRequest(revision: configuration.revision,
+public extension RemoteSecureLinkDatasource {
+    func createLink(configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink {
+        let request = CreateSecureLinkRequest(revision: configuration.revision,
                                               expirationTime: configuration.expirationTime,
                                               maxReadCount: configuration.maxReadCount,
                                               encryptedItemKey: configuration.encryptedItemKey)
@@ -47,19 +46,19 @@ public extension RemotePublicLinkDataSource {
         return response.publicLink
     }
 
-    func deletePublicLink(publicLinkId: String) async throws {
-        let endpoint = DeletePublicLinkEndpoint(publicLinkId: publicLinkId)
+    func deleteLink(linkId: String) async throws {
+        let endpoint = DeleteSecureLinkEndpoint(linkId: linkId)
         _ = try await exec(endpoint: endpoint)
     }
 
-    func getAllPublicLinksForUser() async throws -> [PublicLink] {
+    func getAllLinks() async throws -> [SecureLink] {
         let endpoint = GetAllPublicLinksForUserEndpoint()
         let response = try await exec(endpoint: endpoint)
         return response.publicLinks
     }
 
-    func getPublicLinkContent(publicLinkToken: String) async throws -> PublicLinkContent {
-        let endpoint = GetPublicLinkContentEndpoint(publicLinkToken: publicLinkToken)
+    func getLinkContent(linkToken: String) async throws -> SecureLinkContent {
+        let endpoint = GetSecureLinkContentEndpoint(linkToken: linkToken)
         let response = try await exec(endpoint: endpoint)
         return response.publicLinkContent
     }

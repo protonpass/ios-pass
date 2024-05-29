@@ -410,12 +410,12 @@ extension SharedUseCasesContainer {
 // MARK: - Public link
 
 extension SharedUseCasesContainer {
-    var createItemSharingPublicLink: Factory<any CreateItemSharingPublicLinkUseCase> {
-        self { CreateItemSharingPublicLink(repository: SharedRepositoryContainer.shared.publicLinkRepository(),
-                                           getPublicLinkKeys: self.getPublicLinkKeys()) }
+    var createSecureLink: Factory<any CreateSecureLinkUseCase> {
+        self { CreateSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+                                getSecureLinkKeys: self.getSecureLinkKeys()) }
     }
 
-    var getPublicLinkKeys: Factory<any GetPublicLinkKeysUseCase> {
-        self { GetPublicLinkKeys(passKeyManager: SharedRepositoryContainer.shared.passKeyManager()) }
+    var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
+        self { GetSecureLinkKeys(passKeyManager: SharedRepositoryContainer.shared.passKeyManager()) }
     }
 }
