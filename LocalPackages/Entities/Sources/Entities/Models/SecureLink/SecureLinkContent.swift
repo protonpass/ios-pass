@@ -1,5 +1,5 @@
 //
-// GetPublicLinkContentEndpoint.swift
+// SecureLinkContent.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -18,25 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import ProtonCoreNetworking
-import ProtonCoreServices
+import Foundation
 
-struct GetPublicLinkContentResponse: Decodable, Equatable, Sendable {
-    let publicLinkContent: PublicLinkContent
-}
-
-struct GetPublicLinkContentEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = GetPublicLinkContentResponse
-
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init(publicLinkToken: String) {
-        debugDescription = "Get content for public link"
-        path = "/pass/v1/public_link/content/\(publicLinkToken)"
-        method = .get
-    }
+public struct SecureLinkContent: Decodable, Equatable, Sendable {
+    public let contents, itemKey: String
+    public let contentFormatVersion, expirationTime: Int
+    public let readCount, maxReadCount: Int?
 }
