@@ -67,7 +67,7 @@ enum CreateSecureLinkViewModelState {
         case .creationWithRestriction:
             350
         case .created:
-            250
+            300
         }
     }
 
@@ -79,7 +79,7 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
     @Published private(set) var link: NewSecureLink?
     @Published var selectedExpiration: SecureLinkExpiration = .day(7)
     @Published var loading = false
-    @Published var viewCount = 0
+    @Published var readCount = 0
 
     private var state = PassthroughSubject<CreateSecureLinkViewModelState, Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -93,7 +93,7 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
     init(itemContent: ItemContent) {
         self.itemContent = itemContent
 
-        Publishers.CombineLatest($link, $viewCount)
+        Publishers.CombineLatest($link, $readCount)
             .sink { [weak self] link, count in
                 guard let self else { return }
                 if link != nil {
@@ -129,10 +129,9 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
-                let maxReadCount = viewCount == 0 ? nil : viewCount
                 let result = try await createSecureLink(item: itemContent,
                                                         expirationTime: selectedExpiration.seconds,
-                                                        maxReadCount: maxReadCount)
+                                                        maxReadCount: readCount.nilIfZero)
                 link = result
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -145,21 +144,5 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
             return
         }
         router.action(.copyToClipboard(text: link.url, message: #localized("Link copied")))
-    }
-}
-
-extension NewSecureLink {
-    var relativeTimeRemaining: String? {
-        guard let expirationTime else {
-            return nil
-        }
-        let expirationDate = Date(timeIntervalSince1970: Double(expirationTime))
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-
-        let currentDate = Date()
-        let relativeTime = formatter.localizedString(for: expirationDate, relativeTo: currentDate)
-
-        return relativeTime
     }
 }

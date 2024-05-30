@@ -61842,6 +61842,16 @@
         }
       }
     },
+    "Opened:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opened:"
+          }
+        }
+      }
+    },
     "Optic ID" : {
       "localizations" : {
         "be" : {
@@ -75402,6 +75412,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Säker länk"
+          }
+        }
+      }
+    },
+    "Secure link copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure link copied"
           }
         }
       }
@@ -91106,6 +91126,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lùi lại"
+          }
+        }
+      }
+    },
+    "Unlimited" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited"
           }
         }
       }
