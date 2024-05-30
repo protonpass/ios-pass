@@ -138,11 +138,4 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
             }
         }
     }
-
-    func copyLink() {
-        guard let link else {
-            return
-        }
-        router.action(.copyToClipboard(text: link.url, message: #localized("Link copied")))
-    }
 }
