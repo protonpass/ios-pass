@@ -479,6 +479,8 @@ extension HomepageCoordinator {
                     presentChangePassword(mode: mode)
                 case let .createSecureLink(item):
                     presentCreateSecureLinkView(for: item)
+                case .setExtraPassword:
+                    present(SetExtraPasswordView())
                 }
             }
             .store(in: &cancellables)
