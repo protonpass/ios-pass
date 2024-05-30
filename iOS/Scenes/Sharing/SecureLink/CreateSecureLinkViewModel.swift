@@ -85,7 +85,7 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
     private var cancellables = Set<AnyCancellable>()
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let createSecureLink = resolve(\SharedUseCasesContainer.createSecureLink)
+    let createSecureLink = resolve(\UseCasesContainer.createSecureLink)
 
     let itemContent: ItemContent
     weak var sheetPresentation: UISheetPresentationController?
