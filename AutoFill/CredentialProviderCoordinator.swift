@@ -53,7 +53,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
-    private let theme = resolve(\SharedToolingContainer.theme)
     private weak var rootViewController: UIViewController?
     private weak var context: ASCredentialProviderExtensionContext?
     private var cancellables = Set<AnyCancellable>()
@@ -124,7 +123,8 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
-                rootViewController?.view.overrideUserInterfaceStyle = theme.userInterfaceStyle
+                let theme = preferencesManager.sharedPreferences.unwrapped().theme
+                rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)
             } catch {
                 handle(error: error)
@@ -381,7 +381,6 @@ private extension CredentialProviderCoordinator {
             guard let self else { return }
             cancelAutoFill(reason: .userCanceled, context: context)
         }
-        .theme(theme)
         showView(view)
     }
 
@@ -435,7 +434,8 @@ private extension CredentialProviderCoordinator {
 
     func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
-        viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
+        viewController.overrideUserInterfaceStyle = rootViewController?
+            .overrideUserInterfaceStyle ?? .unspecified
         topMostViewController?.present(viewController, animated: animated)
     }
 

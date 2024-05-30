@@ -1,6 +1,6 @@
 //
-// GetPublicLinkContentEndpoint.swift
-// Proton Pass - Created on 15/05/2024.
+// Label+Extensions.swift
+// Proton Pass - Created on 24/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,26 +17,18 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Entities
-import ProtonCoreNetworking
-import ProtonCoreServices
+import SwiftUI
 
-struct GetPublicLinkContentResponse: Decodable, Equatable, Sendable {
-    let publicLinkContent: PublicLinkContent
-}
+public extension Label where Title == Text, Icon == Image {
+    init(_ titleKey: LocalizedStringKey, uiImage: UIImage) {
+        self.init(title: { Text(titleKey) },
+                  icon: { Image(uiImage: uiImage) })
+    }
 
-struct GetPublicLinkContentEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = GetPublicLinkContentResponse
-
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init(publicLinkToken: String) {
-        debugDescription = "Get content for public link"
-        path = "/pass/v1/public_link/content/\(publicLinkToken)"
-        method = .get
+    init(_ titleKey: LocalizedStringKey, image: Image) {
+        self.init(title: { Text(titleKey) },
+                  icon: { image })
     }
 }

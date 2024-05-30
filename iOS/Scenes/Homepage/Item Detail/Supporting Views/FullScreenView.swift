@@ -43,7 +43,6 @@ struct FullScreenView: View {
     @State private var mode: Mode = .text
     @State private var originalBrightness: CGFloat = 0.5
     @State private var percentage: Double = 0.5
-    private let theme = resolve(\SharedToolingContainer.theme)
     let data: FullScreenData
 
     enum Mode {
@@ -89,7 +88,6 @@ struct FullScreenView: View {
             .animation(.default, value: mode)
             .toolbar { toolbarContent }
         }
-        .theme(theme)
         .onAppear {
             originalBrightness = UIScreen.main.brightness
             UIScreen.main.brightness = CGFloat(1.0)

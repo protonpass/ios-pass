@@ -86,7 +86,7 @@ struct CreateEditIdentityView: View {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
-    enum Field: CustomFieldTypes {        
+    enum Field: CustomFieldTypes {
         case title
         case fullName
         case email
@@ -130,8 +130,6 @@ struct CreateEditIdentityView: View {
                 lhs.hashValue == rhs.hashValue
             }
         }
-
-
     }
 
     var body: some View {

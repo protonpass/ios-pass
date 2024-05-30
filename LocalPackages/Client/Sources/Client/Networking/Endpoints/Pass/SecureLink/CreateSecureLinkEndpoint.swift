@@ -1,5 +1,5 @@
 //
-// CreatePublicLinkEndpoint.swift
+// CreateSecureLinkEndpoint.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,11 +22,11 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-struct CreatePublicLinkResponse: Decodable, Equatable, Sendable {
-    let publicLink: SharedPublicLink
+struct CreateSecureLinkResponse: Decodable, Equatable, Sendable {
+    let publicLink: NewSecureLink
 }
 
-struct CreatePublicLinkRequest: Encodable, Sendable {
+struct CreateSecureLinkRequest: Encodable, Sendable {
     /// Last revision of the item
     let revision: Int
 
@@ -48,16 +48,16 @@ struct CreatePublicLinkRequest: Encodable, Sendable {
 }
 
 struct CreatePublicLinkEndpoint: Endpoint {
-    typealias Body = CreatePublicLinkRequest
-    typealias Response = CreatePublicLinkResponse
+    typealias Body = CreateSecureLinkRequest
+    typealias Response = CreateSecureLinkResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
-    var body: CreatePublicLinkRequest?
+    var body: CreateSecureLinkRequest?
 
-    init(shareId: String, itemId: String, request: CreatePublicLinkRequest) {
-        debugDescription = "Create new public link"
+    init(shareId: String, itemId: String, request: CreateSecureLinkRequest) {
+        debugDescription = "Create new secure link"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/public_link"
         method = .post
         body = request

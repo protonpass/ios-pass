@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Entities
-import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -90,13 +89,13 @@ enum ItemContextMenu {
             var sections: [ItemContextMenuOptionSection] = []
 
             sections.append(.init(options: [
-                .init(title: #localized("Copy email"),
+                .init(title: "Copy email",
                       icon: IconProvider.envelope,
                       action: onCopyEmail),
-                .init(title: #localized("Copy username"),
+                .init(title: "Copy username",
                       icon: IconProvider.user,
                       action: onCopyUsername),
-                .init(title: #localized("Copy password"),
+                .init(title: "Copy password",
                       icon: IconProvider.key,
                       action: onCopyPassword)
             ]))
@@ -119,7 +118,7 @@ enum ItemContextMenu {
                         onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
-            sections.append(.init(options: [.init(title: #localized("Copy alias address"),
+            sections.append(.init(options: [.init(title: "Copy alias address",
                                                   icon: IconProvider.alias,
                                                   action: onCopyAlias)]))
 
@@ -145,16 +144,16 @@ enum ItemContextMenu {
             var sections: [ItemContextMenuOptionSection] = []
 
             sections.append(.init(options: [
-                .init(title: #localized("Copy cardholder name"),
+                .init(title: "Copy cardholder name",
                       icon: IconProvider.user,
                       action: onCopyCardholderName),
-                .init(title: #localized("Copy card number"),
+                .init(title: "Copy card number",
                       icon: IconProvider.creditCard,
                       action: onCopyCardNumber),
-                .init(title: #localized("Copy expiration date"),
+                .init(title: "Copy expiration date",
                       icon: IconProvider.calendarDay,
                       action: onCopyExpirationDate),
-                .init(title: #localized("Copy security code"),
+                .init(title: "Copy security code",
                       icon: Image(uiImage: PassIcon.shieldCheck),
                       action: onCopySecurityCode)
             ]))
@@ -176,7 +175,7 @@ enum ItemContextMenu {
                        onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
-            sections.append(.init(options: [.init(title: #localized("Copy note content"),
+            sections.append(.init(options: [.init(title: "Copy note content",
                                                   icon: IconProvider.note,
                                                   action: onCopyContent)]))
 
@@ -194,10 +193,10 @@ enum ItemContextMenu {
                               onPermanentlyDelete):
             if isEditable {
                 return [
-                    .init(options: [.init(title: #localized("Restore"),
+                    .init(options: [.init(title: "Restore",
                                           icon: IconProvider.clockRotateLeft,
                                           action: onRestore)]),
-                    .init(options: [.init(title: #localized("Delete permanently"),
+                    .init(options: [.init(title: "Delete permanently",
                                           icon: IconProvider.trashCross,
                                           action: onPermanentlyDelete,
                                           isDestructive: true)])
@@ -217,10 +216,10 @@ enum ItemContextMenu {
             var sections: [ItemContextMenuOptionSection] = []
 
             sections.append(.init(options: [
-                .init(title: #localized("Copy email"),
+                .init(title: "Copy email",
                       icon: IconProvider.envelope,
                       action: onCopyEmail),
-                .init(title: #localized("Copy fullname"),
+                .init(title: "Copy fullname",
                       icon: IconProvider.user,
                       action: onCopyFullname)
             ]))
@@ -264,13 +263,17 @@ private extension ItemContextMenu {
 
 struct ItemContextMenuOption: Identifiable {
     var id = UUID()
-    let title: String
+    let title: LocalizedStringKey
     let icon: Image
     let action: () -> Void
     var isDestructive = false
 
+    var buttonRole: ButtonRole? {
+        isDestructive ? .destructive : nil
+    }
+
     static func editOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: #localized("Edit"), icon: IconProvider.pencil, action: action)
+        .init(title: "Edit", icon: IconProvider.pencil, action: action)
     }
 
     static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
@@ -279,11 +282,11 @@ struct ItemContextMenuOption: Identifiable {
     }
 
     static func viewHistoryOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: #localized("View history"), icon: IconProvider.clock, action: action)
+        .init(title: "View history", icon: IconProvider.clock, action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: #localized("Move to trash"),
+        .init(title: "Move to trash",
               icon: IconProvider.trash,
               action: action,
               isDestructive: true)
@@ -301,15 +304,8 @@ private extension View {
             ForEach(menu.sections) { section in
                 Section {
                     ForEach(section.options) { option in
-                        Button(role: option.isDestructive ? .destructive : nil,
-                               action: option.action,
-                               label: {
-                                   Label(title: {
-                                       Text(option.title)
-                                   }, icon: {
-                                       option.icon
-                                   })
-                               })
+                        Label(option.title, image: option.icon)
+                            .buttonEmbeded(role: option.buttonRole, action: option.action)
                     }
                 }
             }

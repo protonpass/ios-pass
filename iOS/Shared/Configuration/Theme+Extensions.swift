@@ -46,17 +46,6 @@ extension Theme: CustomStringConvertible {
         }
     }
 
-    var userInterfaceStyle: UIUserInterfaceStyle {
-        switch self {
-        case .light:
-            .light
-        case .dark:
-            .dark
-        case .matchSystem:
-            .unspecified
-        }
-    }
-
     var inAppTheme: InAppTheme {
         switch self {
         case .light:
@@ -65,17 +54,6 @@ extension Theme: CustomStringConvertible {
             .dark
         case .matchSystem:
             .matchSystem
-        }
-    }
-
-    var colorScheme: ColorScheme? {
-        switch self {
-        case .dark:
-            .dark
-        case .light:
-            .light
-        case .matchSystem:
-            nil
         }
     }
 }

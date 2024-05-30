@@ -26,7 +26,6 @@ import SwiftUI
 /// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
-    private let theme = resolve(\SharedToolingContainer.theme)
 
     init(mode: LocalAuthenticationViewModel.Mode,
          delayed: Bool,
@@ -59,6 +58,5 @@ struct LocalAuthenticationView: View {
             }
             .padding()
         }
-        .theme(theme)
     }
 }
