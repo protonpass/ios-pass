@@ -43,11 +43,7 @@ public extension SymmetricKey {
         }
         let sealedBox = try ChaChaPoly.SealedBox(combined: data)
         let decryptedData = try ChaChaPoly.open(sealedBox, using: self)
-
-        guard let clearText = String(data: decryptedData, encoding: .utf8) else {
-            throw PassError.symmetricEncryption(.failedToUtf8Decode)
-        }
-        return clearText
+        return String(decoding: decryptedData, as: UTF8.self)
     }
 
     func decrypt(_ cypherData: Data) throws -> Data {
