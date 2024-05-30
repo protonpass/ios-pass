@@ -86,8 +86,6 @@ struct SecureLinkDetailUiModel: Sendable {
 
 @MainActor
 final class SecureLinkDetailViewModel: ObservableObject {
-    @Published private(set) var loading = false
-
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     let uiModel: SecureLinkDetailUiModel
@@ -101,9 +99,5 @@ extension SecureLinkDetailViewModel {
     func copyLink() {
         router.action(.copyToClipboard(text: uiModel.url,
                                        message: #localized("Secure link copied")))
-    }
-
-    func removeLink() {
-        print(#function)
     }
 }
