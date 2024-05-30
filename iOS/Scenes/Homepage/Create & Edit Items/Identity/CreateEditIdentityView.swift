@@ -86,7 +86,7 @@ struct CreateEditIdentityView: View {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
-    enum Field: CustomFieldTypes {
+    enum Field: CustomFieldTypes {        
         case title
         case fullName
         case email
@@ -130,81 +130,8 @@ struct CreateEditIdentityView: View {
                 lhs.hashValue == rhs.hashValue
             }
         }
-        
-        var nextField: Field? {
-            switch self {
-            case .title:
-                    .fullName
-            case .fullName:
-                    .email
-            case .email:
-                <#code#>
-            case .phoneNumber:
-                <#code#>
-            case .firstName:
-                <#code#>
-            case .middleName:
-                <#code#>
-            case .lastName:
-                <#code#>
-            case .birthdate:
-                <#code#>
-            case .gender:
-                <#code#>
-            case .organization:
-                <#code#>
-            case .streetAddress:
-                <#code#>
-            case .zipOrPostalCode:
-                <#code#>
-            case .city:
-                <#code#>
-            case .stateOrProvince:
-                <#code#>
-            case .countryOrRegion:
-                <#code#>
-            case .floor:
-                <#code#>
-            case .county:
-                <#code#>
-            case .socialSecurityNumber:
-                <#code#>
-            case .passportNumber:
-                <#code#>
-            case .licenseNumber:
-                <#code#>
-            case .website:
-                <#code#>
-            case .xHandle:
-                <#code#>
-            case .secondPhoneNumber:
-                <#code#>
-            case .linkedIn:
-                <#code#>
-            case .reddit:
-                <#code#>
-            case .facebook:
-                <#code#>
-            case .yahoo:
-                <#code#>
-            case .instagram:
-                <#code#>
-            case .company:
-                <#code#>
-            case .jobTitle:
-                <#code#>
-            case .personalWebsite:
-                <#code#>
-            case .workPhoneNumber:
-                <#code#>
-            case .workEmail:
-                <#code#>
-            case .custom(_):
-                <#code#>
-            default:
-                nil
-            }
-        }
+
+
     }
 
     var body: some View {
@@ -227,7 +154,7 @@ private extension CreateEditIdentityView {
                                            field: .title,
                                            itemContentType: viewModel.itemContentType(),
                                            isEditMode: viewModel.mode.isEditMode,
-                                           onSubmit: { })
+                                           onSubmit: {})
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
 
                 sections()
@@ -706,7 +633,7 @@ private extension CreateEditIdentityView {
     func identityRow(title: String,
                      subtitle: String? = nil,
                      value: Binding<String>,
-                     focusedField: Field,
+                     focusedField: Field? = nil,
                      keyboardType: UIKeyboardType = .asciiCapable) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
@@ -720,7 +647,9 @@ private extension CreateEditIdentityView {
                     .focused($focusedField, equals: focusedField)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.next)
-                    .onSubmit { focusedField = .password }
+                    // swiftlint:disable:next todo
+                    // TODO: set next focus
+                    .onSubmit {}
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -734,7 +663,7 @@ private extension CreateEditIdentityView {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
 //            .animation(.default, value: viewModel.username.isEmpty)
-//            .animation(.default, value: focusedField)
+        .animation(.default, value: focusedField)
     }
 
     var sheetContent: some View {
@@ -826,7 +755,7 @@ private extension CreateEditIdentityView {
                 PassSectionDivider()
 
             case .contact:
-                Text("Linkedin")
+                Text("LinkedIn")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, DesignConstant.sectionPadding)
