@@ -34,9 +34,8 @@ struct SetExtraPasswordView: View {
                 .ignoresSafeArea()
             VStack {
                 SecureField("Extra password",
-                            text: $viewModel.password,
+                            text: $viewModel.extraPassword,
                             prompt: Text(viewModel.state.placeholder))
-                    .tint(PassColor.interactionNormMajor1.toColor)
                     .focused($focused)
                 PassDivider()
                     .padding(.vertical)
@@ -50,9 +49,12 @@ struct SetExtraPasswordView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle(viewModel.state.navigationTitle)
         .toolbar { toolbarContent }
-        .onAppear { focused = true }
         .animation(.default, value: viewModel.canContinue)
         .animation(.default, value: viewModel.state)
+        .tint(PassColor.interactionNormMajor1.toColor)
+        .onChange(of: viewModel.canSetExtraPassword) { _ in
+            focused = true
+        }
         .navigationStackEmbeded()
         .alert("Set extra password",
                isPresented: $viewModel.showLogOutAlert,
@@ -64,6 +66,24 @@ struct SetExtraPasswordView: View {
                message: {
                    Text("You will be logged out and will have to log in again on all of your devices.")
                })
+        .alert("Confirm your Proton password",
+               isPresented: $viewModel.showProtonPasswordConfirmationAlert,
+               actions: {
+                   SecureField("Proton password", text: $viewModel.protonPassword)
+                   Button(action: { viewModel.verifyProtonPassword() },
+                          label: { Text("Confirm") })
+                   Button(role: .cancel,
+                          action: dismiss.callAsFunction,
+                          label: { Text("Cancel") })
+               })
+        .alert("Error occured",
+               isPresented: $viewModel.showWrongProtonPasswordAlert,
+               actions: {
+                   Button(action: { viewModel.retryVerifyingProtonPassword() },
+                          label: { Text("Try again") })
+                   Button(role: .cancel, label: { Text("Cancel") })
+               },
+               message: { Text("Wrong Proton password") })
     }
 }
 

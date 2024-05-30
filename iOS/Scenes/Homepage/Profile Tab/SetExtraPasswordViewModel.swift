@@ -47,15 +47,19 @@ enum SetExtraPasswordViewState {
 @MainActor
 final class SetExtraPasswordViewModel: ObservableObject {
     @Published private(set) var canContinue = false
+    @Published private(set) var canSetExtraPassword = false
     @Published private(set) var state: SetExtraPasswordViewState = .defining
     @Published var showLogOutAlert = false
-    @Published var password = ""
+    @Published var showWrongProtonPasswordAlert = false
+    @Published var showProtonPasswordConfirmationAlert = true
+    @Published var protonPassword = ""
+    @Published var extraPassword = ""
 
-    private var definedPassword = ""
+    private var definedExtraPassword = ""
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        $password
+        $extraPassword
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] password in
@@ -64,7 +68,7 @@ final class SetExtraPasswordViewModel: ObservableObject {
                 case .defining:
                     canContinue = password.count >= 8
                 case .repeating:
-                    canContinue = password.count >= 8 && password == definedPassword
+                    canContinue = password.count >= 8 && password == definedExtraPassword
                 }
             }
             .store(in: &cancellables)
@@ -72,11 +76,25 @@ final class SetExtraPasswordViewModel: ObservableObject {
 }
 
 extension SetExtraPasswordViewModel {
+    func verifyProtonPassword() {
+        guard protonPassword.count >= 8 else { return }
+        if Bool.random() {
+            canSetExtraPassword = true
+        } else {
+            showWrongProtonPasswordAlert = true
+        }
+    }
+
+    func retryVerifyingProtonPassword() {
+        protonPassword = ""
+        showProtonPasswordConfirmationAlert = true
+    }
+
     func `continue`() {
         switch state {
         case .defining:
-            definedPassword = password
-            password = ""
+            definedExtraPassword = extraPassword
+            extraPassword = ""
             state = .repeating
         case .repeating:
             showLogOutAlert = true
