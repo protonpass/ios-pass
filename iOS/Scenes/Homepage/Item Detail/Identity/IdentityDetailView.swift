@@ -103,72 +103,72 @@ private extension IdentityDetailView {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
                     if !viewModel.firstName.isEmpty {
-                        row(title: #localized("First name"), value: viewModel.firstName) {
+                        row(title: IdentityFields.firstName.title, value: viewModel.firstName) {
                             viewModel.copyValueToClipboard(value: viewModel.firstName,
-                                                           message: #localized("First name"))
+                                                           message: IdentityFields.firstName.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.middleName.isEmpty {
-                        row(title: #localized("Middle name"), value: viewModel.middleName) {
+                        row(title: IdentityFields.middleName.title, value: viewModel.middleName) {
                             viewModel.copyValueToClipboard(value: viewModel.middleName,
-                                                           message: #localized("Middle name"))
+                                                           message: IdentityFields.middleName.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.lastName.isEmpty {
-                        row(title: #localized("Last name"), value: viewModel.lastName) {
+                        row(title: IdentityFields.lastName.title, value: viewModel.lastName) {
                             viewModel.copyValueToClipboard(value: viewModel.lastName,
-                                                           message: #localized("Last name"))
+                                                           message: IdentityFields.lastName.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.fullName.isEmpty {
-                        row(title: #localized("Full name"), value: viewModel.fullName) {
+                        row(title: IdentityFields.fullName.title, value: viewModel.fullName) {
                             viewModel.copyValueToClipboard(value: viewModel.fullName,
-                                                           message: #localized("Full name"))
+                                                           message: IdentityFields.fullName.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.email.isEmpty {
-                        row(title: #localized("Email"), value: viewModel.email) {
+                        row(title: IdentityFields.email.title, value: viewModel.email) {
                             viewModel.copyValueToClipboard(value: viewModel.email,
-                                                           message: #localized("Email"))
+                                                           message: IdentityFields.email.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.phoneNumber.isEmpty {
-                        row(title: #localized("Phone number"), value: viewModel.phoneNumber) {
+                        row(title: IdentityFields.phoneNumber.title, value: viewModel.phoneNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.phoneNumber,
-                                                           message: #localized("Phone number"))
+                                                           message: IdentityFields.phoneNumber.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.birthdate.isEmpty {
-                        row(title: #localized("Birthdate"), value: viewModel.birthdate) {
+                        row(title: IdentityFields.birthdate.title, value: viewModel.birthdate) {
                             viewModel.copyValueToClipboard(value: viewModel.birthdate,
-                                                           message: #localized("Birthdate"))
+                                                           message: IdentityFields.birthdate.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.gender.isEmpty {
-                        row(title: #localized("Gender"), value: viewModel.gender) {
+                        row(title: IdentityFields.gender.title, value: viewModel.gender) {
                             viewModel.copyValueToClipboard(value: viewModel.gender,
-                                                           message: #localized("Gender"))
+                                                           message: IdentityFields.gender.title)
                         }
 
                         PassSectionDivider()
@@ -205,72 +205,72 @@ private extension IdentityDetailView {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
                     if !viewModel.organization.isEmpty {
-                        row(title: #localized("Organization"), value: viewModel.organization) {
+                        row(title: IdentityFields.organization.title, value: viewModel.organization) {
                             viewModel.copyValueToClipboard(value: viewModel.organization,
-                                                           message: #localized("Organization"))
+                                                           message: IdentityFields.organization.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.streetAddress.isEmpty {
-                        row(title: #localized("Street address, P.O. box"), value: viewModel.streetAddress) {
+                        row(title: IdentityFields.streetAddress.title, value: viewModel.streetAddress) {
                             viewModel.copyValueToClipboard(value: viewModel.streetAddress,
-                                                           message: #localized("Street address, P.O. box"))
+                                                           message: IdentityFields.streetAddress.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.zipOrPostalCode.isEmpty {
-                        row(title: #localized("ZIP or Postal code"), value: viewModel.zipOrPostalCode) {
+                        row(title: IdentityFields.zipOrPostalCode.title, value: viewModel.zipOrPostalCode) {
                             viewModel.copyValueToClipboard(value: viewModel.zipOrPostalCode,
-                                                           message: #localized("ZIP or Postal code"))
+                                                           message: IdentityFields.zipOrPostalCode.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.city.isEmpty {
-                        row(title: "City", value: viewModel.city) {
+                        row(title: IdentityFields.city.title, value: viewModel.city) {
                             viewModel.copyValueToClipboard(value: viewModel.city,
-                                                           message: #localized("City"))
+                                                           message: IdentityFields.city.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.stateOrProvince.isEmpty {
-                        row(title: "State or province", value: viewModel.stateOrProvince) {
+                        row(title: IdentityFields.stateOrProvince.title, value: viewModel.stateOrProvince) {
                             viewModel.copyValueToClipboard(value: viewModel.stateOrProvince,
-                                                           message: #localized("State or province"))
+                                                           message: IdentityFields.stateOrProvince.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.countryOrRegion.isEmpty {
-                        row(title: "Country or Region", value: viewModel.countryOrRegion) {
+                        row(title: IdentityFields.countryOrRegion.title, value: viewModel.countryOrRegion) {
                             viewModel.copyValueToClipboard(value: viewModel.countryOrRegion,
-                                                           message: #localized("Country or Region"))
+                                                           message: IdentityFields.countryOrRegion.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.floor.isEmpty {
-                        row(title: "Floor", value: viewModel.floor) {
+                        row(title: IdentityFields.floor.title, value: viewModel.floor) {
                             viewModel.copyValueToClipboard(value: viewModel.floor,
-                                                           message: #localized("Floor"))
+                                                           message: IdentityFields.floor.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.county.isEmpty {
-                        row(title: "County", value: viewModel.county) {
+                        row(title: IdentityFields.county.title, value: viewModel.county) {
                             viewModel.copyValueToClipboard(value: viewModel.county,
-                                                           message: #localized("County"))
+                                                           message: IdentityFields.county.title)
                         }
                         PassSectionDivider()
                     }
@@ -307,96 +307,97 @@ private extension IdentityDetailView {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
                     if !viewModel.socialSecurityNumber.isEmpty {
-                        row(title: "Social security number", value: viewModel.socialSecurityNumber) {
-                            viewModel.copyValueToClipboard(value: viewModel.socialSecurityNumber,
-                                                           message: #localized("Social security number"))
-                        }
+                        row(title: IdentityFields.socialSecurityNumber.title,
+                            value: viewModel.socialSecurityNumber) {
+                                viewModel.copyValueToClipboard(value: viewModel.socialSecurityNumber,
+                                                               message: IdentityFields.socialSecurityNumber.title)
+                            }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.passportNumber.isEmpty {
-                        row(title: "Passport number", value: viewModel.passportNumber) {
+                        row(title: IdentityFields.passportNumber.title, value: viewModel.passportNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.passportNumber,
-                                                           message: #localized("Passport number"))
+                                                           message: IdentityFields.passportNumber.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.licenseNumber.isEmpty {
-                        row(title: "License number", value: viewModel.licenseNumber) {
+                        row(title: IdentityFields.licenseNumber.title, value: viewModel.licenseNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.licenseNumber,
-                                                           message: #localized("License number"))
+                                                           message: IdentityFields.licenseNumber.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.website.isEmpty {
-                        row(title: "Website", value: viewModel.website) {
+                        row(title: IdentityFields.website.title, value: viewModel.website) {
                             viewModel.copyValueToClipboard(value: viewModel.website,
-                                                           message: #localized("Website"))
+                                                           message: IdentityFields.website.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.xHandle.isEmpty {
-                        row(title: "X handle", value: viewModel.xHandle) {
+                        row(title: IdentityFields.xHandle.title, value: viewModel.xHandle) {
                             viewModel.copyValueToClipboard(value: viewModel.xHandle,
-                                                           message: #localized("X handle"))
+                                                           message: IdentityFields.xHandle.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.secondPhoneNumber.isEmpty {
-                        row(title: "Second phone number", value: viewModel.secondPhoneNumber) {
+                        row(title: IdentityFields.secondPhoneNumber.title, value: viewModel.secondPhoneNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.secondPhoneNumber,
-                                                           message: #localized("Second phone number"))
+                                                           message: IdentityFields.secondPhoneNumber.title)
                         }
 
                         PassSectionDivider()
                     }
 
-                    if !viewModel.linkedin.isEmpty {
-                        row(title: "Linkedin", value: viewModel.linkedin) {
-                            viewModel.copyValueToClipboard(value: viewModel.linkedin,
-                                                           message: #localized("Linkedin"))
+                    if !viewModel.linkedIn.isEmpty {
+                        row(title: IdentityFields.linkedIn.title, value: viewModel.linkedIn) {
+                            viewModel.copyValueToClipboard(value: viewModel.linkedIn,
+                                                           message: IdentityFields.linkedIn.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.reddit.isEmpty {
-                        row(title: "Reddit", value: viewModel.reddit) {
+                        row(title: IdentityFields.reddit.title, value: viewModel.reddit) {
                             viewModel.copyValueToClipboard(value: viewModel.reddit,
-                                                           message: #localized("Reddit"))
+                                                           message: IdentityFields.reddit.title)
                         }
                         PassSectionDivider()
                     }
 
                     if !viewModel.facebook.isEmpty {
-                        row(title: "Facebook", value: viewModel.facebook) {
+                        row(title: IdentityFields.facebook.title, value: viewModel.facebook) {
                             viewModel.copyValueToClipboard(value: viewModel.facebook,
-                                                           message: #localized("Facebook"))
+                                                           message: IdentityFields.facebook.title)
                         }
                         PassSectionDivider()
                     }
 
                     if !viewModel.yahoo.isEmpty {
-                        row(title: "Yahoo", value: viewModel.yahoo) {
+                        row(title: IdentityFields.yahoo.title, value: viewModel.yahoo) {
                             viewModel.copyValueToClipboard(value: viewModel.yahoo,
-                                                           message: #localized("Yahoo"))
+                                                           message: IdentityFields.yahoo.title)
                         }
                         PassSectionDivider()
                     }
 
                     if !viewModel.instagram.isEmpty {
-                        row(title: "Instagram", value: viewModel.instagram) {
+                        row(title: IdentityFields.instagram.title, value: viewModel.instagram) {
                             viewModel.copyValueToClipboard(value: viewModel.instagram,
-                                                           message: #localized("Instagram"))
+                                                           message: IdentityFields.instagram.title)
                         }
                         PassSectionDivider()
                     }
@@ -433,45 +434,45 @@ private extension IdentityDetailView {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
                     if !viewModel.company.isEmpty {
-                        row(title: "Company", value: viewModel.company) {
+                        row(title: IdentityFields.company.title, value: viewModel.company) {
                             viewModel.copyValueToClipboard(value: viewModel.company,
-                                                           message: #localized("Company"))
+                                                           message: IdentityFields.company.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.jobTitle.isEmpty {
-                        row(title: "Job title", value: viewModel.jobTitle) {
+                        row(title: IdentityFields.jobTitle.title, value: viewModel.jobTitle) {
                             viewModel.copyValueToClipboard(value: viewModel.jobTitle,
-                                                           message: #localized("Job title"))
+                                                           message: IdentityFields.jobTitle.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.personalWebsite.isEmpty {
-                        row(title: "Personal website", value: viewModel.personalWebsite) {
+                        row(title: IdentityFields.personalWebsite.title, value: viewModel.personalWebsite) {
                             viewModel.copyValueToClipboard(value: viewModel.personalWebsite,
-                                                           message: #localized("Personal website"))
+                                                           message: IdentityFields.personalWebsite.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.workPhoneNumber.isEmpty {
-                        row(title: "Work phone number", value: viewModel.workPhoneNumber) {
+                        row(title: IdentityFields.workPhoneNumber.title, value: viewModel.workPhoneNumber) {
                             viewModel.copyValueToClipboard(value: viewModel.workPhoneNumber,
-                                                           message: #localized("Work phone number"))
+                                                           message: IdentityFields.workPhoneNumber.title)
                         }
 
                         PassSectionDivider()
                     }
 
                     if !viewModel.workEmail.isEmpty {
-                        row(title: "Work email", value: viewModel.workEmail) {
+                        row(title: IdentityFields.workEmail.title, value: viewModel.workEmail) {
                             viewModel.copyValueToClipboard(value: viewModel.workEmail,
-                                                           message: #localized("Work email"))
+                                                           message: IdentityFields.workEmail.title)
                         }
 
                         PassSectionDivider()
