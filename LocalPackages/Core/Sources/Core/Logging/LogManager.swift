@@ -197,11 +197,10 @@ private extension LogManager {
 
 private extension LogEntry {
     var toString: String? {
-        guard let jsonData = try? JSONEncoder().encode(self),
-              let jsonString = String(data: jsonData, encoding: .utf8) else {
+        guard let jsonData = try? JSONEncoder().encode(self) else {
             return nil
         }
-        return jsonString
+        return String(decoding: jsonData, as: UTF8.self)
     }
 }
 
