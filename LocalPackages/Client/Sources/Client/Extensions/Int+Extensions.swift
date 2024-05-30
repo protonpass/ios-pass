@@ -25,3 +25,9 @@ extension Int {
         self != 0
     }
 }
+
+public extension Int {
+    var nilIfZero: Int? {
+        self == 0 ? nil : self
+    }
+}

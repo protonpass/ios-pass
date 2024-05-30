@@ -74,7 +74,6 @@ final class ShareCoordinator {
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
-    private let theme = resolve(\SharedToolingContainer.theme)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
@@ -195,7 +194,6 @@ private extension ShareCoordinator {
             guard let self else { return }
             dismissExtension()
         }
-        .theme(theme)
         showView(view)
     }
 

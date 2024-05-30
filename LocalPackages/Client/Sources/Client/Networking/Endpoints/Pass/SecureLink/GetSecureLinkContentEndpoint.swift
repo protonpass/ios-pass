@@ -1,5 +1,5 @@
 //
-// GetAllPublicLinksForUserEndpoint.swift
+// GetSecureLinkContentEndpoint.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,21 +22,21 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-struct GetAllPublicLinksForUserResponse: Decodable, Equatable, Sendable {
-    let publicLinks: [PublicLink]
+struct GetSecureLinkContentResponse: Decodable, Equatable, Sendable {
+    let publicLinkContent: SecureLinkContent
 }
 
-struct GetAllPublicLinksForUserEndpoint: Endpoint {
+struct GetSecureLinkContentEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetAllPublicLinksForUserResponse
+    typealias Response = GetSecureLinkContentResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
 
-    init() {
-        debugDescription = "Get all public links for current user"
-        path = "/pass/v1/public_link"
+    init(linkToken: String) {
+        debugDescription = "Get content for secure link"
+        path = "/pass/v1/public_link/content/\(linkToken)"
         method = .get
     }
 }

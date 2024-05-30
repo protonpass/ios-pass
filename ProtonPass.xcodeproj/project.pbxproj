@@ -378,6 +378,8 @@
 		35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
+		35B0F7872C0739B700A89E93 /* SecureLinkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F7862C0739B700A89E93 /* SecureLinkDetailView.swift */; };
+		35B0F7892C0739D700A89E93 /* SecureLinkDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F7882C0739D700A89E93 /* SecureLinkDetailViewModel.swift */; };
 		35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */; };
 		35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35B9321D2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
@@ -528,8 +530,8 @@
 		5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
-		5BB403792BF64B18005BF271 /* PublicLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB403772BF64B18005BF271 /* PublicLinkView.swift */; };
-		5BB4037A2BF64B18005BF271 /* PublicLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB403782BF64B18005BF271 /* PublicLinkViewModel.swift */; };
+		5BB403792BF64B18005BF271 /* CreateSecureLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB403772BF64B18005BF271 /* CreateSecureLinkView.swift */; };
+		5BB4037A2BF64B18005BF271 /* CreateSecureLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB403782BF64B18005BF271 /* CreateSecureLinkViewModel.swift */; };
 		5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */; };
 		5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
 		5BCF61A02ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
@@ -873,6 +875,8 @@
 		35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCustomFieldView.swift; sourceTree = "<group>"; };
 		35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldEditionCoordinator.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
+		35B0F7862C0739B700A89E93 /* SecureLinkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkDetailView.swift; sourceTree = "<group>"; };
+		35B0F7882C0739D700A89E93 /* SecureLinkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkDetailViewModel.swift; sourceTree = "<group>"; };
 		35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSyncProgressView.swift; sourceTree = "<group>"; };
 		35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRepository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35C0D1C62B20B567005D48A6 /* TOTPRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPRow.swift; sourceTree = "<group>"; };
@@ -999,8 +1003,8 @@
 		5BAE710F2BD1128400F579E4 /* AddCustomEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomEmailViewModel.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
-		5BB403772BF64B18005BF271 /* PublicLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicLinkView.swift; sourceTree = "<group>"; };
-		5BB403782BF64B18005BF271 /* PublicLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicLinkViewModel.swift; sourceTree = "<group>"; };
+		5BB403772BF64B18005BF271 /* CreateSecureLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecureLinkView.swift; sourceTree = "<group>"; };
+		5BB403782BF64B18005BF271 /* CreateSecureLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecureLinkViewModel.swift; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5BD4A8F62B10BFE100C44C08 /* WipeAllData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WipeAllData.swift; sourceTree = "<group>"; };
@@ -1572,6 +1576,17 @@
 			path = "Custom fields";
 			sourceTree = "<group>";
 		};
+		35B0F7852C0738A100A89E93 /* SecureLink */ = {
+			isa = PBXGroup;
+			children = (
+				5BB403772BF64B18005BF271 /* CreateSecureLinkView.swift */,
+				5BB403782BF64B18005BF271 /* CreateSecureLinkViewModel.swift */,
+				35B0F7862C0739B700A89E93 /* SecureLinkDetailView.swift */,
+				35B0F7882C0739D700A89E93 /* SecureLinkDetailViewModel.swift */,
+			);
+			path = SecureLink;
+			sourceTree = "<group>";
+		};
 		35C2162B29EA951E001720FF /* Settings Bundles */ = {
 			isa = PBXGroup;
 			children = (
@@ -1820,7 +1835,7 @@
 		5B1453902A6831C60048B022 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
-				5BE8D72E2BF646F3002F75B6 /* PublicLinkView */,
+				35B0F7852C0738A100A89E93 /* SecureLink */,
 				5BAD39612AF52B31009FD5A3 /* ShareOrCreateNewVaultView */,
 				5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */,
 				5B1453AE2A69814C0048B022 /* SummaryView */,
@@ -2281,15 +2296,6 @@
 				3569B29A29B76BF60070830B /* VaultsManager.swift */,
 			);
 			path = Managers;
-			sourceTree = "<group>";
-		};
-		5BE8D72E2BF646F3002F75B6 /* PublicLinkView */ = {
-			isa = PBXGroup;
-			children = (
-				5BB403772BF64B18005BF271 /* PublicLinkView.swift */,
-				5BB403782BF64B18005BF271 /* PublicLinkViewModel.swift */,
-			);
-			path = PublicLinkView;
 			sourceTree = "<group>";
 		};
 		5BECDE452B90EC230040FCA7 /* PassMonitor */ = {
@@ -3152,6 +3158,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35B0F7872C0739B700A89E93 /* SecureLinkDetailView.swift in Sources */,
 				35AC9A5C2A0BDAA300FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				35C44F762BDA4A420054F7EE /* MonitorAliasesViewModel.swift in Sources */,
 				5B1453992A6938660048B022 /* UserPermissionView.swift in Sources */,
@@ -3284,8 +3291,8 @@
 				35D708F82B6B8517001CBB03 /* EditSpotlightVaultsView.swift in Sources */,
 				35D3861D2BD9299D00532323 /* MonitorIncludedEmailView.swift in Sources */,
 				5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */,
-				5BB403792BF64B18005BF271 /* PublicLinkView.swift in Sources */,
-				5BB4037A2BF64B18005BF271 /* PublicLinkViewModel.swift in Sources */,
+				5BB403792BF64B18005BF271 /* CreateSecureLinkView.swift in Sources */,
+				5BB4037A2BF64B18005BF271 /* CreateSecureLinkViewModel.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
@@ -3402,6 +3409,7 @@
 				5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */,
 				5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */,
 				5BF35D6A2B21F82900D3E297 /* Item+Extensions.swift in Sources */,
+				35B0F7892C0739D700A89E93 /* SecureLinkDetailViewModel.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
@@ -3584,7 +3592,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3666,7 +3674,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
@@ -3746,7 +3754,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3819,7 +3827,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -3923,7 +3931,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -3995,7 +4003,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4064,7 +4072,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4142,7 +4150,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
@@ -4186,7 +4194,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4281,7 +4289,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4353,7 +4361,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4422,7 +4430,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4500,7 +4508,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
@@ -4544,7 +4552,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4623,7 +4631,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4665,7 +4673,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4705,7 +4713,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4745,7 +4753,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4851,7 +4859,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4893,7 +4901,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4988,7 +4996,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -5029,7 +5037,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5095,7 +5103,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5164,7 +5172,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";

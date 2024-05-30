@@ -21,11 +21,11 @@
 import DesignSystem
 import Entities
 import Macro
-import UIKit
+import SwiftUI
 
 extension Pinnable {
-    var pinTitle: String {
-        pinned ? #localized("Unpin") : #localized("Pin")
+    var pinTitle: LocalizedStringKey {
+        pinned ? "Unpin" : "Pin"
     }
 
     var pinIcon: UIImage {
