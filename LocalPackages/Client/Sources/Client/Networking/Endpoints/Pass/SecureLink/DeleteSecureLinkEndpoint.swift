@@ -1,5 +1,5 @@
 //
-// SharedPublicLink.swift
+// DeleteSecureLinkEndpoint.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -19,22 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public struct SharedPublicLink: Decodable, Equatable, Sendable {
-    public let url: String
-    public let publicLinkID: String
-    public let expirationTime: Int?
+struct DeleteSecureLinkEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public init(url: String, publicLinkID: String, expirationTime: Int?) {
-        self.url = url
-        self.publicLinkID = publicLinkID
-        self.expirationTime = expirationTime
-    }
-}
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
 
-public extension SharedPublicLink {
-    func update(with linkKey: String) -> SharedPublicLink {
-        let newUrl = "\(url)#\(linkKey)"
-        return SharedPublicLink(url: newUrl, publicLinkID: publicLinkID, expirationTime: expirationTime)
+    init(linkId: String) {
+        debugDescription = "Delete secure link"
+        path = "/pass/v1/public_link/\(linkId)"
+        method = .delete
     }
 }

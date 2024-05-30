@@ -1,6 +1,6 @@
 //
-// PublicLinkCreationConfiguration.swift
-// Proton Pass - Created on 16/05/2024.
+// SecureLink.swift
+// Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,25 +20,13 @@
 
 import Foundation
 
-public struct PublicLinkCreationConfiguration: Decodable, Equatable, Sendable {
-    public let shareId: String
-    public let itemId: String
-    public let revision: Int
+public struct SecureLink: Decodable, Equatable, Sendable, Identifiable {
+    public let linkID: String
+    public let readCount, maxReadCount: Int?
     public let expirationTime: Int
-    public let encryptedItemKey: String
-    public let maxReadCount: Int?
+    public let shareID, itemID: String
 
-    public init(shareId: String,
-                itemId: String,
-                revision: Int,
-                expirationTime: Int,
-                encryptedItemKey: String,
-                maxReadCount: Int?) {
-        self.shareId = shareId
-        self.itemId = itemId
-        self.revision = revision
-        self.expirationTime = expirationTime
-        self.encryptedItemKey = encryptedItemKey
-        self.maxReadCount = maxReadCount
+    public var id: String {
+        linkID
     }
 }
