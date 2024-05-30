@@ -43,7 +43,13 @@ private extension CreateSecureLinkView {
     var mainContainer: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             if let link = viewModel.link {
-                view(for: link)
+                let uiModel = SecureLinkDetailUiModel(itemContent: viewModel.itemContent,
+                                                      url: link.url,
+                                                      expirationTime: link.expirationTime,
+                                                      readCount: nil,
+                                                      maxReadCount: viewModel.readCount.nilIfZero,
+                                                      mode: .create)
+                SecureLinkDetailView(viewModel: .init(uiModel: uiModel))
             } else {
                 createLink
             }
@@ -53,7 +59,7 @@ private extension CreateSecureLinkView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .showSpinner(viewModel.loading)
         .animation(.default, value: viewModel.link)
-        .animation(.default, value: viewModel.viewCount)
+        .animation(.default, value: viewModel.readCount)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
     }
@@ -98,17 +104,17 @@ private extension CreateSecureLinkView {
                 .toggleStyle(SwitchToggleStyle.pass)
                 .foregroundStyle(PassColor.textNorm.toColor)
 
-            if viewModel.viewCount != 0 {
+            if viewModel.readCount != 0 {
                 HStack {
                     Text("Maximum views:")
-                    Text(verbatim: "\(viewModel.viewCount)")
+                    Text(verbatim: "\(viewModel.readCount)")
                         .fontWeight(.bold)
                         .padding(10)
                         .background(PassColor.textDisabled.toColor)
                         .clipShape(.circle)
                     Spacer()
                     Stepper("Maximum views:",
-                            value: $viewModel.viewCount,
+                            value: $viewModel.readCount,
                             in: 1...Int.max,
                             step: 1)
                         .labelsHidden()
@@ -129,77 +135,9 @@ private extension CreateSecureLinkView {
 
     var viewCountBinding: Binding<Bool> {
         .init(get: {
-            viewModel.viewCount != 0
+            viewModel.readCount != 0
         }, set: { newValue in
-            viewModel.viewCount = newValue ? 1 : 0
+            viewModel.readCount = newValue ? 1 : 0
         })
-    }
-}
-
-private extension CreateSecureLinkView {
-    @ViewBuilder
-    func view(for link: NewSecureLink) -> some View {
-        VStack(spacing: DesignConstant.sectionPadding) {
-            HStack {
-                if let relativeTimeRemaining = link.relativeTimeRemaining {
-                    infoCell(title: "Expires in:",
-                             description: relativeTimeRemaining,
-                             icon: IconProvider.clock)
-                }
-
-                if viewModel.viewCount != 0 {
-                    infoCell(title: "Can be viewed:",
-                             description: #localized("%lld time(s)", viewModel.viewCount),
-                             icon: IconProvider.eye)
-                }
-            }
-            HStack(spacing: DesignConstant.sectionPadding) {
-                Text(verbatim: link.url)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                    .contentShape(.rect)
-                    .onTapGesture { viewModel.copyLink() }
-                    .background(PassColor.interactionNormMinor1.toColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                Image(uiImage: IconProvider.squares)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    .buttonEmbeded { viewModel.copyLink() }
-
-                ShareLink(item: link.url) {
-                    Image(systemName: "square.and.arrow.up")
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                }
-            }
-        }
-    }
-
-    func infoCell(title: LocalizedStringKey,
-                  description: String,
-                  icon: UIImage) -> some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            VStack {
-                Spacer()
-                Image(uiImage: icon)
-                    .scaledToFit()
-                    .frame(width: 14)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                Spacer()
-            }
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                Text(description)
-                    .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
     }
 }
