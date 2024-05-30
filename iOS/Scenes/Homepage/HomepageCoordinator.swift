@@ -391,6 +391,8 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .presentView(view, dismissible):
                     createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
+                case let .itemDetail(view, asSheet):
+                    itemDetailCoordinatorWantsToPresent(view: view, asSheet: asSheet)
                 }
             }
             .store(in: &cancellables)
@@ -611,7 +613,6 @@ extension HomepageCoordinator {
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
-        coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
@@ -1049,7 +1050,6 @@ extension HomepageCoordinator {
 private extension HomepageCoordinator {
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
         let coordinator = CreateEditItemCoordinator(createEditItemDelegates: self)
-//        coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator
     }
@@ -1149,29 +1149,6 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
         }
     }
 
-//    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
-//                                              presentationOption: ChildCoordinatorPresentationOption) {
-//        let display: () -> Void = { [weak self] in
-//            guard let self else { return }
-//            switch bannerOption {
-//            case let .info(message):
-//                bannerManager.displayBottomInfoMessage(message)
-//            case let .success(message):
-//                bannerManager.displayBottomSuccessMessage(message)
-//            case let .error(message):
-//                bannerManager.displayTopErrorMessage(message)
-//            }
-//        }
-//        switch presentationOption {
-//        case .none:
-//            display()
-//        case .dismissTopViewController:
-//            dismissTopMostViewController(animated: true, completion: display)
-//        case .dismissAllViewControllers:
-//            dismissAllViewControllers(animated: true, completion: display)
-//        }
-//    }
-
     func childCoordinatorWantsToDismissTopViewController() {
         dismissTopMostViewController()
     }
@@ -1241,18 +1218,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
-    }
-}
-
-// MARK: - ItemDetailCoordinatorDelegate
-
-extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
-    func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
-        if asSheet {
-            present(view)
-        } else {
-            push(view)
-        }
     }
 }
 

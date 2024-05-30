@@ -1,5 +1,5 @@
 //
-// HomepageCoordinator+ItemCreateEdit.swift
+// HomepageCoordinator+ItemCreateEditDetails.swift
 // Proton Pass - Created on 22/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,10 +21,16 @@
 import Foundation
 import SwiftUI
 
-// MARK: - CreateEditItemCoordinatorDelegate
-
 extension HomepageCoordinator {
     func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
         present(view, dismissible: dismissable)
+    }
+
+    func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
+        if asSheet {
+            present(view)
+        } else {
+            push(view)
+        }
     }
 }

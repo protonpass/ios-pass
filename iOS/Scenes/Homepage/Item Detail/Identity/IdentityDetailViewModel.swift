@@ -20,9 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import Combine
-import Core
 import Entities
 import Factory
 import Macro
@@ -56,7 +54,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var website = ""
     @Published private(set) var xHandle = ""
     @Published private(set) var secondPhoneNumber = ""
-    @Published private(set) var linkedin = ""
+    @Published private(set) var linkedIn = ""
     @Published private(set) var reddit = ""
     @Published private(set) var facebook = ""
     @Published private(set) var yahoo = ""
@@ -89,7 +87,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         !socialSecurityNumber.isEmpty || !passportNumber.isEmpty ||
             !licenseNumber.isEmpty || !website.isEmpty ||
             !xHandle.isEmpty || !secondPhoneNumber.isEmpty ||
-            !linkedin.isEmpty || !reddit.isEmpty || !facebook.isEmpty ||
+            !linkedIn.isEmpty || !reddit.isEmpty || !facebook.isEmpty ||
             !yahoo.isEmpty || !instagram.isEmpty || !extraContactDetails.isEmpty
     }
 
@@ -102,7 +100,6 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     override func bindValues() {
         super.bindValues()
         guard case let .identity(data) = itemContent.contentData else {
-//            assert("Expecting identity type")
             return
         }
         title = itemContent.name
@@ -130,7 +127,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         website = data.website
         xHandle = data.xHandle
         secondPhoneNumber = data.secondPhoneNumber
-        linkedin = data.linkedin
+        linkedIn = data.linkedIn
         reddit = data.reddit
         facebook = data.facebook
         yahoo = data.yahoo
@@ -159,8 +156,4 @@ extension IdentityDetailViewModel {
     func copyHiddenText(_ text: String) {
         copyToClipboard(text: text, message: #localized("Hidden text copied"))
     }
-}
-
-private extension IdentityDetailViewModel {
-    func setUp() {}
 }

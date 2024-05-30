@@ -33,10 +33,12 @@ struct ItemTypeListView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(ItemType.allCases, id: \.self) { type in
-                        itemRow(for: type)
-                            .padding(.horizontal)
-                        if type != ItemType.allCases.last {
-                            PassDivider()
+                        if type != .identity || viewModel.isIdentityActive {
+                            if type != ItemType.allCases.first {
+                                PassDivider()
+                                    .padding(.horizontal)
+                            }
+                            itemRow(for: type)
                                 .padding(.horizontal)
                         }
                     }

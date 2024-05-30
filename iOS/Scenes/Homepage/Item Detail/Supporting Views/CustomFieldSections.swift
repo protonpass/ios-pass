@@ -32,7 +32,7 @@ struct CustomFieldSections: View {
     let isFreeUser: Bool
     var isASection = true
     var showIcon = true
-    var onSelectText: ((String) -> Void)? = nil
+    var onSelectText: ((String) -> Void)?
     let onSelectHiddenText: (String) -> Void
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
