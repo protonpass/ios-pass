@@ -140,6 +140,21 @@ struct AccountView: View {
                               .padding(.vertical)
                 }
 
+                if viewModel.extraPasswordEnabled {
+                    OptionRow(action: { viewModel.setUpExtraPassword() },
+                              height: .tall,
+                              content: {
+                                  Text(verbatim: "Set extra password for Proton Pass")
+                                      .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                              })
+                              .roundedEditableSection()
+                              .padding(.top)
+
+                    // swiftlint:disable:next line_length
+                    Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")
+                        .sectionTitleText()
+                }
+
                 OptionRow(action: { isShowingSignOutConfirmation.toggle() },
                           height: .tall,
                           content: {

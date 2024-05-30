@@ -26049,6 +26049,16 @@
         }
       }
     },
+    "Confirm extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm extra password"
+          }
+        }
+      }
+    },
     "Confirm your email" : {
       "localizations" : {
         "be" : {
@@ -41630,6 +41640,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Термін дії збігає через:"
+          }
+        }
+      }
+    },
+    "Extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password"
           }
         }
       }
@@ -86874,6 +86894,16 @@
         }
       }
     },
+    "Set extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set extra password"
+          }
+        }
+      }
+    },
     "Set PIN code" : {
       "localizations" : {
         "be" : {
@@ -114196,6 +114226,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn đã đạt giới hạn kho lưu trữ có thể tạo. Tạo không giới hạn kho lưu trữ khi bạn nâng cấp gói đăng ký của mình."
+          }
+        }
+      }
+    },
+    "You will be asked for this password during login and when switching from another Proton app to Proton Pass on web." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You will be asked for this password during login and when switching from another Proton app to Proton Pass on web."
+          }
+        }
+      }
+    },
+    "You will be logged out and will have to log in again on all of your devices." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You will be logged out and will have to log in again on all of your devices."
           }
         }
       }
