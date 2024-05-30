@@ -242,6 +242,12 @@
             "state" : "translated",
             "value" : "Сканувати код 2ЕП, кредитну картку та рукописну нотатку"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quét mã 2FA, thẻ tín dụng hoặc chữ viết tay"
+          }
         }
       }
     },
@@ -396,6 +402,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Обмежте небажаний доступ до вашого облікового запису Proton Pass на цьому пристрої"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngăn chặn truy cập trái phép vào tài khoản Proton Pass trên thiết bị này"
           }
         }
       }
