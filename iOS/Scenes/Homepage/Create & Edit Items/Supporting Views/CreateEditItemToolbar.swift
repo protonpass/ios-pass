@@ -116,6 +116,6 @@ private extension CreateEditItemToolbar {
             view.frame(maxWidth: 150, alignment: .trailing)
         }
         .fixedSize(horizontal: false, vertical: false)
-        .buttonEmbeded(onSelectVault)
+        .buttonEmbeded(action: onSelectVault)
     }
 }

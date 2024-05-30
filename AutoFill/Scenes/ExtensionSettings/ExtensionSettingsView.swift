@@ -25,7 +25,6 @@ import SwiftUI
 
 struct ExtensionSettingsView: View {
     @StateObject private var viewModel = ExtensionSettingsViewModel()
-    private let theme = resolve(\SharedToolingContainer.theme)
 
     private let onDismiss: () -> Void
     private let onLogOut: () -> Void
@@ -83,7 +82,6 @@ struct ExtensionSettingsView: View {
                 }
             }
         }
-        .theme(theme)
         .localAuthentication(delayed: false,
                              onAuth: {},
                              onSuccess: {},

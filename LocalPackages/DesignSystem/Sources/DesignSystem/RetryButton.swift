@@ -35,6 +35,6 @@ public struct RetryButton: View {
         Label("Retry", systemImage: "arrow.counterclockwise")
             .foregroundStyle(tintColor.toColor)
             .labelStyle(.rightIcon)
-            .buttonEmbeded(onRetry)
+            .buttonEmbeded(action: onRetry)
     }
 }

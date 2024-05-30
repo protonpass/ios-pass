@@ -59,7 +59,8 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
 
     @MainActor
     func execute(itemContent: ItemContent) async throws {
-        guard getSharedPreferences().automaticallyCopyTotpCode else {
+        guard getSharedPreferences().automaticallyCopyTotpCode,
+              getSharedPreferences().localAuthenticationMethod != .none else {
             // Not opted in
             return
         }

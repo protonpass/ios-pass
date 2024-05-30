@@ -26,7 +26,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SuffixSelectionView: View {
-    private let theme = resolve(\SharedToolingContainer.theme)
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: SuffixSelectionViewModel
 
@@ -84,7 +83,6 @@ struct SuffixSelectionView: View {
                 }
             }
         }
-        .theme(theme)
     }
 
     private func isSelected(_ suffix: Suffix) -> Bool {

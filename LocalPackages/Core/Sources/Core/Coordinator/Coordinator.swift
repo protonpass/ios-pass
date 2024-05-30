@@ -37,7 +37,6 @@ public protocol CoordinatorProtocol: AnyObject {
 //                          animated: Bool,
 //                          dismissible: Bool)
     func present(_ viewController: UIViewController,
-                 userInterfaceStyle: UIUserInterfaceStyle,
                  animated: Bool,
                  dismissible: Bool,
                  uniquenessTag: (any RawRepresentable<Int>)?)
@@ -76,13 +75,11 @@ public extension CoordinatorProtocol {
     /// When `uniquenessTag` is set and there is a sheet that holds the same tag,
     /// we dismiss the top most sheet and do nothing. Otherwise we present the sheet as normal
     func present(_ viewController: UIViewController,
-                 userInterfaceStyle: UIUserInterfaceStyle,
                  animated: Bool = true,
                  dismissible: Bool = true,
                  uniquenessTag: (any RawRepresentable<Int>)? = nil) {
         viewController.sheetPresentationController?.preferredCornerRadius = 16
         viewController.isModalInPresentation = !dismissible
-        viewController.overrideUserInterfaceStyle = userInterfaceStyle
         if let uniquenessTag {
             viewController.view.tag = uniquenessTag.rawValue
             if rootViewController.containsUniqueSheet(uniquenessTag) {

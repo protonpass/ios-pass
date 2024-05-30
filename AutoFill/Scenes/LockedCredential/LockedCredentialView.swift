@@ -25,7 +25,6 @@ import SwiftUI
 
 /// When autofilling from QuickType bar but local authentication is turned on
 struct LockedCredentialView: View {
-    private let theme = resolve(\SharedToolingContainer.theme)
     let viewModel: LockedCredentialViewModel
 
     init(viewModel: LockedCredentialViewModel) {
@@ -41,7 +40,6 @@ struct LockedCredentialView: View {
                                      onFailure: { viewModel.handleAuthenticationFailure() })
                 .toolbar { toolbarContent }
         }
-        .theme(theme)
     }
 
     @ToolbarContentBuilder

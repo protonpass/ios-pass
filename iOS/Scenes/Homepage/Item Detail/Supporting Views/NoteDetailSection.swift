@@ -63,7 +63,6 @@ struct NoteDetailSection: View {
 
 private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
-    private let theme = resolve(\SharedToolingContainer.theme)
     let itemContent: ItemContent
     let vault: Vault?
 
@@ -97,6 +96,5 @@ private struct FullNoteView: View {
             }
         }
         .tint(itemContent.type.normMajor2Color.toColor)
-        .theme(theme)
     }
 }
