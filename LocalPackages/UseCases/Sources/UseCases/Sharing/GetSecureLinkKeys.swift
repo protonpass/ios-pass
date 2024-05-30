@@ -1,6 +1,5 @@
 //
-//
-// GetPublicLinkKeys.swift
+// GetSecureLinkKeys.swift
 // Proton Pass - Created on 16/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -26,17 +25,17 @@ import CryptoKit
 import Entities
 import Foundation
 
-public protocol GetPublicLinkKeysUseCase: Sendable {
+public protocol GetSecureLinkKeysUseCase: Sendable {
     func execute(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String)
 }
 
-public extension GetPublicLinkKeysUseCase {
+public extension GetSecureLinkKeysUseCase {
     func callAsFunction(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String) {
         try await execute(item: item)
     }
 }
 
-public final class GetPublicLinkKeys: GetPublicLinkKeysUseCase {
+public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     private let passKeyManager: any PassKeyManagerProtocol
 
     public init(passKeyManager: any PassKeyManagerProtocol) {

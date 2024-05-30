@@ -66,9 +66,9 @@ struct ItemDetailToolbar: ToolbarContent {
                             .buttonEmbeded { viewModel.moveToAnotherVault() }
                             .hidden(!viewModel.isAllowedToEdit)
 
-                        if viewModel.isPublicLinkActive {
+                        if viewModel.isSecureLinkActive {
                             Label("Secure link", systemImage: "square.and.arrow.up")
-                                .buttonEmbeded { viewModel.publicLinkSharing() }
+                                .buttonEmbeded { viewModel.secureLinkSharing() }
                         }
 
                         Label(viewModel.itemContent.item.pinTitle,
