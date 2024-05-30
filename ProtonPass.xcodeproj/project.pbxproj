@@ -557,7 +557,7 @@
 		5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */; };
 		5BECDE4F2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */; };
 		5BECDE512B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */; };
-		5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEdit.swift */; };
+		5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */; };
 		5BF35D6A2B21F82900D3E297 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
 		5BF35D6C2B21FA4200D3E297 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
 		5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
@@ -1021,7 +1021,7 @@
 		5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailView.swift; sourceTree = "<group>"; };
 		5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailViewModel.swift; sourceTree = "<group>"; };
 		5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecurityWeakness+Extensions.swift"; sourceTree = "<group>"; };
-		5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ItemCreateEdit.swift"; sourceTree = "<group>"; };
+		5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ItemCreateEditDetails.swift"; sourceTree = "<group>"; };
 		5BF35D692B21F82900D3E297 /* Item+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+Extensions.swift"; sourceTree = "<group>"; };
 		5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pinnable+Extensions.swift"; sourceTree = "<group>"; };
 		5BF725AF2BA9D33E00FD3624 /* AuthenticatorRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorRow.swift; sourceTree = "<group>"; };
@@ -1765,7 +1765,7 @@
 				5BECDE432B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift */,
 				357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */,
 				355723C12BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift */,
-				5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEdit.swift */,
+				5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */,
 				355C138829DB71D800264CD0 /* HomepageTabbarView.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
 				356650D72AAF606500BFF4F3 /* Full Sync Progress */,
@@ -3364,7 +3364,7 @@
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */,
-				5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEdit.swift in Sources */,
+				5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */,
 				35116E792A82847300CAD616 /* View+ItemDetailSetUp.swift in Sources */,
 				5BD4A8F72B10BFE100C44C08 /* WipeAllData.swift in Sources */,
 				35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */,

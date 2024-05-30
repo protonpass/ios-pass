@@ -179,6 +179,13 @@ extension ItemContextMenuHandler {
             copy(itemContent.creditCardItem?.verificationNumber, message: #localized("Security code copied"))
         }
     }
+
+    func copyFullname(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            copy(itemContent.identityItem?.fullName, message: #localized("Fullname copied"))
+        }
+    }
 }
 
 // MARK: - Private APIs

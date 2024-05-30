@@ -108,71 +108,8 @@ enum SheetDestination: Equatable, Hashable, Sendable {
 
 enum GenericDestination {
     case presentView(view: any View, dismissible: Bool)
+    case itemDetail(view: any View, asSheet: Bool)
 }
-
-// func presentCreateEditLoginView(mode: ItemMode) throws {
-//    let viewModel = try CreateEditLoginViewModel(mode: mode,
-//                                                 upgradeChecker: upgradeChecker,
-//                                                 vaults: vaultsManager.getAllVaults())
-//    viewModel.delegate = createEditItemDelegates
-//    viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
-//    let view = CreateEditLoginView(viewModel: viewModel)
-//    present(view, dismissable: false)
-//    currentViewModel = viewModel
-// }
-//
-// func presentCreateEditAliasView(mode: ItemMode) throws {
-//    let viewModel = try CreateEditAliasViewModel(mode: mode,
-//                                                 upgradeChecker: upgradeChecker,
-//                                                 vaults: vaultsManager.getAllVaults())
-//    viewModel.delegate = createEditItemDelegates
-//    let view = CreateEditAliasView(viewModel: viewModel)
-//    present(view, dismissable: false)
-//    currentViewModel = viewModel
-// }
-//
-// func presentCreateEditCreditCardView(mode: ItemMode) throws {
-//    let viewModel = try CreateEditCreditCardViewModel(mode: mode,
-//                                                      upgradeChecker: upgradeChecker,
-//                                                      vaults: vaultsManager.getAllVaults())
-//    viewModel.delegate = createEditItemDelegates
-//    let view = CreateEditCreditCardView(viewModel: viewModel)
-//    present(view, dismissable: false)
-//    currentViewModel = viewModel
-// }
-//
-// func presentCreateEditNoteView(mode: ItemMode) throws {
-//    let viewModel = try CreateEditNoteViewModel(mode: mode,
-//                                                upgradeChecker: upgradeChecker,
-//                                                vaults: vaultsManager.getAllVaults())
-//    viewModel.delegate = createEditItemDelegates
-//    let view = CreateEditNoteView(viewModel: viewModel)
-//    present(view, dismissable: false)
-//    currentViewModel = viewModel
-// }
-//
-// func presentCreateEditIdentityView(mode: ItemMode) throws {
-////        let viewModel = try CreateEditLoginViewModel(mode: mode,
-////                                                     upgradeChecker: upgradeChecker,
-////                                                     vaults: vaultsManager.getAllVaults())
-//
-//    let viewModel = try CreateEditIdentityViewModel(mode: mode,
-//                                                    upgradeChecker: upgradeChecker,
-//                                                    vaults: vaultsManager.getAllVaults())
-////        viewModel.delegate = createEditItemDelegates
-////        viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
-//    let view = CreateEditIdentityView(viewModel: viewModel)
-//    present(view, dismissable: false)
-//    currentViewModel = viewModel
-// }
-
-// struct Test: Equatable {
-//    static func == (lhs: Test, rhs: Test) -> Bool {
-//        <#code#>
-//    }
-//
-//    let view: any View
-// }
 
 enum UIElementDisplay: Sendable {
     case globalLoading(shouldShow: Bool)

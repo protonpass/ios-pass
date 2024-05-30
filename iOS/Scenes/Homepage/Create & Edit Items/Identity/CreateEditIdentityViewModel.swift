@@ -22,7 +22,6 @@
 
 import Client
 import Combine
-import Core
 import Entities
 import Factory
 import Foundation
@@ -34,10 +33,6 @@ enum BaseIdentitySection: String, CaseIterable {
     case contact = "Contact details"
     case workDetail = "Work details"
     case custom
-
-//    var identitySectionHeaderKey: IdentitySectionHeaderKey {
-//        IdentitySectionHeaderKey(title: rawValue)
-//    }
 
     var createEditIdentitySection: CreateEditIdentitySection {
         CreateEditIdentitySection(id: rawValue,
@@ -78,15 +73,6 @@ struct CreateEditIdentitySection: Hashable, Identifiable {
                                   content: [])
     }
 }
-
-// @Copyable
-// struct IdentityCellContent: Hashable {
-//    let id: String
-//    let sectionid: String
-//    let title: String
-////    let type: Int
-//    let value: String
-// }
 
 @MainActor
 final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, ObservableObject, Sendable {
@@ -130,7 +116,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     @Published var secondPhoneNumber = ""
 
     /// Additional
-    @Published var linkedin = (value: "", shouldShow: false)
+    @Published var linkedIn = (value: "", shouldShow: false)
     @Published var reddit = (value: "", shouldShow: false)
     @Published var facebook = (value: "", shouldShow: false)
     @Published var yahoo = (value: "", shouldShow: false)
@@ -153,7 +139,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     private var customFieldSection: CreateEditIdentitySection?
     @Published var customSectionTitle = ""
 
-    var sectionToDelete: CreateEditIdentitySection?
+    private(set) var sectionToDelete: CreateEditIdentitySection?
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
@@ -161,31 +147,13 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
-//        setUp()
     }
 
     override func itemContentType() -> ItemContentType { .identity }
 
-    func toggleCollapsingSection(sectionToToggle: CreateEditIdentitySection) {
-        sections = sections.map { section in
-            guard sectionToToggle.id == section.id else {
-                return section
-            }
-            return section.copy(isCollapsed: !section.isCollapsed)
-        }
-    }
-
-    func addCustomField(to section: CreateEditIdentitySection) {
-        customFieldSection = section
-        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
-    }
-
     override func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
         sections = sections.map { section in
-            guard
-//                let customFieldSection,
-//                  customFieldSection.id == section.id,
-                let index = getIndex(section, uiModel) else {
+            guard let index = getIndex(section, uiModel) else {
                 return section
             }
 
@@ -213,30 +181,9 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
         }
     }
 
-    func getIndex(_ section: CreateEditIdentitySection, _ uiModel: CustomFieldUiModel) -> Int? {
-        switch section.type {
-        case .address:
-            extraAddressDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .personalDetails:
-            extraPersonalDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .workDetail:
-            extraWorkDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .contact:
-            extraContactDetails.firstIndex(where: { $0.id == uiModel.id })
-        case .custom:
-            section.content.firstIndex(where: { $0.id == uiModel.id })
-        }
-    }
-
     override func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
         sections = sections.map { section in
-            guard
-//                let customFieldSection,
-//                  customFieldSection.id == section.id,
-                let index = getIndex(section, uiModel) else {
+            guard let index = getIndex(section, uiModel) else {
                 return section
             }
             recentlyAddedOrEditedField = uiModel
@@ -295,20 +242,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
         }
     }
 
-    func reset() {
-        customSectionTitle = ""
-        sectionToDelete = nil
-    }
-
-    func addCustomSection() {
-        guard !customSectionTitle.isEmpty else {
-            return
-        }
-        let newSection = CreateEditIdentitySection.baseCustomSection(title: customSectionTitle)
-        sections.append(newSection)
-        customSectionTitle = ""
-    }
-
     override func bindValues() {
         switch mode {
         case let .clone(itemContent), let .edit(itemContent):
@@ -343,7 +276,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             website = data.website
             xHandle = data.xHandle
             secondPhoneNumber = data.secondPhoneNumber
-            linkedin = (value: data.linkedin, shouldShow: !data.linkedin.isEmpty)
+            linkedIn = (value: data.linkedIn, shouldShow: !data.linkedIn.isEmpty)
             reddit = (value: data.reddit, shouldShow: !data.reddit.isEmpty)
             facebook = (value: data.facebook, shouldShow: !data.facebook.isEmpty)
             yahoo = (value: data.yahoo, shouldShow: !data.yahoo.isEmpty)
@@ -387,7 +320,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
                                 website: website,
                                 xHandle: xHandle,
                                 secondPhoneNumber: secondPhoneNumber,
-                                linkedin: linkedin.value,
+                                linkedIn: linkedIn.value,
                                 reddit: reddit.value,
                                 facebook: facebook.value,
                                 yahoo: yahoo.value,
@@ -406,6 +339,14 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
                      data: .identity(data),
                      customFields: [])
     }
+}
+
+// MARK: - Utils
+
+extension CreateEditIdentityViewModel {
+    func setSectionToDelete(sectionToDelete: CreateEditIdentitySection) {
+        self.sectionToDelete = sectionToDelete
+    }
 
     func deleteCustomSection() {
         guard let sectionToDelete else {
@@ -415,22 +356,59 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
         sections = sections.removing(sectionToDelete)
         self.sectionToDelete = nil
     }
+
+    func reset() {
+        customSectionTitle = ""
+        sectionToDelete = nil
+    }
+
+    func addCustomSection() {
+        guard !customSectionTitle.isEmpty else {
+            return
+        }
+        let newSection = CreateEditIdentitySection.baseCustomSection(title: customSectionTitle)
+        sections.append(newSection)
+        customSectionTitle = ""
+    }
+
+    func getIndex(_ section: CreateEditIdentitySection, _ uiModel: CustomFieldUiModel) -> Int? {
+        switch section.type {
+        case .address:
+            extraAddressDetails.firstIndex(where: { $0.id == uiModel.id })
+
+        case .personalDetails:
+            extraPersonalDetails.firstIndex(where: { $0.id == uiModel.id })
+
+        case .workDetail:
+            extraWorkDetails.firstIndex(where: { $0.id == uiModel.id })
+
+        case .contact:
+            extraContactDetails.firstIndex(where: { $0.id == uiModel.id })
+        case .custom:
+            section.content.firstIndex(where: { $0.id == uiModel.id })
+        }
+    }
+
+    func toggleCollapsingSection(sectionToToggle: CreateEditIdentitySection) {
+        sections = sections.map { section in
+            guard sectionToToggle.id == section.id else {
+                return section
+            }
+            return section.copy(isCollapsed: !section.isCollapsed)
+        }
+    }
+
+    func addCustomField(to section: CreateEditIdentitySection) {
+        customFieldSection = section
+        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
+    }
 }
 
 private extension CreateEditIdentityViewModel {
-    func setUp() {
-        bindValues()
-//        addBaseSections()
-    }
-
     func addBaseSections() {
         for item in BaseIdentitySection.allCases where item != .custom {
             sections.append(item.createEditIdentitySection)
         }
-//
-//        for extraSection in extraSections {
-//            sections.append(extraSection.createEditIdentitySection)
-//        }
     }
 }
 

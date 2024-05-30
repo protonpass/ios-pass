@@ -37,7 +37,7 @@ extension DetailHistoryView {
                 addressDetailSection(item: item)
                 contactDetailSection(item: item)
                 workDetailSection(item: item)
-                ForEach(Array(item.extraSections.enumerated()), id: \.element.id) { (index, customSection) in
+                ForEach(Array(item.extraSections.enumerated()), id: \.element.id) { index, customSection in
                     customDetailSection(customSection: customSection, index: index)
                 }
             }
@@ -81,7 +81,7 @@ private extension DetailHistoryView {
                         value: item.fullName,
                         element: \.identityItem?.lastName) {
                             viewModel.copyValueToClipboard(value: item.fullName,
-                                                           message:  IdentityFields.fullName.title)
+                                                           message: IdentityFields.fullName.title)
                         }
 
                     PassSectionDivider()
@@ -287,7 +287,7 @@ private extension DetailHistoryView {
                         value: item.linkedIn,
                         element: \.identityItem?.linkedIn) {
                             viewModel.copyValueToClipboard(value: item.linkedIn,
-                                                           message:  IdentityFields.linkedIn.title)
+                                                           message: IdentityFields.linkedIn.title)
                         }
 
                     PassSectionDivider()
@@ -310,7 +310,7 @@ private extension DetailHistoryView {
 
                     PassSectionDivider()
 
-                    row(title:  IdentityFields.yahoo.localisedKeyTitle,
+                    row(title: IdentityFields.yahoo.localisedKeyTitle,
                         value: item.yahoo,
                         element: \.identityItem?.yahoo) {
                             viewModel.copyValueToClipboard(value: item.yahoo,
@@ -420,7 +420,9 @@ private extension DetailHistoryView {
 }
 
 private extension DetailHistoryView {
-    func row(title: LocalizedStringKey, value: String, element: KeyPath<ItemContent, some Hashable>,
+    func row(title: LocalizedStringKey,
+             value: String,
+             element: KeyPath<ItemContent, some Hashable>,
              onTap: @escaping () -> Void) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
@@ -436,7 +438,7 @@ private extension DetailHistoryView {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
-    
+
     func customFields(uiModels: [CustomFieldUiModel], element: KeyPath<ItemContent, some Hashable>) -> some View {
         VStack(spacing: 0) {
             ForEach(uiModels) { uiModel in

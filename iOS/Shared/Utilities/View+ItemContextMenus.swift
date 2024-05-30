@@ -63,10 +63,10 @@ enum ItemContextMenu {
               onViewHistory: () -> Void,
               onTrash: () -> Void)
 
-    // TODO: update for use case
     case identity(item: any PinnableItemTypeIdentifiable,
                   isEditable: Bool,
-                  onCopyContent: () -> Void,
+                  onCopyEmail: () -> Void,
+                  onCopyFullname: () -> Void,
                   onEdit: () -> Void,
                   onPinToggle: () -> Void,
                   onViewHistory: () -> Void,
@@ -206,19 +206,24 @@ enum ItemContextMenu {
                 return []
             }
 
-        // TODO: update for use case identity
         case let .identity(item,
                            isEditable,
-                           onCopyContent,
+                           onCopyEmail,
+                           onCopyFullname,
                            onEdit,
                            onPinToggle,
                            onViewHistory,
                            onTrash):
             var sections: [ItemContextMenuOptionSection] = []
 
-            sections.append(.init(options: [.init(title: #localized("Copy identity content"),
-                                                  icon: IconProvider.note,
-                                                  action: onCopyContent)]))
+            sections.append(.init(options: [
+                .init(title: #localized("Copy email"),
+                      icon: IconProvider.envelope,
+                      action: onCopyEmail),
+                .init(title: #localized("Copy fullname"),
+                      icon: IconProvider.user,
+                      action: onCopyFullname)
+            ]))
 
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
@@ -381,10 +386,10 @@ extension View {
                                       onViewHistory: { handler.viewHistory(item) },
                                       onTrash: { handler.trash(item) }))
             case .identity:
-                // TODO: update for use case
                 itemContextMenu(.identity(item: item,
                                           isEditable: isEditable,
-                                          onCopyContent: {},
+                                          onCopyEmail: { handler.copyEmail(item) },
+                                          onCopyFullname: { handler.copyFullname(item) },
                                           onEdit: { handler.edit(item) },
                                           onPinToggle: { handler.toggleItemPinning(item) },
                                           onViewHistory: { handler.viewHistory(item) },
