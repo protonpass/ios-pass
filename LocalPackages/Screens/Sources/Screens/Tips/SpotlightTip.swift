@@ -26,7 +26,6 @@ public struct SpotlightTip: Tip {
     public var id: String { PassTip.spotlight.id }
 
     @Parameter
-    // swiftlint:disable:next redundant_type_annotation
     public static var spotlightEnabled: Bool = false
     public static let didPerformSearch = Event(id: "didPerformSearch")
 
