@@ -26219,6 +26219,16 @@
         }
       }
     },
+    "Confirm your Proton password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm your Proton password"
+          }
+        }
+      }
+    },
     "Congratulations,\n your access has been confirmed" : {
       "comment" : "When an admin confirmed access of a new user",
       "localizations" : {
@@ -76885,6 +76895,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton không chia sẻ thông tin của bạn với các bên thứ ba. Tất cả dữ liệu đến từ tìm kiếm sự hiện diện của các tên miền Proton trên các web đen."
+          }
+        }
+      }
+    },
+    "Proton password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton password"
           }
         }
       }
