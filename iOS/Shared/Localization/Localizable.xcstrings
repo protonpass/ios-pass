@@ -131,6 +131,16 @@
         }
       }
     },
+    "%@ copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ copied"
+          }
+        }
+      }
+    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -8693,7 +8703,14 @@
       }
     },
     "Add field" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add field"
+          }
+        }
+      }
     },
     "Add login details for an app or site" : {
       "localizations" : {
@@ -9765,6 +9782,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додані файли"
+          }
+        }
+      }
+    },
+    "Address details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address details"
           }
         }
       }
@@ -15667,7 +15694,14 @@
       }
     },
     "Are you sure you want to delete the following section %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the following section %@"
+          }
+        }
+      }
     },
     "Associate 2FA?" : {
       "localizations" : {
@@ -17395,7 +17429,14 @@
       }
     },
     "Birthdate" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birthdate"
+          }
+        }
+      }
     },
     "Breach detail action menu" : {
       "localizations" : {
@@ -21073,6 +21114,16 @@
         }
       }
     },
+    "City" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City"
+          }
+        }
+      }
+    },
     "Clear" : {
       "localizations" : {
         "be" : {
@@ -22491,6 +22542,16 @@
         }
       }
     },
+    "Company" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Company"
+          }
+        }
+      }
+    },
     "Conceal" : {
       "localizations" : {
         "be" : {
@@ -23277,6 +23338,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chúc mừng, truy cập của bạn đã được xác nhận"
+          }
+        }
+      }
+    },
+    "Contact details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact details"
           }
         }
       }
@@ -24815,8 +24886,15 @@
         }
       }
     },
-    "Copy identity content" : {
-
+    "Copy fullname" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy fullname"
+          }
+        }
+      }
     },
     "Copy Link" : {
       "localizations" : {
@@ -25469,8 +25547,25 @@
         }
       }
     },
+    "Country or Region" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Country or Region"
+          }
+        }
+      }
+    },
     "County" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "County"
+          }
+        }
+      }
     },
     "Create" : {
       "comment" : "List of available item types",
@@ -26114,7 +26209,14 @@
       }
     },
     "Create a identity" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a identity"
+          }
+        }
+      }
     },
     "Create a login" : {
       "localizations" : {
@@ -28800,7 +28902,14 @@
       }
     },
     "Custom field" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom field"
+          }
+        }
+      }
     },
     "Custom field menu" : {
       "comment" : "accessibility",
@@ -29106,7 +29215,14 @@
       }
     },
     "Custom Section" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Section"
+          }
+        }
+      }
     },
     "Dark" : {
       "localizations" : {
@@ -32599,6 +32715,16 @@
         }
       }
     },
+    "Email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
     "Email address" : {
       "localizations" : {
         "be" : {
@@ -34913,7 +35039,14 @@
       }
     },
     "Enter a section title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a section title"
+          }
+        }
+      }
     },
     "Enter new name for « %@ »" : {
       "localizations" : {
@@ -36650,7 +36783,14 @@
       }
     },
     "Facebook" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facebook"
+          }
+        }
+      }
     },
     "Failed to authenticate" : {
       "comment" : "Users failed to authenticate via Face ID/Touch ID or PIN. We log them out and show an alert with this message.",
@@ -37305,10 +37445,24 @@
       }
     },
     "First name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First name"
+          }
+        }
+      }
     },
     "Floor" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor"
+          }
+        }
+      }
     },
     "Follow these simple steps to get the best experience:" : {
       "localizations" : {
@@ -38688,8 +38842,35 @@
         }
       }
     },
+    "Full name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full name"
+          }
+        }
+      }
+    },
+    "Fullname copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fullname copied"
+          }
+        }
+      }
+    },
     "Gender" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gender"
+          }
+        }
+      }
     },
     "Generate a secure password" : {
       "localizations" : {
@@ -43256,7 +43437,14 @@
       }
     },
     "Identities" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identities"
+          }
+        }
+      }
     },
     "Identity" : {
       "localizations" : {
@@ -43269,19 +43457,54 @@
       }
     },
     "Identity created" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity created"
+          }
+        }
+      }
     },
     "Identity moved to trash" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity moved to trash"
+          }
+        }
+      }
     },
     "Identity permanently deleted" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity permanently deleted"
+          }
+        }
+      }
     },
     "Identity restored" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity restored"
+          }
+        }
+      }
     },
     "Identity updated" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity updated"
+          }
+        }
+      }
     },
     "Immediately" : {
       "localizations" : {
@@ -44042,7 +44265,14 @@
       }
     },
     "Instagram" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instagram"
+          }
+        }
+      }
     },
     "Integrated 2FA authenticator" : {
       "localizations" : {
@@ -47249,6 +47479,16 @@
         }
       }
     },
+    "Job title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Job title"
+          }
+        }
+      }
+    },
     "Join shared vault" : {
       "localizations" : {
         "be" : {
@@ -48691,6 +48931,16 @@
         }
       }
     },
+    "Last name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last name"
+          }
+        }
+      }
+    },
     "Last two weeks" : {
       "localizations" : {
         "be" : {
@@ -49012,7 +49262,14 @@
       }
     },
     "Lastname name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lastname name"
+          }
+        }
+      }
     },
     "Latest breach on %@" : {
       "localizations" : {
@@ -49642,6 +49899,16 @@
         }
       }
     },
+    "License number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "License number"
+          }
+        }
+      }
+    },
     "Light" : {
       "localizations" : {
         "be" : {
@@ -49822,8 +50089,15 @@
         }
       }
     },
-    "Linkedin" : {
-
+    "LinkedIn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LinkedIn"
+          }
+        }
+      }
     },
     "Log in to apps instantly" : {
       "localizations" : {
@@ -52842,7 +53116,14 @@
       }
     },
     "Middle name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Middle name"
+          }
+        }
+      }
     },
     "MM / YY" : {
       "localizations" : {
@@ -60085,6 +60366,16 @@
         }
       }
     },
+    "Organization" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organization"
+          }
+        }
+      }
+    },
     "Other" : {
       "localizations" : {
         "be" : {
@@ -61024,6 +61315,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ключ доступу"
+          }
+        }
+      }
+    },
+    "Passport number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passport number"
           }
         }
       }
@@ -62916,8 +63217,35 @@
         }
       }
     },
+    "Personal details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal details"
+          }
+        }
+      }
+    },
     "Personal website" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal website"
+          }
+        }
+      }
+    },
+    "Phone number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone number"
+          }
+        }
+      }
     },
     "Pin" : {
       "comment" : "Title for action to pin item",
@@ -67429,7 +67757,14 @@
       }
     },
     "Reddit" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reddit"
+          }
+        }
+      }
     },
     "Regenerate password" : {
       "localizations" : {
@@ -68049,6 +68384,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa bí danh"
+          }
+        }
+      }
+    },
+    "Remove custom section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove custom section"
           }
         }
       }
@@ -72855,6 +73200,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aranabilir kasalar"
+          }
+        }
+      }
+    },
+    "Second phone number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Second phone number"
           }
         }
       }
@@ -79690,6 +80045,16 @@
         }
       }
     },
+    "Social security number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social security number"
+          }
+        }
+      }
+    },
     "Sort By" : {
       "comment" : "Items filtering",
       "localizations" : {
@@ -80609,6 +80974,16 @@
         }
       }
     },
+    "State or province" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "State or province"
+          }
+        }
+      }
+    },
     "Stay safer online" : {
       "localizations" : {
         "be" : {
@@ -80913,6 +81288,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ngừng chia sẻ địa chỉ email thật của bạn. Thay vào đó hãy giấu nó bằng các email bí danh⏤độc quyền trên Proton Pass."
+          }
+        }
+      }
+    },
+    "Street address, P.O. box" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Street address, P.O. box"
           }
         }
       }
@@ -90840,6 +91225,16 @@
         }
       }
     },
+    "Upgrade to add custom sections" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to add custom sections"
+          }
+        }
+      }
+    },
     "Upgrade to create credit cards" : {
       "localizations" : {
         "be" : {
@@ -98321,11 +98716,35 @@
         }
       }
     },
+    "Work details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work details"
+          }
+        }
+      }
+    },
     "Work email" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work email"
+          }
+        }
+      }
     },
     "Work phone number" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work phone number"
+          }
+        }
+      }
     },
     "Would you want to associate « %@ » with « %@ »?" : {
       "localizations" : {
@@ -98647,8 +99066,25 @@
         }
       }
     },
+    "X handle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X handle"
+          }
+        }
+      }
+    },
     "Yahoo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yahoo"
+          }
+        }
+      }
     },
     "Yes, sign me out" : {
       "localizations" : {
@@ -103295,6 +103731,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
+          }
+        }
+      }
+    },
+    "ZIP or Postal code" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ZIP or Postal code"
           }
         }
       }

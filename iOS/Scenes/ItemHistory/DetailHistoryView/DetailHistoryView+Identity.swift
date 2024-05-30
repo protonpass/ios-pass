@@ -123,7 +123,7 @@ private extension DetailHistoryView {
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
                 customFields(uiModels: item.extraPersonalDetails.map(\.toCustomFieldUiModel),
-                             element: \.identityItem?.extraPersonalDetails)
+                             border: borderColor(for: \.identityItem?.extraPersonalDetails))
             }
         } header: {
             Text("Personal details")
@@ -212,7 +212,7 @@ private extension DetailHistoryView {
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
                 customFields(uiModels: item.extraAddressDetails.map(\.toCustomFieldUiModel),
-                             element: \.identityItem?.extraAddressDetails)
+                             border: borderColor(for: \.identityItem?.extraAddressDetails))
             }
         } header: {
             Text("Address details")
@@ -329,7 +329,7 @@ private extension DetailHistoryView {
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
                 customFields(uiModels: item.extraContactDetails.map(\.toCustomFieldUiModel),
-                             element: \.identityItem?.extraContactDetails)
+                             border: borderColor(for: \.identityItem?.extraContactDetails))
             }
         } header: {
             Text("Contact details")
@@ -392,7 +392,7 @@ private extension DetailHistoryView {
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
                 customFields(uiModels: item.extraWorkDetails.map(\.toCustomFieldUiModel),
-                             element: \.identityItem?.extraWorkDetails)
+                             border: borderColor(for: \.identityItem?.extraWorkDetails))
             }
         } header: {
             Text("Work details")
@@ -408,7 +408,7 @@ private extension DetailHistoryView {
     func customDetailSection(customSection: CustomSection, index: Int) -> some View {
         Section {
             customFields(uiModels: customSection.content.map(\.toCustomFieldUiModel),
-                         element: \.identityItem?.extraSections[index])
+                         border: customSectionsColor)
         } header: {
             Text(customSection.title)
                 .foregroundStyle(PassColor.textWeak.toColor)
@@ -439,7 +439,7 @@ private extension DetailHistoryView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    func customFields(uiModels: [CustomFieldUiModel], element: KeyPath<ItemContent, some Hashable>) -> some View {
+    func customFields(uiModels: [CustomFieldUiModel], border: UIColor) -> some View {
         VStack(spacing: 0) {
             ForEach(uiModels) { uiModel in
                 let customField = uiModel.customField
@@ -462,6 +462,11 @@ private extension DetailHistoryView {
                 .padding(.vertical, 8)
             }
         }
-        .roundedDetailSection(borderColor: borderColor(for: element))
+        .roundedDetailSection(borderColor: border)
+    }
+
+    var customSectionsColor: UIColor {
+        viewModel.currentRevision.identityItem?.extraSections != viewModel.pastRevision.identityItem?
+            .extraSections ? PassColor.signalWarning : PassColor.inputBorderNorm
     }
 }
