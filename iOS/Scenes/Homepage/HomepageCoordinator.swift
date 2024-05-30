@@ -458,8 +458,8 @@ extension HomepageCoordinator {
                     presentPasswordReusedListView(for: content)
                 case let .changePassword(mode):
                     presentChangePassword(mode: mode)
-                case let .publicLink(item):
-                    publicLink(item: item)
+                case let .createSecureLink(item):
+                    presentCreateSecureLinkView(for: item)
                 }
             }
             .store(in: &cancellables)
@@ -799,11 +799,11 @@ extension HomepageCoordinator {
         present(viewController)
     }
 
-    func publicLink(item: ItemContent) {
-        let viewModel = PublicLinkViewModel(itemContent: item)
-        let view = PublicLinkView(viewModel: viewModel)
+    func presentCreateSecureLinkView(for item: ItemContent) {
+        let viewModel = CreateSecureLinkViewModel(itemContent: item)
+        let view = CreateSecureLinkView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.custom(PublicLinkViewModelState.default.sheetHeight),
+        viewController.setDetentType(.custom(CreateSecureLinkViewModelState.default.sheetHeight),
                                      parentViewController: rootViewController)
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         viewModel.sheetPresentation = viewController.sheetPresentationController
