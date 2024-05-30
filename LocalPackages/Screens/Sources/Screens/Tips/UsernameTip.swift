@@ -26,7 +26,6 @@ public struct UsernameTip: Tip {
     public var id: String { PassTip.username.id }
 
     @Parameter
-    // swiftlint:disable:next redundant_type_annotation
     public static var enabled: Bool = false
 
     public var rules: [Rule] {

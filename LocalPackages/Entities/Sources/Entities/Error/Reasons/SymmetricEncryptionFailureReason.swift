@@ -25,7 +25,6 @@ public extension PassError {
     enum SymmetricEncryptionFailureReason: CustomDebugStringConvertible, Sendable {
         case failedToUtf8ConvertToData(String)
         case failedToBase64Decode(String)
-        case failedToUtf8Decode
 
         public var debugDescription: String {
             switch self {
@@ -33,8 +32,6 @@ public extension PassError {
                 "Failed to UTF8 convert to data \"\(string)\""
             case let .failedToBase64Decode(string):
                 "Failed to base 64 decode \"\(string)\""
-            case .failedToUtf8Decode:
-                "Failed to UTF8 decode"
             }
         }
     }
