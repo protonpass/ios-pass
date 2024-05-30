@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import DesignSystem
 import DocScanner
 import Entities
 import SwiftUI
