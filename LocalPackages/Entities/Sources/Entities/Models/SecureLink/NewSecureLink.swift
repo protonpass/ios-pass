@@ -1,5 +1,5 @@
 //
-// PublicLinkContent.swift
+// NewSecureLink.swift
 // Proton Pass - Created on 15/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,22 +20,15 @@
 
 import Foundation
 
-public struct PublicLinkContent: Decodable, Equatable, Sendable {
-    public let contents, itemKey: String
-    public let contentFormatVersion, expirationTime: Int
-    public let readCount, maxReadCount: Int?
+public struct NewSecureLink: Decodable, Equatable, Sendable {
+    public let url: String
+    public let publicLinkID: String
+    public let expirationTime: Int?
+}
 
-    public init(contents: String,
-                itemKey: String,
-                contentFormatVersion: Int,
-                readCount: Int?,
-                maxReadCount: Int?,
-                expirationTime: Int) {
-        self.contents = contents
-        self.itemKey = itemKey
-        self.contentFormatVersion = contentFormatVersion
-        self.readCount = readCount
-        self.maxReadCount = maxReadCount
-        self.expirationTime = expirationTime
+public extension NewSecureLink {
+    func update(with linkKey: String) -> NewSecureLink {
+        let newUrl = "\(url)#\(linkKey)"
+        return NewSecureLink(url: newUrl, publicLinkID: publicLinkID, expirationTime: expirationTime)
     }
 }

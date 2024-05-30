@@ -478,3 +478,16 @@ extension UseCasesContainer {
         self { OverrideSecuritySettings(preferencesManager: SharedToolingContainer.shared.preferencesManager()) }
     }
 }
+
+// MARK: - Secure link
+
+extension UseCasesContainer {
+    var createSecureLink: Factory<any CreateSecureLinkUseCase> {
+        self { CreateSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+                                getSecureLinkKeys: self.getSecureLinkKeys()) }
+    }
+
+    var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
+        self { GetSecureLinkKeys(passKeyManager: SharedRepositoryContainer.shared.passKeyManager()) }
+    }
+}
