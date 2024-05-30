@@ -333,7 +333,7 @@ extension IdentityData {
         item.website = website
         item.xHandle = xHandle
         item.secondPhoneNumber = secondPhoneNumber
-        item.linkedin = linkedin
+        item.linkedin = linkedIn
         item.reddit = reddit
         item.facebook = facebook
         item.yahoo = yahoo

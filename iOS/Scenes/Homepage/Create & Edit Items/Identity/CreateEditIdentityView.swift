@@ -38,13 +38,13 @@ enum SectionsSheetStates: MultipleSheetDisplaying {
     var title: String {
         switch self {
         case .personal:
-            "Personal Details"
+            #localized("Personal details")
         case .address:
-            "Address Details"
+            #localized("Address details")
         case .contact:
-            "Contact Details"
+            #localized("Contact details")
         case .work:
-            "Work Details"
+            #localized("Work details")
         default:
             ""
         }
@@ -80,8 +80,6 @@ struct CreateEditIdentityView: View {
     @State private var showCustomTitleAlert = false
     @State private var showDeleteCustomSectionAlert = false
     @State private var isShowingDiscardAlert = false
-    @State private var username = ""
-
     @FocusState private var focusedField: Field?
 
     init(viewModel: CreateEditIdentityViewModel) {
@@ -89,7 +87,39 @@ struct CreateEditIdentityView: View {
     }
 
     enum Field: CustomFieldTypes {
-        case title, email, username, password, totp, websites, note
+        case title
+        case fullName
+        case email
+        case phoneNumber
+        case firstName
+        case middleName
+        case lastName
+        case birthdate
+        case gender
+        case organization
+        case streetAddress
+        case zipOrPostalCode
+        case city
+        case stateOrProvince
+        case countryOrRegion
+        case floor
+        case county
+        case socialSecurityNumber
+        case passportNumber
+        case licenseNumber
+        case website
+        case xHandle
+        case secondPhoneNumber
+        case linkedIn
+        case reddit
+        case facebook
+        case yahoo
+        case instagram
+        case company
+        case jobTitle
+        case personalWebsite
+        case workPhoneNumber
+        case workEmail
         case custom(CustomFieldUiModel?)
 
         static func == (lhs: Field, rhs: Field) -> Bool {
@@ -98,6 +128,81 @@ struct CreateEditIdentityView: View {
                 lhsfield?.id == rhsfield?.id
             } else {
                 lhs.hashValue == rhs.hashValue
+            }
+        }
+        
+        var nextField: Field? {
+            switch self {
+            case .title:
+                    .fullName
+            case .fullName:
+                    .email
+            case .email:
+                <#code#>
+            case .phoneNumber:
+                <#code#>
+            case .firstName:
+                <#code#>
+            case .middleName:
+                <#code#>
+            case .lastName:
+                <#code#>
+            case .birthdate:
+                <#code#>
+            case .gender:
+                <#code#>
+            case .organization:
+                <#code#>
+            case .streetAddress:
+                <#code#>
+            case .zipOrPostalCode:
+                <#code#>
+            case .city:
+                <#code#>
+            case .stateOrProvince:
+                <#code#>
+            case .countryOrRegion:
+                <#code#>
+            case .floor:
+                <#code#>
+            case .county:
+                <#code#>
+            case .socialSecurityNumber:
+                <#code#>
+            case .passportNumber:
+                <#code#>
+            case .licenseNumber:
+                <#code#>
+            case .website:
+                <#code#>
+            case .xHandle:
+                <#code#>
+            case .secondPhoneNumber:
+                <#code#>
+            case .linkedIn:
+                <#code#>
+            case .reddit:
+                <#code#>
+            case .facebook:
+                <#code#>
+            case .yahoo:
+                <#code#>
+            case .instagram:
+                <#code#>
+            case .company:
+                <#code#>
+            case .jobTitle:
+                <#code#>
+            case .personalWebsite:
+                <#code#>
+            case .workPhoneNumber:
+                <#code#>
+            case .workEmail:
+                <#code#>
+            case .custom(_):
+                <#code#>
+            default:
+                nil
             }
         }
     }
@@ -122,7 +227,7 @@ private extension CreateEditIdentityView {
                                            field: .title,
                                            itemContentType: viewModel.itemContentType(),
                                            isEditMode: viewModel.mode.isEditMode,
-                                           onSubmit: { focusedField = .email })
+                                           onSubmit: { })
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
 
                 sections()
@@ -157,7 +262,6 @@ private extension CreateEditIdentityView {
             .padding(.horizontal, DesignConstant.sectionPadding)
             .padding(.bottom, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .showSpinner(viewModel.loading)
             .animation(.default, value: viewModel.sections)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
@@ -168,7 +272,7 @@ private extension CreateEditIdentityView {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar {
             CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
-                                  isSaveable: true, // viewModel.isSaveable,
+                                  isSaveable: true,
                                   isSaving: viewModel.isSaving,
                                   canScanDocuments: viewModel.canScanDocuments,
                                   vault: viewModel.editableVault,
@@ -194,6 +298,7 @@ private extension CreateEditIdentityView {
             Button("Delete", role: .destructive, action: viewModel.deleteCustomSection)
             Button("Cancel", role: .cancel) { viewModel.reset() }
         } message: {
+            // swiftlint:disable:next line_length
             Text("Are you sure you want to delete the following section \(viewModel.sectionToDelete?.title ?? "Unknown")")
         }
     }
@@ -254,7 +359,7 @@ private extension CreateEditIdentityView {
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .padding(.top, DesignConstant.sectionPadding)
                     .buttonEmbeded {
-                        viewModel.sectionToDelete = section
+                        viewModel.setSectionToDelete(sectionToDelete: section)
                         showDeleteCustomSectionAlert.toggle()
                     }
             }
@@ -310,52 +415,44 @@ private extension CreateEditIdentityView {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
                 if viewModel.firstName.shouldShow {
-                    identityRow(title: "First name",
-                                subtitle: "First name",
+                    identityRow(title: IdentityFields.firstName.title,
                                 value: $viewModel.firstName.value)
                     PassSectionDivider()
                 }
 
                 if viewModel.middleName.shouldShow {
-                    identityRow(title: "Middle name",
-                                subtitle: "Middle name",
+                    identityRow(title: IdentityFields.middleName.title,
                                 value: $viewModel.middleName.value)
                     PassSectionDivider()
                 }
 
                 if viewModel.lastName.shouldShow {
-                    identityRow(title: "Last name",
-                                subtitle: "Last name",
+                    identityRow(title: IdentityFields.lastName.title,
                                 value: $viewModel.lastName.value)
                     PassSectionDivider()
                 }
 
-                identityRow(title: "Full name",
-                            subtitle: "Full name",
+                identityRow(title: IdentityFields.fullName.title,
                             value: $viewModel.fullName)
                 PassSectionDivider()
-                identityRow(title: "Email",
-                            subtitle: "Email",
+                identityRow(title: IdentityFields.email.title,
                             value: $viewModel.email,
                             keyboardType: .emailAddress)
                 PassSectionDivider()
-                identityRow(title: "Phone number",
-                            subtitle: "Phone number",
+                identityRow(title: IdentityFields.phoneNumber.title,
                             value: $viewModel.phoneNumber,
                             keyboardType: .phonePad)
 
                 if viewModel.birthdate.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Birthdate",
-                                subtitle: "Birthdate",
+                    identityRow(title: IdentityFields.birthdate.title,
                                 value: $viewModel.birthdate.value)
                 }
 
                 if viewModel.gender.shouldShow {
                     PassSectionDivider()
 
-                    identityRow(title: "Gender",
-                                subtitle: "Gender",
+                    identityRow(title: IdentityFields.gender.title,
                                 value: $viewModel.gender.value)
                 }
 
@@ -394,47 +491,39 @@ private extension CreateEditIdentityView {
     func addressDetailSection(_ section: CreateEditIdentitySection) -> some View {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
-                identityRow(title: "Organization",
-                            subtitle: "Organization",
+                identityRow(title: IdentityFields.organization.title,
                             value: $viewModel.organization)
                 PassSectionDivider()
-                identityRow(title: "Street address, P.O. box",
-                            subtitle: "Street address, P.O. box",
+                identityRow(title: IdentityFields.streetAddress.title,
                             value: $viewModel.streetAddress)
                 PassSectionDivider()
-                identityRow(title: "ZIP or Postal code",
-                            subtitle: "ZIP or Postal code",
+                identityRow(title: IdentityFields.zipOrPostalCode.title,
                             value: $viewModel.zipOrPostalCode,
-                            keyboardType: .numberPad)
+                            keyboardType: .asciiCapableNumberPad)
                 PassSectionDivider()
 
-                identityRow(title: "City",
-                            subtitle: "City",
+                identityRow(title: IdentityFields.city.title,
                             value: $viewModel.city)
                 PassSectionDivider()
 
-                identityRow(title: "State or province",
-                            subtitle: "State or province",
+                identityRow(title: IdentityFields.stateOrProvince.title,
                             value: $viewModel.stateOrProvince)
                 PassSectionDivider()
 
-                identityRow(title: "Country or Region",
-                            subtitle: "Country or Region",
+                identityRow(title: IdentityFields.countryOrRegion.title,
                             value: $viewModel.countryOrRegion)
 
                 if viewModel.floor.shouldShow {
                     PassSectionDivider()
 
-                    identityRow(title: "Floor",
-                                subtitle: "Floor",
+                    identityRow(title: IdentityFields.floor.title,
                                 value: $viewModel.floor.value)
                 }
 
                 if viewModel.county.shouldShow {
                     PassSectionDivider()
 
-                    identityRow(title: "County",
-                                subtitle: "County",
+                    identityRow(title: IdentityFields.county.title,
                                 value: $viewModel.county.value)
                 }
 
@@ -473,52 +562,52 @@ private extension CreateEditIdentityView {
     func contactDetailSection(_ section: CreateEditIdentitySection) -> some View {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
-                identityRow(title: "Social security number",
+                identityRow(title: IdentityFields.socialSecurityNumber.title,
                             value: $viewModel.socialSecurityNumber)
                 PassSectionDivider()
-                identityRow(title: "Passport number",
+                identityRow(title: IdentityFields.passportNumber.title,
                             value: $viewModel.passportNumber)
                 PassSectionDivider()
-                identityRow(title: "License number",
+                identityRow(title: IdentityFields.licenseNumber.title,
                             value: $viewModel.licenseNumber)
                 PassSectionDivider()
-                identityRow(title: "Website",
+                identityRow(title: IdentityFields.website.title,
                             value: $viewModel.website)
                 PassSectionDivider()
-                identityRow(title: "X handle",
+                identityRow(title: IdentityFields.xHandle.title,
                             value: $viewModel.xHandle)
                 PassSectionDivider()
-                identityRow(title: "Second phone number",
+                identityRow(title: IdentityFields.secondPhoneNumber.title,
                             value: $viewModel.secondPhoneNumber,
                             keyboardType: .namePhonePad)
 
-                if viewModel.linkedin.shouldShow {
+                if viewModel.linkedIn.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Linkedin",
-                                value: $viewModel.linkedin.value)
+                    identityRow(title: IdentityFields.linkedIn.title,
+                                value: $viewModel.linkedIn.value)
                 }
 
                 if viewModel.reddit.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Reddit",
+                    identityRow(title: IdentityFields.reddit.title,
                                 value: $viewModel.reddit.value)
                 }
 
                 if viewModel.facebook.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Facebook",
+                    identityRow(title: IdentityFields.facebook.title,
                                 value: $viewModel.facebook.value)
                 }
 
                 if viewModel.yahoo.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Yahoo",
+                    identityRow(title: IdentityFields.yahoo.title,
                                 value: $viewModel.yahoo.value)
                 }
 
                 if viewModel.instagram.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Instagram",
+                    identityRow(title: IdentityFields.instagram.title,
                                 value: $viewModel.instagram.value)
                 }
 
@@ -557,28 +646,28 @@ private extension CreateEditIdentityView {
     func workDetailSection(_ section: CreateEditIdentitySection) -> some View {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
-                identityRow(title: "Company",
+                identityRow(title: IdentityFields.company.title,
                             value: $viewModel.company)
                 PassSectionDivider()
-                identityRow(title: "Job title",
+                identityRow(title: IdentityFields.jobTitle.title,
                             value: $viewModel.jobTitle)
 
                 if viewModel.personalWebsite.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Personal website",
+                    identityRow(title: IdentityFields.personalWebsite.title,
                                 value: $viewModel.personalWebsite.value)
                 }
 
                 if viewModel.workPhoneNumber.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Work phone number",
+                    identityRow(title: IdentityFields.workPhoneNumber.title,
                                 value: $viewModel.workPhoneNumber.value,
                                 keyboardType: .namePhonePad)
                 }
 
                 if viewModel.workEmail.shouldShow {
                     PassSectionDivider()
-                    identityRow(title: "Work email",
+                    identityRow(title: IdentityFields.workEmail.title,
                                 value: $viewModel.workEmail.value)
                 }
 
@@ -617,7 +706,7 @@ private extension CreateEditIdentityView {
     func identityRow(title: String,
                      subtitle: String? = nil,
                      value: Binding<String>,
-                     shouldCapitalize: TextInputAutocapitalization = .never,
+                     focusedField: Field,
                      keyboardType: UIKeyboardType = .asciiCapable) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
@@ -628,7 +717,7 @@ private extension CreateEditIdentityView {
                     .textInputAutocapitalization(.never)
                     .keyboardType(keyboardType)
                     .autocorrectionDisabled()
-                    .focused($focusedField, equals: .username)
+                    .focused($focusedField, equals: focusedField)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
@@ -646,7 +735,6 @@ private extension CreateEditIdentityView {
         .padding(.horizontal, DesignConstant.sectionPadding)
 //            .animation(.default, value: viewModel.username.isEmpty)
 //            .animation(.default, value: focusedField)
-//            .id(usernameID)
     }
 
     var sheetContent: some View {
@@ -743,9 +831,9 @@ private extension CreateEditIdentityView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, DesignConstant.sectionPadding)
                     .buttonEmbeded {
-                        viewModel.linkedin.shouldShow.toggle()
+                        viewModel.linkedIn.shouldShow.toggle()
                     }
-                    .disabled(viewModel.linkedin.shouldShow)
+                    .disabled(viewModel.linkedIn.shouldShow)
 
                 PassSectionDivider()
 

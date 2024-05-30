@@ -59,6 +59,11 @@ final class ItemTypeListViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+
+    var isIdentityActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
+    }
 
     weak var delegate: (any ItemTypeListViewModelDelegate)?
 
