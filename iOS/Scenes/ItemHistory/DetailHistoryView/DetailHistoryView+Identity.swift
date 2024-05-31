@@ -37,8 +37,8 @@ extension DetailHistoryView {
                 addressDetailSection(item: item)
                 contactDetailSection(item: item)
                 workDetailSection(item: item)
-                ForEach(Array(item.extraSections.enumerated()), id: \.element.id) { index, customSection in
-                    customDetailSection(customSection: customSection, index: index)
+                ForEach(item.extraSections) { customSection in
+                    customDetailSection(customSection: customSection)
                 }
             }
         }
@@ -405,7 +405,7 @@ private extension DetailHistoryView {
 }
 
 private extension DetailHistoryView {
-    func customDetailSection(customSection: CustomSection, index: Int) -> some View {
+    func customDetailSection(customSection: CustomSection) -> some View {
         Section {
             customFields(uiModels: customSection.content.map(\.toCustomFieldUiModel),
                          border: customSectionsColor)

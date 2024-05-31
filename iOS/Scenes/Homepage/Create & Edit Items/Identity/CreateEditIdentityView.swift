@@ -88,38 +88,40 @@ struct CreateEditIdentityView: View {
 
     enum Field: CustomFieldTypes {
         case title
-        case fullName
-        case email
-        case phoneNumber
-        case firstName
-        case middleName
-        case lastName
-        case birthdate
-        case gender
-        case organization
-        case streetAddress
-        case zipOrPostalCode
-        case city
-        case stateOrProvince
-        case countryOrRegion
-        case floor
-        case county
-        case socialSecurityNumber
-        case passportNumber
-        case licenseNumber
-        case website
-        case xHandle
-        case secondPhoneNumber
-        case linkedIn
-        case reddit
-        case facebook
-        case yahoo
-        case instagram
-        case company
-        case jobTitle
-        case personalWebsite
-        case workPhoneNumber
-        case workEmail
+        // swiftlint:disable next todo
+        // TODO: implement focus later
+//        case fullName
+//        case email
+//        case phoneNumber
+//        case firstName
+//        case middleName
+//        case lastName
+//        case birthdate
+//        case gender
+//        case organization
+//        case streetAddress
+//        case zipOrPostalCode
+//        case city
+//        case stateOrProvince
+//        case countryOrRegion
+//        case floor
+//        case county
+//        case socialSecurityNumber
+//        case passportNumber
+//        case licenseNumber
+//        case website
+//        case xHandle
+//        case secondPhoneNumber
+//        case linkedIn
+//        case reddit
+//        case facebook
+//        case yahoo
+//        case instagram
+//        case company
+//        case jobTitle
+//        case personalWebsite
+//        case workPhoneNumber
+//        case workEmail
         case custom(CustomFieldUiModel?)
 
         static func == (lhs: Field, rhs: Field) -> Bool {
