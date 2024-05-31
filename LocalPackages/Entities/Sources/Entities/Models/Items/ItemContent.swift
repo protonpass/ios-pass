@@ -195,4 +195,3 @@ public extension ItemContent {
         return fields
     }
 }
-
