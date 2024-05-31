@@ -51,6 +51,7 @@ final class SetExtraPasswordViewModel: ObservableObject {
     @Published private(set) var canSetExtraPassword = false
     @Published private(set) var error: (any Error)?
     @Published private(set) var state: SetExtraPasswordViewState = .defining
+    @Published private(set) var loading = false
     @Published var showLogOutAlert = false
     @Published var showWrongProtonPasswordAlert = false
     @Published var showProtonPasswordConfirmationAlert = true
@@ -60,7 +61,6 @@ final class SetExtraPasswordViewModel: ObservableObject {
     private var definedExtraPassword = ""
     private var cancellables = Set<AnyCancellable>()
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
     private let createExtraPassword = resolve(\UseCasesContainer.createExtraPassword)
 
@@ -83,12 +83,11 @@ final class SetExtraPasswordViewModel: ObservableObject {
 
 extension SetExtraPasswordViewModel {
     func verifyProtonPassword() {
-        guard protonPassword.count >= 8 else { return }
         Task { [weak self] in
             guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            defer { loading = false }
             do {
-                router.display(element: .globalLoading(shouldShow: true))
+                loading = true
                 if try await doVerifyProtonPassword(protonPassword) {
                     canSetExtraPassword = true
                 } else {

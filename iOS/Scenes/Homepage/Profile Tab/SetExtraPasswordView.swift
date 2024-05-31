@@ -45,16 +45,19 @@ struct SetExtraPasswordView: View {
                 Spacer()
             }
             .padding()
+            .opacity(viewModel.canSetExtraPassword ? 1 : 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle(viewModel.state.navigationTitle)
         .toolbar { toolbarContent }
         .animation(.default, value: viewModel.canContinue)
+        .animation(.default, value: viewModel.canSetExtraPassword)
         .animation(.default, value: viewModel.state)
         .tint(PassColor.interactionNormMajor1.toColor)
         .onChange(of: viewModel.canSetExtraPassword) { _ in
             focused = true
         }
+        .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
         .alert("Error occured",
                isPresented: errorBinding,
@@ -110,6 +113,7 @@ private extension SetExtraPasswordView {
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: !viewModel.canContinue,
                                         action: { viewModel.continue() })
+                .hidden(!viewModel.canSetExtraPassword)
         }
     }
 

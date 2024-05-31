@@ -373,7 +373,9 @@ extension UseCasesContainer {
     }
 
     var verifyProtonPassword: Factory<any VerifyProtonPasswordUseCase> {
-        self { VerifyProtonPassword() }
+        self { VerifyProtonPassword(userDataProvider: self.userDataProvider,
+                                    doh: SharedToolingContainer.shared.doh(),
+                                    appVer: SharedToolingContainer.shared.appVersion()) }
     }
 
     var createExtraPassword: Factory<any CreateExtraPasswordUseCase> {

@@ -78850,6 +78850,16 @@
         }
       }
     },
+    "Repeat extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeat extra password"
+          }
+        }
+      }
+    },
     "Repeat PIN code" : {
       "localizations" : {
         "be" : {
@@ -111658,6 +111668,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gửi cho chúng tôi trên Reddit"
+          }
+        }
+      }
+    },
+    "Wrong Proton password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrong Proton password"
           }
         }
       }
