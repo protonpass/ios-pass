@@ -76,8 +76,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
     var isAlias: Bool { aliasCreationLiteInfo != nil }
 
-//    weak var createEditLoginViewModelDelegate: (any CreateEditLoginViewModelDelegate)?
-
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
