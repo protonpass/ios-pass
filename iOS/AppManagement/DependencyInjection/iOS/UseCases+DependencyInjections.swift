@@ -371,6 +371,14 @@ extension UseCasesContainer {
                                             getBreachesForAlias: self.getBreachesForAlias(),
                                             stream: DataStreamContainer.shared.monitorStateStream()) }
     }
+
+    var verifyProtonPassword: Factory<any VerifyProtonPasswordUseCase> {
+        self { VerifyProtonPassword() }
+    }
+
+    var createExtraPassword: Factory<any CreateExtraPasswordUseCase> {
+        self { CreateExtraPassword() }
+    }
 }
 
 // MARK: - Misc
