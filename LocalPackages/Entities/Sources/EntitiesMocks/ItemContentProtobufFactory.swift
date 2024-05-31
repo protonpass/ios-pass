@@ -57,26 +57,48 @@ public enum ItemContentProtobufFactory {
             
         case .note:
             itemContentProtobuf.content.note = .init()
+        case let .identity(data):
+            itemContentProtobuf.content.identity = .init()
+            itemContentProtobuf.content.identity.fullName = data.fullName
+            itemContentProtobuf.content.identity.email = data.email
+            itemContentProtobuf.content.identity.phoneNumber = data.phoneNumber
+            itemContentProtobuf.content.identity.firstName = data.firstName
+            itemContentProtobuf.content.identity.middleName = data.middleName
+            itemContentProtobuf.content.identity.lastName = data.lastName
+            itemContentProtobuf.content.identity.birthdate = data.birthdate
+            itemContentProtobuf.content.identity.gender = data.gender
+            itemContentProtobuf.content.identity.extraPersonalDetails = data.extraPersonalDetails.toProtonPassItemV1ExtraFields
+            itemContentProtobuf.content.identity.organization = data.organization
+            itemContentProtobuf.content.identity.streetAddress = data.streetAddress
+            itemContentProtobuf.content.identity.zipOrPostalCode = data.zipOrPostalCode
+            itemContentProtobuf.content.identity.city = data.city
+            itemContentProtobuf.content.identity.stateOrProvince = data.stateOrProvince
+            itemContentProtobuf.content.identity.countryOrRegion = data.countryOrRegion
+            itemContentProtobuf.content.identity.floor = data.floor
+            itemContentProtobuf.content.identity.county = data.county
+            itemContentProtobuf.content.identity.extraAddressDetails = data.extraAddressDetails.toProtonPassItemV1ExtraFields
+            itemContentProtobuf.content.identity.socialSecurityNumber = data.socialSecurityNumber
+            itemContentProtobuf.content.identity.passportNumber = data.passportNumber
+            itemContentProtobuf.content.identity.licenseNumber = data.licenseNumber
+            itemContentProtobuf.content.identity.website = data.website
+            itemContentProtobuf.content.identity.xHandle = data.xHandle
+            itemContentProtobuf.content.identity.secondPhoneNumber = data.secondPhoneNumber
+            itemContentProtobuf.content.identity.linkedin = data.linkedIn
+            itemContentProtobuf.content.identity.reddit = data.reddit
+            itemContentProtobuf.content.identity.facebook = data.facebook
+            itemContentProtobuf.content.identity.yahoo = data.yahoo
+            itemContentProtobuf.content.identity.instagram = data.instagram
+            itemContentProtobuf.content.identity.extraContactDetails = data.extraContactDetails.toProtonPassItemV1ExtraFields
+            itemContentProtobuf.content.identity.company = data.company
+            itemContentProtobuf.content.identity.jobTitle = data.jobTitle
+            itemContentProtobuf.content.identity.personalWebsite = data.personalWebsite
+            itemContentProtobuf.content.identity.workPhoneNumber = data.workPhoneNumber
+            itemContentProtobuf.content.identity.workEmail = data.workEmail
+            itemContentProtobuf.content.identity.extraWorkDetails = data.extraWorkDetails.toProtonPassItemV1ExtraFields
+            itemContentProtobuf.content.identity.extraSections = data.extraSections.toProtonPassItemV1ExtraIdentitySections
         }
         
-        itemContentProtobuf.extraFields = customFields.map { customField in
-            var extraField = ProtonPassItemV1_ExtraField()
-            extraField.fieldName = customField.title
-            
-            switch customField.type {
-            case .text:
-                extraField.text = .init()
-                extraField.text.content = customField.content
-            case .totp:
-                extraField.totp = .init()
-                extraField.totp.totpUri = customField.content
-            case .hidden:
-                extraField.hidden = .init()
-                extraField.hidden.content = customField.content
-            }
-            
-            return extraField
-        }
+        itemContentProtobuf.extraFields = customFields.toProtonPassItemV1ExtraFields
         
         return itemContentProtobuf
     }
