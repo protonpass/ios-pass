@@ -196,38 +196,3 @@ public extension ItemContent {
     }
 }
 
-extension [CustomField] {
-    var toProtonPassItemV1ExtraFields: [ProtonPassItemV1_ExtraField] {
-        self.map { customField in
-            var extraField = ProtonPassItemV1_ExtraField()
-            extraField.fieldName = customField.title
-
-            switch customField.type {
-            case .text:
-                extraField.text = .init()
-                extraField.text.content = customField.content
-
-            case .totp:
-                extraField.totp = .init()
-                extraField.totp.totpUri = customField.content
-
-            case .hidden:
-                extraField.hidden = .init()
-                extraField.hidden.content = customField.content
-            }
-
-            return extraField
-        }
-    }
-}
-
-extension [CustomSection] {
-    var toProtonPassItemV1ExtraIdentitySections: [ProtonPassItemV1_ExtraIdentitySection] {
-        self.map { section in
-            var extraSection = ProtonPassItemV1_ExtraIdentitySection()
-            extraSection.sectionName = section.title
-            extraSection.sectionFields = section.content.toProtonPassItemV1ExtraFields
-            return extraSection
-        }
-    }
-}

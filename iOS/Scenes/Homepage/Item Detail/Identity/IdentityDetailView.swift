@@ -546,12 +546,6 @@ private extension IdentityDetailView {
             Button(action: onTap) {
                 Text("Copy")
             }
-
-//            Button {
-//                viewModel.showLarge(.text(viewModel.username))
-//            } label: {
-//                Text("Show large")
-//            }
         }
     }
 }

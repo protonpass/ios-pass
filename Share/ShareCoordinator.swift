@@ -286,7 +286,6 @@ private extension ShareCoordinator {
                         try CreateEditLoginViewModel(mode: .create(shareId: shareId, type: creationType),
                                                      upgradeChecker: upgradeChecker, vaults: vaults)
                     viewModel.delegate = self
-//                    viewModel.createEditLoginViewModelDelegate = self
                     createEditItemViewModel = viewModel
                     let view = CreateEditLoginView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
