@@ -88,7 +88,7 @@ struct CreateEditIdentityView: View {
 
     enum Field: CustomFieldTypes {
         case title
-        // swiftlint:disable next todo
+        // swiftlint:disable:next todo
         // TODO: implement focus later
 //        case fullName
 //        case email
