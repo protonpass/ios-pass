@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Factory
 import Foundation
 import Macro
 
@@ -48,6 +49,7 @@ enum SetExtraPasswordViewState {
 final class SetExtraPasswordViewModel: ObservableObject {
     @Published private(set) var canContinue = false
     @Published private(set) var canSetExtraPassword = false
+    @Published private(set) var error: (any Error)?
     @Published private(set) var state: SetExtraPasswordViewState = .defining
     @Published var showLogOutAlert = false
     @Published var showWrongProtonPasswordAlert = false
@@ -57,6 +59,10 @@ final class SetExtraPasswordViewModel: ObservableObject {
 
     private var definedExtraPassword = ""
     private var cancellables = Set<AnyCancellable>()
+
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
+    private let createExtraPassword = resolve(\UseCasesContainer.createExtraPassword)
 
     init() {
         $extraPassword
@@ -78,10 +84,19 @@ final class SetExtraPasswordViewModel: ObservableObject {
 extension SetExtraPasswordViewModel {
     func verifyProtonPassword() {
         guard protonPassword.count >= 8 else { return }
-        if Bool.random() {
-            canSetExtraPassword = true
-        } else {
-            showWrongProtonPasswordAlert = true
+        Task { [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                if try await doVerifyProtonPassword(protonPassword) {
+                    canSetExtraPassword = true
+                } else {
+                    showWrongProtonPasswordAlert = true
+                }
+            } catch {
+                self.error = error
+            }
         }
     }
 
