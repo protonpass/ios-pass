@@ -56,6 +56,10 @@ struct SetExtraPasswordView: View {
             focused = true
         }
         .navigationStackEmbeded()
+        .alert("Error occured",
+               isPresented: errorBinding,
+               actions: { Button(action: dismiss.callAsFunction, label: { Text("OK") }) },
+               message: { Text(viewModel.error?.localizedDescription ?? "") })
         .alert("Set extra password",
                isPresented: $viewModel.showLogOutAlert,
                actions: {
@@ -107,5 +111,9 @@ private extension SetExtraPasswordView {
                                         disabled: !viewModel.canContinue,
                                         action: { viewModel.continue() })
         }
+    }
+
+    var errorBinding: Binding<Bool> {
+        .init(get: { viewModel.error != nil }, set: { _ in })
     }
 }
