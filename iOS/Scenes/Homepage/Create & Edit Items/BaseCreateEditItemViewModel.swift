@@ -81,7 +81,7 @@ enum ItemCreationType: Equatable, Hashable {
 }
 
 @MainActor
-class BaseCreateEditItemViewModel {
+class BaseCreateEditItemViewModel: CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
@@ -317,7 +317,6 @@ extension BaseCreateEditItemViewModel {
     }
 
     func editCustomFieldTitle(_ uiModel: CustomFieldUiModel) {
-        print("plop")
         delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(uiModel, delegate: self)
     }
 
@@ -394,40 +393,4 @@ extension BaseCreateEditItemViewModel {
     func changeVault() {
         router.present(for: .vaultSelection)
     }
-}
-
-// MARK: - CustomFieldTitleAlertHandlerDelegate
-
-extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
-//    func customFieldAdded(_ customField: CustomField) {
-//        let uiModel = CustomFieldUiModel(customField: customField)
-//        customFieldUiModels.append(uiModel)
-//        recentlyAddedOrEditedField = uiModel
-//    }
-}
-
-// MARK: - CustomFieldEditionDelegate
-
-extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
-//    func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
-//        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
-//            let message = "Custom field with id \(uiModel.id) not found"
-//            logger.error(message)
-//            assertionFailure(message)
-//            return
-//        }
-//        recentlyAddedOrEditedField = uiModel
-//        customFieldUiModels[index] = uiModel.update(title: newTitle)
-//    }
-//
-//    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
-//        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
-//            let message = "Custom field with id \(uiModel.id) not found"
-//            logger.error(message)
-//            assertionFailure(message)
-//            return
-//        }
-//        recentlyAddedOrEditedField = uiModel
-//        customFieldUiModels[index] = uiModel.update(content: content)
-//    }
 }
