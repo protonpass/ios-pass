@@ -21,6 +21,12 @@
             "value" : "Tilføj brugernavn-felt"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzername-Feld hinzufügen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73,6 +79,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ユーザー名フィールドを追加"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მომხმარებლის სახელის ველის დამატება"
           }
         },
         "ko" : {
@@ -1230,6 +1242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Povoliť Spotlight vyhľadávanie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omogočanje iskanja Spotlight"
           }
         },
         "sv" : {
@@ -2502,6 +2520,12 @@
             "value" : "Stlačením a podržaním položky zobrazíte ďalšie možnosti."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pritisnite in pridržite predmet, da se prikažejo dodatne možnosti."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2908,7 +2932,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Recherchez des éléments en toute simplicité sur votre écran d'accueil. Ouvrez Réglages → Spotlight pour l'activer."
+            "value" : "Recherchez des éléments en toute simplicité sur votre écran d'accueil. Ouvrez Réglages → \"Spotlight\" pour l'activer."
           }
         },
         "id" : {
@@ -2969,6 +2993,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bezproblémové vyhľadávanie položiek prostredníctvom domovskej obrazovky. Otvorte Nastavenia → Spotlight a povoľte."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brezhibno iskanje predmetov prek domačega zaslona. Odprite Nastavitve → Spotlight in omogočite iskanje."
           }
         },
         "sv" : {
@@ -4030,6 +4060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ここをタップしてユーザー名のフィールドを追加します。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაატყაპუნეთ აქ მომხმარებლის სახელისთვის ველის დასამატებლად."
           }
         },
         "ko" : {
