@@ -30,12 +30,12 @@ import UIKit
 @MainActor
 final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var title = ""
-    @Published private(set) var fullName = ""
-    @Published private(set) var email = ""
-    @Published private(set) var phoneNumber = ""
     @Published private(set) var firstName = ""
     @Published private(set) var middleName = ""
     @Published private(set) var lastName = ""
+    @Published private(set) var fullName = ""
+    @Published private(set) var email = ""
+    @Published private(set) var phoneNumber = ""
     @Published private(set) var birthdate = ""
     @Published private(set) var gender = ""
     @Published private(set) var extraPersonalDetails: [CustomFieldUiModel] = []
@@ -97,6 +97,38 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
             !workEmail.isEmpty || !extraWorkDetails.isEmpty
     }
 
+    var nonEmptyPersonalElement: [String] {
+        [firstName, middleName, lastName, fullName, email, phoneNumber, birthdate, gender]
+            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
+    var nonEmptyAddressElement: [String] {
+        [organization, streetAddress, zipOrPostalCode, city, stateOrProvince, countryOrRegion, floor, county]
+            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
+    var nonEmptyContactElement: [String] {
+        [
+            socialSecurityNumber,
+            passportNumber,
+            licenseNumber,
+            website,
+            xHandle,
+            secondPhoneNumber,
+            linkedIn,
+            reddit,
+            facebook,
+            yahoo,
+            instagram
+        ]
+        .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
+    var nonEmptyWorkElement: [String] {
+        [company, jobTitle, personalWebsite, workPhoneNumber, workEmail]
+            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
     override func bindValues() {
         super.bindValues()
         guard case let .identity(data) = itemContent.contentData else {
@@ -155,5 +187,15 @@ extension IdentityDetailViewModel {
 
     func copyHiddenText(_ text: String) {
         copyToClipboard(text: text, message: #localized("Hidden text copied"))
+    }
+}
+
+extension [String] {
+    func isLastNonEmptyElement(_ element: Element) -> Bool {
+        guard let lastIndex = lastIndex(where: { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
+        else {
+            return false
+        }
+        return self[lastIndex] == element
     }
 }

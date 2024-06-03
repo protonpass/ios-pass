@@ -33744,6 +33744,16 @@
         }
       }
     },
+    "Edit section's title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit section's title"
+          }
+        }
+      }
+    },
     "Editor" : {
       "comment" : "A sharing access level, user can create, edit, delete items in a shared vault.",
       "localizations" : {
@@ -36290,6 +36300,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tên trường tùy chọn"
+          }
+        }
+      }
+    },
+    "Enter a new section title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a new section title"
           }
         }
       }
@@ -55361,6 +55381,26 @@
         }
       }
     },
+    "Modify" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modify"
+          }
+        }
+      }
+    },
+    "Modify the section name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modify the section name"
+          }
+        }
+      }
+    },
     "Monitored" : {
       "localizations" : {
         "be" : {
@@ -57059,6 +57099,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không bao giờ"
+          }
+        }
+      }
+    },
+    "New title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New title"
           }
         }
       }
@@ -70828,6 +70878,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa trường"
+          }
+        }
+      }
+    },
+    "Remove section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove section"
           }
         }
       }
