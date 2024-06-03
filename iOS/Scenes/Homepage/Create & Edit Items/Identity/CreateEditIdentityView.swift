@@ -78,6 +78,7 @@ struct CreateEditIdentityView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var sheetState: SectionsSheetStates = .none
     @State private var showCustomTitleAlert = false
+    @State private var showSectionTitleModification = false
     @State private var showDeleteCustomSectionAlert = false
     @State private var isShowingDiscardAlert = false
     @FocusState private var focusedField: Field?
@@ -190,6 +191,10 @@ private extension CreateEditIdentityView {
             .padding(.bottom, DesignConstant.sectionPadding)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .animation(.default, value: viewModel.sections)
+            .animation(.default, value: viewModel.extraPersonalDetails)
+            .animation(.default, value: viewModel.extraWorkDetails)
+            .animation(.default, value: viewModel.extraAddressDetails)
+            .animation(.default, value: viewModel.extraContactDetails)
             .scrollViewEmbeded(maxWidth: .infinity)
             .background(PassColor.backgroundNorm.toColor)
             .navigationBarBackButtonHidden(true)
@@ -197,6 +202,7 @@ private extension CreateEditIdentityView {
                                for: .navigationBar)
         }
         .background(PassColor.backgroundNorm.toColor)
+        .tint(viewModel.itemContentType().normMajor1Color.toColor)
         .toolbar {
             CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
                                   isSaveable: true,
@@ -216,6 +222,7 @@ private extension CreateEditIdentityView {
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .alert("Custom Section", isPresented: $showCustomTitleAlert) {
             TextField("Title", text: $viewModel.customSectionTitle)
+                .autocorrectionDisabled()
             Button("Add", action: viewModel.addCustomSection)
             Button("Cancel", role: .cancel) { viewModel.reset() }
         } message: {
@@ -226,7 +233,15 @@ private extension CreateEditIdentityView {
             Button("Cancel", role: .cancel) { viewModel.reset() }
         } message: {
             // swiftlint:disable:next line_length
-            Text("Are you sure you want to delete the following section \(viewModel.sectionToDelete?.title ?? "Unknown")")
+            Text("Are you sure you want to delete the following section \(viewModel.selectedCustomSection?.title ?? "Unknown")")
+        }
+        .alert("Modify the section name", isPresented: $showSectionTitleModification) {
+            TextField("New title", text: $viewModel.customSectionTitle)
+                .autocorrectionDisabled()
+            Button("Modify", action: viewModel.modifyCustomSectionName)
+            Button("Cancel", role: .cancel) { viewModel.reset() }
+        } message: {
+            Text("Enter a new section title")
         }
     }
 }
@@ -282,13 +297,24 @@ private extension CreateEditIdentityView {
             Spacer()
 
             if section.isCustom {
-                IconProvider.crossCircle
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .padding(.top, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.setSectionToDelete(sectionToDelete: section)
-                        showDeleteCustomSectionAlert.toggle()
-                    }
+                Menu(content: {
+                    Label(title: { Text("Edit section's title") }, icon: { Image(uiImage: IconProvider.pencil) })
+                        .buttonEmbeded {
+                            viewModel.setSelectedSection(section: section)
+                            showSectionTitleModification.toggle()
+                        }
+
+                    Label(title: { Text("Remove section") },
+                          icon: { Image(uiImage: IconProvider.crossCircle) })
+                        .buttonEmbeded {
+                            viewModel.setSelectedSection(section: section)
+                            showDeleteCustomSectionAlert.toggle()
+                        }
+                }, label: {
+                    IconProvider.threeDotsVertical
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .padding(.top, DesignConstant.sectionPadding)
+                })
             }
         }
     }
@@ -312,7 +338,7 @@ private extension CreateEditIdentityView {
                                             onRemove: {
                                                 // Work around a crash in later versions of iOS 17
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    viewModel.extraPersonalDetails
+                                                    viewModel.sections[index].content
                                                         .removeAll(where: { $0.id == field.id })
                                                 }
                                             })
@@ -407,6 +433,7 @@ private extension CreateEditIdentityView {
                                title: "Add more",
                                titleColor: viewModel.itemContentType().normMajor2Color,
                                backgroundColor: viewModel.itemContentType().normMinor1Color,
+                               fontWeight: .bold,
                                maxWidth: 140) { sheetState = .personal(section) }
         }
     }
@@ -466,7 +493,7 @@ private extension CreateEditIdentityView {
                                         onRemove: {
                                             // Work around a crash in later versions of iOS 17
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraPersonalDetails
+                                                viewModel.extraAddressDetails
                                                     .removeAll(where: { $0.id == field.id })
                                             }
                                         })
@@ -550,7 +577,7 @@ private extension CreateEditIdentityView {
                                         onRemove: {
                                             // Work around a crash in later versions of iOS 17
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraPersonalDetails
+                                                viewModel.extraContactDetails
                                                     .removeAll(where: { $0.id == field.id })
                                             }
                                         })
@@ -610,7 +637,7 @@ private extension CreateEditIdentityView {
                                         onRemove: {
                                             // Work around a crash in later versions of iOS 17
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraPersonalDetails
+                                                viewModel.extraWorkDetails
                                                     .removeAll(where: { $0.id == field.id })
                                             }
                                         })
