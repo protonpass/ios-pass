@@ -43,6 +43,7 @@ struct ItemCountView: View {
                     ItemContentTypeCountView(type: .alias, count: itemCount.alias)
                     ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCard)
                     ItemContentTypeCountView(type: .note, count: itemCount.note)
+                    ItemContentTypeCountView(type: .identity, count: itemCount.identity)
                 }
                 .padding(.horizontal)
             }

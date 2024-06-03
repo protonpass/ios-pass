@@ -139,7 +139,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     private var customFieldSection: CreateEditIdentitySection?
     @Published var customSectionTitle = ""
 
-    private(set) var sectionToDelete: CreateEditIdentitySection?
+    private(set) var selectedCustomSection: CreateEditIdentitySection?
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
@@ -344,22 +344,22 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
 // MARK: - Utils
 
 extension CreateEditIdentityViewModel {
-    func setSectionToDelete(sectionToDelete: CreateEditIdentitySection) {
-        self.sectionToDelete = sectionToDelete
+    func setSelectedSection(section: CreateEditIdentitySection) {
+        selectedCustomSection = section
     }
 
     func deleteCustomSection() {
-        guard let sectionToDelete else {
+        guard let sectionToDelete = selectedCustomSection else {
             return
         }
 
         sections = sections.removing(sectionToDelete)
-        self.sectionToDelete = nil
+        selectedCustomSection = nil
     }
 
     func reset() {
         customSectionTitle = ""
-        sectionToDelete = nil
+        selectedCustomSection = nil
     }
 
     func addCustomSection() {
@@ -368,6 +368,19 @@ extension CreateEditIdentityViewModel {
         }
         let newSection = CreateEditIdentitySection.baseCustomSection(title: customSectionTitle)
         sections.append(newSection)
+        customSectionTitle = ""
+    }
+
+    func modifyCustomSectionName() {
+        guard !customSectionTitle.isEmpty, let sectionToModify = selectedCustomSection else {
+            return
+        }
+        sections = sections.map { section in
+            guard sectionToModify.id == section.id else {
+                return section
+            }
+            return section.copy(title: customSectionTitle)
+        }
         customSectionTitle = ""
     }
 
