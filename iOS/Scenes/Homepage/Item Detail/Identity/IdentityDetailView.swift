@@ -108,7 +108,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.firstName.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.firstName) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.middleName.isEmpty {
@@ -117,7 +119,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.middleName.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.middleName) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.lastName.isEmpty {
@@ -126,7 +130,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.lastName.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.lastName) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.fullName.isEmpty {
@@ -135,7 +141,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.fullName.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.fullName) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.email.isEmpty {
@@ -144,7 +152,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.email.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.email) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.phoneNumber.isEmpty {
@@ -153,7 +163,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.phoneNumber.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.phoneNumber) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.birthdate.isEmpty {
@@ -162,7 +174,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.birthdate.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.birthdate) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.gender.isEmpty {
@@ -170,7 +184,9 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.gender,
                                                            message: IdentityFields.gender.title)
                         }
+                    }
 
+                    if !viewModel.extraPersonalDetails.isEmpty, !viewModel.nonEmptyPersonalElement.isEmpty {
                         PassSectionDivider()
                     }
 
@@ -209,8 +225,9 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.organization,
                                                            message: IdentityFields.organization.title)
                         }
-
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.organization) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.streetAddress.isEmpty {
@@ -219,7 +236,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.streetAddress.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.streetAddress) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.zipOrPostalCode.isEmpty {
@@ -227,8 +246,9 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.zipOrPostalCode,
                                                            message: IdentityFields.zipOrPostalCode.title)
                         }
-
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.zipOrPostalCode) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.city.isEmpty {
@@ -237,7 +257,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.city.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.city) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.stateOrProvince.isEmpty {
@@ -246,7 +268,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.stateOrProvince.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.stateOrProvince) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.countryOrRegion.isEmpty {
@@ -255,7 +279,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.countryOrRegion.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.countryOrRegion) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.floor.isEmpty {
@@ -264,7 +290,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.floor.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.floor) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.county.isEmpty {
@@ -272,6 +300,9 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.county,
                                                            message: IdentityFields.county.title)
                         }
+                    }
+
+                    if !viewModel.extraAddressDetails.isEmpty, !viewModel.nonEmptyAddressElement.isEmpty {
                         PassSectionDivider()
                     }
 
@@ -313,7 +344,10 @@ private extension IdentityDetailView {
                                                                message: IdentityFields.socialSecurityNumber.title)
                             }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyContactElement
+                            .isLastNonEmptyElement(viewModel.socialSecurityNumber) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.passportNumber.isEmpty {
@@ -322,7 +356,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.passportNumber.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.passportNumber) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.licenseNumber.isEmpty {
@@ -331,7 +367,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.licenseNumber.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.licenseNumber) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.website.isEmpty {
@@ -340,7 +378,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.website.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.website) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.xHandle.isEmpty {
@@ -349,7 +389,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.xHandle.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.xHandle) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.secondPhoneNumber.isEmpty {
@@ -358,7 +400,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.secondPhoneNumber.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.secondPhoneNumber) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.linkedIn.isEmpty {
@@ -367,7 +411,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.linkedIn.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.linkedIn) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.reddit.isEmpty {
@@ -375,7 +421,10 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.reddit,
                                                            message: IdentityFields.reddit.title)
                         }
-                        PassSectionDivider()
+
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.reddit) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.facebook.isEmpty {
@@ -383,7 +432,10 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.facebook,
                                                            message: IdentityFields.facebook.title)
                         }
-                        PassSectionDivider()
+
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.facebook) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.yahoo.isEmpty {
@@ -391,7 +443,10 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.yahoo,
                                                            message: IdentityFields.yahoo.title)
                         }
-                        PassSectionDivider()
+
+                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.yahoo) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.instagram.isEmpty {
@@ -399,6 +454,9 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.instagram,
                                                            message: IdentityFields.instagram.title)
                         }
+                    }
+
+                    if !viewModel.extraContactDetails.isEmpty, !viewModel.nonEmptyContactElement.isEmpty {
                         PassSectionDivider()
                     }
 
@@ -439,7 +497,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.company.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.company) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.jobTitle.isEmpty {
@@ -448,7 +508,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.jobTitle.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.jobTitle) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.personalWebsite.isEmpty {
@@ -457,7 +519,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.personalWebsite.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.personalWebsite) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.workPhoneNumber.isEmpty {
@@ -466,7 +530,9 @@ private extension IdentityDetailView {
                                                            message: IdentityFields.workPhoneNumber.title)
                         }
 
-                        PassSectionDivider()
+                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.workPhoneNumber) {
+                            PassSectionDivider()
+                        }
                     }
 
                     if !viewModel.workEmail.isEmpty {
@@ -474,7 +540,9 @@ private extension IdentityDetailView {
                             viewModel.copyValueToClipboard(value: viewModel.workEmail,
                                                            message: IdentityFields.workEmail.title)
                         }
+                    }
 
+                    if !viewModel.extraWorkDetails.isEmpty, !viewModel.nonEmptyWorkElement.isEmpty {
                         PassSectionDivider()
                     }
 

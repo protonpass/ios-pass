@@ -172,7 +172,6 @@ private extension CreditCardDetailView {
                              action: { isShowingCardNumber.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
                     .animationsDisabled()
-//                    .accessibilityLabel(Text(isShowingCardNumber ? "Hide card number" : "Show card number"))
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
