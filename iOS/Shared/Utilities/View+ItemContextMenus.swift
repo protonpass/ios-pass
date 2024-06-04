@@ -219,7 +219,7 @@ enum ItemContextMenu {
                 .init(title: "Copy email",
                       icon: IconProvider.envelope,
                       action: onCopyEmail),
-                .init(title: "Copy fullname",
+                .init(title: "Copy full name",
                       icon: IconProvider.user,
                       action: onCopyFullname)
             ]))
