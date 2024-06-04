@@ -36,7 +36,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let note: String
     public let contentData: ItemContentData
 
-    /// Should only be used for item that are not identity for now
+    /// Should only be used for login items
     public let customFields: [CustomField]
 
     public var id: String {

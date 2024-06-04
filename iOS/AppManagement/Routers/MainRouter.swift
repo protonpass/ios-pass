@@ -140,7 +140,7 @@ final actor MainUIKitSwiftUIRouter: Sendable {
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
     let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
     let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
-    let genericDestination: PassthroughSubject<GenericDestination, Never> = .init()
+    let itemDestinations: PassthroughSubject<GenericDestination, Never> = .init()
 
     @MainActor
     private var pendingDeeplinkDestination: DeeplinkDestination?
@@ -157,7 +157,7 @@ final actor MainUIKitSwiftUIRouter: Sendable {
 
     @MainActor
     func navigate(to destination: GenericDestination) {
-        genericDestination.send(destination)
+        itemDestinations.send(destination)
     }
 
     @MainActor

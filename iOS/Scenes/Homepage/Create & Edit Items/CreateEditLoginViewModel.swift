@@ -92,6 +92,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit)
     }
 
+    private var loginDelegate: (any CreateEditLoginViewModelDelegate)? {
+        delegate as? (any CreateEditLoginViewModelDelegate)
+    }
+
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
@@ -235,7 +239,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func generateAlias() {
         if let aliasOptions, let aliasCreationLiteInfo {
-            (delegate as? any CreateEditLoginViewModelDelegate)?
+            loginDelegate?
                 .createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
                                                               creationInfo: aliasCreationLiteInfo,
                                                               delegate: self)
@@ -271,7 +275,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func generatePassword() {
-        (delegate as? any CreateEditLoginViewModelDelegate)?.createEditLoginViewModelWantsToGeneratePassword(self)
+        loginDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
     func pasteTotpUriFromClipboard() {

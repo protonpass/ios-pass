@@ -371,7 +371,7 @@ extension HomepageCoordinator {
             .store(in: &cancellables)
 
         router
-            .genericDestination
+            .itemDestinations
             .receive(on: DispatchQueue.main)
             .sink { [weak self] destination in
                 guard let self else { return }

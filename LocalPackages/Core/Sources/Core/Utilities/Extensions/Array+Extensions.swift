@@ -58,4 +58,43 @@ public extension Array {
             }
         }
     }
+
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
+        }
+    }
+}
+
+public extension Array where Element: Equatable {
+    func isLastNonEmptyElement(_ element: Element, isEmpty: (Element) -> Bool) -> Bool {
+        guard let lastIndex = lastIndex(where: { !isEmpty($0) }) else {
+            return false
+        }
+        return self[lastIndex] == element
+    }
+}
+
+public extension [any Collection] {
+    func hasNonEmptyElement() -> Bool {
+        contains { !$0.isEmpty }
+    }
+}
+
+public extension Array where Element: Equatable {
+    /// Insert if not exist, remove if exist. This method is designed for arrays with unique elements only.
+    /// So be careful when using on an array of repeated elements, it will result in undefined behaviors.
+    /// - Parameters:
+    ///  - element: New element to insert or remove.
+    ///  - minItemCount: Minimum number of item that the array must have after removing an element.
+    ///  Use to make sure array always  has at least a certain number of items.
+    mutating func insertOrRemove(_ element: Element, minItemCount: UInt = 0) {
+        if contains(element) {
+            if count - 1 >= minItemCount {
+                removeAll { $0 == element }
+            }
+        } else {
+            append(element)
+        }
+    }
 }

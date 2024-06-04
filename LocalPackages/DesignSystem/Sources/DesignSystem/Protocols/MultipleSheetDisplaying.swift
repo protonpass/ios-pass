@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol MultipleSheetDisplaying where Self: Equatable {
+public protocol MultipleSheetsDisplaying where Self: Equatable {
     // This the none displaying modal enum case. Should always be present
     static var none: Self { get }
 
@@ -28,7 +28,7 @@ public protocol MultipleSheetDisplaying where Self: Equatable {
     var shouldDisplay: Bool { get set }
 }
 
-public extension MultipleSheetDisplaying {
+public extension MultipleSheetsDisplaying {
     var shouldDisplay: Bool {
         get {
             switch self {
