@@ -21,6 +21,7 @@
 //
 
 import Combine
+import Core
 import Entities
 import Factory
 import Macro
@@ -69,32 +70,60 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var extraSections: [CustomSection] = []
 
     var showPersonalSection: Bool {
-        !title.isEmpty || !fullName.isEmpty ||
-            !email.isEmpty || !phoneNumber.isEmpty ||
-            !firstName.isEmpty || !middleName.isEmpty ||
-            !lastName.isEmpty || !birthdate.isEmpty ||
-            !gender.isEmpty || !extraPersonalDetails.isEmpty
+        [
+            title,
+            fullName,
+            email,
+            phoneNumber,
+            firstName,
+            middleName,
+            lastName,
+            birthdate,
+            gender,
+            extraPersonalDetails
+        ].hasNonEmptyElement()
     }
 
     var showAddressSection: Bool {
-        !organization.isEmpty || !streetAddress.isEmpty ||
-            !zipOrPostalCode.isEmpty || !city.isEmpty ||
-            !stateOrProvince.isEmpty || !countryOrRegion.isEmpty ||
-            !floor.isEmpty || !county.isEmpty || !extraAddressDetails.isEmpty
+        [
+            organization,
+            streetAddress,
+            zipOrPostalCode,
+            city,
+            stateOrProvince,
+            countryOrRegion,
+            floor,
+            county,
+            extraAddressDetails
+        ].hasNonEmptyElement()
     }
 
     var showContactSection: Bool {
-        !socialSecurityNumber.isEmpty || !passportNumber.isEmpty ||
-            !licenseNumber.isEmpty || !website.isEmpty ||
-            !xHandle.isEmpty || !secondPhoneNumber.isEmpty ||
-            !linkedIn.isEmpty || !reddit.isEmpty || !facebook.isEmpty ||
-            !yahoo.isEmpty || !instagram.isEmpty || !extraContactDetails.isEmpty
+        [
+            socialSecurityNumber,
+            passportNumber,
+            licenseNumber,
+            website,
+            xHandle,
+            secondPhoneNumber,
+            linkedIn,
+            reddit,
+            facebook,
+            yahoo,
+            instagram,
+            extraContactDetails
+        ].hasNonEmptyElement()
     }
 
     var showWordSection: Bool {
-        !company.isEmpty || !jobTitle.isEmpty ||
-            !personalWebsite.isEmpty || !workPhoneNumber.isEmpty ||
-            !workEmail.isEmpty || !extraWorkDetails.isEmpty
+        [
+            company,
+            jobTitle,
+            personalWebsite,
+            workPhoneNumber,
+            workEmail,
+            extraWorkDetails
+        ].hasNonEmptyElement()
     }
 
     var nonEmptyPersonalElement: [String] {
@@ -187,15 +216,5 @@ extension IdentityDetailViewModel {
 
     func copyHiddenText(_ text: String) {
         copyToClipboard(text: text, message: #localized("Hidden text copied"))
-    }
-}
-
-extension [String] {
-    func isLastNonEmptyElement(_ element: Element) -> Bool {
-        guard let lastIndex = lastIndex(where: { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
-        else {
-            return false
-        }
-        return self[lastIndex] == element
     }
 }

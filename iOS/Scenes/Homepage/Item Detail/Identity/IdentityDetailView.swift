@@ -44,50 +44,48 @@ struct IdentityDetailView: View {
 
 private extension IdentityDetailView {
     var mainContainer: some View {
-        VStack {
-            ScrollViewReader { value in
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ItemDetailTitleView(itemContent: viewModel.itemContent,
-                                            vault: viewModel.vault?.vault,
-                                            shouldShowVault: viewModel.shouldShowVault)
-                            .padding(.bottom, 25)
+        ScrollViewReader { value in
+            ScrollView {
+                VStack(spacing: 0) {
+                    ItemDetailTitleView(itemContent: viewModel.itemContent,
+                                        vault: viewModel.vault?.vault,
+                                        shouldShowVault: viewModel.shouldShowVault)
+                        .padding(.bottom, 25)
 
-                        if viewModel.showPersonalSection {
-                            personalDetailSection
-                        }
-
-                        if viewModel.showAddressSection {
-                            addressDetailSection
-                        }
-
-                        if viewModel.showContactSection {
-                            contactDetailSection
-                        }
-
-                        if viewModel.showWordSection {
-                            workDetailSection
-                        }
-
-                        ForEach(viewModel.extraSections) { customSection in
-                            customDetailSection(customSection: customSection)
-                        }
-
-                        ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                                 action: { viewModel.showItemHistory() })
-
-                        ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
-                                                  itemContent: viewModel.itemContent,
-                                                  onCopy: { viewModel.copyToClipboard(text: $0, message: $1) })
-                            .padding(.top, 24)
-                            .id(bottomID)
+                    if viewModel.showPersonalSection {
+                        personalDetailSection
                     }
-                    .padding()
+
+                    if viewModel.showAddressSection {
+                        addressDetailSection
+                    }
+
+                    if viewModel.showContactSection {
+                        contactDetailSection
+                    }
+
+                    if viewModel.showWordSection {
+                        workDetailSection
+                    }
+
+                    ForEach(viewModel.extraSections) { customSection in
+                        customDetailSection(customSection: customSection)
+                    }
+
+                    ItemDetailHistorySection(itemContent: viewModel.itemContent,
+                                             action: { viewModel.showItemHistory() })
+
+                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
+                                              itemContent: viewModel.itemContent,
+                                              onCopy: { viewModel.copyToClipboard(text: $0, message: $1) })
+                        .padding(.top, 24)
+                        .id(bottomID)
                 }
-                .animation(.default, value: viewModel.moreInfoSectionExpanded)
-                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
-                    withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
-                }
+                .padding()
+            }
+            .animation(.default, value: viewModel.moreInfoSectionExpanded)
+            .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
+                withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
@@ -102,82 +100,33 @@ private extension IdentityDetailView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    if !viewModel.firstName.isEmpty {
-                        row(title: IdentityFields.firstName.title, value: viewModel.firstName) {
-                            viewModel.copyValueToClipboard(value: viewModel.firstName,
-                                                           message: IdentityFields.firstName.title)
-                        }
+                    rowWithDivider(title: IdentityFields.firstName.title,
+                                   value: viewModel.firstName,
+                                   fields: viewModel.nonEmptyPersonalElement)
 
-                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.firstName) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.middleName.title,
+                                   value: viewModel.middleName,
+                                   fields: viewModel.nonEmptyPersonalElement)
 
-                    if !viewModel.middleName.isEmpty {
-                        row(title: IdentityFields.middleName.title, value: viewModel.middleName) {
-                            viewModel.copyValueToClipboard(value: viewModel.middleName,
-                                                           message: IdentityFields.middleName.title)
-                        }
+                    rowWithDivider(title: IdentityFields.lastName.title,
+                                   value: viewModel.lastName,
+                                   fields: viewModel.nonEmptyPersonalElement)
 
-                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.middleName) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.fullName.title,
+                                   value: viewModel.fullName,
+                                   fields: viewModel.nonEmptyPersonalElement)
 
-                    if !viewModel.lastName.isEmpty {
-                        row(title: IdentityFields.lastName.title, value: viewModel.lastName) {
-                            viewModel.copyValueToClipboard(value: viewModel.lastName,
-                                                           message: IdentityFields.lastName.title)
-                        }
+                    rowWithDivider(title: IdentityFields.email.title,
+                                   value: viewModel.email,
+                                   fields: viewModel.nonEmptyPersonalElement)
 
-                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.lastName) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.phoneNumber.title,
+                                   value: viewModel.phoneNumber,
+                                   fields: viewModel.nonEmptyPersonalElement)
 
-                    if !viewModel.fullName.isEmpty {
-                        row(title: IdentityFields.fullName.title, value: viewModel.fullName) {
-                            viewModel.copyValueToClipboard(value: viewModel.fullName,
-                                                           message: IdentityFields.fullName.title)
-                        }
-
-                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.fullName) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.email.isEmpty {
-                        row(title: IdentityFields.email.title, value: viewModel.email) {
-                            viewModel.copyValueToClipboard(value: viewModel.email,
-                                                           message: IdentityFields.email.title)
-                        }
-
-                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.email) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.phoneNumber.isEmpty {
-                        row(title: IdentityFields.phoneNumber.title, value: viewModel.phoneNumber) {
-                            viewModel.copyValueToClipboard(value: viewModel.phoneNumber,
-                                                           message: IdentityFields.phoneNumber.title)
-                        }
-
-                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.phoneNumber) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.birthdate.isEmpty {
-                        row(title: IdentityFields.birthdate.title, value: viewModel.birthdate) {
-                            viewModel.copyValueToClipboard(value: viewModel.birthdate,
-                                                           message: IdentityFields.birthdate.title)
-                        }
-
-                        if !viewModel.nonEmptyPersonalElement.isLastNonEmptyElement(viewModel.birthdate) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.birthdate.title,
+                                   value: viewModel.birthdate,
+                                   fields: viewModel.nonEmptyPersonalElement)
 
                     if !viewModel.gender.isEmpty {
                         row(title: IdentityFields.gender.title, value: viewModel.gender) {
@@ -220,80 +169,33 @@ private extension IdentityDetailView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    if !viewModel.organization.isEmpty {
-                        row(title: IdentityFields.organization.title, value: viewModel.organization) {
-                            viewModel.copyValueToClipboard(value: viewModel.organization,
-                                                           message: IdentityFields.organization.title)
-                        }
-                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.organization) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.organization.title,
+                                   value: viewModel.organization,
+                                   fields: viewModel.nonEmptyAddressElement)
 
-                    if !viewModel.streetAddress.isEmpty {
-                        row(title: IdentityFields.streetAddress.title, value: viewModel.streetAddress) {
-                            viewModel.copyValueToClipboard(value: viewModel.streetAddress,
-                                                           message: IdentityFields.streetAddress.title)
-                        }
+                    rowWithDivider(title: IdentityFields.streetAddress.title,
+                                   value: viewModel.streetAddress,
+                                   fields: viewModel.nonEmptyAddressElement)
 
-                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.streetAddress) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.zipOrPostalCode.title,
+                                   value: viewModel.zipOrPostalCode,
+                                   fields: viewModel.nonEmptyAddressElement)
 
-                    if !viewModel.zipOrPostalCode.isEmpty {
-                        row(title: IdentityFields.zipOrPostalCode.title, value: viewModel.zipOrPostalCode) {
-                            viewModel.copyValueToClipboard(value: viewModel.zipOrPostalCode,
-                                                           message: IdentityFields.zipOrPostalCode.title)
-                        }
-                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.zipOrPostalCode) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.city.title,
+                                   value: viewModel.city,
+                                   fields: viewModel.nonEmptyAddressElement)
 
-                    if !viewModel.city.isEmpty {
-                        row(title: IdentityFields.city.title, value: viewModel.city) {
-                            viewModel.copyValueToClipboard(value: viewModel.city,
-                                                           message: IdentityFields.city.title)
-                        }
+                    rowWithDivider(title: IdentityFields.stateOrProvince.title,
+                                   value: viewModel.stateOrProvince,
+                                   fields: viewModel.nonEmptyAddressElement)
 
-                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.city) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.countryOrRegion.title,
+                                   value: viewModel.countryOrRegion,
+                                   fields: viewModel.nonEmptyAddressElement)
 
-                    if !viewModel.stateOrProvince.isEmpty {
-                        row(title: IdentityFields.stateOrProvince.title, value: viewModel.stateOrProvince) {
-                            viewModel.copyValueToClipboard(value: viewModel.stateOrProvince,
-                                                           message: IdentityFields.stateOrProvince.title)
-                        }
-
-                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.stateOrProvince) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.countryOrRegion.isEmpty {
-                        row(title: IdentityFields.countryOrRegion.title, value: viewModel.countryOrRegion) {
-                            viewModel.copyValueToClipboard(value: viewModel.countryOrRegion,
-                                                           message: IdentityFields.countryOrRegion.title)
-                        }
-
-                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.countryOrRegion) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.floor.isEmpty {
-                        row(title: IdentityFields.floor.title, value: viewModel.floor) {
-                            viewModel.copyValueToClipboard(value: viewModel.floor,
-                                                           message: IdentityFields.floor.title)
-                        }
-
-                        if !viewModel.nonEmptyAddressElement.isLastNonEmptyElement(viewModel.floor) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.floor.title,
+                                   value: viewModel.floor,
+                                   fields: viewModel.nonEmptyAddressElement)
 
                     if !viewModel.county.isEmpty {
                         row(title: IdentityFields.county.title, value: viewModel.county) {
@@ -337,117 +239,45 @@ private extension IdentityDetailView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    if !viewModel.socialSecurityNumber.isEmpty {
-                        row(title: IdentityFields.socialSecurityNumber.title,
-                            value: viewModel.socialSecurityNumber) {
-                                viewModel.copyValueToClipboard(value: viewModel.socialSecurityNumber,
-                                                               message: IdentityFields.socialSecurityNumber.title)
-                            }
+                    rowWithDivider(title: IdentityFields.socialSecurityNumber.title,
+                                   value: viewModel.socialSecurityNumber,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                        if !viewModel.nonEmptyContactElement
-                            .isLastNonEmptyElement(viewModel.socialSecurityNumber) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.passportNumber.title,
+                                   value: viewModel.passportNumber,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                    if !viewModel.passportNumber.isEmpty {
-                        row(title: IdentityFields.passportNumber.title, value: viewModel.passportNumber) {
-                            viewModel.copyValueToClipboard(value: viewModel.passportNumber,
-                                                           message: IdentityFields.passportNumber.title)
-                        }
+                    rowWithDivider(title: IdentityFields.licenseNumber.title,
+                                   value: viewModel.licenseNumber,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.passportNumber) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.website.title,
+                                   value: viewModel.website,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                    if !viewModel.licenseNumber.isEmpty {
-                        row(title: IdentityFields.licenseNumber.title, value: viewModel.licenseNumber) {
-                            viewModel.copyValueToClipboard(value: viewModel.licenseNumber,
-                                                           message: IdentityFields.licenseNumber.title)
-                        }
+                    rowWithDivider(title: IdentityFields.xHandle.title,
+                                   value: viewModel.xHandle,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.licenseNumber) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.secondPhoneNumber.title,
+                                   value: viewModel.secondPhoneNumber,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                    if !viewModel.website.isEmpty {
-                        row(title: IdentityFields.website.title, value: viewModel.website) {
-                            viewModel.copyValueToClipboard(value: viewModel.website,
-                                                           message: IdentityFields.website.title)
-                        }
+                    rowWithDivider(title: IdentityFields.linkedIn.title,
+                                   value: viewModel.linkedIn,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.website) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.reddit.title,
+                                   value: viewModel.reddit,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                    if !viewModel.xHandle.isEmpty {
-                        row(title: IdentityFields.xHandle.title, value: viewModel.xHandle) {
-                            viewModel.copyValueToClipboard(value: viewModel.xHandle,
-                                                           message: IdentityFields.xHandle.title)
-                        }
+                    rowWithDivider(title: IdentityFields.facebook.title,
+                                   value: viewModel.facebook,
+                                   fields: viewModel.nonEmptyContactElement)
 
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.xHandle) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.secondPhoneNumber.isEmpty {
-                        row(title: IdentityFields.secondPhoneNumber.title, value: viewModel.secondPhoneNumber) {
-                            viewModel.copyValueToClipboard(value: viewModel.secondPhoneNumber,
-                                                           message: IdentityFields.secondPhoneNumber.title)
-                        }
-
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.secondPhoneNumber) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.linkedIn.isEmpty {
-                        row(title: IdentityFields.linkedIn.title, value: viewModel.linkedIn) {
-                            viewModel.copyValueToClipboard(value: viewModel.linkedIn,
-                                                           message: IdentityFields.linkedIn.title)
-                        }
-
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.linkedIn) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.reddit.isEmpty {
-                        row(title: IdentityFields.reddit.title, value: viewModel.reddit) {
-                            viewModel.copyValueToClipboard(value: viewModel.reddit,
-                                                           message: IdentityFields.reddit.title)
-                        }
-
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.reddit) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.facebook.isEmpty {
-                        row(title: IdentityFields.facebook.title, value: viewModel.facebook) {
-                            viewModel.copyValueToClipboard(value: viewModel.facebook,
-                                                           message: IdentityFields.facebook.title)
-                        }
-
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.facebook) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.yahoo.isEmpty {
-                        row(title: IdentityFields.yahoo.title, value: viewModel.yahoo) {
-                            viewModel.copyValueToClipboard(value: viewModel.yahoo,
-                                                           message: IdentityFields.yahoo.title)
-                        }
-
-                        if !viewModel.nonEmptyContactElement.isLastNonEmptyElement(viewModel.yahoo) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.yahoo.title,
+                                   value: viewModel.yahoo,
+                                   fields: viewModel.nonEmptyContactElement)
 
                     if !viewModel.instagram.isEmpty {
                         row(title: IdentityFields.instagram.title, value: viewModel.instagram) {
@@ -491,49 +321,21 @@ private extension IdentityDetailView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    if !viewModel.company.isEmpty {
-                        row(title: IdentityFields.company.title, value: viewModel.company) {
-                            viewModel.copyValueToClipboard(value: viewModel.company,
-                                                           message: IdentityFields.company.title)
-                        }
+                    rowWithDivider(title: IdentityFields.company.title,
+                                   value: viewModel.company,
+                                   fields: viewModel.nonEmptyWorkElement)
 
-                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.company) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.jobTitle.title,
+                                   value: viewModel.jobTitle,
+                                   fields: viewModel.nonEmptyWorkElement)
 
-                    if !viewModel.jobTitle.isEmpty {
-                        row(title: IdentityFields.jobTitle.title, value: viewModel.jobTitle) {
-                            viewModel.copyValueToClipboard(value: viewModel.jobTitle,
-                                                           message: IdentityFields.jobTitle.title)
-                        }
+                    rowWithDivider(title: IdentityFields.personalWebsite.title,
+                                   value: viewModel.personalWebsite,
+                                   fields: viewModel.nonEmptyWorkElement)
 
-                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.jobTitle) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.personalWebsite.isEmpty {
-                        row(title: IdentityFields.personalWebsite.title, value: viewModel.personalWebsite) {
-                            viewModel.copyValueToClipboard(value: viewModel.personalWebsite,
-                                                           message: IdentityFields.personalWebsite.title)
-                        }
-
-                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.personalWebsite) {
-                            PassSectionDivider()
-                        }
-                    }
-
-                    if !viewModel.workPhoneNumber.isEmpty {
-                        row(title: IdentityFields.workPhoneNumber.title, value: viewModel.workPhoneNumber) {
-                            viewModel.copyValueToClipboard(value: viewModel.workPhoneNumber,
-                                                           message: IdentityFields.workPhoneNumber.title)
-                        }
-
-                        if !viewModel.nonEmptyWorkElement.isLastNonEmptyElement(viewModel.workPhoneNumber) {
-                            PassSectionDivider()
-                        }
-                    }
+                    rowWithDivider(title: IdentityFields.workPhoneNumber.title,
+                                   value: viewModel.workPhoneNumber,
+                                   fields: viewModel.nonEmptyWorkElement)
 
                     if !viewModel.workEmail.isEmpty {
                         row(title: IdentityFields.workEmail.title, value: viewModel.workEmail) {
@@ -613,6 +415,22 @@ private extension IdentityDetailView {
         .contextMenu {
             Button(action: onTap) {
                 Text("Copy")
+            }
+        }
+    }
+
+    @ViewBuilder
+    func rowWithDivider(title: String, value: String, fields: [String]) -> some View {
+        if !value.isEmpty {
+            row(title: title, value: value) {
+                viewModel.copyValueToClipboard(value: value,
+                                               message: title)
+            }
+
+            if !fields.isLastNonEmptyElement(value,
+                                             isEmpty: { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                                             }) {
+                PassSectionDivider()
             }
         }
     }

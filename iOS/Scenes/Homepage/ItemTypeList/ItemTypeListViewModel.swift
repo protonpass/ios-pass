@@ -28,7 +28,7 @@ import ProtonCoreUIFoundations
 import UIKit
 
 enum ItemType: CaseIterable {
-    case login, alias, creditCard, note, password, identity
+    case login, alias, note, password, creditCard, identity
 }
 
 extension ItemContentType {
