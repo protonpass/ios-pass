@@ -64,7 +64,7 @@ private extension IdentityDetailView {
                         contactDetailSection
                     }
 
-                    if viewModel.showWordSection {
+                    if viewModel.showWorkSection {
                         workDetailSection
                     }
 
@@ -377,17 +377,24 @@ private extension IdentityDetailView {
 private extension IdentityDetailView {
     func customDetailSection(customSection: CustomSection) -> some View {
         Section {
-            CustomFieldSections(itemContentType: viewModel.itemContent.type,
-                                uiModels: customSection.content
-                                    .map(\.toCustomFieldUiModel),
-                                isFreeUser: viewModel.isFreeUser,
-                                showIcon: false,
-                                onSelectText: { viewModel.copyValueToClipboard(value: $0,
-                                                                               message: #localized("Custom field"))
-                                },
-                                onSelectHiddenText: { viewModel.copyHiddenText($0) },
-                                onSelectTotpToken: { viewModel.copyTotpToken($0) },
-                                onUpgrade: { viewModel.upgrade() })
+            if customSection.content.isEmpty {
+                Text("Empty section")
+                    .font(.callout.italic())
+                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                                    uiModels: customSection.content
+                                        .map(\.toCustomFieldUiModel),
+                                    isFreeUser: viewModel.isFreeUser,
+                                    showIcon: false,
+                                    onSelectText: { viewModel.copyValueToClipboard(value: $0,
+                                                                                   message: #localized("Custom field"))
+                                    },
+                                    onSelectHiddenText: { viewModel.copyHiddenText($0) },
+                                    onSelectTotpToken: { viewModel.copyTotpToken($0) },
+                                    onUpgrade: { viewModel.upgrade() })
+            }
         } header: {
             Text(customSection.title)
                 .foregroundStyle(PassColor.textWeak.toColor)
