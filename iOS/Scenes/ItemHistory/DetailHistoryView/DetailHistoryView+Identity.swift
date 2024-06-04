@@ -51,74 +51,51 @@ private extension DetailHistoryView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    row(title: IdentityFields.firstName.localisedKeyTitle,
+                    row(title: IdentityFields.firstName.title,
                         value: item.firstName,
-                        element: \.identityItem?.firstName) {
-                            viewModel.copyValueToClipboard(value: item.firstName,
-                                                           message: IdentityFields.firstName.title)
-                        }
+                        element: \.identityItem?.firstName)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.middleName.localisedKeyTitle,
+                    row(title: IdentityFields.middleName.title,
                         value: item.middleName,
-                        element: \.identityItem?.middleName) {
-                            viewModel.copyValueToClipboard(value: item.middleName,
-                                                           message: IdentityFields.middleName.title)
-                        }
+                        element: \.identityItem?.middleName)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.lastName.localisedKeyTitle,
+                    row(title: IdentityFields.lastName.title,
                         value: item.lastName,
-                        element: \.identityItem?.lastName) {
-                            viewModel.copyValueToClipboard(value: item.lastName,
-                                                           message: IdentityFields.lastName.title)
-                        }
+                        element: \.identityItem?.lastName)
+
                     PassSectionDivider()
 
-                    row(title: IdentityFields.fullName.localisedKeyTitle,
+                    row(title: IdentityFields.fullName.title,
                         value: item.fullName,
-                        element: \.identityItem?.lastName) {
-                            viewModel.copyValueToClipboard(value: item.fullName,
-                                                           message: IdentityFields.fullName.title)
-                        }
+                        element: \.identityItem?.fullName)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.email.localisedKeyTitle,
+                    row(title: IdentityFields.email.title,
                         value: item.email,
-                        element: \.identityItem?.email) {
-                            viewModel.copyValueToClipboard(value: item.email,
-                                                           message: IdentityFields.email.title)
-                        }
+                        element: \.identityItem?.email)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.phoneNumber.localisedKeyTitle,
+                    row(title: IdentityFields.phoneNumber.title,
                         value: item.phoneNumber,
-                        element: \.identityItem?.phoneNumber) {
-                            viewModel.copyValueToClipboard(value: item.phoneNumber,
-                                                           message: IdentityFields.phoneNumber.title)
-                        }
+                        element: \.identityItem?.phoneNumber)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.birthdate.localisedKeyTitle,
+                    row(title: IdentityFields.birthdate.title,
                         value: item.birthdate,
-                        element: \.identityItem?.birthdate) {
-                            viewModel.copyValueToClipboard(value: item.birthdate,
-                                                           message: IdentityFields.birthdate.title)
-                        }
+                        element: \.identityItem?.birthdate)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.gender.localisedKeyTitle,
+                    row(title: IdentityFields.gender.title,
                         value: item.gender,
-                        element: \.identityItem?.gender) {
-                            viewModel.copyValueToClipboard(value: item.gender,
-                                                           message: IdentityFields.gender.title)
-                        }
+                        element: \.identityItem?.gender)
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
@@ -126,10 +103,7 @@ private extension DetailHistoryView {
                              border: borderColor(for: \.identityItem?.extraPersonalDetails))
             }
         } header: {
-            Text("Personal details")
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, DesignConstant.sectionPadding)
+            sectionTitle(title: "Personal details")
         }
     }
 }
@@ -139,75 +113,51 @@ private extension DetailHistoryView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    row(title: IdentityFields.organization.localisedKeyTitle,
+                    row(title: IdentityFields.organization.title,
                         value: item.organization,
-                        element: \.identityItem?.organization) {
-                            viewModel.copyValueToClipboard(value: item.organization,
-                                                           message: IdentityFields.organization.title)
-                        }
+                        element: \.identityItem?.organization)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.streetAddress.localisedKeyTitle,
+                    row(title: IdentityFields.streetAddress.title,
                         value: item.streetAddress,
-                        element: \.identityItem?.streetAddress) {
-                            viewModel.copyValueToClipboard(value: item.streetAddress,
-                                                           message: IdentityFields.streetAddress.title)
-                        }
+                        element: \.identityItem?.streetAddress)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.zipOrPostalCode.localisedKeyTitle,
+                    row(title: IdentityFields.zipOrPostalCode.title,
                         value: item.zipOrPostalCode,
-                        element: \.identityItem?.zipOrPostalCode) {
-                            viewModel.copyValueToClipboard(value: item.zipOrPostalCode,
-                                                           message: IdentityFields.zipOrPostalCode.title)
-                        }
+                        element: \.identityItem?.zipOrPostalCode)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.city.localisedKeyTitle,
+                    row(title: IdentityFields.city.title,
                         value: item.city,
-                        element: \.identityItem?.city) {
-                            viewModel.copyValueToClipboard(value: item.city,
-                                                           message: IdentityFields.city.title)
-                        }
+                        element: \.identityItem?.city)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.stateOrProvince.localisedKeyTitle,
+                    row(title: IdentityFields.stateOrProvince.title,
                         value: item.stateOrProvince,
-                        element: \.identityItem?.stateOrProvince) {
-                            viewModel.copyValueToClipboard(value: item.stateOrProvince,
-                                                           message: IdentityFields.stateOrProvince.title)
-                        }
+                        element: \.identityItem?.stateOrProvince)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.countryOrRegion.localisedKeyTitle,
+                    row(title: IdentityFields.countryOrRegion.title,
                         value: item.countryOrRegion,
-                        element: \.identityItem?.countryOrRegion) {
-                            viewModel.copyValueToClipboard(value: item.countryOrRegion,
-                                                           message: IdentityFields.countryOrRegion.title)
-                        }
+                        element: \.identityItem?.countryOrRegion)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.floor.localisedKeyTitle,
+                    row(title: IdentityFields.floor.title,
                         value: item.floor,
-                        element: \.identityItem?.floor) {
-                            viewModel.copyValueToClipboard(value: item.floor,
-                                                           message: IdentityFields.floor.title)
-                        }
+                        element: \.identityItem?.floor)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.county.localisedKeyTitle,
+                    row(title: IdentityFields.county.title,
                         value: item.county,
-                        element: \.identityItem?.county) {
-                            viewModel.copyValueToClipboard(value: item.county,
-                                                           message: IdentityFields.county.title)
-                        }
+                        element: \.identityItem?.county)
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
@@ -215,11 +165,7 @@ private extension DetailHistoryView {
                              border: borderColor(for: \.identityItem?.extraAddressDetails))
             }
         } header: {
-            Text("Address details")
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, DesignConstant.sectionPadding)
-                .padding(.vertical, DesignConstant.sectionPadding)
+            sectionTitle(title: "Address details")
         }
     }
 }
@@ -229,102 +175,69 @@ private extension DetailHistoryView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    row(title: IdentityFields.socialSecurityNumber.localisedKeyTitle,
+                    row(title: IdentityFields.socialSecurityNumber.title,
                         value: item.socialSecurityNumber,
-                        element: \.identityItem?.socialSecurityNumber) {
-                            viewModel.copyValueToClipboard(value: item.socialSecurityNumber,
-                                                           message: IdentityFields.socialSecurityNumber.title)
-                        }
+                        element: \.identityItem?.socialSecurityNumber)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.passportNumber.localisedKeyTitle,
+                    row(title: IdentityFields.passportNumber.title,
                         value: item.passportNumber,
-                        element: \.identityItem?.passportNumber) {
-                            viewModel.copyValueToClipboard(value: item.passportNumber,
-                                                           message: IdentityFields.passportNumber.title)
-                        }
+                        element: \.identityItem?.passportNumber)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.licenseNumber.localisedKeyTitle,
+                    row(title: IdentityFields.licenseNumber.title,
                         value: item.licenseNumber,
-                        element: \.identityItem?.licenseNumber) {
-                            viewModel.copyValueToClipboard(value: item.licenseNumber,
-                                                           message: IdentityFields.licenseNumber.title)
-                        }
+                        element: \.identityItem?.licenseNumber)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.website.localisedKeyTitle,
+                    row(title: IdentityFields.website.title,
                         value: item.website,
-                        element: \.identityItem?.website) {
-                            viewModel.copyValueToClipboard(value: item.website,
-                                                           message: IdentityFields.website.title)
-                        }
+                        element: \.identityItem?.website)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.xHandle.localisedKeyTitle,
+                    row(title: IdentityFields.xHandle.title,
                         value: item.xHandle,
-                        element: \.identityItem?.xHandle) {
-                            viewModel.copyValueToClipboard(value: item.xHandle,
-                                                           message: IdentityFields.xHandle.title)
-                        }
+                        element: \.identityItem?.xHandle)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.secondPhoneNumber.localisedKeyTitle,
+                    row(title: IdentityFields.secondPhoneNumber.title,
                         value: item.secondPhoneNumber,
-                        element: \.identityItem?.secondPhoneNumber) {
-                            viewModel.copyValueToClipboard(value: item.secondPhoneNumber,
-                                                           message: IdentityFields.secondPhoneNumber.title)
-                        }
+                        element: \.identityItem?.secondPhoneNumber)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.linkedIn.localisedKeyTitle,
+                    row(title: IdentityFields.linkedIn.title,
                         value: item.linkedIn,
-                        element: \.identityItem?.linkedIn) {
-                            viewModel.copyValueToClipboard(value: item.linkedIn,
-                                                           message: IdentityFields.linkedIn.title)
-                        }
+                        element: \.identityItem?.linkedIn)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.reddit.localisedKeyTitle,
+                    row(title: IdentityFields.reddit.title,
                         value: item.reddit,
-                        element: \.identityItem?.reddit) {
-                            viewModel.copyValueToClipboard(value: item.reddit,
-                                                           message: IdentityFields.reddit.title)
-                        }
+                        element: \.identityItem?.reddit)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.facebook.localisedKeyTitle,
+                    row(title: IdentityFields.facebook.title,
                         value: item.facebook,
-                        element: \.identityItem?.facebook) {
-                            viewModel.copyValueToClipboard(value: item.facebook,
-                                                           message: IdentityFields.facebook.title)
-                        }
+                        element: \.identityItem?.facebook)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.yahoo.localisedKeyTitle,
+                    row(title: IdentityFields.yahoo.title,
                         value: item.yahoo,
-                        element: \.identityItem?.yahoo) {
-                            viewModel.copyValueToClipboard(value: item.yahoo,
-                                                           message: IdentityFields.yahoo.title)
-                        }
+                        element: \.identityItem?.yahoo)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.instagram.localisedKeyTitle,
+                    row(title: IdentityFields.instagram.title,
                         value: item.instagram,
-                        element: \.identityItem?.instagram) {
-                            viewModel.copyValueToClipboard(value: item.instagram,
-                                                           message: IdentityFields.instagram.title)
-                        }
+                        element: \.identityItem?.instagram)
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
@@ -332,11 +245,7 @@ private extension DetailHistoryView {
                              border: borderColor(for: \.identityItem?.extraContactDetails))
             }
         } header: {
-            Text("Contact details")
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, DesignConstant.sectionPadding)
-                .padding(.vertical, DesignConstant.sectionPadding)
+            sectionTitle(title: "Contact details")
         }
     }
 }
@@ -346,48 +255,33 @@ private extension DetailHistoryView {
         Section {
             VStack(alignment: .leading) {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    row(title: IdentityFields.company.localisedKeyTitle,
+                    row(title: IdentityFields.company.title,
                         value: item.company,
-                        element: \.identityItem?.company) {
-                            viewModel.copyValueToClipboard(value: item.company,
-                                                           message: IdentityFields.company.title)
-                        }
+                        element: \.identityItem?.company)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.jobTitle.localisedKeyTitle,
+                    row(title: IdentityFields.jobTitle.title,
                         value: item.jobTitle,
-                        element: \.identityItem?.jobTitle) {
-                            viewModel.copyValueToClipboard(value: item.jobTitle,
-                                                           message: IdentityFields.jobTitle.title)
-                        }
+                        element: \.identityItem?.jobTitle)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.personalWebsite.localisedKeyTitle,
+                    row(title: IdentityFields.personalWebsite.title,
                         value: item.personalWebsite,
-                        element: \.identityItem?.personalWebsite) {
-                            viewModel.copyValueToClipboard(value: item.personalWebsite,
-                                                           message: IdentityFields.personalWebsite.title)
-                        }
+                        element: \.identityItem?.personalWebsite)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.workPhoneNumber.localisedKeyTitle,
+                    row(title: IdentityFields.workPhoneNumber.title,
                         value: item.workPhoneNumber,
-                        element: \.identityItem?.workPhoneNumber) {
-                            viewModel.copyValueToClipboard(value: item.workPhoneNumber,
-                                                           message: IdentityFields.workPhoneNumber.title)
-                        }
+                        element: \.identityItem?.workPhoneNumber)
 
                     PassSectionDivider()
 
-                    row(title: IdentityFields.workEmail.localisedKeyTitle,
+                    row(title: IdentityFields.workEmail.title,
                         value: item.workEmail,
-                        element: \.identityItem?.workEmail) {
-                            viewModel.copyValueToClipboard(value: item.workEmail,
-                                                           message: IdentityFields.workEmail.title)
-                        }
+                        element: \.identityItem?.workEmail)
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
                 .roundedEditableSection()
@@ -395,11 +289,7 @@ private extension DetailHistoryView {
                              border: borderColor(for: \.identityItem?.extraWorkDetails))
             }
         } header: {
-            Text("Work details")
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, DesignConstant.sectionPadding)
-                .padding(.vertical, DesignConstant.sectionPadding)
+            sectionTitle(title: "Work details")
         }
     }
 }
@@ -420,10 +310,9 @@ private extension DetailHistoryView {
 }
 
 private extension DetailHistoryView {
-    func row(title: LocalizedStringKey,
+    func row(title: String,
              value: String,
-             element: KeyPath<ItemContent, some Hashable>,
-             onTap: @escaping () -> Void) -> some View {
+             element: KeyPath<ItemContent, some Hashable>) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
@@ -434,7 +323,10 @@ private extension DetailHistoryView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
-            .onTapGesture(perform: onTap)
+            .onTapGesture {
+                viewModel.copyValueToClipboard(value: value,
+                                               message: title)
+            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -468,5 +360,13 @@ private extension DetailHistoryView {
     var customSectionsColor: UIColor {
         viewModel.currentRevision.identityItem?.extraSections != viewModel.pastRevision.identityItem?
             .extraSections ? PassColor.signalWarning : PassColor.inputBorderNorm
+    }
+
+    func sectionTitle(title: LocalizedStringKey) -> some View {
+        Text(title)
+            .foregroundStyle(PassColor.textWeak.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, DesignConstant.sectionPadding)
+            .padding(.vertical, DesignConstant.sectionPadding)
     }
 }

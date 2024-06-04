@@ -171,7 +171,7 @@ extension ItemContentType {
         case .note:
             #localized("Create a note")
         case .identity:
-            #localized("Create a identity")
+            #localized("Create an identity")
         }
     }
 
