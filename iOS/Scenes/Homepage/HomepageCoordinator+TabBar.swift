@@ -65,7 +65,8 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.medium, parentViewController: rootViewController)
+        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 

@@ -35,7 +35,7 @@ private enum SectionsSheetStates: MultipleSheetsDisplaying {
     case contact(CreateEditIdentitySection)
     case work(CreateEditIdentitySection)
 
-    var title: LocalizedStringKey {
+    var title: LocalizedStringKey? {
         switch self {
         case .personal:
             "Personal details"
@@ -46,7 +46,7 @@ private enum SectionsSheetStates: MultipleSheetsDisplaying {
         case .work:
             "Work details"
         default:
-            ""
+            nil
         }
     }
 
@@ -356,6 +356,7 @@ private extension CreateEditIdentityView {
                                title: "Add more",
                                titleColor: viewModel.itemContentType().normMajor2Color,
                                backgroundColor: viewModel.itemContentType().normMinor1Color,
+                               fontWeight: .bold,
                                maxWidth: 140) {
                 viewModel.addCustomField(to: section)
             }
@@ -692,7 +693,6 @@ private extension CreateEditIdentityView {
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-//            .animation(.default, value: viewModel.username.isEmpty)
         .animation(.default, value: focusedField)
     }
 
@@ -705,9 +705,11 @@ private extension CreateEditIdentityView {
                 .frame(maxWidth: .infinity)
                 .padding(.top, DesignConstant.sectionPadding)
 
-            Text(sheetState.title)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity)
+            if let title = sheetState.title {
+                Text(title)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity)
+            }
 
             switch sheetState {
             case .personal:
