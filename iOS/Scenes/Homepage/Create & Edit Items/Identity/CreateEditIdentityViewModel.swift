@@ -36,18 +36,32 @@ enum BaseIdentitySection: String, CaseIterable {
 
     var createEditIdentitySection: CreateEditIdentitySection {
         CreateEditIdentitySection(id: rawValue,
-                                  title: rawValue,
+                                  title: title,
                                   type: self,
                                   isCollapsed: self == .contact || self == .workDetail,
                                   isCustom: false,
                                   content: [])
     }
+    
+    private var title: String {
+        switch self {
+        case .personalDetails:
+            #localized("Personal details")
+        case .address:
+            #localized("Address details")
+        case .contact:
+            #localized("Contact details")
+        case .workDetail:
+            #localized("Work details")
+        case .custom:
+            ""
+        }
+    }
 }
 
 extension CustomSection {
     var createEditIdentitySection: CreateEditIdentitySection {
-        CreateEditIdentitySection(id: UUID().uuidString,
-                                  title: title,
+        CreateEditIdentitySection(title: title,
                                   type: .custom,
                                   isCollapsed: true,
                                   isCustom: true,
@@ -55,9 +69,8 @@ extension CustomSection {
     }
 }
 
-@Copyable
 struct CreateEditIdentitySection: Hashable, Identifiable {
-    let id: String
+    var id: String = UUID().uuidString
     let title: String
     let type: BaseIdentitySection
     let isCollapsed: Bool
@@ -65,12 +78,52 @@ struct CreateEditIdentitySection: Hashable, Identifiable {
     var content: [CustomFieldUiModel]
 
     static func baseCustomSection(title: String) -> CreateEditIdentitySection {
-        CreateEditIdentitySection(id: UUID().uuidString,
-                                  title: title,
+        CreateEditIdentitySection(title: title,
                                   type: .custom,
                                   isCollapsed: false,
                                   isCustom: true,
                                   content: [])
+    }
+
+    func copy(content: [CustomFieldUiModel]) -> CreateEditIdentitySection {
+        CreateEditIdentitySection(id: id,
+                                  title: title,
+                                  type: type,
+                                  isCollapsed: isCollapsed,
+                                  isCustom: isCustom,
+                                  content: content)
+    }
+
+    func copy(title: String) -> CreateEditIdentitySection {
+        CreateEditIdentitySection(id: id,
+                                  title: title,
+                                  type: type,
+                                  isCollapsed: isCollapsed,
+                                  isCustom: isCustom,
+                                  content: content)
+    }
+
+    func copy(isCollapsed: Bool) -> CreateEditIdentitySection {
+        CreateEditIdentitySection(id: id,
+                                  title: title,
+                                  type: type,
+                                  isCollapsed: isCollapsed,
+                                  isCustom: isCustom,
+                                  content: content)
+    }
+}
+
+struct HiddenStringValue: Sendable {
+    var value: String
+    var shouldShow: Bool
+
+    init(value: String) {
+        self.value = value
+        shouldShow = !value.isEmpty
+    }
+
+    static var `default`: Self {
+        .init(value: "")
     }
 }
 
@@ -85,11 +138,11 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     @Published var phoneNumber = ""
 
     /// Additional
-    @Published var firstName = (value: "", shouldShow: false)
-    @Published var middleName = (value: "", shouldShow: false)
-    @Published var lastName = (value: "", shouldShow: false)
-    @Published var birthdate = (value: "", shouldShow: false)
-    @Published var gender = (value: "", shouldShow: false)
+    @Published var firstName: HiddenStringValue = .default
+    @Published var middleName: HiddenStringValue = .default
+    @Published var lastName: HiddenStringValue = .default
+    @Published var birthdate: HiddenStringValue = .default
+    @Published var gender: HiddenStringValue = .default
     @Published var extraPersonalDetails: [CustomFieldUiModel] = []
 
     /// Address details
@@ -102,8 +155,8 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     @Published var countryOrRegion = ""
 
     /// Additional
-    @Published var floor = (value: "", shouldShow: false)
-    @Published var county = (value: "", shouldShow: false)
+    @Published var floor: HiddenStringValue = .default
+    @Published var county: HiddenStringValue = .default
     @Published var extraAddressDetails: [CustomFieldUiModel] = []
 
     /// Contact details
@@ -116,11 +169,11 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     @Published var secondPhoneNumber = ""
 
     /// Additional
-    @Published var linkedIn = (value: "", shouldShow: false)
-    @Published var reddit = (value: "", shouldShow: false)
-    @Published var facebook = (value: "", shouldShow: false)
-    @Published var yahoo = (value: "", shouldShow: false)
-    @Published var instagram = (value: "", shouldShow: false)
+    @Published var linkedIn: HiddenStringValue = .default
+    @Published var reddit: HiddenStringValue = .default
+    @Published var facebook: HiddenStringValue = .default
+    @Published var yahoo: HiddenStringValue = .default
+    @Published var instagram: HiddenStringValue = .default
     @Published var extraContactDetails: [CustomFieldUiModel] = []
 
     /// Work details
@@ -129,9 +182,9 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     @Published var jobTitle = ""
 
     /// Additional
-    @Published var personalWebsite = (value: "", shouldShow: false)
-    @Published var workPhoneNumber = (value: "", shouldShow: false)
-    @Published var workEmail = (value: "", shouldShow: false)
+    @Published var personalWebsite: HiddenStringValue = .default
+    @Published var workPhoneNumber: HiddenStringValue = .default
+    @Published var workEmail: HiddenStringValue = .default
     @Published var extraWorkDetails: [CustomFieldUiModel] = []
 
     @Published var sections = [CreateEditIdentitySection]()
@@ -255,11 +308,11 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             fullName = data.fullName
             email = data.email
             phoneNumber = data.phoneNumber
-            firstName = (value: data.firstName, shouldShow: !data.firstName.isEmpty)
-            middleName = (value: data.middleName, shouldShow: !data.middleName.isEmpty)
-            lastName = (value: data.lastName, shouldShow: !data.lastName.isEmpty)
-            birthdate = (value: data.birthdate, shouldShow: !data.birthdate.isEmpty)
-            gender = (value: data.gender, shouldShow: !data.gender.isEmpty)
+            firstName = .init(value: data.firstName)
+            middleName = .init(value: data.middleName)
+            lastName = .init(value: data.lastName)
+            birthdate = .init(value: data.birthdate)
+            gender = .init(value: data.gender)
             extraPersonalDetails = data.extraPersonalDetails.map { CustomFieldUiModel(customField: $0) }
             organization = data.organization
             streetAddress = data.streetAddress
@@ -267,8 +320,8 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             city = data.city
             stateOrProvince = data.stateOrProvince
             countryOrRegion = data.countryOrRegion
-            floor = (value: data.floor, shouldShow: !data.floor.isEmpty)
-            county = (value: data.county, shouldShow: !data.county.isEmpty)
+            floor = .init(value: data.floor)
+            county = .init(value: data.county)
             extraAddressDetails = data.extraAddressDetails.map { CustomFieldUiModel(customField: $0) }
             socialSecurityNumber = data.socialSecurityNumber
             passportNumber = data.passportNumber
@@ -276,18 +329,18 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             website = data.website
             xHandle = data.xHandle
             secondPhoneNumber = data.secondPhoneNumber
-            linkedIn = (value: data.linkedIn, shouldShow: !data.linkedIn.isEmpty)
-            reddit = (value: data.reddit, shouldShow: !data.reddit.isEmpty)
-            facebook = (value: data.facebook, shouldShow: !data.facebook.isEmpty)
-            yahoo = (value: data.yahoo, shouldShow: !data.yahoo.isEmpty)
-            instagram = (value: data.instagram, shouldShow: !data.instagram.isEmpty)
+            linkedIn = .init(value: data.linkedIn)
+            reddit = .init(value: data.reddit)
+            facebook = .init(value: data.facebook)
+            yahoo = .init(value: data.yahoo)
+            instagram = .init(value: data.instagram)
             extraContactDetails = data.extraContactDetails.map { CustomFieldUiModel(customField: $0) }
             company = data.company
             jobTitle = data.jobTitle
 
-            personalWebsite = (value: data.personalWebsite, shouldShow: !data.personalWebsite.isEmpty)
-            workPhoneNumber = (value: data.workPhoneNumber, shouldShow: !data.workPhoneNumber.isEmpty)
-            workEmail = (value: data.workEmail, shouldShow: !data.workEmail.isEmpty)
+            personalWebsite = .init(value: data.personalWebsite)
+            workPhoneNumber = .init(value: data.workPhoneNumber)
+            workEmail = .init(value: data.workEmail)
             extraWorkDetails = data.extraWorkDetails.map { CustomFieldUiModel(customField: $0) }
             sections.append(contentsOf: data.extraSections.toCreateEditIdentitySections)
         case .create:
@@ -425,13 +478,13 @@ private extension CreateEditIdentityViewModel {
     }
 }
 
-extension [CustomSection] {
+private extension [CustomSection] {
     var toCreateEditIdentitySections: [CreateEditIdentitySection] {
         self.map(\.createEditIdentitySection)
     }
 }
 
-extension [CreateEditIdentitySection] {
+private extension [CreateEditIdentitySection] {
     var filterToCustomSections: [CustomSection] {
         self.compactMap { section in
             guard section.isCustom else {
