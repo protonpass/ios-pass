@@ -31,6 +31,7 @@ import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreLogin
+import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
 import ProtonCoreUIFoundations
@@ -441,6 +442,8 @@ extension HomepageCoordinator {
                     openTutorialVideo()
                 case .accountSettings:
                     beginAccountSettingsFlow()
+                case .securityKeys:
+                    presentSecurityKeys()
                 case .settingsMenu:
                     profileTabViewModelWantsToShowSettingsMenu()
                 case let .createEditLogin(item):
@@ -860,6 +863,21 @@ extension HomepageCoordinator {
                         guard let self else { return }
                         processPasswordChange(authCredential: cred, userInfo: userInfo)
                     }
+                let navigationController = UINavigationController(rootViewController: viewController)
+                present(navigationController)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func presentSecurityKeys() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let viewController = LoginUIModule
+                    .makeSecurityKeysViewController(apiService: apiManager.apiService,
+                                                    clientApp: .pass)
                 let navigationController = UINavigationController(rootViewController: viewController)
                 present(navigationController)
             } catch {
