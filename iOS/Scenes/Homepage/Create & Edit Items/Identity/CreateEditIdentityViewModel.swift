@@ -42,7 +42,7 @@ enum BaseIdentitySection: String, CaseIterable {
                                   isCustom: false,
                                   content: [])
     }
-    
+
     private var title: String {
         switch self {
         case .personalDetails:
