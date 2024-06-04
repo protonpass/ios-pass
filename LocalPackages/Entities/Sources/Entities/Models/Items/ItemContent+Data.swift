@@ -352,7 +352,7 @@ extension IdentityData {
 
 public extension [CustomField] {
     var toProtonPassItemV1ExtraFields: [ProtonPassItemV1_ExtraField] {
-        self.map { customField in
+        map { customField in
             var extraField = ProtonPassItemV1_ExtraField()
             extraField.fieldName = customField.title
 
@@ -377,7 +377,7 @@ public extension [CustomField] {
 
 public extension [CustomSection] {
     var toProtonPassItemV1ExtraIdentitySections: [ProtonPassItemV1_ExtraIdentitySection] {
-        self.map { section in
+        map { section in
             var extraSection = ProtonPassItemV1_ExtraIdentitySection()
             extraSection.sectionName = section.title
             extraSection.sectionFields = section.content.toProtonPassItemV1ExtraFields

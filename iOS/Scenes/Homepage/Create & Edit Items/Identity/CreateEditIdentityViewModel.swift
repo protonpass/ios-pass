@@ -68,7 +68,7 @@ struct CreateEditIdentitySection: Hashable, Identifiable {
         CreateEditIdentitySection(id: UUID().uuidString,
                                   title: title,
                                   type: .custom,
-                                  isCollapsed: true,
+                                  isCollapsed: false,
                                   isCustom: true,
                                   content: [])
     }
