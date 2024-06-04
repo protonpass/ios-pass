@@ -217,11 +217,7 @@ private extension IdentityDetailView {
                 .roundedEditableSection()
             }
         } header: {
-            Text("Address details")
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, DesignConstant.sectionPadding)
-                .padding(.vertical, DesignConstant.sectionPadding)
+            sectionHeader(title: "Address details")
         }
     }
 }
@@ -295,11 +291,7 @@ private extension IdentityDetailView {
                 .roundedEditableSection()
             }
         } header: {
-            Text("Contact details")
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, DesignConstant.sectionPadding)
-                .padding(.vertical, DesignConstant.sectionPadding)
+            sectionHeader(title: "Contact details")
         }
     }
 }
@@ -349,11 +341,7 @@ private extension IdentityDetailView {
                 .roundedEditableSection()
             }
         } header: {
-            Text("Work details")
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, DesignConstant.sectionPadding)
-                .padding(.vertical, DesignConstant.sectionPadding)
+            sectionHeader(title: "Work details")
         }
     }
 }
@@ -421,5 +409,13 @@ private extension IdentityDetailView {
                 PassSectionDivider()
             }
         }
+    }
+
+    func sectionHeader(title: LocalizedStringKey) -> some View {
+        Text(title)
+            .foregroundStyle(PassColor.textWeak.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, DesignConstant.sectionPadding)
+            .padding(.vertical, DesignConstant.sectionPadding)
     }
 }
