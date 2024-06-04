@@ -28,23 +28,23 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 // swiftlint:disable file_length
-enum SectionsSheetStates: MultipleSheetDisplaying {
+private enum SectionsSheetStates: MultipleSheetsDisplaying {
     case none
     case personal(CreateEditIdentitySection)
     case address(CreateEditIdentitySection)
     case contact(CreateEditIdentitySection)
     case work(CreateEditIdentitySection)
 
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
         case .personal:
-            #localized("Personal details")
+            "Personal details"
         case .address:
-            #localized("Address details")
+            "Address details"
         case .contact:
-            #localized("Contact details")
+            "Contact details"
         case .work:
-            #localized("Work details")
+            "Work details"
         default:
             ""
         }
@@ -143,6 +143,9 @@ struct CreateEditIdentityView: View {
                     .presentationDragIndicator(.visible)
             }
             .navigationStackEmbeded()
+            .onAppear {
+                focusedField = .title
+            }
     }
 }
 

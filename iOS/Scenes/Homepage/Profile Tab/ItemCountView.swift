@@ -28,6 +28,7 @@ private let kChipHeight: CGFloat = 56
 
 struct ItemCountView: View {
     @StateObject private var vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     var body: some View {
         switch vaultsManager.state {
@@ -43,7 +44,9 @@ struct ItemCountView: View {
                     ItemContentTypeCountView(type: .alias, count: itemCount.alias)
                     ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCard)
                     ItemContentTypeCountView(type: .note, count: itemCount.note)
-                    ItemContentTypeCountView(type: .identity, count: itemCount.identity)
+                    if getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1) {
+                        ItemContentTypeCountView(type: .identity, count: itemCount.identity)
+                    }
                 }
                 .padding(.horizontal)
             }
