@@ -32,7 +32,6 @@ struct CustomFieldSections: View {
     let isFreeUser: Bool
     var isASection = true
     var showIcon = true
-    var onSelectText: ((String) -> Void)?
     let onSelectHiddenText: (String) -> Void
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
@@ -51,7 +50,6 @@ struct CustomFieldSections: View {
                                        isFreeUser: isFreeUser,
                                        isASection: isASection,
                                        showIcon: showIcon,
-                                       onSelect: { onSelectText?(content) },
                                        onUpgrade: onUpgrade)
             case .hidden:
                 HiddenCustomFieldSection(title: title,
@@ -87,7 +85,6 @@ struct TextCustomFieldSection: View {
     let isFreeUser: Bool
     let isASection: Bool
     let showIcon: Bool
-    let onSelect: (() -> Void)?
     let onUpgrade: () -> Void
 
     var body: some View {
@@ -108,15 +105,11 @@ struct TextCustomFieldSection: View {
                         // swiftlint:disable:next deprecated_foregroundcolor_modifier
                         .foregroundColor(PassColor.textNorm)
                         .isEditable(false)
+                        .autoDetectDataTypes(.all)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
-            .onTapGesture {
-                if !isFreeUser {
-                    onSelect?()
-                }
-            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
