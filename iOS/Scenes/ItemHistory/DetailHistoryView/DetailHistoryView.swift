@@ -101,7 +101,7 @@ extension DetailHistoryView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 60)
-        .padding(.bottom, 40)
+        .padding(.bottom, 30)
     }
 
     func noteFields(item: ItemContent) -> some View {

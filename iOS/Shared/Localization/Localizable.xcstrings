@@ -26006,12 +26006,12 @@
         }
       }
     },
-    "Copy fullname" : {
+    "Copy full name" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy fullname"
+            "value" : "Copy full name"
           }
         }
       }
@@ -27318,16 +27318,6 @@
         }
       }
     },
-    "Create a identity" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create a identity"
-          }
-        }
-      }
-    },
     "Create a login" : {
       "localizations" : {
         "be" : {
@@ -27804,6 +27794,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo ghi chú"
+          }
+        }
+      }
+    },
+    "Create an identity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an identity"
           }
         }
       }
@@ -40340,12 +40340,12 @@
         }
       }
     },
-    "Fullname copied" : {
+    "Full name copied" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fullname copied"
+            "value" : "Full name copied"
           }
         }
       }
