@@ -183,7 +183,7 @@ extension ItemContextMenuHandler {
     func copyFullname(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.identityItem?.fullName, message: #localized("Fullname copied"))
+            copy(itemContent.identityItem?.fullName, message: #localized("Full name copied"))
         }
     }
 }
