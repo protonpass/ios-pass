@@ -34721,6 +34721,16 @@
         }
       }
     },
+    "Empty section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empty section"
+          }
+        }
+      }
+    },
     "Empty trash" : {
       "localizations" : {
         "be" : {

@@ -115,7 +115,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         ].hasNonEmptyElement()
     }
 
-    var showWordSection: Bool {
+    var showWorkSection: Bool {
         [
             company,
             jobTitle,
