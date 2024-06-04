@@ -175,6 +175,7 @@ public extension String {
         return nonNilNonEmptyStrings.joined(separator: separator)
     }
 
+    // periphery:ignore
     static func concatenateOptionalStrings(_ strings: String?..., separator: String = "") -> String {
         // Call the array-based function with the variadic arguments
         concatenateOptionalStrings(strings, separator: separator)
