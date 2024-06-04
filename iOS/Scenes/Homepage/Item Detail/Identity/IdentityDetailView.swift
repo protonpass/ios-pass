@@ -144,10 +144,6 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: {
-                                            viewModel.copyValueToClipboard(value: $0,
-                                                                           message: #localized("Custom field"))
-                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -213,10 +209,6 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: {
-                                            viewModel.copyValueToClipboard(value: $0,
-                                                                           message: #localized("Custom field"))
-                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -295,10 +287,6 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: {
-                                            viewModel.copyValueToClipboard(value: $0,
-                                                                           message: #localized("Custom field"))
-                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -353,10 +341,6 @@ private extension IdentityDetailView {
                                         isFreeUser: viewModel.isFreeUser,
                                         isASection: false,
                                         showIcon: false,
-                                        onSelectText: {
-                                            viewModel.copyValueToClipboard(value: $0,
-                                                                           message: #localized("Custom field"))
-                                        },
                                         onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                         onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                         onUpgrade: { viewModel.upgrade() })
@@ -388,9 +372,6 @@ private extension IdentityDetailView {
                                         .map(\.toCustomFieldUiModel),
                                     isFreeUser: viewModel.isFreeUser,
                                     showIcon: false,
-                                    onSelectText: { viewModel.copyValueToClipboard(value: $0,
-                                                                                   message: #localized("Custom field"))
-                                    },
                                     onSelectHiddenText: { viewModel.copyHiddenText($0) },
                                     onSelectTotpToken: { viewModel.copyTotpToken($0) },
                                     onUpgrade: { viewModel.upgrade() })
