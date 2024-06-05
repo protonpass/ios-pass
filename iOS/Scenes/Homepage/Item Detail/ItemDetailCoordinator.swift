@@ -25,27 +25,19 @@ import SwiftUI
 import UIKit
 
 @MainActor
-protocol ItemDetailCoordinatorDelegate: AnyObject {
-    func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool)
-}
-
-@MainActor
 final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private weak var itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?
     private var currentViewModel: BaseItemDetailViewModel?
-
-    weak var delegate: (any ItemDetailCoordinatorDelegate)?
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init(itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?) {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
     }
 
     func showDetail(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
-        assert(delegate != nil, "delegate is not set")
-
         let itemDetailPage: ItemDetailPage = switch itemContent.contentData {
         case .login:
             makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
@@ -55,12 +47,14 @@ final class ItemDetailCoordinator: DeinitPrintable {
             makeAliasItemDetailPage(from: itemContent, asSheet: asSheet)
         case .creditCard:
             makeCreditCardDetailPage(from: itemContent, asSheet: asSheet)
+        case .identity:
+            makeIdentityDetailPage(from: itemContent, asSheet: asSheet)
         }
 
         itemDetailPage.viewModel.delegate = itemDetailViewModelDelegate
         currentViewModel = itemDetailPage.viewModel
 
-        delegate?.itemDetailCoordinatorWantsToPresent(view: itemDetailPage.view, asSheet: asSheet)
+        router.navigate(to: .itemDetail(view: itemDetailPage.view, asSheet: asSheet))
     }
 
     /// Refresh the currently presented item detail page
@@ -104,5 +98,12 @@ private extension ItemDetailCoordinator {
                                                   itemContent: itemContent,
                                                   upgradeChecker: upgradeChecker)
         return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
+    }
+
+    func makeIdentityDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
+        let viewModel = IdentityDetailViewModel(isShownAsSheet: asSheet,
+                                                itemContent: itemContent,
+                                                upgradeChecker: upgradeChecker)
+        return .init(viewModel: viewModel, view: IdentityDetailView(viewModel: viewModel))
     }
 }

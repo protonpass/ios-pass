@@ -149,6 +149,16 @@
         }
       }
     },
+    "%@ copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ copied"
+          }
+        }
+      }
+    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -10342,6 +10352,16 @@
         }
       }
     },
+    "Add field" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add field"
+          }
+        }
+      }
+    },
     "Add login details for an app or site" : {
       "localizations" : {
         "be" : {
@@ -11460,6 +11480,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các tập tin đã được thêm"
+          }
+        }
+      }
+    },
+    "Address details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address details"
           }
         }
       }
@@ -17445,6 +17475,16 @@
         }
       }
     },
+    "Are you sure you want to delete the following section \"%@\"?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the following section \"%@\"?"
+          }
+        }
+      }
+    },
     "Associate 2FA?" : {
       "localizations" : {
         "be" : {
@@ -19202,6 +19242,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tự động lưu"
+          }
+        }
+      }
+    },
+    "Birthdate" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birthdate"
           }
         }
       }
@@ -23090,6 +23140,16 @@
         }
       }
     },
+    "City" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City"
+          }
+        }
+      }
+    },
     "Clear" : {
       "localizations" : {
         "be" : {
@@ -24532,6 +24592,16 @@
         }
       }
     },
+    "Company" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Company"
+          }
+        }
+      }
+    },
     "Conceal" : {
       "localizations" : {
         "be" : {
@@ -25330,6 +25400,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chúc mừng, truy cập của bạn đã được xác nhận"
+          }
+        }
+      }
+    },
+    "Contact details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact details"
           }
         }
       }
@@ -26934,6 +27014,16 @@
         }
       }
     },
+    "Copy full name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy full name"
+          }
+        }
+      }
+    },
     "Copy note content" : {
       "localizations" : {
         "be" : {
@@ -27571,6 +27661,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sao chép tên đăng nhập"
+          }
+        }
+      }
+    },
+    "Country or Region" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Country or Region"
+          }
+        }
+      }
+    },
+    "County" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "County"
           }
         }
       }
@@ -28692,6 +28802,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo ghi chú"
+          }
+        }
+      }
+    },
+    "Create an identity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an identity"
           }
         }
       }
@@ -30937,6 +31057,16 @@
         }
       }
     },
+    "Custom field" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom field"
+          }
+        }
+      }
+    },
     "Custom field menu" : {
       "comment" : "accessibility",
       "localizations" : {
@@ -31254,6 +31384,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các trường tùy chỉnh"
+          }
+        }
+      }
+    },
+    "Custom section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom section"
           }
         }
       }
@@ -34624,6 +34764,16 @@
         }
       }
     },
+    "Edit section's title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit section's title"
+          }
+        }
+      }
+    },
     "Editor" : {
       "comment" : "A sharing access level, user can create, edit, delete items in a shared vault.",
       "localizations" : {
@@ -34781,6 +34931,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biên tập viên"
+          }
+        }
+      }
+    },
+    "Email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
           }
         }
       }
@@ -35583,6 +35743,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ghi chú trống"
+          }
+        }
+      }
+    },
+    "Empty section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empty section"
           }
         }
       }
@@ -37166,6 +37336,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tên trường tùy chọn"
+          }
+        }
+      }
+    },
+    "Enter a new section title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a new section title"
+          }
+        }
+      }
+    },
+    "Enter a section title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a section title"
           }
         }
       }
@@ -39106,6 +39296,16 @@
         }
       }
     },
+    "Facebook" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facebook"
+          }
+        }
+      }
+    },
     "Failed to authenticate" : {
       "comment" : "Users failed to authenticate via Face ID/Touch ID or PIN. We log them out and show an alert with this message.",
       "localizations" : {
@@ -39587,6 +39787,16 @@
         }
       }
     },
+    "Fill in your personal data" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fill in your personal data"
+          }
+        }
+      }
+    },
     "Find an alias, login, or note" : {
       "comment" : "Search page",
       "localizations" : {
@@ -39744,6 +39954,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm một bí danh, đăng nhập hoặc ghi chú"
+          }
+        }
+      }
+    },
+    "First name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First name"
+          }
+        }
+      }
+    },
+    "Floor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor"
           }
         }
       }
@@ -41188,6 +41418,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dùng thử miễn phí"
+          }
+        }
+      }
+    },
+    "Full name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full name"
+          }
+        }
+      }
+    },
+    "Full name copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full name copied"
+          }
+        }
+      }
+    },
+    "Gender" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gender"
           }
         }
       }
@@ -45978,6 +46238,76 @@
         }
       }
     },
+    "Identities" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identities"
+          }
+        }
+      }
+    },
+    "Identity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity"
+          }
+        }
+      }
+    },
+    "Identity created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity created"
+          }
+        }
+      }
+    },
+    "Identity moved to trash" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity moved to trash"
+          }
+        }
+      }
+    },
+    "Identity permanently deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity permanently deleted"
+          }
+        }
+      }
+    },
+    "Identity restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity restored"
+          }
+        }
+      }
+    },
+    "Identity updated" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity updated"
+          }
+        }
+      }
+    },
     "Immediately" : {
       "localizations" : {
         "be" : {
@@ -46762,6 +47092,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mã PIN không chính xác."
+          }
+        }
+      }
+    },
+    "Instagram" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instagram"
           }
         }
       }
@@ -50049,6 +50389,16 @@
         }
       }
     },
+    "Job title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Job title"
+          }
+        }
+      }
+    },
     "Join shared vault" : {
       "localizations" : {
         "be" : {
@@ -51491,6 +51841,16 @@
         }
       }
     },
+    "Last name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last name"
+          }
+        }
+      }
+    },
     "Last two weeks" : {
       "localizations" : {
         "be" : {
@@ -52445,6 +52805,16 @@
         }
       }
     },
+    "License number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "License number"
+          }
+        }
+      }
+    },
     "Light" : {
       "localizations" : {
         "be" : {
@@ -52731,6 +53101,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bağlantının geçerlilik süresi sonu"
+          }
+        }
+      }
+    },
+    "LinkedIn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LinkedIn"
           }
         }
       }
@@ -55901,6 +56281,16 @@
         }
       }
     },
+    "Middle name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Middle name"
+          }
+        }
+      }
+    },
     "MM / YY" : {
       "localizations" : {
         "be" : {
@@ -56217,6 +56607,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lần cuối sửa đổi"
+          }
+        }
+      }
+    },
+    "Modify" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modify"
+          }
+        }
+      }
+    },
+    "Modify the section name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modify the section name"
           }
         }
       }
@@ -57955,6 +58365,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không bao giờ"
+          }
+        }
+      }
+    },
+    "New title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New title"
           }
         }
       }
@@ -63404,6 +63824,16 @@
         }
       }
     },
+    "Organization" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organization"
+          }
+        }
+      }
+    },
     "Other" : {
       "localizations" : {
         "be" : {
@@ -64355,6 +64785,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Khóa truy cập"
+          }
+        }
+      }
+    },
+    "Passport number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passport number"
           }
         }
       }
@@ -66417,6 +66857,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cá nhân"
+          }
+        }
+      }
+    },
+    "Personal details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal details"
+          }
+        }
+      }
+    },
+    "Personal website" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal website"
+          }
+        }
+      }
+    },
+    "Phone number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone number"
           }
         }
       }
@@ -71038,6 +71508,16 @@
         }
       }
     },
+    "Reddit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reddit"
+          }
+        }
+      }
+    },
     "Regenerate password" : {
       "localizations" : {
         "be" : {
@@ -71672,6 +72152,16 @@
         }
       }
     },
+    "Remove custom section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove custom section"
+          }
+        }
+      }
+    },
     "Remove field" : {
       "localizations" : {
         "be" : {
@@ -71828,6 +72318,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa trường"
+          }
+        }
+      }
+    },
+    "Remove section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove section"
           }
         }
       }
@@ -76718,6 +77218,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kho lưu trữ có thể được tìm kiếm"
+          }
+        }
+      }
+    },
+    "Second phone number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Second phone number"
           }
         }
       }
@@ -84101,6 +84611,16 @@
         }
       }
     },
+    "Social security number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social security number"
+          }
+        }
+      }
+    },
     "Sort By" : {
       "comment" : "Items filtering",
       "localizations" : {
@@ -85056,6 +85576,16 @@
         }
       }
     },
+    "State or province" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "State or province"
+          }
+        }
+      }
+    },
     "Stay safer online" : {
       "localizations" : {
         "be" : {
@@ -85372,6 +85902,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ngừng chia sẻ địa chỉ email thật của bạn. Thay vào đó hãy giấu nó bằng các email bí danh⏤độc quyền trên Proton Pass."
+          }
+        }
+      }
+    },
+    "Street address, P.O. box" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Street address, P.O. box"
           }
         }
       }
@@ -95605,6 +96145,16 @@
         }
       }
     },
+    "Upgrade to add custom sections" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to add custom sections"
+          }
+        }
+      }
+    },
     "Upgrade to create credit cards" : {
       "localizations" : {
         "be" : {
@@ -103302,6 +103852,36 @@
         }
       }
     },
+    "Work details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work details"
+          }
+        }
+      }
+    },
+    "Work email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work email"
+          }
+        }
+      }
+    },
+    "Work phone number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work phone number"
+          }
+        }
+      }
+    },
     "Would you want to associate « %@ » with « %@ »?" : {
       "localizations" : {
         "be" : {
@@ -103618,6 +104198,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gửi cho chúng tôi trên Reddit"
+          }
+        }
+      }
+    },
+    "X handle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X handle"
+          }
+        }
+      }
+    },
+    "Yahoo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yahoo"
           }
         }
       }
@@ -108525,6 +109125,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
+          }
+        }
+      }
+    },
+    "ZIP or Postal code" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ZIP or Postal code"
           }
         }
       }

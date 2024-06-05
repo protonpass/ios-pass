@@ -62,6 +62,8 @@ enum ItemCreationType: Equatable, Hashable {
                passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
     case creditCard
 
+    case identity
+
     var itemContentType: ItemContentType {
         switch self {
         case .note:
@@ -72,18 +74,20 @@ enum ItemCreationType: Equatable, Hashable {
             .login
         case .creditCard:
             .creditCard
+        case .identity:
+            .identity
         }
     }
 }
 
 @MainActor
-class BaseCreateEditItemViewModel {
+class BaseCreateEditItemViewModel: CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var canScanDocuments = false
-    @Published private(set) var recentlyAddedOrEditedField: CustomFieldUiModel?
+    @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
     @Published var isObsolete = false
@@ -179,6 +183,34 @@ class BaseCreateEditItemViewModel {
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
 
     func telemetryEventTypes() -> [TelemetryEventType] { [] }
+
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
+        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
+            let message = "Custom field with id \(uiModel.id) not found"
+            logger.error(message)
+            assertionFailure(message)
+            return
+        }
+        recentlyAddedOrEditedField = uiModel
+        customFieldUiModels[index] = uiModel.update(title: newTitle)
+    }
+
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
+        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
+            let message = "Custom field with id \(uiModel.id) not found"
+            logger.error(message)
+            assertionFailure(message)
+            return
+        }
+        recentlyAddedOrEditedField = uiModel
+        customFieldUiModels[index] = uiModel.update(content: content)
+    }
+
+    func customFieldAdded(_ customField: CustomField) {
+        let uiModel = CustomFieldUiModel(customField: customField)
+        customFieldUiModels.append(uiModel)
+        recentlyAddedOrEditedField = uiModel
+    }
 }
 
 // MARK: - Private APIs
@@ -360,41 +392,5 @@ extension BaseCreateEditItemViewModel {
 
     func changeVault() {
         router.present(for: .vaultSelection)
-    }
-}
-
-// MARK: - CustomFieldTitleAlertHandlerDelegate
-
-extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
-    func customFieldAdded(_ customField: CustomField) {
-        let uiModel = CustomFieldUiModel(customField: customField)
-        customFieldUiModels.append(uiModel)
-        recentlyAddedOrEditedField = uiModel
-    }
-}
-
-// MARK: - CustomFieldEditionDelegate
-
-extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
-    func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
-        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
-            let message = "Custom field with id \(uiModel.id) not found"
-            logger.error(message)
-            assertionFailure(message)
-            return
-        }
-        recentlyAddedOrEditedField = uiModel
-        customFieldUiModels[index] = uiModel.update(title: newTitle)
-    }
-
-    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
-        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
-            let message = "Custom field with id \(uiModel.id) not found"
-            logger.error(message)
-            assertionFailure(message)
-            return
-        }
-        recentlyAddedOrEditedField = uiModel
-        customFieldUiModels[index] = uiModel.update(content: content)
     }
 }

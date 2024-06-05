@@ -62,6 +62,15 @@ enum ItemContextMenu {
               onViewHistory: () -> Void,
               onTrash: () -> Void)
 
+    case identity(item: any PinnableItemTypeIdentifiable,
+                  isEditable: Bool,
+                  onCopyEmail: () -> Void,
+                  onCopyFullname: () -> Void,
+                  onEdit: () -> Void,
+                  onPinToggle: () -> Void,
+                  onViewHistory: () -> Void,
+                  onTrash: () -> Void)
+
     case trashedItem(isEditable: Bool,
                      onRestore: () -> Void,
                      onPermanentlyDelete: () -> Void)
@@ -195,6 +204,34 @@ enum ItemContextMenu {
             } else {
                 return []
             }
+
+        case let .identity(item,
+                           isEditable,
+                           onCopyEmail,
+                           onCopyFullname,
+                           onEdit,
+                           onPinToggle,
+                           onViewHistory,
+                           onTrash):
+            var sections: [ItemContextMenuOptionSection] = []
+
+            sections.append(.init(options: [
+                .init(title: "Copy email",
+                      icon: IconProvider.envelope,
+                      action: onCopyEmail),
+                .init(title: "Copy full name",
+                      icon: IconProvider.user,
+                      action: onCopyFullname)
+            ]))
+
+            sections += Self.commonLastSections(item: item,
+                                                isEditable: isEditable,
+                                                onEdit: onEdit,
+                                                onPinToggle: onPinToggle,
+                                                onViewHistory: onViewHistory,
+                                                onTrash: onTrash)
+
+            return sections
         }
     }
 }
@@ -344,6 +381,15 @@ extension View {
                                       onPinToggle: { handler.toggleItemPinning(item) },
                                       onViewHistory: { handler.viewHistory(item) },
                                       onTrash: { handler.trash(item) }))
+            case .identity:
+                itemContextMenu(.identity(item: item,
+                                          isEditable: isEditable,
+                                          onCopyEmail: { handler.copyEmail(item) },
+                                          onCopyFullname: { handler.copyFullname(item) },
+                                          onEdit: { handler.edit(item) },
+                                          onPinToggle: { handler.toggleItemPinning(item) },
+                                          onViewHistory: { handler.viewHistory(item) },
+                                          onTrash: { handler.trash(item) }))
             }
         }
     }
