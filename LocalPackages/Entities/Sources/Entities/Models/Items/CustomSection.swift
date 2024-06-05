@@ -1,7 +1,7 @@
 //
-// FeatureFlagType.swift
-// Proton Pass - Created on 04/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// CustomSection.swift
+// Proton Pass - Created on 23/05/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,16 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreFeatureFlags
+import Foundation
 
-// periphery:ignore
-/// Should be activated when new feature flags are added to the project
-/// following is how a flag should be added:
-/// Example:
-///    case passSharingV1 = "PassSharingV1"
-public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-    case passSentinelV1 = "PassSentinelV1"
-    case passUsernameSplit = "PassUsernameSplit"
-    case passPublicLinkV1 = "PassPublicLinkV1"
-    case passIdentityV1 = "PassIdentityV1"
+public struct CustomSection: Equatable, Hashable, Sendable, Identifiable {
+    public let title: String
+    public var content: [CustomField]
+
+    public var id: Int { hashValue }
+
+    public init(title: String, content: [CustomField]) {
+        self.title = title
+        self.content = content
+    }
+
+    init(from extraSection: ProtonPassItemV1_ExtraIdentitySection) {
+        title = extraSection.sectionName
+        content = extraSection.sectionFields.map { .init(from: $0) }
+    }
 }

@@ -201,6 +201,230 @@ public struct ProtonPassItemV1_ItemCreditCard {
   public init() {}
 }
 
+public struct ProtonPassItemV1_ItemIdentity {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Personal details
+  /// Shown
+  public var fullName: String {
+    get {return _storage._fullName}
+    set {_uniqueStorage()._fullName = newValue}
+  }
+
+  public var email: String {
+    get {return _storage._email}
+    set {_uniqueStorage()._email = newValue}
+  }
+
+  public var phoneNumber: String {
+    get {return _storage._phoneNumber}
+    set {_uniqueStorage()._phoneNumber = newValue}
+  }
+
+  /// Additional
+  public var firstName: String {
+    get {return _storage._firstName}
+    set {_uniqueStorage()._firstName = newValue}
+  }
+
+  public var middleName: String {
+    get {return _storage._middleName}
+    set {_uniqueStorage()._middleName = newValue}
+  }
+
+  public var lastName: String {
+    get {return _storage._lastName}
+    set {_uniqueStorage()._lastName = newValue}
+  }
+
+  public var birthdate: String {
+    get {return _storage._birthdate}
+    set {_uniqueStorage()._birthdate = newValue}
+  }
+
+  public var gender: String {
+    get {return _storage._gender}
+    set {_uniqueStorage()._gender = newValue}
+  }
+
+  public var extraPersonalDetails: [ProtonPassItemV1_ExtraField] {
+    get {return _storage._extraPersonalDetails}
+    set {_uniqueStorage()._extraPersonalDetails = newValue}
+  }
+
+  /// Address details
+  /// Shown
+  public var organization: String {
+    get {return _storage._organization}
+    set {_uniqueStorage()._organization = newValue}
+  }
+
+  public var streetAddress: String {
+    get {return _storage._streetAddress}
+    set {_uniqueStorage()._streetAddress = newValue}
+  }
+
+  public var zipOrPostalCode: String {
+    get {return _storage._zipOrPostalCode}
+    set {_uniqueStorage()._zipOrPostalCode = newValue}
+  }
+
+  public var city: String {
+    get {return _storage._city}
+    set {_uniqueStorage()._city = newValue}
+  }
+
+  public var stateOrProvince: String {
+    get {return _storage._stateOrProvince}
+    set {_uniqueStorage()._stateOrProvince = newValue}
+  }
+
+  public var countryOrRegion: String {
+    get {return _storage._countryOrRegion}
+    set {_uniqueStorage()._countryOrRegion = newValue}
+  }
+
+  /// Additional
+  public var floor: String {
+    get {return _storage._floor}
+    set {_uniqueStorage()._floor = newValue}
+  }
+
+  public var county: String {
+    get {return _storage._county}
+    set {_uniqueStorage()._county = newValue}
+  }
+
+  public var extraAddressDetails: [ProtonPassItemV1_ExtraField] {
+    get {return _storage._extraAddressDetails}
+    set {_uniqueStorage()._extraAddressDetails = newValue}
+  }
+
+  /// Contact details
+  /// Shown
+  public var socialSecurityNumber: String {
+    get {return _storage._socialSecurityNumber}
+    set {_uniqueStorage()._socialSecurityNumber = newValue}
+  }
+
+  public var passportNumber: String {
+    get {return _storage._passportNumber}
+    set {_uniqueStorage()._passportNumber = newValue}
+  }
+
+  public var licenseNumber: String {
+    get {return _storage._licenseNumber}
+    set {_uniqueStorage()._licenseNumber = newValue}
+  }
+
+  public var website: String {
+    get {return _storage._website}
+    set {_uniqueStorage()._website = newValue}
+  }
+
+  public var xHandle: String {
+    get {return _storage._xHandle}
+    set {_uniqueStorage()._xHandle = newValue}
+  }
+
+  public var secondPhoneNumber: String {
+    get {return _storage._secondPhoneNumber}
+    set {_uniqueStorage()._secondPhoneNumber = newValue}
+  }
+
+  /// Additional
+  public var linkedin: String {
+    get {return _storage._linkedin}
+    set {_uniqueStorage()._linkedin = newValue}
+  }
+
+  public var reddit: String {
+    get {return _storage._reddit}
+    set {_uniqueStorage()._reddit = newValue}
+  }
+
+  public var facebook: String {
+    get {return _storage._facebook}
+    set {_uniqueStorage()._facebook = newValue}
+  }
+
+  public var yahoo: String {
+    get {return _storage._yahoo}
+    set {_uniqueStorage()._yahoo = newValue}
+  }
+
+  public var instagram: String {
+    get {return _storage._instagram}
+    set {_uniqueStorage()._instagram = newValue}
+  }
+
+  public var extraContactDetails: [ProtonPassItemV1_ExtraField] {
+    get {return _storage._extraContactDetails}
+    set {_uniqueStorage()._extraContactDetails = newValue}
+  }
+
+  /// Work details
+  /// Shown
+  public var company: String {
+    get {return _storage._company}
+    set {_uniqueStorage()._company = newValue}
+  }
+
+  public var jobTitle: String {
+    get {return _storage._jobTitle}
+    set {_uniqueStorage()._jobTitle = newValue}
+  }
+
+  /// Additional
+  public var personalWebsite: String {
+    get {return _storage._personalWebsite}
+    set {_uniqueStorage()._personalWebsite = newValue}
+  }
+
+  public var workPhoneNumber: String {
+    get {return _storage._workPhoneNumber}
+    set {_uniqueStorage()._workPhoneNumber = newValue}
+  }
+
+  public var workEmail: String {
+    get {return _storage._workEmail}
+    set {_uniqueStorage()._workEmail = newValue}
+  }
+
+  public var extraWorkDetails: [ProtonPassItemV1_ExtraField] {
+    get {return _storage._extraWorkDetails}
+    set {_uniqueStorage()._extraWorkDetails = newValue}
+  }
+
+  /// Extra sections
+  public var extraSections: [ProtonPassItemV1_ExtraIdentitySection] {
+    get {return _storage._extraSections}
+    set {_uniqueStorage()._extraSections = newValue}
+  }
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+
+  fileprivate var _storage = _StorageClass.defaultInstance
+}
+
+public struct ProtonPassItemV1_ExtraIdentitySection {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var sectionName: String = String()
+
+  public var sectionFields: [ProtonPassItemV1_ExtraField] = []
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
 /// Client extras
 public struct ProtonPassItemV1_AllowedAndroidApp {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
@@ -410,6 +634,14 @@ public struct ProtonPassItemV1_Content {
     set {content = .creditCard(newValue)}
   }
 
+  public var identity: ProtonPassItemV1_ItemIdentity {
+    get {
+      if case .identity(let v)? = content {return v}
+      return ProtonPassItemV1_ItemIdentity()
+    }
+    set {content = .identity(newValue)}
+  }
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   /// No case 1 to avoid having a default
@@ -418,6 +650,7 @@ public struct ProtonPassItemV1_Content {
     case login(ProtonPassItemV1_ItemLogin)
     case alias(ProtonPassItemV1_ItemAlias)
     case creditCard(ProtonPassItemV1_ItemCreditCard)
+    case identity(ProtonPassItemV1_ItemIdentity)
 
   #if !swift(>=4.1)
     public static func ==(lhs: ProtonPassItemV1_Content.OneOf_Content, rhs: ProtonPassItemV1_Content.OneOf_Content) -> Bool {
@@ -439,6 +672,10 @@ public struct ProtonPassItemV1_Content {
       }()
       case (.creditCard, .creditCard): return {
         guard case .creditCard(let l) = lhs, case .creditCard(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.identity, .identity): return {
+        guard case .identity(let l) = lhs, case .identity(let r) = rhs else { preconditionFailure() }
         return l == r
       }()
       default: return false
@@ -501,6 +738,8 @@ extension ProtonPassItemV1_Passkey: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemLogin: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemAlias: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemCreditCard: @unchecked Sendable {}
+extension ProtonPassItemV1_ItemIdentity: @unchecked Sendable {}
+extension ProtonPassItemV1_ExtraIdentitySection: @unchecked Sendable {}
 extension ProtonPassItemV1_AllowedAndroidApp: @unchecked Sendable {}
 extension ProtonPassItemV1_AndroidSpecific: @unchecked Sendable {}
 extension ProtonPassItemV1_PlatformSpecific: @unchecked Sendable {}
@@ -844,6 +1083,404 @@ extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf.
     if lhs.verificationNumber != rhs.verificationNumber {return false}
     if lhs.expirationDate != rhs.expirationDate {return false}
     if lhs.pin != rhs.pin {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".ItemIdentity"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "full_name"),
+    2: .same(proto: "email"),
+    3: .standard(proto: "phone_number"),
+    4: .standard(proto: "first_name"),
+    5: .standard(proto: "middle_name"),
+    6: .standard(proto: "last_name"),
+    7: .same(proto: "birthdate"),
+    8: .same(proto: "gender"),
+    9: .standard(proto: "extra_personal_details"),
+    10: .same(proto: "organization"),
+    11: .standard(proto: "street_address"),
+    12: .standard(proto: "zip_or_postal_code"),
+    13: .same(proto: "city"),
+    14: .standard(proto: "state_or_province"),
+    15: .standard(proto: "country_or_region"),
+    16: .same(proto: "floor"),
+    17: .same(proto: "county"),
+    18: .standard(proto: "extra_address_details"),
+    19: .standard(proto: "social_security_number"),
+    20: .standard(proto: "passport_number"),
+    21: .standard(proto: "license_number"),
+    22: .same(proto: "website"),
+    23: .standard(proto: "x_handle"),
+    24: .standard(proto: "second_phone_number"),
+    25: .same(proto: "linkedin"),
+    26: .same(proto: "reddit"),
+    27: .same(proto: "facebook"),
+    28: .same(proto: "yahoo"),
+    29: .same(proto: "instagram"),
+    30: .standard(proto: "extra_contact_details"),
+    31: .same(proto: "company"),
+    32: .standard(proto: "job_title"),
+    33: .standard(proto: "personal_website"),
+    34: .standard(proto: "work_phone_number"),
+    35: .standard(proto: "work_email"),
+    36: .standard(proto: "extra_work_details"),
+    37: .standard(proto: "extra_sections"),
+  ]
+
+  fileprivate class _StorageClass {
+    var _fullName: String = String()
+    var _email: String = String()
+    var _phoneNumber: String = String()
+    var _firstName: String = String()
+    var _middleName: String = String()
+    var _lastName: String = String()
+    var _birthdate: String = String()
+    var _gender: String = String()
+    var _extraPersonalDetails: [ProtonPassItemV1_ExtraField] = []
+    var _organization: String = String()
+    var _streetAddress: String = String()
+    var _zipOrPostalCode: String = String()
+    var _city: String = String()
+    var _stateOrProvince: String = String()
+    var _countryOrRegion: String = String()
+    var _floor: String = String()
+    var _county: String = String()
+    var _extraAddressDetails: [ProtonPassItemV1_ExtraField] = []
+    var _socialSecurityNumber: String = String()
+    var _passportNumber: String = String()
+    var _licenseNumber: String = String()
+    var _website: String = String()
+    var _xHandle: String = String()
+    var _secondPhoneNumber: String = String()
+    var _linkedin: String = String()
+    var _reddit: String = String()
+    var _facebook: String = String()
+    var _yahoo: String = String()
+    var _instagram: String = String()
+    var _extraContactDetails: [ProtonPassItemV1_ExtraField] = []
+    var _company: String = String()
+    var _jobTitle: String = String()
+    var _personalWebsite: String = String()
+    var _workPhoneNumber: String = String()
+    var _workEmail: String = String()
+    var _extraWorkDetails: [ProtonPassItemV1_ExtraField] = []
+    var _extraSections: [ProtonPassItemV1_ExtraIdentitySection] = []
+
+    #if swift(>=5.10)
+      // This property is used as the initial default value for new instances of the type.
+      // The type itself is protecting the reference to its storage via CoW semantics.
+      // This will force a copy to be made of this reference when the first mutation occurs;
+      // hence, it is safe to mark this as `nonisolated(unsafe)`.
+      static nonisolated(unsafe) let defaultInstance = _StorageClass()
+    #else
+      static let defaultInstance = _StorageClass()
+    #endif
+
+    private init() {}
+
+    init(copying source: _StorageClass) {
+      _fullName = source._fullName
+      _email = source._email
+      _phoneNumber = source._phoneNumber
+      _firstName = source._firstName
+      _middleName = source._middleName
+      _lastName = source._lastName
+      _birthdate = source._birthdate
+      _gender = source._gender
+      _extraPersonalDetails = source._extraPersonalDetails
+      _organization = source._organization
+      _streetAddress = source._streetAddress
+      _zipOrPostalCode = source._zipOrPostalCode
+      _city = source._city
+      _stateOrProvince = source._stateOrProvince
+      _countryOrRegion = source._countryOrRegion
+      _floor = source._floor
+      _county = source._county
+      _extraAddressDetails = source._extraAddressDetails
+      _socialSecurityNumber = source._socialSecurityNumber
+      _passportNumber = source._passportNumber
+      _licenseNumber = source._licenseNumber
+      _website = source._website
+      _xHandle = source._xHandle
+      _secondPhoneNumber = source._secondPhoneNumber
+      _linkedin = source._linkedin
+      _reddit = source._reddit
+      _facebook = source._facebook
+      _yahoo = source._yahoo
+      _instagram = source._instagram
+      _extraContactDetails = source._extraContactDetails
+      _company = source._company
+      _jobTitle = source._jobTitle
+      _personalWebsite = source._personalWebsite
+      _workPhoneNumber = source._workPhoneNumber
+      _workEmail = source._workEmail
+      _extraWorkDetails = source._extraWorkDetails
+      _extraSections = source._extraSections
+    }
+  }
+
+  fileprivate mutating func _uniqueStorage() -> _StorageClass {
+    if !isKnownUniquelyReferenced(&_storage) {
+      _storage = _StorageClass(copying: _storage)
+    }
+    return _storage
+  }
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    _ = _uniqueStorage()
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      while let fieldNumber = try decoder.nextFieldNumber() {
+        // The use of inline closures is to circumvent an issue where the compiler
+        // allocates stack space for every case branch when no optimizations are
+        // enabled. https://github.com/apple/swift-protobuf/issues/1034
+        switch fieldNumber {
+        case 1: try { try decoder.decodeSingularStringField(value: &_storage._fullName) }()
+        case 2: try { try decoder.decodeSingularStringField(value: &_storage._email) }()
+        case 3: try { try decoder.decodeSingularStringField(value: &_storage._phoneNumber) }()
+        case 4: try { try decoder.decodeSingularStringField(value: &_storage._firstName) }()
+        case 5: try { try decoder.decodeSingularStringField(value: &_storage._middleName) }()
+        case 6: try { try decoder.decodeSingularStringField(value: &_storage._lastName) }()
+        case 7: try { try decoder.decodeSingularStringField(value: &_storage._birthdate) }()
+        case 8: try { try decoder.decodeSingularStringField(value: &_storage._gender) }()
+        case 9: try { try decoder.decodeRepeatedMessageField(value: &_storage._extraPersonalDetails) }()
+        case 10: try { try decoder.decodeSingularStringField(value: &_storage._organization) }()
+        case 11: try { try decoder.decodeSingularStringField(value: &_storage._streetAddress) }()
+        case 12: try { try decoder.decodeSingularStringField(value: &_storage._zipOrPostalCode) }()
+        case 13: try { try decoder.decodeSingularStringField(value: &_storage._city) }()
+        case 14: try { try decoder.decodeSingularStringField(value: &_storage._stateOrProvince) }()
+        case 15: try { try decoder.decodeSingularStringField(value: &_storage._countryOrRegion) }()
+        case 16: try { try decoder.decodeSingularStringField(value: &_storage._floor) }()
+        case 17: try { try decoder.decodeSingularStringField(value: &_storage._county) }()
+        case 18: try { try decoder.decodeRepeatedMessageField(value: &_storage._extraAddressDetails) }()
+        case 19: try { try decoder.decodeSingularStringField(value: &_storage._socialSecurityNumber) }()
+        case 20: try { try decoder.decodeSingularStringField(value: &_storage._passportNumber) }()
+        case 21: try { try decoder.decodeSingularStringField(value: &_storage._licenseNumber) }()
+        case 22: try { try decoder.decodeSingularStringField(value: &_storage._website) }()
+        case 23: try { try decoder.decodeSingularStringField(value: &_storage._xHandle) }()
+        case 24: try { try decoder.decodeSingularStringField(value: &_storage._secondPhoneNumber) }()
+        case 25: try { try decoder.decodeSingularStringField(value: &_storage._linkedin) }()
+        case 26: try { try decoder.decodeSingularStringField(value: &_storage._reddit) }()
+        case 27: try { try decoder.decodeSingularStringField(value: &_storage._facebook) }()
+        case 28: try { try decoder.decodeSingularStringField(value: &_storage._yahoo) }()
+        case 29: try { try decoder.decodeSingularStringField(value: &_storage._instagram) }()
+        case 30: try { try decoder.decodeRepeatedMessageField(value: &_storage._extraContactDetails) }()
+        case 31: try { try decoder.decodeSingularStringField(value: &_storage._company) }()
+        case 32: try { try decoder.decodeSingularStringField(value: &_storage._jobTitle) }()
+        case 33: try { try decoder.decodeSingularStringField(value: &_storage._personalWebsite) }()
+        case 34: try { try decoder.decodeSingularStringField(value: &_storage._workPhoneNumber) }()
+        case 35: try { try decoder.decodeSingularStringField(value: &_storage._workEmail) }()
+        case 36: try { try decoder.decodeRepeatedMessageField(value: &_storage._extraWorkDetails) }()
+        case 37: try { try decoder.decodeRepeatedMessageField(value: &_storage._extraSections) }()
+        default: break
+        }
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      if !_storage._fullName.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._fullName, fieldNumber: 1)
+      }
+      if !_storage._email.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._email, fieldNumber: 2)
+      }
+      if !_storage._phoneNumber.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._phoneNumber, fieldNumber: 3)
+      }
+      if !_storage._firstName.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._firstName, fieldNumber: 4)
+      }
+      if !_storage._middleName.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._middleName, fieldNumber: 5)
+      }
+      if !_storage._lastName.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._lastName, fieldNumber: 6)
+      }
+      if !_storage._birthdate.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._birthdate, fieldNumber: 7)
+      }
+      if !_storage._gender.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._gender, fieldNumber: 8)
+      }
+      if !_storage._extraPersonalDetails.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._extraPersonalDetails, fieldNumber: 9)
+      }
+      if !_storage._organization.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._organization, fieldNumber: 10)
+      }
+      if !_storage._streetAddress.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._streetAddress, fieldNumber: 11)
+      }
+      if !_storage._zipOrPostalCode.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._zipOrPostalCode, fieldNumber: 12)
+      }
+      if !_storage._city.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._city, fieldNumber: 13)
+      }
+      if !_storage._stateOrProvince.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._stateOrProvince, fieldNumber: 14)
+      }
+      if !_storage._countryOrRegion.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._countryOrRegion, fieldNumber: 15)
+      }
+      if !_storage._floor.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._floor, fieldNumber: 16)
+      }
+      if !_storage._county.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._county, fieldNumber: 17)
+      }
+      if !_storage._extraAddressDetails.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._extraAddressDetails, fieldNumber: 18)
+      }
+      if !_storage._socialSecurityNumber.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._socialSecurityNumber, fieldNumber: 19)
+      }
+      if !_storage._passportNumber.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._passportNumber, fieldNumber: 20)
+      }
+      if !_storage._licenseNumber.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._licenseNumber, fieldNumber: 21)
+      }
+      if !_storage._website.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._website, fieldNumber: 22)
+      }
+      if !_storage._xHandle.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._xHandle, fieldNumber: 23)
+      }
+      if !_storage._secondPhoneNumber.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._secondPhoneNumber, fieldNumber: 24)
+      }
+      if !_storage._linkedin.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._linkedin, fieldNumber: 25)
+      }
+      if !_storage._reddit.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._reddit, fieldNumber: 26)
+      }
+      if !_storage._facebook.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._facebook, fieldNumber: 27)
+      }
+      if !_storage._yahoo.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._yahoo, fieldNumber: 28)
+      }
+      if !_storage._instagram.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._instagram, fieldNumber: 29)
+      }
+      if !_storage._extraContactDetails.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._extraContactDetails, fieldNumber: 30)
+      }
+      if !_storage._company.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._company, fieldNumber: 31)
+      }
+      if !_storage._jobTitle.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._jobTitle, fieldNumber: 32)
+      }
+      if !_storage._personalWebsite.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._personalWebsite, fieldNumber: 33)
+      }
+      if !_storage._workPhoneNumber.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._workPhoneNumber, fieldNumber: 34)
+      }
+      if !_storage._workEmail.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._workEmail, fieldNumber: 35)
+      }
+      if !_storage._extraWorkDetails.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._extraWorkDetails, fieldNumber: 36)
+      }
+      if !_storage._extraSections.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._extraSections, fieldNumber: 37)
+      }
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_ItemIdentity, rhs: ProtonPassItemV1_ItemIdentity) -> Bool {
+    if lhs._storage !== rhs._storage {
+      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
+        let _storage = _args.0
+        let rhs_storage = _args.1
+        if _storage._fullName != rhs_storage._fullName {return false}
+        if _storage._email != rhs_storage._email {return false}
+        if _storage._phoneNumber != rhs_storage._phoneNumber {return false}
+        if _storage._firstName != rhs_storage._firstName {return false}
+        if _storage._middleName != rhs_storage._middleName {return false}
+        if _storage._lastName != rhs_storage._lastName {return false}
+        if _storage._birthdate != rhs_storage._birthdate {return false}
+        if _storage._gender != rhs_storage._gender {return false}
+        if _storage._extraPersonalDetails != rhs_storage._extraPersonalDetails {return false}
+        if _storage._organization != rhs_storage._organization {return false}
+        if _storage._streetAddress != rhs_storage._streetAddress {return false}
+        if _storage._zipOrPostalCode != rhs_storage._zipOrPostalCode {return false}
+        if _storage._city != rhs_storage._city {return false}
+        if _storage._stateOrProvince != rhs_storage._stateOrProvince {return false}
+        if _storage._countryOrRegion != rhs_storage._countryOrRegion {return false}
+        if _storage._floor != rhs_storage._floor {return false}
+        if _storage._county != rhs_storage._county {return false}
+        if _storage._extraAddressDetails != rhs_storage._extraAddressDetails {return false}
+        if _storage._socialSecurityNumber != rhs_storage._socialSecurityNumber {return false}
+        if _storage._passportNumber != rhs_storage._passportNumber {return false}
+        if _storage._licenseNumber != rhs_storage._licenseNumber {return false}
+        if _storage._website != rhs_storage._website {return false}
+        if _storage._xHandle != rhs_storage._xHandle {return false}
+        if _storage._secondPhoneNumber != rhs_storage._secondPhoneNumber {return false}
+        if _storage._linkedin != rhs_storage._linkedin {return false}
+        if _storage._reddit != rhs_storage._reddit {return false}
+        if _storage._facebook != rhs_storage._facebook {return false}
+        if _storage._yahoo != rhs_storage._yahoo {return false}
+        if _storage._instagram != rhs_storage._instagram {return false}
+        if _storage._extraContactDetails != rhs_storage._extraContactDetails {return false}
+        if _storage._company != rhs_storage._company {return false}
+        if _storage._jobTitle != rhs_storage._jobTitle {return false}
+        if _storage._personalWebsite != rhs_storage._personalWebsite {return false}
+        if _storage._workPhoneNumber != rhs_storage._workPhoneNumber {return false}
+        if _storage._workEmail != rhs_storage._workEmail {return false}
+        if _storage._extraWorkDetails != rhs_storage._extraWorkDetails {return false}
+        if _storage._extraSections != rhs_storage._extraSections {return false}
+        return true
+      }
+      if !storagesAreEqual {return false}
+    }
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ProtonPassItemV1_ExtraIdentitySection: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".ExtraIdentitySection"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "section_name"),
+    2: .standard(proto: "section_fields"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.sectionName) }()
+      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.sectionFields) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.sectionName.isEmpty {
+      try visitor.visitSingularStringField(value: self.sectionName, fieldNumber: 1)
+    }
+    if !self.sectionFields.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.sectionFields, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_ExtraIdentitySection, rhs: ProtonPassItemV1_ExtraIdentitySection) -> Bool {
+    if lhs.sectionName != rhs.sectionName {return false}
+    if lhs.sectionFields != rhs.sectionFields {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1202,6 +1839,7 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
     3: .same(proto: "login"),
     4: .same(proto: "alias"),
     5: .standard(proto: "credit_card"),
+    6: .same(proto: "identity"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1262,6 +1900,19 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
           self.content = .creditCard(v)
         }
       }()
+      case 6: try {
+        var v: ProtonPassItemV1_ItemIdentity?
+        var hadOneofValue = false
+        if let current = self.content {
+          hadOneofValue = true
+          if case .identity(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.content = .identity(v)
+        }
+      }()
       default: break
       }
     }
@@ -1288,6 +1939,10 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
     case .creditCard?: try {
       guard case .creditCard(let v)? = self.content else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+    }()
+    case .identity?: try {
+      guard case .identity(let v)? = self.content else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
     }()
     case nil: break
     }

@@ -27,12 +27,14 @@ public struct ItemCount: Hashable, Equatable, Sendable {
     public let alias: Int
     public let creditCard: Int
     public let note: Int
+    public let identity: Int
 
     public static let zero = ItemCount(total: 0,
                                        login: 0,
                                        alias: 0,
                                        creditCard: 0,
-                                       note: 0)
+                                       note: 0,
+                                       identity: 0)
 }
 
 public extension ItemCount {
@@ -42,5 +44,6 @@ public extension ItemCount {
         alias = items.filter { $0.type == .alias }.count
         creditCard = items.filter { $0.type == .creditCard }.count
         note = items.filter { $0.type == .note }.count
+        identity = items.filter { $0.type == .identity }.count
     }
 }

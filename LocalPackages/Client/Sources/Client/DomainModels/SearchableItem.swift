@@ -22,6 +22,7 @@ import Core
 import CryptoKit
 import Entities
 
+// swiftlint:disable cyclomatic_complexity
 /// Items that live in memory for search purpose
 public struct SearchableItem: ItemTypeIdentifiable, Equatable {
     public let shareId: String
@@ -69,6 +70,59 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
             url = data.urls.first
             requiredExtras = [data.email, data.username]
             optionalExtras = data.urls
+        case let .identity(data):
+            url = nil
+            requiredExtras = [data.email, data.fullName]
+            optionalExtras = [
+                data.birthdate,
+                data.lastName,
+                data.county,
+                data.firstName,
+                data.facebook,
+                data.floor,
+                data.gender,
+                data.instagram,
+                data.middleName,
+                data.personalWebsite,
+                data.reddit,
+                data.workEmail,
+                data.workPhoneNumber,
+                data.yahoo,
+                data.city,
+                data.company,
+                data.countryOrRegion,
+                data.jobTitle,
+                data.licenseNumber,
+                data.organization,
+                data.passportNumber,
+                data.phoneNumber,
+                data.secondPhoneNumber,
+                data.socialSecurityNumber,
+                data.stateOrProvince,
+                data.streetAddress,
+                data.website,
+                data.linkedIn,
+                data.xHandle,
+                data.zipOrPostalCode
+            ]
+
+            for customField in data.extraAddressDetails where customField.type == .text {
+                optionalExtras.append("\(customField.title): \(customField.content)")
+            }
+            for customField in data.extraPersonalDetails where customField.type == .text {
+                optionalExtras.append("\(customField.title): \(customField.content)")
+            }
+            for customField in data.extraContactDetails where customField.type == .text {
+                optionalExtras.append("\(customField.title): \(customField.content)")
+            }
+            for customField in data.extraWorkDetails where customField.type == .text {
+                optionalExtras.append("\(customField.title): \(customField.content)")
+            }
+            for section in data.extraSections {
+                for customField in section.content where customField.type == .text {
+                    optionalExtras.append("\(customField.title): \(customField.content)")
+                }
+            }
         default:
             url = nil
             requiredExtras = []
@@ -180,3 +234,5 @@ public extension [SearchableItem] {
         self.map(\.toItemSearchResult)
     }
 }
+
+// swiftlint:enable cyclomatic_complexity

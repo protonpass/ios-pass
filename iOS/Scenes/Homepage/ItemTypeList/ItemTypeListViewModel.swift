@@ -28,7 +28,7 @@ import ProtonCoreUIFoundations
 import UIKit
 
 enum ItemType: CaseIterable {
-    case login, alias, creditCard, note, password
+    case login, alias, note, password, creditCard, identity
 }
 
 extension ItemContentType {
@@ -42,6 +42,8 @@ extension ItemContentType {
             .creditCard
         case .note:
             .note
+        case .identity:
+            .identity
         }
     }
 }
@@ -57,6 +59,11 @@ final class ItemTypeListViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+
+    var isIdentityActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
+    }
 
     weak var delegate: (any ItemTypeListViewModelDelegate)?
 
@@ -90,6 +97,8 @@ extension ItemType {
             IconProvider.fileLines
         case .password:
             IconProvider.key
+        case .identity:
+            IconProvider.cardIdentity
         }
     }
 
@@ -105,6 +114,8 @@ extension ItemType {
             ItemContentType.note.normMajor2Color
         case .password:
             PassColor.passwordInteractionNormMajor2
+        case .identity:
+            PassColor.interactionNormMajor2
         }
     }
 
@@ -120,6 +131,8 @@ extension ItemType {
             ItemContentType.note.normMinor1Color
         case .password:
             PassColor.passwordInteractionNormMinor1
+        case .identity:
+            PassColor.interactionNormMinor1
         }
     }
 
@@ -135,6 +148,8 @@ extension ItemType {
             #localized("Card")
         case .password:
             #localized("Password")
+        case .identity:
+            #localized("Identity")
         }
     }
 
@@ -150,6 +165,8 @@ extension ItemType {
             #localized("Jot down a PIN, code, or note to self")
         case .password:
             #localized("Generate a secure password")
+        case .identity:
+            #localized("Fill in your personal data")
         }
     }
 }

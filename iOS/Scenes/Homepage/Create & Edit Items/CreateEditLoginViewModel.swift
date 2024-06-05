@@ -76,8 +76,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
     var isAlias: Bool { aliasCreationLiteInfo != nil }
 
-    weak var createEditLoginViewModelDelegate: (any CreateEditLoginViewModelDelegate)?
-
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
@@ -92,6 +90,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     var usernameFlagActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit)
+    }
+
+    private var loginDelegate: (any CreateEditLoginViewModelDelegate)? {
+        delegate as? (any CreateEditLoginViewModelDelegate)
     }
 
     override init(mode: ItemMode,
@@ -237,7 +239,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func generateAlias() {
         if let aliasOptions, let aliasCreationLiteInfo {
-            createEditLoginViewModelDelegate?
+            loginDelegate?
                 .createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
                                                               creationInfo: aliasCreationLiteInfo,
                                                               delegate: self)
@@ -273,7 +275,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func generatePassword() {
-        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
+        loginDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
     func pasteTotpUriFromClipboard() {

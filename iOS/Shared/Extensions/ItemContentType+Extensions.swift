@@ -37,6 +37,8 @@ extension ItemContentType {
             IconProvider.fileLines
         case .creditCard:
             PassIcon.passCreditCardOneStripe
+        case .identity:
+            IconProvider.cardIdentity
         }
     }
 
@@ -59,6 +61,8 @@ extension ItemContentType {
             PassColor.noteInteractionNorm
         case .creditCard:
             PassColor.cardInteractionNorm
+        case .identity:
+            PassColor.interactionNorm
         }
     }
 
@@ -72,6 +76,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMajor1
         case .creditCard:
             PassColor.cardInteractionNormMajor1
+        case .identity:
+            PassColor.interactionNormMajor1
         }
     }
 
@@ -85,6 +91,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMajor2
         case .creditCard:
             PassColor.cardInteractionNormMajor2
+        case .identity:
+            PassColor.interactionNormMajor2
         }
     }
 
@@ -98,6 +106,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMinor1
         case .creditCard:
             PassColor.cardInteractionNormMinor1
+        case .identity:
+            PassColor.interactionNormMinor1
         }
     }
 
@@ -111,6 +121,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMinor2
         case .creditCard:
             PassColor.cardInteractionNormMinor2
+        case .identity:
+            PassColor.interactionNormMinor2
         }
     }
 }
@@ -128,6 +140,8 @@ extension ItemContentType {
             #localized("Note")
         case .creditCard:
             #localized("Card")
+        case .identity:
+            #localized("Identity")
         }
     }
 
@@ -141,6 +155,8 @@ extension ItemContentType {
             #localized("Notes")
         case .creditCard:
             #localized("Credit cards")
+        case .identity:
+            #localized("Identities")
         }
     }
 
@@ -154,6 +170,8 @@ extension ItemContentType {
             #localized("Create a card")
         case .note:
             #localized("Create a note")
+        case .identity:
+            #localized("Create an identity")
         }
     }
 
@@ -167,6 +185,8 @@ extension ItemContentType {
             #localized("Credit card created")
         case .note:
             #localized("Note created")
+        case .identity:
+            #localized("Identity created")
         }
     }
 
@@ -180,6 +200,8 @@ extension ItemContentType {
             #localized("Credit card restored")
         case .note:
             #localized("Note restored")
+        case .identity:
+            #localized("Identity restored")
         }
     }
 
@@ -193,6 +215,8 @@ extension ItemContentType {
             #localized("Credit card permanently deleted")
         case .note:
             #localized("Note permanently deleted")
+        case .identity:
+            #localized("Identity permanently deleted")
         }
     }
 
@@ -206,6 +230,8 @@ extension ItemContentType {
             #localized("Credit card updated")
         case .note:
             #localized("Note updated")
+        case .identity:
+            #localized("Identity updated")
         }
     }
 }

@@ -163,6 +163,8 @@ private extension ItemContentType {
             "note"
         case .creditCard:
             "credit_card"
+        case .identity:
+            "identity"
         }
     }
 }

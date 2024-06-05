@@ -167,6 +167,25 @@ public extension String {
         let middleReplacement = String(repeating: newChar, count: middleCount)
         return "\(firstChar)\(middleReplacement)\(lastChar)"
     }
+
+    static func concatenateOptionalStrings(_ strings: [String?], separator: String = "") -> String {
+        // Filter out nil values and empty strings, then unwrap the non-nil, non-empty values
+        let nonNilNonEmptyStrings = strings.compactMap { $0?.isEmpty == false ? $0 : nil }
+        // Join the non-nil, non-empty strings with a space separator
+        return nonNilNonEmptyStrings.joined(separator: separator)
+    }
+
+    // periphery:ignore
+    static func concatenateOptionalStrings(_ strings: String?..., separator: String = "") -> String {
+        // Call the array-based function with the variadic arguments
+        concatenateOptionalStrings(strings, separator: separator)
+    }
+
+    func concatenateWith(_ strings: String?..., separator: String = "") -> String {
+        var content: [String?] = [self]
+        content.append(contentsOf: strings)
+        return String.concatenateOptionalStrings(content, separator: separator)
+    }
 }
 
 // MARK: Computed Extensions
