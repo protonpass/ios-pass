@@ -515,12 +515,14 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         present(viewController, dismissible: true)
     }
 
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate) {
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
+                                                      shouldDisplayTotp: Bool) {
         guard let rootViewController else {
             return
         }
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           delegate: delegate)
+                                                           delegate: delegate,
+                                                           shouldShowTotp: shouldDisplayTotp)
         customCoordinator?.start()
     }
 
