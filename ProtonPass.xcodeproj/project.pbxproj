@@ -377,6 +377,8 @@
 		35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */; };
 		35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
+		35AF16C92C108AF500277E79 /* ExtraPasswordSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF16C82C108AF500277E79 /* ExtraPasswordSheet.swift */; };
+		35AF16CB2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF16CA2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B0F7872C0739B700A89E93 /* SecureLinkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F7862C0739B700A89E93 /* SecureLinkDetailView.swift */; };
 		35B0F7892C0739D700A89E93 /* SecureLinkDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F7882C0739D700A89E93 /* SecureLinkDetailViewModel.swift */; };
@@ -876,6 +878,8 @@
 		35AC9A642A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldAdditionCoordinator.swift; sourceTree = "<group>"; };
 		35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCustomFieldView.swift; sourceTree = "<group>"; };
 		35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldEditionCoordinator.swift; sourceTree = "<group>"; };
+		35AF16C82C108AF500277E79 /* ExtraPasswordSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraPasswordSheet.swift; sourceTree = "<group>"; };
+		35AF16CA2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ExtraPassword.swift"; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B0F7862C0739B700A89E93 /* SecureLinkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkDetailView.swift; sourceTree = "<group>"; };
 		35B0F7882C0739D700A89E93 /* SecureLinkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkDetailViewModel.swift; sourceTree = "<group>"; };
@@ -1450,6 +1454,7 @@
 		3569B2A729B7D2030070830B /* Profile Tab */ = {
 			isa = PBXGroup;
 			children = (
+				35AF16C72C108AAA00277E79 /* Extra password */,
 				35533BBE29D618A200EC58DE /* AccountView.swift */,
 				35533BC029D618B800EC58DE /* AccountViewModel.swift */,
 				3546327A2A9CEFBC00321691 /* AutoFillInstructionsView.swift */,
@@ -1460,8 +1465,6 @@
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
 				35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */,
-				35B0F78A2C088DE300A89E93 /* SetExtraPasswordView.swift */,
-				35B0F78C2C088DF700A89E93 /* SetExtraPasswordViewModel.swift */,
 				5BE5BDEB2A4C753A007CBE1B /* Bug Report */,
 				353739DF29EAE84000A3255E /* QA Features */,
 				356BC35329D6CDA300F03497 /* Settings */,
@@ -1580,6 +1583,16 @@
 				35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */,
 			);
 			path = "Custom fields";
+			sourceTree = "<group>";
+		};
+		35AF16C72C108AAA00277E79 /* Extra password */ = {
+			isa = PBXGroup;
+			children = (
+				35AF16C82C108AF500277E79 /* ExtraPasswordSheet.swift */,
+				35B0F78A2C088DE300A89E93 /* SetExtraPasswordView.swift */,
+				35B0F78C2C088DF700A89E93 /* SetExtraPasswordViewModel.swift */,
+			);
+			path = "Extra password";
 			sourceTree = "<group>";
 		};
 		35B0F7852C0738A100A89E93 /* SecureLink */ = {
@@ -1782,6 +1795,7 @@
 			children = (
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				5B5DBF122B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift */,
+				35AF16CA2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift */,
 				356A1EFF2B889DDA00561950 /* HomepageCoordinator+Passkey.swift */,
 				5BECDE432B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift */,
 				357919B02B70E7630085B532 /* HomepageCoordinator+Spotlight.swift */,
@@ -3232,6 +3246,7 @@
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
 				3559BAA02A5B32550020E172 /* Preferences.swift in Sources */,
 				35704EBF2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift in Sources */,
+				35AF16CB2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift in Sources */,
 				352352B62B91DEB400603B91 /* ItemSearchResultView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				5B6639612B4D9A4F0029F8DA /* ItemDetailHistorySection.swift in Sources */,
@@ -3339,6 +3354,7 @@
 				5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */,
 				35AC9A562A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift in Sources */,
 				5BECDE442B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift in Sources */,
+				35AF16C92C108AF500277E79 /* ExtraPasswordSheet.swift in Sources */,
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,
 				5B1092D32B5199F1002621A4 /* DetailHistoryView+Note.swift in Sources */,
