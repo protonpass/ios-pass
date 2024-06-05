@@ -151,59 +151,55 @@ struct CreateEditIdentityView: View {
 
 private extension CreateEditIdentityView {
     var mainContainer: some View {
-        ScrollView {
-            LazyVStack(spacing: DesignConstant.sectionPadding) {
-                CreateEditItemTitleSection(title: $viewModel.title,
-                                           focusedField: $focusedField,
-                                           field: .title,
-                                           itemContentType: viewModel.itemContentType(),
-                                           isEditMode: viewModel.mode.isEditMode,
-                                           onSubmit: {})
-                    .padding(.vertical, DesignConstant.sectionPadding / 2)
+        LazyVStack(spacing: DesignConstant.sectionPadding) {
+            CreateEditItemTitleSection(title: $viewModel.title,
+                                       focusedField: $focusedField,
+                                       field: .title,
+                                       itemContentType: viewModel.itemContentType(),
+                                       isEditMode: viewModel.mode.isEditMode,
+                                       onSubmit: {})
+                .padding(.vertical, DesignConstant.sectionPadding / 2)
 
-                sections()
-                PassSectionDivider()
+            sections()
+            PassSectionDivider()
 
-                if viewModel.canAddMoreCustomFields {
-                    CapsuleLabelButton(icon: IconProvider.plus,
-                                       title: "Add a custom section",
-                                       titleColor: viewModel.itemContentType().normMajor2Color,
-                                       backgroundColor: viewModel.itemContentType().normMinor1Color,
-                                       height: 55) {
-                        showCustomTitleAlert.toggle()
-                    }
-                } else {
-                    Button { viewModel.upgrade() } label: {
-                        Label(title: {
-                            Text("Upgrade to add custom sections")
-                                .font(.callout)
-                                .fontWeight(.medium)
-                        }, icon: {
-                            Image(uiImage: IconProvider.arrowOutSquare)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 16)
-                        })
-                        .foregroundStyle(ItemContentType.identity.normMajor2Color.toColor)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
+            if viewModel.canAddMoreCustomFields {
+                CapsuleLabelButton(icon: IconProvider.plus,
+                                   title: "Add a custom section",
+                                   titleColor: viewModel.itemContentType().normMajor2Color,
+                                   backgroundColor: viewModel.itemContentType().normMinor1Color,
+                                   height: 55) {
+                    showCustomTitleAlert.toggle()
                 }
+            } else {
+                Button { viewModel.upgrade() } label: {
+                    Label(title: {
+                        Text("Upgrade to add custom sections")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                    }, icon: {
+                        Image(uiImage: IconProvider.arrowOutSquare)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 16)
+                    })
+                    .foregroundStyle(ItemContentType.identity.normMajor2Color.toColor)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, DesignConstant.sectionPadding)
             }
-            .padding(.horizontal, DesignConstant.sectionPadding)
-            .padding(.bottom, DesignConstant.sectionPadding)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .animation(.default, value: viewModel.sections)
-            .animation(.default, value: viewModel.extraPersonalDetails)
-            .animation(.default, value: viewModel.extraWorkDetails)
-            .animation(.default, value: viewModel.extraAddressDetails)
-            .animation(.default, value: viewModel.extraContactDetails)
-            .scrollViewEmbeded(maxWidth: .infinity)
-            .background(PassColor.backgroundNorm.toColor)
-            .navigationBarBackButtonHidden(true)
-            .toolbarBackground(PassColor.backgroundNorm.toColor,
-                               for: .navigationBar)
         }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.bottom, DesignConstant.sectionPadding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.sections)
+        .animation(.default, value: viewModel.extraPersonalDetails)
+        .animation(.default, value: viewModel.extraWorkDetails)
+        .animation(.default, value: viewModel.extraAddressDetails)
+        .animation(.default, value: viewModel.extraContactDetails)
+        .scrollViewEmbeded(maxWidth: .infinity)
+        .navigationBarBackButtonHidden(true)
+        .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
         .background(PassColor.backgroundNorm.toColor)
         .tint(viewModel.itemContentType().normMajor1Color.toColor)
         .toolbar {
@@ -223,7 +219,7 @@ private extension CreateEditIdentityView {
                                   })
         }
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
-        .alert("Custom Section", isPresented: $showCustomTitleAlert) {
+        .alert("Custom section", isPresented: $showCustomTitleAlert) {
             TextField("Title", text: $viewModel.customSectionTitle)
                 .autocorrectionDisabled()
             Button("Add", action: viewModel.addCustomSection)
@@ -236,21 +232,30 @@ private extension CreateEditIdentityView {
             Button("Cancel", role: .cancel) { viewModel.reset() }
         } message: {
             // swiftlint:disable:next line_length
-            Text("Are you sure you want to delete the following section \(viewModel.selectedCustomSection?.title ?? "Unknown")")
+            Text("Are you sure you want to delete the following section \"\(viewModel.selectedCustomSection?.title ?? "Unknown")\"?")
         }
         .alert("Modify the section name", isPresented: $showSectionTitleModification) {
             TextField("New title", text: $viewModel.customSectionTitle)
                 .autocorrectionDisabled()
-            Button("Modify", action: viewModel.modifyCustomSectionName)
+            Button("Modify") { viewModel.modifyCustomSectionName() }
             Button("Cancel", role: .cancel) { viewModel.reset() }
         } message: {
             Text("Enter a new section title")
         }
     }
+
+    func addMoreButton(_ action: @escaping () -> Void) -> some View {
+        CapsuleLabelButton(icon: IconProvider.plus,
+                           title: "Add more",
+                           titleColor: viewModel.itemContentType().normMajor2Color,
+                           backgroundColor: viewModel.itemContentType().normMinor1Color,
+                           fontWeight: .medium,
+                           maxWidth: 140,
+                           action: action)
+    }
 }
 
 private extension CreateEditIdentityView {
-    @ViewBuilder
     func sections() -> some View {
         ForEach(Array(viewModel.sections.enumerated()), id: \.element.id) { index, section in
             Section(content: {
@@ -295,7 +300,7 @@ private extension CreateEditIdentityView {
                   .frame(maxWidth: .infinity, alignment: .leading)
                   .padding(.top, DesignConstant.sectionPadding)
                   .buttonEmbeded {
-                      viewModel.toggleCollapsingSection(sectionToToggle: section)
+                      viewModel.toggleCollapsingSection(section)
                   }
             Spacer()
 
@@ -352,12 +357,7 @@ private extension CreateEditIdentityView {
                 view.padding(.vertical, DesignConstant.sectionPadding)
             }
             .roundedEditableSection()
-            CapsuleLabelButton(icon: IconProvider.plus,
-                               title: "Add more",
-                               titleColor: viewModel.itemContentType().normMajor2Color,
-                               backgroundColor: viewModel.itemContentType().normMinor1Color,
-                               fontWeight: .bold,
-                               maxWidth: 140) {
+            addMoreButton {
                 viewModel.addCustomField(to: section)
             }
         }
@@ -392,10 +392,12 @@ private extension CreateEditIdentityView {
                 identityRow(title: IdentityFields.fullName.title,
                             value: $viewModel.fullName)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.email.title,
                             value: $viewModel.email,
                             keyboardType: .emailAddress)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.phoneNumber.title,
                             value: $viewModel.phoneNumber,
                             keyboardType: .phonePad)
@@ -408,7 +410,6 @@ private extension CreateEditIdentityView {
 
                 if viewModel.gender.shouldShow {
                     PassSectionDivider()
-
                     identityRow(title: IdentityFields.gender.title,
                                 value: $viewModel.gender.value)
                 }
@@ -433,12 +434,9 @@ private extension CreateEditIdentityView {
             }
             .padding(.vertical, DesignConstant.sectionPadding)
             .roundedEditableSection()
-            CapsuleLabelButton(icon: IconProvider.plus,
-                               title: "Add more",
-                               titleColor: viewModel.itemContentType().normMajor2Color,
-                               backgroundColor: viewModel.itemContentType().normMinor1Color,
-                               fontWeight: .bold,
-                               maxWidth: 140) { sheetState = .personal(section) }
+            addMoreButton {
+                sheetState = .personal(section)
+            }
         }
     }
 }
@@ -452,9 +450,11 @@ private extension CreateEditIdentityView {
                 identityRow(title: IdentityFields.organization.title,
                             value: $viewModel.organization)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.streetAddress.title,
                             value: $viewModel.streetAddress)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.zipOrPostalCode.title,
                             value: $viewModel.zipOrPostalCode,
                             keyboardType: .asciiCapableNumberPad)
@@ -473,14 +473,12 @@ private extension CreateEditIdentityView {
 
                 if viewModel.floor.shouldShow {
                     PassSectionDivider()
-
                     identityRow(title: IdentityFields.floor.title,
                                 value: $viewModel.floor.value)
                 }
 
                 if viewModel.county.shouldShow {
                     PassSectionDivider()
-
                     identityRow(title: IdentityFields.county.title,
                                 value: $viewModel.county.value)
                 }
@@ -505,11 +503,9 @@ private extension CreateEditIdentityView {
             }
             .padding(.vertical, DesignConstant.sectionPadding)
             .roundedEditableSection()
-            CapsuleLabelButton(icon: IconProvider.plus,
-                               title: "Add more",
-                               titleColor: viewModel.itemContentType().normMajor2Color,
-                               backgroundColor: viewModel.itemContentType().normMinor1Color,
-                               maxWidth: 140) { sheetState = .address(section) }
+            addMoreButton {
+                sheetState = .address(section)
+            }
         }
     }
 }
@@ -523,18 +519,23 @@ private extension CreateEditIdentityView {
                 identityRow(title: IdentityFields.socialSecurityNumber.title,
                             value: $viewModel.socialSecurityNumber)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.passportNumber.title,
                             value: $viewModel.passportNumber)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.licenseNumber.title,
                             value: $viewModel.licenseNumber)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.website.title,
                             value: $viewModel.website)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.xHandle.title,
                             value: $viewModel.xHandle)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.secondPhoneNumber.title,
                             value: $viewModel.secondPhoneNumber,
                             keyboardType: .namePhonePad)
@@ -589,11 +590,9 @@ private extension CreateEditIdentityView {
             }
             .padding(.vertical, DesignConstant.sectionPadding)
             .roundedEditableSection()
-            CapsuleLabelButton(icon: IconProvider.plus,
-                               title: "Add more",
-                               titleColor: viewModel.itemContentType().normMajor2Color,
-                               backgroundColor: viewModel.itemContentType().normMinor1Color,
-                               maxWidth: 140) { sheetState = .contact(section) }
+            addMoreButton {
+                sheetState = .contact(section)
+            }
         }
     }
 }
@@ -607,6 +606,7 @@ private extension CreateEditIdentityView {
                 identityRow(title: IdentityFields.company.title,
                             value: $viewModel.company)
                 PassSectionDivider()
+
                 identityRow(title: IdentityFields.jobTitle.title,
                             value: $viewModel.jobTitle)
 
@@ -649,11 +649,9 @@ private extension CreateEditIdentityView {
             }
             .padding(.vertical, DesignConstant.sectionPadding)
             .roundedEditableSection()
-            CapsuleLabelButton(icon: IconProvider.plus,
-                               title: "Add more",
-                               titleColor: viewModel.itemContentType().normMajor2Color,
-                               backgroundColor: viewModel.itemContentType().normMinor1Color,
-                               maxWidth: 140) { sheetState = .work(section) }
+            addMoreButton {
+                sheetState = .work(section)
+            }
         }
     }
 }
@@ -713,167 +711,54 @@ private extension CreateEditIdentityView {
 
             switch sheetState {
             case .personal:
-                Text("First name")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.firstName.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.firstName.shouldShow)
+                sheetOption("First name", value: $viewModel.firstName)
                 PassSectionDivider()
 
-                Text("Middle name")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.middleName.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.middleName.shouldShow)
+                sheetOption("Middle name", value: $viewModel.middleName)
                 PassSectionDivider()
 
-                Text("Lastname name")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.lastName.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.lastName.shouldShow)
+                sheetOption("Last name", value: $viewModel.lastName)
                 PassSectionDivider()
 
-                Text("Birthdate")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.birthdate.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.birthdate.shouldShow)
+                sheetOption("Birthdate", value: $viewModel.birthdate)
                 PassSectionDivider()
 
-                Text("Gender")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.gender.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.gender.shouldShow)
-
+                sheetOption("Gender", value: $viewModel.gender)
                 PassSectionDivider()
+
             case .address:
-                Text("Floor")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.floor.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.floor.shouldShow)
-
+                sheetOption("Floor", value: $viewModel.floor)
                 PassSectionDivider()
 
-                Text("County")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.county.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.county.shouldShow)
-
+                sheetOption("County", value: $viewModel.county)
                 PassSectionDivider()
 
             case .contact:
-                Text("LinkedIn")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.linkedIn.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.linkedIn.shouldShow)
-
+                sheetOption("LinkedIn", value: $viewModel.linkedIn)
                 PassSectionDivider()
 
-                Text("Reddit")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.reddit.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.reddit.shouldShow)
-
+                sheetOption("Reddit", value: $viewModel.reddit)
                 PassSectionDivider()
 
-                Text("Facebook")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.facebook.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.facebook.shouldShow)
-
+                sheetOption("Facebook", value: $viewModel.facebook)
                 PassSectionDivider()
 
-                Text("Yahoo")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.yahoo.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.yahoo.shouldShow)
-
+                sheetOption("Yahoo", value: $viewModel.yahoo)
                 PassSectionDivider()
 
-                Text("Instagram")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.instagram.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.instagram.shouldShow)
-
+                sheetOption("Instagram", value: $viewModel.instagram)
                 PassSectionDivider()
 
             case .work:
-
-                Text("Personal website")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.personalWebsite.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.personalWebsite.shouldShow)
-
+                sheetOption("Personal website", value: $viewModel.personalWebsite)
                 PassSectionDivider()
-                Text("Work phone number")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.workPhoneNumber.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.workPhoneNumber.shouldShow)
 
+                sheetOption("Work phone number", value: $viewModel.workPhoneNumber)
                 PassSectionDivider()
-                Text("Work email")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, DesignConstant.sectionPadding)
-                    .buttonEmbeded {
-                        viewModel.workEmail.shouldShow.toggle()
-                    }
-                    .disabled(viewModel.workEmail.shouldShow)
 
+                sheetOption("Work email", value: $viewModel.workEmail)
                 PassSectionDivider()
+
             default:
                 EmptyView()
             }
@@ -908,6 +793,16 @@ private extension CreateEditIdentityView {
         .frame(maxHeight: .infinity)
         .padding(.horizontal, DesignConstant.sectionPadding)
         .background(PassColor.backgroundNorm.toColor)
+    }
+
+    func sheetOption(_ title: LocalizedStringKey,
+                     value: Binding<HiddenStringValue>) -> some View {
+        Text(title)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, DesignConstant.sectionPadding)
+            .buttonEmbeded { value.wrappedValue.shouldShow.toggle() }
+            .disabled(value.wrappedValue.shouldShow)
     }
 }
 

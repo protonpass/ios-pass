@@ -20,7 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import Combine
 import Entities
 import Factory
@@ -193,14 +192,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     @Published var customSectionTitle = ""
 
     private(set) var selectedCustomSection: CreateEditIdentitySection?
-
-    override init(mode: ItemMode,
-                  upgradeChecker: any UpgradeCheckerProtocol,
-                  vaults: [Vault]) throws {
-        try super.init(mode: mode,
-                       upgradeChecker: upgradeChecker,
-                       vaults: vaults)
-    }
 
     override func itemContentType() -> ItemContentType { .identity }
 
@@ -455,7 +446,7 @@ extension CreateEditIdentityViewModel {
         }
     }
 
-    func toggleCollapsingSection(sectionToToggle: CreateEditIdentitySection) {
+    func toggleCollapsingSection(_ sectionToToggle: CreateEditIdentitySection) {
         sections = sections.map { section in
             guard sectionToToggle.id == section.id else {
                 return section

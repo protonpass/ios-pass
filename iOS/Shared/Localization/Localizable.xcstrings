@@ -16551,12 +16551,12 @@
         }
       }
     },
-    "Are you sure you want to delete the following section %@" : {
+    "Are you sure you want to delete the following section \"%@\"?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Are you sure you want to delete the following section %@"
+            "value" : "Are you sure you want to delete the following section \"%@\"?"
           }
         }
       }
@@ -30368,12 +30368,12 @@
         }
       }
     },
-    "Custom Section" : {
+    "Custom section" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Custom Section"
+            "value" : "Custom section"
           }
         }
       }
@@ -51021,16 +51021,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tuần trước"
-          }
-        }
-      }
-    },
-    "Lastname name" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lastname name"
           }
         }
       }
