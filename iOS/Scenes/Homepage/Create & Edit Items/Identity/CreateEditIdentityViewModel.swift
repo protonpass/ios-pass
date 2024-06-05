@@ -457,7 +457,7 @@ extension CreateEditIdentityViewModel {
 
     func addCustomField(to section: CreateEditIdentitySection) {
         customFieldSection = section
-        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
+        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self, shouldDisplayTotp: false)
     }
 }
 
