@@ -386,10 +386,11 @@ extension ShareCoordinator: ExtensionCoordinator {
 // MARK: CreateEditItemViewModelDelegate
 
 extension ShareCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate) {
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
+                                                      shouldDisplayTotp: Bool) {
         guard let topMostViewController else { return }
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: topMostViewController,
-                                                           delegate: delegate)
+                                                           delegate: delegate, shouldShowTotp: shouldDisplayTotp)
         customCoordinator?.start()
     }
 
