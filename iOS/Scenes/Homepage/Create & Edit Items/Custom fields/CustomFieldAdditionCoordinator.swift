@@ -36,14 +36,18 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
 
     weak var rootViewController: UIViewController?
     weak var delegate: (any CustomFieldAdditionDelegate)?
+    private let shouldShowTotp: Bool
 
-    init(rootViewController: UIViewController, delegate: any CustomFieldAdditionDelegate) {
+    init(rootViewController: UIViewController,
+         delegate: any CustomFieldAdditionDelegate,
+         shouldShowTotp: Bool) {
         self.rootViewController = rootViewController
         self.delegate = delegate
+        self.shouldShowTotp = shouldShowTotp
     }
 
     func start() {
-        let view = CustomFieldTypesView { [weak self] type in
+        let view = CustomFieldTypesView(shouldShowTotp: shouldShowTotp) { [weak self] type in
             guard let self else { return }
             rootViewController?.topMostViewController.dismiss(animated: true) { [weak self] in
                 guard let self else { return }
@@ -53,7 +57,7 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
         }
         let viewController = UIHostingController(rootView: view)
 
-        let customHeight = Int(OptionRowHeight.short.value) * CustomFieldType.allCases.count
+        let customHeight = Int(OptionRowHeight.short.value) * CustomFieldType.cases(shouldShowTotp).count
         if let rootViewController {
             viewController.setDetentType(.custom(CGFloat(customHeight)),
                                          parentViewController: rootViewController)
