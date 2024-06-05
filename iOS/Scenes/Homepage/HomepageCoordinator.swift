@@ -1421,9 +1421,11 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         present(viewController)
     }
 
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate) {
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
+                                                      shouldDisplayTotp: Bool) {
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           delegate: delegate)
+                                                           delegate: delegate,
+                                                           shouldShowTotp: shouldDisplayTotp)
         customCoordinator?.start()
     }
 

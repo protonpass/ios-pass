@@ -30,7 +30,8 @@ import ProtonCoreLogin
 
 @MainActor
 protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate)
+    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
+                                                      shouldDisplayTotp: Bool)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: any CustomFieldEditionDelegate)
 }
@@ -313,7 +314,7 @@ private extension BaseCreateEditItemViewModel {
 
 extension BaseCreateEditItemViewModel {
     func addCustomField() {
-        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
+        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self, shouldDisplayTotp: true)
     }
 
     func editCustomFieldTitle(_ uiModel: CustomFieldUiModel) {
