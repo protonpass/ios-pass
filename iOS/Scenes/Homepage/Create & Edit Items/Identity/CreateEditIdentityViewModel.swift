@@ -191,6 +191,8 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     private var customFieldSection: CreateEditIdentitySection?
     @Published var customSectionTitle = ""
 
+    var isSaveable: Bool { !title.isEmpty }
+
     private(set) var selectedCustomSection: CreateEditIdentitySection?
 
     override func itemContentType() -> ItemContentType { .identity }
