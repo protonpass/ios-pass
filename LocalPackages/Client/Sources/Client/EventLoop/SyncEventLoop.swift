@@ -88,10 +88,8 @@ public enum SyncEventLoopSkipReason {
 private let kThresholdRange = 55...60
 
 // sourcery: AutoMockable
-public protocol SyncEventLoopProtocol {
-//    func start()
+public protocol SyncEventLoopProtocol: Sendable {
     func forceSync()
-//    func stop()
     func reset()
 }
 
