@@ -30,6 +30,8 @@ struct CustomFieldSections: View {
     let itemContentType: ItemContentType
     let uiModels: [CustomFieldUiModel]
     let isFreeUser: Bool
+    var isASection = true
+    var showIcon = true
     let onSelectHiddenText: (String) -> Void
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
@@ -46,12 +48,16 @@ struct CustomFieldSections: View {
                                        content: content,
                                        itemContentType: itemContentType,
                                        isFreeUser: isFreeUser,
+                                       isASection: isASection,
+                                       showIcon: showIcon,
                                        onUpgrade: onUpgrade)
             case .hidden:
                 HiddenCustomFieldSection(title: title,
                                          content: content,
                                          itemContentType: itemContentType,
                                          isFreeUser: isFreeUser,
+                                         isASection: isASection,
+                                         showIcon: showIcon,
                                          onSelect: { onSelectHiddenText(content) },
                                          onUpgrade: onUpgrade)
             case .totp:
@@ -59,8 +65,14 @@ struct CustomFieldSections: View {
                                        content: content,
                                        itemContentType: itemContentType,
                                        isFreeUser: isFreeUser,
+                                       isASection: isASection,
+                                       showIcon: showIcon,
                                        onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
+            }
+
+            if uiModel != uiModels.last, !isASection {
+                PassSectionDivider()
             }
         }
     }
@@ -71,12 +83,16 @@ struct TextCustomFieldSection: View {
     let content: String
     let itemContentType: ItemContentType
     let isFreeUser: Bool
+    let isASection: Bool
+    let showIcon: Bool
     let onUpgrade: () -> Void
 
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
-                                  color: itemContentType.normColor)
+            if showIcon {
+                ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
+                                      color: itemContentType.normColor)
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
@@ -89,14 +105,19 @@ struct TextCustomFieldSection: View {
                         // swiftlint:disable:next deprecated_foregroundcolor_modifier
                         .foregroundColor(PassColor.textNorm)
                         .isEditable(false)
+                        .autoDetectDataTypes(.all)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
         }
-        .padding(DesignConstant.sectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
         .tint(itemContentType.normColor.toColor)
-        .roundedDetailSection()
-        .padding(.top, 8)
+        .if(isASection) { view in
+            view.roundedDetailSection()
+        }
+        .padding(.top, isASection ? 8 : 0)
     }
 }
 
@@ -106,13 +127,17 @@ struct HiddenCustomFieldSection: View {
     let content: String
     let itemContentType: ItemContentType
     let isFreeUser: Bool
+    let isASection: Bool
+    let showIcon: Bool
     let onSelect: () -> Void
     let onUpgrade: () -> Void
 
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: CustomFieldType.hidden.icon,
-                                  color: itemContentType.normColor)
+            if showIcon {
+                ItemDetailSectionIcon(icon: CustomFieldType.hidden.icon,
+                                      color: itemContentType.normColor)
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
@@ -151,10 +176,13 @@ struct HiddenCustomFieldSection: View {
             }
         }
         .animation(.default, value: isShowingText)
-        .padding(DesignConstant.sectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
         .tint(itemContentType.normColor.toColor)
-        .roundedDetailSection()
-        .padding(.top, 8)
+        .if(isASection) { view in
+            view.roundedDetailSection()
+        }
+        .padding(.top, isASection ? 8 : 0)
     }
 }
 
@@ -191,27 +219,17 @@ struct TotpCustomFieldSection: View {
     let content: String
     let itemContentType: ItemContentType
     let isFreeUser: Bool
+    let isASection: Bool
+    let showIcon: Bool
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
 
-    init(title: String,
-         content: String,
-         itemContentType: ItemContentType,
-         isFreeUser: Bool,
-         onSelectTotpToken: @escaping (String) -> Void,
-         onUpgrade: @escaping () -> Void) {
-        self.title = title
-        self.content = content
-        self.itemContentType = itemContentType
-        self.isFreeUser = isFreeUser
-        self.onSelectTotpToken = onSelectTotpToken
-        self.onUpgrade = onUpgrade
-    }
-
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: CustomFieldType.totp.icon,
-                                  color: itemContentType.normColor)
+            if showIcon {
+                ItemDetailSectionIcon(icon: CustomFieldType.totp.icon,
+                                      color: itemContentType.normColor)
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
@@ -252,10 +270,13 @@ struct TotpCustomFieldSection: View {
                 }
             }
         }
-        .padding(DesignConstant.sectionPadding)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
         .tint(itemContentType.normColor.toColor)
-        .roundedDetailSection()
-        .padding(.top, 8)
+        .if(isASection) { view in
+            view.roundedDetailSection()
+        }
+        .padding(.top, isASection ? 8 : 0)
         .onFirstAppear {
             if !isFreeUser {
                 viewModel.bind(uri: content)

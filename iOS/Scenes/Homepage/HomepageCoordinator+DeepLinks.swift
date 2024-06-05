@@ -37,7 +37,6 @@ extension HomepageCoordinator {
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaultsManager.getAllVaults())
             viewModel.delegate = self
-            viewModel.createEditLoginViewModelDelegate = self
             let view = CreateEditLoginView(viewModel: viewModel)
             present(view)
         } catch {

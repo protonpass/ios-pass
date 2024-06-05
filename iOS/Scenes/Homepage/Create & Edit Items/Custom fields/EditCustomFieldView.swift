@@ -30,12 +30,16 @@ struct EditCustomFieldView<Field: Hashable>: View {
     let contentType: ItemContentType
     @Binding var uiModel: CustomFieldUiModel
 
+    var showIcon = true
+    var roundedSection = true
     var onEditTitle: () -> Void
     var onRemove: () -> Void
 
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: uiModel.customField.type.icon)
+            if showIcon {
+                ItemDetailSectionIcon(icon: uiModel.customField.type.icon)
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(uiModel.customField.title)
@@ -100,7 +104,11 @@ struct EditCustomFieldView<Field: Hashable>: View {
                              accessibilityLabel: "Custom field menu")
             })
         }
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .if(roundedSection) { view in
+            view
+                .padding(.vertical, DesignConstant.sectionPadding)
+                .roundedEditableSection()
+        }
     }
 }

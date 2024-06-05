@@ -101,7 +101,7 @@ extension DetailHistoryView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 60)
-        .padding(.bottom, 40)
+        .padding(.bottom, 30)
     }
 
     func noteFields(item: ItemContent) -> some View {
@@ -145,7 +145,7 @@ private extension DetailHistoryView {
 private extension DetailHistoryView {
     var mainContainer: some View {
         ZStack(alignment: .bottom) {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 switch viewModel.currentRevision.contentData {
                 case .note:
                     noteView
@@ -155,6 +155,8 @@ private extension DetailHistoryView {
                     creditCardView
                 case .alias:
                     aliasView
+                case .identity:
+                    identityView
                 }
             }
             .animation(.default, value: viewModel.selectedRevision)
