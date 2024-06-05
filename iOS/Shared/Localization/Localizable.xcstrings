@@ -23030,6 +23030,16 @@
         }
       }
     },
+    "Caution: You won’t be able to access your Pass account if you lose this password." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caution: You won’t be able to access your Pass account if you lose this password."
+          }
+        }
+      }
+    },
     "Change mailbox password" : {
       "localizations" : {
         "be" : {
@@ -76119,6 +76129,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hồ sơ"
+          }
+        }
+      }
+    },
+    "Protect Proton Pass with an extra password." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protect Proton Pass with an extra password."
           }
         }
       }

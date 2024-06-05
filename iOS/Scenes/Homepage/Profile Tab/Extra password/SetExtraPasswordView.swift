@@ -32,16 +32,23 @@ struct SetExtraPasswordView: View {
         ZStack {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
-            VStack {
+            VStack(alignment: .leading) {
                 SecureField("Extra password",
                             text: $viewModel.extraPassword,
                             prompt: Text(viewModel.state.placeholder))
                     .focused($focused)
+
                 PassDivider()
                     .padding(.vertical)
+
                 // swiftlint:disable:next line_length
                 Text("You will be asked for this password during login and when switching from another Proton app to Proton Pass on web.")
                     .foregroundStyle(PassColor.textWeak.toColor)
+                    .padding(.bottom)
+
+                Text("Caution: You won’t be able to access your Pass account if you lose this password.")
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+
                 Spacer()
             }
             .padding()
