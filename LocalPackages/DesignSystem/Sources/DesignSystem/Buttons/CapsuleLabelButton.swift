@@ -26,6 +26,7 @@ public struct CapsuleLabelButton: View {
     let title: String
     let titleColor: UIColor
     let backgroundColor: UIColor
+    let fontWeight: Font.Weight
     let height: CGFloat
     let maxWidth: CGFloat?
     let action: () -> Void
@@ -36,6 +37,7 @@ public struct CapsuleLabelButton: View {
                 title: String,
                 titleColor: UIColor,
                 backgroundColor: UIColor,
+                fontWeight: Font.Weight = .regular,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 isDisabled: Bool = false,
@@ -50,6 +52,7 @@ public struct CapsuleLabelButton: View {
         self.action = action
         self.isDisabled = isDisabled
         self.leadingIcon = leadingIcon
+        self.fontWeight = fontWeight
     }
 
     public var body: some View {
@@ -73,6 +76,7 @@ public struct CapsuleLabelButton: View {
             }
             .padding(.horizontal)
             .foregroundStyle(titleColor.toColor)
+            .fontWeight(fontWeight)
             .frame(height: height)
             .frame(maxWidth: maxWidth)
             .background(backgroundColor.toColor.opacity(isDisabled ? 0.4 : 1.0))

@@ -21,104 +21,6 @@
 import CoreSpotlight
 import Foundation
 
-public enum ItemContentData: Sendable, Equatable, Hashable {
-    case alias
-    case login(LogInItemData)
-    case note
-    case creditCard(CreditCardData)
-
-    public var type: ItemContentType {
-        switch self {
-        case .alias:
-            .alias
-        case .login:
-            .login
-        case .note:
-            .note
-        case .creditCard:
-            .creditCard
-        }
-    }
-}
-
-public struct LogInItemData: Sendable, Equatable, Hashable {
-    public let email: String
-    public let username: String
-    public let password: String
-    public let totpUri: String
-    public let urls: [String]
-    public let allowedAndroidApps: [AllowedAndroidApp]
-    public let passkeys: [Passkey]
-
-    public init(email: String,
-                username: String,
-                password: String,
-                totpUri: String,
-                urls: [String],
-                allowedAndroidApps: [AllowedAndroidApp],
-                passkeys: [Passkey]) {
-        self.email = email
-        self.username = username
-        self.password = password
-        self.totpUri = totpUri
-        self.urls = urls
-        self.allowedAndroidApps = allowedAndroidApps
-        self.passkeys = passkeys
-    }
-
-    /// This variable should be used as the new main authentication variable
-    /// It returns either the user's username or the email
-    /// This should be user for indexing login items
-    public var authIdentifier: String {
-        if username.isEmpty {
-            return email
-        }
-
-        return username
-    }
-}
-
-public struct CreditCardData: Sendable, Equatable, Hashable {
-    public let cardholderName: String
-    public let type: ProtonPassItemV1_CardType
-    public let number: String
-    public let verificationNumber: String
-    public let expirationDate: String // YYYY-MM
-    public let pin: String
-
-    public var month: Int {
-        Int(expirationDate.components(separatedBy: "-").last ?? "") ?? 0
-    }
-
-    public var year: Int {
-        Int(expirationDate.components(separatedBy: "-").first ?? "") ?? 0
-    }
-
-    public var displayedExpirationDate: String {
-        Self.expirationDate(month: month, year: year)
-    }
-
-    public init(cardholderName: String,
-                type: ProtonPassItemV1_CardType,
-                number: String,
-                verificationNumber: String,
-                expirationDate: String,
-                pin: String) {
-        self.cardholderName = cardholderName
-        self.type = type
-        self.number = number
-        self.verificationNumber = verificationNumber
-        self.expirationDate = expirationDate
-        self.pin = pin
-    }
-}
-
-public extension CreditCardData {
-    static func expirationDate(month: Int, year: Int) -> String {
-        String(format: "%02d / %02d", month, year % 100)
-    }
-}
-
 public protocol ItemContentProtocol: Sendable {
     var name: String { get }
     var note: String { get }
@@ -133,6 +35,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let name: String
     public let note: String
     public let contentData: ItemContentData
+
+    /// Should only be used for login items
     public let customFields: [CustomField]
 
     public var id: String {
@@ -213,6 +117,13 @@ public extension ItemContent {
         return nil
     }
 
+    var identityItem: IdentityData? {
+        if case let .identity(item) = contentData {
+            return item
+        }
+        return nil
+    }
+
     var hasTotpUri: Bool {
         switch contentData {
         case let .login(data):
@@ -249,6 +160,8 @@ public extension ItemContent {
                 contents.append(data.cardholderName)
             case .note:
                 break
+            case let .identity(data):
+                contents.append(contentsOf: [data.fullName, data.email])
             }
 
             let customFieldValues = customFields
@@ -282,110 +195,3 @@ public extension ItemContent {
         return fields
     }
 }
-
-extension ItemContentProtobuf: ProtobufableItemContentProtocol {
-    public var name: String { metadata.name }
-    public var note: String { metadata.note }
-    public var uuid: String { metadata.itemUuid }
-
-    public var contentData: ItemContentData {
-        switch content.content {
-        case .alias:
-            .alias
-
-        case .note:
-            .note
-
-        case let .creditCard(data):
-            .creditCard(.init(cardholderName: data.cardholderName,
-                              type: data.cardType,
-                              number: data.number,
-                              verificationNumber: data.verificationNumber,
-                              expirationDate: data.expirationDate,
-                              pin: data.pin))
-
-        case let .login(data):
-            .login(.init(email: data.itemEmail,
-                         username: data.itemUsername,
-                         password: data.password,
-                         totpUri: data.totpUri,
-                         urls: data.urls,
-                         allowedAndroidApps: platformSpecific.android.allowedApps,
-                         passkeys: data.passkeys))
-        case .none:
-            .note
-        }
-    }
-
-    public var customFields: [CustomField] { extraFields.map { .init(from: $0) } }
-
-    public func data() throws -> Data {
-        try serializedData()
-    }
-
-    public init(data: Data) throws {
-        self = try ItemContentProtobuf(serializedData: data)
-    }
-
-    public init(name: String,
-                note: String,
-                itemUuid: String,
-                data: ItemContentData,
-                customFields: [CustomField]) {
-        self.init()
-        metadata = .init()
-        metadata.itemUuid = itemUuid
-        metadata.name = name
-        metadata.note = note
-
-        switch data {
-        case .alias:
-            content.alias = .init()
-
-        case let .login(logInData):
-            content.login = .init()
-            content.login.itemEmail = logInData.email
-            content.login.itemUsername = logInData.username
-            content.login.password = logInData.password
-            content.login.totpUri = logInData.totpUri
-            content.login.urls = logInData.urls
-            content.login.passkeys = logInData.passkeys
-            platformSpecific.android.allowedApps = logInData.allowedAndroidApps
-
-        case let .creditCard(data):
-            content.creditCard = .init()
-            content.creditCard.cardholderName = data.cardholderName
-            content.creditCard.cardType = data.type
-            content.creditCard.number = data.number
-            content.creditCard.verificationNumber = data.verificationNumber
-            content.creditCard.expirationDate = data.expirationDate
-            content.creditCard.pin = data.pin
-
-        case .note:
-            content.note = .init()
-        }
-
-        extraFields = customFields.map { customField in
-            var extraField = ProtonPassItemV1_ExtraField()
-            extraField.fieldName = customField.title
-
-            switch customField.type {
-            case .text:
-                extraField.text = .init()
-                extraField.text.content = customField.content
-
-            case .totp:
-                extraField.totp = .init()
-                extraField.totp.totpUri = customField.content
-
-            case .hidden:
-                extraField.hidden = .init()
-                extraField.hidden.content = customField.content
-            }
-
-            return extraField
-        }
-    }
-}
-
-extension LogInItemData: UsernameEmailContainer {}

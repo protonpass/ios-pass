@@ -106,6 +106,11 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case createSecureLink(ItemContent)
 }
 
+enum GenericDestination {
+    case presentView(view: any View, dismissible: Bool)
+    case itemDetail(view: any View, asSheet: Bool)
+}
+
 enum UIElementDisplay: Sendable {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(any Error)
@@ -135,6 +140,7 @@ final actor MainUIKitSwiftUIRouter: Sendable {
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
     let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
     let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
+    let itemDestinations: PassthroughSubject<GenericDestination, Never> = .init()
 
     @MainActor
     private var pendingDeeplinkDestination: DeeplinkDestination?
@@ -147,6 +153,11 @@ final actor MainUIKitSwiftUIRouter: Sendable {
     @MainActor
     func present(for destination: SheetDestination) {
         newSheetDestination.send(destination)
+    }
+
+    @MainActor
+    func navigate(to destination: GenericDestination) {
+        itemDestinations.send(destination)
     }
 
     @MainActor

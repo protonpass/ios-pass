@@ -25,11 +25,6 @@ import ProtonCoreLogin
 import SwiftUI
 import UIKit
 
-@MainActor
-protocol CreateEditItemCoordinatorDelegate: AnyObject {
-    func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool)
-}
-
 typealias CreateEditItemDelegates =
     CreateEditItemViewModelDelegate &
     CreateEditLoginViewModelDelegate &
@@ -43,13 +38,12 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let getCurrentSelectedShareId = resolve(\SharedUseCasesContainer.getCurrentSelectedShareId)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private weak var createEditItemDelegates: (any CreateEditItemDelegates)?
 
     private var currentViewModel: BaseCreateEditItemViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
-
-    weak var delegate: (any CreateEditItemCoordinatorDelegate)?
 
     init(createEditItemDelegates: (any CreateEditItemDelegates)?) {
         self.createEditItemDelegates = createEditItemDelegates
@@ -75,6 +69,8 @@ extension CreateEditItemCoordinator {
             try presentCreateEditCreditCardView(mode: mode)
         case .alias:
             try presentCreateEditAliasView(mode: mode)
+        case .identity:
+            try presentCreateEditIdentityView(mode: mode)
         }
     }
 
@@ -89,6 +85,8 @@ extension CreateEditItemCoordinator {
             try presentCreateEditCreditCardView(mode: mode)
         case .alias:
             try presentCreateEditAliasView(mode: mode)
+        case .identity:
+            try presentCreateEditIdentityView(mode: mode)
         }
     }
 
@@ -108,6 +106,8 @@ extension CreateEditItemCoordinator {
         case .password:
             presentGeneratePasswordView(mode: .random,
                                         generatePasswordViewModelDelegate: createEditItemDelegates)
+        case .identity:
+            try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
         }
     }
 
@@ -120,8 +120,7 @@ extension CreateEditItemCoordinator {
 
 private extension CreateEditItemCoordinator {
     func present(_ view: any View, dismissable: Bool) {
-        assert(delegate != nil, "delegate is not set")
-        delegate?.createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissable)
+        router.navigate(to: .presentView(view: view, dismissible: dismissable))
     }
 
     func presentCreateEditLoginView(mode: ItemMode) throws {
@@ -129,7 +128,6 @@ private extension CreateEditItemCoordinator {
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
-        viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -165,10 +163,18 @@ private extension CreateEditItemCoordinator {
         currentViewModel = viewModel
     }
 
+    func presentCreateEditIdentityView(mode: ItemMode) throws {
+        let viewModel = try CreateEditIdentityViewModel(mode: mode,
+                                                        upgradeChecker: upgradeChecker,
+                                                        vaults: vaultsManager.getAllVaults())
+        viewModel.delegate = createEditItemDelegates
+        let view = CreateEditIdentityView(viewModel: viewModel)
+        present(view, dismissable: false)
+        currentViewModel = viewModel
+    }
+
     func presentGeneratePasswordView(mode: GeneratePasswordViewMode,
                                      generatePasswordViewModelDelegate: (any GeneratePasswordViewModelDelegate)?) {
-        assert(delegate != nil, "delegate is not set")
-        guard delegate != nil else { return }
         Task { [weak self] in
             guard let self else { return }
             let coordinator =

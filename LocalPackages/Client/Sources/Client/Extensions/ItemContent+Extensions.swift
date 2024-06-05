@@ -44,6 +44,8 @@ public extension ItemContent {
 
         case .note:
             note = String(self.note.prefix(50))
+        case let .identity(data):
+            note = data.fullName.concatenateWith(data.email, separator: " / ")
         }
 
         return .init(itemId: item.itemID,

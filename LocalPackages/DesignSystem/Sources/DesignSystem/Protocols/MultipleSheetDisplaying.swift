@@ -1,7 +1,7 @@
 //
-// Array+Chunked.swift
-// Proton Pass - Created on 03/02/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// MultipleSheetDisplaying.swift
+// Proton Pass - Created on 27/05/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,10 +20,27 @@
 
 import Foundation
 
-public extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        stride(from: 0, to: count, by: size).map {
-            Array(self[$0..<Swift.min($0 + size, count)])
+public protocol MultipleSheetsDisplaying where Self: Equatable {
+    // This the none displaying modal enum case. Should always be present
+    static var none: Self { get }
+
+    // This is the binding boolean used to toggle the sheet display
+    var shouldDisplay: Bool { get set }
+}
+
+public extension MultipleSheetsDisplaying {
+    var shouldDisplay: Bool {
+        get {
+            switch self {
+            case .none:
+                false
+            default:
+                true
+            }
+        }
+
+        set(newValue) {
+            self = newValue ? self : .none
         }
     }
 }
