@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreFeatureFlags
 import UIKit
 
-protocol WipeAllDataUseCase {
+protocol WipeAllDataUseCase: Sendable {
     func execute() async
 }
 
@@ -33,6 +33,8 @@ extension WipeAllDataUseCase {
         await execute()
     }
 }
+
+extension VaultSyncEventStream: @unchecked Sendable{}
 
 final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
