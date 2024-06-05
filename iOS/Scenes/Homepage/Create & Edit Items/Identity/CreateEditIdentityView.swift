@@ -204,7 +204,7 @@ private extension CreateEditIdentityView {
         .tint(viewModel.itemContentType().normMajor1Color.toColor)
         .toolbar {
             CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
-                                  isSaveable: true,
+                                  isSaveable: viewModel.isSaveable,
                                   isSaving: viewModel.isSaving,
                                   canScanDocuments: viewModel.canScanDocuments,
                                   vault: viewModel.editableVault,
