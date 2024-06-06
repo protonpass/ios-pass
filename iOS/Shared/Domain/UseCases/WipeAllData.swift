@@ -34,8 +34,6 @@ extension WipeAllDataUseCase {
     }
 }
 
-extension VaultSyncEventStream: @unchecked Sendable{}
-
 final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
     private let appData: any AppDataProtocol
