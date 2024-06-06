@@ -157,8 +157,8 @@ extension AccountViewModel {
         router.present(for: .accountSettings)
     }
 
-    func setUpExtraPassword() {
-        router.present(for: .setExtraPassword)
+    func enableExtraPassword() {
+        router.present(for: .enableExtraPassword)
     }
 
     func signOut() {

@@ -1,6 +1,6 @@
 //
-// CreateExtraPassword.swift
-// Proton Pass - Created on 30/05/2024.
+// Modulus.swift
+// Proton Pass - Created on 05/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,18 +21,7 @@
 
 import Foundation
 
-public protocol CreateExtraPasswordUseCase: Sendable {
-    func execute(_ password: String) async throws
-}
-
-public extension CreateExtraPasswordUseCase {
-    func callAsFunction(_ password: String) async throws {
-        try await execute(password)
-    }
-}
-
-public final class CreateExtraPassword: Sendable, CreateExtraPasswordUseCase {
-    public init() {}
-
-    public func execute(_ password: String) async throws {}
+public struct Modulus: Sendable, Decodable {
+    public let modulus: String
+    public let modulusID: String
 }

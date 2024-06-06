@@ -1,5 +1,5 @@
 //
-// SetExtraPasswordView.swift
+// EnableExtraPasswordView.swift
 // Proton Pass - Created on 30/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,10 +23,11 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SetExtraPasswordView: View {
+struct EnableExtraPasswordView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = SetExtraPasswordViewModel()
+    @StateObject private var viewModel = EnableExtraPasswordViewModel()
     @FocusState private var focused
+    let onExtraPasswordEnabled: () -> Void
 
     var body: some View {
         ZStack {
@@ -64,21 +65,42 @@ struct SetExtraPasswordView: View {
         .onChange(of: viewModel.canSetExtraPassword) { _ in
             focused = true
         }
+        .onChange(of: viewModel.extraPasswordEnabled) { _ in
+            onExtraPasswordEnabled()
+        }
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
         .alert("Error occured",
-               isPresented: errorBinding,
-               actions: { Button(action: dismiss.callAsFunction, label: { Text("OK") }) },
-               message: { Text(viewModel.error?.localizedDescription ?? "") })
+               isPresented: protonPasswordVerificationErrorBinding,
+               actions: { cancelButton },
+               message: {
+                   Text(viewModel.protonPasswordVerificationError?.localizedDescription ?? "")
+               })
+        .alert("Error occured",
+               isPresented: enableExtraPasswordErrorBinding,
+               actions: {
+                   tryAgainButton { viewModel.proceedSetUp() }
+                   cancelButton
+               },
+               message: {
+                   Text(viewModel.enableExtraPasswordError?.localizedDescription ?? "")
+               })
+        .alert("Error occured",
+               isPresented: $viewModel.showWrongProtonPasswordAlert,
+               actions: {
+                   tryAgainButton { viewModel.retryVerifyingProtonPassword() }
+                   cancelButton
+               },
+               message: { Text("Wrong Proton password") })
         .alert("Set extra password",
                isPresented: $viewModel.showLogOutAlert,
                actions: {
                    Button(action: { viewModel.proceedSetUp() },
                           label: { Text("Confirm") })
-                   Button(role: .cancel, label: { Text("Cancel") })
+                   cancelButton
                },
                message: {
-                   Text("You will be logged out and will have to log in again on all of your devices.")
+                   Text("You will be logged out and will have to log in again on all of your other devices.")
                })
         .alert("Confirm your Proton password",
                isPresented: $viewModel.showProtonPasswordConfirmationAlert,
@@ -86,22 +108,12 @@ struct SetExtraPasswordView: View {
                    SecureField("Proton password", text: $viewModel.protonPassword)
                    Button(action: { viewModel.verifyProtonPassword() },
                           label: { Text("Confirm") })
-                   Button(role: .cancel,
-                          action: dismiss.callAsFunction,
-                          label: { Text("Cancel") })
+                   cancelButton
                })
-        .alert("Error occured",
-               isPresented: $viewModel.showWrongProtonPasswordAlert,
-               actions: {
-                   Button(action: { viewModel.retryVerifyingProtonPassword() },
-                          label: { Text("Try again") })
-                   Button(role: .cancel, label: { Text("Cancel") })
-               },
-               message: { Text("Wrong Proton password") })
     }
 }
 
-private extension SetExtraPasswordView {
+private extension EnableExtraPasswordView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -124,7 +136,23 @@ private extension SetExtraPasswordView {
         }
     }
 
-    var errorBinding: Binding<Bool> {
-        .init(get: { viewModel.error != nil }, set: { _ in })
+    var cancelButton: some View {
+        Button(role: .cancel,
+               action: dismiss.callAsFunction,
+               label: { Text("Cancel") })
+    }
+
+    func tryAgainButton(_ action: @escaping () -> Void) -> some View {
+        Button(action: action, label: { Text("Try again") })
+    }
+
+    var protonPasswordVerificationErrorBinding: Binding<Bool> {
+        .init(get: { viewModel.protonPasswordVerificationError != nil },
+              set: { _ in })
+    }
+
+    var enableExtraPasswordErrorBinding: Binding<Bool> {
+        .init(get: { viewModel.enableExtraPasswordError != nil },
+              set: { _ in })
     }
 }

@@ -141,7 +141,7 @@ struct AccountView: View {
                 }
 
                 if viewModel.extraPasswordEnabled {
-                    OptionRow(action: { viewModel.setUpExtraPassword() },
+                    OptionRow(action: { viewModel.enableExtraPassword() },
                               height: .tall,
                               content: {
                                   Text(verbatim: "Set extra password for Proton Pass")

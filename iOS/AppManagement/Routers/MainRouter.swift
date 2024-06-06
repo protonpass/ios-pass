@@ -104,7 +104,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case passwordReusedItemList(ItemContent)
     case changePassword(PasswordChangeModule.PasswordChangeMode)
     case createSecureLink(ItemContent)
-    case setExtraPassword
+    case enableExtraPassword
 }
 
 enum GenericDestination {
