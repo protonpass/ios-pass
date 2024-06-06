@@ -378,8 +378,8 @@ extension UseCasesContainer {
                                     appVer: SharedToolingContainer.shared.appVersion()) }
     }
 
-    var createExtraPassword: Factory<any CreateExtraPasswordUseCase> {
-        self { CreateExtraPassword() }
+    var enableExtraPassword: Factory<any EnableExtraPasswordUseCase> {
+        self { EnableExtraPassword(repository: RepositoryContainer.shared.extraPasswordRepository()) }
     }
 }
 
