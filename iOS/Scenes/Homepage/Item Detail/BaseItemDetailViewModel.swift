@@ -68,11 +68,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-
-    var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
-    }
 
     var isAllowedToShare: Bool {
         guard let vault else {

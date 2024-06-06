@@ -40,11 +40,13 @@ struct ShareOrCreateNewVaultView: View {
 
             Spacer()
 
-            secureLink
-                .padding(.top, 12)
+            if viewModel.isSecureLinkActive {
+                secureLink
+                    .padding(.top, 12)
 
-            Divider()
-                .padding(.vertical, 24)
+                PassDivider()
+                    .padding(.vertical, 24)
+            }
 
             currentVault
 
