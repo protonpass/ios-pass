@@ -67,7 +67,7 @@ enum CreateSecureLinkViewModelState {
         case .creationWithRestriction:
             350
         case .created:
-            300
+            400
         }
     }
 
@@ -113,6 +113,7 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
                 let detent = UISheetPresentationController.Detent.custom { _ in
                     CGFloat(state.sheetHeight)
                 }
+
                 sheetPresentation?.animateChanges { [weak self] in
                     guard let self else { return }
                     sheetPresentation?.detents = [detent]
