@@ -38,15 +38,13 @@ struct ShareOrCreateNewVaultView: View {
                 .font(.body.bold())
                 .foregroundStyle(PassColor.textNorm.toColor)
 
-            Text("Use vaults to share this item with another person")
-                .frame(maxWidth: .infinity, alignment: .center)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .padding(.top, 8)
-                .padding(.bottom, 16)
-                .fixedSize(horizontal: false, vertical: true)
-
             Spacer()
+
+            secureLink
+                .padding(.top, 12)
+
+            Divider()
+                .padding(.vertical, 24)
 
             currentVault
 
@@ -67,6 +65,31 @@ struct ShareOrCreateNewVaultView: View {
         .padding(.bottom, 32)
         .padding(.horizontal, 16)
         .background(PassColor.backgroundNorm.toColor)
+    }
+}
+
+private extension ShareOrCreateNewVaultView {
+    var secureLink: some View {
+        HStack {
+            SquircleThumbnail(data: .icon(IconProvider.link),
+                              tintColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1)
+            VStack(alignment: .leading) {
+                Text("Via secure link")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("Generate a secure link to this item")
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .onTapGesture {
+            viewModel.secureLinkSharing()
+        }
+        .padding()
+        .roundedEditableSection()
     }
 }
 

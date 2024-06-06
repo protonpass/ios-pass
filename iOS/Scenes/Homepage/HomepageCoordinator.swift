@@ -700,7 +700,7 @@ extension HomepageCoordinator {
     func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
         let view = ShareOrCreateNewVaultView(vault: vault, itemContent: itemContent)
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.custom(310),
+        viewController.setDetentType(.custom(400),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
@@ -813,14 +813,17 @@ extension HomepageCoordinator {
     }
 
     func presentCreateSecureLinkView(for item: ItemContent) {
-        let viewModel = CreateSecureLinkViewModel(itemContent: item)
-        let view = CreateSecureLinkView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.custom(CreateSecureLinkViewModelState.default.sheetHeight),
-                                     parentViewController: rootViewController)
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        viewModel.sheetPresentation = viewController.sheetPresentationController
-        present(viewController)
+        dismissTopMostViewController { [weak self] in
+            guard let self else { return }
+            let viewModel = CreateSecureLinkViewModel(itemContent: item)
+            let view = CreateSecureLinkView(viewModel: viewModel)
+            let viewController = UIHostingController(rootView: view)
+            viewController.setDetentType(.custom(CreateSecureLinkViewModelState.default.sheetHeight),
+                                         parentViewController: rootViewController)
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+            viewModel.sheetPresentation = viewController.sheetPresentationController
+            present(viewController)
+        }
     }
 
     func handleFailedLocalAuthentication() {
