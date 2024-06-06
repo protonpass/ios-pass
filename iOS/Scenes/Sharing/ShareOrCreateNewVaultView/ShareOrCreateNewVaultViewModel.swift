@@ -58,6 +58,10 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         }
     }
 
+    func secureLinkSharing() {
+        router.present(for: .createSecureLink(itemContent))
+    }
+
     private func complete(with vault: SharingVaultData) {
         setShareInviteVault(with: vault)
         router.present(for: .sharingFlow(.topMost))

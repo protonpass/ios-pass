@@ -170,10 +170,6 @@ class BaseItemDetailViewModel: ObservableObject {
         router.present(for: .moveItemsBetweenVaults(.singleItem(itemContent)))
     }
 
-    func secureLinkSharing() {
-        router.present(for: .createSecureLink(itemContent))
-    }
-
     func toggleItemPinning() {
         Task { [weak self] in
             guard let self else {
