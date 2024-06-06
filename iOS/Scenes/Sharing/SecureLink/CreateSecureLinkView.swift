@@ -117,16 +117,17 @@ private extension CreateSecureLinkView {
                                    backgroundColor: PassColor.interactionNormMinor1.toColor)
                 }
                 .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(height: 50)
+                .padding(.vertical, 5)
+            } else {
+                Spacer()
             }
-
-            Spacer()
 
             CapsuleTextButton(title: "Generate secure link",
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNormMajor1,
                               height: 48,
                               action: { viewModel.createLink() })
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
