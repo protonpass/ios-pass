@@ -61,7 +61,9 @@ private extension CreateSecureLinkView {
         .animation(.default, value: viewModel.link)
         .animation(.default, value: viewModel.readCount)
         .background(PassColor.backgroundNorm.toColor)
-        .toolbar { toolbarContent }
+        .if(viewModel.link == nil) { view in
+            view.toolbar { toolbarContent }
+        }
     }
 }
 
@@ -107,19 +109,15 @@ private extension CreateSecureLinkView {
             if viewModel.readCount != 0 {
                 HStack {
                     Text("Maximum views:")
-                    Text(verbatim: "\(viewModel.readCount)")
-                        .fontWeight(.bold)
-                        .padding(10)
-                        .background(PassColor.textDisabled.toColor)
-                        .clipShape(.circle)
                     Spacer()
-                    Stepper("Maximum views:",
-                            value: $viewModel.readCount,
-                            in: 1...Int.max,
-                            step: 1)
-                        .labelsHidden()
+                    CapsuleStepper(value: $viewModel.readCount,
+                                   step: 1,
+                                   minValue: 1,
+                                   textColor: PassColor.textNorm.toColor,
+                                   backgroundColor: PassColor.interactionNormMinor1.toColor)
                 }
                 .foregroundStyle(PassColor.textNorm.toColor)
+                .frame(height: 50)
             }
 
             Spacer()
