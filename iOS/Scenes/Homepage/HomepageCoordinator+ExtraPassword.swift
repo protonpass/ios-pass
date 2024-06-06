@@ -18,17 +18,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Macro
 import SwiftUI
 
 extension HomepageCoordinator {
-    func beginSetExtraPasswordFlow() {
+    func beginEnableExtraPasswordFlow() {
         let view = ExtraPasswordSheet { [weak self] in
             guard let self else { return }
-            present(SetExtraPasswordView())
+            presentEnableExtraPasswordView()
         }
         let viewController = UIHostingController(rootView: view)
         viewController.setDetentType(.custom(380),
                                      parentViewController: rootViewController)
         present(viewController)
+    }
+}
+
+private extension HomepageCoordinator {
+    func presentEnableExtraPasswordView() {
+        let view = EnableExtraPasswordView { [weak self] in
+            guard let self else { return }
+            bannerManager.displayBottomInfoMessage(#localized("Extra password set"))
+        }
+        present(view)
     }
 }

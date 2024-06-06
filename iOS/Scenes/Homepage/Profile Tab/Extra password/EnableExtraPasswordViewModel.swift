@@ -1,5 +1,5 @@
 //
-// SetExtraPasswordViewModel.swift
+// EnableExtraPasswordViewModel.swift
 // Proton Pass - Created on 30/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,7 +23,7 @@ import Factory
 import Foundation
 import Macro
 
-enum SetExtraPasswordViewState {
+enum EnableExtraPasswordViewState {
     case defining, repeating
 
     var navigationTitle: String {
@@ -46,15 +46,17 @@ enum SetExtraPasswordViewState {
 }
 
 @MainActor
-final class SetExtraPasswordViewModel: ObservableObject {
+final class EnableExtraPasswordViewModel: ObservableObject {
     @Published private(set) var canContinue = false
     @Published private(set) var canSetExtraPassword = false
-    @Published private(set) var error: (any Error)?
-    @Published private(set) var state: SetExtraPasswordViewState = .defining
+    @Published private(set) var protonPasswordVerificationError: (any Error)?
+    @Published private(set) var enableExtraPasswordError: (any Error)?
+    @Published private(set) var state: EnableExtraPasswordViewState = .defining
     @Published private(set) var loading = false
     @Published var showLogOutAlert = false
     @Published var showWrongProtonPasswordAlert = false
     @Published var showProtonPasswordConfirmationAlert = true
+    @Published var extraPasswordEnabled = false
     @Published var protonPassword = ""
     @Published var extraPassword = ""
 
@@ -62,7 +64,7 @@ final class SetExtraPasswordViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
-    private let createExtraPassword = resolve(\UseCasesContainer.createExtraPassword)
+    private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
 
     init() {
         $extraPassword
@@ -81,7 +83,7 @@ final class SetExtraPasswordViewModel: ObservableObject {
     }
 }
 
-extension SetExtraPasswordViewModel {
+extension EnableExtraPasswordViewModel {
     func verifyProtonPassword() {
         Task { [weak self] in
             guard let self else { return }
@@ -94,7 +96,7 @@ extension SetExtraPasswordViewModel {
                     showWrongProtonPasswordAlert = true
                 }
             } catch {
-                self.error = error
+                protonPasswordVerificationError = error
             }
         }
     }
@@ -116,6 +118,16 @@ extension SetExtraPasswordViewModel {
     }
 
     func proceedSetUp() {
-        print(#function)
+        Task { [weak self] in
+            guard let self else { return }
+            defer { loading = false }
+            do {
+                loading = true
+                try await enableExtraPassword(definedExtraPassword)
+                extraPasswordEnabled = true
+            } catch {
+                enableExtraPasswordError = error
+            }
+        }
     }
 }

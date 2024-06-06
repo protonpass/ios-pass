@@ -56,7 +56,7 @@ struct ExtraPasswordSheet: View {
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               height: 48,
-                              action: onContinue)
+                              action: { dismiss(); onContinue() })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()

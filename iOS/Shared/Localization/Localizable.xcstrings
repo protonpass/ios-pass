@@ -41674,6 +41674,17 @@
         }
       }
     },
+    "Extra password set" : {
+      "comment" : "Title of the alert after setting up extra password",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password set"
+          }
+        }
+      }
+    },
     "Face ID" : {
       "localizations" : {
         "cs" : {
@@ -114300,12 +114311,12 @@
         }
       }
     },
-    "You will be logged out and will have to log in again on all of your devices." : {
+    "You will be logged out and will have to log in again on all of your other devices." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You will be logged out and will have to log in again on all of your devices."
+            "value" : "You will be logged out and will have to log in again on all of your other devices."
           }
         }
       }
