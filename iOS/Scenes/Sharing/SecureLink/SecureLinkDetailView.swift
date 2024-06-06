@@ -29,16 +29,13 @@ struct SecureLinkDetailView: View {
     var body: some View {
         let uiModel = viewModel.uiModel
         VStack(spacing: DesignConstant.sectionPadding) {
-            HStack(spacing: DesignConstant.sectionPadding) {
-                GeneralItemRow(thumbnailView: {
-                                   ItemSquircleThumbnail(data: uiModel.itemContent.thumbnailData())
-                               },
-                               title: uiModel.itemContent.title,
-                               description: uiModel.itemContent.loginItem?.authIdentifier ?? "")
-                Spacer()
-            }
-            .frame(height: 70)
-            .padding(.top, 45)
+            GeneralItemRow(thumbnailView: {
+                               ItemSquircleThumbnail(data: uiModel.itemContent.thumbnailData())
+                           },
+                           title: uiModel.itemContent.title,
+                           description: uiModel.itemContent.loginItem?.authIdentifier ?? "")
+                .frame(height: 70)
+                .padding(.top, 45)
 
             HStack {
                 infoCell(title: #localized("Expires in:"),
