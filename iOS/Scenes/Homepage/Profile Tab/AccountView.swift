@@ -140,16 +140,12 @@ struct AccountView: View {
                               .padding(.vertical)
                 }
 
-                if viewModel.extraPasswordEnabled {
-                    OptionRow(action: { viewModel.enableExtraPassword() },
-                              height: .tall,
-                              content: {
-                                  Text(verbatim: "Set extra password for Proton Pass")
-                                      .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                              })
-                              .roundedEditableSection()
-                              .padding(.top)
-
+                if viewModel.extraPasswordSupported {
+                    if viewModel.extraPasswordEnabled {
+                        extraPasswordEnabledRow
+                    } else {
+                        extraPasswordDisabledRow
+                    }
                     // swiftlint:disable:next line_length
                     Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")
                         .sectionTitleText()
@@ -191,6 +187,7 @@ struct AccountView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
             .animation(.default, value: viewModel.plan)
+            .animation(.default, value: viewModel.extraPasswordEnabled)
         }
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
@@ -230,5 +227,22 @@ struct AccountView: View {
                 EmptyView()
             }
         }
+    }
+}
+
+private extension AccountView {
+    var extraPasswordDisabledRow: some View {
+        OptionRow(action: { viewModel.enableExtraPassword() },
+                  height: .tall,
+                  content: {
+                      Text(verbatim: "Set extra password for Proton Pass")
+                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                  })
+                  .roundedEditableSection()
+                  .padding(.top)
+    }
+
+    var extraPasswordEnabledRow: some View {
+        Text(verbatim: "Enabled")
     }
 }

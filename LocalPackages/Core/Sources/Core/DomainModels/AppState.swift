@@ -52,7 +52,7 @@ public enum LogOutReason: Equatable {
 
 public enum AppState {
     case loggedOut(LogOutReason)
-    case manuallyLoggedIn(UserData)
+    case manuallyLoggedIn(UserData, extraPassword: Bool)
     case alreadyLoggedIn
     case undefined
 }
