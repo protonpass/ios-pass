@@ -29,24 +29,13 @@ struct SecureLinkDetailView: View {
     var body: some View {
         let uiModel = viewModel.uiModel
         VStack(spacing: DesignConstant.sectionPadding) {
-            HStack(spacing: DesignConstant.sectionPadding) {
-                GeneralItemRow(thumbnailView: {
-                                   ItemSquircleThumbnail(data: uiModel.itemContent.thumbnailData())
-                               },
-                               title: uiModel.itemContent.title,
-                               description: uiModel.itemContent.loginItem?.authIdentifier ?? "")
-                Spacer()
-                CircleButton(icon: IconProvider.squares,
-                             iconColor: PassColor.interactionNormMajor1,
-                             backgroundColor: PassColor.interactionNormMinor2,
-                             action: { viewModel.copyLink() })
-
-                ShareLink(item: uiModel.url) {
-                    CircleButton(icon: IconProvider.arrowUpFromSquare,
-                                 iconColor: PassColor.interactionNormMajor1,
-                                 backgroundColor: PassColor.interactionNormMinor2)
-                }
-            }
+            GeneralItemRow(thumbnailView: {
+                               ItemSquircleThumbnail(data: uiModel.itemContent.thumbnailData())
+                           },
+                           title: uiModel.itemContent.title,
+                           description: uiModel.itemContent.loginItem?.authIdentifier ?? "")
+                .frame(height: 70)
+                .padding(.top, 45)
 
             HStack {
                 infoCell(title: #localized("Expires in:"),
@@ -57,6 +46,8 @@ struct SecureLinkDetailView: View {
                          description: uiModel.readDescription,
                          icon: IconProvider.eye)
             }
+            .frame(height: 80)
+            .padding(.bottom, 10)
 
             Text(verbatim: uiModel.url)
                 .foregroundStyle(PassColor.textNorm.toColor)
@@ -67,6 +58,19 @@ struct SecureLinkDetailView: View {
                 .onTapGesture { viewModel.copyLink() }
                 .background(PassColor.interactionNormMinor1.toColor)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
+
+            CapsuleTextButton(title: "Copy link",
+                              titleColor: PassColor.interactionNormMinor1,
+                              backgroundColor: PassColor.interactionNormMajor2,
+                              height: 48,
+                              action: { viewModel.copyLink() })
+
+            ShareLink(item: uiModel.url) {
+                CapsuleTextButton(title: "Share link",
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: PassColor.interactionNormMinor1,
+                                  height: 48)
+            }
 
             Spacer()
         }
