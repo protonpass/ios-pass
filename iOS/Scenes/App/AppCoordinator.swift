@@ -168,7 +168,14 @@ final class AppCoordinator {
 private extension AppCoordinator {
     func start() {
         if appData.isAuthenticated {
-            appStateObserver.updateAppState(.alreadyLoggedIn)
+            if appData.getUserData() != nil {
+                // Extra password enabled but users cancel the process in the middle
+                // so we manually remove credentials here
+                appData.setCredential(nil)
+                appStateObserver.updateAppState(.alreadyLoggedIn)
+            } else {
+                appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
+            }
         } else if appData.getCredential() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
@@ -205,6 +212,16 @@ private extension AppCoordinator {
         }
     }
 
+    func showExtraPasswordLockScreen(_ userData: UserData) {
+        let email = userData.user.email ?? userData.credential.userName
+        let view = ExtraPasswordLockView(email: email) { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.manuallyLoggedIn(userData))
+        }
+        let viewController = UIHostingController(rootView: view)
+        animateUpdateRootViewController(viewController)
+    }
+
     func animateUpdateRootViewController(_ newRootViewController: UIViewController,
                                          completion: (() -> Void)? = nil) {
         window.rootViewController = newRootViewController
@@ -232,9 +249,9 @@ private extension AppCoordinator {
         }
 
         corruptedSessionStream = corruptedSessionEventStream
+            .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] reason in
                 guard let self else { return }
                 captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
@@ -305,7 +322,11 @@ private extension AppCoordinator {
 
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
-        appStateObserver.updateAppState(.manuallyLoggedIn(userData))
+        if userData.scopes.contains(where: { $0 == "pass" }) {
+            appStateObserver.updateAppState(.manuallyLoggedIn(userData))
+        } else {
+            showExtraPasswordLockScreen(userData)
+        }
     }
 }
 
