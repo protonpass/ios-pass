@@ -1,5 +1,5 @@
 //
-// ExtraPasswordVerificationResult.swift
+// DisableExtraPasswordEndpoint.swift
 // Proton Pass - Created on 07/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -19,19 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
+import Entities
+import ProtonCoreNetworking
 
-public enum ExtraPasswordVerificationResult: Sendable {
-    case successful
-    case wrongPassword
-    case tooManyAttempts
+struct DisableExtraPasswordEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
 
-    public var isSuccessful: Bool {
-        if case .successful = self {
-            return true
-        }
-        return false
-    }
+    let debugDescription = "Disable extra password"
+    let path = "/pass/v1/user/srp"
+    let method: HTTPMethod = .delete
 }
-
-public typealias DisableExtraPasswordResult = ExtraPasswordVerificationResult
