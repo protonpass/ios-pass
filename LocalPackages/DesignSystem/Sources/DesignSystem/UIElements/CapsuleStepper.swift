@@ -51,6 +51,7 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
                 .disabled(reachedMinValue)
             Text("\(value)")
                 .fontWeight(.bold)
+                .monospacedDigit()
             Button { value = value.advanced(by: step) } label: { Text(verbatim: "+") }
                 .disabled(reachedMaxValue)
         }
