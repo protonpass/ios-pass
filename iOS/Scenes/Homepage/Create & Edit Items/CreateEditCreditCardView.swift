@@ -88,6 +88,7 @@ private extension CreateEditCreditCardView {
                                   vault: viewModel.editableVault,
                                   itemContentType: viewModel.itemContentType(),
                                   shouldUpgrade: viewModel.shouldUpgrade,
+                                  isPhone: viewModel.isPhone,
                                   onSelectVault: { viewModel.changeVault() },
                                   onGoBack: { isShowingDiscardAlert.toggle() },
                                   onUpgrade: { viewModel.upgrade() },
