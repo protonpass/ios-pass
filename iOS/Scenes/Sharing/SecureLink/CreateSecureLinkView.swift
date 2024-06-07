@@ -115,6 +115,7 @@ private extension CreateSecureLinkView {
                                    minValue: 1,
                                    textColor: PassColor.textNorm.toColor,
                                    backgroundColor: PassColor.interactionNormMinor1.toColor)
+                        .frame(minWidth: 145)
                 }
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.vertical, 5)

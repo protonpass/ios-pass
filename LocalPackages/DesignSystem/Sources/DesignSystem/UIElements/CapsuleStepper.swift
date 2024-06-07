@@ -27,39 +27,44 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
     let maxValue: V?
     let textColor: Color
     let backgroundColor: Color
+    let height: CGFloat
 
     public init(value: Binding<V>,
                 step: V.Stride,
                 minValue: V? = nil,
                 maxValue: V? = nil,
                 textColor: Color,
-                backgroundColor: Color) {
+                backgroundColor: Color,
+                height: CGFloat = 44) {
         _value = value
         self.step = step
         self.minValue = minValue
         self.maxValue = maxValue
         self.textColor = textColor
         self.backgroundColor = backgroundColor
+        self.height = height
     }
 
     public var body: some View {
-        HStack {
-            HStack(spacing: 24) {
-                Button { value = value.advanced(by: -step) } label: { Text(verbatim: "-") }
-                    .disabled(reachedMinValue)
-                Text("\(value)")
-                Button { value = value.advanced(by: step) } label: { Text(verbatim: "+") }
-                    .disabled(reachedMaxValue)
-            }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 16)
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .background {
-                Capsule()
-                    .fill(backgroundColor)
-            }
+        HStack(spacing: 24) {
+            Button { value = value.advanced(by: -step) } label: { Text(verbatim: "-") }
+                .disabled(reachedMinValue)
+            Text("\(value)")
+                .fontWeight(.bold)
+            Button { value = value.advanced(by: step) } label: { Text(verbatim: "+") }
+                .disabled(reachedMaxValue)
         }
+        .font(.title3)
+        .foregroundStyle(PassColor.textNorm.toColor)
         .buttonStyle(.plain)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
+        .frame(height: height)
+        .foregroundStyle(PassColor.textNorm.toColor)
+        .background {
+            Capsule()
+                .fill(backgroundColor)
+        }
     }
 
     private var reachedMinValue: Bool {

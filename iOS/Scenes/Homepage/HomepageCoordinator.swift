@@ -90,6 +90,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -104,6 +105,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var authenticated = false
+
+    var isSecureLinkActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+    }
 
     weak var delegate: (any HomepageCoordinatorDelegate)?
     weak var homepageTabDelegate: (any HomepageTabDelegate)?
@@ -700,7 +705,9 @@ extension HomepageCoordinator {
     func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
         let view = ShareOrCreateNewVaultView(vault: vault, itemContent: itemContent)
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.custom(400),
+        let height: CGFloat = isSecureLinkActive ? 400 : 310
+
+        viewController.setDetentType(.custom(height),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
