@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import Foundation
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
@@ -50,25 +51,40 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
     @Published private(set) var passwordMode: UserSettings.Password.PasswordMode = .singlePassword
+    @Published private(set) var extraPasswordEnabled = false
     private(set) var accountRecovery: AccountRecovery?
 
+    private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any AccountViewModelDelegate)?
 
     var username: String { userDataProvider.getUserData()?.user.email ?? "" }
 
-    var extraPasswordEnabled: Bool {
+    var extraPasswordSupported: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAccessKeyV1)
     }
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
+        extraPasswordEnabled = preferencesManager.userPreferences.unwrapped().extraPasswordEnabled
         refreshUserPlan()
         refreshAccountRecovery()
         refreshAccountPasswordMode()
+
+        preferencesManager
+            .userPreferencesUpdates
+            .filter(\.extraPasswordEnabled)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] enabled in
+                guard let self else { return }
+                extraPasswordEnabled = enabled
+            }
+            .store(in: &cancellables)
     }
 
     private func refreshUserPlan() {

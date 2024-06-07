@@ -32,12 +32,16 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// Spotlight indexable vaults
     public var spotlightSearchableVaults: SpotlightSearchableVaults
 
+    public var extraPasswordEnabled: Bool
+
     public init(spotlightEnabled: Bool,
                 spotlightSearchableContent: SpotlightSearchableContent,
-                spotlightSearchableVaults: SpotlightSearchableVaults) {
+                spotlightSearchableVaults: SpotlightSearchableVaults,
+                extraPasswordEnabled: Bool) {
         self.spotlightEnabled = spotlightEnabled
         self.spotlightSearchableContent = spotlightSearchableContent
         self.spotlightSearchableVaults = spotlightSearchableVaults
+        self.extraPasswordEnabled = extraPasswordEnabled
     }
 }
 
@@ -46,12 +50,14 @@ private extension UserPreferences {
         static let spotlightEnabled = false
         static let spotlightSearchableContent: SpotlightSearchableContent = .title
         static let spotlightSearchableVaults: SpotlightSearchableVaults = .all
+        static let extraPasswordEnabled = false
     }
 
     enum CodingKeys: String, CodingKey {
         case spotlightEnabled
         case spotlightSearchableContent
         case spotlightSearchableVaults
+        case extraPasswordEnabled
     }
 }
 
@@ -63,9 +69,12 @@ public extension UserPreferences {
                                                                        forKey: .spotlightSearchableContent)
         let spotlightSearchableVaults = try container.decodeIfPresent(SpotlightSearchableVaults.self,
                                                                       forKey: .spotlightSearchableVaults)
+        let extraPasswordEnabled = try container.decodeIfPresent(Bool.self,
+                                                                 forKey: .extraPasswordEnabled)
         self.init(spotlightEnabled: spotlightEnabled ?? Default.spotlightEnabled,
                   spotlightSearchableContent: spotlightSearchableContent ?? Default.spotlightSearchableContent,
-                  spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults)
+                  spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults,
+                  extraPasswordEnabled: extraPasswordEnabled ?? Default.extraPasswordEnabled)
     }
 }
 
@@ -73,7 +82,8 @@ extension UserPreferences: Defaultable {
     public static var `default`: Self {
         .init(spotlightEnabled: Default.spotlightEnabled,
               spotlightSearchableContent: Default.spotlightSearchableContent,
-              spotlightSearchableVaults: Default.spotlightSearchableVaults)
+              spotlightSearchableVaults: Default.spotlightSearchableVaults,
+              extraPasswordEnabled: Default.extraPasswordEnabled)
     }
 }
 
