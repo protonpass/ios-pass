@@ -25,6 +25,8 @@ public extension PassError {
     enum ExtraPasswordFailureReason: CustomDebugStringConvertible, Sendable {
         case failedToGenerateSalt
         case failedToHashPassword
+        case failedToGenerateSrpAuth
+        case emptySrpClientAuth
 
         public var debugDescription: String {
             switch self {
@@ -32,6 +34,10 @@ public extension PassError {
                 "Failed to generate salt"
             case .failedToHashPassword:
                 "Failed to hash password"
+            case .failedToGenerateSrpAuth:
+                "Failed to generate SRP auth"
+            case .emptySrpClientAuth:
+                "Empty SRP client auth"
             }
         }
     }
