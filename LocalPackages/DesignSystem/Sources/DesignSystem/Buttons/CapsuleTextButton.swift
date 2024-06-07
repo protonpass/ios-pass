@@ -27,14 +27,14 @@ public struct CapsuleTextButton: View {
     let backgroundColor: UIColor
     let height: CGFloat
     let maxWidth: CGFloat?
-    let action: () -> Void
+    let action: (() -> Void)?
 
     public init(title: String,
                 titleColor: UIColor,
                 backgroundColor: UIColor,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
-                action: @escaping () -> Void) {
+                action: (() -> Void)? = nil) {
         self.title = title
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
@@ -44,16 +44,26 @@ public struct CapsuleTextButton: View {
     }
 
     public var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.callout)
-                .foregroundStyle(titleColor.toColor)
-                .frame(height: height)
-                .frame(maxWidth: maxWidth)
-                .padding(.horizontal, 16)
-                .background(backgroundColor.toColor)
-                .clipShape(Capsule())
+        if let action {
+            Button(action: action) {
+                realBody
+            }
+        } else {
+            realBody
         }
+    }
+}
+
+private extension CapsuleTextButton {
+    var realBody: some View {
+        Text(title)
+            .font(.callout)
+            .foregroundStyle(titleColor.toColor)
+            .frame(height: height)
+            .frame(maxWidth: maxWidth)
+            .padding(.horizontal, 16)
+            .background(backgroundColor.toColor)
+            .clipShape(Capsule())
     }
 }
 

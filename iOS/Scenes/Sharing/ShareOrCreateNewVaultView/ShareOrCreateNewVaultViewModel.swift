@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Entities
 import Factory
 import Foundation
@@ -31,6 +32,11 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+
+    var isSecureLinkActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+    }
 
     init(vault: VaultListUiModel, itemContent: ItemContent) {
         self.vault = vault
@@ -56,6 +62,10 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
                 router.display(element: .displayErrorBanner(error))
             }
         }
+    }
+
+    func secureLinkSharing() {
+        router.present(for: .createSecureLink(itemContent))
     }
 
     private func complete(with vault: SharingVaultData) {
