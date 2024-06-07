@@ -168,14 +168,7 @@ final class AppCoordinator {
 private extension AppCoordinator {
     func start() {
         if appData.isAuthenticated {
-            if appData.getUserData() != nil {
-                // Extra password enabled but users cancel the process in the middle
-                // so we manually remove credentials here
-                appData.setCredential(nil)
-                appStateObserver.updateAppState(.alreadyLoggedIn)
-            } else {
-                appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
-            }
+            appStateObserver.updateAppState(.alreadyLoggedIn)
         } else if appData.getCredential() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
@@ -213,11 +206,21 @@ private extension AppCoordinator {
     }
 
     func showExtraPasswordLockScreen(_ userData: UserData) {
-        let email = userData.user.email ?? userData.credential.userName
-        let view = ExtraPasswordLockView(email: email) { [weak self] in
+        let onSuccess: () -> Void = { [weak self] in
             guard let self else { return }
             appStateObserver.updateAppState(.manuallyLoggedIn(userData))
         }
+
+        let onFailure: () -> Void = { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
+        }
+
+        let username = userData.credential.userName
+        let view = ExtraPasswordLockView(email: userData.user.email ?? username,
+                                         username: username,
+                                         onSuccess: onSuccess,
+                                         onFailure: onFailure)
         let viewController = UIHostingController(rootView: view)
         animateUpdateRootViewController(viewController)
     }
@@ -307,6 +310,9 @@ private extension AppCoordinator {
                   message: #localized("Please log in again"))
         case let .failedToInitializePreferences(error):
             alert(title: #localized("Error occured"), message: error.localizedDescription)
+        case .tooManyWrongExtraPasswordAttempts:
+            alert(title: #localized("Failed to authenticate"),
+                  message: #localized("Too many wrong attempts"))
         default:
             break
         }

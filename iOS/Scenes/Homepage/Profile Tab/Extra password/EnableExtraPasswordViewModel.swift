@@ -75,9 +75,9 @@ final class EnableExtraPasswordViewModel: ObservableObject {
                 guard let self else { return }
                 switch state {
                 case .defining:
-                    canContinue = password.count >= Constants.extraPasswordMinLength
+                    canContinue = password.count >= Constants.ExtraPassword.minLength
                 case .repeating:
-                    canContinue = password.count >= Constants.extraPasswordMinLength &&
+                    canContinue = password.count >= Constants.ExtraPassword.minLength &&
                         password == definedExtraPassword
                 }
             }

@@ -66,6 +66,7 @@ struct EnableExtraPasswordView: View {
             focused = true
         }
         .onChange(of: viewModel.extraPasswordEnabled) { _ in
+            dismiss()
             onExtraPasswordEnabled()
         }
         .showSpinner(viewModel.loading)

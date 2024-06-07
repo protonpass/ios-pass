@@ -19,14 +19,18 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import SwiftUI
 
 struct ExtraPasswordLockView: View {
     @StateObject private var viewModel = ExtraPasswordLockViewModel()
     @FocusState private var focused
+    @State private var showWrongPasswordError = false
     let email: String
-    let onUnlock: () -> Void
+    let username: String
+    let onSuccess: () -> Void
+    let onFailure: () -> Void
 
     var body: some View {
         VStack(alignment: .center) {
@@ -56,6 +60,15 @@ struct ExtraPasswordLockView: View {
                 .focused($focused)
                 .multilineTextAlignment(.center)
 
+            if showWrongPasswordError {
+                Text("Wrong extra password")
+                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+            } else {
+                // Dummy text to occupy vertical space
+                Text(verbatim: "I'm so dumb")
+                    .opacity(0)
+            }
+
             Spacer()
 
             DisablableCapsuleTextButton(title: #localized("Unlock"),
@@ -65,15 +78,25 @@ struct ExtraPasswordLockView: View {
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: !viewModel.canProceed,
                                         height: 60,
-                                        action: { viewModel.unlock() })
+                                        action: { viewModel.unlock(username) })
         }
         .tint(PassColor.interactionNormMajor1.toColor)
         .padding()
         .background(PassColor.backgroundNorm.toColor)
+        .animation(.default, value: showWrongPasswordError)
         .onAppear { focused = true }
+        .onChange(of: viewModel.result) { result in
+            if let result { handle(result) }
+        }
+        .onChange(of: viewModel.extraPassword) { password in
+            if showWrongPasswordError {
+                showWrongPasswordError = password.isEmpty
+            }
+        }
+        .showSpinner(viewModel.loading)
         .alert("Error occured",
                isPresented: errorBinding,
-               actions: { Button(role: .cancel, label: { Text("Cancel") }) },
+               actions: { Button("Cancel", role: .cancel, action: onFailure) },
                message: { Text(viewModel.error?.localizedDescription ?? "") })
     }
 }
@@ -82,5 +105,18 @@ private extension ExtraPasswordLockView {
     var errorBinding: Binding<Bool> {
         .init(get: { viewModel.error != nil },
               set: { _ in })
+    }
+
+    func handle(_ result: ExtraPasswordVerificationResult) {
+        switch result {
+        case .successful:
+            onSuccess()
+        case .wrongPassword:
+            viewModel.extraPassword = ""
+            showWrongPasswordError = true
+            focused = true
+        case .tooManyAttempts:
+            onFailure()
+        }
     }
 }

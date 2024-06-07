@@ -1,5 +1,5 @@
 //
-// SrpValidationData.swift
+// ExtraPasswordVerificationResult.swift
 // Proton Pass - Created on 07/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,20 +21,8 @@
 
 import Foundation
 
-public struct SrpValidationData: Sendable, Encodable {
-    public let clientEphemeral: String
-    public let clientProof: String
-    public let srpSessionID: String
-
-    public init(clientEphemeral: String, clientProof: String, srpSessionID: String) {
-        self.clientEphemeral = clientEphemeral
-        self.clientProof = clientProof
-        self.srpSessionID = srpSessionID
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case clientEphemeral = "ClientEphemeral"
-        case clientProof = "ClientProof"
-        case srpSessionID = "SrpSessionID"
-    }
+public enum ExtraPasswordVerificationResult: Sendable {
+    case successful
+    case wrongPassword
+    case tooManyAttempts
 }

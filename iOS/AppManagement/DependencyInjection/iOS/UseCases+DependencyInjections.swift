@@ -87,6 +87,10 @@ private extension UseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
+
+    var extraPasswordRepository: any ExtraPasswordRepositoryProtocol {
+        RepositoryContainer.shared.extraPasswordRepository()
+    }
 }
 
 // MARK: User report
@@ -379,7 +383,11 @@ extension UseCasesContainer {
     }
 
     var enableExtraPassword: Factory<any EnableExtraPasswordUseCase> {
-        self { EnableExtraPassword(repository: RepositoryContainer.shared.extraPasswordRepository()) }
+        self { EnableExtraPassword(repository: self.extraPasswordRepository) }
+    }
+
+    var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
+        self { VerifyExtraPassword(repository: self.extraPasswordRepository) }
     }
 }
 

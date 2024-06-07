@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 import Entities
 import Foundation
 import ProtonCoreAuthenticationKeyGeneration
@@ -56,7 +57,7 @@ public final class EnableExtraPassword: Sendable, EnableExtraPasswordUseCase {
             throw PassError.extraPassword(.failedToHashPassword)
         }
 
-        let verifier = try auth.generateVerifier(2_048)
+        let verifier = try auth.generateVerifier(Constants.ExtraPassword.srpBitLength)
         let userSrp = PassUserSrp(modulusId: modulus.modulusID,
                                   verifier: verifier.encodeBase64(),
                                   salt: salt.encodeBase64())
