@@ -27,6 +27,7 @@ import SwiftUI
 struct AccountView: View {
     @State private var isShowingSignOutConfirmation = false
     @StateObject var viewModel: AccountViewModel
+    @State private var showDisableExtraPasswordAlert = false
 
     var body: some View {
         if viewModel.isShownAsSheet {
@@ -196,6 +197,15 @@ struct AccountView: View {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.isLoading)
+        .alert("Enter your extra password",
+               isPresented: $showDisableExtraPasswordAlert,
+               actions: {
+                   SecureField("Extra password", text: $viewModel.extraPassword)
+                   Button(role: .destructive,
+                          action: { viewModel.disableExtraPassword() },
+                          label: { Text("Remove extra password") })
+                   Button(role: .cancel, label: { Text("Cancel") })
+               })
         .alert("You will be signed out",
                isPresented: $isShowingSignOutConfirmation,
                actions: {
@@ -243,6 +253,30 @@ private extension AccountView {
     }
 
     var extraPasswordEnabledRow: some View {
-        Text(verbatim: "Enabled")
+        OptionRow(height: .tall,
+                  content: {
+                      VStack(alignment: .leading) {
+                          Text(verbatim: "Extra password for Proton Pass")
+                              .foregroundStyle(PassColor.textNorm.toColor)
+                          Text("Active")
+                              .font(.callout)
+                              .foregroundStyle(PassColor.cardInteractionNormMajor1.toColor)
+                      }
+                  },
+                  trailing: {
+                      Menu(content: {
+                          Button(role: .destructive,
+                                 action: { showDisableExtraPasswordAlert.toggle() },
+                                 label: { Text("Remove") })
+                      }, label: {
+                          Image(uiImage: IconProvider.threeDotsVertical)
+                              .resizable()
+                              .scaledToFit()
+                              .foregroundStyle(PassColor.textWeak.toColor)
+                              .frame(width: 24)
+                      })
+                  })
+                  .roundedEditableSection()
+                  .padding(.top)
     }
 }

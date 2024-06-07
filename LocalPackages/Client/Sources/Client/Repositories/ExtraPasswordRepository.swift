@@ -26,6 +26,7 @@ import Foundation
 public protocol ExtraPasswordRepositoryProtocol: Sendable {
     func getModulus() async throws -> Modulus
     func enableExtraPassword(_ userSrp: PassUserSrp) async throws
+    func disableExtraPassword() async throws
     func initiateSrpAuthentication() async throws -> SrpAuthenticationData
     func validateSrpAuthentication(_ data: SrpValidationData) async throws
 }
@@ -47,6 +48,11 @@ public extension ExtraPasswordRepository {
 
     func enableExtraPassword(_ userSrp: PassUserSrp) async throws {
         let endpoint = EnableExtraPasswordEndpoint(userSrp)
+        _ = try await apiService.exec(endpoint: endpoint)
+    }
+
+    func disableExtraPassword() async throws {
+        let endpoint = DisableExtraPasswordEndpoint()
         _ = try await apiService.exec(endpoint: endpoint)
     }
 

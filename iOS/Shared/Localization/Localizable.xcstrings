@@ -9523,6 +9523,16 @@
         }
       }
     },
+    "Active" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active"
+          }
+        }
+      }
+    },
     "Add" : {
       "localizations" : {
         "be" : {
@@ -41684,6 +41694,16 @@
         }
       }
     },
+    "Extra password disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password disabled"
+          }
+        }
+      }
+    },
     "Extra password set" : {
       "comment" : "Title of the alert after setting up extra password",
       "localizations" : {
@@ -61372,6 +61392,16 @@
         }
       }
     },
+    "Missing username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing username"
+          }
+        }
+      }
+    },
     "MM / YY" : {
       "localizations" : {
         "be" : {
@@ -78591,6 +78621,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özel bölümü kaldır"
+          }
+        }
+      }
+    },
+    "Remove extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove extra password"
           }
         }
       }
