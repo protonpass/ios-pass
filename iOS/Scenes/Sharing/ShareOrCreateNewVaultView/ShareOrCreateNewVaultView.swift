@@ -87,6 +87,7 @@ private extension ShareOrCreateNewVaultView {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        .contentShape(.rect)
         .onTapGesture {
             viewModel.secureLinkSharing()
         }

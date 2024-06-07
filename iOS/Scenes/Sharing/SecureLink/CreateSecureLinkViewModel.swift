@@ -63,7 +63,7 @@ enum CreateSecureLinkViewModelState {
     var sheetHeight: CGFloat {
         switch self {
         case .creationWithoutRestriction, .creationWithRestriction:
-            300
+            310
         case .created:
             400
         }
