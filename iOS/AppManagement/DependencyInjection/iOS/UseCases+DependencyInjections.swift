@@ -386,6 +386,11 @@ extension UseCasesContainer {
         self { EnableExtraPassword(repository: self.extraPasswordRepository) }
     }
 
+    var disableExtraPassword: Factory<any DisableExtraPasswordUseCase> {
+        self { DisableExtraPassword(repository: self.extraPasswordRepository,
+                                    verifyExtraPassword: self.verifyExtraPassword()) }
+    }
+
     var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
         self { VerifyExtraPassword(repository: self.extraPasswordRepository) }
     }

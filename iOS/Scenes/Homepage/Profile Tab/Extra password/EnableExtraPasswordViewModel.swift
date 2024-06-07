@@ -66,6 +66,7 @@ final class EnableExtraPasswordViewModel: ObservableObject {
 
     private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
     private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
+    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
 
     init() {
         $extraPassword
@@ -126,6 +127,7 @@ extension EnableExtraPasswordViewModel {
             do {
                 loading = true
                 try await enableExtraPassword(definedExtraPassword)
+                try await updateUserPreferences(\.extraPasswordEnabled, value: true)
                 extraPasswordEnabled = true
             } catch {
                 enableExtraPasswordError = error

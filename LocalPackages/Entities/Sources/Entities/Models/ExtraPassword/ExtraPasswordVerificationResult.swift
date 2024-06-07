@@ -25,4 +25,13 @@ public enum ExtraPasswordVerificationResult: Sendable {
     case successful
     case wrongPassword
     case tooManyAttempts
+
+    public var isSuccessful: Bool {
+        if case .successful = self {
+            return true
+        }
+        return false
+    }
 }
+
+public typealias DisableExtraPasswordResult = ExtraPasswordVerificationResult
