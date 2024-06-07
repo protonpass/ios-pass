@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1C9AA77B635A4599C2AA6036 /* CredentialsMigrationStateProviderMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78575478A6DB57CBD5F463DD /* CredentialsMigrationStateProviderMock.generated.swift */; };
-		350A7E232C11E87400C11EE8 /* ExtraPasswordLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A7E222C11E87400C11EE8 /* ExtraPasswordLockView.swift */; };
-		350A7E252C11E97C00C11EE8 /* ExtraPasswordLockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A7E242C11E97C00C11EE8 /* ExtraPasswordLockViewModel.swift */; };
 		350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF86D299683940045B7B6 /* NoteEditSection.swift */; };
 		350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF86D299683940045B7B6 /* NoteEditSection.swift */; };
 		350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */; };
@@ -384,8 +382,6 @@
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B0F7872C0739B700A89E93 /* SecureLinkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F7862C0739B700A89E93 /* SecureLinkDetailView.swift */; };
 		35B0F7892C0739D700A89E93 /* SecureLinkDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F7882C0739D700A89E93 /* SecureLinkDetailViewModel.swift */; };
-		35B0F78B2C088DE300A89E93 /* EnableExtraPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F78A2C088DE300A89E93 /* EnableExtraPasswordView.swift */; };
-		35B0F78D2C088DF700A89E93 /* EnableExtraPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F78C2C088DF700A89E93 /* EnableExtraPasswordViewModel.swift */; };
 		35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */; };
 		35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35B9321D2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
@@ -422,6 +418,10 @@
 		35ECCEE02BA48E1B00202613 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
 		35ECCEE22BA48E1C00202613 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
 		35ECCEE32BA48E1F00202613 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
+		35EDB30A2C13101600FE441C /* EnableExtraPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EDB3062C13101500FE441C /* EnableExtraPasswordView.swift */; };
+		35EDB30B2C13101600FE441C /* ExtraPasswordLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EDB3072C13101500FE441C /* ExtraPasswordLockView.swift */; };
+		35EDB30C2C13101600FE441C /* ExtraPasswordLockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EDB3082C13101600FE441C /* ExtraPasswordLockViewModel.swift */; };
+		35EDB30D2C13101600FE441C /* EnableExtraPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EDB3092C13101600FE441C /* EnableExtraPasswordViewModel.swift */; };
 		35F3A2F82AB0967B00DD30DC /* ObfuscatedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F3A2F72AB0967B00DD30DC /* ObfuscatedConstants.swift */; };
 		35F3EF282AF673E000A67459 /* AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F3EF272AF673E000A67459 /* AppDataTests.swift */; };
 		35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F6D0C52A20A93800C8E395 /* InfoBanner.swift */; };
@@ -666,8 +666,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		350A7E222C11E87400C11EE8 /* ExtraPasswordLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraPasswordLockView.swift; sourceTree = "<group>"; };
-		350A7E242C11E97C00C11EE8 /* ExtraPasswordLockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraPasswordLockViewModel.swift; sourceTree = "<group>"; };
 		350AF86D299683940045B7B6 /* NoteEditSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditSection.swift; sourceTree = "<group>"; };
 		350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataContainer+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailSetUp.swift"; sourceTree = "<group>"; };
@@ -887,8 +885,6 @@
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B0F7862C0739B700A89E93 /* SecureLinkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkDetailView.swift; sourceTree = "<group>"; };
 		35B0F7882C0739D700A89E93 /* SecureLinkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkDetailViewModel.swift; sourceTree = "<group>"; };
-		35B0F78A2C088DE300A89E93 /* EnableExtraPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableExtraPasswordView.swift; sourceTree = "<group>"; };
-		35B0F78C2C088DF700A89E93 /* EnableExtraPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableExtraPasswordViewModel.swift; sourceTree = "<group>"; };
 		35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSyncProgressView.swift; sourceTree = "<group>"; };
 		35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRepository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35C0D1C62B20B567005D48A6 /* TOTPRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPRow.swift; sourceTree = "<group>"; };
@@ -934,6 +930,10 @@
 		35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		35EC5C992AE015DE0050614F /* ShareInviteeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInviteeView.swift; sourceTree = "<group>"; };
+		35EDB3062C13101500FE441C /* EnableExtraPasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnableExtraPasswordView.swift; sourceTree = "<group>"; };
+		35EDB3072C13101500FE441C /* ExtraPasswordLockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtraPasswordLockView.swift; sourceTree = "<group>"; };
+		35EDB3082C13101600FE441C /* ExtraPasswordLockViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtraPasswordLockViewModel.swift; sourceTree = "<group>"; };
+		35EDB3092C13101600FE441C /* EnableExtraPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnableExtraPasswordViewModel.swift; sourceTree = "<group>"; };
 		35F3A2F72AB0967B00DD30DC /* ObfuscatedConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscatedConstants.swift; sourceTree = "<group>"; };
 		35F3EF272AF673E000A67459 /* AppDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataTests.swift; sourceTree = "<group>"; };
 		35F6D0C52A20A93800C8E395 /* InfoBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBanner.swift; sourceTree = "<group>"; };
@@ -1592,11 +1592,11 @@
 		35AF16C72C108AAA00277E79 /* Extra password */ = {
 			isa = PBXGroup;
 			children = (
-				350A7E222C11E87400C11EE8 /* ExtraPasswordLockView.swift */,
-				350A7E242C11E97C00C11EE8 /* ExtraPasswordLockViewModel.swift */,
 				35AF16C82C108AF500277E79 /* ExtraPasswordSheet.swift */,
-				35B0F78A2C088DE300A89E93 /* EnableExtraPasswordView.swift */,
-				35B0F78C2C088DF700A89E93 /* EnableExtraPasswordViewModel.swift */,
+				35EDB3062C13101500FE441C /* EnableExtraPasswordView.swift */,
+				35EDB3092C13101600FE441C /* EnableExtraPasswordViewModel.swift */,
+				35EDB3072C13101500FE441C /* ExtraPasswordLockView.swift */,
+				35EDB3082C13101600FE441C /* ExtraPasswordLockViewModel.swift */,
 			);
 			path = "Extra password";
 			sourceTree = "<group>";
@@ -3199,6 +3199,7 @@
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */,
 				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
+				35EDB30C2C13101600FE441C /* ExtraPasswordLockViewModel.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
@@ -3227,7 +3228,6 @@
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
 				355723C22BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift in Sources */,
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
-				35B0F78D2C088DF700A89E93 /* EnableExtraPasswordViewModel.swift in Sources */,
 				5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */,
 				5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */,
 				5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */,
@@ -3272,7 +3272,6 @@
 				5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */,
 				3545731F2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
-				35B0F78B2C088DE300A89E93 /* EnableExtraPasswordView.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
@@ -3286,7 +3285,6 @@
 				5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				5BD4A90C2B15F18100C44C08 /* PasswordStrength+Extensions.swift in Sources */,
-				350A7E252C11E97C00C11EE8 /* ExtraPasswordLockViewModel.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
 				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */,
@@ -3362,6 +3360,7 @@
 				35AC9A562A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift in Sources */,
 				5BECDE442B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift in Sources */,
 				35AF16C92C108AF500277E79 /* ExtraPasswordSheet.swift in Sources */,
+				35EDB30A2C13101600FE441C /* EnableExtraPasswordView.swift in Sources */,
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,
 				5B1092D32B5199F1002621A4 /* DetailHistoryView+Note.swift in Sources */,
@@ -3411,7 +3410,6 @@
 				3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */,
 				356BC35229D6C5B400F03497 /* SettingsViewModel.swift in Sources */,
 				5B888A252B440E270011D6E0 /* AliasPrefixError+Extensions.swift in Sources */,
-				350A7E232C11E87400C11EE8 /* ExtraPasswordLockView.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				357ABEB02B188A08003D05C8 /* ItemsTabTopBar.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
@@ -3456,6 +3454,8 @@
 				5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+Extensions.swift in Sources */,
+				35EDB30B2C13101600FE441C /* ExtraPasswordLockView.swift in Sources */,
+				35EDB30D2C13101600FE441C /* EnableExtraPasswordViewModel.swift in Sources */,
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
