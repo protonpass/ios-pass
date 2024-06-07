@@ -19,21 +19,38 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
+import Factory
 import Foundation
+import Macro
 
 @MainActor
 final class ExtraPasswordLockViewModel: ObservableObject {
     @Published private(set) var loading = false
+    @Published private(set) var result: ExtraPasswordVerificationResult?
     @Published private(set) var error: (any Error)?
     @Published var extraPassword = ""
 
-    var canProceed: Bool { extraPassword.count >= Constants.extraPasswordMinLength }
+    var canProceed: Bool { extraPassword.count >= Constants.ExtraPassword.minLength }
+
+    private let verifyExtraPassword = resolve(\UseCasesContainer.verifyExtraPassword)
 
     init() {}
 }
 
 extension ExtraPasswordLockViewModel {
-    func unlock() {
-        print(#function)
+    func unlock(_ username: String) {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { loading = false }
+            do {
+                result = nil
+                loading = true
+                result = try await verifyExtraPassword(username: username,
+                                                       password: extraPassword)
+            } catch {
+                self.error = error
+            }
+        }
     }
 }

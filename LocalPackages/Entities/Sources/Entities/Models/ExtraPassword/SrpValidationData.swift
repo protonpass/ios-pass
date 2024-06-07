@@ -31,4 +31,10 @@ public struct SrpValidationData: Sendable, Encodable {
         self.clientProof = clientProof
         self.srpSessionID = srpSessionID
     }
+
+    enum CodingKeys: String, CodingKey {
+        case clientEphemeral = "ClientEphemeral"
+        case clientProof = "ClientProof"
+        case srpSessionID = "SrpSessionID"
+    }
 }

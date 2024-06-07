@@ -29,7 +29,6 @@ public enum Constants {
     public static let appStoreUrl = "itms-apps://itunes.apple.com/app/id6443490629"
     public static let existingUserSharingSignatureContext = "pass.invite.vault.existing-user"
     public static let newUserSharingSignatureContext = "pass.invite.vault.new-user"
-    public static let extraPasswordMinLength = 8
 
     public enum PINCode {
         public static let minLength = 4
@@ -46,6 +45,11 @@ public enum Constants {
     public enum ContentFormatVersion {
         public static let item = 6
         public static let vault = 1
+    }
+
+    public enum ExtraPassword {
+        public static let minLength = 8
+        public static let srpBitLength = 2_048
     }
 
     // swiftlint:disable:next type_name

@@ -97921,6 +97921,16 @@
         }
       }
     },
+    "Too many wrong attempts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Too many wrong attempts"
+          }
+        }
+      }
+    },
     "TOTP copied" : {
       "localizations" : {
         "be" : {
@@ -111709,6 +111719,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gửi cho chúng tôi trên Reddit"
+          }
+        }
+      }
+    },
+    "Wrong extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrong extra password"
           }
         }
       }

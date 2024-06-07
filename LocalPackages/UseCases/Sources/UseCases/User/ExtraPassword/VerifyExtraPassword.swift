@@ -20,22 +20,20 @@
 //
 
 import Client
+import Core
 import Entities
 import Foundation
-
-public enum ExtraPasswordVerificationResult: Sendable {
-    case successful
-    case wrongPassword
-    case tooManyAttempts
-}
+@preconcurrency import ProtonCoreCryptoGoInterface
 
 public protocol VerifyExtraPasswordUseCase: Sendable {
-    func execute(_ password: String) async throws -> ExtraPasswordVerificationResult
+    func execute(username: String,
+                 password: String) async throws -> ExtraPasswordVerificationResult
 }
 
 public extension VerifyExtraPasswordUseCase {
-    func callAsFunction(_ password: String) async throws -> ExtraPasswordVerificationResult {
-        try await execute(password)
+    func callAsFunction(username: String,
+                        password: String) async throws -> ExtraPasswordVerificationResult {
+        try await execute(username: username, password: password)
     }
 }
 
@@ -47,14 +45,30 @@ public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
         self.repository = repository
     }
 
-    public func execute(_ password: String) async throws -> ExtraPasswordVerificationResult {
+    public func execute(username: String,
+                        password: String) async throws -> ExtraPasswordVerificationResult {
         // Step 1: initiate the process
         let authData = try await getAuthData()
 
         // Step 2: cryptographic voodoo
-        let validationData = SrpValidationData(clientEphemeral: "",
-                                               clientProof: "",
-                                               srpSessionID: "")
+        guard let auth = CryptoGo.SrpAuth(authData.version,
+                                          username,
+                                          password.data(using: .utf8),
+                                          authData.srpSalt,
+                                          authData.modulus,
+                                          authData.serverEphemeral) else {
+            throw PassError.extraPassword(.failedToGenerateSrpAuth)
+        }
+
+        let srpClient = try auth.generateProofs(Constants.ExtraPassword.srpBitLength)
+        guard let ephemeral = srpClient.clientEphemeral?.encodeBase64(),
+              let proof = srpClient.clientProof?.encodeBase64() else {
+            throw PassError.extraPassword(.emptySrpClientAuth)
+        }
+
+        let validationData = SrpValidationData(clientEphemeral: ephemeral,
+                                               clientProof: proof,
+                                               srpSessionID: authData.srpSessionID)
 
         // Step 3: validation
         do {
