@@ -40242,6 +40242,16 @@
         }
       }
     },
+    "Enter your extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your extra password"
+          }
+        }
+      }
+    },
     "Enter your PIN code" : {
       "localizations" : {
         "be" : {
