@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Core
 import Factory
 import Foundation
 import Macro
@@ -74,9 +75,10 @@ final class EnableExtraPasswordViewModel: ObservableObject {
                 guard let self else { return }
                 switch state {
                 case .defining:
-                    canContinue = password.count >= 8
+                    canContinue = password.count >= Constants.extraPasswordMinLength
                 case .repeating:
-                    canContinue = password.count >= 8 && password == definedExtraPassword
+                    canContinue = password.count >= Constants.extraPasswordMinLength &&
+                        password == definedExtraPassword
                 }
             }
             .store(in: &cancellables)
