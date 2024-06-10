@@ -405,7 +405,8 @@ private extension CreateEditIdentityView {
                 if viewModel.birthdate.shouldShow {
                     PassSectionDivider()
                     identityRow(title: IdentityFields.birthdate.title,
-                                value: $viewModel.birthdate.value)
+                                value: $viewModel.birthdate.value,
+                                keyboardType: .numbersAndPunctuation)
                 }
 
                 if viewModel.gender.shouldShow {
