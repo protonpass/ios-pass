@@ -68,6 +68,7 @@ extension CustomSection {
     }
 }
 
+@Copyable
 struct CreateEditIdentitySection: Hashable, Identifiable {
     var id: String = UUID().uuidString
     let title: String
@@ -82,33 +83,6 @@ struct CreateEditIdentitySection: Hashable, Identifiable {
                                   isCollapsed: false,
                                   isCustom: true,
                                   content: [])
-    }
-
-    func copy(content: [CustomFieldUiModel]) -> CreateEditIdentitySection {
-        CreateEditIdentitySection(id: id,
-                                  title: title,
-                                  type: type,
-                                  isCollapsed: isCollapsed,
-                                  isCustom: isCustom,
-                                  content: content)
-    }
-
-    func copy(title: String) -> CreateEditIdentitySection {
-        CreateEditIdentitySection(id: id,
-                                  title: title,
-                                  type: type,
-                                  isCollapsed: isCollapsed,
-                                  isCustom: isCustom,
-                                  content: content)
-    }
-
-    func copy(isCollapsed: Bool) -> CreateEditIdentitySection {
-        CreateEditIdentitySection(id: id,
-                                  title: title,
-                                  type: type,
-                                  isCollapsed: isCollapsed,
-                                  isCustom: isCustom,
-                                  content: content)
     }
 }
 
@@ -294,7 +268,9 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             guard case let .identity(data) = itemContent.contentData else { return }
 
             for item in BaseIdentitySection.allCases where item != .custom {
-                sections.append(item.createEditIdentitySection)
+                let shouldBeExpanded = data.sectionShouldBeExpanded(for: item)
+                let section = item.createEditIdentitySection.copy(isCollapsed: !shouldBeExpanded)
+                sections.append(section)
             }
 
             title = itemContent.name
@@ -330,7 +306,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             extraContactDetails = data.extraContactDetails.map { CustomFieldUiModel(customField: $0) }
             company = data.company
             jobTitle = data.jobTitle
-
             personalWebsite = .init(value: data.personalWebsite)
             workPhoneNumber = .init(value: data.workPhoneNumber)
             workEmail = .init(value: data.workEmail)
@@ -467,6 +442,51 @@ private extension CreateEditIdentityViewModel {
     func addBaseSections() {
         for item in BaseIdentitySection.allCases where item != .custom {
             sections.append(item.createEditIdentitySection)
+        }
+    }
+}
+
+private extension IdentityData {
+    typealias SectionElements = Collection & Equatable
+
+    var contactSection: [any SectionElements] {
+        [
+            socialSecurityNumber,
+            passportNumber,
+            licenseNumber,
+            website,
+            xHandle,
+            secondPhoneNumber,
+            linkedIn,
+            reddit,
+            facebook,
+            yahoo,
+            instagram,
+            extraContactDetails
+        ]
+    }
+
+    var workSection: [any SectionElements] {
+        [
+            company,
+            jobTitle,
+            personalWebsite,
+            workPhoneNumber,
+            workEmail,
+            extraWorkDetails
+        ]
+    }
+
+    func sectionShouldBeExpanded(for sectionType: BaseIdentitySection) -> Bool {
+        switch sectionType {
+        case .address, .personalDetails:
+            true
+        case .workDetail:
+            workSection.contains { !$0.isEmpty }
+        case .contact:
+            contactSection.contains { !$0.isEmpty }
+        default:
+            false
         }
     }
 }
