@@ -71,7 +71,6 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
 
     var showPersonalSection: Bool {
         [
-            title,
             fullName,
             email,
             phoneNumber,
