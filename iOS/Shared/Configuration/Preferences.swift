@@ -176,7 +176,8 @@ extension Preferences: PreferencesMigrator {
                                        shareClipboard: shareClipboard)
         let user = UserPreferences(spotlightEnabled: spotlightEnabled,
                                    spotlightSearchableContent: spotlightSearchableContent,
-                                   spotlightSearchableVaults: spotlightSearchableVaults)
+                                   spotlightSearchableVaults: spotlightSearchableVaults,
+                                   extraPasswordEnabled: false)
         return (app, shared, user)
     }
 }

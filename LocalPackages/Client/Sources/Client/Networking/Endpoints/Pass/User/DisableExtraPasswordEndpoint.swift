@@ -1,6 +1,6 @@
-//  
-// UserPreferences+Test.swift
-// Proton Pass - Created on 29/03/2024.
+//
+// DisableExtraPasswordEndpoint.swift
+// Proton Pass - Created on 07/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,12 +20,13 @@
 //
 
 import Entities
+import ProtonCoreNetworking
 
-extension UserPreferences {
-    static func random() -> Self {
-        .init(spotlightEnabled: .random(),
-              spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!,
-              extraPasswordEnabled: .random())
-    }
+struct DisableExtraPasswordEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = CodeOnlyResponse
+
+    let debugDescription = "Disable extra password"
+    let path = "/pass/v1/user/srp"
+    let method: HTTPMethod = .delete
 }

@@ -1,6 +1,6 @@
-//  
-// UserPreferences+Test.swift
-// Proton Pass - Created on 29/03/2024.
+//
+// InitiateSrpAuthenticationEndpoint.swift
+// Proton Pass - Created on 07/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,12 +20,21 @@
 //
 
 import Entities
+import ProtonCoreNetworking
 
-extension UserPreferences {
-    static func random() -> Self {
-        .init(spotlightEnabled: .random(),
-              spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!,
-              extraPasswordEnabled: .random())
+struct InitiateSrpAuthenticationResponse: Decodable, Sendable {
+    let srpData: SrpAuthenticationData
+
+    enum CodingKeys: String, CodingKey {
+        case srpData = "SRPData"
     }
+}
+
+struct InitiateSrpAuthenticationEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = InitiateSrpAuthenticationResponse
+
+    let debugDescription = "Initiate SRP authentication"
+    let path = "/pass/v1/user/srp/info"
+    let method: HTTPMethod = .get
 }

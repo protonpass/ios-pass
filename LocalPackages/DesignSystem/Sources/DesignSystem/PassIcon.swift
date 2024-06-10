@@ -44,6 +44,7 @@ public extension PassIcon {
 
     static let coverScreenBackground = Self.icon(named: "CoverScreenBackground")
     static let coverScreenLogo = Self.icon(named: "CoverScreenLogo")
+    static let extraPassword = Self.icon(named: "ExtraPassword")
 
     static let filterFilled = Self.icon(named: "FilterFilled")
     static let fullSyncDone = Self.icon(named: "FullSyncDone")
