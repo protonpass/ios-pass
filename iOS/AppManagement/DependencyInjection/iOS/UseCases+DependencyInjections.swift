@@ -490,4 +490,8 @@ extension UseCasesContainer {
     var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
         self { GetSecureLinkKeys(passKeyManager: SharedRepositoryContainer.shared.passKeyManager()) }
     }
+
+    var getSecureLinkList: Factory<any GetSecureLinkListUseCase> {
+        self { GetSecureLinkList(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource()) }
+    }
 }
