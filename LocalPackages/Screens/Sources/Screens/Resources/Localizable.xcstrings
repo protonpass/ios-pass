@@ -147,6 +147,12 @@
             "value" : "Kullanıcı adı alanı ekle"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додати поле імені користувача"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1260,6 +1266,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spotlight aramasını kullanıma al"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкнути пошук Spotlight"
           }
         },
         "vi" : {
@@ -2932,7 +2944,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Recherchez des éléments en toute simplicité sur votre écran d'accueil. Ouvrez Réglages → \"Spotlight\" pour l'activer."
+            "value" : "Recherchez des éléments en toute simplicité depuis votre écran d'accueil. Ouvrez Réglages → \"Spotlight\" pour l'activer."
           }
         },
         "id" : {
@@ -3011,6 +3023,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Giriş sayfanızdan ögeleri doğrudan arayın. Kullanıma almak için Ayarlar → Spotlight seçeneğini açın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Легко шукайте елементи на головному екрані. Щоб увімкнути, відкрийте Налаштування → Spotlight."
           }
         },
         "vi" : {
@@ -4126,6 +4144,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullanıcı adı alanı eklemek için buraya dokunun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натисніть тут, щоб додати поле для імені користувача."
           }
         },
         "vi" : {

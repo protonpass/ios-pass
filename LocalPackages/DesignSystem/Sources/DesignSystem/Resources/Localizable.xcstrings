@@ -1267,6 +1267,12 @@
             "value" : "Bu ögede bazı değişiklikler yapılmış. Önceki sayfaya dönülüyor."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для даного елемента відбулися деякі зміни, поверніться на попередню сторінку."
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1419,6 +1425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu öge eskimiş"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цей елемент застарілий"
           }
         },
         "vi" : {

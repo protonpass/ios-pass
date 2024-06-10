@@ -1501,7 +1501,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rechercher les éléments épinglés"
+            "value" : "Rechercher dans les éléments épinglés"
           }
         },
         "id" : {
@@ -1586,6 +1586,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sabitlenmiş ögeleri ara"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пошук закріплених елементів"
           }
         },
         "vi" : {
@@ -1740,6 +1746,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eklenti günlüklerini paylaş"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати журнали розширень"
           }
         },
         "vi" : {
