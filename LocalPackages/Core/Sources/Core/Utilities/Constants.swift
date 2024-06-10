@@ -47,6 +47,11 @@ public enum Constants {
         public static let vault = 1
     }
 
+    public enum ExtraPassword {
+        public static let minLength = 8
+        public static let srpBitLength = 2_048
+    }
+
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"

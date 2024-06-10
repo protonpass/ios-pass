@@ -1,6 +1,6 @@
-//  
-// UserPreferences+Test.swift
-// Proton Pass - Created on 29/03/2024.
+//
+// ExtraPasswordVerificationResult.swift
+// Proton Pass - Created on 07/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,13 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Entities
+import Foundation
 
-extension UserPreferences {
-    static func random() -> Self {
-        .init(spotlightEnabled: .random(),
-              spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!,
-              extraPasswordEnabled: .random())
+public enum ExtraPasswordVerificationResult: Sendable {
+    case successful
+    case wrongPassword
+    case tooManyAttempts
+
+    public var isSuccessful: Bool {
+        if case .successful = self {
+            return true
+        }
+        return false
     }
 }
+
+public typealias DisableExtraPasswordResult = ExtraPasswordVerificationResult
