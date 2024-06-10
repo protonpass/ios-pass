@@ -190,7 +190,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
 
     private var tabIndexes = [HomepageTab: Int]()
@@ -250,16 +249,14 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         tabIndexes[.itemCreation] = currentIndex
         currentIndex += 1
 
-        if getFeatureFlagStatus(with: FeatureFlagType.passSentinelV1) {
-            let passMonitorViewController = UIHostingController(rootView: passMonitorView)
-            passMonitorViewController.tabBarItem.image = MonitorState.default.icon(selected: false)
-            passMonitorViewController.tabBarItem.selectedImage = MonitorState.default.icon(selected: true)
-            passMonitorViewController.tabBarItem.accessibilityLabel = HomepageTab.passMonitor.hint
-            controllers.append(passMonitorViewController)
-            self.passMonitorViewController = passMonitorViewController
-            tabIndexes[.passMonitor] = currentIndex
-            currentIndex += 1
-        }
+        let passMonitorViewController = UIHostingController(rootView: passMonitorView)
+        passMonitorViewController.tabBarItem.image = MonitorState.default.icon(selected: false)
+        passMonitorViewController.tabBarItem.selectedImage = MonitorState.default.icon(selected: true)
+        passMonitorViewController.tabBarItem.accessibilityLabel = HomepageTab.passMonitor.hint
+        controllers.append(passMonitorViewController)
+        self.passMonitorViewController = passMonitorViewController
+        tabIndexes[.passMonitor] = currentIndex
+        currentIndex += 1
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = HomepageTab.profile.image
