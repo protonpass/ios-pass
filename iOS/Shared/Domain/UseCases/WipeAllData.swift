@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreFeatureFlags
 import UIKit
 
-protocol WipeAllDataUseCase {
+protocol WipeAllDataUseCase: Sendable {
     func execute() async
 }
 
