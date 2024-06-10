@@ -40422,7 +40422,7 @@
         }
       }
     },
-    "Error occured" : {
+    "Error occurred" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -40457,7 +40457,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Error occured"
+            "value" : "Error occurred"
           }
         },
         "es" : {

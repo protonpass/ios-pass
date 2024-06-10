@@ -71,13 +71,13 @@ struct EnableExtraPasswordView: View {
         }
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
-        .alert("Error occured",
+        .alert("Error occurred",
                isPresented: protonPasswordVerificationErrorBinding,
                actions: { cancelButton },
                message: {
                    Text(viewModel.protonPasswordVerificationError?.localizedDescription ?? "")
                })
-        .alert("Error occured",
+        .alert("Error occurred",
                isPresented: enableExtraPasswordErrorBinding,
                actions: {
                    tryAgainButton { viewModel.proceedSetUp() }
@@ -86,7 +86,7 @@ struct EnableExtraPasswordView: View {
                message: {
                    Text(viewModel.enableExtraPasswordError?.localizedDescription ?? "")
                })
-        .alert("Error occured",
+        .alert("Error occurred",
                isPresented: $viewModel.showWrongProtonPasswordAlert,
                actions: {
                    tryAgainButton { viewModel.retryVerifyingProtonPassword() }
