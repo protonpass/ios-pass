@@ -38,6 +38,11 @@ public final class AuthManager: AuthManagerProtocol {
     public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
     private var delegateExecutor: CompletionBlockExecutor?
 
+    /// Work-around to keep track of `Credential` mostly for scopes check
+    /// as we don't store `Credential` as-is but convert to `AuthCredential` which doesn't contains `scopes`
+    /// A dictionary with `sessionUID` as keys
+    private var cachedCredentials: [String: Credential] = [:]
+
     public init(credentialProvider: any CredentialProvider) {
         self.credentialProvider = .init(credentialProvider)
     }
@@ -55,6 +60,10 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func credential(sessionUID: String) -> Credential? {
         credentialProvider.transform { credentialProvider in
+            if let credential = cachedCredentials[sessionUID] {
+                return credential
+            }
+
             guard let authCredential = credentialProvider.getCredential() else {
                 return nil
             }
@@ -81,6 +90,8 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func onUpdate(credential: Credential, sessionUID: String) {
         credentialProvider.mutate { credentialProviderUpdated in
+            defer { cachedCredentials[sessionUID] = credential }
+
             guard let authCredential = credentialProviderUpdated.getCredential() else {
                 credentialProviderUpdated.setCredential(AuthCredential(credential))
                 return
@@ -110,6 +121,9 @@ public final class AuthManager: AuthManagerProtocol {
     public func onSessionObtaining(credential: Credential) {
         credentialProvider.mutate { credentialProvider in
             let sessionUID = credential.UID
+
+            defer { cachedCredentials[sessionUID] = credential }
+
             let newCredentials = AuthCredential(credential)
 
             credentialProvider.setCredential(newCredentials)
