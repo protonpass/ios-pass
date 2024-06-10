@@ -37,6 +37,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = VaultManagerState.loading
 
+    @Published private(set) var secureLinks: [SecureLink]?
+
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
@@ -46,6 +48,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -80,6 +83,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     func canMoveItems(vault: Vault) -> Bool {
         canUserPerformActionOnVault(for: vault)
     }
+
+    func showSecureLinkList() {}
 }
 
 // MARK: - Private APIs
@@ -93,6 +98,16 @@ private extension EditableVaultListViewModel {
                 state = newState
             }
             .store(in: &cancellables)
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                secureLinks = try await getSecureLinkList()
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 
     func doDelete(vault: Vault) {
