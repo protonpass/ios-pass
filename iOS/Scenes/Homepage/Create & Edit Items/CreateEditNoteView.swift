@@ -84,6 +84,7 @@ struct CreateEditNoteView: View {
                                       vault: viewModel.editableVault,
                                       itemContentType: viewModel.itemContentType(),
                                       shouldUpgrade: false,
+                                      isPhone: viewModel.isPhone,
                                       onSelectVault: { viewModel.changeVault() },
                                       onGoBack: { isShowingDiscardAlert.toggle() },
                                       onUpgrade: { /* Not applicable */ },

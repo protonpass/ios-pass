@@ -27,6 +27,7 @@ import Factory
 import Foundation
 import Macro
 import ProtonCoreLogin
+import SwiftUI
 
 @MainActor
 protocol CreateEditItemViewModelDelegate: AnyObject {
@@ -109,6 +110,10 @@ class BaseCreateEditItemViewModel: CustomFieldAdditionDelegate, CustomFieldEditi
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
+    }
+
+    var isPhone: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone
     }
 
     /// Only able to select vault when creating items
