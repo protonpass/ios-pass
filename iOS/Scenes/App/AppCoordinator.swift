@@ -343,7 +343,7 @@ private extension AppCoordinator {
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
         case let .failedToInitializePreferences(error):
-            alert(title: #localized("Error occured"), message: error.localizedDescription)
+            alert(title: #localized("Error occurred"), message: error.localizedDescription)
         case .tooManyWrongExtraPasswordAttempts:
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Too many wrong attempts"))
