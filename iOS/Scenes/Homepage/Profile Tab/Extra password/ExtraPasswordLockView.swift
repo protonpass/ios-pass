@@ -60,14 +60,9 @@ struct ExtraPasswordLockView: View {
                 .focused($focused)
                 .multilineTextAlignment(.center)
 
-            if showWrongPasswordError {
-                Text("Wrong extra password")
-                    .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-            } else {
-                // Dummy text to occupy vertical space
-                Text(verbatim: "I'm so dumb")
-                    .opacity(0)
-            }
+            Text("Wrong extra password")
+                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                .opacity(showWrongPasswordError ? 1 : 0)
 
             Spacer()
 
@@ -94,7 +89,7 @@ struct ExtraPasswordLockView: View {
             }
         }
         .showSpinner(viewModel.loading)
-        .alert("Error occured",
+        .alert("Error occurred",
                isPresented: errorBinding,
                actions: { Button("Cancel", role: .cancel, action: onFailure) },
                message: { Text(viewModel.error?.localizedDescription ?? "") })
