@@ -49,6 +49,10 @@ struct EditableVaultListView: View {
                             PassDivider()
                         }
 
+                        if let links = viewModel.secureLinks {
+                            secureLink(link: links)
+                        }
+
                         vaultRow(for: .trash)
 
                         PassDivider()
@@ -104,6 +108,54 @@ struct EditableVaultListView: View {
                 trashTrailingView
             }
         }
+    }
+
+    private func secureLink(link: [SecureLink]) -> some View {
+        HStack {
+            SquircleThumbnail(data: .icon(IconProvider.link),
+                              tintColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1)
+            VStack(alignment: .leading) {
+                Text("Secure links")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("\(link.count) links")
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .buttonEmbeded {
+            dismiss()
+            viewModel.showSecureLinkList()
+        }
+//
+//        let itemCount = viewModel.itemCount(for: selection)
+//
+//
+//
+//        HStack {
+//            Button(action: {
+//
+//            }, label: {
+//
+//                VaultRow(thumbnail: {
+//                             CircleButton(icon: selection.icon,
+//                                          iconColor: selection.color,
+//                                          backgroundColor: selection.color.withAlphaComponent(0.16))
+//                         },
+//                         title: selection.title,
+//                         itemCount: itemCount,
+//                         isShared: selection.shared,
+//                         isSelected: viewModel.isSelected(selection),
+//                         showBadge: selection.showBadge,
+//                         height: 74)
+//            })
+//            .buttonStyle(.plain)
+//
+//            Spacer()
+//        }
     }
 
     private func threeDotsIcon() -> some View {
