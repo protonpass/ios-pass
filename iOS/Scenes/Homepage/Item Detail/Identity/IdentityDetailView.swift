@@ -149,7 +149,7 @@ private extension IdentityDetailView {
                                         onUpgrade: { viewModel.upgrade() })
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
-                .roundedEditableSection()
+                .roundedDetailSection()
             }
         } header: {
             Text("Personal details")
@@ -214,7 +214,7 @@ private extension IdentityDetailView {
                                         onUpgrade: { viewModel.upgrade() })
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
-                .roundedEditableSection()
+                .roundedDetailSection()
             }
         } header: {
             sectionHeader(title: "Address details")
@@ -288,7 +288,7 @@ private extension IdentityDetailView {
                                         onUpgrade: { viewModel.upgrade() })
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
-                .roundedEditableSection()
+                .roundedDetailSection()
             }
         } header: {
             sectionHeader(title: "Contact details")
@@ -338,7 +338,7 @@ private extension IdentityDetailView {
                                         onUpgrade: { viewModel.upgrade() })
                 }
                 .padding(.vertical, DesignConstant.sectionPadding)
-                .roundedEditableSection()
+                .roundedDetailSection()
             }
         } header: {
             sectionHeader(title: "Work details")
