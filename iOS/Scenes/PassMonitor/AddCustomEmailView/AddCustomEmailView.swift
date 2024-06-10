@@ -106,7 +106,7 @@ struct AddCustomEmailView: View {
         .onReceive(viewModel.$verificationError) { error in
             showErrorAlert = error != nil
         }
-        .alert("Error occured",
+        .alert("Error occurred",
                isPresented: $showErrorAlert,
                actions: {
                    Button(action: dismiss.callAsFunction) {

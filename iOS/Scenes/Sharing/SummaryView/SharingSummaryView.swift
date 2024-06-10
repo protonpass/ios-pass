@@ -55,7 +55,7 @@ struct SharingSummaryView: View {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.sendingInvite)
-        .alert("Error occured",
+        .alert("Error occurred",
                isPresented: $viewModel.showContactSupportAlert,
                actions: { Button(role: .cancel, label: { Text("OK") }) },
                message: { Text("Please contact us to investigate the issue") })
