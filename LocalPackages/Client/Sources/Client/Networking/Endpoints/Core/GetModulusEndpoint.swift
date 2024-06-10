@@ -1,6 +1,6 @@
-//  
-// UserPreferences+Test.swift
-// Proton Pass - Created on 29/03/2024.
+//
+// GetModulusEndpoint.swift
+// Proton Pass - Created on 05/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,12 +20,13 @@
 //
 
 import Entities
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-extension UserPreferences {
-    static func random() -> Self {
-        .init(spotlightEnabled: .random(),
-              spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!,
-              extraPasswordEnabled: .random())
-    }
+struct GetModulusEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = Modulus
+
+    let debugDescription = "Get modulus"
+    let path = "/core/v4/auth/modulus"
 }

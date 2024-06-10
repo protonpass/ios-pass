@@ -87,6 +87,10 @@ private extension UseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
+
+    var extraPasswordRepository: any ExtraPasswordRepositoryProtocol {
+        RepositoryContainer.shared.extraPasswordRepository()
+    }
 }
 
 // MARK: User report
@@ -370,6 +374,25 @@ extension UseCasesContainer {
                                             getAllAliases: SharedUseCasesContainer.shared.getAllAliases(),
                                             getBreachesForAlias: self.getBreachesForAlias(),
                                             stream: DataStreamContainer.shared.monitorStateStream()) }
+    }
+
+    var verifyProtonPassword: Factory<any VerifyProtonPasswordUseCase> {
+        self { VerifyProtonPassword(userDataProvider: self.userDataProvider,
+                                    doh: SharedToolingContainer.shared.doh(),
+                                    appVer: SharedToolingContainer.shared.appVersion()) }
+    }
+
+    var enableExtraPassword: Factory<any EnableExtraPasswordUseCase> {
+        self { EnableExtraPassword(repository: self.extraPasswordRepository) }
+    }
+
+    var disableExtraPassword: Factory<any DisableExtraPasswordUseCase> {
+        self { DisableExtraPassword(repository: self.extraPasswordRepository,
+                                    verifyExtraPassword: self.verifyExtraPassword()) }
+    }
+
+    var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
+        self { VerifyExtraPassword(repository: self.extraPasswordRepository) }
     }
 }
 

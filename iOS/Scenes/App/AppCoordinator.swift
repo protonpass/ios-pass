@@ -40,6 +40,28 @@ import Sentry
 import SwiftUI
 import UIKit
 
+private enum HomeSceneMode {
+    case manualLogin
+    case manualLoginWithExtraPassword
+    case alreadyLoggedIn
+
+    var isManualLogin: Bool {
+        switch self {
+        case .manualLogin, .manualLoginWithExtraPassword:
+            true
+        default:
+            false
+        }
+    }
+
+    var extraPassword: Bool {
+        if case .manualLoginWithExtraPassword = self {
+            return true
+        }
+        return false
+    }
+}
+
 @MainActor
 final class AppCoordinator {
     private let window: UIWindow
@@ -123,15 +145,19 @@ final class AppCoordinator {
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
                     connectToCorruptedSessionStream()
-                    showHomeScene(manualLogIn: false)
+                    showHomeScene(mode: .alreadyLoggedIn)
                     if let sessionID = appData.getCredential()?.sessionID {
                         registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
                     }
-                case let .manuallyLoggedIn(userData):
+                case let .manuallyLoggedIn(userData, extraPassword):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
                     connectToCorruptedSessionStream()
-                    showHomeScene(manualLogIn: true)
+                    if extraPassword {
+                        showHomeScene(mode: .manualLoginWithExtraPassword)
+                    } else {
+                        showHomeScene(mode: .manualLogin)
+                    }
                     registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -189,12 +215,20 @@ private extension AppCoordinator {
         }
     }
 
-    func showHomeScene(manualLogIn: Bool) {
+    func showHomeScene(mode: HomeSceneMode) {
         Task { [weak self] in
             guard let self else {
                 return
             }
-            await loginMethod.setLogInFlow(newState: manualLogIn)
+            if mode.extraPassword {
+                do {
+                    try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
+                                                                       value: true)
+                } catch {
+                    logger.error(error)
+                }
+            }
+            await loginMethod.setLogInFlow(newState: mode.isManualLogin)
             let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
             self.homepageCoordinator = homepageCoordinator
@@ -203,6 +237,26 @@ private extension AppCoordinator {
                 homepageCoordinator.onboardIfNecessary()
             }
         }
+    }
+
+    func showExtraPasswordLockScreen(_ userData: UserData) {
+        let onSuccess: () -> Void = { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
+        }
+
+        let onFailure: () -> Void = { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
+        }
+
+        let username = userData.credential.userName
+        let view = ExtraPasswordLockView(email: userData.user.email ?? username,
+                                         username: username,
+                                         onSuccess: onSuccess,
+                                         onFailure: onFailure)
+        let viewController = UIHostingController(rootView: view)
+        animateUpdateRootViewController(viewController)
     }
 
     func animateUpdateRootViewController(_ newRootViewController: UIViewController,
@@ -232,9 +286,9 @@ private extension AppCoordinator {
         }
 
         corruptedSessionStream = corruptedSessionEventStream
+            .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] reason in
                 guard let self else { return }
                 captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
@@ -289,7 +343,10 @@ private extension AppCoordinator {
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
         case let .failedToInitializePreferences(error):
-            alert(title: #localized("Error occured"), message: error.localizedDescription)
+            alert(title: #localized("Error occurred"), message: error.localizedDescription)
+        case .tooManyWrongExtraPasswordAttempts:
+            alert(title: #localized("Failed to authenticate"),
+                  message: #localized("Too many wrong attempts"))
         default:
             break
         }
@@ -305,7 +362,11 @@ private extension AppCoordinator {
 
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
-        appStateObserver.updateAppState(.manuallyLoggedIn(userData))
+        if userData.scopes.contains(where: { $0 == "pass" }) {
+            appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: false))
+        } else {
+            showExtraPasswordLockScreen(userData)
+        }
     }
 }
 

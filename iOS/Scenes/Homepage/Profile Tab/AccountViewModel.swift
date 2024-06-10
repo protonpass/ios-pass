@@ -23,6 +23,8 @@ import Combine
 import Core
 import Entities
 import Factory
+import Foundation
+import Macro
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
@@ -49,21 +51,43 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let doDisableExtraPassword = resolve(\UseCasesContainer.disableExtraPassword)
+
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
     @Published private(set) var passwordMode: UserSettings.Password.PasswordMode = .singlePassword
+    @Published private(set) var extraPasswordEnabled = false
+    @Published var extraPassword = ""
     private(set) var accountRecovery: AccountRecovery?
 
+    private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any AccountViewModelDelegate)?
 
     var username: String { userDataProvider.getUserData()?.user.email ?? "" }
 
+    var extraPasswordSupported: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passAccessKeyV1)
+    }
+
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
+        extraPasswordEnabled = preferencesManager.userPreferences.unwrapped().extraPasswordEnabled
         refreshUserPlan()
         refreshAccountRecovery()
         refreshAccountPasswordMode()
+
+        preferencesManager
+            .userPreferencesUpdates
+            .filter(\.extraPasswordEnabled)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] enabled in
+                guard let self else { return }
+                extraPasswordEnabled = enabled
+            }
+            .store(in: &cancellables)
     }
 
     private func refreshUserPlan() {
@@ -150,6 +174,41 @@ extension AccountViewModel {
 
     func openAccountSettings() {
         router.present(for: .accountSettings)
+    }
+
+    func enableExtraPassword() {
+        router.present(for: .enableExtraPassword)
+    }
+
+    func disableExtraPassword() {
+        guard let username = userDataProvider.getUserData()?.credential.userName else {
+            let errorMessage = #localized("Missing username")
+            router.display(element: .errorMessage(errorMessage))
+            logger.error("Failed to disable extra password. Missing username")
+            return
+        }
+        Task { [weak self] in
+            guard let self else { return }
+            defer { isLoading = false }
+            isLoading = true
+            do {
+                let result = try await doDisableExtraPassword(username: username,
+                                                              password: extraPassword)
+                extraPassword = ""
+                switch result {
+                case .successful:
+                    let message = #localized("Extra password disabled")
+                    router.display(element: .infosMessage(message))
+                    try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled, value: false)
+                case .tooManyAttempts, .wrongPassword:
+                    let errorMessage = #localized("Wrong extra password")
+                    router.display(element: .errorMessage(errorMessage))
+                }
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 
     func signOut() {

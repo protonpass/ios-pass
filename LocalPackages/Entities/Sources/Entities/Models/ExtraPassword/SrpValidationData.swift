@@ -1,6 +1,6 @@
-//  
-// UserPreferences+Test.swift
-// Proton Pass - Created on 29/03/2024.
+//
+// SrpValidationData.swift
+// Proton Pass - Created on 07/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,13 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Entities
+import Foundation
 
-extension UserPreferences {
-    static func random() -> Self {
-        .init(spotlightEnabled: .random(),
-              spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!,
-              extraPasswordEnabled: .random())
+public struct SrpValidationData: Sendable, Encodable {
+    public let clientEphemeral: String
+    public let clientProof: String
+    public let srpSessionID: String
+
+    public init(clientEphemeral: String, clientProof: String, srpSessionID: String) {
+        self.clientEphemeral = clientEphemeral
+        self.clientProof = clientProof
+        self.srpSessionID = srpSessionID
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case clientEphemeral = "ClientEphemeral"
+        case clientProof = "ClientProof"
+        case srpSessionID = "SrpSessionID"
     }
 }

@@ -29,6 +29,7 @@ public enum LogOutReason: Equatable {
     case sessionInvalidated
     case userInitiated
     case failedToInitializePreferences(any Error)
+    case tooManyWrongExtraPasswordAttempts
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
@@ -51,7 +52,7 @@ public enum LogOutReason: Equatable {
 
 public enum AppState {
     case loggedOut(LogOutReason)
-    case manuallyLoggedIn(UserData)
+    case manuallyLoggedIn(UserData, extraPassword: Bool)
     case alreadyLoggedIn
     case undefined
 }
