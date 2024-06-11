@@ -102,11 +102,7 @@ public extension TelemetryEventRepository {
         logger.trace("Refreshing user access")
         let plan = try await accessRepository.refreshAccess().plan
 
-        // Send item read events for B2B users regardless of telemetry settings
-        if plan.isBusinessUser {
-            logger.trace("[B2B] Ignore telemetry settings and send read events")
-            try await itemReadEventRepository.sendAllEvents()
-        }
+        try await sendAllItemReadEvents(plan: plan)
 
         if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
@@ -115,6 +111,33 @@ public extension TelemetryEventRepository {
             return .thresholdReachedButTelemetryOff
         }
 
+        try await sendAllTelemetryEvents(userId: userId, plan: plan)
+
+        logger.info("Sent all events")
+        try await scheduler.randomNextThreshold()
+        return .allEventsSent
+    }
+
+    /// For testing purpose only. Not available at protocol level.
+    func forceSendAllEvents() async throws {
+        logger.debug("Force sending all events")
+        let userId = try userDataProvider.getUserId()
+        let plan = try await accessRepository.refreshAccess().plan
+        try await sendAllItemReadEvents(plan: plan)
+        try await sendAllTelemetryEvents(userId: userId, plan: plan)
+        logger.info("Force sent all events")
+    }
+}
+
+private extension TelemetryEventRepository {
+    func sendAllItemReadEvents(plan: Plan) async throws {
+        if plan.isBusinessUser {
+            logger.trace("[B2B] Ignore telemetry settings and send read events")
+            try await itemReadEventRepository.sendAllEvents()
+        }
+    }
+
+    func sendAllTelemetryEvents(userId: String, plan: Plan) async throws {
         while true {
             let events = try await localDatasource.getOldestEvents(count: batchSize,
                                                                    userId: userId)
@@ -125,10 +148,6 @@ public extension TelemetryEventRepository {
             try await remoteDatasource.send(events: eventInfos)
             try await localDatasource.remove(events: events, userId: userId)
         }
-
-        logger.info("Sent all events")
-        try await scheduler.randomNextThreshold()
-        return .allEventsSent
     }
 }
 

@@ -50,6 +50,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
 
     @Published private(set) var uiModels = [TelemetryEventUiModel]()
     @Published private(set) var relativeThreshold = ""
+    @Published private(set) var loading = false
     @Published private(set) var error: (any Error)?
 
     init() {
@@ -76,24 +77,46 @@ private final class TelemetryEventsViewModel: ObservableObject {
             }
         }
     }
+
+    func forceSend() {
+        guard let repository = telemetryEventRepository as? TelemetryEventRepository else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            defer { loading = false }
+            do {
+                loading = true
+                try await repository.forceSendAllEvents()
+                refresh()
+            } catch {
+                self.error = error
+            }
+        }
+    }
 }
 
 private struct TelemetryEventsView: View {
     @StateObject private var viewModel = TelemetryEventsViewModel()
 
     var body: some View {
-        if let error = viewModel.error {
-            RetryableErrorView(errorMessage: error.localizedDescription, onRetry: viewModel.refresh)
-        } else {
-            if viewModel.uiModels.isEmpty {
-                Form {
-                    Text(verbatim: "No events")
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                }
+        ZStack {
+            if let error = viewModel.error {
+                RetryableErrorView(errorMessage: error.localizedDescription, onRetry: viewModel.refresh)
             } else {
-                eventsList
+                if viewModel.uiModels.isEmpty {
+                    Form {
+                        Text(verbatim: "No events")
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                    }
+                } else {
+                    eventsList
+                }
             }
         }
+        .toolbar {
+            Button(action: { viewModel.forceSend() },
+                   label: { Text(verbatim: "Force send") })
+        }
+        .showSpinner(viewModel.loading)
     }
 
     private var eventsList: some View {
