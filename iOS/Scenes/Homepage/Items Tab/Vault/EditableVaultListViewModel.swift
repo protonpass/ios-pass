@@ -84,7 +84,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         canUserPerformActionOnVault(for: vault)
     }
 
-    func showSecureLinkList() {}
+    func showSecureLinkList() {
+        guard let secureLinks else {
+            return
+        }
+        router.present(for: .secureLinks(secureLinks))
+    }
 }
 
 // MARK: - Private APIs

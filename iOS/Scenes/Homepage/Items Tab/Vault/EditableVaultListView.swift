@@ -71,6 +71,7 @@ struct EditableVaultListView: View {
             .padding([.bottom, .horizontal])
         }
         .background(PassColor.backgroundWeak.toColor)
+        .animation(.default, value: viewModel.secureLinks)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -125,7 +126,12 @@ struct EditableVaultListView: View {
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+
+            Spacer()
+            Spacer()
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical)
         .buttonEmbeded {
             dismiss()
             viewModel.showSecureLinkList()

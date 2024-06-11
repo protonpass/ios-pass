@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct SecureLink: Decodable, Equatable, Sendable, Identifiable {
+public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable {
     public let linkID: String
     public let readCount, maxReadCount: Int?
     public let expirationTime: Int
