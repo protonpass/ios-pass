@@ -21,8 +21,6 @@
 import Core
 import Entities
 import Foundation
-import ProtonCoreLogin
-import ProtonCoreServices
 
 public enum TelemetryEventSendResult: Sendable {
     case thresholdNotReached

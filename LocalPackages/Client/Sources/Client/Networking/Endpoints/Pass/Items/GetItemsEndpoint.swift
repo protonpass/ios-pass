@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetItemsResponse: Decodable, Sendable {
     let items: ItemsPaginated

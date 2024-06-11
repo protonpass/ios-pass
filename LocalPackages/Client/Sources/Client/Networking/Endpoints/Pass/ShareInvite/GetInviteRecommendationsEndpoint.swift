@@ -21,7 +21,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetInviteRecommendationsResponse: Sendable, Decodable {
     let recommendation: InviteRecommendations
@@ -33,13 +32,11 @@ struct GetInviteRecommendationsEndpoint: Endpoint {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
     var parameters: [String: Any]?
 
     init(shareId: String, query: InviteRecommendationsQuery) {
         debugDescription = "Get invite recommendations"
         path = "/pass/v1/share/\(shareId)/invite/recommended_emails"
-        method = .get
         var parameters: [String: Any] = [:]
         if let lastToken = query.lastToken {
             parameters["PlanSince"] = lastToken

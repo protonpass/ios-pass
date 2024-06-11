@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetAllBreachesForUserResponse: Decodable, Equatable, Sendable {
     let breaches: UserBreaches
@@ -30,13 +29,6 @@ struct GetAllBreachesForUserEndpoint: Endpoint {
     typealias Body = EmptyRequest
     typealias Response = GetAllBreachesForUserResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init() {
-        debugDescription = "Get all breaches for current user"
-        path = "/pass/v1/breach"
-        method = .get
-    }
+    let debugDescription = "Get all breaches for current user"
+    let path = "/pass/v1/breach"
 }

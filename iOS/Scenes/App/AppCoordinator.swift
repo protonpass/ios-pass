@@ -21,24 +21,14 @@
 import Client
 import Combine
 import Core
-import CoreData
-import CryptoKit
 import Entities
 import Factory
 import Macro
-import MBProgressHUD
 import ProtonCoreAccountRecovery
-import ProtonCoreAuthentication
 import ProtonCoreFeatureFlags
-import ProtonCoreKeymaker
 import ProtonCoreLogin
-import ProtonCoreNetworking
 import ProtonCorePushNotifications
-import ProtonCoreServices
-import ProtonCoreUtilities
-import Sentry
 import SwiftUI
-import UIKit
 
 private enum HomeSceneMode {
     case manualLogin
