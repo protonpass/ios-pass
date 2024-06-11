@@ -46,7 +46,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     private let remoteDatasource: any RemoteTelemetryEventDatasourceProtocol
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
-    private let eventCount: Int
+    private let batchSize: Int
     private let logger: Logger
     public let scheduler: any TelemetrySchedulerProtocol
     private let userDataProvider: any UserDataProvider
@@ -58,12 +58,12 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 logManager: any LogManagerProtocol,
                 scheduler: any TelemetrySchedulerProtocol,
                 userDataProvider: any UserDataProvider,
-                eventCount: Int = Constants.Utils.batchSize) {
+                batchSize: Int = Constants.Utils.batchSize) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userSettingsRepository = userSettingsRepository
         self.accessRepository = accessRepository
-        self.eventCount = eventCount
+        self.batchSize = batchSize
         logger = .init(manager: logManager)
         self.scheduler = scheduler
         self.userDataProvider = userDataProvider
@@ -107,7 +107,7 @@ public extension TelemetryEventRepository {
         let plan = try await accessRepository.refreshAccess().plan
 
         while true {
-            let events = try await localDatasource.getOldestEvents(count: eventCount,
+            let events = try await localDatasource.getOldestEvents(count: batchSize,
                                                                    userId: userId)
             if events.isEmpty {
                 break
