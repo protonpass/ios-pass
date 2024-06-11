@@ -24,7 +24,6 @@ import CoreData
 import Entities
 import Foundation
 
-// sourcery: AutoMockable
 public protocol LocalItemReadEventDatasourceProtocol: Sendable {
     /// Record new events
     func insertEvent(_ event: ItemReadEvent, userId: String) async throws
