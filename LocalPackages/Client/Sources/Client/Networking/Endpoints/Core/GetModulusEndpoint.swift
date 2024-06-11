@@ -21,7 +21,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetModulusEndpoint: Endpoint {
     typealias Body = EmptyRequest

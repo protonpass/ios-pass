@@ -18,12 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Combine
 import Core
 import Entities
 import Factory
-import ProtonCoreServices
 import SwiftUI
 
 @MainActor

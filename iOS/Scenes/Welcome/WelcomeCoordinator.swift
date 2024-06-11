@@ -21,8 +21,6 @@
 import Core
 import Entities
 import Macro
-import ProtonCoreDoh
-import ProtonCoreForceUpgrade
 import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking

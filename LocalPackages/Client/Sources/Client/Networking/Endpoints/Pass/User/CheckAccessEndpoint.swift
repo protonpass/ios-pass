@@ -29,13 +29,6 @@ struct CheckAccessEndpoint: Endpoint {
     typealias Body = EmptyRequest
     typealias Response = CheckAccessResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init() {
-        debugDescription = "Check access to Pass"
-        path = "/pass/v1/user/access"
-        method = .get
-    }
+    let debugDescription = "Check access to Pass"
+    let path = "/pass/v1/user/access"
 }

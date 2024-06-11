@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetAllCustomEmailForUserResponse: Decodable, Equatable, Sendable {
     let emails: Emails
@@ -34,13 +33,6 @@ struct GetAllCustomEmailForUserEndpoint: Endpoint {
     typealias Body = EmptyRequest
     typealias Response = GetAllCustomEmailForUserResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init() {
-        debugDescription = "Get all custom emails for current user"
-        path = "/pass/v1/breach/custom_email"
-        method = .get
-    }
+    let debugDescription = "Get all custom emails for current user"
+    let path = "/pass/v1/breach/custom_email"
 }

@@ -20,7 +20,6 @@
 //
 
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct DeleteShareNewUserInviteEndpoint: Endpoint {
     typealias Body = EmptyRequest

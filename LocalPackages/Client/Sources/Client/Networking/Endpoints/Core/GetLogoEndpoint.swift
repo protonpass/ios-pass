@@ -20,7 +20,6 @@
 
 import Foundation
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 // Dummy empty response
 struct GetLogoResponse: Decodable, Sendable {}
@@ -31,13 +30,11 @@ struct GetLogoEndpoint: Endpoint, @unchecked Sendable {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
     var parameters: [String: Any]?
 
     init(domain: String, size: Int = 32, mode: String = "dark", format: String = "png") {
         debugDescription = "Get fav icon of a domain"
         path = "/core/v4/images/logo"
-        method = .get
         let host = URL(string: domain)?.host ?? domain
         parameters = ["Domain": host, "Size": size, "Mode": mode, "Format": format]
     }

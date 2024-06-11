@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetAllSecureLinksResponse: Decodable, Equatable, Sendable {
     let publicLinks: [SecureLink]
@@ -30,13 +29,6 @@ struct GetAllPublicLinksForUserEndpoint: Endpoint {
     typealias Body = EmptyRequest
     typealias Response = GetAllSecureLinksResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init() {
-        debugDescription = "Get all secure links for current user"
-        path = "/pass/v1/public_link"
-        method = .get
-    }
+    let debugDescription = "Get all secure links for current user"
+    let path = "/pass/v1/public_link"
 }

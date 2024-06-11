@@ -24,7 +24,6 @@ import ClientMocks
 import Core
 import CoreMocks
 import Entities
-import ProtonCoreServices
 import XCTest
 
 final class ItemRepositoryTests: XCTestCase {
@@ -74,7 +73,7 @@ extension ItemRepositoryTests {
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)
-        let expectation = self.expectation(description: "Init of ItemRepository")
+        let expectation = expectation(description: "Init of ItemRepository")
         
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?

@@ -36,5 +36,4 @@ struct InitiateSrpAuthenticationEndpoint: Endpoint {
 
     let debugDescription = "Initiate SRP authentication"
     let path = "/pass/v1/user/srp/info"
-    let method: HTTPMethod = .get
 }

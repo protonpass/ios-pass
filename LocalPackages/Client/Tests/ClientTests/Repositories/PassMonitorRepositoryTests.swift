@@ -26,7 +26,6 @@ import CoreMocks
 import CryptoKit
 import Entities
 import EntitiesMocks
-import ProtonCoreServices
 import XCTest
 
 final class PassMonitorRepositoryTests: XCTestCase {
