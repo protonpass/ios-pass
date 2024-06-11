@@ -45,8 +45,24 @@ public final class ItemReadEventRepositoryProtocolMock: @unchecked Sendable, Ite
         }
         closureAddEvent()
     }
+    // MARK: - getAllEvents
+    public var getAllEventsThrowableError2: Error?
+    public var closureGetAllEvents: () -> () = {}
+    public var invokedGetAllEventsfunction = false
+    public var invokedGetAllEventsCount = 0
+    public var stubbedGetAllEventsResult: [ItemReadEvent]!
+
+    public func getAllEvents() async throws -> [ItemReadEvent] {
+        invokedGetAllEventsfunction = true
+        invokedGetAllEventsCount += 1
+        if let error = getAllEventsThrowableError2 {
+            throw error
+        }
+        closureGetAllEvents()
+        return stubbedGetAllEventsResult
+    }
     // MARK: - sendAllEvents
-    public var sendAllEventsThrowableError2: Error?
+    public var sendAllEventsThrowableError3: Error?
     public var closureSendAllEvents: () -> () = {}
     public var invokedSendAllEventsfunction = false
     public var invokedSendAllEventsCount = 0
@@ -54,7 +70,7 @@ public final class ItemReadEventRepositoryProtocolMock: @unchecked Sendable, Ite
     public func sendAllEvents() async throws {
         invokedSendAllEventsfunction = true
         invokedSendAllEventsCount += 1
-        if let error = sendAllEventsThrowableError2 {
+        if let error = sendAllEventsThrowableError3 {
             throw error
         }
         closureSendAllEvents()

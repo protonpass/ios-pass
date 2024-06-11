@@ -26,6 +26,7 @@ import Foundation
 // sourcery: AutoMockable
 public protocol ItemReadEventRepositoryProtocol: Sendable {
     func addEvent(for item: any ItemIdentifiable) async throws
+    func getAllEvents() async throws -> [ItemReadEvent]
     func sendAllEvents() async throws
 }
 
@@ -62,6 +63,11 @@ public extension ItemReadEventRepository {
                                   timestamp: date.timeIntervalSince1970)
         try await localDatasource.insertEvent(event, userId: userId)
         logger.trace("Added event for item \(item.debugDescription), user \(userId)")
+    }
+
+    func getAllEvents() async throws -> [ItemReadEvent] {
+        let userId = try userDataProvider.getUserId()
+        return try await localDatasource.getAllEvents(userId: userId)
     }
 
     func sendAllEvents() async throws {
