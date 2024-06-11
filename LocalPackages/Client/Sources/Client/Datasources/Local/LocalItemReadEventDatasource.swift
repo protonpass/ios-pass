@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Core
 import CoreData
 import Entities
 import Foundation
@@ -36,9 +35,6 @@ public protocol LocalItemReadEventDatasourceProtocol: Sendable {
 
     /// Remove events already sent to the BE
     func removeEvents(_ events: [ItemReadEvent]) async throws
-
-    /// Remove all events for a user (e.g after logging out)
-    func removeAllEvents(userId: String) async throws
 }
 
 public final class LocalItemReadEventDatasource: LocalDatasource, LocalItemReadEventDatasourceProtocol {}
@@ -84,21 +80,11 @@ public extension LocalItemReadEventDatasource {
         try await context.perform {
             for event in events {
                 let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemReadEventEntity")
-                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    .init(format: "uuid = %@", event.uuid)
-                ])
+                fetchRequest.predicate = .init(format: "uuid = %@", event.uuid)
                 let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
                 try context.execute(batchDeleteRequest)
             }
             try context.save()
         }
-    }
-
-    func removeAllEvents(userId: String) async throws {
-        let context = newTaskContext(type: .delete)
-        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemReadEventEntity")
-        request.predicate = .init(format: "userID = %@", userId)
-        try await execute(batchDeleteRequest: .init(fetchRequest: request),
-                          context: context)
     }
 }
