@@ -19,9 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import CoreData
-import ProtonCoreNetworking
-import ProtonCoreServices
 
 // sourcery: AutoMockable
 public protocol ShareEventIDRepositoryProtocol: Sendable {

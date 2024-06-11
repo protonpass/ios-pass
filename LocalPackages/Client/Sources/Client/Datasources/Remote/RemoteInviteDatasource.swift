@@ -19,8 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import Foundation
-import ProtonCoreServices
 
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser() async throws -> [UserInvite]
