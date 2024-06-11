@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct DeleteItemsEndpoint: Endpoint {
     typealias Body = ModifyItemRequest
