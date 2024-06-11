@@ -58,7 +58,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 logManager: any LogManagerProtocol,
                 scheduler: any TelemetrySchedulerProtocol,
                 userDataProvider: any UserDataProvider,
-                eventCount: Int = 500) {
+                eventCount: Int = Constants.Utils.batchSize) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userSettingsRepository = userSettingsRepository

@@ -51,6 +51,12 @@
         <attribute name="shareID" attributeType="String" defaultValueString=""/>
         <attribute name="time" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String" defaultValueString=""/>
+        <attribute name="uuid" attributeType="String" defaultValueString=""/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uuid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="OrganizationEntity" representedClassName="OrganizationEntity" syncable="YES">
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>

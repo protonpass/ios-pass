@@ -22,6 +22,7 @@
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol RemoteItemReadEventDatasourceProtocol: Sendable {
     func send(events: [ItemReadEvent], shareId: String) async throws
 }

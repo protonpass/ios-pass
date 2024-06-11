@@ -25,26 +25,15 @@ import Entities
 import Foundation
 import XCTest
 
-private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
-    var currentDate = Date.now
-
-    func getCurrentDate() -> Date { currentDate }
-}
-
 private final class LocalItemReadEventDatasourceTests: XCTestCase {
-    var currentDateProvider: MockedCurrentDateProvider!
     var sut: (any LocalItemReadEventDatasourceProtocol)!
 
     override func setUp() {
         super.setUp()
-        currentDateProvider = .init()
-        sut = LocalItemReadEventDatasource(
-            currentDateProvider: currentDateProvider,
-            databaseService: DatabaseService(inMemory: true))
+        sut = LocalItemReadEventDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {
-        currentDateProvider = nil
         sut = nil
         super.tearDown()
     }
@@ -53,43 +42,56 @@ private final class LocalItemReadEventDatasourceTests: XCTestCase {
 extension LocalItemReadEventDatasourceTests {
     func testInsertGetRemoveEvents() async throws {
         let userId1 = String.random()
-        let event1 = try await insertRandomEvent(timestamp: 17,
-                                                 userId: userId1)
-        let event2 = try await insertRandomEvent(timestamp: 20,
-                                                 userId: userId1)
-        let event3 = try await insertRandomEvent(timestamp: 34,
-                                                 userId: userId1)
-        let event4 = try await insertRandomEvent(timestamp: 4,
-                                                 userId: userId1)
+        let event1 = try await givenInsertedEvent(userId: userId1,
+                                                  timestamp: 4)
+        let event2 = try await givenInsertedEvent(userId: userId1,
+                                                  timestamp: 2)
+        let event3 = try await givenInsertedEvent(userId: userId1,
+                                                  timestamp: 6)
+        let event4 = try await givenInsertedEvent(userId: userId1,
+                                                  timestamp: 8)
+        let event5 = try await givenInsertedEvent(userId: userId1,
+                                                  timestamp: 1)
+
+        let batch1 = try await sut.getOldestEvents(count: 3, userId: userId1)
+        XCTAssertEqual(batch1, [event5, event2, event1])
+
+        let batch2 = try await sut.getAllEvents(userId: userId1)
+        XCTAssertEqual(batch2, [event5, event2, event1, event3, event4])
+
+        try await sut.removeEvents(batch1)
 
         let userId2 = String.random()
-        let event5 = try await insertRandomEvent(timestamp: 10,
-                                                 userId: userId2)
+        let event6 = try await givenInsertedEvent(userId: userId2,
+                                                  timestamp: 7)
+        let event7 = try await givenInsertedEvent(userId: userId2,
+                                                  timestamp: 3)
+        let event8 = try await givenInsertedEvent(userId: userId2,
+                                                  timestamp: 9)
 
-        let eventsForUserId1FirstGet = try await sut.getAllEvents(userId: userId1)
-        XCTAssertEqual(eventsForUserId1FirstGet, [event4, event1, event2, event3])
+        let batch3 = try await sut.getOldestEvents(count: 3, userId: userId1)
+        XCTAssertEqual(batch3, [event3, event4])
 
-        try await sut.removeAllEvents(userId: userId1)
-        let eventsForUserId1SecondGet = try await sut.getAllEvents(userId: userId1)
-        XCTAssertTrue(eventsForUserId1SecondGet.isEmpty)
+        let batch4 = try await sut.getOldestEvents(count: 2, userId: userId2)
+        XCTAssertEqual(batch4, [event7, event6])
 
-        let eventsForUserId2FirstGet = try await sut.getAllEvents(userId: userId2)
-        XCTAssertEqual(eventsForUserId2FirstGet, [event5])
+        let batch5 = try await sut.getAllEvents(userId: userId2)
+        XCTAssertEqual(batch5, [event7, event6, event8])
 
         try await sut.removeAllEvents(userId: userId2)
-        let eventsForUserId2SecondGet = try await sut.getAllEvents(userId: userId1)
-        XCTAssertTrue(eventsForUserId2SecondGet.isEmpty)
+        let batch6 = try await sut.getAllEvents(userId: userId2)
+        XCTAssertTrue(batch6.isEmpty)
     }
 }
 
 private extension LocalItemReadEventDatasourceTests {
-    func insertRandomEvent(timestamp: Double,
-                           userId: String) async throws -> ItemReadEvent {
-        currentDateProvider.currentDate = Date(timeIntervalSince1970: timestamp)
-        let item = MockedItemIdentiable.random()
-        try await sut.insertEvent(item, userId: userId)
-        return .init(shareId: item.shareId,
-                     itemId: item.itemId,
-                     timestamp: timestamp)
+    func givenInsertedEvent(userId: String,
+                            timestamp: TimeInterval) async throws -> ItemReadEvent {
+        let event = ItemReadEvent(uuid: .random(),
+                                  shareId: .random(),
+                                  itemId: .random(),
+                                  timestamp: timestamp)
+        try await sut.insertEvent(event, userId: userId)
+        return event
     }
 }
