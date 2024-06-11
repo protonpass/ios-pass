@@ -40,6 +40,7 @@ struct QAFeaturesView: View {
                 Section {
                     CachedFavIconsSection()
                     TelemetryEventsSection()
+                    ItemReadEventsSection()
                     TrashItemsSection()
                     BannersSection()
                     Toggle(isOn: $displayUpgradeAppBanner) {

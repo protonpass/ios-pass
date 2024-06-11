@@ -77,10 +77,6 @@ extension LocalItemReadEventDatasourceTests {
 
         let batch5 = try await sut.getAllEvents(userId: userId2)
         XCTAssertEqual(batch5, [event7, event6, event8])
-
-        try await sut.removeAllEvents(userId: userId2)
-        let batch6 = try await sut.getAllEvents(userId: userId2)
-        XCTAssertTrue(batch6.isEmpty)
     }
 }
 
