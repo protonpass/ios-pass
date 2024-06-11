@@ -91,10 +91,35 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
     func updateAliasesMonitor(_ monitored: Bool) async throws {}
 }
 
+private final class MockedBusinessPlanRepository: AccessRepositoryProtocol {
+    let access: CurrentValueSubject<Access?, Never> = .init(nil)
+    let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
+
+    let mockedAccess = Access(plan: .init(type: "business",
+                                          internalName: .random(),
+                                          displayName: .random(),
+                                          hideUpgrade: false,
+                                          trialEnd: .random(in: 1...100),
+                                          vaultLimit: .random(in: 1...100),
+                                          aliasLimit: .random(in: 1...100),
+                                          totpLimit: .random(in: 1...100)),
+                              monitor: .init(protonAddress: .random(), aliases: .random()),
+                              pendingInvites: 1,
+                              waitingNewUserInvites: 1,
+                              minVersionUpgrade: nil)
+
+    func getAccess() async throws -> Access { mockedAccess }
+    func getPlan() async throws -> Plan { mockedAccess.plan }
+    func refreshAccess() async throws -> Access { mockedAccess }
+    func updateProtonAddressesMonitor(_ monitored: Bool) async throws {}
+    func updateAliasesMonitor(_ monitored: Bool) async throws {}
+}
+
 final class TelemetryEventRepositoryTests: XCTestCase {
     var localDatasource: LocalTelemetryEventDatasourceProtocol!
     var thresholdProvider: TelemetryThresholdProviderMock!
     var userDataProviderMock: UserDataProviderMock!
+    var itemReadEventRepository: ItemReadEventRepositoryProtocolMock!
     var sut: TelemetryEventRepositoryProtocol!
 
     override func setUp() {
@@ -103,6 +128,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
         thresholdProvider = TelemetryThresholdProviderMock()
         userDataProviderMock = UserDataProviderMock()
         userDataProviderMock.stubbedGetUserDataResult = .preview
+        itemReadEventRepository = .init()
     }
 
     override func tearDown() {
@@ -123,7 +149,8 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
-                                       accessRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(), 
+                                       itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userDataProvider: userDataProviderMock)
@@ -150,7 +177,8 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
-                                       accessRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(), 
+                                       itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userDataProvider: userDataProviderMock)
@@ -164,6 +192,8 @@ extension TelemetryEventRepositoryTests {
         threshold = await sut.scheduler.getThreshold()
         XCTAssertNotNil(threshold)
         XCTAssertEqual(sendResult, .thresholdNotReached)
+        // Not applicable to free users
+        XCTAssertFalse(itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
     func testDoNotSendEventWhenThresholdNotReached() async throws {
@@ -178,7 +208,8 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
-                                       accessRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(), 
+                                       itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userDataProvider: userDataProviderMock)
@@ -188,6 +219,8 @@ extension TelemetryEventRepositoryTests {
 
         // Then
         XCTAssertEqual(sendResult, .thresholdNotReached)
+        // Not applicable to free users
+        XCTAssertFalse(itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
     func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
@@ -206,6 +239,7 @@ extension TelemetryEventRepositoryTests {
                                        remoteDatasource: MockedRemoteDatasource(),
                                        userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
                                        accessRepository: MockedFreePlanRepository(),
+                                       itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userDataProvider: userDataProviderMock,
@@ -233,6 +267,8 @@ extension TelemetryEventRepositoryTests {
         let maxInterval = await telemetryScheduler.maxIntervalInHours
         XCTAssertTrue(differenceInHours >= minInterval)
         XCTAssertTrue(differenceInHours <= maxInterval)
+        // Not applicable to free users
+        XCTAssertFalse(itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
     func testRemoveAllLocalEventsWhenThresholdIsReachedButTelemetryIsOff() async throws {
@@ -251,7 +287,8 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        userSettingsRepository: settingsService,
-                                       accessRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(), 
+                                       itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userDataProvider: userDataProviderMock)
@@ -278,5 +315,66 @@ extension TelemetryEventRepositoryTests {
         let maxInterval = await telemetryScheduler.maxIntervalInHours
         XCTAssertTrue(differenceInHours >= minInterval)
         XCTAssertTrue(differenceInHours <= maxInterval)
+        // Not applicable to free users
+        XCTAssertFalse(itemReadEventRepository.invokedSendAllEventsfunction)
+    }
+
+    func testSendItemReadEventsForB2BWhenThresholdIsReachedButTelemetryIsOff() async throws {
+        // Given
+        let givenCurrentDate = Date.now
+        let mockedCurrentDateProvider = MockedCurrentDateProvider()
+        mockedCurrentDateProvider.currentDate = givenCurrentDate
+
+        thresholdProvider.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
+        let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
+                                                    thresholdProvider: thresholdProvider)
+        let settings = UserSettings(telemetry: false,
+                                    highSecurity: .default,
+                                    password: .init(mode: .singlePassword),
+                                    twoFactor: .init(type: .disabled))
+        let settingsService = MockedUserSettingsRepositoryProtocol(settings: settings)
+        sut = TelemetryEventRepository(localDatasource: localDatasource,
+                                       remoteDatasource: MockedRemoteDatasource(),
+                                       userSettingsRepository: settingsService,
+                                       accessRepository: MockedBusinessPlanRepository(), 
+                                       itemReadEventRepository: itemReadEventRepository,
+                                       logManager: LogManager.dummyLogManager(),
+                                       scheduler: telemetryScheduler,
+                                       userDataProvider: userDataProviderMock)
+
+        // When
+        let sendResult = try await sut.sendAllEventsIfApplicable()
+
+        // Then
+        XCTAssertEqual(sendResult, .thresholdReachedButTelemetryOff)
+        XCTAssertTrue(itemReadEventRepository.invokedSendAllEventsfunction)
+    }
+
+    func testSendItemReadEventsForB2BWhenThresholdIsReached() async throws {
+        // Given
+        let givenCurrentDate = Date.now
+        let mockedCurrentDateProvider = MockedCurrentDateProvider()
+        mockedCurrentDateProvider.currentDate = givenCurrentDate
+
+        thresholdProvider.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
+        let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
+                                                    thresholdProvider: thresholdProvider)
+        sut = TelemetryEventRepository(localDatasource: localDatasource,
+                                       remoteDatasource: MockedRemoteDatasource(),
+                                       userSettingsRepository: MockedUserSettingsRepositoryProtocol(),
+                                       accessRepository: MockedBusinessPlanRepository(),
+                                       itemReadEventRepository: 
+                                        itemReadEventRepository,
+                                       logManager: LogManager.dummyLogManager(),
+                                       scheduler: telemetryScheduler,
+                                       userDataProvider: userDataProviderMock,
+                                       batchSize: 1)
+
+        // When
+        let sendResult = try await sut.sendAllEventsIfApplicable()
+
+        // Then
+        XCTAssertEqual(sendResult, .allEventsSent)
+        XCTAssertTrue(itemReadEventRepository.invokedSendAllEventsfunction)
     }
 }

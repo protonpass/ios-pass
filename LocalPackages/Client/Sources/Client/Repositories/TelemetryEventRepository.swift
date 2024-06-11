@@ -46,6 +46,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     private let remoteDatasource: any RemoteTelemetryEventDatasourceProtocol
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
+    private let itemReadEventRepository: any ItemReadEventRepositoryProtocol
     private let batchSize: Int
     private let logger: Logger
     public let scheduler: any TelemetrySchedulerProtocol
@@ -55,6 +56,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 remoteDatasource: any RemoteTelemetryEventDatasourceProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
+                itemReadEventRepository: any ItemReadEventRepositoryProtocol,
                 logManager: any LogManagerProtocol,
                 scheduler: any TelemetrySchedulerProtocol,
                 userDataProvider: any UserDataProvider,
@@ -63,6 +65,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
         self.remoteDatasource = remoteDatasource
         self.userSettingsRepository = userSettingsRepository
         self.accessRepository = accessRepository
+        self.itemReadEventRepository = itemReadEventRepository
         self.batchSize = batchSize
         logger = .init(manager: logManager)
         self.scheduler = scheduler
@@ -96,15 +99,21 @@ public extension TelemetryEventRepository {
 
         let telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
 
+        logger.trace("Refreshing user access")
+        let plan = try await accessRepository.refreshAccess().plan
+
+        // Send item read events for B2B users regardless of telemetry settings
+        if plan.isBusinessUser {
+            logger.trace("[B2B] Ignore telemetry settings and send read events")
+            try await itemReadEventRepository.sendAllEvents()
+        }
+
         if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
             try await localDatasource.removeAllEvents(userId: userId)
             try await scheduler.randomNextThreshold()
             return .thresholdReachedButTelemetryOff
         }
-
-        logger.trace("Telemetry enabled, refreshing user access.")
-        let plan = try await accessRepository.refreshAccess().plan
 
         while true {
             let events = try await localDatasource.getOldestEvents(count: batchSize,
