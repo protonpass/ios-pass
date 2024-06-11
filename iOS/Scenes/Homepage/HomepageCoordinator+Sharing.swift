@@ -1,6 +1,6 @@
 //
-// SecureLink.swift
-// Proton Pass - Created on 15/05/2024.
+// HomepageCoordinator+Sharing.swift
+// Proton Pass - Created on 10/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,13 +20,18 @@
 
 import Foundation
 
-public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable {
-    public let linkID: String
-    public let readCount, maxReadCount: Int?
-    public let expirationTime: Int
-    public let shareID, itemID: String
+import DesignSystem
+import Entities
+import SwiftUI
 
-    public var id: String {
-        linkID
+extension HomepageCoordinator {
+    func presentSecureLinks(_ links: [SecureLink]) {
+//        let viewModel = TotpLoginsViewModel(totpUri: totpUri)
+//        let view = TotpLoginsView(viewModel: viewModel)
+        let view = Text("List")
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.large, parentViewController: rootViewController)
+
+        present(viewController)
     }
 }
