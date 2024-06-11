@@ -21,14 +21,19 @@
 
 import Foundation
 
-public struct ItemReadEvent: Sendable, Hashable, Identifiable {
+public struct ItemReadEvent: Sendable, Equatable, Identifiable {
+    public let uuid: String
     public let shareId: String
     public let itemId: String
     public let timestamp: TimeInterval
 
-    public var id: Int { hashValue }
+    public var id: String { uuid }
 
-    public init(shareId: String, itemId: String, timestamp: TimeInterval) {
+    public init(uuid: String,
+                shareId: String,
+                itemId: String,
+                timestamp: TimeInterval) {
+        self.uuid = uuid
         self.shareId = shareId
         self.itemId = itemId
         self.timestamp = timestamp

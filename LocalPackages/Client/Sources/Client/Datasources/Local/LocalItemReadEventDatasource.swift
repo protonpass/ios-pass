@@ -24,31 +24,30 @@ import CoreData
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol LocalItemReadEventDatasourceProtocol: Sendable {
-    func insertEvent(_ item: any ItemIdentifiable, userId: String) async throws
+    /// Record new events
+    func insertEvent(_ event: ItemReadEvent, userId: String) async throws
+
+    /// Retrieve events by batch to send to the BE
+    func getOldestEvents(count: Int, userId: String) async throws -> [ItemReadEvent]
+
+    /// Retrieve all events for a user. For testing only.
     func getAllEvents(userId: String) async throws -> [ItemReadEvent]
+
+    /// Remove events already sent to the BE
+    func removeEvents(_ events: [ItemReadEvent]) async throws
+
+    /// Remove all events for a user (e.g after logging out)
     func removeAllEvents(userId: String) async throws
 }
 
-public final class LocalItemReadEventDatasource: LocalDatasource, LocalItemReadEventDatasourceProtocol {
-    private let currentDateProvider: any CurrentDateProviderProtocol
-
-    init(currentDateProvider: any CurrentDateProviderProtocol,
-         databaseService: any DatabaseServiceProtocol) {
-        self.currentDateProvider = currentDateProvider
-        super.init(databaseService: databaseService)
-    }
-}
+public final class LocalItemReadEventDatasource: LocalDatasource, LocalItemReadEventDatasourceProtocol {}
 
 public extension LocalItemReadEventDatasource {
-    func insertEvent(_ item: any ItemIdentifiable,
+    func insertEvent(_ event: ItemReadEvent,
                      userId: String) async throws {
         let context = newTaskContext(type: .insert)
-
-        let date = currentDateProvider.getCurrentDate()
-        let event = ItemReadEvent(shareId: item.shareId,
-                                  itemId: item.itemId,
-                                  timestamp: date.timeIntervalSince1970)
         let request =
             newBatchInsertRequest(entity: ItemReadEventEntity.entity(context: context),
                                   sourceItems: [event]) { managedObject, event in
@@ -56,6 +55,18 @@ public extension LocalItemReadEventDatasource {
             }
 
         try await execute(batchInsertRequest: request, context: context)
+    }
+
+    func getOldestEvents(count: Int, userId: String) async throws -> [ItemReadEvent] {
+        let context = newTaskContext(type: .fetch)
+
+        let request = ItemReadEventEntity.fetchRequest()
+        request.predicate = .init(format: "userID = %@", userId)
+        request.sortDescriptors = [.init(key: "time", ascending: true)]
+        request.fetchLimit = count
+        let entities = try await execute(fetchRequest: request,
+                                         context: context)
+        return entities.map { $0.toItemReadEvent() }
     }
 
     func getAllEvents(userId: String) async throws -> [ItemReadEvent] {
@@ -67,6 +78,21 @@ public extension LocalItemReadEventDatasource {
         let entities = try await execute(fetchRequest: request,
                                          context: context)
         return entities.map { $0.toItemReadEvent() }
+    }
+
+    func removeEvents(_ events: [ItemReadEvent]) async throws {
+        let context = newTaskContext(type: .delete)
+        try await context.perform {
+            for event in events {
+                let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemReadEventEntity")
+                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    .init(format: "uuid = %@", event.uuid)
+                ])
+                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                try context.execute(batchDeleteRequest)
+            }
+            try context.save()
+        }
     }
 
     func removeAllEvents(userId: String) async throws {

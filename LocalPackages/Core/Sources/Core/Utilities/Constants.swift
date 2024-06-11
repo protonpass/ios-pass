@@ -40,6 +40,7 @@ public enum Constants {
             CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
 
         public static let defaultPageSize = 100
+        public static let batchSize = 500
     }
 
     public enum ContentFormatVersion {
