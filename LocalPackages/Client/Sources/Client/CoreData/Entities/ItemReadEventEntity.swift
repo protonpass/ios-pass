@@ -37,11 +37,15 @@ extension ItemReadEventEntity {
     @NSManaged var itemID: String
     @NSManaged var time: Double
     @NSManaged var userID: String
+    @NSManaged var uuid: String
 }
 
 extension ItemReadEventEntity {
     func toItemReadEvent() -> ItemReadEvent {
-        .init(shareId: shareID, itemId: itemID, timestamp: time)
+        .init(uuid: uuid,
+              shareId: shareID,
+              itemId: itemID,
+              timestamp: time)
     }
 }
 
@@ -51,5 +55,6 @@ extension ItemReadEventEntity {
         itemID = event.itemId
         time = event.timestamp
         userID = userId
+        uuid = event.uuid
     }
 }
