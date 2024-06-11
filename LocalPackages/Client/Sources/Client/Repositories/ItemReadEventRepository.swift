@@ -23,6 +23,7 @@ import Core
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol ItemReadEventRepositoryProtocol: Sendable {
     func addEvent(for item: any ItemIdentifiable) async throws
     func sendAllEvents() async throws
