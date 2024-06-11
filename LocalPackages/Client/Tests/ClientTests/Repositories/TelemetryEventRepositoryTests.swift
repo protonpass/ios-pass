@@ -209,7 +209,7 @@ extension TelemetryEventRepositoryTests {
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userDataProvider: userDataProviderMock,
-                                       eventCount: 1)
+                                       batchSize: 1)
 
         // When
         try await sut.addNewEvent(type: .create(.login))

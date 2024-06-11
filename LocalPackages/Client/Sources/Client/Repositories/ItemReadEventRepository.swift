@@ -31,28 +31,65 @@ public protocol ItemReadEventRepositoryProtocol: Sendable {
 public actor ItemReadEventRepository: ItemReadEventRepositoryProtocol {
     private let localDatasource: any LocalItemReadEventDatasourceProtocol
     private let remoteDatasource: any RemoteItemReadEventDatasourceProtocol
+    private let currentDateProvider: any CurrentDateProviderProtocol
     private let userDataProvider: any UserDataProvider
-    private let eventCount: Int
+    private let batchSize: Int
     private let logger: Logger
 
     public init(localDatasource: any LocalItemReadEventDatasourceProtocol,
                 remoteDatasource: any RemoteItemReadEventDatasourceProtocol,
+                currentDateProvider: any CurrentDateProviderProtocol,
                 userDataProvider: any UserDataProvider,
                 logManager: any LogManagerProtocol,
-                eventCount: Int = Constants.Utils.batchSize) {
+                batchSize: Int = Constants.Utils.batchSize) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
+        self.currentDateProvider = currentDateProvider
         self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)
-        self.eventCount = eventCount
+        self.batchSize = batchSize
     }
 }
 
 public extension ItemReadEventRepository {
     func addEvent(for item: any ItemIdentifiable) async throws {
+        let date = currentDateProvider.getCurrentDate()
         let userId = try userDataProvider.getUserId()
-//        try await localDatasource.insertEvent(item, userId: userId)
+        let event = ItemReadEvent(uuid: UUID().uuidString,
+                                  shareId: item.shareId,
+                                  itemId: item.itemId,
+                                  timestamp: date.timeIntervalSince1970)
+        try await localDatasource.insertEvent(event, userId: userId)
+        logger.trace("Added event for item \(item.debugDescription), user \(userId)")
     }
 
-    func sendAllEvents() async throws {}
+    func sendAllEvents() async throws {
+        logger.info("Sending all item reads event")
+        let userId = try userDataProvider.getUserId()
+        while true {
+            let events =
+                try await localDatasource.getOldestEvents(count: batchSize,
+                                                          userId: userId)
+
+            if events.isEmpty {
+                break
+            }
+
+            logger.trace("Found \(events.count) events for user \(userId)")
+
+            let shouldInclude: @Sendable (ItemReadEvent) -> Bool = { _ in
+                true
+            }
+            let action: @Sendable ([ItemReadEvent], String) async throws -> Void = { [weak self] events, shareId in
+                guard let self else { return }
+                try await remoteDatasource.send(events: events, shareId: shareId)
+                try await localDatasource.removeEvents(events)
+                logger.trace("Sent \(events.count) events for user \(userId)")
+            }
+            try await events.groupAndBulkAction(by: \.shareId,
+                                                shouldInclude: shouldInclude,
+                                                action: action)
+        }
+        logger.info("Sent all read events for user \(userId)")
+    }
 }
