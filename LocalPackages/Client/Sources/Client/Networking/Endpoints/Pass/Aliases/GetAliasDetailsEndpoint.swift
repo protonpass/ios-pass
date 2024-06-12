@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetAliasDetailsResponse: Decodable, Sendable {
     let alias: Alias

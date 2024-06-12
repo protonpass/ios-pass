@@ -18,10 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import Entities
-import ProtonCoreNetworking
-import ProtonCoreServices
 
 public protocol AliasRepositoryProtocol: Sendable {
     func getAliasOptions(shareId: String) async throws -> AliasOptions

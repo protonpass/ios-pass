@@ -18,10 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import ProtonCoreAuthentication
 import ProtonCoreDataModel
-import ProtonCoreServices
 
 struct GetUserResponse: Decodable, Sendable {
     let user: User

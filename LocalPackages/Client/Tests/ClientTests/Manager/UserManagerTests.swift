@@ -63,7 +63,7 @@ extension UserManagerTests {
     }
 
     func testGetActiveUserData_ThrowUserDatasAvailableButNoActiveUserId() async throws {
-        let expectation = XCTestExpectation(description: "Should throw error")
+        let expectation = expectation(description: "Should throw error")
 
         userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
         activeUserIdDatasource.stubbedGetActiveUserIdResult = nil
@@ -83,7 +83,7 @@ extension UserManagerTests {
     }
 
     func testGetActiveUserData_ThrowActiveUserIdAvailableButNoUserDataFound() async throws {
-        let expectation = XCTestExpectation(description: "Should throw error")
+        let expectation = expectation(description: "Should throw error")
 
         userDataDatasource.stubbedGetAllResult = []
         activeUserIdDatasource.stubbedGetActiveUserIdResult = .random()
@@ -103,7 +103,7 @@ extension UserManagerTests {
     }
 
     func testGetActiveUserData_ThrowActiveUserDataNotFound() async throws {
-        let expectation = XCTestExpectation(description: "Should throw error")
+        let expectation = expectation(description: "Should throw error")
 
         userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
         activeUserIdDatasource.stubbedGetActiveUserIdResult = .random()

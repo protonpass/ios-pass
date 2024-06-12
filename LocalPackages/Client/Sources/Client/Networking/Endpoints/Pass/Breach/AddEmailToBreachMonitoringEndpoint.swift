@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct AddEmailToBreachMonitoringResponse: Decodable, Equatable, Sendable {
     let email: CustomEmail

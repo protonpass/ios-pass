@@ -18,21 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct ActivateSentinelEndpoint: Endpoint {
     typealias Body = EmptyRequest
     typealias Response = CodeOnlyResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init() {
-        debugDescription = "Activate Sentinel"
-        path = "/core/v4/settings/highsecurity"
-        method = .post
-    }
+    let debugDescription = "Activate Sentinel"
+    let path = "/core/v4/settings/highsecurity"
+    let method: HTTPMethod = .post
 }

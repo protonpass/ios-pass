@@ -21,7 +21,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct PromoteNewUserInviteEndpoint: Endpoint {
     typealias Body = PromoteNewUserInviteRequest

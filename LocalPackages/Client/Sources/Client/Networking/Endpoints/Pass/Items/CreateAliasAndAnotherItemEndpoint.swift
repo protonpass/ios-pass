@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 public struct CreateAliasAndAnotherItemResponse: Decodable, Sendable {
     public let bundle: Bundle

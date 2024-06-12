@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct UpdateUserSharePermissionsEndpoint: Endpoint {
     typealias Body = UserSharePermissionRequest
