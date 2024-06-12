@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetPendingInvitesForShareResponse: Decodable, Equatable, Sendable {
     let invites: [ShareExistingUserInvite]
@@ -33,11 +32,9 @@ struct GetPendingInvitesForShareEndpoint: Endpoint {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
 
     init(for shareId: String) {
         debugDescription = "Get pending invites for share"
         path = "/pass/v1/share/\(shareId)/invite"
-        method = .get
     }
 }

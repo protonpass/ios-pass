@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetShareLinkedUsersResponse: Decodable, Sendable {
     let shares: [UserShareInfos]
@@ -32,11 +31,9 @@ struct GetShareLinkedUsersEndpoint: Endpoint {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
 
     init(for shareId: String) {
         debugDescription = "Get users that have access to the whole vault, or item"
         path = "/pass/v1/share/\(shareId)/user"
-        method = .get
     }
 }

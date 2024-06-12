@@ -21,7 +21,6 @@
 import Client
 import Core
 import Factory
-import ProtonCoreServices
 import UseCases
 
 final class UseCasesContainer: SharedContainer, AutoRegistering, Sendable {

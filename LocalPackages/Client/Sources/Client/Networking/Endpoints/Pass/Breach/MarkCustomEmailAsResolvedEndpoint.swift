@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct MarkCustomEmailAsResolvedEndpoint: Endpoint {
     typealias Body = EmptyRequest
