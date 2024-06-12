@@ -128,7 +128,6 @@ struct EditableVaultListView: View {
             }
 
             Spacer()
-            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical)
@@ -136,32 +135,6 @@ struct EditableVaultListView: View {
             dismiss()
             viewModel.showSecureLinkList()
         }
-//
-//        let itemCount = viewModel.itemCount(for: selection)
-//
-//
-//
-//        HStack {
-//            Button(action: {
-//
-//            }, label: {
-//
-//                VaultRow(thumbnail: {
-//                             CircleButton(icon: selection.icon,
-//                                          iconColor: selection.color,
-//                                          backgroundColor: selection.color.withAlphaComponent(0.16))
-//                         },
-//                         title: selection.title,
-//                         itemCount: itemCount,
-//                         isShared: selection.shared,
-//                         isSelected: viewModel.isSelected(selection),
-//                         showBadge: selection.showBadge,
-//                         height: 74)
-//            })
-//            .buttonStyle(.plain)
-//
-//            Spacer()
-//        }
     }
 
     private func threeDotsIcon() -> some View {
