@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetUserSettingsResponse: Decodable, Sendable {
     let userSettings: UserSettings
@@ -29,11 +28,6 @@ struct GetUserSettingsEndpoint: Endpoint {
     typealias Body = EmptyRequest
     typealias Response = GetUserSettingsResponse
 
-    var debugDescription: String
-    var path: String
-
-    init() {
-        debugDescription = "Get user settings"
-        path = "/core/v4/settings"
-    }
+    let debugDescription = "Get user settings"
+    let path = "/core/v4/settings"
 }

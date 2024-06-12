@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetSharesResponse: Decodable, Sendable {
     let shares: [Share]
@@ -29,13 +28,6 @@ struct GetSharesEndpoint: Endpoint {
     typealias Body = EmptyRequest
     typealias Response = GetSharesResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-
-    init() {
-        debugDescription = "Get (partial) shares"
-        path = "/pass/v1/share"
-        method = .get
-    }
+    let debugDescription = "Get (partial) shares"
+    let path = "/pass/v1/share"
 }

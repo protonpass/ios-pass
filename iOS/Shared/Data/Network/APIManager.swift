@@ -21,24 +21,19 @@
 import Client
 import Combine
 import Core
-import CryptoKit
 import Factory
 import Foundation
 import ProtonCoreAuthentication
-import ProtonCoreChallenge
 import ProtonCoreCryptoGoInterface
 import ProtonCoreEnvironment
 import ProtonCoreForceUpgrade
 import ProtonCoreFoundations
 import ProtonCoreHumanVerification
-import ProtonCoreKeymaker
 import ProtonCoreLogin
 
 @preconcurrency import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreServices
-import SwiftUI
-import UIKit
 
 final class APIManager {
     typealias SessionUID = String

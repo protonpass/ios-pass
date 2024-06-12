@@ -23,7 +23,6 @@ import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct MoveItemsResponse: Decodable, Sendable {
     let items: [Item]

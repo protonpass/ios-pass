@@ -20,7 +20,6 @@
 //
 
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct CheckAddressEndpoint: Endpoint {
     typealias Body = CheckAddressRequest

@@ -23,8 +23,6 @@ import CoreData
 import CryptoKit
 import Entities
 import ProtonCoreCrypto
-import ProtonCoreLogin
-import ProtonCoreServices
 
 typealias DecryptionKey = ProtonCoreCrypto.DecryptionKey
 typealias Encryptor = ProtonCoreCrypto.Encryptor
