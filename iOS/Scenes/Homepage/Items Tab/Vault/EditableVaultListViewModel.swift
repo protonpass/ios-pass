@@ -48,7 +48,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
+//    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -103,16 +103,16 @@ private extension EditableVaultListViewModel {
                 state = newState
             }
             .store(in: &cancellables)
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                secureLinks = try await getSecureLinkList()
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
+//
+//        Task { [weak self] in
+//            guard let self else { return }
+//            do {
+//                secureLinks = try await getSecureLinkList()
+//            } catch {
+//                logger.error(error)
+//                router.display(element: .displayErrorBanner(error))
+//            }
+//        }
     }
 
     func doDelete(vault: Vault) {

@@ -54,8 +54,10 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
                                                             itemId: item.itemId,
                                                             revision: Int(item.item.revision),
                                                             expirationTime: expirationTime,
-                                                            encryptedItemKey: keys.encryptedItemKey,
-                                                            maxReadCount: maxReadCount)
+                                                            encryptedItemKey: keys.itemKeyEncoded,
+                                                            maxReadCount: maxReadCount,
+                                                            encryptedLinkKey: keys.linkKeyEncoded,
+                                                            linkKeyShareKeyRotation: keys.shareKeyRotation)
         let link = try await datasource.createLink(configuration: configuration)
         return link.update(with: keys.linkKey)
     }

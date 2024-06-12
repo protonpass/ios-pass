@@ -71,12 +71,17 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
 
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
     @Published private(set) var secureLinks: [SecureLink]?
     private var secureLinkFetch: Task<Void, Never>?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
+
+    var isSecureLinkActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+    }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
