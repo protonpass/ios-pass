@@ -25,6 +25,9 @@ public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable
     public let readCount, maxReadCount: Int?
     public let expirationTime: Int
     public let shareID, itemID: String
+    public let linkURL: String
+    public let encryptedLinkKey: String
+    public let linkKeyShareKeyRotation: Int64
 
     public var id: String {
         linkID
@@ -38,10 +41,12 @@ public struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, Sendable
 
     public let secureLink: SecureLink
     public let itemContent: ItemContent
+    public let url: String
 
-    public init(secureLink: SecureLink, itemContent: ItemContent) {
+    public init(secureLink: SecureLink, itemContent: ItemContent, url: String) {
         self.secureLink = secureLink
         self.itemContent = itemContent
+        self.url = url
     }
 
     public var relativeTimeRemaining: String {

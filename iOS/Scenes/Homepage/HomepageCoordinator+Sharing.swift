@@ -41,7 +41,7 @@ extension HomepageCoordinator {
 //            let view = CreateSecureLinkView(viewModel: viewModel)
 
         let uiModel = SecureLinkDetailUiModel(itemContent: link.itemContent,
-                                              url: "" /* link.url */,
+                                              url: link.url,
                                               expirationTime: link.secureLink.expirationTime,
                                               readCount: link.secureLink.readCount,
                                               maxReadCount: link.secureLink.maxReadCount,
