@@ -1,3 +1,6 @@
+# Version 1.11.3
+Fixed crashes when revealing passwords on iOS 18
+
 # Version 1.11.2
 - Fixed theme settings not respected
 - Fixed 2FA code being copied when no local authentication method set
