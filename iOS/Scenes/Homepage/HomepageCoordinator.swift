@@ -481,6 +481,8 @@ extension HomepageCoordinator {
                     presentCreateSecureLinkView(for: item)
                 case let .secureLinks(links):
                     presentSecureLinks(links)
+                case let .secureLinkDetail(link):
+                    presentSecureLinkDetail(link: link)
                 }
             }
             .store(in: &cancellables)
