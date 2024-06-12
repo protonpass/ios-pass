@@ -74,6 +74,10 @@ struct SecureLinkDetailView: View {
 
             Spacer()
         }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.bottom, DesignConstant.sectionPadding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(PassColor.backgroundNorm.toColor)
     }
 }
 

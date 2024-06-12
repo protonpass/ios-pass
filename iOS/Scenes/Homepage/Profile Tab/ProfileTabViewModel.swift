@@ -21,9 +21,12 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import Entities
 import Factory
+import Macro
 import ProtonCoreServices
+import Screens
 import SwiftUI
 
 @MainActor
@@ -68,6 +71,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
 
+    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
+    @Published private(set) var secureLinks: [SecureLink]?
+    private var secureLinkFetch: Task<Void, Never>?
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -83,6 +90,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
         refresh()
+        fetchSecureLink()
         setUp()
     }
 }
@@ -223,6 +231,42 @@ extension ProfileTabViewModel {
 
     func qaFeatures() {
         delegate?.profileTabViewModelWantsToQaFeatures()
+    }
+}
+
+// MARK: - Secure link
+
+extension ProfileTabViewModel {
+    func fetchSecureLink() {
+        secureLinkFetch = Task { [weak self] in
+            guard let self else { return }
+            do {
+                secureLinks = try await getSecureLinkList()
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func showSecureLinkList() {
+        secureLinkFetch?.cancel()
+        router.present(for: .secureLinks(secureLinks))
+    }
+
+    func upsell(entryPoint: UpsellEntry) {
+        var upsellElements = [UpsellElement]()
+        upsellElements.append(UpsellElement(icon: PassIcon.shield2,
+                                            title: #localized("Dark Web Monitoring"),
+                                            color: PassColor.interactionNormMajor2))
+        upsellElements.append(contentsOf: [UpsellElement].default)
+
+        let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                       title: #localized("Stay safer online"),
+                                                       description: entryPoint.description,
+                                                       upsellElements: upsellElements,
+                                                       ctaTitle: #localized("Get Pass Plus"))
+        router.present(for: .upselling(configuration))
     }
 }
 
