@@ -49,8 +49,10 @@ enum PasswordUtils {
             return attributedChar
         }
         var attributedString = attributedChars.reduce(into: .init()) { $0 += $1 }
-        // Set an empty language id to trick SwiftUI into not adding hyphens for multiline passwords
-        attributedString.languageIdentifier = ""
+        if #unavailable(iOS 18) {
+            // Set an empty language id to trick SwiftUI into not adding hyphens for multiline passwords
+            attributedString.languageIdentifier = ""
+        }
         return attributedString
     }
 }
