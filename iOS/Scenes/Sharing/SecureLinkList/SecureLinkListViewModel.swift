@@ -21,6 +21,7 @@
 //
 
 import Combine
+import CryptoKit
 import Entities
 import Factory
 import Foundation
@@ -39,6 +40,7 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
     @Published var searchText = ""
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let passKeyManager = resolve(\SharedRepositoryContainer.passKeyManager)
     private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
@@ -133,7 +135,75 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
             }
         }
     }
+
+    func copyLink(_ item: SecureLinkListUIModel) {
+        print(item.url)
+    }
+
+    func recreateLinkUrl(for link: SecureLink) async throws -> String {
+//        Task {
+//            do {
+//                guard let shareKey = try? await passKeyManager.getShareKey(shareId: link.secureLink.shareID,
+//                                                                           keyRotation: link.secureLink
+//                                                                               .linkKeyShareKeyRotation) else {
+//                    return
+//                }
+        let shareKey = try await passKeyManager.getShareKey(shareId: link.shareID,
+                                                            keyRotation: link
+                                                                .linkKeyShareKeyRotation)
+
+        guard let linkKeyData = try? link.encryptedLinkKey.base64Decode() else {
+            throw PassError.crypto(.failedToBase64Decode)
+        }
+
+        let decryptedLinkKeyData = try AES.GCM.open(linkKeyData,
+                                                    key: shareKey.keyData,
+                                                    associatedData: .linkKey)
+
+        return "\(link.linkURL)#\(decryptedLinkKeyData.base64URLSafeEncodedString())"
+//            } catch {
+//                router.display(element: .displayErrorBanner(error))
+//            }
+//        }
+    }
 }
+
+// func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey
+
+// public init(passKeyManager: any PassKeyManagerProtocol) {
+//    self.passKeyManager = passKeyManager
+// }
+//
+///// Generates link and encoded item keys
+///// - Parameter item: Item to be publicly shared
+///// - Returns: A tuple with the link and item encoded keys
+// public func execute(item: ItemContent) async throws
+//    -> SecureLinkKeys /* (linkKey: String, encryptedItemKey: String */ {
+//    let itemKeyInfo = try await passKeyManager.getLatestItemKey(shareId: item.shareId, itemId: item.itemId)
+//
+//    let shareKeyInfo = try await passKeyManager.getLatestShareKey(shareId: item.shareId)
+//
+//    let linkKey = try Data.random()
+//
+//    let encryptedItemKey = try AES.GCM.seal(itemKeyInfo.keyData,
+//                                            key: linkKey,
+//                                            associatedData: .itemKey)
+//
+//    let encryptedLinkKey = try AES.GCM.seal(linkKey,
+//                                            key: shareKeyInfo.keyData,
+//                                            associatedData: .linkKey)
+//
+//    guard let itemKeyEncoded = encryptedItemKey.combined?.base64EncodedString(),
+//          let linkKeyEncoded = encryptedLinkKey.combined?.base64EncodedString()
+//    else {
+//        throw PassError.crypto(.failedToBase64Encode)
+//    }
+//
+//    return SecureLinkKeys(linkKey: linkKey.base64URLSafeEncodedString(), itemKeyEncoded: itemKeyEncoded,
+//                          linkKeyEncoded: linkKeyEncoded,
+//                          shareKeyRotation: shareKeyInfo
+//                              .keyRotation) // (linkKey.base64URLSafeEncodedString(), itemKeyEncoded)
+// }
 
 private extension SecureLinkListViewModel {
     func setUp() {
@@ -169,12 +239,19 @@ private extension SecureLinkListViewModel {
     func updateLocalData(links: [SecureLink]) async throws {
         let itemsIds = links.map { (sharedId: $0.shareID, itemId: $0.itemID) }
         let itemContents = try await itemRepository.getAllItemsContent(items: itemsIds)
-        items = links.compactMap { link in
+
+//        let itemsContent: [ItemContent] = try await items.asyncCompactMap { [weak self] item in
+//            guard let self else { return nil }
+//            return try await item.getItemContent(symmetricKey: getSymmetricKey())
+//        }
+
+        items = try await links.asyncCompactMap { link -> SecureLinkListUIModel? in
             guard let content = itemContents
                 .first(where: { $0.shareId == link.shareID && $0.item.itemID == link.itemID }) else {
                 return nil
             }
-            return SecureLinkListUIModel(secureLink: link, itemContent: content)
+            let url = try await recreateLinkUrl(for: link)
+            return SecureLinkListUIModel(secureLink: link, itemContent: content, url: url)
         }
         if secureLinks != items {
             secureLinks = items
