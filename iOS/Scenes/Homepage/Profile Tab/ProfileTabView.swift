@@ -43,8 +43,10 @@ struct ProfileTabView: View {
                         autoFillDisabledSection
                     }
 
-                    secureLinkSection
-                        .padding(.vertical)
+                    if viewModel.isSecureLinkActive {
+                        secureLinkSection
+                            .padding(.vertical)
+                    }
 
                     accountAndSettingsSection
                         .padding(.vertical)
@@ -235,17 +237,16 @@ struct ProfileTabView: View {
         .padding(.horizontal)
     }
 
-    // TODO: feature flag hiding
     @ViewBuilder
     private var secureLinkSection: some View {
         let isFreeUser = viewModel.plan?.isFreeUser ?? true
         VStack(spacing: 0) {
             OptionRow(action: {
-                          if isFreeUser {
-                              viewModel.upsell(entryPoint: .generic)
-                          } else {
-                              viewModel.showSecureLinkList()
-                          }
+//                          if isFreeUser {
+//                              viewModel.upsell(entryPoint: .generic)
+//                          } else {
+                          viewModel.showSecureLinkList()
+//                          }
                       },
                       height: .tall,
                       content: {
@@ -254,6 +255,16 @@ struct ProfileTabView: View {
                                   .foregroundStyle(PassColor.textNorm.toColor)
 
                               Spacer()
+
+                              if !isFreeUser, let secureLinks = viewModel.secureLinks {
+                                  Text("\(secureLinks.count)")
+                                      .fontWeight(.medium)
+                                      .padding(.vertical, 4)
+                                      .padding(.horizontal, 11)
+                                      .foregroundStyle(PassColor.textNorm.toColor)
+                                      .background(PassColor.backgroundMedium.toColor)
+                                      .clipShape(Capsule())
+                              }
 
 //                              if let plan = viewModel.plan, plan.isFreeUser {
 //                              Image(uiImage: PassIcon.passSubscriptionBadge)

@@ -94,9 +94,10 @@ private extension SecureLinkListView {
 
                     VStack {
                         Text(item.itemContent.name)
+                            .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
                             .lineLimit(1)
                             .foregroundStyle(PassColor.textNorm.toColor)
-                            .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
+                            .frame(maxWidth: .infinity, alignment: .center)
                         VStack {
                             Text("Expires in \(item.relativeTimeRemaining)")
                                 .matchedGeometryEffect(id: "expire\(item.secureLink.linkID)", in: animation)
@@ -114,38 +115,8 @@ private extension SecureLinkListView {
                     .matchedGeometryEffect(id: "TEST\(item.secureLink.linkID)", in: animation)
                 }
                 .padding(24)
-
-//                Menu {
-//                    Button {} label: {
-//                        Label(title: {
-//                            Text("Copy link")
-//                        }, icon: {
-//                            Image(uiImage: IconProvider.squares)
-//                                .renderingMode(.template)
-//                                .foregroundStyle(PassColor.textWeak.toColor)
-//                        })
-//                    }
-//                    Button(role: .destructive,
-//                           action: { viewModel.deleteLink(link: item) },
-//                           label: {
-//                               Label(title: {
-//                                   Text("Remove link")
-//                               }, icon: {
-//                                   Image(uiImage: IconProvider.crossCircle)
-//                               })
-//                           })
-//                } label: {
-//                    Image(uiImage: IconProvider.threeDotsVertical)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 20, height: 20)
-//                        .foregroundStyle(PassColor.textWeak.toColor)
-//                        .contentShape(.rect)
-//                }
-//                .simultaneousGesture(TapGesture().onEnded {})
-//                .matchedGeometryEffect(id: "menu\(item.secureLink.linkID)", in: animation)
                 menu(item: item)
-                    .padding(.top, 16)
+                    .padding([.top, .trailing], 16)
             }
             .frame(minWidth: 175, maxWidth: .infinity)
             .background(PassColor.interactionNormMinor2.toColor)
@@ -154,7 +125,6 @@ private extension SecureLinkListView {
                 viewModel.goToDetail(link: item)
             }
             .matchedGeometryEffect(id: "stack\(item.secureLink.linkID)", in: animation)
-
         } else {
             HStack {
                 ItemSquircleThumbnail(data: item.itemContent.thumbnailData())
@@ -163,11 +133,11 @@ private extension SecureLinkListView {
 
                 VStack {
                     Text(item.itemContent.name)
+                        .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
                         .lineLimit(1)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .padding(.bottom, 5)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
 
                     HStack {
                         Text("Expires in \(item.relativeTimeRemaining)")
@@ -187,38 +157,8 @@ private extension SecureLinkListView {
 
                 Spacer()
                 menu(item: item)
-//                Menu {
-//                    Button {} label: {
-//                        Label(title: {
-//                            Text("Copy link")
-//                        }, icon: {
-//                            Image(uiImage: IconProvider.squares)
-//                                .renderingMode(.template)
-//                                .foregroundStyle(PassColor.textWeak.toColor)
-//                        })
-//                    }
-//                    Button(role: .destructive,
-//                           action: { viewModel.deleteLink(link: item) },
-//                           label: {
-//                               Label(title: {
-//                                   Text("Remove link")
-//                               }, icon: {
-//                                   Image(uiImage: IconProvider.crossCircle)
-//                               })
-//                           })
-//                } label: {
-//                    Image(uiImage: IconProvider.threeDotsVertical)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 20, height: 20)
-//                        .foregroundStyle(PassColor.textWeak.toColor)
-//                        .contentShape(.rect)
-//                }
-//                .simultaneousGesture(TapGesture().onEnded {})
-//                .matchedGeometryEffect(id: "menu\(item.secureLink.linkID)", in: animation)
             }
             .padding()
-            //        .frame(minWidth: 175, maxWidth: .infinity)
             .background(PassColor.interactionNormMinor2.toColor)
             .cornerRadius(20)
             .onTapGesture {
@@ -243,7 +183,7 @@ private extension SecureLinkListView {
 
     func menu(item: SecureLinkListUIModel) -> some View {
         Menu {
-            Button {} label: {
+            Button { viewModel.copyLink(item) } label: {
                 Label(title: {
                     Text("Copy link")
                 }, icon: {
@@ -272,60 +212,6 @@ private extension SecureLinkListView {
         .simultaneousGesture(TapGesture().onEnded {})
         .matchedGeometryEffect(id: "menu\(item.secureLink.linkID)", in: animation)
     }
-
-//    func itemRow(for item: SecureLinkListUIModel) -> some View {
-//        HStack {
-//            ItemSquircleThumbnail(data: item.itemContent.thumbnailData())
-//            VStack {
-//                Text(item.itemContent.name)
-//                    .foregroundStyle(PassColor.textNorm.toColor)
-//                Text("Expires in \(item.relativeTimeRemaining)")
-//                    .font(.caption)
-//                    .foregroundStyle(PassColor.textWeak.toColor)
-//                if let readCount = item.secureLink.readCount {
-//                    Text("\(readCount) view")
-//                        .font(.caption)
-//                        .foregroundStyle(PassColor.textWeak.toColor)
-//                }
-//            }
-//            .padding(24)
-//
-//            Menu {
-//                Button {} label: {
-//                    Label(title: {
-//                        Text("Copy link")
-//                    }, icon: {
-//                        Image(uiImage: IconProvider.squares)
-//                            .renderingMode(.template)
-//                            .foregroundStyle(PassColor.textWeak.toColor)
-//                    })
-//                }
-//                Button(role: .destructive,
-//                       action: { viewModel.deleteLink(link: item) },
-//                       label: {
-//                           Label(title: {
-//                               Text("Remove link")
-//                           }, icon: {
-//                               Image(uiImage: IconProvider.crossCircle)
-//                           })
-//                       })
-//            } label: {
-//                Image(uiImage: IconProvider.threeDotsVertical)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: 20, height: 20)
-//                    .foregroundStyle(PassColor.textWeak.toColor)
-//                    .contentShape(.rect)
-//            }
-//            .simultaneousGesture(TapGesture().onEnded {})
-//            .padding(.top, 16)
-//        }
-//        .background(PassColor.interactionNormMinor2.toColor)
-//        .cornerRadius(20)
-//        .onTapGesture {
-//            viewModel.goToDetail(link: item)
-//        }
-//    }
 }
 
 private extension SecureLinkListView {

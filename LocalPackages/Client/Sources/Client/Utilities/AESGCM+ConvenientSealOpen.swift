@@ -25,6 +25,7 @@ public enum AssociatedData: String {
     case itemContent = "itemcontent"
     case itemKey = "itemkey"
     case vaultContent = "vaultcontent"
+    case linkKey = "linkkey"
 
     var data: Data { rawValue.data(using: .utf8) ?? .init() }
 }
