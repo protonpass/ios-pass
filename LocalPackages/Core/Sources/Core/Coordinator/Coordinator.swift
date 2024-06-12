@@ -32,23 +32,14 @@ public protocol CoordinatorProtocol: AnyObject {
     func start(with viewController: UIViewController, secondaryViewController: UIViewController?)
     func push<V: View>(_ view: V, animated: Bool, hidesBackButton: Bool)
     func push(_ viewController: UIViewController, animated: Bool, hidesBackButton: Bool)
-//    func present<V: View>(_ view: V,
-//                          userInterfaceStyle: UIUserInterfaceStyle,
-//                          animated: Bool,
-//                          dismissible: Bool)
     func present(_ viewController: UIViewController,
                  animated: Bool,
                  dismissible: Bool,
+                 presentationDelay: TimeInterval,
                  uniquenessTag: (any RawRepresentable<Int>)?)
-//    func hideSecondaryView()
-//    func showSecondaryView()
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
     func coordinatorDidDismiss()
-//    func popTopViewController(animated: Bool)
-//    func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
-//    func isAtRootViewController() -> Bool
-//    func setStatusBarStyle(_ style: UIStatusBarStyle)
 }
 
 public extension CoordinatorProtocol {
@@ -62,21 +53,12 @@ public extension CoordinatorProtocol {
         push(UIHostingController(rootView: view), animated: animated, hidesBackButton: hidesBackButton)
     }
 
-//    func present(_ view: some View,
-//                 userInterfaceStyle: UIUserInterfaceStyle,
-//                 animated: Bool = true,
-//                 dismissible: Bool = true) {
-//        present(UIHostingController(rootView: view),
-//                userInterfaceStyle: userInterfaceStyle,
-//                animated: animated,
-//                dismissible: dismissible)
-//    }
-
     /// When `uniquenessTag` is set and there is a sheet that holds the same tag,
     /// we dismiss the top most sheet and do nothing. Otherwise we present the sheet as normal
     func present(_ viewController: UIViewController,
                  animated: Bool = true,
                  dismissible: Bool = true,
+                 presentationDelay: TimeInterval = 0.1,
                  uniquenessTag: (any RawRepresentable<Int>)? = nil) {
         viewController.sheetPresentationController?.preferredCornerRadius = 16
         viewController.isModalInPresentation = !dismissible
@@ -87,7 +69,13 @@ public extension CoordinatorProtocol {
                 return
             }
         }
-        rootViewController.topMostViewController.present(viewController, animated: animated)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + presentationDelay) { [weak self] in
+            guard let self else {
+                return
+            }
+            rootViewController.topMostViewController.present(viewController, animated: true)
+        }
     }
 
     func dismissTopMostViewController(animated: Bool = true, completion: (() -> Void)? = nil) {
@@ -149,15 +137,6 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-//    public func setStatusBarStyle(_ style: UIStatusBarStyle) {
-//        switch type {
-//        case let .navigation(navigationController):
-//            navigationController.setStatusBarStyle(style)
-//        case let .split(splitViewController):
-//            splitViewController.setStatusBarStyle(style)
-//        }
-//    }
-
     public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
         switch type {
         case let .navigation(navigationController):
@@ -215,28 +194,6 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-//    public func popToRoot(animated: Bool, secondaryViewController: UIViewController?) {
-//        if let topMostNavigationController = topMostViewController as? UINavigationController {
-//            topMostNavigationController.popToRootViewController(animated: animated)
-//        } else {
-//            switch type {
-//            case let .navigation(navigationController):
-//                navigationController.popToRootViewController(animated: animated)
-//            case let .split(splitViewController):
-//                splitViewController.show(.primary)
-//                if let secondaryViewController {
-//                    secondaryViewController.navigationItem.hidesBackButton = true
-//                    let navigationController = UINavigationController(rootViewController:
-//                    secondaryViewController)
-//                    // Set to nil before setting to the real secondary view controller
-//                    // otherwise in spit mode, secondary view is shown instead of primary one.
-//                    splitViewController.setViewController(nil, for: .secondary)
-//                    splitViewController.setViewController(navigationController, for: .secondary)
-//                }
-//            }
-//        }
-//    }
-
     public func hideSecondaryView() {
         guard case let .split(splitViewController) = type else { return }
         splitViewController.viewController(for: .secondary)?.view.alpha = 0
@@ -248,21 +205,6 @@ open class Coordinator: CoordinatorProtocol {
             splitViewController.viewController(for: .secondary)?.view.alpha = 1
         }
     }
-
-//
-//    public func isAtRootViewController() -> Bool {
-//        if topMostViewController == rootViewController {
-//            switch type {
-//            case let .navigation(navigationController):
-//                return navigationController.viewControllers.count == 1
-//            case .split:
-//                return true
-//            }
-//        } else if let topMostNavigationController = topMostViewController as? UINavigationController {
-//            return topMostNavigationController.viewControllers.count == 1
-//        }
-//        return false
-//    }
 
     /// Only applicable for iPad
     /// `true` when the app is not in full screen (only show 1 page at a time, not in split mode)
@@ -292,11 +234,6 @@ final class PPNavigationController: UINavigationController, UIGestureRecognizerD
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         viewControllers.count > 1
     }
-
-//    func setStatusBarStyle(_ style: UIStatusBarStyle) {
-//        statusBarStyle = style
-//        setNeedsStatusBarAppearanceUpdate()
-//    }
 }
 
 final class PPSplitViewController: UISplitViewController {
@@ -315,9 +252,4 @@ final class PPSplitViewController: UISplitViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         show(.primary)
     }
-
-//    func setStatusBarStyle(_ style: UIStatusBarStyle) {
-//        statusBarStyle = style
-//        setNeedsStatusBarAppearanceUpdate()
-//    }
 }

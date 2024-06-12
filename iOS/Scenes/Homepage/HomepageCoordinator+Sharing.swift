@@ -25,13 +25,43 @@ import Entities
 import SwiftUI
 
 extension HomepageCoordinator {
-    func presentSecureLinks(_ links: [SecureLink]) {
-//        let viewModel = TotpLoginsViewModel(totpUri: totpUri)
-//        let view = TotpLoginsView(viewModel: viewModel)
-        let view = Text("List")
+    func presentSecureLinks(_ links: [SecureLink]?) {
+        let view =
+            SecureLinkListView(viewModel: .init(links: links))
         let viewController = UIHostingController(rootView: view)
         viewController.setDetentType(.large, parentViewController: rootViewController)
 
         present(viewController)
     }
+
+    func presentSecureLinkDetail(link: SecureLinkListUIModel) {
+//        dismissTopMostViewController { [weak self] in
+//            guard let self else { return }
+//            let viewModel = CreateSecureLinkViewModel(itemContent: item)
+//            let view = CreateSecureLinkView(viewModel: viewModel)
+
+        let uiModel = SecureLinkDetailUiModel(itemContent: link.itemContent,
+                                              url: "" /* link.url */,
+                                              expirationTime: link.secureLink.expirationTime,
+                                              readCount: link.secureLink.readCount,
+                                              maxReadCount: link.secureLink.maxReadCount,
+                                              mode: .edit)
+        let view = SecureLinkDetailView(viewModel: .init(uiModel: uiModel))
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.custom(420),
+                                     parentViewController: rootViewController)
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+//            viewModel.sheetPresentation = viewController.sheetPresentationController
+        present(viewController)
+
+//        }
+    }
 }
+
+// let uiModel = SecureLinkDetailUiModel(itemContent: viewModel.itemContent,
+//                                      url: link.url,
+//                                      expirationTime: link.expirationTime,
+//                                      readCount: nil,
+//                                      maxReadCount: viewModel.readCount.nilIfZero,
+//                                      mode: .create)
+// SecureLinkDetailView(viewModel: .init(uiModel: uiModel))
