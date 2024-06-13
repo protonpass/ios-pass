@@ -48,7 +48,8 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
     private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
     private let recreateSecureLink = resolve(\UseCasesContainer.recreateSecureLink)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
+//    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
+    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private var links: [SecureLink]?
     private var items = [SecureLinkListUIModel]()
 
@@ -78,7 +79,6 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
             loading = true
             do {
                 try await deleteSecureLink(linkId: link.secureLink.linkID)
-                removeLocalLink(item: link)
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
@@ -89,7 +89,9 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
-            loading = true
+            if links == nil || (links?.isEmpty ?? true) {
+                loading = true
+            }
             do {
                 try await fetchLinksContent()
             } catch {
@@ -99,90 +101,26 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
     }
 
     func refresh() async {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                links = try await getSecureLinkList()
+        try? await secureLinkManager.updateSecureLinks()
 
-                if let links {
-                    try await updateLocalData(links: links)
-                }
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
+//        Task { [weak self] in
+//            guard let self else { return }
+//            do {
+//                links = try await secureLinkManager.updateSecureLinks() // try await getSecureLinkList()
+//
+//                if let links {
+//                    try await updateLocalData(links: links)
+//                }
+//            } catch {
+//                router.display(element: .displayErrorBanner(error))
+//            }
+//        }
     }
 
     func copyLink(_ item: SecureLinkListUIModel) {
         router.action(.copyToClipboard(text: item.url, message: #localized("Secure link copied")))
     }
-
-//    func recreateLinkUrl(for link: SecureLink) async throws -> String {
-    ////        Task {
-    ////            do {
-    ////                guard let shareKey = try? await passKeyManager.getShareKey(shareId:
-    /// link.secureLink.shareID,
-    ////                                                                           keyRotation: link.secureLink
-    ////                                                                               .linkKeyShareKeyRotation)
-    /// else {
-    ////                    return
-    ////                }
-//        let shareKey = try await passKeyManager.getShareKey(shareId: link.shareID,
-//                                                            keyRotation: link
-//                                                                .linkKeyShareKeyRotation)
-//
-//        guard let linkKeyData = try? link.encryptedLinkKey.base64Decode() else {
-//            throw PassError.crypto(.failedToBase64Decode)
-//        }
-//
-//        let decryptedLinkKeyData = try AES.GCM.open(linkKeyData,
-//                                                    key: shareKey.keyData,
-//                                                    associatedData: .linkKey)
-//
-//        return "\(link.linkURL)#\(decryptedLinkKeyData.base64URLSafeEncodedString())"
-    ////            } catch {
-    ////                router.display(element: .displayErrorBanner(error))
-    ////            }
-    ////        }
-//    }
 }
-
-// func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey
-
-// public init(passKeyManager: any PassKeyManagerProtocol) {
-//    self.passKeyManager = passKeyManager
-// }
-//
-///// Generates link and encoded item keys
-///// - Parameter item: Item to be publicly shared
-///// - Returns: A tuple with the link and item encoded keys
-// public func execute(item: ItemContent) async throws
-//    -> SecureLinkKeys /* (linkKey: String, encryptedItemKey: String */ {
-//    let itemKeyInfo = try await passKeyManager.getLatestItemKey(shareId: item.shareId, itemId: item.itemId)
-//
-//    let shareKeyInfo = try await passKeyManager.getLatestShareKey(shareId: item.shareId)
-//
-//    let linkKey = try Data.random()
-//
-//    let encryptedItemKey = try AES.GCM.seal(itemKeyInfo.keyData,
-//                                            key: linkKey,
-//                                            associatedData: .itemKey)
-//
-//    let encryptedLinkKey = try AES.GCM.seal(linkKey,
-//                                            key: shareKeyInfo.keyData,
-//                                            associatedData: .linkKey)
-//
-//    guard let itemKeyEncoded = encryptedItemKey.combined?.base64EncodedString(),
-//          let linkKeyEncoded = encryptedLinkKey.combined?.base64EncodedString()
-//    else {
-//        throw PassError.crypto(.failedToBase64Encode)
-//    }
-//
-//    return SecureLinkKeys(linkKey: linkKey.base64URLSafeEncodedString(), itemKeyEncoded: itemKeyEncoded,
-//                          linkKeyEncoded: linkKeyEncoded,
-//                          shareKeyRotation: shareKeyInfo
-//                              .keyRotation) // (linkKey.base64URLSafeEncodedString(), itemKeyEncoded)
-// }
 
 private extension SecureLinkListViewModel {
     func setUp() {
@@ -203,26 +141,44 @@ private extension SecureLinkListViewModel {
                 }
             }
             .store(in: &cancellables)
+
+        secureLinkManager.currentSecureLinks
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newLinks in
+                guard let self, let newLinks else { return }
+                links = newLinks
+                guard let links else { return }
+                Task { [weak self] in
+                    guard let self else { return }
+                    do {
+                        try await updateLocalData(links: links)
+                    } catch {
+                        router.display(element: .displayErrorBanner(error))
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func fetchLinksContent() async throws {
-        if links == nil {
-            links = try await getSecureLinkList()
-        }
-        guard let links else {
-            return
-        }
-        try await updateLocalData(links: links)
+        try await secureLinkManager.updateSecureLinks()
+//        if links == nil {
+//        secureLinkManager.loadLinks()
+//        }
+
+//        if links == nil {
+//            links = try await secureLinkManager.updateSecureLinks() // getSecureLinkList()
+//        }
+//        guard let links else {
+//            return
+//        }
+//        try await updateLocalData(links: links)
     }
 
     func updateLocalData(links: [SecureLink]) async throws {
         let itemsIds = links.map { (sharedId: $0.shareID, itemId: $0.itemID) }
         let itemContents = try await itemRepository.getAllItemsContent(items: itemsIds)
-
-//        let itemsContent: [ItemContent] = try await items.asyncCompactMap { [weak self] item in
-//            guard let self else { return nil }
-//            return try await item.getItemContent(symmetricKey: getSymmetricKey())
-//        }
 
         items = try await links.asyncCompactMap { link -> SecureLinkListUIModel? in
             guard let content = itemContents
@@ -235,17 +191,5 @@ private extension SecureLinkListViewModel {
         if secureLinks != items {
             secureLinks = items
         }
-    }
-
-    func removeLocalLink(item: SecureLinkListUIModel) {
-        links?.removeAll { $0.linkID == item.secureLink.linkID }
-        items
-            .removeAll {
-                $0.secureLink.linkID == item.secureLink.linkID
-            }
-        secureLinks?
-            .removeAll {
-                $0.secureLink.linkID == item.secureLink.linkID
-            }
     }
 }

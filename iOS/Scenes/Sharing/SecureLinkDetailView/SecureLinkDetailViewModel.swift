@@ -24,6 +24,7 @@ import Foundation
 import Macro
 
 struct SecureLinkDetailUiModel: Sendable {
+    let secureLinkID: String
     let itemContent: ItemContent
     let url: String
     let expirationTime: Int?
@@ -58,6 +59,15 @@ struct SecureLinkDetailUiModel: Sendable {
         }
     }
 
+    var linkActionTitle: String {
+        switch mode {
+        case .create:
+            #localized("View all your shared links")
+        case .edit:
+            #localized("Remove link")
+        }
+    }
+
     var readDescription: String {
         switch mode {
         case .create:
@@ -86,12 +96,34 @@ struct SecureLinkDetailUiModel: Sendable {
 
 @MainActor
 final class SecureLinkDetailViewModel: ObservableObject {
+    @Published private(set) var loading = false
+    @Published private(set) var finishedDeleting = false
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
 
     let uiModel: SecureLinkDetailUiModel
 
     init(uiModel: SecureLinkDetailUiModel) {
         self.uiModel = uiModel
+    }
+
+    func showSecureLinkList() {
+        router.present(for: .secureLinks(nil))
+    }
+
+    func deleteLink(link: SecureLinkDetailUiModel) {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { loading = false }
+            loading = true
+            do {
+                try await deleteSecureLink(linkId: link.secureLinkID)
+                finishedDeleting = true
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 

@@ -82,13 +82,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     func canMoveItems(vault: Vault) -> Bool {
         canUserPerformActionOnVault(for: vault)
     }
-
-    func showSecureLinkList() {
-        guard let secureLinks else {
-            return
-        }
-        router.present(for: .secureLinks(secureLinks))
-    }
 }
 
 // MARK: - Private APIs
