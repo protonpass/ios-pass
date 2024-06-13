@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetAllBreachesForProtonAddressEndpoint: Endpoint {
     typealias Body = EmptyRequest
@@ -28,11 +27,9 @@ struct GetAllBreachesForProtonAddressEndpoint: Endpoint {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
 
     init(addressId: String) {
         debugDescription = "Get breaches for a proton address"
         path = "/pass/v1/breach/address/\(addressId)/breaches"
-        method = .get
     }
 }

@@ -24,7 +24,6 @@ import Foundation
 import ProtonCoreFeatureFlags
 import ProtonCorePayments
 import ProtonCorePaymentsUI
-import ProtonCoreServices
 
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, any Error>

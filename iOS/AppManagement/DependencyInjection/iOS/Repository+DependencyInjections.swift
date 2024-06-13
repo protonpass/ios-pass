@@ -67,4 +67,8 @@ extension RepositoryContainer {
         self { InviteRepository(remoteInviteDatasource: self.remoteInviteDatasource(),
                                 logManager: self.logManager) }
     }
+
+    var extraPasswordRepository: Factory<any ExtraPasswordRepositoryProtocol> {
+        self { ExtraPasswordRepository(apiService: self.apiService) }
+    }
 }

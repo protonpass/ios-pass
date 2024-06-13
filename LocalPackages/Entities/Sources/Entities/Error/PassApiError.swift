@@ -49,6 +49,9 @@ public enum PassApiError: Int, Error {
     /// Invalid validation (e.g custom email validation)
     case invalidValidation = 2_001
 
-    /// Not allowed (e.g custom email is removed or too many failed verifications)
+    /// Not allowed (e.g custom email is removed or wrong extra password)
     case notAllowed = 2_011
+
+    /// To many wrong attempts (e.g wrong extra password many times)
+    case tooManyWrongAttempts = 2_026
 }

@@ -20,7 +20,6 @@
 
 import Foundation
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct InviteMultipleNewUserToShareEndpoint: Endpoint {
     typealias Body = InviteMultipleNewUsersToShareRequest

@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct CreateSecureLinkResponse: Decodable, Equatable, Sendable {
     let publicLink: NewSecureLink

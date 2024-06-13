@@ -21,8 +21,6 @@
 
 import Client
 
-@preconcurrency import ProtonCoreServices
-
 public protocol RevokeCurrentSessionUseCase: Sendable {
     func execute() async
 }
