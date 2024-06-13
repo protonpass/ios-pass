@@ -22,7 +22,6 @@ import Core
 import CryptoKit
 import Entities
 import Foundation
-import ProtonCoreServices
 
 public struct FavIcon: Hashable, Sendable {
     public let domain: String

@@ -103,7 +103,7 @@ extension PreferencesManagerTest {
     func testReceiveEventWhenUpdatingAppPreferences() async throws {
         // Given
         try await sut.setUp()
-        let expectation = XCTestExpectation(description: "Should receive update event")
+        let expectation = expectation(description: "Should receive update event")
         let newValue = Int.random(in: 1...100)
         sut.appPreferencesUpdates
             .filter(\.createdItemsCount)
@@ -141,7 +141,7 @@ extension PreferencesManagerTest {
         // Given
         try await sut.setUp()
 
-        let expectationAppLockTime = XCTestExpectation(description: "Should receive update event")
+        let expectationAppLockTime = expectation(description: "Should receive update event")
         let newAppLockTime = try XCTUnwrap(AppLockTime.random())
         sut.sharedPreferencesUpdates
             .filter(\.appLockTime)
@@ -152,7 +152,7 @@ extension PreferencesManagerTest {
             }
             .store(in: &cancellables)
 
-        let expectationPinCode = XCTestExpectation(description: "Should receive update event")
+        let expectationPinCode = expectation(description: "Should receive update event")
         // Explicitly test nil to see if we can receive events for nullable values
         let newPinCode: String? = nil
         sut.sharedPreferencesUpdates
@@ -192,7 +192,7 @@ extension PreferencesManagerTest {
     func testReceiveEventWhenUpdatingUserPreferences() async throws {
         // Given
         try await sut.setUp()
-        let expectation = XCTestExpectation(description: "Should receive update event")
+        let expectation = expectation(description: "Should receive update event")
         let newValue = try XCTUnwrap(SpotlightSearchableContent.random())
         sut.userPreferencesUpdates
             .filter(\.spotlightSearchableContent)
@@ -257,16 +257,16 @@ extension PreferencesManagerTest {
 extension PreferencesManagerTest {
     func testFilterMultipleKeysPath() async throws {
         try await sut.setUp()
-        let expectation1 = XCTestExpectation(description: "Should receive 1 update event")
+        let expectation1 = expectation(description: "Should receive 1 update event")
         expectation1.expectedFulfillmentCount = 1
 
-        let expectation2 = XCTestExpectation(description: "Should receive 1 update event")
+        let expectation2 = expectation(description: "Should receive 1 update event")
         expectation2.expectedFulfillmentCount = 1
 
-        let expectation3 = XCTestExpectation(description: "Should receive 2 update events")
+        let expectation3 = expectation(description: "Should receive 2 update events")
         expectation3.expectedFulfillmentCount = 2
 
-        let expectation4 = XCTestExpectation(description: "Should receive 3 update events")
+        let expectation4 = expectation(description: "Should receive 3 update events")
         expectation4.expectedFulfillmentCount = 3
 
         sut.appPreferencesUpdates

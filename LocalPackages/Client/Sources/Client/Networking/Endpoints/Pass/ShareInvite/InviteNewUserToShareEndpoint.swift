@@ -22,7 +22,6 @@
 import Entities
 import Foundation
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 // struct InviteNewUserToShareEndpoint: Endpoint {
 //    typealias Body = InviteNewUserToShareRequest

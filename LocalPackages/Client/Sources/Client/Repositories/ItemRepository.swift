@@ -24,8 +24,6 @@ import CoreData
 import CryptoKit
 import Entities
 import ProtonCoreLogin
-import ProtonCoreNetworking
-import ProtonCoreServices
 
 private let kBatchPageSize = 100
 

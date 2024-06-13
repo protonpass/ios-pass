@@ -38,6 +38,7 @@ final class PassIconTests: XCTestCase {
 
         _ = PassIcon.coverScreenBackground
         _ = PassIcon.coverScreenLogo
+        _ = PassIcon.extraPassword
 
         _ = PassIcon.filterFilled
         _ = PassIcon.fullSyncDone

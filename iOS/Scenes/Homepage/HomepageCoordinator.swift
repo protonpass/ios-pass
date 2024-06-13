@@ -22,8 +22,6 @@
 import Client
 import Combine
 import Core
-import CoreData
-import CryptoKit
 import DesignSystem
 import Entities
 import Factory
@@ -35,12 +33,10 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
-import ProtonCoreServices
 import ProtonCoreUIFoundations
 import Screens
 import StoreKit
 import SwiftUI
-import UIKit
 
 private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
 
@@ -479,6 +475,8 @@ extension HomepageCoordinator {
                     presentChangePassword(mode: mode)
                 case let .createSecureLink(item):
                     presentCreateSecureLinkView(for: item)
+                case .enableExtraPassword:
+                    beginEnableExtraPasswordFlow()
                 case let .secureLinks(links):
                     presentSecureLinks(links)
                 case let .secureLinkDetail(link):

@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetSecureLinkContentResponse: Decodable, Equatable, Sendable {
     let publicLinkContent: SecureLinkContent
@@ -32,11 +31,9 @@ struct GetSecureLinkContentEndpoint: Endpoint {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
 
     init(linkToken: String) {
         debugDescription = "Get content for secure link"
         path = "/pass/v1/public_link/content/\(linkToken)"
-        method = .get
     }
 }

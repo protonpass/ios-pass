@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct BreachesForCustomEmailResponse: Decodable, Equatable, Sendable {
     let breaches: EmailBreaches
@@ -32,11 +31,9 @@ struct GetBreachesForCustomEmailEndpoint: Endpoint {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
 
     init(emailId: String) {
         debugDescription = "Get breaches for a custom email"
         path = "/pass/v1/breach/custom_email/\(emailId)/breaches"
-        method = .get
     }
 }

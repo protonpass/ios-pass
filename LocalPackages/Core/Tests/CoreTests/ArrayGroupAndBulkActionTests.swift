@@ -55,9 +55,9 @@ final class ArrayGroupAndBulkActionTests: XCTestCase {
                              item0Share1, item1Share1,
                              item1Share3]
 
-        let share0IsHandled = XCTestExpectation(description: "Share0 should be handled")
-        let share1IsHandled = XCTestExpectation(description: "Share1 should be handled")
-        let share3IsHandled = XCTestExpectation(description: "Share3 should be handled")
+        let share0IsHandled = expectation(description: "Share0 should be handled")
+        let share1IsHandled = expectation(description: "Share1 should be handled")
+        let share3IsHandled = expectation(description: "Share3 should be handled")
 
         // When
         try await allItems.groupAndBulkAction(

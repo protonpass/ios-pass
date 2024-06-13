@@ -22,18 +22,10 @@
 import Client
 @preconcurrency import Combine
 import Core
-import CoreData
-import CryptoKit
 import DesignSystem
 import Entities
 import Factory
-import MBProgressHUD
-import ProtonCoreAuthentication
-import ProtonCoreLogin
-import ProtonCoreNetworking
-import ProtonCoreServices
 import Screens
-import Sentry
 import SwiftUI
 
 @MainActor

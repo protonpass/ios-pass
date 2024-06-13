@@ -20,7 +20,6 @@
 
 import Foundation
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 public struct TransferOwnershipVaultRequest: Encodable, Sendable {
     let newOwnerShareID: String
