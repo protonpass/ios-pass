@@ -22,12 +22,12 @@
 import ProtonCoreNetworking
 
 extension AuthCredential {
-    static func random() -> AuthCredential {
+    static func random(userId: String = .random()) -> AuthCredential {
         AuthCredential(sessionID: .random(),
                        accessToken: .random(),
                        refreshToken: .random(),
                        userName: .random(),
-                       userID: .random(),
+                       userID: userId,
                        privateKey: .random(),
                        passwordKeySalt: .random())
     }
