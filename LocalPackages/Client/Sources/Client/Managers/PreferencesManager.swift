@@ -51,24 +51,24 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
     var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
     var appPreferencesUpdates: PassthroughSubject<AppPreferencesUpdate, Never> { get }
 
-    func updateAppPreferences<T: Sendable>(_ keyPath: WritableKeyPath<AppPreferences, T>,
-                                           value: T) async throws
+    func updateAppPreferences<T>(_ keyPath: WritableKeyPath<AppPreferences, T>,
+                                 value: T) async throws where T: Sendable
     func removeAppPreferences() async
 
     // Shared preferences
     var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> { get }
     var sharedPreferencesUpdates: PassthroughSubject<SharedPreferencesUpdate, Never> { get }
 
-    func updateSharedPreferences<T: Sendable>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
-                                              value: T) async throws
+    func updateSharedPreferences<T>(_ keyPath: WritableKeyPath<SharedPreferences, T>,
+                                    value: T) async throws where T: Sendable
     func removeSharedPreferences() async throws
 
     // User's preferences
     var userPreferences: CurrentValueSubject<UserPreferences?, Never> { get }
     var userPreferencesUpdates: PassthroughSubject<UserPreferencesUpdate, Never> { get }
 
-    func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
-                                            value: T) async throws
+    func updateUserPreferences<T>(_ keyPath: WritableKeyPath<UserPreferences, T>,
+                                  value: T) async throws where T: Sendable
     func removeUserPreferences() async throws
 }
 
