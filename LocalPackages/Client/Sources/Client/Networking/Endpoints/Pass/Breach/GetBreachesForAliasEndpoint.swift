@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetBreachesForAliasEndpoint: Endpoint {
     typealias Body = EmptyRequest
@@ -27,11 +26,9 @@ struct GetBreachesForAliasEndpoint: Endpoint {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
 
     init(shareId: String, itemId: String) {
         debugDescription = "Get breaches for an alias"
         path = "/pass/v1/share/\(shareId)/alias/\(itemId)/breaches"
-        method = .get
     }
 }

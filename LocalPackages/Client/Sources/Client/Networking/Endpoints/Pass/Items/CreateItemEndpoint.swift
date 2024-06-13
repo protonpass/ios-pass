@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct CreateItemResponse: Decodable, Sendable {
     let item: Item

@@ -18,11 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CryptoKit
 import Entities
-import ProtonCoreKeyManager
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 public struct UpdateItemFlagsRequest: Sendable, Encodable {
     // swiftlint:disable:next discouraged_optional_boolean

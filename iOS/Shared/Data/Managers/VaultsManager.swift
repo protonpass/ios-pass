@@ -223,9 +223,9 @@ extension VaultsManager {
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
             } else if cryptoErrorOccured {
-                logger.info("Crypto error occured. Doing full sync")
+                logger.info("Crypto error occurred. Doing full sync")
                 try await fullSync()
-                logger.info("Crypto error occured. Done full sync")
+                logger.info("Crypto error occurred. Done full sync")
             } else {
                 logger.info("Not manual login, getting local shares & items")
                 let vaults = try await shareRepository.getVaults()
