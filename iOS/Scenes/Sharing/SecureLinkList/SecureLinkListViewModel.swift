@@ -48,7 +48,6 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
     private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
     private let recreateSecureLink = resolve(\UseCasesContainer.recreateSecureLink)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-//    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private var links: [SecureLink]?
     private var items = [SecureLinkListUIModel]()
@@ -102,19 +101,6 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
 
     func refresh() async {
         try? await secureLinkManager.updateSecureLinks()
-
-//        Task { [weak self] in
-//            guard let self else { return }
-//            do {
-//                links = try await secureLinkManager.updateSecureLinks() // try await getSecureLinkList()
-//
-//                if let links {
-//                    try await updateLocalData(links: links)
-//                }
-//            } catch {
-//                router.display(element: .displayErrorBanner(error))
-//            }
-//        }
     }
 
     func copyLink(_ item: SecureLinkListUIModel) {
@@ -163,17 +149,6 @@ private extension SecureLinkListViewModel {
 
     func fetchLinksContent() async throws {
         try await secureLinkManager.updateSecureLinks()
-//        if links == nil {
-//        secureLinkManager.loadLinks()
-//        }
-
-//        if links == nil {
-//            links = try await secureLinkManager.updateSecureLinks() // getSecureLinkList()
-//        }
-//        guard let links else {
-//            return
-//        }
-//        try await updateLocalData(links: links)
     }
 
     func updateLocalData(links: [SecureLink]) async throws {

@@ -4359,9 +4359,6 @@
         }
       }
     },
-    "%lld links" : {
-
-    },
     "%lld member(s)" : {
       "localizations" : {
         "be" : {
@@ -7391,6 +7388,28 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Thời gian dùng thử còn %lld ngày"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld view" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld view"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld views"
                 }
               }
             }
@@ -28263,6 +28282,16 @@
         }
       }
     },
+    "Copy link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy link"
+          }
+        }
+      }
+    },
     "Copy note content" : {
       "localizations" : {
         "be" : {
@@ -41491,6 +41520,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép ngày hết hạn"
+          }
+        }
+      }
+    },
+    "Expires in %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expires in %@"
           }
         }
       }
@@ -78677,6 +78716,16 @@
         }
       }
     },
+    "Remove link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove link"
+          }
+        }
+      }
+    },
     "Remove section" : {
       "localizations" : {
         "be" : {
@@ -83863,6 +83912,16 @@
         }
       }
     },
+    "Secure link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure link"
+          }
+        }
+      }
+    },
     "Secure link copied" : {
       "localizations" : {
         "be" : {
@@ -84006,7 +84065,14 @@
       }
     },
     "Secure links" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure links"
+          }
+        }
+      }
     },
     "Secure password manager and more" : {
       "comment" : "Slogan",
@@ -107837,6 +107903,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xem bí danh"
+          }
+        }
+      }
+    },
+    "View all your shared links" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View all your shared links"
           }
         }
       }

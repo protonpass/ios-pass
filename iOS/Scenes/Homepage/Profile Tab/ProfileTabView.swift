@@ -245,11 +245,11 @@ struct ProfileTabView: View {
         let isFreeUser = viewModel.plan?.isFreeUser ?? true
         VStack(spacing: 0) {
             OptionRow(action: {
-//                          if isFreeUser {
-//                              viewModel.upsell(entryPoint: .generic)
-//                          } else {
-                          viewModel.showSecureLinkList()
-//                          }
+                          if isFreeUser {
+                              viewModel.upsell(entryPoint: .generic)
+                          } else {
+                              viewModel.showSecureLinkList()
+                          }
                       },
                       height: .tall,
                       content: {
@@ -260,7 +260,7 @@ struct ProfileTabView: View {
                               Spacer()
 
                               if !isFreeUser, let secureLinks = viewModel.secureLinks {
-                                  Text("\(secureLinks.count)")
+                                  Text(verbatim: "\(secureLinks.count)")
                                       .fontWeight(.medium)
                                       .padding(.vertical, 4)
                                       .padding(.horizontal, 11)

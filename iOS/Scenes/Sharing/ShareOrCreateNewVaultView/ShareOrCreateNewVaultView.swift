@@ -96,11 +96,11 @@ private extension ShareOrCreateNewVaultView {
         }
         .contentShape(.rect)
         .onTapGesture {
-//            if viewModel.isFreeUser {
-//                viewModel.upsell(entryPoint: .generic)
-//            } else {
-            viewModel.secureLinkSharing()
-//            }
+            if viewModel.isFreeUser {
+                viewModel.upsell(entryPoint: .generic)
+            } else {
+                viewModel.secureLinkSharing()
+            }
         }
         .padding()
         .roundedEditableSection()
