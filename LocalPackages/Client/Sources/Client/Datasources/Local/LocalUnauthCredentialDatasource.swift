@@ -24,7 +24,8 @@ import ProtonCoreNetworking
 
 private let kUnauthCredentialKey = "UnauthCredential"
 
-protocol LocalUnauthCredentialDatasourceProtocol: Sendable {
+// sourcery: AutoMockable
+public protocol LocalUnauthCredentialDatasourceProtocol: Sendable {
     func getUnauthCredential() throws -> AuthCredential?
     func upsertUnauthCredential(_ credential: AuthCredential) throws
     func removeUnauthCredential()

@@ -1,6 +1,6 @@
 //
-// AppPreferences+Test.swift
-// Proton Pass - Created on 03/04/2024.
+// ApiManager.swift
+// Proton Pass - Created on 17/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,16 +19,18 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Entities
+import ProtonCoreNetworking
+@preconcurrency import ProtonCoreServices
 
-extension AppPreferences {
-    static func random() -> Self {
-        .init(onboarded: .random(),
-              telemetryThreshold: .random(in: 1...1_000_000),
-              createdItemsCount: .random(in: 1...100),
-              dismissedBannerIds: .random(randomElement: .random()),
-              dismissedCustomDomainExplanation: .random(),
-              didMigratePreferences: .random(), 
-              activeUserId: .random())
+public protocol ApiManagerProtocol: Sendable {
+    var apiService: any APIService { get }
+}
+
+public actor ApiManager: Sendable, ApiManagerProtocol {
+    public let apiService: any APIService
+
+    init(authCredential: AuthCredential,
+         apiService: any APIService) {
+        self.apiService = apiService
     }
 }

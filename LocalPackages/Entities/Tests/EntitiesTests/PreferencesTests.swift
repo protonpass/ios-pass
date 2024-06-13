@@ -40,7 +40,8 @@ final class PreferencesTests: XCTestCase {
                                          dismissedBannerIds: ["a", "b", "c"], 
                                          dismissedCustomDomainExplanation:
                                             AppPreferences.default.dismissedCustomDomainExplanation,
-                                         didMigratePreferences: AppPreferences.default.didMigratePreferences)
+                                         didMigratePreferences: AppPreferences.default.didMigratePreferences,
+                                         activeUserId: nil)
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
     }
 
