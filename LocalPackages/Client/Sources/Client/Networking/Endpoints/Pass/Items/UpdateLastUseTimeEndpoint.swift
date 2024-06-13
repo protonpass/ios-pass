@@ -21,7 +21,6 @@
 import Entities
 import Foundation
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct UpdateLastUseTimeResponse: Decodable, Sendable {
     let revision: Item

@@ -88,7 +88,8 @@ final class PreferencesTests: XCTestCase {
         let expectation = UserPreferences(
             spotlightEnabled: UserPreferences.default.spotlightEnabled,
             spotlightSearchableContent: .allExceptSensitiveData,
-            spotlightSearchableVaults: UserPreferences.default.spotlightSearchableVaults)
+            spotlightSearchableVaults: UserPreferences.default.spotlightSearchableVaults, 
+            extraPasswordEnabled: UserPreferences.default.extraPasswordEnabled)
         try decodeAndAssert(UserPreferences.self, json: json, expectation: expectation)
     }
 

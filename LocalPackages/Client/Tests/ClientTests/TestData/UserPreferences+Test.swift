@@ -25,6 +25,7 @@ extension UserPreferences {
     static func random() -> Self {
         .init(spotlightEnabled: .random(),
               spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!)
+              spotlightSearchableVaults: .random()!,
+              extraPasswordEnabled: .random())
     }
 }

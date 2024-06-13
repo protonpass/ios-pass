@@ -44,7 +44,7 @@ final class LoggerTests: XCTestCase {
     }
 
     func testGenerateErrorLogEntry() {
-        let message = "Error occured"
+        let message = "Error occurred"
         let timestamp = Date().timeIntervalSince1970
         let entry = sut.error(message, timestamp: timestamp)
         XCTAssertEqual(entry.timestamp, timestamp)

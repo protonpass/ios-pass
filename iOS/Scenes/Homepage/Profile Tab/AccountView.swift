@@ -27,6 +27,7 @@ import SwiftUI
 struct AccountView: View {
     @State private var isShowingSignOutConfirmation = false
     @StateObject var viewModel: AccountViewModel
+    @State private var showDisableExtraPasswordAlert = false
 
     var body: some View {
         if viewModel.isShownAsSheet {
@@ -140,6 +141,17 @@ struct AccountView: View {
                               .padding(.vertical)
                 }
 
+                if viewModel.extraPasswordSupported {
+                    if viewModel.extraPasswordEnabled {
+                        extraPasswordEnabledRow
+                    } else {
+                        extraPasswordDisabledRow
+                    }
+                    // swiftlint:disable:next line_length
+                    Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")
+                        .sectionTitleText()
+                }
+
                 OptionRow(action: { isShowingSignOutConfirmation.toggle() },
                           height: .tall,
                           content: {
@@ -176,6 +188,7 @@ struct AccountView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
             .animation(.default, value: viewModel.plan)
+            .animation(.default, value: viewModel.extraPasswordEnabled)
         }
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
@@ -184,6 +197,15 @@ struct AccountView: View {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.isLoading)
+        .alert("Enter your extra password",
+               isPresented: $showDisableExtraPasswordAlert,
+               actions: {
+                   SecureField("Extra password", text: $viewModel.extraPassword)
+                   Button(role: .destructive,
+                          action: { viewModel.disableExtraPassword() },
+                          label: { Text("Remove extra password") })
+                   Button(role: .cancel, label: { Text("Cancel") })
+               })
         .alert("You will be signed out",
                isPresented: $isShowingSignOutConfirmation,
                actions: {
@@ -215,5 +237,46 @@ struct AccountView: View {
                 EmptyView()
             }
         }
+    }
+}
+
+private extension AccountView {
+    var extraPasswordDisabledRow: some View {
+        OptionRow(action: { viewModel.enableExtraPassword() },
+                  height: .tall,
+                  content: {
+                      Text(verbatim: "Set extra password for Proton Pass")
+                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                  })
+                  .roundedEditableSection()
+                  .padding(.top)
+    }
+
+    var extraPasswordEnabledRow: some View {
+        OptionRow(height: .tall,
+                  content: {
+                      VStack(alignment: .leading) {
+                          Text(verbatim: "Extra password for Proton Pass")
+                              .foregroundStyle(PassColor.textNorm.toColor)
+                          Text("Active")
+                              .font(.callout)
+                              .foregroundStyle(PassColor.cardInteractionNormMajor1.toColor)
+                      }
+                  },
+                  trailing: {
+                      Menu(content: {
+                          Button(role: .destructive,
+                                 action: { showDisableExtraPasswordAlert.toggle() },
+                                 label: { Text("Remove") })
+                      }, label: {
+                          Image(uiImage: IconProvider.threeDotsVertical)
+                              .resizable()
+                              .scaledToFit()
+                              .foregroundStyle(PassColor.textWeak.toColor)
+                              .frame(width: 24)
+                      })
+                  })
+                  .roundedEditableSection()
+                  .padding(.top)
     }
 }

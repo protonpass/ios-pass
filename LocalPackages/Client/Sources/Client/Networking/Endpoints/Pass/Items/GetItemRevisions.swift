@@ -21,7 +21,6 @@
 import Core
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetItemRevisionsResponse: Decodable, Sendable {
     let revisions: ItemsPaginated

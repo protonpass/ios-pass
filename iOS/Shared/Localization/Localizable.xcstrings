@@ -9545,6 +9545,16 @@
         }
       }
     },
+    "Active" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active"
+          }
+        }
+      }
+    },
     "Add" : {
       "localizations" : {
         "be" : {
@@ -23052,6 +23062,16 @@
         }
       }
     },
+    "Caution: You won’t be able to access your Pass account if you lose this password." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caution: You won’t be able to access your Pass account if you lose this password."
+          }
+        }
+      }
+    },
     "Change mailbox password" : {
       "localizations" : {
         "be" : {
@@ -26071,6 +26091,16 @@
         }
       }
     },
+    "Confirm extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm extra password"
+          }
+        }
+      }
+    },
     "Confirm your email" : {
       "localizations" : {
         "be" : {
@@ -26227,6 +26257,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xác nhận email của bạn"
+          }
+        }
+      }
+    },
+    "Confirm your Proton password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm your Proton password"
           }
         }
       }
@@ -40244,6 +40284,16 @@
         }
       }
     },
+    "Enter your extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your extra password"
+          }
+        }
+      }
+    },
     "Enter your PIN code" : {
       "localizations" : {
         "be" : {
@@ -40404,7 +40454,7 @@
         }
       }
     },
-    "Error occured" : {
+    "Error occurred" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -40439,7 +40489,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Error occured"
+            "value" : "Error occurred"
           }
         },
         "es" : {
@@ -41672,6 +41722,37 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Термін дії збігає через:"
+          }
+        }
+      }
+    },
+    "Extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password"
+          }
+        }
+      }
+    },
+    "Extra password disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password disabled"
+          }
+        }
+      }
+    },
+    "Extra password set" : {
+      "comment" : "Title of the alert after setting up extra password",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password set"
           }
         }
       }
@@ -61353,6 +61434,16 @@
         }
       }
     },
+    "Missing username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing username"
+          }
+        }
+      }
+    },
     "MM / YY" : {
       "localizations" : {
         "be" : {
@@ -76135,6 +76226,16 @@
         }
       }
     },
+    "Protect Proton Pass with an extra password." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protect Proton Pass with an extra password."
+          }
+        }
+      }
+    },
     "Protect your most sensitive data" : {
       "localizations" : {
         "be" : {
@@ -76907,6 +77008,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton không chia sẻ thông tin của bạn với các bên thứ ba. Tất cả dữ liệu đến từ tìm kiếm sự hiện diện của các tên miền Proton trên các web đen."
+          }
+        }
+      }
+    },
+    "Proton password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton password"
           }
         }
       }
@@ -78556,6 +78667,16 @@
         }
       }
     },
+    "Remove extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove extra password"
+          }
+        }
+      }
+    },
     "Remove field" : {
       "localizations" : {
         "be" : {
@@ -78858,6 +78979,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölümü kaldır"
+          }
+        }
+      }
+    },
+    "Repeat extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeat extra password"
           }
         }
       }
@@ -86942,6 +87073,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thiết lập quyền truy cập cho tất cả mọi thành viên"
+          }
+        }
+      }
+    },
+    "Set extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set extra password"
           }
         }
       }
@@ -97888,6 +98029,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hôm nay"
+          }
+        }
+      }
+    },
+    "Too many wrong attempts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Too many wrong attempts"
           }
         }
       }
@@ -111694,6 +111845,26 @@
         }
       }
     },
+    "Wrong extra password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrong extra password"
+          }
+        }
+      }
+    },
+    "Wrong Proton password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrong Proton password"
+          }
+        }
+      }
+    },
     "X handle" : {
       "localizations" : {
         "be" : {
@@ -114278,6 +114449,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn đã đạt giới hạn kho lưu trữ có thể tạo. Tạo không giới hạn kho lưu trữ khi bạn nâng cấp gói đăng ký của mình."
+          }
+        }
+      }
+    },
+    "You will be asked for this password during login and when switching from another Proton app to Proton Pass on web." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You will be asked for this password during login and when switching from another Proton app to Proton Pass on web."
+          }
+        }
+      }
+    },
+    "You will be logged out and will have to log in again on all of your other devices." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You will be logged out and will have to log in again on all of your other devices."
           }
         }
       }

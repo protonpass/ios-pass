@@ -20,7 +20,6 @@
 
 import Entities
 import ProtonCoreNetworking
-import ProtonCoreServices
 
 struct GetShareKeysResponse: Decodable, Sendable {
     let shareKeys: ShareKeys
@@ -32,13 +31,11 @@ struct GetShareKeysEndpoint: Endpoint, @unchecked Sendable {
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
     var queries: [String: Any]?
 
     init(shareId: String, page: Int, pageSize: Int) {
         debugDescription = "Get keys for share"
         path = "/pass/v1/share/\(shareId)/key"
-        method = .get
         queries = .paginationQuery(page: page, pageSize: pageSize)
     }
 }

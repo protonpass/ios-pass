@@ -28,7 +28,6 @@ import LocalAuthentication
 import ProtonCoreDoh
 import ProtonCoreKeymaker
 import ProtonCoreLogin
-import ProtonCoreServices
 
 /// Contain tools shared between main iOS app and extensions
 final class SharedToolingContainer: SharedContainer, AutoRegistering {
