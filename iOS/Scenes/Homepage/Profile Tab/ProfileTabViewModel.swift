@@ -59,6 +59,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -70,14 +72,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
-
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private let getSecureLinkList = resolve(\UseCasesContainer.getSecureLinkList)
     @Published private(set) var secureLinks: [SecureLink]?
-    private var secureLinkFetch: Task<Void, Never>?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
+    private var secureLinkFetch: Task<Void, Never>?
 
     var isSecureLinkActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
@@ -246,7 +245,7 @@ extension ProfileTabViewModel {
         secureLinkFetch = Task { [weak self] in
             guard let self else { return }
             do {
-                secureLinks = try await getSecureLinkList()
+                secureLinks = try await secureLinkManager.updateSecureLinks()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -317,6 +316,15 @@ private extension ProfileTabViewModel {
                 if plan.isBusinessUser {
                     applyOrganizationSettings()
                 }
+            }
+            .store(in: &cancellables)
+
+        secureLinkManager.currentSecureLinks
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newLinks in
+                guard let self, secureLinks != newLinks else { return }
+                secureLinks = newLinks
             }
             .store(in: &cancellables)
     }

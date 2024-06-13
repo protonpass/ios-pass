@@ -35,7 +35,8 @@ extension HomepageCoordinator {
     }
 
     func presentSecureLinkDetail(link: SecureLinkListUIModel) {
-        let uiModel = SecureLinkDetailUiModel(itemContent: link.itemContent,
+        let uiModel = SecureLinkDetailUiModel(secureLinkID: link.id,
+                                              itemContent: link.itemContent,
                                               url: link.url,
                                               expirationTime: link.secureLink.expirationTime,
                                               readCount: link.secureLink.readCount,
@@ -43,7 +44,7 @@ extension HomepageCoordinator {
                                               mode: .edit)
         let view = SecureLinkDetailView(viewModel: .init(uiModel: uiModel))
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.custom(420),
+        viewController.setDetentType(.custom(CreateSecureLinkViewModelState.created.sheetHeight),
                                      parentViewController: rootViewController)
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)

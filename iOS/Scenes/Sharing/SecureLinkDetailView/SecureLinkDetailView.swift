@@ -25,6 +25,7 @@ import SwiftUI
 
 struct SecureLinkDetailView: View {
     @StateObject var viewModel: SecureLinkDetailViewModel
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         let uiModel = viewModel.uiModel
@@ -72,12 +73,30 @@ struct SecureLinkDetailView: View {
                                   height: 48)
             }
 
+            Button {
+                if uiModel.mode == .create {
+                    viewModel.showSecureLinkList()
+                } else {
+                    viewModel.deleteLink(link: uiModel)
+                }
+            } label: {
+                Text(uiModel.linkActionTitle)
+                    .foregroundStyle((uiModel.mode == .create ? PassColor.interactionNormMajor2 : PassColor
+                            .passwordInteractionNormMajor2).toColor)
+            }.frame(height: 48)
             Spacer()
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
+        .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm.toColor)
+        .onChange(of: viewModel.finishedDeleting) { value in
+            guard value else {
+                return
+            }
+            dismiss()
+        }
     }
 }
 

@@ -45,9 +45,9 @@ struct CreateSecureLinkView: View {
 private extension CreateSecureLinkView {
     @ViewBuilder
     var mainContainer: some View {
-//        VStack(spacing: DesignConstant.sectionPadding) {
         if let link = viewModel.link {
-            let uiModel = SecureLinkDetailUiModel(itemContent: viewModel.itemContent,
+            let uiModel = SecureLinkDetailUiModel(secureLinkID: link.publicLinkID,
+                                                  itemContent: viewModel.itemContent,
                                                   url: link.url,
                                                   expirationTime: link.expirationTime,
                                                   readCount: nil,
@@ -62,17 +62,6 @@ private extension CreateSecureLinkView {
                 .background(PassColor.backgroundNorm.toColor)
                 .toolbar { toolbarContent }
         }
-//        }
-//        .padding(.horizontal, DesignConstant.sectionPadding)
-//        .padding(.bottom, DesignConstant.sectionPadding)
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .showSpinner(viewModel.loading)
-//        .animation(.default, value: viewModel.link)
-//        .animation(.default, value: viewModel.readCount)
-//        .background(PassColor.backgroundNorm.toColor)
-//        .if(viewModel.link == nil) { view in
-//            view.toolbar { toolbarContent }
-//        }
     }
 }
 
