@@ -24,8 +24,8 @@ import Foundation
 
 public protocol SecureLinkManagerProtocol: Sendable {
     var currentSecureLinks: CurrentValueSubject<[SecureLink]?, Never> { get }
-    var currentSecureLinksTest: any AsyncSequence { get }
 
+    // periphery:ignore
     func loadLinks()
     @discardableResult
     func updateSecureLinks() async throws -> [SecureLink]
@@ -33,9 +33,6 @@ public protocol SecureLinkManagerProtocol: Sendable {
 
 public final class SecureLinkManager: SecureLinkManagerProtocol, @unchecked Sendable {
     public let currentSecureLinks: CurrentValueSubject<[SecureLink]?, Never> = .init(nil)
-    public var currentSecureLinksTest: any AsyncSequence {
-        currentSecureLinks.values
-    }
 
     private let dataSource: any RemoteSecureLinkDatasourceProtocol
 
