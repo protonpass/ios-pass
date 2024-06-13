@@ -25,6 +25,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 
