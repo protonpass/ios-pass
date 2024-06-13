@@ -488,7 +488,8 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var createSecureLink: Factory<any CreateSecureLinkUseCase> {
         self { CreateSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
-                                getSecureLinkKeys: self.getSecureLinkKeys()) }
+                                getSecureLinkKeys: self.getSecureLinkKeys(),
+                                manager: ServiceContainer.shared.secureLinkManager()) }
     }
 
     var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
@@ -500,7 +501,8 @@ extension UseCasesContainer {
     }
 
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
-        self { DeleteSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource()) }
+        self { DeleteSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+                                manager: ServiceContainer.shared.secureLinkManager()) }
     }
 
     var recreateSecureLink: Factory<any RecreateSecureLinkUseCase> {

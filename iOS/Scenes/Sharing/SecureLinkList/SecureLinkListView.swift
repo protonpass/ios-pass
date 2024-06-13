@@ -268,12 +268,6 @@ private extension SecureLinkListView {
     }
 }
 
-struct SecureLinkListView_Previews: PreviewProvider {
-    static var previews: some View {
-        SecureLinkListView(viewModel: .init(links: []))
-    }
-}
-
 /// Set up common UI appearance for item detail pages
 /// e.g. navigation bar, background color, toolbar, delete item alert...
 struct CommonViewSetUpModifier: ViewModifier {
