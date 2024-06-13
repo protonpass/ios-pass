@@ -25,6 +25,7 @@ import Foundation
 
 private let kSharedPreferencesKey = "SharedPreferences"
 
+// sourcery: AutoMockable
 /// Store symmetrically encrypted `SharedPreferences` in keychain
 public protocol LocalSharedPreferencesDatasourceProtocol: Sendable {
     func getPreferences() throws -> SharedPreferences?
