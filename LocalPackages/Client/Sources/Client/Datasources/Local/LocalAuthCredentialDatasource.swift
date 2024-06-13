@@ -26,6 +26,7 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
+// sourcery: AutoMockable
 public protocol LocalAuthCredentialDatasourceProtocol: Sendable {
     func getCredential(userId: String, module: PassModule) async throws -> AuthCredential?
     func upsertCredential(userId: String,
