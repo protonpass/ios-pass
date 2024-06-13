@@ -161,7 +161,8 @@ extension Preferences: PreferencesMigrator {
                                  createdItemsCount: createdItemsCount,
                                  dismissedBannerIds: dismissedBannerIds,
                                  dismissedCustomDomainExplanation: false,
-                                 didMigratePreferences: true)
+                                 didMigratePreferences: true,
+                                 activeUserId: nil)
         let shared = SharedPreferences(quickTypeBar: quickTypeBar,
                                        automaticallyCopyTotpCode: automaticallyCopyTotpCode,
                                        theme: theme,
