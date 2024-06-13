@@ -25,8 +25,11 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
-// TODO: ordering
 struct SecureLinkListView: View {
+    @StateObject var viewModel: SecureLinkListViewModel
+    @Environment(\.dismiss) private var dismiss
+    @Namespace private var animation
+
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     private let iPadColumns = [
         GridItem(.flexible()),
@@ -34,12 +37,31 @@ struct SecureLinkListView: View {
         GridItem(.flexible())
     ]
 
-    @Namespace private var animation
+    private enum GeoMatchIds {
+        case expire(String)
+        case view(String)
+        case internalContainer(String)
+        case externalContainer(String)
+        case stack(String)
+        case menu(String)
 
-    @StateObject var viewModel: SecureLinkListViewModel
-    @Environment(\.dismiss) private var dismiss
-
-    @State var isShowingSheet = false
+        var id: String {
+            switch self {
+            case let .expire(value):
+                "expire\(value)"
+            case let .view(value):
+                "view\(value)"
+            case let .internalContainer(value):
+                "internalContainer\(value)"
+            case let .externalContainer(value):
+                "externalContainer\(value)"
+            case let .stack(value):
+                "stack\(value)"
+            case let .menu(value):
+                "menu\(value)"
+            }
+        }
+    }
 
     var body: some View {
         mainContainer
@@ -88,31 +110,29 @@ private extension SecureLinkListView {
         if viewModel.display == .cell {
             ZStack(alignment: .topTrailing) {
                 VStack {
-                    ItemSquircleThumbnail(data: item.itemContent.thumbnailData())
-                        .padding(.bottom, 8)
-                        .matchedGeometryEffect(id: "icon\(item.secureLink.linkID)", in: animation)
+                    cellIcon(item: item)
 
                     VStack {
-                        Text(item.itemContent.name)
-                            .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
-                            .lineLimit(1)
-                            .foregroundStyle(PassColor.textNorm.toColor)
-                            .frame(maxWidth: .infinity, alignment: .center)
+                        cellTitle(item: item)
+
                         VStack {
                             Text("Expires in \(item.relativeTimeRemaining)")
-                                .matchedGeometryEffect(id: "expire\(item.secureLink.linkID)", in: animation)
+                                .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id,
+                                                       in: animation)
 
                             if let readCount = item.secureLink.readCount {
                                 Text("\(readCount) view")
-                                    .matchedGeometryEffect(id: "view\(item.secureLink.linkID)",
+                                    .matchedGeometryEffect(id: GeoMatchIds.view(item.id).id,
                                                            in: animation)
                             }
                         }
-                        .matchedGeometryEffect(id: "container\(item.secureLink.linkID)", in: animation)
+                        .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id,
+                                               in: animation)
                         .font(.caption)
                         .foregroundStyle(PassColor.textWeak.toColor)
                     }
-                    .matchedGeometryEffect(id: "TEST\(item.secureLink.linkID)", in: animation)
+                    .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id,
+                                           in: animation)
                 }
                 .padding(24)
                 menu(item: item)
@@ -124,36 +144,30 @@ private extension SecureLinkListView {
             .onTapGesture {
                 viewModel.goToDetail(link: item)
             }
-            .matchedGeometryEffect(id: "stack\(item.secureLink.linkID)", in: animation)
+            .matchedGeometryEffect(id: GeoMatchIds.stack(item.id).id, in: animation)
         } else {
             HStack {
-                ItemSquircleThumbnail(data: item.itemContent.thumbnailData())
-                    .padding(.trailing, 10)
-                    .matchedGeometryEffect(id: "icon\(item.secureLink.linkID)", in: animation)
+                cellIcon(item: item)
 
                 VStack {
-                    Text(item.itemContent.name)
-                        .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
-                        .lineLimit(1)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                    cellTitle(item: item)
                         .padding(.bottom, 5)
-                        .frame(maxWidth: .infinity, alignment: .leading)
 
                     HStack {
                         Text("Expires in \(item.relativeTimeRemaining)")
-                            .matchedGeometryEffect(id: "expire\(item.secureLink.linkID)", in: animation)
+                            .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id, in: animation)
                         if let readCount = item.secureLink.readCount {
                             Text(verbatim: "/")
                             Text("\(readCount) view")
-                                .matchedGeometryEffect(id: "view\(item.secureLink.linkID)", in: animation)
+                                .matchedGeometryEffect(id: GeoMatchIds.view(item.id).id, in: animation)
                         }
                         Spacer()
                     }
-                    .matchedGeometryEffect(id: "container\(item.secureLink.linkID)", in: animation)
+                    .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id, in: animation)
                     .font(.caption)
                     .foregroundStyle(PassColor.textWeak.toColor)
                 }
-                .matchedGeometryEffect(id: "TEST\(item.secureLink.linkID)", in: animation)
+                .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id, in: animation)
 
                 Spacer()
                 menu(item: item)
@@ -164,8 +178,22 @@ private extension SecureLinkListView {
             .onTapGesture {
                 viewModel.goToDetail(link: item)
             }
-            .matchedGeometryEffect(id: "stack\(item.secureLink.linkID)", in: animation)
+            .matchedGeometryEffect(id: GeoMatchIds.stack(item.id).id, in: animation)
         }
+    }
+
+    func cellIcon(item: SecureLinkListUIModel) -> some View {
+        ItemSquircleThumbnail(data: item.itemContent.thumbnailData())
+            .padding(viewModel.display == .cell ? .bottom : .trailing, 10)
+            .matchedGeometryEffect(id: "icon\(item.secureLink.linkID)", in: animation)
+    }
+
+    func cellTitle(item: SecureLinkListUIModel) -> some View {
+        Text(item.itemContent.name)
+            .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
+            .lineLimit(1)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: viewModel.display == .cell ? .center : .leading)
     }
 }
 
@@ -210,7 +238,7 @@ private extension SecureLinkListView {
                 .contentShape(.rect)
         }
         .simultaneousGesture(TapGesture().onEnded {})
-        .matchedGeometryEffect(id: "menu\(item.secureLink.linkID)", in: animation)
+        .matchedGeometryEffect(id: GeoMatchIds.menu(item.id).id, in: animation)
     }
 }
 
@@ -236,13 +264,6 @@ private extension SecureLinkListView {
                     Image(systemName: "square.grid.3x3.square")
                 }
             }.buttonStyle(.plain)
-
-//            CircleButton(icon: IconProvider.chevronDown,
-//                         iconColor: PassColor.loginInteractionNormMajor2,
-//                         backgroundColor: PassColor.loginInteractionNormMinor1,
-//                         accessibilityLabel: "test2") {
-            ////                dismiss()
-//            }
         }
     }
 }
@@ -268,15 +289,6 @@ struct CommonViewSetUpModifier: ViewModifier {
                                for: .navigationBar)
 
             .navigationTitle(title)
-//            .tint(tintColor.toColor)
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .navigationBarBackButtonHidden()
-//            .navigationBarTitleDisplayMode(.inline)
-//            .navigationBarHidden(false)
-//            .background(PassColor.backgroundNorm.toColor)
-//            .toolbar { ItemDetailToolbar(viewModel: viewModel) }
-//            .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
-//                                                    onDelete: viewModel.permanentlyDelete))
     }
 }
 

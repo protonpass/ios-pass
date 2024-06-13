@@ -19,13 +19,18 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Entities
 import Factory
 import Foundation
 import Macro
+import ProtonCoreUIFoundations
+import Screens
 
 @MainActor
 final class ShareOrCreateNewVaultViewModel: ObservableObject {
+    @Published private(set) var isFreeUser = true
+
     let vault: VaultListUiModel
     let itemContent: ItemContent
 
@@ -33,6 +38,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
 
     var isSecureLinkActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
@@ -41,6 +47,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     init(vault: VaultListUiModel, itemContent: ItemContent) {
         self.vault = vault
         self.itemContent = itemContent
+        checkIfFreeUser()
     }
 
     func shareVault() {
@@ -71,6 +78,32 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private func complete(with vault: SharingVaultData) {
         setShareInviteVault(with: vault)
         router.present(for: .sharingFlow(.topMost))
+    }
+
+    func checkIfFreeUser() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func upsell(entryPoint: UpsellEntry) {
+        var upsellElements = [UpsellElement]()
+        upsellElements.append(UpsellElement(icon: IconProvider.link,
+                                            title: #localized("Secure links"),
+                                            color: PassColor.interactionNormMajor2))
+        upsellElements.append(contentsOf: [UpsellElement].default)
+
+        let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                       title: #localized("Stay safer online"),
+                                                       description: entryPoint.description,
+                                                       upsellElements: upsellElements,
+                                                       ctaTitle: #localized("Get Pass Plus"))
+        router.present(for: .upselling(configuration))
     }
 }
 
