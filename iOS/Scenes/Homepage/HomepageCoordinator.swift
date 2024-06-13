@@ -874,15 +874,11 @@ extension HomepageCoordinator {
     func presentSecurityKeys() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            do {
-                let viewController = LoginUIModule
-                    .makeSecurityKeysViewController(apiService: apiManager.apiService,
-                                                    clientApp: .pass)
-                let navigationController = UINavigationController(rootViewController: viewController)
-                present(navigationController)
-            } catch {
-                handle(error: error)
-            }
+            let viewController = LoginUIModule
+                .makeSecurityKeysViewController(apiService: apiManager.apiService,
+                                                clientApp: .pass)
+            let navigationController = UINavigationController(rootViewController: viewController)
+            present(navigationController)
         }
     }
 
