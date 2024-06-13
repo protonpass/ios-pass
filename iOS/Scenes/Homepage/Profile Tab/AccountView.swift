@@ -69,7 +69,7 @@ struct AccountView: View {
                         OptionRow(action: { viewModel.showSecurityKeys() },
                                   height: .tall,
                                   content: {
-                                      Text("Security Keys")
+                                      Text("Security keys")
                                           .foregroundStyle(PassColor.textNorm.toColor)
                                   },
                                   trailing: { ChevronRight() })

@@ -88669,12 +88669,12 @@
         }
       }
     },
-    "Security Keys" : {
+    "Security keys" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Security Keys"
+            "value" : "Security keys"
           }
         }
       }
