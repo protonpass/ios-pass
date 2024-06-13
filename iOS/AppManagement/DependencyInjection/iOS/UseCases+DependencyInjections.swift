@@ -496,10 +496,6 @@ extension UseCasesContainer {
         self { GetSecureLinkKeys(passKeyManager: self.passKeyManager) }
     }
 
-    var getSecureLinkList: Factory<any GetSecureLinkListUseCase> {
-        self { GetSecureLinkList(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource()) }
-    }
-
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
         self { DeleteSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
                                 manager: ServiceContainer.shared.secureLinkManager()) }
