@@ -50,6 +50,7 @@ public protocol SessionManagerProtocol {
 }
 
 public final class SessionManager: SessionManagerProtocol {
+    private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let authDatasource: any LocalAuthCredentialDatasourceProtocol
     private let unauthDatasource: any LocalUnauthCredentialDatasourceProtocol
     private let preferencesManager: any PreferencesManagerProtocol
@@ -60,21 +61,25 @@ public final class SessionManager: SessionManagerProtocol {
 
     private var didSetUp = false
 
-    init(authDatasource: any LocalAuthCredentialDatasourceProtocol,
+    init(userDataDatasource: any LocalUserDataDatasourceProtocol,
+         authDatasource: any LocalAuthCredentialDatasourceProtocol,
          unauthDatasource: any LocalUnauthCredentialDatasourceProtocol,
          preferencesManager: any PreferencesManagerProtocol,
          module: PassModule,
          logManager: any LogManagerProtocol) {
-        self.module = module
+        self.userDataDatasource = userDataDatasource
         self.authDatasource = authDatasource
         self.unauthDatasource = unauthDatasource
         self.preferencesManager = preferencesManager
+        self.module = module
         logger = .init(manager: logManager)
     }
 }
 
 public extension SessionManager {
     func setUp() async throws {
+        let userDatas = try await userDataDatasource.getAll()
+        self.userDatas.send(userDatas)
         didSetUp = true
     }
 
@@ -117,7 +122,14 @@ public extension SessionManager {
 
     func removeAllCredentials(userId: String) async throws {
         assertDidSetUp()
+        try await userDataDatasource.remove(userId: userId)
         try await authDatasource.removeAllCredentials(userId: userId)
+        let userDatas = try await userDataDatasource.getAll()
+        self.userDatas.send(userDatas)
+        if userId == getActiveUserId() {
+            try await preferencesManager.updateAppPreferences(\.activeUserId,
+                                                              value: nil)
+        }
     }
 }
 
