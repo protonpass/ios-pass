@@ -60,3 +60,17 @@ public struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, Sendable
         return relativeTime
     }
 }
+
+public struct SecureLinkKeys {
+    public let linkKey: String
+    public let itemKeyEncoded: String
+    public let linkKeyEncoded: String
+    public let shareKeyRotation: Int64
+
+    public init(linkKey: String, itemKeyEncoded: String, linkKeyEncoded: String, shareKeyRotation: Int64) {
+        self.linkKey = linkKey
+        self.itemKeyEncoded = itemKeyEncoded
+        self.linkKeyEncoded = linkKeyEncoded
+        self.shareKeyRotation = shareKeyRotation
+    }
+}
