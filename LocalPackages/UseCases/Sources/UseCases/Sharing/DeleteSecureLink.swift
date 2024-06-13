@@ -34,12 +34,16 @@ public extension DeleteSecureLinkUseCase {
 
 public final class DeleteSecureLink: DeleteSecureLinkUseCase {
     private let datasource: any RemoteSecureLinkDatasourceProtocol
+    private let manager: any SecureLinkManagerProtocol
 
-    public init(datasource: any RemoteSecureLinkDatasourceProtocol) {
+    public init(datasource: any RemoteSecureLinkDatasourceProtocol,
+                manager: any SecureLinkManagerProtocol) {
         self.datasource = datasource
+        self.manager = manager
     }
 
     public func execute(linkId: String) async throws {
         try await datasource.deleteLink(linkId: linkId)
+        try await manager.updateSecureLinks()
     }
 }
