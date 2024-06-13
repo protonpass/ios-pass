@@ -78,6 +78,9 @@ struct ProfileTabView: View {
         .task {
             await viewModel.refreshPlan()
         }
+        .onAppear {
+            viewModel.fetchSecureLink()
+        }
     }
 
     @ToolbarContentBuilder
@@ -265,20 +268,6 @@ struct ProfileTabView: View {
                                       .background(PassColor.backgroundMedium.toColor)
                                       .clipShape(Capsule())
                               }
-
-//                              if let plan = viewModel.plan, plan.isFreeUser {
-//                              Image(uiImage: PassIcon.passSubscriptionBadge)
-//                                  .resizable()
-//                                  .scaledToFit()
-//                                  .frame(height: 24)
-//
-//                              } else {
-//
-//                              }
-//                                  .sectionTitleText()
-
-//                              Text(viewModel.localAuthenticationMethod.title)
-//                                  .foregroundStyle(PassColor.textNorm.toColor)
                           }
                       },
                       trailing: {

@@ -252,64 +252,16 @@ public extension LocalItemDatasource {
                 .init(format: "shareID = %@", tuple.sharedId),
                 .init(format: "itemID = %@", tuple.itemId)
             ])
-//            let sharedIdPredicate =  NSPredicate(format: "shareID = %@", tuple.shareId)//NSPredicate(format:
-//            "shareID == %@", tuple.sharedId)
-//            let itemIdPredicate = NSPredicate(format: "itemId == %@", tuple.itemId)
-//            let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sharedIdPredicate,
-//            itemIdPredicate])
             predicates.append(compoundPredicate)
         }
 
-//            .init(format: "shareID = %@", shareId),
-//            .init(format: "itemID = %@", itemId)
-
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-//            .init(format: "state = %d", ItemState.active.rawValue),
-//            .init(format: "isLogInItem = %d", true)
-//        ])
         fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
 
         // Set the batch size to optimize fetching
-        fetchRequest.fetchBatchSize = 20
-
-        // Create a batch fetch request
-//        let batchFetchRequest = NSBatchFetchRequest<NSFetchRequestResult>(fetchRequest: fetchRequest)
-//        fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        fetchRequest.fetchBatchSize = 50
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 }
-
-// import CoreData
-//
-// func fetchItems(with tuples: [(sharedId: String, itemId: String)], in context: NSManagedObjectContext) throws ->
-// [Item] {
-//    let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//    // Create an array to hold individual predicates
-//    var predicates: [NSPredicate] = []
-//
-//    for tuple in tuples {
-//        let sharedIdPredicate = NSPredicate(format: "sharedId == %@", tuple.sharedId)
-//        let itemIdPredicate = NSPredicate(format: "itemId == %@", tuple.itemId)
-//        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sharedIdPredicate,
-//        itemIdPredicate])
-//        predicates.append(compoundPredicate)
-//    }
-//
-//    // Combine all predicates using OR
-//    fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
-//
-//    // Create a batch fetch request
-//    let batchFetchRequest = NSBatchFetchRequest<NSFetchRequestResult>(fetchRequest: fetchRequest)
-//
-//    // Execute the fetch request
-//    guard let result = try context.execute(batchFetchRequest) as? NSBatchFetchResult else {
-//        return []
-//    }
-//
-//    // Return the fetched objects
-//    return result.result as? [Item] ?? []
-// }
