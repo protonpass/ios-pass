@@ -87,6 +87,10 @@ private extension UseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
+
+    var passKeyManager: any PassKeyManagerProtocol {
+        SharedRepositoryContainer.shared.passKeyManager()
+    }
 }
 
 // MARK: User report
@@ -488,7 +492,7 @@ extension UseCasesContainer {
     }
 
     var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
-        self { GetSecureLinkKeys(passKeyManager: SharedRepositoryContainer.shared.passKeyManager()) }
+        self { GetSecureLinkKeys(passKeyManager: self.passKeyManager) }
     }
 
     var getSecureLinkList: Factory<any GetSecureLinkListUseCase> {
@@ -497,5 +501,9 @@ extension UseCasesContainer {
 
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
         self { DeleteSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource()) }
+    }
+
+    var recreateSecureLink: Factory<any RecreateSecureLinkUseCase> {
+        self { RecreateSecureLink(passKeyManager: self.passKeyManager) }
     }
 }

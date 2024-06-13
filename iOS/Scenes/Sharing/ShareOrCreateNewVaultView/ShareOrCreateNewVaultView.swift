@@ -86,10 +86,21 @@ private extension ShareOrCreateNewVaultView {
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+
+            if viewModel.isFreeUser {
+                Image(uiImage: PassIcon.passSubscriptionBadge)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 24)
+            }
         }
         .contentShape(.rect)
         .onTapGesture {
+//            if viewModel.isFreeUser {
+//                viewModel.upsell(entryPoint: .generic)
+//            } else {
             viewModel.secureLinkSharing()
+//            }
         }
         .padding()
         .roundedEditableSection()

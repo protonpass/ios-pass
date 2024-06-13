@@ -26,13 +26,12 @@ import Entities
 import Foundation
 
 public protocol GetSecureLinkKeysUseCase: Sendable {
-    func execute(item: ItemContent) async throws
-        -> /* (linkKey: String, encryptedItemKey: String) */ SecureLinkKeys
+    func execute(item: ItemContent) async throws -> SecureLinkKeys
 }
 
 public extension GetSecureLinkKeysUseCase {
     func callAsFunction(item: ItemContent) async throws
-        -> SecureLinkKeys /* (linkKey: String, encryptedItemKey: String) */ {
+        -> SecureLinkKeys {
         try await execute(item: item)
     }
 }
@@ -47,8 +46,7 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
-    public func execute(item: ItemContent) async throws
-        -> SecureLinkKeys /* (linkKey: String, encryptedItemKey: String */ {
+    public func execute(item: ItemContent) async throws -> SecureLinkKeys {
         let itemKeyInfo = try await passKeyManager.getLatestItemKey(shareId: item.shareId, itemId: item.itemId)
 
         let shareKeyInfo = try await passKeyManager.getLatestShareKey(shareId: item.shareId)
@@ -69,16 +67,9 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
             throw PassError.crypto(.failedToBase64Encode)
         }
 
-        return SecureLinkKeys(linkKey: linkKey.base64URLSafeEncodedString(), itemKeyEncoded: itemKeyEncoded,
+        return SecureLinkKeys(linkKey: linkKey.base64URLSafeEncodedString(),
+                              itemKeyEncoded: itemKeyEncoded,
                               linkKeyEncoded: linkKeyEncoded,
-                              shareKeyRotation: shareKeyInfo
-                                  .keyRotation) // (linkKey.base64URLSafeEncodedString(), itemKeyEncoded)
+                              shareKeyRotation: shareKeyInfo.keyRotation)
     }
-}
-
-public struct SecureLinkKeys {
-    let linkKey: String
-    let itemKeyEncoded: String
-    let linkKeyEncoded: String
-    let shareKeyRotation: Int64
 }
