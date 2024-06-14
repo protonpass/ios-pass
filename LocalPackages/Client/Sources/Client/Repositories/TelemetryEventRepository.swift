@@ -46,7 +46,8 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     private let remoteDatasource: any RemoteTelemetryEventDatasourceProtocol
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
-    private let eventCount: Int
+    private let itemReadEventRepository: any ItemReadEventRepositoryProtocol
+    private let batchSize: Int
     private let logger: Logger
     public let scheduler: any TelemetrySchedulerProtocol
     private let userDataProvider: any UserDataProvider
@@ -55,15 +56,17 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 remoteDatasource: any RemoteTelemetryEventDatasourceProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
+                itemReadEventRepository: any ItemReadEventRepositoryProtocol,
                 logManager: any LogManagerProtocol,
                 scheduler: any TelemetrySchedulerProtocol,
                 userDataProvider: any UserDataProvider,
-                eventCount: Int = 500) {
+                batchSize: Int = Constants.Utils.batchSize) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userSettingsRepository = userSettingsRepository
         self.accessRepository = accessRepository
-        self.eventCount = eventCount
+        self.itemReadEventRepository = itemReadEventRepository
+        self.batchSize = batchSize
         logger = .init(manager: logManager)
         self.scheduler = scheduler
         self.userDataProvider = userDataProvider
@@ -96,6 +99,11 @@ public extension TelemetryEventRepository {
 
         let telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
 
+        logger.trace("Refreshing user access")
+        let plan = try await accessRepository.refreshAccess().plan
+
+        try await sendAllItemReadEvents(plan: plan)
+
         if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
             try await localDatasource.removeAllEvents(userId: userId)
@@ -103,11 +111,35 @@ public extension TelemetryEventRepository {
             return .thresholdReachedButTelemetryOff
         }
 
-        logger.trace("Telemetry enabled, refreshing user access.")
-        let plan = try await accessRepository.refreshAccess().plan
+        try await sendAllTelemetryEvents(userId: userId, plan: plan)
 
+        logger.info("Sent all events")
+        try await scheduler.randomNextThreshold()
+        return .allEventsSent
+    }
+
+    /// For testing purpose only. Not available at protocol level.
+    func forceSendAllEvents() async throws {
+        logger.debug("Force sending all events")
+        let userId = try userDataProvider.getUserId()
+        let plan = try await accessRepository.refreshAccess().plan
+        try await sendAllItemReadEvents(plan: plan)
+        try await sendAllTelemetryEvents(userId: userId, plan: plan)
+        logger.info("Force sent all events")
+    }
+}
+
+private extension TelemetryEventRepository {
+    func sendAllItemReadEvents(plan: Plan) async throws {
+        if plan.isBusinessUser {
+            logger.trace("[B2B] Ignore telemetry settings and send read events")
+            try await itemReadEventRepository.sendAllEvents()
+        }
+    }
+
+    func sendAllTelemetryEvents(userId: String, plan: Plan) async throws {
         while true {
-            let events = try await localDatasource.getOldestEvents(count: eventCount,
+            let events = try await localDatasource.getOldestEvents(count: batchSize,
                                                                    userId: userId)
             if events.isEmpty {
                 break
@@ -116,10 +148,6 @@ public extension TelemetryEventRepository {
             try await remoteDatasource.send(events: eventInfos)
             try await localDatasource.remove(events: events, userId: userId)
         }
-
-        logger.info("Sent all events")
-        try await scheduler.randomNextThreshold()
-        return .allEventsSent
     }
 }
 

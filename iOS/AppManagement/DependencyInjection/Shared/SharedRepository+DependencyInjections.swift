@@ -193,6 +193,15 @@ private extension SharedRepositoryContainer {
         self { RemoteBreachDataSource(apiService: self.apiService,
                                       eventStream: self.corruptedSessionEventStream) }
     }
+
+    var localItemReadEventDatasource: Factory<any LocalItemReadEventDatasourceProtocol> {
+        self { LocalItemReadEventDatasource(databaseService: self.databaseService) }
+    }
+
+    var remoteItemReadEventDatasource: Factory<any RemoteItemReadEventDatasourceProtocol> {
+        self { RemoteItemReadEventDatasource(apiService: self.apiService,
+                                             eventStream: self.corruptedSessionEventStream) }
+    }
 }
 
 // MARK: Public datasources
@@ -315,6 +324,7 @@ extension SharedRepositoryContainer {
                                      remoteDatasource: self.remoteTelemetryEventDatasource(),
                                      userSettingsRepository: self.userSettingsRepository(),
                                      accessRepository: self.accessRepository(),
+                                     itemReadEventRepository: self.itemReadEventRepository(),
                                      logManager: self.logManager,
                                      scheduler: self.telemetryScheduler(),
                                      userDataProvider: self.userDataProvider)
@@ -357,6 +367,14 @@ extension SharedRepositoryContainer {
 
     var networkRepository: Factory<any NetworkRepositoryProtocol> {
         self { NetworkRepository(apiService: self.apiService) }
+    }
+
+    var itemReadEventRepository: Factory<any ItemReadEventRepositoryProtocol> {
+        self { ItemReadEventRepository(localDatasource: self.localItemReadEventDatasource(),
+                                       remoteDatasource: self.remoteItemReadEventDatasource(),
+                                       currentDateProvider: self.currentDateProvider,
+                                       userDataProvider: self.userDataProvider,
+                                       logManager: self.logManager) }
     }
 }
 
