@@ -68,6 +68,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
+    private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
 
     var isAllowedToShare: Bool {
         guard let vault else {
@@ -101,6 +102,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
+        addItemReadEvent(itemContent)
         assert(superBindValuesCalled, "bindValues must be overridden with call to super")
     }
 
