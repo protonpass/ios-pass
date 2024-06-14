@@ -19,8 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-// Remove later
-// periphery:ignore:all
 import CoreData
 import CryptoKit
 import Entities

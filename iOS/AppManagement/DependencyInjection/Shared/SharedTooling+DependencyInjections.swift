@@ -126,6 +126,21 @@ extension SharedToolingContainer {
                                       preferencesMigrator: self.preferences())
         }
     }
+
+    var sessionManager: Factory<any SessionManagerProtocol> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            let userDataDatasource = container.localUserDataDatasource()
+            let authCredentialDatasource = container.localAuthCredentialDatasource()
+            let unauthCredentialDatasource = container.localUnauthCredentialDatasource()
+            return SessionManager(userDataDatasource: userDataDatasource,
+                                  authDatasource: authCredentialDatasource,
+                                  unauthDatasource: unauthCredentialDatasource,
+                                  preferencesManager: self.preferencesManager(),
+                                  module: self.module(),
+                                  logManager: self.logManager())
+        }
+    }
 }
 
 // MARK: Keychain tools
