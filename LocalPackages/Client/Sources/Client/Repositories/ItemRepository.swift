@@ -132,7 +132,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws
 
-    func getAllItemsContent(items: [(sharedId: String, itemId: String)]) async throws -> [ItemContent]
+    func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
 }
 
 public extension ItemRepositoryProtocol {
@@ -208,7 +208,7 @@ public extension ItemRepository {
         return try encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
     }
 
-    func getAllItemsContent(items: [(sharedId: String, itemId: String)]) async throws -> [ItemContent] {
+    func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
         let items = try await localDatasource.getItems(for: items)
 
         let itemsContent: [ItemContent] = try await items.asyncCompactMap { [weak self] item in

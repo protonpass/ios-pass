@@ -35,7 +35,7 @@ public protocol CoordinatorProtocol: AnyObject {
     func present(_ viewController: UIViewController,
                  animated: Bool,
                  dismissible: Bool,
-                 presentationDelay: TimeInterval,
+                 delay: TimeInterval,
                  uniquenessTag: (any RawRepresentable<Int>)?)
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
@@ -58,7 +58,7 @@ public extension CoordinatorProtocol {
     func present(_ viewController: UIViewController,
                  animated: Bool = true,
                  dismissible: Bool = true,
-                 presentationDelay: TimeInterval = 0.1,
+                 delay: TimeInterval = 0.1,
                  uniquenessTag: (any RawRepresentable<Int>)? = nil) {
         viewController.sheetPresentationController?.preferredCornerRadius = 16
         viewController.isModalInPresentation = !dismissible
@@ -70,7 +70,7 @@ public extension CoordinatorProtocol {
             }
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + presentationDelay) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
             guard let self else {
                 return
             }

@@ -70,7 +70,7 @@ public protocol LocalItemDatasourceProtocol: Sendable {
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
 
-    func getItems(for ids: [(sharedId: String, itemId: String)]) async throws -> [SymmetricallyEncryptedItem]
+    func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 }
 
 public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}
@@ -243,14 +243,14 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
-    func getItems(for ids: [(sharedId: String, itemId: String)]) async throws -> [SymmetricallyEncryptedItem] {
+    func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
         // Create an array to hold individual predicates
         var predicates: [NSPredicate] = []
 
-        for tuple in ids {
+        for item in items {
             let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", tuple.sharedId),
-                .init(format: "itemID = %@", tuple.itemId)
+                .init(format: "shareID = %@", item.shareId),
+                .init(format: "itemID = %@", item.itemId)
             ])
             predicates.append(compoundPredicate)
         }
@@ -260,7 +260,6 @@ public extension LocalItemDatasource {
         fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
 
         // Set the batch size to optimize fetching
-        fetchRequest.fetchBatchSize = 50
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
