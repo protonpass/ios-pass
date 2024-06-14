@@ -71,6 +71,7 @@ enum SharedItemType: CaseIterable {
 final class ShareCoordinator {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let sessionManager = resolve(\SharedToolingContainer.sessionManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
@@ -130,6 +131,7 @@ extension ShareCoordinator {
     func start() async {
         do {
             try await preferencesManager.setUp()
+            try await sessionManager.setUp()
             if credentialProvider.isAuthenticated {
                 await parseSharedContentAndBeginShareFlow()
             } else {

@@ -19,14 +19,17 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
+// periphery:ignore:all
+@preconcurrency import Combine
 import Core
 import Entities
 import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
-public protocol SessionManagerProtocol {
+extension AuthCredential: @unchecked Sendable {}
+
+public protocol SessionManagerProtocol: Sendable {
     /// Hold the list of all logged in users
     var userDatas: CurrentValueSubject<[UserData], Never> { get }
 
@@ -34,7 +37,7 @@ public protocol SessionManagerProtocol {
     func setUp() async throws
 
     /// The `UserData` of the active user
-    func getActiveUserData() throws -> UserData?
+    func getActiveUserData() async throws -> UserData?
 
     /// Get the credential of the active user if any, fallback to unauth credential if not exist
     func getCredential() async throws -> AuthCredential?
@@ -49,7 +52,7 @@ public protocol SessionManagerProtocol {
     func removeAllCredentials(userId: String) async throws
 }
 
-public final class SessionManager: SessionManagerProtocol {
+public actor SessionManager: Sendable, SessionManagerProtocol {
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let authDatasource: any LocalAuthCredentialDatasourceProtocol
     private let unauthDatasource: any LocalUnauthCredentialDatasourceProtocol
@@ -61,12 +64,12 @@ public final class SessionManager: SessionManagerProtocol {
 
     private var didSetUp = false
 
-    init(userDataDatasource: any LocalUserDataDatasourceProtocol,
-         authDatasource: any LocalAuthCredentialDatasourceProtocol,
-         unauthDatasource: any LocalUnauthCredentialDatasourceProtocol,
-         preferencesManager: any PreferencesManagerProtocol,
-         module: PassModule,
-         logManager: any LogManagerProtocol) {
+    public init(userDataDatasource: any LocalUserDataDatasourceProtocol,
+                authDatasource: any LocalAuthCredentialDatasourceProtocol,
+                unauthDatasource: any LocalUnauthCredentialDatasourceProtocol,
+                preferencesManager: any PreferencesManagerProtocol,
+                module: PassModule,
+                logManager: any LogManagerProtocol) {
         self.userDataDatasource = userDataDatasource
         self.authDatasource = authDatasource
         self.unauthDatasource = unauthDatasource
@@ -83,7 +86,7 @@ public extension SessionManager {
         didSetUp = true
     }
 
-    func getActiveUserData() throws -> UserData? {
+    func getActiveUserData() async throws -> UserData? {
         assertDidSetUp()
         guard let activeUserId = getActiveUserId() else {
             return nil
