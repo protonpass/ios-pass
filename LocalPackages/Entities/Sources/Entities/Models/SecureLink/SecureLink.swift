@@ -34,6 +34,16 @@ public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable
     }
 }
 
+extension SecureLink: ItemIdentifiable {
+    public var shareId: String {
+        shareID
+    }
+
+    public var itemId: String {
+        itemID
+    }
+}
+
 public struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, Sendable {
     public var id: String {
         secureLink.id
@@ -58,19 +68,5 @@ public struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, Sendable
         let relativeTime = formatter.localizedString(for: expirationDate, relativeTo: currentDate)
 
         return relativeTime
-    }
-}
-
-public struct SecureLinkKeys {
-    public let linkKey: String
-    public let itemKeyEncoded: String
-    public let linkKeyEncoded: String
-    public let shareKeyRotation: Int64
-
-    public init(linkKey: String, itemKeyEncoded: String, linkKeyEncoded: String, shareKeyRotation: Int64) {
-        self.linkKey = linkKey
-        self.itemKeyEncoded = itemKeyEncoded
-        self.linkKeyEncoded = linkKeyEncoded
-        self.shareKeyRotation = shareKeyRotation
     }
 }

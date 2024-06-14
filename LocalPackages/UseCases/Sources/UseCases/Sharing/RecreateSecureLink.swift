@@ -46,7 +46,7 @@ public final class RecreateSecureLink: RecreateSecureLinkUseCase {
                                                             keyRotation: link
                                                                 .linkKeyShareKeyRotation)
 
-        guard let linkKeyData = try? link.encryptedLinkKey.base64Decode() else {
+        guard let linkKeyData = try link.encryptedLinkKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
 

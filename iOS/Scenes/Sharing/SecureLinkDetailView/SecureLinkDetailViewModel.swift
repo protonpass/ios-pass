@@ -62,7 +62,7 @@ struct SecureLinkDetailUiModel: Sendable {
     var linkActionTitle: String {
         switch mode {
         case .create:
-            #localized("View all your shared links")
+            #localized("View all your secure links")
         case .edit:
             #localized("Remove link")
         }
@@ -125,9 +125,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
             }
         }
     }
-}
-
-extension SecureLinkDetailViewModel {
+    
     func copyLink() {
         router.action(.copyToClipboard(text: uiModel.url,
                                        message: #localized("Secure link copied")))
