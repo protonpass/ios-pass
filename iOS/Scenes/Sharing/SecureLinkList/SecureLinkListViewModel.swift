@@ -28,20 +28,15 @@ import Macro
 import SwiftUI
 
 enum SecureLinkListDisplay: Int {
-    case cell = 0
-    case row = 1
+    case grid = 0
+    case list = 1
 }
 
 @MainActor
 final class SecureLinkListViewModel: ObservableObject, Sendable {
-    @AppStorage("display") var display: SecureLinkListDisplay = .cell {
-        didSet {
-            objectWillChange.send()
-        }
-    }
-
-    @Published var secureLinks: [SecureLinkListUIModel]?
-    @Published var loading = false
+    @AppStorage("secureLinkListDisplay") var display: SecureLinkListDisplay = .grid
+    @Published private(set) var secureLinks = [SecureLinkListUIModel]()
+    @Published private(set) var loading = false
     @Published var searchText = ""
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -57,14 +52,18 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
     var isPhone: Bool {
         UIDevice.current.userInterfaceIdiom == .phone
     }
+    
+    var isGrid: Bool {
+        display == .grid
+    }
 
     init(links: [SecureLink]?) {
         self.links = links
         setUp()
     }
 
-    func displayToggle() {
-        display = display == .cell ? .row : .cell
+    func toggleDisplay() {
+        display = display == .grid ? .row : .grid
     }
 
     func goToDetail(link: SecureLinkListUIModel) {
@@ -152,8 +151,7 @@ private extension SecureLinkListViewModel {
     }
 
     func updateLocalData(links: [SecureLink]) async throws {
-        let itemsIds = links.map { (sharedId: $0.shareID, itemId: $0.itemID) }
-        let itemContents = try await itemRepository.getAllItemsContent(items: itemsIds)
+        let itemContents = try await itemRepository.getAllItemsContent(items: links)
 
         items = try await links.asyncCompactMap { link -> SecureLinkListUIModel? in
             guard let content = itemContents

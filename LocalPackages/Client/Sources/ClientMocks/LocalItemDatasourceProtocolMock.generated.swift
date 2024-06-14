@@ -301,11 +301,11 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
     public var closureGetItemsIdsAsync16: () -> () = {}
     public var invokedGetItemsIdsAsync16 = false
     public var invokedGetItemsIdsAsyncCount16 = 0
-    public var invokedGetItemsIdsAsyncParameters16: (ids: [(sharedId: String, itemId: String)], Void)?
-    public var invokedGetItemsIdsAsyncParametersList16 = [(ids: [(sharedId: String, itemId: String)], Void)]()
+    public var invokedGetItemsIdsAsyncParameters16: (ids: [any ItemIdentifiable], Void)?
+    public var invokedGetItemsIdsAsyncParametersList16 = [(ids: [any ItemIdentifiable], Void)]()
     public var stubbedGetItemsIdsAsyncResult16: [SymmetricallyEncryptedItem]!
 
-    public func getItems(for ids: [(sharedId: String, itemId: String)]) async throws -> [SymmetricallyEncryptedItem] {
+    public func getItems(for ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
         invokedGetItemsIdsAsync16 = true
         invokedGetItemsIdsAsyncCount16 += 1
         invokedGetItemsIdsAsyncParameters16 = (ids, ())

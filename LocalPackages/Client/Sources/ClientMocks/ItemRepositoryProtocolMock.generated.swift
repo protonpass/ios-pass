@@ -25,8 +25,6 @@ import CoreData
 import CryptoKit
 import Entities
 import ProtonCoreLogin
-import ProtonCoreNetworking
-import ProtonCoreServices
 
 public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemRepositoryProtocol {
 
@@ -685,11 +683,11 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureGetAllItemsContent: () -> () = {}
     public var invokedGetAllItemsContentfunction = false
     public var invokedGetAllItemsContentCount = 0
-    public var invokedGetAllItemsContentParameters: (items: [(sharedId: String, itemId: String)], Void)?
-    public var invokedGetAllItemsContentParametersList = [(items: [(sharedId: String, itemId: String)], Void)]()
+    public var invokedGetAllItemsContentParameters: (items: [any ItemIdentifiable], Void)?
+    public var invokedGetAllItemsContentParametersList = [(items: [any ItemIdentifiable], Void)]()
     public var stubbedGetAllItemsContentResult: [ItemContent]!
 
-    public func getAllItemsContent(items: [(sharedId: String, itemId: String)]) async throws -> [ItemContent] {
+    public func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
         invokedGetAllItemsContentfunction = true
         invokedGetAllItemsContentCount += 1
         invokedGetAllItemsContentParameters = (items, ())

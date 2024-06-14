@@ -20,12 +20,9 @@
 
 import Client
 import Core
-import CoreData
 import CryptoKit
 import Entities
 import ProtonCoreLogin
-import ProtonCoreNetworking
-import ProtonCoreServices
 
 public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareRepositoryProtocol {
 
