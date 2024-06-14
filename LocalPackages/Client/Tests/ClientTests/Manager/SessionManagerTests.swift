@@ -115,7 +115,7 @@ extension SessionManagerTests {
         try await makeActiveUser(activeUser)
 
         // When
-        let activeUserData = try sut.getActiveUserData()
+        let activeUserData = try await sut.getActiveUserData()
 
         // Then
         XCTAssertEqual(activeUserData?.userId, activeUser.userId)
@@ -243,7 +243,8 @@ extension SessionManagerTests {
 
         // Then
         // Credentials of active users are available
-        XCTAssertEqual((try sut.getActiveUserData())?.userId, activeUser.userId)
+        let getUser = try await XCTUnwrapAsync(await sut.getActiveUserData())
+        XCTAssertEqual(getUser.userId, activeUser.userId)
         try await XCTAssertNotNilAsync(
             await authDatasource.getCredential(userId: activeUserId,
                                                module: .hostApp))
@@ -270,7 +271,7 @@ extension SessionManagerTests {
                                                module: .shareExtension))
 
         XCTAssertEqual(sut.userDatas.value.count, userDatas.count - 1)
-        XCTAssertNil(try sut.getActiveUserData())
+        try await XCTAssertNilAsync(await sut.getActiveUserData())
 
         // When
         let inactiveUser = try XCTUnwrap(sut.userDatas.value.randomElement())
