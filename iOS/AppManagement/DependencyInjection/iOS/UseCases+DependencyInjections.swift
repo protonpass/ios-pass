@@ -499,6 +499,12 @@ extension UseCasesContainer {
     var overrideSecuritySettings: Factory<any OverrideSecuritySettingsUseCase> {
         self { OverrideSecuritySettings(preferencesManager: SharedToolingContainer.shared.preferencesManager()) }
     }
+
+    var addItemReadEvent: Factory<any AddItemReadEventUseCase> {
+        self { AddItemReadEvent(eventRepository: SharedRepositoryContainer.shared.itemReadEventRepository(),
+                                accessRepository: self.accessRepository,
+                                logManager: self.logManager) }
+    }
 }
 
 // MARK: - Secure link
