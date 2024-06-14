@@ -66,6 +66,7 @@ final class AppCoordinator {
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let sessionManager = resolve(\SharedToolingContainer.sessionManager)
     private let appData = resolve(\SharedDataContainer.appData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -172,6 +173,7 @@ final class AppCoordinator {
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
+                try await sessionManager.setUp()
                 window.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start()
             } catch {
