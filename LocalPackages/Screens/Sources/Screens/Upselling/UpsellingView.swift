@@ -126,7 +126,6 @@ private extension UpsellingView {
     func perkRow(element: UpsellElement) -> some View {
         Label(title: {
             Text(element.title)
-                .minimumScaleFactor(0.75)
         }, icon: {
             Image(uiImage: element.icon)
                 .renderingMode(element.color != nil ? .template : .original)
