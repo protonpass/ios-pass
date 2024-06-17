@@ -25,8 +25,6 @@ import CoreData
 import CryptoKit
 import Entities
 import ProtonCoreLogin
-import ProtonCoreNetworking
-import ProtonCoreServices
 
 public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemRepositoryProtocol {
 
@@ -680,8 +678,28 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         }
         closureUpdateItemFlags()
     }
+    // MARK: - getAllItemsContent
+    public var getAllItemsContentItemsThrowableError34: Error?
+    public var closureGetAllItemsContent: () -> () = {}
+    public var invokedGetAllItemsContentfunction = false
+    public var invokedGetAllItemsContentCount = 0
+    public var invokedGetAllItemsContentParameters: (items: [any ItemIdentifiable], Void)?
+    public var invokedGetAllItemsContentParametersList = [(items: [any ItemIdentifiable], Void)]()
+    public var stubbedGetAllItemsContentResult: [ItemContent]!
+
+    public func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
+        invokedGetAllItemsContentfunction = true
+        invokedGetAllItemsContentCount += 1
+        invokedGetAllItemsContentParameters = (items, ())
+        invokedGetAllItemsContentParametersList.append((items, ()))
+        if let error = getAllItemsContentItemsThrowableError34 {
+            throw error
+        }
+        closureGetAllItemsContent()
+        return stubbedGetAllItemsContentResult
+    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError34: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError35: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -694,7 +712,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError34 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError35 {
             throw error
         }
         closureTotpCreationDateThreshold()
