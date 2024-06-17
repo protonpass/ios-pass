@@ -20,9 +20,6 @@
 
 import Client
 import Core
-import CoreData
-import ProtonCoreNetworking
-import ProtonCoreServices
 
 public final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, ShareEventIDRepositoryProtocol {
 

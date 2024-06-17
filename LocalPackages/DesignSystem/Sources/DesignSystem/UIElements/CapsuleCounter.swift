@@ -1,6 +1,6 @@
 //
-// SecureLink.swift
-// Proton Pass - Created on 15/05/2024.
+// CapsuleCounter.swift
+// Proton Pass - Created on 17/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,28 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable {
-    public let linkID: String
-    public let readCount, maxReadCount: Int?
-    public let expirationTime: Int
-    public let shareID, itemID: String
-    public let linkURL: String
-    public let encryptedLinkKey: String
-    public let linkKeyShareKeyRotation: Int64
+public struct CapsuleCounter: View {
+    let count: Int
+    let foregroundStyle: Color
+    let background: Color
 
-    public var id: String {
-        linkID
-    }
-}
-
-extension SecureLink: ItemIdentifiable {
-    public var shareId: String {
-        shareID
+    public init(count: Int, foregroundStyle: Color, background: Color) {
+        self.count = count
+        self.foregroundStyle = foregroundStyle
+        self.background = background
     }
 
-    public var itemId: String {
-        itemID
+    public var body: some View {
+        Text(verbatim: "\(count)")
+            .fontWeight(.medium)
+            .padding(.vertical, 4)
+            .padding(.horizontal, 12)
+            .foregroundStyle(foregroundStyle)
+            .background(background)
+            .clipShape(Capsule())
     }
 }

@@ -43,6 +43,11 @@ struct ProfileTabView: View {
                         autoFillDisabledSection
                     }
 
+                    if viewModel.isSecureLinkActive {
+                        secureLinkSection
+                            .padding(.vertical)
+                    }
+
                     accountAndSettingsSection
                         .padding(.vertical)
 
@@ -72,6 +77,9 @@ struct ProfileTabView: View {
         }
         .task {
             await viewModel.refreshPlan()
+        }
+        .onAppear {
+            viewModel.fetchSecureLinks()
         }
     }
 
@@ -229,6 +237,47 @@ struct ProfileTabView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        .padding(.horizontal)
+    }
+
+    @ViewBuilder
+    private var secureLinkSection: some View {
+        let isFreeUser = viewModel.plan?.isFreeUser ?? true
+        VStack(spacing: 0) {
+            OptionRow(action: {
+                          if isFreeUser {
+                              viewModel.upsell(entryPoint: .secureLink)
+                          } else {
+                              viewModel.showSecureLinkList()
+                          }
+                      },
+                      height: .tall,
+                      content: {
+                          HStack(spacing: DesignConstant.sectionPadding / 2) {
+                              Text("Secure link")
+                                  .foregroundStyle(PassColor.textNorm.toColor)
+
+                              Spacer()
+
+                              if !isFreeUser, let secureLinks = viewModel.secureLinks {
+                                  CapsuleCounter(count: secureLinks.count,
+                                                 foregroundStyle: PassColor.textNorm.toColor,
+                                                 background: PassColor.backgroundMedium.toColor)
+                              }
+                          }
+                      },
+                      trailing: {
+                          if isFreeUser {
+                              Image(uiImage: PassIcon.passSubscriptionBadge)
+                                  .resizable()
+                                  .scaledToFit()
+                                  .frame(height: 24)
+                          } else {
+                              ChevronRight()
+                          }
+                      })
+        }
+        .roundedEditableSection()
         .padding(.horizontal)
     }
 

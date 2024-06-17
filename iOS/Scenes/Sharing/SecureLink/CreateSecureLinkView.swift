@@ -35,34 +35,32 @@ struct CreateSecureLinkView: View {
 
     var body: some View {
         mainContainer
+            .animation(.default, value: viewModel.link)
+            .animation(.default, value: viewModel.readCount)
+            .showSpinner(viewModel.loading)
             .navigationStackEmbeded()
     }
 }
 
 private extension CreateSecureLinkView {
+    @ViewBuilder
     var mainContainer: some View {
-        VStack(spacing: DesignConstant.sectionPadding) {
-            if let link = viewModel.link {
-                let uiModel = SecureLinkDetailUiModel(itemContent: viewModel.itemContent,
-                                                      url: link.url,
-                                                      expirationTime: link.expirationTime,
-                                                      readCount: nil,
-                                                      maxReadCount: viewModel.readCount.nilIfZero,
-                                                      mode: .create)
-                SecureLinkDetailView(viewModel: .init(uiModel: uiModel))
-            } else {
-                createLink
-            }
-        }
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .padding(.bottom, DesignConstant.sectionPadding)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .showSpinner(viewModel.loading)
-        .animation(.default, value: viewModel.link)
-        .animation(.default, value: viewModel.readCount)
-        .background(PassColor.backgroundNorm.toColor)
-        .if(viewModel.link == nil) { view in
-            view.toolbar { toolbarContent }
+        if let link = viewModel.link {
+            let uiModel = SecureLinkDetailUiModel(secureLinkID: link.publicLinkID,
+                                                  itemContent: viewModel.itemContent,
+                                                  url: link.url,
+                                                  expirationTime: link.expirationTime,
+                                                  readCount: nil,
+                                                  maxReadCount: viewModel.readCount.nilIfZero,
+                                                  mode: .create)
+            SecureLinkDetailView(viewModel: .init(uiModel: uiModel))
+        } else {
+            createLink
+                .padding(.horizontal, DesignConstant.sectionPadding)
+                .padding(.bottom, DesignConstant.sectionPadding)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(PassColor.backgroundNorm.toColor)
+                .toolbar { toolbarContent }
         }
     }
 }

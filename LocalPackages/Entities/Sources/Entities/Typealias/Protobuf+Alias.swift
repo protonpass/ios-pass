@@ -54,8 +54,10 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                          urls: data.urls,
                          allowedAndroidApps: platformSpecific.android.allowedApps,
                          passkeys: data.passkeys))
+
         case .none:
             .note
+
         case let .identity(data):
             .identity(IdentityData(from: data))
         }
@@ -107,6 +109,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
 
         case .note:
             content.note = .init()
+
         case let .identity(data):
             content.identity = data.toProtonPassItemV1ItemIdentity
         }

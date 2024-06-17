@@ -18,10 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 @MainActor
@@ -54,6 +56,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -65,9 +69,14 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
+    @Published private(set) var secureLinks: [SecureLink]?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
+
+    var isSecureLinkActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+    }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
@@ -224,6 +233,30 @@ extension ProfileTabViewModel {
     }
 }
 
+// MARK: - Secure link
+
+extension ProfileTabViewModel {
+    func fetchSecureLinks() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                secureLinks = try await secureLinkManager.updateSecureLinks()
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func showSecureLinkList() {
+        router.present(for: .secureLinks)
+    }
+
+    func upsell(entryPoint: UpsellEntry) {
+        router.present(for: .upselling(entryPoint.defaultConfiguration))
+    }
+}
+
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
@@ -266,6 +299,15 @@ private extension ProfileTabViewModel {
                 if plan.isBusinessUser {
                     applyOrganizationSettings()
                 }
+            }
+            .store(in: &cancellables)
+
+        secureLinkManager.currentSecureLinks
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newLinks in
+                guard let self, secureLinks != newLinks else { return }
+                secureLinks = newLinks
             }
             .store(in: &cancellables)
     }
