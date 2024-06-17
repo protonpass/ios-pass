@@ -19,13 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import DesignSystem
 import Entities
 import Factory
 import Foundation
 import Macro
 import ProtonCoreUIFoundations
-import Screens
 
 @MainActor
 final class ShareOrCreateNewVaultViewModel: ObservableObject {

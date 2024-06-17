@@ -50,10 +50,6 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
 
     private var cancellables = Set<AnyCancellable>()
 
-    var isPhone: Bool {
-        UIDevice.current.userInterfaceIdiom == .phone
-    }
-
     var searchSecureLink: Bool {
         UserDefaults.standard.bool(forKey: Constants.QA.searchAndListSecureLink)
     }
