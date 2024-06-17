@@ -354,6 +354,7 @@ extension SearchViewState: Equatable {
 
         case let (.error(lhsError), .error(rhsError)):
             lhsError.localizedDescription == rhsError.localizedDescription
+
         default:
             false
         }
