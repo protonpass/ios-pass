@@ -43,30 +43,3 @@ extension SecureLink: ItemIdentifiable {
         itemID
     }
 }
-
-public struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, Sendable {
-    public var id: String {
-        secureLink.id
-    }
-
-    public let secureLink: SecureLink
-    public let itemContent: ItemContent
-    public let url: String
-
-    public init(secureLink: SecureLink, itemContent: ItemContent, url: String) {
-        self.secureLink = secureLink
-        self.itemContent = itemContent
-        self.url = url
-    }
-
-    public var relativeTimeRemaining: String {
-        let expirationDate = Date(timeIntervalSince1970: Double(secureLink.expirationTime))
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-
-        let currentDate = Date()
-        let relativeTime = formatter.localizedString(for: expirationDate, relativeTo: currentDate)
-
-        return relativeTime
-    }
-}

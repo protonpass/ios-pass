@@ -25,7 +25,6 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 
@@ -80,7 +79,7 @@ struct ProfileTabView: View {
             await viewModel.refreshPlan()
         }
         .onAppear {
-            viewModel.fetchSecureLink()
+            viewModel.fetchSecureLinks()
         }
     }
 
@@ -247,7 +246,7 @@ struct ProfileTabView: View {
         VStack(spacing: 0) {
             OptionRow(action: {
                           if isFreeUser {
-                              viewModel.upsell(entryPoint: .generic)
+                              viewModel.upsell(entryPoint: .secureLink)
                           } else {
                               viewModel.showSecureLinkList()
                           }
@@ -261,13 +260,9 @@ struct ProfileTabView: View {
                               Spacer()
 
                               if !isFreeUser, let secureLinks = viewModel.secureLinks {
-                                  Text(verbatim: "\(secureLinks.count)")
-                                      .fontWeight(.medium)
-                                      .padding(.vertical, 4)
-                                      .padding(.horizontal, 11)
-                                      .foregroundStyle(PassColor.textNorm.toColor)
-                                      .background(PassColor.backgroundMedium.toColor)
-                                      .clipShape(Capsule())
+                                  CapsuleCounter(count: secureLinks.count,
+                                                 foregroundStyle: PassColor.textNorm.toColor,
+                                                 background: PassColor.backgroundMedium.toColor)
                               }
                           }
                       },

@@ -402,7 +402,6 @@
 		35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */; };
 		35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */; };
 		35D3861D2BD9299D00532323 /* MonitorIncludedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D3861C2BD9299D00532323 /* MonitorIncludedEmailView.swift */; };
-		35D386202BD92B2900532323 /* BreachCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D3861F2BD92B2900532323 /* BreachCounterView.swift */; };
 		35D708F82B6B8517001CBB03 /* EditSpotlightVaultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */; };
 		35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */; };
 		35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */; };
@@ -554,6 +553,10 @@
 		5BD4A90D2B15F33700C44C08 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
 		5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
 		5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
+		5BD613892C2028FE00968E0F /* SecureLinkListUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */; };
+		5BD6138A2C20293B00968E0F /* SecureLinkListUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */; };
+		5BD6138B2C20295300968E0F /* SecureLinkListUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */; };
+		5BD6138D2C202B0E00968E0F /* UpsellEntry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */; };
 		5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */; };
 		5BD870D92BB46C7800A9F1A8 /* PasswordReusedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
@@ -912,7 +915,6 @@
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
 		35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsCoordinator.swift; sourceTree = "<group>"; };
 		35D3861C2BD9299D00532323 /* MonitorIncludedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorIncludedEmailView.swift; sourceTree = "<group>"; };
-		35D3861F2BD92B2900532323 /* BreachCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachCounterView.swift; sourceTree = "<group>"; };
 		35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsView.swift; sourceTree = "<group>"; };
 		35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsViewModel.swift; sourceTree = "<group>"; };
 		35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardView.swift; sourceTree = "<group>"; };
@@ -1030,6 +1032,8 @@
 		5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
 		5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PasswordStrength+Extensions.swift"; sourceTree = "<group>"; };
 		5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthIcon.swift; sourceTree = "<group>"; };
+		5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListUIModel.swift; sourceTree = "<group>"; };
+		5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellEntry+Extensions.swift"; sourceTree = "<group>"; };
 		5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedView.swift; sourceTree = "<group>"; };
 		5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedViewModel.swift; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
@@ -1216,6 +1220,7 @@
 				35733B7E29CC60D200052229 /* VaultColor.swift */,
 				35733B7C29CC5DB700052229 /* VaultIcon.swift */,
 				5BE8092F2C07358200D3A707 /* IdentityFields.swift */,
+				5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1660,7 +1665,6 @@
 		35D3861E2BD92B0800532323 /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
-				35D3861F2BD92B2900532323 /* BreachCounterView.swift */,
 				35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */,
 				35D3861C2BD9299D00532323 /* MonitorIncludedEmailView.swift */,
 				356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */,
@@ -1954,6 +1958,7 @@
 				5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */,
 				5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */,
 				5B4E53D92BD6A02500E8D54A /* DateFormatter+Extensions.swift */,
+				5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2992,6 +2997,7 @@
 				5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */,
 				5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
 				3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */,
+				5BD6138A2C20293B00968E0F /* SecureLinkListUIModel.swift in Sources */,
 				5B0C74FD2A2F606C00272CE8 /* SharedServices+DependencyInjections.swift in Sources */,
 				3562BC3229954334003FCB13 /* ItemDetailSectionIcon.swift in Sources */,
 				355BDED8299E6F9C009FDBB1 /* CreateAliasLiteView.swift in Sources */,
@@ -3188,6 +3194,7 @@
 				357C71BD2B5FB13100AA0BF1 /* UpgradeButton.swift in Sources */,
 				35796CF52B5EE71F00BF4E9E /* AppData.swift in Sources */,
 				35796D042B5EEE8100BF4E9E /* CreateEditNoteViewModel.swift in Sources */,
+				5BD6138B2C20295300968E0F /* SecureLinkListUIModel.swift in Sources */,
 				357C71BF2B5FB15000AA0BF1 /* CustomFieldTypesView.swift in Sources */,
 				357C71B12B5FB07800AA0BF1 /* WipeAllData.swift in Sources */,
 				357C71B62B5FB0BE00AA0BF1 /* SharedDataStreams+DependencyInjections.swift in Sources */,
@@ -3238,7 +3245,6 @@
 				356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */,
 				356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */,
 				356BBB712ACC539E005A10DB /* ShareOrCreateNewVaultView.swift in Sources */,
-				35D386202BD92B2900532323 /* BreachCounterView.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
 				35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */,
 				3567DF4D2A49C7950025BD88 /* UpsellableDetailText.swift in Sources */,
@@ -3407,8 +3413,10 @@
 				5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */,
 				3585DE522B591035008AFD9F /* ImportExportWebView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,
+				5BD613892C2028FE00968E0F /* SecureLinkListUIModel.swift in Sources */,
 				5BD4A8FE2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */,
 				354E9AAB2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
+				5BD6138D2C202B0E00968E0F /* UpsellEntry+Extensions.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */,
 				35805D0A2BD8E39300288CC0 /* MonitorExcludedEmailView.swift in Sources */,

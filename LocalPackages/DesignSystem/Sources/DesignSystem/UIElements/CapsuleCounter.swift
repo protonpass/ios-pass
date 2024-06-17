@@ -1,6 +1,6 @@
 //
-// BreachCounterView.swift
-// Proton Pass - Created on 24/04/2024.
+// CapsuleCounter.swift
+// Proton Pass - Created on 17/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import Entities
 import SwiftUI
 
-struct BreachCounterView: View {
+public struct CapsuleCounter: View {
     let count: Int
-    let type: SecureRowType
+    let foregroundStyle: Color
+    let background: Color
 
-    var body: some View {
+    public init(count: Int, foregroundStyle: Color, background: Color) {
+        self.count = count
+        self.foregroundStyle = foregroundStyle
+        self.background = background
+    }
+
+    public var body: some View {
         Text(verbatim: "\(count)")
             .fontWeight(.medium)
             .padding(.vertical, 4)
             .padding(.horizontal, 12)
-            .foregroundStyle(type.iconColor.toColor)
-            .background(type.background.toColor)
+            .foregroundStyle(foregroundStyle)
+            .background(background)
             .clipShape(Capsule())
     }
 }
