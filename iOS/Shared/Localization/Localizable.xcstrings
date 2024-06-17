@@ -81,6 +81,12 @@
             "value" : "「%1$@」をクリップボードにコピーしました。 %2$lld 秒後に期限切れになります。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%1$@\" დაკოპირდა ბუფერში. ვადა იწურება %2$lld წაში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -102,7 +108,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kod \"%1$@\" został skopiowany do schowka. Kod wygasa za %2$lld sek."
+            "value" : "Kod \"%1$@\" został skopiowany do schowka. Kod wygaśnie za %2$lld sek."
           }
         },
         "pt-BR" : {
@@ -287,6 +293,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kopyalandı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã sao chép %@"
           }
         }
       }
@@ -9547,10 +9559,142 @@
     },
     "Active" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Актыўна"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivní"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiv"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiv"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ενεργό"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Active"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytössä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actif"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktif"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attivo"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აქტიური"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "활성"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiv"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włączony"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktívne"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivno"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanımda"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bật"
           }
         }
       }
@@ -10648,6 +10792,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alan ekle"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm trường"
           }
         }
       }
@@ -11918,6 +12068,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Деталі адреси"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thông tin địa chỉ"
           }
         }
       }
@@ -17367,6 +17523,12 @@
             "value" : "すべてのログイン項目で 2 要素認証が有効になっています"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ყველა თქვენს შესვლის დეტალს 2FA ჩართული აქვს"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17995,6 +18157,12 @@
             "value" : "Sei sicuro di voler eliminare la seguente sezione \"%@\"?"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დარწმუნებული ბრძანდებით, რომ გნებავთ, წაშალოთ სექცია \"%@\"?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18047,6 +18215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%@\" bölümünü kaldırmak istediğinize emin misiniz?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có chắc chắn muốn xóa các mục \"%@\"?"
           }
         }
       }
@@ -19865,7 +20039,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Syntymäaika"
+            "value" : "Syntymäpäivä"
           }
         },
         "fr" : {
@@ -19944,6 +20118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doğum tarihi"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngày sinh"
           }
         }
       }
@@ -20125,7 +20305,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Databrud opdaget for"
+            "value" : "Databrud registreret for"
           }
         },
         "de" : {
@@ -20418,6 +20598,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Виявлені витоки"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phát hiện rò rỉ dữ liệu"
           }
         }
       }
@@ -21135,6 +21321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Можна переглянути:"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Có thể được xem:"
           }
         }
       }
@@ -23064,10 +23256,142 @@
     },
     "Caution: You won’t be able to access your Pass account if you lose this password." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Асцярожна: вы не зможаце атрымаць доступ да ўліковага запісу Pass, калі згубіце гэты пароль."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upozornění: Pokud toto heslo ztratíte, nebudete mít přístup ke svému účtu Pass."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forsigtig: Du vil ikke kunne tilgå din Pass-konto, hvis du mister denne adgangskode."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achtung! Wenn du dieses Passwort verlierst, kannst du nicht mehr auf dein Pass-Konto zugreifen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προσοχή: Δε θα μπορείτε να αποκτήσετε πρόσβαση στον λογαριασμό σας Pass αν χάσετε αυτόν τον κωδικό πρόσβασης."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Caution: You won’t be able to access your Pass account if you lose this password."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precaución: No podrás acceder a tu cuenta de Pass si pierdes esta contraseña."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precaución: No podrá acceder a su cuenta de Pass si pierde esta contraseña."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varoitus: Jos kadotat tämän salasanan, et enää pääse Pass-tilillesi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avertissement : vous ne pourrez plus accéder à votre compte Pass si vous perdez ce mot de passe."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peringatan: Anda tidak akan dapat mengakses akun Pass Anda apabila Anda kehilangan kata sandi ini."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attenzione: non potrai accedere al tuo account Pass se perdi questa password."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注意: このパスワードを紛失すると、Pass アカウントにアクセスできなくなります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경고: 이 비밀번호를 분실하면 Pass 계정에 접근할 수 없게 됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forsiktig: du får ikke tilgang til Pass-kontoen din hvis du mister dette passordet."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostrzeżenie: Jeśli zapomnisz tego hasła, stracisz dostęp do konta Proton Pass."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuidado: você não poderá acessar sua conta do Pass se você perder essa senha."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atenție: nu veți putea accesa contul Pass dacă pierdeți această parolă."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozor: Pokiaľ toto heslo stratíte, nebudete mať prístup k vášmu účtu Pass."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozor: Če izgubite to geslo, ne boste mogli dostopati do svojega računa Pass."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varning: Du kommer inte att kunna komma åt ditt Pass-konto om du tappar bort detta lösenord."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dikkat: Bu parolayı kaybederseniz Pass hesabınıza erişemezsiniz."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lưu ý: bạn sẽ không thể truy cập vào tài khoản Proton Pass nếu không có mật khẩu này."
           }
         }
       }
@@ -24887,7 +25211,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kloonaa"
+            "value" : "Monista"
           }
         },
         "fr" : {
@@ -25566,6 +25890,12 @@
             "value" : "Firma"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bedrijf"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25606,6 +25936,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kuruluş"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Công ty"
           }
         }
       }
@@ -26093,10 +26429,142 @@
     },
     "Confirm extra password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пацвердзіць дадатковы пароль"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrdit dodatečné heslo"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekræft ekstra adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusätzliches Passwort bestätigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιβεβαίωση επιπλέον κωδικού πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirm extra password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirma la contraseña adicional"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirme la contraseña adicional"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vahvista lisäsalasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmer le mot de passe supplémentaire"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfirmasi kata sandi tambahan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conferma la password aggiuntiva"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაადასტურეთ დამატებითი პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호 확인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekreft ekstra passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potwierdź dodatkowe hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmar senha adicional"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmare parolă suplimentară"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrďte dodatočné heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potrdite dodatno geslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekräfta extra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parola onayı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xác nhận mật khẩu phụ"
           }
         }
       }
@@ -26263,10 +26731,130 @@
     },
     "Confirm your Proton password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пацвердзіць ваш пароль Proton"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekræft din Proton-adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-Passwort bestätigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιβεβαίωση του Proton κωδικού σύνδεσης σας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirm your Proton password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirma tu contraseña de Proton"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirme su contraseña de Proton"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vahvista Proton-salasanasi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmez votre mot de passe Proton"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfirmasi kata sandi Proton Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conferma la password Proton"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაადასტურეთ თქვენი Proton-ის პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 비밀번호 확인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekreft Proton-passordet ditt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potwierdź hasło Proton"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmar sua senha da Proton"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmați parola Proton"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrďte vaše Proton heslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekräfta ditt Proton-lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton parolanızı onaylayın"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xác nhận mật khẩu Proton"
           }
         }
       }
@@ -26582,6 +27170,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подробиці контакту"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thông tin liên lạc"
           }
         }
       }
@@ -28319,6 +28913,12 @@
             "state" : "translated",
             "value" : "Tam adı kopyala"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sao chép tên đầy đủ"
+          }
         }
       }
     },
@@ -29124,6 +29724,12 @@
             "state" : "translated",
             "value" : "Країна або регіон"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quốc gia hoặc khu vực"
+          }
         }
       }
     },
@@ -29259,6 +29865,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İlçe"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quận hạt"
           }
         }
       }
@@ -30516,6 +31128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir kimlik oluştur"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tạo một danh tính"
           }
         }
       }
@@ -32894,6 +33512,12 @@
             "state" : "translated",
             "value" : "Özel alan"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trường tùy chỉnh"
+          }
         }
       }
     },
@@ -33350,6 +33974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özel bölüm"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mục tùy chỉnh"
           }
         }
       }
@@ -36773,7 +37403,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Muokkaa osion nimikettä"
+            "value" : "Muokkaa osion otsikkoa"
           }
         },
         "fr" : {
@@ -36852,6 +37482,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölüm başlığını düzenle"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chỉnh sửa tiêu đề của mục"
           }
         }
       }
@@ -38065,6 +38701,12 @@
             "value" : "Tom seksjon"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sekcja jest pusta"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -38099,6 +38741,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Boş bölüm"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mục trống"
           }
         }
       }
@@ -38944,7 +39592,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ota Proton Sentinel käyttöön"
+            "value" : "Käytä Proton Sentineliä"
           }
         },
         "fr" : {
@@ -39264,7 +39912,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seuraavan tason salasanahallintaan:"
+            "value" : "Edistyneempään salasanahallintaan:"
           }
         },
         "fr" : {
@@ -39745,7 +40393,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Syötä uusi osion nimike"
+            "value" : "Syötä osion uusi otsikko"
           }
         },
         "fr" : {
@@ -39825,6 +40473,12 @@
             "state" : "translated",
             "value" : "Yeni bölümün başlığını yazın"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhập tên cho mục mới"
+          }
         }
       }
     },
@@ -39881,7 +40535,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Syötä osion nimike"
+            "value" : "Syötä osion otsikko"
           }
         },
         "fr" : {
@@ -39960,6 +40614,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir bölüm başlığı yazın"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhập tên cho mục"
           }
         }
       }
@@ -40286,10 +40946,148 @@
     },
     "Enter your extra password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увядзіце ваш дадатковы пароль"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zadejte své dodatečné heslo"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indtast din ekstra adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib dein zusätzliches Passwort ein."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εισαγάγετε τον επιπλέον κωδικό πρόσβασής σας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter your extra password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresa tu contraseña adicional"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingrese su contraseña adicional"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syötä lisäsalasanasi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saisissez votre mot de passe supplémentaire"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masukkan kata sandi tambahan Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci la password aggiuntiva"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეიყვანეთ თქვენი დაამატებითი პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호 입력"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angi det ekstra passordet ditt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wpisz dodatkowe hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Digite sua senha adicional"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduceți parola suplimentară"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zadajte vaše dodatočné heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vnesite dodatno geslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ange ditt extra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parolanızı yazın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведіть ваш додатковий пароль"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhập mật khẩu phụ"
           }
         }
       }
@@ -40462,16 +41260,10 @@
             "value" : "Адбылася памылка"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Došlo k chybě"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fejl opstod"
+            "value" : "Der opstod en fejl"
           }
         },
         "de" : {
@@ -40495,7 +41287,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha producido un error"
+            "value" : "Se ha producido un error."
           }
         },
         "es-419" : {
@@ -40528,16 +41320,10 @@
             "value" : "Si è verificato un errore"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "エラーが発生しました"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "შეცდომა"
+            "value" : "დაფიქსირდა შეცდომა"
           }
         },
         "ko" : {
@@ -40555,7 +41341,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er is iets fout gegaan"
+            "value" : "Er is iets fout gegaan."
           }
         },
         "pl" : {
@@ -40598,12 +41384,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorun çıktı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сталася помилка"
           }
         },
         "vi" : {
@@ -41723,25 +42503,277 @@
             "state" : "translated",
             "value" : "Термін дії збігає через:"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hết hạn vào:"
+          }
         }
       }
     },
     "Extra password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковы пароль"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusätzliches Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιπλέον κωδικός πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extra password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña adicional"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña adicional"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisäsalasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe supplémentaire"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi tambahan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password aggiuntiva"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatkowe hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha adicional"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parola suplimentară"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatočné heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatno geslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parola"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mật khẩu phụ"
           }
         }
       }
     },
     "Extra password disabled" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковы пароль адключаны"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra adgangskode deaktiveret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusätzliches Passwort deaktiviert."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο επιπλέον κωδικός πρόσβασης απενεργοποιήθηκε"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extra password disabled"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña adicional está desactivada."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña adicional está desactivada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisäsalasana poistettiin käytöstä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le mot de passe supplémentaire est désactivé."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi tambahan dinonaktifkan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password aggiuntiva disabilitata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი პაროლი გათიშულია"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호 비활성화"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra passord deaktivert"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatkowe hasło zostało wyłączone"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha adicional desativada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă suplimentară dezactivată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatočné heslo bolo vypnuté"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra lösenord inaktiverat"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parola kapalı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mật khẩu phụ chưa được kích hoạt"
           }
         }
       }
@@ -41749,10 +42781,124 @@
     "Extra password set" : {
       "comment" : "Title of the alert after setting up extra password",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковы пароль зададзены"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra adgangskode indstillet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusätzliches Passwort festgelegt."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο επιπλέον ορισμός κωδικού πρόσβασης έχει τεθεί"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extra password set"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña adicional está configurada."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña adicional está configurada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisäsalasana asetettiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le mot de passe supplémentaire est configuré."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi tambahan ditetapkan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password aggiuntiva impostata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი პაროლი დაყენებულია"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호 설정"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra passord angitt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustaw dodatkowe hasło"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă suplimentară setată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatočné heslo bolo nastavené"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra lösenord inställt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parola ayarlandı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mật khẩu phụ đã được kích hoạt"
           }
         }
       }
@@ -42629,6 +43775,12 @@
             "state" : "translated",
             "value" : "Заповніть ваші особисті дані"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Điền vào thông tin cá nhân"
+          }
         }
       }
     },
@@ -43079,6 +44231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kat"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tầng"
           }
         }
       }
@@ -44746,7 +45904,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Koko nimi on kopioitu"
+            "value" : "Koko nimi kopioitiin"
           }
         },
         "fr" : {
@@ -44825,6 +45983,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tam ad kopyalandı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã sao chép tên đầy đủ"
           }
         }
       }
@@ -44994,7 +46158,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Згенерыраваць публічную спасылку для гэтага элемента"
+            "value" : "Згенерыраваць бяспечную спасылку для гэтага элемента"
           }
         },
         "da" : {
@@ -45007,6 +46171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Einen sicheren Link zu diesem Eintrag generieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δημιουργία ασφαλούς σύνδεσης προς αυτό το στοιχείο"
           }
         },
         "en" : {
@@ -45027,6 +46197,12 @@
             "value" : "Genere un enlace seguro para este elemento"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo turvallinen linkki tähän kohteeseen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45045,6 +46221,18 @@
             "value" : "Genera un link sicuro a questo elemento"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაცული ბმულის შექმნა ამ ელემენტისთვის"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목으로의 안전한 링크 만들기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45057,10 +46245,40 @@
             "value" : "Utwórz link do elementu"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerar um link seguro para este item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generare legătură web sigură pentru acest articol"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vygenerovať bezpečný odkaz na túto položku"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generera en säker länk till detta objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu öge için güvenli bir bağlantı oluştur"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tạo một liên kết an toàn tới nội dung này"
           }
         }
       }
@@ -48765,7 +49983,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Overvågning af Hide-my-email-aliasser sat på pause"
+            "value" : "Monitorering af Hide-my-email-aliasser sat på pause"
           }
         },
         "de" : {
@@ -48913,7 +50131,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Назіранне за псеўданімамі Hide-my-email адноўлена"
+            "value" : "Назіранне за псеўданімамі Hide-my-email узноўлена"
           }
         },
         "cs" : {
@@ -49961,6 +51179,12 @@
             "value" : "Identiteter"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identiteiten"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50001,6 +51225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kimlikler"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các danh tính"
           }
         }
       }
@@ -50137,6 +51367,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kimlik"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danh tính"
           }
         }
       }
@@ -50280,6 +51516,12 @@
             "state" : "translated",
             "value" : "Ідентичність створено"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã tạo danh tính"
+          }
         }
       }
     },
@@ -50422,6 +51664,12 @@
             "state" : "translated",
             "value" : "Особисті дані переміщено до смітника"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã chuyển danh tính vào thùng rác"
+          }
         }
       }
     },
@@ -50557,6 +51805,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kimlik kalıcı olarak silindi"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xóa vĩnh viễn danh tính"
           }
         }
       }
@@ -50694,6 +51948,12 @@
             "state" : "translated",
             "value" : "Kimlik geri yüklendi"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã khôi phục danh tính"
+          }
         }
       }
     },
@@ -50750,7 +52010,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Identiteetti päivitettiin"
+            "value" : "Identiteettiä muokattiin"
           }
         },
         "fr" : {
@@ -50829,6 +52089,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kimlik güncellendi"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã cập nhật danh tính"
           }
         }
       }
@@ -54034,6 +55300,12 @@
             "state" : "translated",
             "value" : "Меню дії елемента"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các tùy chọn cho nội dung"
+          }
         }
       }
     },
@@ -54342,6 +55614,12 @@
             "state" : "translated",
             "value" : "Меню фільтра елементів"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các tùy chọn bộ lọc nội dung"
+          }
         }
       }
     },
@@ -54490,6 +55768,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Меню сортування та фільтрації елементів"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các tùy chọn bộ lọc và sắp xếp nội dung"
           }
         }
       }
@@ -55100,6 +56384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İş unvanı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chức vụ"
           }
         }
       }
@@ -56439,7 +57729,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Muokattu"
+            "value" : "Muokattu viimeksi"
           }
         },
         "fr" : {
@@ -57740,6 +59030,12 @@
             "value" : "Førerkortnummer"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licentienummer"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57780,6 +59076,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ehliyet numarası"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Số bằng lái"
           }
         }
       }
@@ -58036,6 +59338,12 @@
             "value" : "Koblingen utløper etter"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link wygaśnie za"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -58076,6 +59384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Термін дії посилання закінчується після"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liên kết vô hiệu sau"
           }
         }
       }
@@ -58649,6 +59963,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inicio de sesión para %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirjautumistieto osoitteelle %@"
           }
         },
         "fr" : {
@@ -60813,6 +62133,12 @@
             "state" : "translated",
             "value" : "Максимум переглядів:"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lượt xem tối đa"
+          }
         }
       }
     },
@@ -61431,15 +62757,147 @@
             "state" : "translated",
             "value" : "İkinci ad"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tên đệm"
+          }
         }
       }
     },
     "Missing username" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адсутнічае імя карыстальніка"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mangler brugernavn"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzername fehlt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Λείπει το όνομα χρήστη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Missing username"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta el nombre de usuario."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta el nombre de usuario"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puuttuva käyttäjätunnus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom d'utilisateur est manquant."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama pengguna belum diisi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome utente mancante"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აკლია მომხმარებლის სახელი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정명이 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mangler brukernavn"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak nazwy użytkownika"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta o nome de usuário"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lipsește numele de utilizator."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chýbajúce meno používateľa"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manjka Uporabniško Ime"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saknar användarnamn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı adı eksik"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không tìm thấy tên người dùng"
           }
         }
       }
@@ -61897,6 +63355,12 @@
             "state" : "translated",
             "value" : "Değiştir"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sửa đổi"
+          }
         }
       }
     },
@@ -62032,6 +63496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölüm adını değiştir"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sửa đổi tiêu đề của mục"
           }
         }
       }
@@ -62397,7 +63867,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kohteen %@ valvonta keskeytettiin"
+            "value" : "Osoitteen %@ valvonta keskeytettiin"
           }
         },
         "fr" : {
@@ -62503,7 +63973,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Назіранне адноўлена для %@"
+            "value" : "Назіранне ўзноўлена для %@"
           }
         },
         "cs" : {
@@ -64775,7 +66245,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ei lokitietoja kohteelle %@"
+            "value" : "Ei lokitietoja osoitteelle %@"
           }
         },
         "fr" : {
@@ -66346,6 +67816,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nota para %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muistiinpano osoitteelle %@"
           }
         },
         "fr" : {
@@ -69087,6 +70563,12 @@
             "value" : "Åpnet:"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geopend:"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69133,6 +70615,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Відкрито:"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã mở:"
           }
         }
       }
@@ -70699,6 +72187,12 @@
             "state" : "translated",
             "value" : "Номер паспорта"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Số hộ chiếu"
+          }
         }
       }
     },
@@ -70915,7 +72409,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salasanan vaihto onnistui"
+            "value" : "Salasana vaihdettiin"
           }
         },
         "fr" : {
@@ -72915,6 +74409,12 @@
             "state" : "translated",
             "value" : "Персональні подробиці"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thông tin cá nhân"
+          }
         }
       }
     },
@@ -73050,6 +74550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kişisel site"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trang web cá nhân"
           }
         }
       }
@@ -74474,6 +75980,12 @@
             "state" : "translated",
             "value" : "Будь ласка, перевірте у теці «Спам» лист з назвою «Будь ласка, підтвердіть свою електронну адресу для Proton Pass»\n\nЯкщо ви не можете знайти такий лист, ви можете [запросити новий код](https://proton.me)."
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vui lòng tìm kiếm trong mục thư rác email có nội dung \"Vui lòng xác nhận địa chỉ email của bạn với Proton Pass\"\n\nNếu không tìm thấy, bạn có thể [yêu cầu một mã khác](https://proton.me)"
+          }
         }
       }
     },
@@ -74530,7 +76042,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ota meihin yhteyttä ongelman tutkimiseksi"
+            "value" : "Ota meihin yhteyttä ongelman selvittämiseksi"
           }
         },
         "fr" : {
@@ -76228,10 +77740,130 @@
     },
     "Protect Proton Pass with an extra password." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абараніць Proton Pass з дапамогай дадатковага пароля."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskyt Proton Pass med en ekstra adgangskode."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schütze Proton Pass mit einem zusätzlichen Passwort."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προστατέψτε το Proton Pass με έναν επιπλέον κωδικό πρόσβασης."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Protect Proton Pass with an extra password."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protege Proton Pass con una contraseña adicional."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteja Proton Pass con una contraseña adicional."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suojaa Proton Pass lisäsalasanalla"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protégez Proton Pass avec un mot de passe supplémentaire."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lindungi Proton Pass dengan kata sandi tambahan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteggi Proton Pass con una password aggiuntiva."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაიცავით Proton Pass დამატებითი პაროლით."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀버호로 Proton Pass 보호하기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskytt Proton Pass med et ekstra passord."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chroń Proton Pass za pomocą dodatkowego hasła."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteja o Proton Pass com uma senha adicional."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protejați Proton Pass cu o parolă suplimentară."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ochránte Proton Pass s dodatočným heslom."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skydda Proton Pass med ett extra lösenord."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass uygulamasını bir ek parola ile koruyun."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bảo vật Proton Pass với mật khẩu phụ"
           }
         }
       }
@@ -76715,7 +78347,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Назіранне за адрасамі Proton адноўлена"
+            "value" : "Назіранне за адрасамі Proton узноўлена"
           }
         },
         "cs" : {
@@ -76917,7 +78549,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton ei koskaan jaa tietojasi ulkopuolisille tahoille. Kaikki tiedot ovat peräisin pimeässä verkossa suoritettavasta Proton-verkkotunnusten valvonnasta."
+            "value" : "Proton ei koskaan jaa tietojasi ulkopuolisille tahoille. Tiedot ovat peräisin Proton-verkkotunnusten pimeän verkon valvonnasta."
           }
         },
         "fr" : {
@@ -76992,6 +78624,12 @@
             "value" : "Proton nikoli ne deli vaših podatkov s tretjimi osebami. Vsi podatki izvirajo iz iskanja pojava domen Proton na temnem spletu."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton delar aldrig din information med tredje part. All data kommer från sökningar efter förekomsten av Proton-domäner på mörka webben."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77014,10 +78652,136 @@
     },
     "Proton password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пароль Proton"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κωδικός πρόσβασης Proton"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña de Proton"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña de Proton"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-salasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de Passe Proton"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi Proton"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password Proton"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-ის პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 비밀번호"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hasło Proton"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha da Proton"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parola Proton"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton geslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton parolası"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mật khẩu Proton"
           }
         }
       }
@@ -77950,7 +79714,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Luo salasana uudelleen"
+            "value" : "Luo uusi salasana"
           }
         },
         "fr" : {
@@ -78664,15 +80428,141 @@
             "state" : "translated",
             "value" : "Özel bölümü kaldır"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa mục tùy chỉnh"
+          }
         }
       }
     },
     "Remove extra password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдаліць дадатковы пароль"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern ekstra adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusätzliches Passwort entfernen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κατάργηση επιπλέον κωδικού πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove extra password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar la contraseña adicional"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar la contraseña adicional"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista lisäsalasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer le mot de passe supplémentaire"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus kata sandi tambahan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovi la password aggiuntiva"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი პაროლის წაშლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호 지우기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern ekstra passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń dodatkowe hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover senha adicional"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminare parolă suplimentară"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstrániť dodatočné heslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort extra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parolayı kaldır"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gỡ bỏ mật khẩu phụ"
           }
         }
       }
@@ -78980,15 +80870,141 @@
             "state" : "translated",
             "value" : "Bölümü kaldır"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa mục"
+          }
         }
       }
     },
     "Repeat extra password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паўтарыць дадатковы пароль"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gentag ekstra adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusätzliches Passwort wiederholen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επανάληψη επιπλέον κωδικού πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Repeat extra password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repite la contraseña adicional"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repita la contraseña adicional"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toista lisäsalasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répéter le mot de passe supplémentaire"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulangi kata sandi tambahan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripeti la password aggiuntiva"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაიმეორეთ დამატებითი პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호 재확인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gjenta ekstra passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potwierdź dodatkowe hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetir senha adicional"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetare parolă suplimentară"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zopakovať dodatočné heslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetera extra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parola onayı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lặp lại mật khẩu phụ"
           }
         }
       }
@@ -81286,7 +83302,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rajoita katselujen määrää"
+            "value" : "Rajoita tarkastelumäärää"
           }
         },
         "fr" : {
@@ -81371,6 +83387,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Обмежити кількість переглядів"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giới hạn số lượt xem"
           }
         }
       }
@@ -81540,7 +83562,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Аднавіць назіранне"
+            "value" : "Узнавіць назіранне"
           }
         },
         "cs" : {
@@ -83652,7 +85674,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haettava sisältö"
+            "value" : "Etsittävissä oleva sisältö"
           }
         },
         "fr" : {
@@ -83806,7 +85828,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haettavat holvit"
+            "value" : "Etsittävissä olevat holvit"
           }
         },
         "fr" : {
@@ -84040,6 +86062,12 @@
             "state" : "translated",
             "value" : "İkinci telefonu numarası"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Số điện thoại phụ"
+          }
         }
       }
     },
@@ -84106,7 +86134,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turvallinen linkki on kopioitu"
+            "value" : "Turvallinen linkki kopioitiin"
           }
         },
         "fr" : {
@@ -84191,6 +86219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Захищене посилання скопійовано"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã sao chép liên kết an toàn"
           }
         }
       }
@@ -86327,7 +88361,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lähetä virheilmoitus"
+            "value" : "Lähetä vikailmoitus"
           }
         },
         "fr" : {
@@ -86970,7 +89004,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aseta käyttöoikeustaso kaikille jäsenille"
+            "value" : "Aseta kaikkien jäsenten käyttöoikeustaso"
           }
         },
         "fr" : {
@@ -87079,10 +89113,148 @@
     },
     "Set extra password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Задаць дадатковы пароль"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavte dodatečné heslo"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indstil ekstra adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusätzliches Passwort festlegen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ορισμός επιπλέον κωδικού πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Set extra password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establece la contraseña adicional"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configure la contraseña adicional"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aseta lisäsalasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définissez un mot de passe supplémentaire"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tetapkan kata sandi tambahan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imposta la password aggiuntiva"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードを設定する"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი პაროლის დაყენება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 비밀번호 설정"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angi ekstra passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustaw dodatkowe hasło"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Defina senha adicional"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setare parolă suplimentară"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastaviť dodatočné heslo"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavite dodatno geslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ställ in extra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parolayı ayarla"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thiết lập mật khẩu phụ"
           }
         }
       }
@@ -87621,7 +89793,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Määritä 2FA lisäturvaa varten"
+            "value" : "Tehosta suojausta määrittämällä 2FA"
           }
         },
         "fr" : {
@@ -88346,6 +90518,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поділитися захищеним посиланням"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chia sẻ liên kết an toàn"
           }
         }
       }
@@ -91485,6 +93663,12 @@
             "state" : "translated",
             "value" : "Номер соціального страхування"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Số bảo hiểm xã hội"
+          }
         }
       }
     },
@@ -92022,7 +94206,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esittelyssä"
+            "value" : "Spotlight"
           }
         },
         "fr" : {
@@ -92600,6 +94784,12 @@
             "state" : "translated",
             "value" : "Область або район"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tỉnh thành"
+          }
         }
       }
     },
@@ -93067,6 +95257,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вулична адреса, поштова скринька"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tên đường"
           }
         }
       }
@@ -98035,10 +100231,124 @@
     },
     "Too many wrong attempts" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Занадта шмат няправільных спроб"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For mange forkerte forsøg"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zu viele falsche Versuche"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πάρα πολλές λανθασμένες προσπάθειες"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Too many wrong attempts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hubo demasiados intentos incorrectos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hubo demasiados intentos incorrectos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liian monta virheellistä yritystä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il y a eu trop de tentatives incorrectes."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terlalu banyak percobaan yang salah"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Troppi tentativi errati"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ძალიან ბევრი არასწორი მცდელობა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "너무 많은 시도입니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For mange feilforsøk"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zbyt wiele nieudanych prób"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prea multe încercări greșite."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Príliš veľa chybných pokusov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "För många felaktiga försök"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çok fazla yanlış deneme yapıldı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quá nhiều lần thử bị thất bại"
           }
         }
       }
@@ -100579,6 +102889,12 @@
             "value" : "Ubegrenset"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onbeperkt"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -100625,6 +102941,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Необмежено"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không giới hạn"
           }
         }
       }
@@ -101162,7 +103484,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avaa edistyneet tietoturvaominaisuudet ja yksityiskohtaiset lokit verkkoläsnäolosi suojaamiseksi."
+            "value" : "Avaa edistyneet suojausominaisuudet ja yksityiskohtaiset lokit verkkonäkyvyytesi suojaamiseksi."
           }
         },
         "fr" : {
@@ -103423,7 +105745,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "커스텀 섹션을 추가하려면 업그레이드"
+            "value" : "사용자 지정 섹션을 추가하려면 업그레이드"
           }
         },
         "nb" : {
@@ -103472,6 +105794,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özel bölümler ekleyebilmek için tarifenizi yükseltin"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nâng cấp để thêm các mục tùy chỉn"
           }
         }
       }
@@ -107676,6 +110004,12 @@
             "value" : "Über sicheren Link"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μέσω ασφαλούς συνδέσμου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107692,6 +110026,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vía enlace seguro"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turvallisen linkin kautta"
           }
         },
         "fr" : {
@@ -107712,6 +110052,18 @@
             "value" : "Tramite link sicuro"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაცული ბმულით"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "안전한 링크를 이용함"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107730,10 +110082,34 @@
             "value" : "Via link seguro"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prin legătură web securizată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cez bezpečný odkaz"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Via säker länk"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Güvenli bağlantı ile"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thông qua liên kết an toàn"
           }
         }
       }
@@ -110044,7 +112420,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heikot salasanat ovat helpommin arvattavissa. Luo vahvoja salasanoja, jotta tilisi pysyvät turvassa."
+            "value" : "Heikot salasanat ovat helpommin arvattavissa. Suojaa tilisi luomalla niille vahvat salasanat."
           }
         },
         "fr" : {
@@ -111244,6 +113620,12 @@
             "state" : "translated",
             "value" : "İş bilgileri"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thông tin công việc"
+          }
         }
       }
     },
@@ -111339,6 +113721,12 @@
             "value" : "E-postadresse for arbeid"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zakelijke e-mail"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -111379,6 +113767,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İş e-posta adresi"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email công việc"
           }
         }
       }
@@ -111436,7 +113830,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Työpuhelinnumero"
+            "value" : "Työpuhelin"
           }
         },
         "fr" : {
@@ -111521,6 +113915,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Номер робочого телефону"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Số điện thoại công việc"
           }
         }
       }
@@ -111847,20 +114247,260 @@
     },
     "Wrong extra password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Няправільны дадатковы пароль"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forkert ekstra adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falsches zusätzliches Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Λάθος επιπλέον κωδικός πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wrong extra password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña adicional no es correcta."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña adicional no es correcta."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Väärä lisäsalasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le mot de passe supplémentaire n'est pas correct."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi tambahan salah"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password aggiuntiva errata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არასწორი დამატებითი პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "잘못된 추가 비밀번호입니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Galt ekstra passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatkowe hasło jest nieprawidłowe"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha adicional errada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă suplimentară greșită."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chybné dodatočné heslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fel extra lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek parola yanlış"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mật khẩu phụ không đúng"
           }
         }
       }
     },
     "Wrong Proton password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Няправільны пароль Proton"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forkert Proton-adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falsches Proton-Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Λάθος κωδικός πρόσβασης Proton"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wrong Proton password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña de Proton no es correcta."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña de Proton no es correcta."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Väärä Proton-salasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le mot de passe Proton n'est pas correct."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi Proton salah"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password Proton errata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არასწორი Proton-ის პაროლი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 비밀번호가 옳지 않습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Galt Proton-passord"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hasło Proton jest nieprawidłowe"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha adicional da Proton errada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă Proton greșită."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chybné Proton heslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fel Proton-lösenord"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton parolası yanlış"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mật khẩu Proton không đúng"
           }
         }
       }
@@ -111918,7 +114558,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "X-käyttäjätunnus"
+            "value" : "X-tunnus"
           }
         },
         "fr" : {
@@ -111997,6 +114637,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "X takma adı"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tài khoản X"
           }
         }
       }
@@ -113748,6 +116394,12 @@
             "value" : "監視から除外されたログイン項目はありません"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონიტორინგიდან ამოღებული შესვლის დეტალები არ გაგაჩნიათ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114465,20 +117117,260 @@
     },
     "You will be asked for this password during login and when switching from another Proton app to Proton Pass on web." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас будуць пытацца гэты пароль падчас уваходу і пры пераключэнні з іншай праграмы Proton на Proton Pass для браўзера."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O toto heslo budete požádáni při přihlašování a při přechodu z jiné aplikace Proton do Proton Pass na webu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du vil blive bedt om denne adgangskode under login, og ved skift fra en anden Proton-app til Proton Pass på nettet."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du wirst bei der Anmeldung und beim Wechsel von einer anderen Proton-App zu Proton Pass im Web nach diesem Passwort gefragt."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Θα σας ζητηθεί αυτός ο κωδικός πρόσβασης κατά τη σύνδεση και κατά τη μετάβαση από άλλη εφαρμογή Proton στο Proton Pass στον ιστό."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You will be asked for this password during login and when switching from another Proton app to Proton Pass on web."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se te pedirá esta contraseña durante el inicio de sesión y cuando cambies de una aplicación de Proton a Proton Pass en la web."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se le pedirá esta contraseña durante el inicio de sesión y cuando cambie de una aplicación de Proton a Proton Pass en la web."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinulta kysytään tätä salasanaa kun kirjaudut sisään ja kun siirryt toisesta Proton-sovelluksesta Proton Pass -verkkopalveluun."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce mot de passe vous sera demandé lorsque vous vous connectez et passer d'une autre application Proton à Proton Pass sur le web."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda akan diminta untuk memasukkan kata sandi ini pada saat masuk dan pada saat berpindah dari aplikasi Proton lain ke Proton Pass melalui situs web."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ti verrà richiesta questa password quando effettui l'accesso e quando passi da un'altra app Proton a Proton Pass web."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン時、および別の Proton アプリから Web 上の Proton Pass に切り替えるときに、このパスワードの入力を求められます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그인하는 동안 그리고 다른 Proton 앱에서 웹에서 Proton Pass로 전환할 때 이 비밀번호를 입력하라는 메시지가 표시됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du vil bli bedt om dette passordet under innlogging og når du bytter fra en annen Proton-app til Proton Pass på nettet."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hasło będzie wymagane podczas logowania i przełączania się do aplikacji Proton Pass przez przeglądarkę."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essa senha será solicitada a você ao iniciar sessão e quando mudar de outro aplicativo do Proton para o Proton Pass na web."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vi se va cere această parolă în timpul conectării și când treceți de la o altă aplicație Proton la Proton Pass pe web."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O toto heslo budete požiadaní počas prihlasovania a pri prechode z inej Proton aplikácie do Proton Pass na webe."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To geslo boste morali navesti med prijavo in pri prehodu iz druge aplikacije Proton v spletno aplikacijo Proton Pass."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kommer att bli tillfrågad om detta lösenord vid inloggning och när du byter från en annan Proton-app till Proton Pass på webben."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oturum açarken ve başka bir Proton uygulamasından Proton Pass İnternet uygulamasına geçerken sizden bu parola istenir."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn sẽ được hỏi mật khẩu phụ khi đăng nhập và khi chuyển từ một ứng dụng Proton khác sang Proton Pass trên trình duyệt."
           }
         }
       }
     },
     "You will be logged out and will have to log in again on all of your other devices." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На ўсіх вашых іншых прыладах сеанс будзе завершаны і вам неабходна будзе аўтарызавацца паўторна."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du bliver logget ud og skal logge ind igen på alle dine andre enheder."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du wirst abgemeldet und musst dich auf allen anderen Geräten erneut anmelden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Θα αποσυνδεθείτε και θα πρέπει να συνδεθείτε ξανά σε όλες τις άλλες συσκευές σας."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You will be logged out and will have to log in again on all of your other devices."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se cerrará la sesión y tendrás que volver a iniciarla en todos los dispositivos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se cerrará la sesión y tendrá que volver a iniciarla en todos los dispositivos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinut kirjataan ulos ja sinun on kirjauduttava uudelleen sisään kaikilla muilla laitteillasi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous serez déconnecté et vous devrez vous connecter à nouveau sur tous vos autres appareils."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda akan dikeluarkan dari akun dan perlu untuk masuk kembali pada seluruh perangkat lainnya yang Anda miliki"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verrai disconnesso e dovrai accedere nuovamente su tutti gli altri tuoi dispositivi."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자가 로그아웃되고 다른 모든 장치에서 다시 로그인해야 합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du blir logget ut og må logge på igjen på alle de andre enhetene dine."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konieczne będzie ponowne zalogowanie się na wszystkich urządzeniach."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contul se va deconecta și va trebui să vă reconectați pe toate celelalte dispozitive."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dôjde k odhláseniu a budete sa musieť znova prihlásiť na všetkých ostatných zariadeniach."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kommer bli utloggad och måste logga in igen på alla dina andra enheter."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oturumunuz kapatılacak ve diğer tüm aygıtlarınızda yeniden oturum açmanız gerekecek."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn sẽ bị đăng xuất và phải đăng nhập lại trên các thiết bị khác."
           }
         }
       }
@@ -115700,6 +118592,12 @@
             "value" : "あなたの電子メール アドレスは、少なくとも 1 件のデータ侵害で漏洩しました。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი ელფოსტის მისამართი, სულ ცოტა, 1 მონაცემების გაჟონვაში გამოჩნდა."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -116489,6 +119387,12 @@
             "value" : "Proton アカウント情報は安全かつ暗号化されたままです。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი Proton-ის ანგარიშის ინფორმაცია დაცული და დაშიფრული რჩება."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -117176,6 +120080,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Posta kodu"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mã bưu chính"
           }
         }
       }
