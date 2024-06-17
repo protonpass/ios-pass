@@ -477,6 +477,10 @@ extension HomepageCoordinator {
                     presentCreateSecureLinkView(for: item)
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
+                case .secureLinks:
+                    presentSecureLinks()
+                case let .secureLinkDetail(link):
+                    presentSecureLinkDetail(link: link)
                 }
             }
             .store(in: &cancellables)

@@ -23,9 +23,12 @@ import Entities
 import Factory
 import Foundation
 import Macro
+import ProtonCoreUIFoundations
 
 @MainActor
 final class ShareOrCreateNewVaultViewModel: ObservableObject {
+    @Published private(set) var isFreeUser = true
+
     let vault: VaultListUiModel
     let itemContent: ItemContent
 
@@ -33,6 +36,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
 
     var isSecureLinkActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
@@ -41,6 +45,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     init(vault: VaultListUiModel, itemContent: ItemContent) {
         self.vault = vault
         self.itemContent = itemContent
+        checkIfFreeUser()
     }
 
     func shareVault() {
@@ -71,6 +76,21 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private func complete(with vault: SharingVaultData) {
         setShareInviteVault(with: vault)
         router.present(for: .sharingFlow(.topMost))
+    }
+
+    func checkIfFreeUser() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func upsell(entryPoint: UpsellEntry) {
+        router.present(for: .upselling(entryPoint.defaultConfiguration))
     }
 }
 

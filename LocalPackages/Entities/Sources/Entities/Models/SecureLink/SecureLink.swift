@@ -20,13 +20,26 @@
 
 import Foundation
 
-public struct SecureLink: Decodable, Equatable, Sendable, Identifiable {
+public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable {
     public let linkID: String
     public let readCount, maxReadCount: Int?
     public let expirationTime: Int
     public let shareID, itemID: String
+    public let linkURL: String
+    public let encryptedLinkKey: String
+    public let linkKeyShareKeyRotation: Int64
 
     public var id: String {
         linkID
+    }
+}
+
+extension SecureLink: ItemIdentifiable {
+    public var shareId: String {
+        shareID
+    }
+
+    public var itemId: String {
+        itemID
     }
 }

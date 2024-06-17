@@ -7395,6 +7395,28 @@
         }
       }
     },
+    "%lld view" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld view"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld views"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld word(s)" : {
       "localizations" : {
         "be" : {
@@ -28300,6 +28322,16 @@
         }
       }
     },
+    "Copy link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy link"
+          }
+        }
+      }
+    },
     "Copy note content" : {
       "localizations" : {
         "be" : {
@@ -41538,6 +41570,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép ngày hết hạn"
+          }
+        }
+      }
+    },
+    "Expires in %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expires in %@"
           }
         }
       }
@@ -78795,6 +78837,16 @@
         }
       }
     },
+    "Remove link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove link"
+          }
+        }
+      }
+    },
     "Remove section" : {
       "localizations" : {
         "be" : {
@@ -83991,6 +84043,16 @@
         }
       }
     },
+    "Secure link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure link"
+          }
+        }
+      }
+    },
     "Secure link copied" : {
       "localizations" : {
         "be" : {
@@ -84129,6 +84191,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Захищене посилання скопійовано"
+          }
+        }
+      }
+    },
+    "Secure links" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure links"
           }
         }
       }
@@ -107986,6 +108058,16 @@
         }
       }
     },
+    "View all your secure links" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View all your secure links"
+          }
+        }
+      }
+    },
     "View and edit details for this alias on the separate alias page." : {
       "localizations" : {
         "be" : {
@@ -113412,6 +113494,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không thể mời người dùng bên ngoài tổ chức, liên hệ quản lí để tìm hiểu thêm."
+          }
+        }
+      }
+    },
+    "You currently don't have any secure links" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You currently don't have any secure links"
           }
         }
       }

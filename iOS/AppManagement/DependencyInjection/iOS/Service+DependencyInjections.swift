@@ -51,4 +51,8 @@ extension ServiceContainer {
     var pushNotificationService: Factory<any PushNotificationServiceProtocol> {
         self { PushNotificationService(apiService: SharedToolingContainer.shared.apiManager().apiService) }
     }
+
+    var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
+        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource()) }
+    }
 }

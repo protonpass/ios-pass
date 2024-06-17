@@ -296,4 +296,24 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         closureGetAllPinnedItems()
         return stubbedGetAllPinnedItemsResult
     }
+    // MARK: - getItemsIds
+    public var getItemsForThrowableError16: Error?
+    public var closureGetItemsIdsAsync16: () -> () = {}
+    public var invokedGetItemsIdsAsync16 = false
+    public var invokedGetItemsIdsAsyncCount16 = 0
+    public var invokedGetItemsIdsAsyncParameters16: (ids: [any ItemIdentifiable], Void)?
+    public var invokedGetItemsIdsAsyncParametersList16 = [(ids: [any ItemIdentifiable], Void)]()
+    public var stubbedGetItemsIdsAsyncResult16: [SymmetricallyEncryptedItem]!
+
+    public func getItems(for ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        invokedGetItemsIdsAsync16 = true
+        invokedGetItemsIdsAsyncCount16 += 1
+        invokedGetItemsIdsAsyncParameters16 = (ids, ())
+        invokedGetItemsIdsAsyncParametersList16.append((ids, ()))
+        if let error = getItemsForThrowableError16 {
+            throw error
+        }
+        closureGetItemsIdsAsync16()
+        return stubbedGetItemsIdsAsyncResult16
+    }
 }

@@ -59,6 +59,7 @@ public enum Constants {
         public static let displayAuthenticator = "displayAuthenticator"
         public static let resetTipsStateOnLaunch = "resetTipsStateOnLaunch"
         public static let forceShowTips = "forceShowTips"
+        public static let searchAndListSecureLink = "searchAndListSecureLink"
     }
 }
 

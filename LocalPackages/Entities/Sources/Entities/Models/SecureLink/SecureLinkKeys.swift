@@ -1,6 +1,6 @@
 //
-// BreachCounterView.swift
-// Proton Pass - Created on 24/04/2024.
+// SecureLinkKeys.swift
+// Proton Pass - Created on 14/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import Entities
-import SwiftUI
+import Foundation
 
-struct BreachCounterView: View {
-    let count: Int
-    let type: SecureRowType
+public struct SecureLinkKeys {
+    public let linkKey: String
+    public let itemKeyEncoded: String
+    public let linkKeyEncoded: String
+    public let shareKeyRotation: Int64
 
-    var body: some View {
-        Text(verbatim: "\(count)")
-            .fontWeight(.medium)
-            .padding(.vertical, 4)
-            .padding(.horizontal, 12)
-            .foregroundStyle(type.iconColor.toColor)
-            .background(type.background.toColor)
-            .clipShape(Capsule())
+    public init(linkKey: String, itemKeyEncoded: String, linkKeyEncoded: String, shareKeyRotation: Int64) {
+        self.linkKey = linkKey
+        self.itemKeyEncoded = itemKeyEncoded
+        self.linkKeyEncoded = linkKeyEncoded
+        self.shareKeyRotation = shareKeyRotation
     }
 }

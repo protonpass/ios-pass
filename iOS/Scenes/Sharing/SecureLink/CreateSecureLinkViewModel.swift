@@ -65,7 +65,7 @@ enum CreateSecureLinkViewModelState {
         case .creationWithoutRestriction, .creationWithRestriction:
             310
         case .created:
-            400
+            450
         }
     }
 
