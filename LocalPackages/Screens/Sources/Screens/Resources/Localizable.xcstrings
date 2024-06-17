@@ -1175,7 +1175,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ota Spotlight-haku käyttöön"
+            "value" : "Käytä Spotlight-hakua"
           }
         },
         "fr" : {
@@ -2938,7 +2938,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Etsi kohteita saumattomasti koti-valikon kautta. Avaa Asetukset → Spotlight ottaaksesi sen käyttöön."
+            "value" : "Etsi kohteita saumattomasti suoraan koti-valikosta. Ota haku käyttöön asetusten Spotlight-osiosta."
           }
         },
         "fr" : {
