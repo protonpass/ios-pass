@@ -477,7 +477,9 @@ private extension DarkWebMonitorHomeView {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             if let count {
-                BreachCounterView(count: count, type: .danger)
+                CapsuleCounter(count: count,
+                               foregroundStyle: SecureRowType.danger.iconColor.toColor,
+                               background: SecureRowType.danger.background.toColor)
             }
 
             ItemDetailSectionIcon(icon: IconProvider.chevronRight,

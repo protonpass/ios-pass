@@ -69,6 +69,8 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
+
+    func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 }
 
 public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}
@@ -237,6 +239,27 @@ public extension LocalItemDatasource {
             .init(format: "isLogInItem = %d", true)
         ])
         fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
+    func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        // Create an array to hold individual predicates
+        var predicates: [NSPredicate] = []
+
+        for item in items {
+            let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", item.shareId),
+                .init(format: "itemID = %@", item.itemId)
+            ])
+            predicates.append(compoundPredicate)
+        }
+
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+
+        // Set the batch size to optimize fetching
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }

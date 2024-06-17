@@ -27,18 +27,24 @@ public struct SecureLinkCreationConfiguration: Decodable, Equatable, Sendable {
     public let expirationTime: Int
     public let encryptedItemKey: String
     public let maxReadCount: Int?
+    public let encryptedLinkKey: String
+    public let linkKeyShareKeyRotation: Int64
 
     public init(shareId: String,
                 itemId: String,
                 revision: Int,
                 expirationTime: Int,
                 encryptedItemKey: String,
-                maxReadCount: Int?) {
+                maxReadCount: Int?,
+                encryptedLinkKey: String,
+                linkKeyShareKeyRotation: Int64) {
         self.shareId = shareId
         self.itemId = itemId
         self.revision = revision
         self.expirationTime = expirationTime
         self.encryptedItemKey = encryptedItemKey
         self.maxReadCount = maxReadCount
+        self.encryptedLinkKey = encryptedLinkKey
+        self.linkKeyShareKeyRotation = linkKeyShareKeyRotation
     }
 }

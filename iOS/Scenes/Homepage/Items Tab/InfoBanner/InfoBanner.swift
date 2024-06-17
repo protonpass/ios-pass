@@ -60,7 +60,6 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                   ctaTitle: #localized("Turn on AutoFill"),
                   backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
                   foregroundColor: PassColor.textInvert.toColor)
-
         case .aliases:
             .init(title: #localized("Goodbye spam and scams"),
                   description: #localized("Use email aliases to protect your inbox and identity"),

@@ -39,11 +39,14 @@ public extension CreateSecureLinkUseCase {
 public final class CreateSecureLink: CreateSecureLinkUseCase {
     private let getSecureLinkKeys: any GetSecureLinkKeysUseCase
     private let datasource: any RemoteSecureLinkDatasourceProtocol
+    private let manager: any SecureLinkManagerProtocol
 
     public init(datasource: any RemoteSecureLinkDatasourceProtocol,
-                getSecureLinkKeys: any GetSecureLinkKeysUseCase) {
+                getSecureLinkKeys: any GetSecureLinkKeysUseCase,
+                manager: any SecureLinkManagerProtocol) {
         self.datasource = datasource
         self.getSecureLinkKeys = getSecureLinkKeys
+        self.manager = manager
     }
 
     public func execute(item: ItemContent,
@@ -54,9 +57,12 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
                                                             itemId: item.itemId,
                                                             revision: Int(item.item.revision),
                                                             expirationTime: expirationTime,
-                                                            encryptedItemKey: keys.encryptedItemKey,
-                                                            maxReadCount: maxReadCount)
+                                                            encryptedItemKey: keys.itemKeyEncoded,
+                                                            maxReadCount: maxReadCount,
+                                                            encryptedLinkKey: keys.linkKeyEncoded,
+                                                            linkKeyShareKeyRotation: keys.shareKeyRotation)
         let link = try await datasource.createLink(configuration: configuration)
+        try await manager.updateSecureLinks()
         return link.update(with: keys.linkKey)
     }
 }

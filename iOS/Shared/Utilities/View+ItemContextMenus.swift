@@ -352,6 +352,7 @@ extension View {
                                        onPinToggle: { handler.toggleItemPinning(item) },
                                        onViewHistory: { handler.viewHistory(item) },
                                        onTrash: { handler.trash(item) }))
+
             case .alias:
                 itemContextMenu(.alias(item: item,
                                        isEditable: isEditable,
@@ -381,6 +382,7 @@ extension View {
                                       onPinToggle: { handler.toggleItemPinning(item) },
                                       onViewHistory: { handler.viewHistory(item) },
                                       onTrash: { handler.trash(item) }))
+
             case .identity:
                 itemContextMenu(.identity(item: item,
                                           isEditable: isEditable,

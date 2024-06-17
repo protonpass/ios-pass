@@ -32,6 +32,9 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.displayAuthenticator)
     private var displayAuthenticator = false
 
+    @AppStorage(Constants.QA.searchAndListSecureLink)
+    private var searchAndListSecureLink = false
+
     var body: some View {
         NavigationStack {
             Form {
@@ -48,6 +51,10 @@ struct QAFeaturesView: View {
                     }
                     Toggle(isOn: $displayAuthenticator) {
                         Text(verbatim: "Display Authenticator")
+                    }
+
+                    Toggle(isOn: $searchAndListSecureLink) {
+                        Text(verbatim: "Display search secure link")
                     }
                 }
                 if #available(iOS 17, *) {

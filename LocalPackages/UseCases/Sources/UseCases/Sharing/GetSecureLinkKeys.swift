@@ -26,11 +26,12 @@ import Entities
 import Foundation
 
 public protocol GetSecureLinkKeysUseCase: Sendable {
-    func execute(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String)
+    func execute(item: ItemContent) async throws -> SecureLinkKeys
 }
 
 public extension GetSecureLinkKeysUseCase {
-    func callAsFunction(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String) {
+    func callAsFunction(item: ItemContent) async throws
+        -> SecureLinkKeys {
         try await execute(item: item)
     }
 }
@@ -45,18 +46,30 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
-    public func execute(item: ItemContent) async throws -> (linkKey: String, encryptedItemKey: String) {
+    public func execute(item: ItemContent) async throws -> SecureLinkKeys {
         let itemKeyInfo = try await passKeyManager.getLatestItemKey(shareId: item.shareId, itemId: item.itemId)
+
+        let shareKeyInfo = try await passKeyManager.getLatestShareKey(shareId: item.shareId)
+
         let linkKey = try Data.random()
 
         let encryptedItemKey = try AES.GCM.seal(itemKeyInfo.keyData,
                                                 key: linkKey,
                                                 associatedData: .itemKey)
 
-        guard let itemKeyEncoded = encryptedItemKey.combined?.base64EncodedString() else {
+        let encryptedLinkKey = try AES.GCM.seal(linkKey,
+                                                key: shareKeyInfo.keyData,
+                                                associatedData: .linkKey)
+
+        guard let itemKeyEncoded = encryptedItemKey.combined?.base64EncodedString(),
+              let linkKeyEncoded = encryptedLinkKey.combined?.base64EncodedString()
+        else {
             throw PassError.crypto(.failedToBase64Encode)
         }
 
-        return (linkKey.base64URLSafeEncodedString(), itemKeyEncoded)
+        return SecureLinkKeys(linkKey: linkKey.base64URLSafeEncodedString(),
+                              itemKeyEncoded: itemKeyEncoded,
+                              linkKeyEncoded: linkKeyEncoded,
+                              shareKeyRotation: shareKeyInfo.keyRotation)
     }
 }
