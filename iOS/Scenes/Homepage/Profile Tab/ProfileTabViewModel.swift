@@ -25,7 +25,6 @@ import DesignSystem
 import Entities
 import Factory
 import Macro
-import ProtonCoreServices
 import Screens
 import SwiftUI
 
@@ -76,7 +75,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
-    private var secureLinkFetch: Task<Void, Never>?
 
     var isSecureLinkActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
@@ -94,7 +92,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
         refresh()
-        fetchSecureLink()
         setUp()
     }
 }
@@ -241,8 +238,8 @@ extension ProfileTabViewModel {
 // MARK: - Secure link
 
 extension ProfileTabViewModel {
-    func fetchSecureLink() {
-        secureLinkFetch = Task { [weak self] in
+    func fetchSecureLinks() {
+        Task { [weak self] in
             guard let self else { return }
             do {
                 secureLinks = try await secureLinkManager.updateSecureLinks()
@@ -254,23 +251,11 @@ extension ProfileTabViewModel {
     }
 
     func showSecureLinkList() {
-        secureLinkFetch?.cancel()
-        router.present(for: .secureLinks(secureLinks))
+        router.present(for: .secureLinks)
     }
 
     func upsell(entryPoint: UpsellEntry) {
-        var upsellElements = [UpsellElement]()
-        upsellElements.append(UpsellElement(icon: PassIcon.shield2,
-                                            title: #localized("Dark Web Monitoring"),
-                                            color: PassColor.interactionNormMajor2))
-        upsellElements.append(contentsOf: [UpsellElement].default)
-
-        let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
-                                                       title: #localized("Stay safer online"),
-                                                       description: entryPoint.description,
-                                                       upsellElements: upsellElements,
-                                                       ctaTitle: #localized("Get Pass Plus"))
-        router.present(for: .upselling(configuration))
+        router.present(for: .upselling(entryPoint.defaultConfiguration))
     }
 }
 

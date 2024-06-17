@@ -29,26 +29,6 @@ import Foundation
 import Macro
 import Screens
 
-enum UpsellEntry {
-    case generic
-    case missing2fa
-    case sentinel
-    case darkWebMonitorNoBreach
-    case darkWebMonitorBreach
-
-    var description: String {
-        switch self {
-        case .generic, .missing2fa, .sentinel:
-            #localized("Unlock advanced security features and detailed logs to safeguard your online presence.")
-        case .darkWebMonitorNoBreach:
-            #localized("Dark Web Monitoring is available with a paid plan. Upgrade for immediate access.")
-        case .darkWebMonitorBreach:
-            // swiftlint:disable:next line_length
-            #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
-        }
-    }
-}
-
 @MainActor
 final class PassMonitorViewModel: ObservableObject, Sendable {
     @Published private(set) var weaknessStats: WeaknessStats?
@@ -103,18 +83,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     }
 
     func upsell(entryPoint: UpsellEntry) {
-        var upsellElements = [UpsellElement]()
-        upsellElements.append(UpsellElement(icon: PassIcon.shield2,
-                                            title: #localized("Dark Web Monitoring"),
-                                            color: PassColor.interactionNormMajor2))
-        upsellElements.append(contentsOf: [UpsellElement].default)
-
-        let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
-                                                       title: #localized("Stay safer online"),
-                                                       description: entryPoint.description,
-                                                       upsellElements: upsellElements,
-                                                       ctaTitle: #localized("Get Pass Plus"))
-        router.present(for: .upselling(configuration))
+        router.present(for: .upselling(entryPoint.defaultConfiguration))
     }
 }
 

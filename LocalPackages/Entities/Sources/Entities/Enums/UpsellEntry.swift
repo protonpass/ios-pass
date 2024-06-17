@@ -1,6 +1,6 @@
 //
-// SecureLink.swift
-// Proton Pass - Created on 15/05/2024.
+// UpsellEntry.swift
+// Proton Pass - Created on 17/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,26 +20,11 @@
 
 import Foundation
 
-public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable {
-    public let linkID: String
-    public let readCount, maxReadCount: Int?
-    public let expirationTime: Int
-    public let shareID, itemID: String
-    public let linkURL: String
-    public let encryptedLinkKey: String
-    public let linkKeyShareKeyRotation: Int64
-
-    public var id: String {
-        linkID
-    }
-}
-
-extension SecureLink: ItemIdentifiable {
-    public var shareId: String {
-        shareID
-    }
-
-    public var itemId: String {
-        itemID
-    }
+public enum UpsellEntry {
+    case generic
+    case missing2fa
+    case sentinel
+    case darkWebMonitorNoBreach
+    case darkWebMonitorBreach
+    case secureLink
 }

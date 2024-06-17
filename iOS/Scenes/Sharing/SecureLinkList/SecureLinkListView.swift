@@ -26,16 +26,12 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SecureLinkListView: View {
-    @StateObject var viewModel: SecureLinkListViewModel
+    @StateObject private var viewModel = SecureLinkListViewModel()
     @Environment(\.dismiss) private var dismiss
     @Namespace private var animation
 
-    private let columns = [GridItem(.flexible()), GridItem(.flexible())]
-    private let iPadColumns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    private let columns = [GridItem](repeating: .init(.flexible()),
+                                     count: UIDevice.current.isIpad ? 3 : 2)
 
     private enum GeoMatchIds {
         case expire(String)
@@ -68,8 +64,10 @@ struct SecureLinkListView: View {
             .commonViewSetUpModifier("Secure links")
             .showSpinner(viewModel.loading)
             .toolbar { toolbarContent }
-            .searchable(text: $viewModel.searchText,
-                        prompt: "Search")
+            .if(viewModel.searchSecureLink) { view in
+                view.searchable(text: $viewModel.searchText,
+                                prompt: "Search")
+            }
             .refreshable {
                 await viewModel.refresh()
             }
@@ -79,17 +77,32 @@ struct SecureLinkListView: View {
             .animation(.default, value: viewModel.display)
             .animation(.default, value: viewModel.secureLinks)
             .navigationStackEmbeded()
+            .tint(PassColor.interactionNorm.toColor)
     }
 }
 
 private extension SecureLinkListView {
     @ViewBuilder
     var mainContainer: some View {
-        if let secureLinks = viewModel.secureLinks {
-            if viewModel.display == .cell {
-                itemsGrid(items: secureLinks)
+        if viewModel.secureLinks.isEmpty {
+            VStack {
+                Spacer()
+                Image(uiImage: PassIcon.securityEmptyState)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 195)
+                Text("You currently don't have any secure links")
+                    .foregroundStyle(PassColor.textHint.toColor)
+                    .fontWeight(.medium)
+                    .multilineTextAlignment(.center)
+                Spacer()
+            }
+            .frame(maxHeight: .infinity)
+        } else {
+            if viewModel.isGrid {
+                itemsGrid(items: viewModel.secureLinks)
             } else {
-                itemsList(items: secureLinks)
+                itemsList(items: viewModel.secureLinks)
             }
         }
     }
@@ -97,7 +110,7 @@ private extension SecureLinkListView {
 
 private extension SecureLinkListView {
     func itemsGrid(items: [SecureLinkListUIModel]) -> some View {
-        LazyVGrid(columns: viewModel.isPhone ? columns : iPadColumns) {
+        LazyVGrid(columns: columns) {
             ForEach(items) { item in
                 itemCell(for: item)
             }
@@ -105,86 +118,25 @@ private extension SecureLinkListView {
         }
     }
 
-    @ViewBuilder
     func itemCell(for item: SecureLinkListUIModel) -> some View {
-        if viewModel.display == .cell {
-            ZStack(alignment: .topTrailing) {
-                VStack {
-                    cellIcon(item: item)
-
-                    VStack {
-                        cellTitle(item: item)
-
-                        VStack {
-                            Text("Expires in \(item.relativeTimeRemaining)")
-                                .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id,
-                                                       in: animation)
-
-                            if let readCount = item.secureLink.readCount {
-                                Text("\(readCount) view")
-                                    .matchedGeometryEffect(id: GeoMatchIds.view(item.id).id,
-                                                           in: animation)
-                            }
-                        }
-                        .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id,
-                                               in: animation)
-                        .font(.caption)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                    }
-                    .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id,
-                                           in: animation)
-                }
-                .padding(24)
-                menu(item: item)
-                    .padding([.top, .trailing], 16)
+        Group {
+            if viewModel.isGrid {
+                gridItemCell(for: item)
+            } else {
+                listItemCell(for: item)
             }
-            .frame(minWidth: 175, maxWidth: .infinity)
-            .background(PassColor.interactionNormMinor2.toColor)
-            .cornerRadius(20)
-            .onTapGesture {
-                viewModel.goToDetail(link: item)
-            }
-            .matchedGeometryEffect(id: GeoMatchIds.stack(item.id).id, in: animation)
-        } else {
-            HStack {
-                cellIcon(item: item)
-
-                VStack {
-                    cellTitle(item: item)
-                        .padding(.bottom, 5)
-
-                    HStack {
-                        Text("Expires in \(item.relativeTimeRemaining)")
-                            .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id, in: animation)
-                        if let readCount = item.secureLink.readCount {
-                            Text(verbatim: "/")
-                            Text("\(readCount) view")
-                                .matchedGeometryEffect(id: GeoMatchIds.view(item.id).id, in: animation)
-                        }
-                        Spacer()
-                    }
-                    .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id, in: animation)
-                    .font(.caption)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                }
-                .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id, in: animation)
-
-                Spacer()
-                menu(item: item)
-            }
-            .padding()
-            .background(PassColor.interactionNormMinor2.toColor)
-            .cornerRadius(20)
-            .onTapGesture {
-                viewModel.goToDetail(link: item)
-            }
-            .matchedGeometryEffect(id: GeoMatchIds.stack(item.id).id, in: animation)
         }
+        .background(PassColor.interactionNormMinor2.toColor)
+        .cornerRadius(20)
+        .onTapGesture {
+            viewModel.goToDetail(link: item)
+        }
+        .matchedGeometryEffect(id: GeoMatchIds.stack(item.id).id, in: animation)
     }
 
     func cellIcon(item: SecureLinkListUIModel) -> some View {
         ItemSquircleThumbnail(data: item.itemContent.thumbnailData())
-            .padding(viewModel.display == .cell ? .bottom : .trailing, 10)
+            .padding(viewModel.isGrid ? .bottom : .trailing, 10)
             .matchedGeometryEffect(id: "icon\(item.secureLink.linkID)", in: animation)
     }
 
@@ -193,7 +145,72 @@ private extension SecureLinkListView {
             .matchedGeometryEffect(id: "name\(item.secureLink.linkID)", in: animation)
             .lineLimit(1)
             .foregroundStyle(PassColor.textNorm.toColor)
-            .frame(maxWidth: .infinity, alignment: viewModel.display == .cell ? .center : .leading)
+            .fontWeight(.medium)
+            .frame(maxWidth: .infinity, alignment: viewModel.isGrid ? .center : .leading)
+    }
+
+    func gridItemCell(for item: SecureLinkListUIModel) -> some View {
+        ZStack(alignment: .topTrailing) {
+            VStack {
+                cellIcon(item: item)
+
+                VStack {
+                    cellTitle(item: item)
+
+                    VStack {
+                        Text("Expires in \(item.relativeTimeRemaining)")
+                            .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id,
+                                                   in: animation)
+
+                        if let readCount = item.secureLink.readCount {
+                            Text("\(readCount) view")
+                                .matchedGeometryEffect(id: GeoMatchIds.view(item.id).id,
+                                                       in: animation)
+                        }
+                    }
+                    .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id,
+                                           in: animation)
+                    .font(.caption)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                }
+                .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id,
+                                       in: animation)
+            }
+            .padding(24)
+            menu(item: item)
+                .padding([.top, .trailing], 16)
+        }
+        .frame(minWidth: 175, maxWidth: .infinity)
+    }
+
+    func listItemCell(for item: SecureLinkListUIModel) -> some View {
+        HStack {
+            cellIcon(item: item)
+
+            VStack {
+                cellTitle(item: item)
+                    .padding(.bottom, 5)
+
+                HStack {
+                    Text("Expires in \(item.relativeTimeRemaining)")
+                        .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id, in: animation)
+                    if let readCount = item.secureLink.readCount {
+                        Text(verbatim: "/")
+                        Text("\(readCount) view")
+                            .matchedGeometryEffect(id: GeoMatchIds.view(item.id).id, in: animation)
+                    }
+                    Spacer()
+                }
+                .matchedGeometryEffect(id: GeoMatchIds.internalContainer(item.id).id, in: animation)
+                .font(.caption)
+                .foregroundStyle(PassColor.textWeak.toColor)
+            }
+            .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id, in: animation)
+
+            Spacer()
+            menu(item: item)
+        }
+        .padding()
     }
 }
 
@@ -247,30 +264,30 @@ private extension SecureLinkListView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.chevronDown,
-                         iconColor: PassColor.loginInteractionNormMajor2,
-                         backgroundColor: PassColor.loginInteractionNormMinor1,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close") {
                 dismiss()
             }
         }
 
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button {
-                viewModel.displayToggle()
-            } label: {
-                if viewModel.display == .cell {
-                    Image(systemName: "list.bullet.rectangle")
-                } else {
-                    Image(systemName: "square.grid.3x3.square")
+        if viewModel.searchSecureLink {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button {
+                    viewModel.toggleDisplay()
+                } label: {
+                    Image(systemName: viewModel.isGrid ? "list.bullet.rectangle" : "square.grid.3x3.square")
                 }
-            }.buttonStyle(.plain)
+                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                .buttonStyle(.plain)
+            }
         }
     }
 }
 
 /// Set up common UI appearance for item detail pages
-/// e.g. navigation bar, background color, toolbar, delete item alert...
-struct CommonViewSetUpModifier: ViewModifier {
+/// e.g. navigation bar, background color, toolbar
+private struct CommonViewSetUpModifier: ViewModifier {
     let title: String
 
     func body(content: Content) -> some View {

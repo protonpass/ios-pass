@@ -108058,12 +108058,12 @@
         }
       }
     },
-    "View all your shared links" : {
+    "View all your secure links" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "View all your shared links"
+            "value" : "View all your secure links"
           }
         }
       }
@@ -113494,6 +113494,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không thể mời người dùng bên ngoài tổ chức, liên hệ quản lí để tìm hiểu thêm."
+          }
+        }
+      }
+    },
+    "You currently don't have any secure links" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You currently don't have any secure links"
           }
         }
       }
