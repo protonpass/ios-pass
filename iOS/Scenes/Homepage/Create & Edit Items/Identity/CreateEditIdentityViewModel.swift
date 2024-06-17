@@ -182,6 +182,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             case .address:
                 extraAddressDetails[index] = uiModel.update(title: newTitle)
                 return section
+
             case .personalDetails:
                 extraPersonalDetails[index] = uiModel.update(title: newTitle)
                 return section
@@ -193,6 +194,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             case .contact:
                 extraContactDetails[index] = uiModel.update(title: newTitle)
                 return section
+
             case .custom:
                 var newCustoms = section.content
                 newCustoms[index] = uiModel.update(title: newTitle)
@@ -243,6 +245,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             case .address:
                 extraAddressDetails.append(uiModel)
                 return section
+
             case .personalDetails:
                 extraPersonalDetails.append(uiModel)
                 return section
@@ -254,6 +257,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
             case .contact:
                 extraContactDetails.append(uiModel)
                 return section
+
             case .custom:
                 newCustoms.append(uiModel)
             }
@@ -418,6 +422,7 @@ extension CreateEditIdentityViewModel {
 
         case .contact:
             extraContactDetails.firstIndex(where: { $0.id == uiModel.id })
+
         case .custom:
             section.content.firstIndex(where: { $0.id == uiModel.id })
         }

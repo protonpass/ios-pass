@@ -102,6 +102,7 @@ struct SearchView: View {
                 } else {
                     NoSearchResultsInAllVaultView(query: query)
                 }
+
             case let .results(itemCount, results):
                 SearchResultsView(selectedType: $viewModel.selectedType,
                                   selectedSortType: $viewModel.selectedSortType,
