@@ -477,8 +477,8 @@ extension HomepageCoordinator {
                     presentCreateSecureLinkView(for: item)
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
-                case let .secureLinks(links):
-                    presentSecureLinks(links)
+                case .secureLinks:
+                    presentSecureLinks()
                 case let .secureLinkDetail(link):
                     presentSecureLinkDetail(link: link)
                 }

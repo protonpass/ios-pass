@@ -109,7 +109,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
     }
 
     func showSecureLinkList() {
-        router.present(for: .secureLinks(nil))
+        router.present(for: .secureLinks)
     }
 
     func deleteLink(link: SecureLinkDetailUiModel) {
@@ -125,7 +125,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
             }
         }
     }
-    
+
     func copyLink() {
         router.action(.copyToClipboard(text: uiModel.url,
                                        message: #localized("Secure link copied")))

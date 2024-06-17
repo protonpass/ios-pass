@@ -59,7 +59,9 @@ private extension MonitorIncludedEmailView {
     @ViewBuilder
     var trailingView: some View {
         if address.isBreached {
-            BreachCounterView(count: address.breachCounter, type: .danger)
+            CapsuleCounter(count: address.breachCounter,
+                           foregroundStyle: SecureRowType.danger.iconColor.toColor,
+                           background: SecureRowType.danger.background.toColor)
         }
         ItemDetailSectionIcon(icon: IconProvider.chevronRight,
                               color: address.isBreached ?

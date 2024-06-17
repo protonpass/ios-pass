@@ -97,7 +97,7 @@ private extension ShareOrCreateNewVaultView {
         .contentShape(.rect)
         .onTapGesture {
             if viewModel.isFreeUser {
-                viewModel.upsell(entryPoint: .generic)
+                viewModel.upsell(entryPoint: .secureLink)
             } else {
                 viewModel.secureLinkSharing()
             }
