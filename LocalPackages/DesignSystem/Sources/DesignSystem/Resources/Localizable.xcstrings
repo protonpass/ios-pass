@@ -489,16 +489,10 @@
             "value" : "Адбылася памылка"
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Došlo k chybě"
-          }
-        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fejl opstod"
+            "value" : "Der opstod en fejl"
           }
         },
         "de" : {
@@ -522,7 +516,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha producido un error"
+            "value" : "Se ha producido un error."
           }
         },
         "es-419" : {
@@ -555,16 +549,10 @@
             "value" : "Si è verificato un errore"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "エラーが発生しました"
-          }
-        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "შეცდომა"
+            "value" : "დაფიქსირდა შეცდომა"
           }
         },
         "ko" : {
@@ -582,7 +570,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er is iets fout gegaan"
+            "value" : "Er is iets fout gegaan."
           }
         },
         "pl" : {
@@ -625,12 +613,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorun çıktı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сталася помилка"
           }
         },
         "vi" : {
