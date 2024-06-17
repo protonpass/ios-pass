@@ -20,6 +20,7 @@
 //
 
 // periphery:ignore:all
+import Core
 import Foundation
 import ProtonCoreNetworking
 
@@ -29,20 +30,20 @@ private let kUnauthCredentialKey = "UnauthCredential"
 public protocol LocalUnauthCredentialDatasourceProtocol: Sendable {
     func getUnauthCredential() throws -> AuthCredential?
     func upsertUnauthCredential(_ credential: AuthCredential) throws
-    func removeUnauthCredential()
+    func removeUnauthCredential() throws
 }
 
 public final class LocalUnauthCredentialDatasource: Sendable, LocalUnauthCredentialDatasourceProtocol {
-    private let userDefault: UserDefaults
+    private let keychain: any KeychainProtocol
 
-    public init(userDefault: UserDefaults) {
-        self.userDefault = userDefault
+    public init(keychain: any KeychainProtocol) {
+        self.keychain = keychain
     }
 }
 
 public extension LocalUnauthCredentialDatasource {
     func getUnauthCredential() throws -> AuthCredential? {
-        guard let data = userDefault.data(forKey: kUnauthCredentialKey) else {
+        guard let data = try keychain.dataOrError(forKey: kUnauthCredentialKey) else {
             return nil
         }
         return try JSONDecoder().decode(AuthCredential.self, from: data)
@@ -50,10 +51,10 @@ public extension LocalUnauthCredentialDatasource {
 
     func upsertUnauthCredential(_ credential: AuthCredential) throws {
         let data = try JSONEncoder().encode(credential)
-        userDefault.set(data, forKey: kUnauthCredentialKey)
+        try keychain.setOrError(data, forKey: kUnauthCredentialKey)
     }
 
-    func removeUnauthCredential() {
-        userDefault.removeObject(forKey: kUnauthCredentialKey)
+    func removeUnauthCredential() throws {
+        try keychain.removeOrError(forKey: kUnauthCredentialKey)
     }
 }

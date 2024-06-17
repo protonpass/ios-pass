@@ -241,7 +241,7 @@ extension SharedRepositoryContainer {
     }
 
     var localUnauthCredentialDatasource: Factory<any LocalUnauthCredentialDatasourceProtocol> {
-        self { LocalUnauthCredentialDatasource(userDefault: kSharedUserDefaults) }
+        self { LocalUnauthCredentialDatasource(keychain: self.keychain) }
     }
 }
 
