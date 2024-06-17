@@ -75,6 +75,7 @@ struct SecureLinkDetailView: View {
 
             Button {
                 if uiModel.mode == .create {
+                    dismiss()
                     viewModel.showSecureLinkList()
                 } else {
                     viewModel.deleteLink(link: uiModel)
