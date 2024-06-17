@@ -124,6 +124,13 @@ public extension ItemContent {
         return nil
     }
 
+    var isAlias: Bool {
+        if case .alias = contentData {
+            return true
+        }
+        return false
+    }
+
     var hasTotpUri: Bool {
         switch contentData {
         case let .login(data):
