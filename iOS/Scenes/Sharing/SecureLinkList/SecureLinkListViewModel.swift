@@ -21,6 +21,7 @@
 //
 
 import Combine
+import Core
 import Entities
 import Factory
 import Foundation
@@ -52,18 +53,21 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
     var isPhone: Bool {
         UIDevice.current.userInterfaceIdiom == .phone
     }
-    
+
+    var searchSecureLink: Bool {
+        UserDefaults.standard.bool(forKey: Constants.QA.searchAndListSecureLink)
+    }
+
     var isGrid: Bool {
         display == .grid
     }
 
-    init(links: [SecureLink]?) {
-        self.links = links
+    init() {
         setUp()
     }
 
     func toggleDisplay() {
-        display = display == .grid ? .row : .grid
+        display = display == .grid ? .list : .grid
     }
 
     func goToDetail(link: SecureLinkListUIModel) {
@@ -91,7 +95,7 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
                 loading = true
             }
             do {
-                try await fetchLinksContent()
+                try await secureLinkManager.updateSecureLinks()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
@@ -99,7 +103,11 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
     }
 
     func refresh() async {
-        try? await secureLinkManager.updateSecureLinks()
+        do {
+            try await secureLinkManager.updateSecureLinks()
+        } catch {
+            router.display(element: .displayErrorBanner(error))
+        }
     }
 
     func copyLink(_ item: SecureLinkListUIModel) {
@@ -144,10 +152,6 @@ private extension SecureLinkListViewModel {
                 }
             }
             .store(in: &cancellables)
-    }
-
-    func fetchLinksContent() async throws {
-        try await secureLinkManager.updateSecureLinks()
     }
 
     func updateLocalData(links: [SecureLink]) async throws {

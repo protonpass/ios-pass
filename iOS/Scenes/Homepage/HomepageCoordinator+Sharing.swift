@@ -25,8 +25,9 @@ import Entities
 import SwiftUI
 
 extension HomepageCoordinator {
-    func presentSecureLinks(_ links: [SecureLink]?) {
-        let view = SecureLinkListView(viewModel: .init(links: links))
+    func presentSecureLinks() {
+        let view = SecureLinkListView()
+
         let viewController = UIHostingController(rootView: view)
         present(viewController)
     }

@@ -92,18 +92,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func upsell(entryPoint: UpsellEntry) {
-        var upsellElements = [UpsellElement]()
-        upsellElements.append(UpsellElement(icon: IconProvider.link,
-                                            title: #localized("Secure links"),
-                                            color: PassColor.interactionNormMajor2))
-        upsellElements.append(contentsOf: [UpsellElement].default)
-
-        let configuration = UpsellingViewConfiguration(icon: PassIcon.passPlus,
-                                                       title: #localized("Stay safer online"),
-                                                       description: entryPoint.description,
-                                                       upsellElements: upsellElements,
-                                                       ctaTitle: #localized("Get Pass Plus"))
-        router.present(for: .upselling(configuration))
+        router.present(for: .upselling(entryPoint.defaultConfiguration))
     }
 }
 
