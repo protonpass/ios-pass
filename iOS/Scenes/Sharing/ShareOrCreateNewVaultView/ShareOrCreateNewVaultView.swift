@@ -40,7 +40,7 @@ struct ShareOrCreateNewVaultView: View {
 
             Spacer()
 
-            if viewModel.isSecureLinkActive {
+            if viewModel.isSecureLinkActive, !viewModel.itemContent.isAlias {
                 secureLink
                     .padding(.top, 12)
 
