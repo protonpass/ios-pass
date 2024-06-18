@@ -225,10 +225,18 @@ extension SharedRepositoryContainer {
                                               databaseService: self.databaseService) }
     }
 
-    // periphery:ignore
     var remoteSecureLinkDatasource: Factory<any RemoteSecureLinkDatasourceProtocol> {
         self { RemoteSecureLinkDatasource(apiService: self.apiService,
                                           eventStream: self.corruptedSessionEventStream) }
+    }
+
+    var localUserDataDatasource: Factory<any LocalUserDataDatasourceProtocol> {
+        self { LocalUserDataDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
+                                       databaseService: self.databaseService) }
+    }
+
+    var localActiveUserIdDatasource: Factory<any LocalActiveUserIdDatasourceProtocol> {
+        self { LocalActiveUserIdDatasource(userDefault: kSharedUserDefaults) }
     }
 }
 

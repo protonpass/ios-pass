@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import Entities
 import Foundation
 
-public final class LocalAppPreferencesDatasourceProtocolMock: @unchecked Sendable, LocalAppPreferencesDatasourceProtocol {
+public final class LocalSharedPreferencesDatasourceProtocolMock: @unchecked Sendable, LocalSharedPreferencesDatasourceProtocol {
 
     public init() {}
 
@@ -31,9 +32,9 @@ public final class LocalAppPreferencesDatasourceProtocolMock: @unchecked Sendabl
     public var closureGetPreferences: () -> () = {}
     public var invokedGetPreferencesfunction = false
     public var invokedGetPreferencesCount = 0
-    public var stubbedGetPreferencesResult: AppPreferences?
+    public var stubbedGetPreferencesResult: SharedPreferences?
 
-    public func getPreferences() throws -> AppPreferences? {
+    public func getPreferences() throws -> SharedPreferences? {
         invokedGetPreferencesfunction = true
         invokedGetPreferencesCount += 1
         if let error = getPreferencesThrowableError1 {
@@ -47,10 +48,10 @@ public final class LocalAppPreferencesDatasourceProtocolMock: @unchecked Sendabl
     public var closureUpsertPreferences: () -> () = {}
     public var invokedUpsertPreferencesfunction = false
     public var invokedUpsertPreferencesCount = 0
-    public var invokedUpsertPreferencesParameters: (preferences: AppPreferences, Void)?
-    public var invokedUpsertPreferencesParametersList = [(preferences: AppPreferences, Void)]()
+    public var invokedUpsertPreferencesParameters: (preferences: SharedPreferences, Void)?
+    public var invokedUpsertPreferencesParametersList = [(preferences: SharedPreferences, Void)]()
 
-    public func upsertPreferences(_ preferences: AppPreferences) throws {
+    public func upsertPreferences(_ preferences: SharedPreferences) throws {
         invokedUpsertPreferencesfunction = true
         invokedUpsertPreferencesCount += 1
         invokedUpsertPreferencesParameters = (preferences, ())
@@ -61,13 +62,17 @@ public final class LocalAppPreferencesDatasourceProtocolMock: @unchecked Sendabl
         closureUpsertPreferences()
     }
     // MARK: - removePreferences
+    public var removePreferencesThrowableError3: Error?
     public var closureRemovePreferences: () -> () = {}
     public var invokedRemovePreferencesfunction = false
     public var invokedRemovePreferencesCount = 0
 
-    public func removePreferences() {
+    public func removePreferences() throws {
         invokedRemovePreferencesfunction = true
         invokedRemovePreferencesCount += 1
+        if let error = removePreferencesThrowableError3 {
+            throw error
+        }
         closureRemovePreferences()
     }
 }
