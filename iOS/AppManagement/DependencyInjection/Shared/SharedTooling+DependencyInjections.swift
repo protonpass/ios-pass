@@ -127,18 +127,12 @@ extension SharedToolingContainer {
         }
     }
 
-    var sessionManager: Factory<any SessionManagerProtocol> {
+    // periphery:ignore
+    var userManager: Factory<any UserManagerProtocol> {
         self {
-            let container = SharedRepositoryContainer.shared
-            let userDataDatasource = container.localUserDataDatasource()
-            let authCredentialDatasource = container.localAuthCredentialDatasource()
-            let unauthCredentialDatasource = container.localUnauthCredentialDatasource()
-            return SessionManager(userDataDatasource: userDataDatasource,
-                                  authDatasource: authCredentialDatasource,
-                                  unauthDatasource: unauthCredentialDatasource,
-                                  preferencesManager: self.preferencesManager(),
-                                  module: self.module(),
-                                  logManager: self.logManager())
+            UserManager(userDataDatasource: SharedRepositoryContainer.shared.localUserDataDatasource(),
+                        activeUserIdDatasource: SharedRepositoryContainer.shared.localActiveUserIdDatasource(),
+                        logManager: self.logManager())
         }
     }
 }

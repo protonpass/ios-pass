@@ -28,7 +28,6 @@ extension AppPreferences {
               createdItemsCount: .random(in: 1...100),
               dismissedBannerIds: .random(randomElement: .random()),
               dismissedCustomDomainExplanation: .random(),
-              didMigratePreferences: .random(), 
-              activeUserId: .random())
+              didMigratePreferences: .random())
     }
 }
