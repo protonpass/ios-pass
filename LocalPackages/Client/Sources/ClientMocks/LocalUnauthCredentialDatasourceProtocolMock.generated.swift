@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import Foundation
 import ProtonCoreNetworking
 
@@ -61,13 +62,17 @@ public final class LocalUnauthCredentialDatasourceProtocolMock: @unchecked Senda
         closureUpsertUnauthCredential()
     }
     // MARK: - removeUnauthCredential
+    public var removeUnauthCredentialThrowableError3: Error?
     public var closureRemoveUnauthCredential: () -> () = {}
     public var invokedRemoveUnauthCredentialfunction = false
     public var invokedRemoveUnauthCredentialCount = 0
 
-    public func removeUnauthCredential() {
+    public func removeUnauthCredential() throws {
         invokedRemoveUnauthCredentialfunction = true
         invokedRemoveUnauthCredentialCount += 1
+        if let error = removeUnauthCredentialThrowableError3 {
+            throw error
+        }
         closureRemoveUnauthCredential()
     }
 }
