@@ -249,6 +249,7 @@ private extension UserEmailView {
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: !viewModel.canContinue,
                                             action: {
+                                                isFocused = false
                                                 Task {
                                                     if await viewModel.continue() {
                                                         router.navigate(to: .userSharePermission)
