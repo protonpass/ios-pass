@@ -57,7 +57,7 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
         }
         let viewController = UIHostingController(rootView: view)
 
-        let customHeight = Int(OptionRowHeight.short.value) * CustomFieldType.cases(shouldShowTotp).count
+        let customHeight = Int(OptionRowHeight.medium.value) * CustomFieldType.cases(shouldShowTotp).count
         if let rootViewController {
             viewController.setDetentType(.custom(CGFloat(customHeight)),
                                          parentViewController: rootViewController)
