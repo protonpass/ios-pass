@@ -97,7 +97,7 @@ struct CreateEditVaultView: View {
 
     private var vaultsLimitMessage: some View {
         // swiftlint:disable:next line_length
-        TextBanner("You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription.")
+        TextBanner("You have reached the limit of vaults you can create. Upgrade to a paid plan to create multiple vaults.")
     }
 
     private var previewAndTitle: some View {
