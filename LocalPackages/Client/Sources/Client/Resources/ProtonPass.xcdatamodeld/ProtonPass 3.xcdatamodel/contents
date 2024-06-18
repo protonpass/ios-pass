@@ -21,6 +21,17 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="AuthCredentialEntity" representedClassName="AuthCredentialEntity" syncable="YES">
+        <attribute name="encryptedData" attributeType="Binary"/>
+        <attribute name="module" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="userID"/>
+                <constraint value="module"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES">
         <attribute name="aliasEmail" optional="YES" attributeType="String"/>
         <attribute name="content" attributeType="String"/>

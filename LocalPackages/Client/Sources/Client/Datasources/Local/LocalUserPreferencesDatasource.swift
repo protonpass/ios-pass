@@ -23,6 +23,7 @@ import CoreData
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 /// Store symmetrically encrypted `UserPreferences` in core data
 public protocol LocalUserPreferencesDatasourceProtocol: Sendable {
     func getPreferences(for userId: String) async throws -> UserPreferences?

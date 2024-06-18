@@ -19,55 +19,68 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import CoreData
 import Entities
 import Foundation
 
-public final class LocalAppPreferencesDatasourceProtocolMock: @unchecked Sendable, LocalAppPreferencesDatasourceProtocol {
+public final class LocalUserPreferencesDatasourceProtocolMock: @unchecked Sendable, LocalUserPreferencesDatasourceProtocol {
 
     public init() {}
 
     // MARK: - getPreferences
-    public var getPreferencesThrowableError1: Error?
+    public var getPreferencesForThrowableError1: Error?
     public var closureGetPreferences: () -> () = {}
     public var invokedGetPreferencesfunction = false
     public var invokedGetPreferencesCount = 0
-    public var stubbedGetPreferencesResult: AppPreferences?
+    public var invokedGetPreferencesParameters: (userId: String, Void)?
+    public var invokedGetPreferencesParametersList = [(userId: String, Void)]()
+    public var stubbedGetPreferencesResult: UserPreferences?
 
-    public func getPreferences() throws -> AppPreferences? {
+    public func getPreferences(for userId: String) async throws -> UserPreferences? {
         invokedGetPreferencesfunction = true
         invokedGetPreferencesCount += 1
-        if let error = getPreferencesThrowableError1 {
+        invokedGetPreferencesParameters = (userId, ())
+        invokedGetPreferencesParametersList.append((userId, ()))
+        if let error = getPreferencesForThrowableError1 {
             throw error
         }
         closureGetPreferences()
         return stubbedGetPreferencesResult
     }
     // MARK: - upsertPreferences
-    public var upsertPreferencesThrowableError2: Error?
+    public var upsertPreferencesForThrowableError2: Error?
     public var closureUpsertPreferences: () -> () = {}
     public var invokedUpsertPreferencesfunction = false
     public var invokedUpsertPreferencesCount = 0
-    public var invokedUpsertPreferencesParameters: (preferences: AppPreferences, Void)?
-    public var invokedUpsertPreferencesParametersList = [(preferences: AppPreferences, Void)]()
+    public var invokedUpsertPreferencesParameters: (preferences: UserPreferences, userId: String)?
+    public var invokedUpsertPreferencesParametersList = [(preferences: UserPreferences, userId: String)]()
 
-    public func upsertPreferences(_ preferences: AppPreferences) throws {
+    public func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws {
         invokedUpsertPreferencesfunction = true
         invokedUpsertPreferencesCount += 1
-        invokedUpsertPreferencesParameters = (preferences, ())
-        invokedUpsertPreferencesParametersList.append((preferences, ()))
-        if let error = upsertPreferencesThrowableError2 {
+        invokedUpsertPreferencesParameters = (preferences, userId)
+        invokedUpsertPreferencesParametersList.append((preferences, userId))
+        if let error = upsertPreferencesForThrowableError2 {
             throw error
         }
         closureUpsertPreferences()
     }
     // MARK: - removePreferences
+    public var removePreferencesForThrowableError3: Error?
     public var closureRemovePreferences: () -> () = {}
     public var invokedRemovePreferencesfunction = false
     public var invokedRemovePreferencesCount = 0
+    public var invokedRemovePreferencesParameters: (userId: String, Void)?
+    public var invokedRemovePreferencesParametersList = [(userId: String, Void)]()
 
-    public func removePreferences() {
+    public func removePreferences(for userId: String) async throws {
         invokedRemovePreferencesfunction = true
         invokedRemovePreferencesCount += 1
+        invokedRemovePreferencesParameters = (userId, ())
+        invokedRemovePreferencesParametersList.append((userId, ()))
+        if let error = removePreferencesForThrowableError3 {
+            throw error
+        }
         closureRemovePreferences()
     }
 }

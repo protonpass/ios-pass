@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.3 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -296,24 +296,24 @@ public final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalIt
         closureGetAllPinnedItems()
         return stubbedGetAllPinnedItemsResult
     }
-    // MARK: - getItemsIds
+    // MARK: - getItemsItems
     public var getItemsForThrowableError16: Error?
-    public var closureGetItemsIdsAsync16: () -> () = {}
-    public var invokedGetItemsIdsAsync16 = false
-    public var invokedGetItemsIdsAsyncCount16 = 0
-    public var invokedGetItemsIdsAsyncParameters16: (ids: [any ItemIdentifiable], Void)?
-    public var invokedGetItemsIdsAsyncParametersList16 = [(ids: [any ItemIdentifiable], Void)]()
-    public var stubbedGetItemsIdsAsyncResult16: [SymmetricallyEncryptedItem]!
+    public var closureGetItemsItemsAsync16: () -> () = {}
+    public var invokedGetItemsItemsAsync16 = false
+    public var invokedGetItemsItemsAsyncCount16 = 0
+    public var invokedGetItemsItemsAsyncParameters16: (items: [any ItemIdentifiable], Void)?
+    public var invokedGetItemsItemsAsyncParametersList16 = [(items: [any ItemIdentifiable], Void)]()
+    public var stubbedGetItemsItemsAsyncResult16: [SymmetricallyEncryptedItem]!
 
-    public func getItems(for ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
-        invokedGetItemsIdsAsync16 = true
-        invokedGetItemsIdsAsyncCount16 += 1
-        invokedGetItemsIdsAsyncParameters16 = (ids, ())
-        invokedGetItemsIdsAsyncParametersList16.append((ids, ()))
+    public func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem] {
+        invokedGetItemsItemsAsync16 = true
+        invokedGetItemsItemsAsyncCount16 += 1
+        invokedGetItemsItemsAsyncParameters16 = (items, ())
+        invokedGetItemsItemsAsyncParametersList16.append((items, ()))
         if let error = getItemsForThrowableError16 {
             throw error
         }
-        closureGetItemsIdsAsync16()
-        return stubbedGetItemsIdsAsyncResult16
+        closureGetItemsItemsAsync16()
+        return stubbedGetItemsItemsAsyncResult16
     }
 }

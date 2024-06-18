@@ -126,6 +126,15 @@ extension SharedToolingContainer {
                                       preferencesMigrator: self.preferences())
         }
     }
+
+    // periphery:ignore
+    var userManager: Factory<any UserManagerProtocol> {
+        self {
+            UserManager(userDataDatasource: SharedRepositoryContainer.shared.localUserDataDatasource(),
+                        activeUserIdDatasource: SharedRepositoryContainer.shared.localActiveUserIdDatasource(),
+                        logManager: self.logManager())
+        }
+    }
 }
 
 // MARK: Keychain tools
