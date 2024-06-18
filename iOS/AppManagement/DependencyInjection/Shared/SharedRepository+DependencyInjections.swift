@@ -235,13 +235,8 @@ extension SharedRepositoryContainer {
                                        databaseService: self.databaseService) }
     }
 
-    var localAuthCredentialDatasource: Factory<any LocalAuthCredentialDatasourceProtocol> {
-        self { LocalAuthCredentialDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
-                                             databaseService: self.databaseService) }
-    }
-
-    var localUnauthCredentialDatasource: Factory<any LocalUnauthCredentialDatasourceProtocol> {
-        self { LocalUnauthCredentialDatasource(keychain: self.keychain) }
+    var localActiveUserIdDatasource: Factory<any LocalActiveUserIdDatasourceProtocol> {
+        self { LocalActiveUserIdDatasource(userDefault: kSharedUserDefaults) }
     }
 }
 
