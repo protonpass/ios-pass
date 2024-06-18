@@ -38,7 +38,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let sessionManager = resolve(\SharedToolingContainer.sessionManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
 
@@ -116,7 +115,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
-                try await sessionManager.setUp()
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
                 rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)

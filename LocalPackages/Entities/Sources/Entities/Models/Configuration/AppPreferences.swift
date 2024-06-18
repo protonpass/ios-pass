@@ -42,22 +42,18 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     // TODO: Introduced in april 2024, can be removed several months later
     public var didMigratePreferences: Bool
 
-    public var activeUserId: String?
-
     public init(onboarded: Bool,
                 telemetryThreshold: TimeInterval?,
                 createdItemsCount: Int,
                 dismissedBannerIds: [String],
                 dismissedCustomDomainExplanation: Bool,
-                didMigratePreferences: Bool,
-                activeUserId: String?) {
+                didMigratePreferences: Bool) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
         self.dismissedBannerIds = dismissedBannerIds
         self.dismissedCustomDomainExplanation = dismissedCustomDomainExplanation
         self.didMigratePreferences = didMigratePreferences
-        self.activeUserId = activeUserId
     }
 }
 
@@ -69,7 +65,6 @@ private extension AppPreferences {
         static let dismissedBannerIds: [String] = []
         static let dismissedCustomDomainExplanation = false
         static let didMigratePreferences = false
-        static let activeUserId: String? = nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -79,7 +74,6 @@ private extension AppPreferences {
         case dismissedBannerIds
         case dismissedCustomDomainExplanation
         case didMigratePreferences
-        case activeUserId
     }
 }
 
@@ -95,15 +89,13 @@ public extension AppPreferences {
             try container.decodeIfPresent(Bool.self, forKey: .dismissedCustomDomainExplanation)
         let didMigratePreferences = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .didMigratePreferences)
-        let activeUserId = try container.decodeIfPresent(String.self, forKey: .activeUserId)
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,
                   dismissedBannerIds: dismissedBannerIds ?? Default.dismissedBannerIds,
                   dismissedCustomDomainExplanation: dismissedCustomDomainExplanation ?? Default
                       .dismissedCustomDomainExplanation,
-                  didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences,
-                  activeUserId: activeUserId ?? Default.activeUserId)
+                  didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences)
     }
 }
 
@@ -114,7 +106,6 @@ extension AppPreferences: Defaultable {
               createdItemsCount: Default.createdItemsCount,
               dismissedBannerIds: Default.dismissedBannerIds,
               dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
-              didMigratePreferences: Default.didMigratePreferences,
-              activeUserId: Default.activeUserId)
+              didMigratePreferences: Default.didMigratePreferences)
     }
 }

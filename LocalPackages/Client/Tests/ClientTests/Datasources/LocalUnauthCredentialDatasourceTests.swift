@@ -20,18 +20,20 @@
 //
 
 @testable import Client
+import CoreMocks
 import Foundation
 import ProtonCoreNetworking
 import XCTest
 
 final class LocalUnauthCredentialDatasourceTests: XCTestCase {
+    var keychainMockProvider: KeychainProtocolMockProvider!
     var sut: LocalUnauthCredentialDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
-        let userDefaults = UserDefaults.standard
-        userDefaults.removeAllObjects()
-        sut = LocalUnauthCredentialDatasource(userDefault: userDefaults)
+        keychainMockProvider = .init()
+        keychainMockProvider.setUp()
+        sut = LocalUnauthCredentialDatasource(keychain: keychainMockProvider.getKeychain())
     }
 
     override func tearDown() {
@@ -55,7 +57,7 @@ extension LocalUnauthCredentialDatasourceTests {
         let result2 = try XCTUnwrap(sut.getUnauthCredential())
         XCTAssertTrue(result2.isEqual(to: updatedCredential))
 
-        sut.removeUnauthCredential()
+        try sut.removeUnauthCredential()
         try XCTAssertNil(sut.getUnauthCredential())
     }
 }
