@@ -26,6 +26,16 @@ extension XCTestCase {
         return try XCTUnwrap(object)
     }
 
+    func XCTAssertNilAsync<T>(_ operation: @autoclosure () async throws -> T?) async throws {
+        let object = try await operation()
+        XCTAssertNil(object)
+    }
+
+    func XCTAssertNotNilAsync<T>(_ operation: @autoclosure () async throws -> T?) async throws {
+        let object = try await operation()
+        XCTAssertNotNil(object)
+    }
+
     func assertEncodeCorrectly<T: Encodable>(_ object: T, _ expectedResult: String) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
