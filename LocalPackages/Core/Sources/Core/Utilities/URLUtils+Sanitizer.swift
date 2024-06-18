@@ -42,8 +42,7 @@ public extension URLUtils {
 
             if let url = URL(string: urlString),
                url.scheme != nil,
-               let host = url.host,
-               host.components(separatedBy: ".").count > 1 {
+               url.host != nil {
                 return urlString
             }
 
