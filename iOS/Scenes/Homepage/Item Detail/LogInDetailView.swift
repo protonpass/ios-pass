@@ -212,16 +212,6 @@ private extension LogInDetailView {
                 } else {
                     Text(viewModel.username)
                         .sectionContentText()
-
-                    if viewModel.isAlias {
-                        Button { viewModel.showAliasDetail() } label: {
-                            Text("View alias")
-                                .font(.callout)
-                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color.toColor)
-                                .underline(color: viewModel.itemContent.type.normMajor2Color.toColor)
-                        }
-                        .padding(.top, 8)
-                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
