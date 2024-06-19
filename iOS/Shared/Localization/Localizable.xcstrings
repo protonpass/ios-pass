@@ -42778,6 +42778,16 @@
         }
       }
     },
+    "Extra password must have at least %lld characters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password must have at least %lld characters"
+          }
+        }
+      }
+    },
     "Extra password set" : {
       "comment" : "Title of the alert after setting up extra password",
       "localizations" : {
@@ -72660,6 +72670,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép mật khẩu"
+          }
+        }
+      }
+    },
+    "Passwords do not match" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwords do not match"
           }
         }
       }
