@@ -43,6 +43,10 @@ struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, @unchecked Send
         self.currentDate = currentDate
     }
 
+    var isActive: Bool {
+        secureLink.active
+    }
+
     var relativeTimeRemaining: String {
         let expirationDate = Date(timeIntervalSince1970: Double(secureLink.expirationTime))
         formatter.unitsStyle = .full

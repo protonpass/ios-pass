@@ -99,34 +99,83 @@ private extension SecureLinkListView {
             }
             .frame(maxHeight: .infinity)
         } else {
+            activeSection
+            inactiveSection
+        }
+    }
+}
+
+private extension SecureLinkListView {
+    @ViewBuilder
+    var activeSection: some View {
+        if !viewModel.activeLinks.isEmpty {
             if viewModel.isGrid {
-                itemsGrid(items: viewModel.secureLinks)
+                itemsGrid(items: viewModel.activeLinks)
             } else {
-                itemsList(items: viewModel.secureLinks)
+                itemsList(items: viewModel.activeLinks)
+            }
+        }
+    }
+
+    @ViewBuilder
+    var inactiveSection: some View {
+        if !viewModel.inactiveLinks.isEmpty {
+            Section {
+                if viewModel.isGrid {
+                    itemsGrid(items: viewModel.inactiveLinks, isInactive: true)
+                } else {
+                    itemsList(items: viewModel.inactiveLinks, isInactive: true)
+                }
+            } header: {
+                HStack {
+                    Text("Inactive links")
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, DesignConstant.sectionPadding)
+                    Spacer()
+                    Menu {
+                        Button(role: .destructive,
+                               action: { viewModel.removeAllInactiveLinks() },
+                               label: {
+                                   Label(title: {
+                                       Text("Remove all inactive links")
+                                   }, icon: {
+                                       Image(uiImage: IconProvider.crossCircle)
+                                   })
+                               })
+                    } label: {
+                        Image(uiImage: IconProvider.threeDotsVertical)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .contentShape(.rect)
+                    }
+                }
             }
         }
     }
 }
 
 private extension SecureLinkListView {
-    func itemsGrid(items: [SecureLinkListUIModel]) -> some View {
+    func itemsGrid(items: [SecureLinkListUIModel], isInactive: Bool = false) -> some View {
         LazyVGrid(columns: columns) {
             ForEach(items) { item in
-                itemCell(for: item)
+                itemCell(for: item, isInactive: isInactive)
             }
             Spacer()
         }
     }
 
-    func itemCell(for item: SecureLinkListUIModel) -> some View {
+    func itemCell(for item: SecureLinkListUIModel, isInactive: Bool) -> some View {
         Group {
             if viewModel.isGrid {
-                gridItemCell(for: item)
+                gridItemCell(for: item, isInactive: isInactive)
             } else {
-                listItemCell(for: item)
+                listItemCell(for: item, isInactive: isInactive)
             }
         }
-        .background(PassColor.interactionNormMinor2.toColor)
+        .background(isInactive ? PassColor.textDisabled.toColor : PassColor.interactionNormMinor2.toColor)
         .cornerRadius(20)
         .onTapGesture {
             viewModel.goToDetail(link: item)
@@ -149,7 +198,7 @@ private extension SecureLinkListView {
             .frame(maxWidth: .infinity, alignment: viewModel.isGrid ? .center : .leading)
     }
 
-    func gridItemCell(for item: SecureLinkListUIModel) -> some View {
+    func gridItemCell(for item: SecureLinkListUIModel, isInactive: Bool) -> some View {
         ZStack(alignment: .topTrailing) {
             VStack {
                 cellIcon(item: item)
@@ -177,13 +226,13 @@ private extension SecureLinkListView {
                                        in: animation)
             }
             .padding(24)
-            menu(item: item)
+            menu(item: item, isInactive: isInactive)
                 .padding([.top, .trailing], 16)
         }
         .frame(minWidth: 175, maxWidth: .infinity)
     }
 
-    func listItemCell(for item: SecureLinkListUIModel) -> some View {
+    func listItemCell(for item: SecureLinkListUIModel, isInactive: Bool) -> some View {
         HStack {
             cellIcon(item: item)
 
@@ -208,17 +257,17 @@ private extension SecureLinkListView {
             .matchedGeometryEffect(id: GeoMatchIds.externalContainer(item.id).id, in: animation)
 
             Spacer()
-            menu(item: item)
+            menu(item: item, isInactive: isInactive)
         }
         .padding()
     }
 }
 
 private extension SecureLinkListView {
-    func itemsList(items: [SecureLinkListUIModel]) -> some View {
+    func itemsList(items: [SecureLinkListUIModel], isInactive: Bool = false) -> some View {
         LazyVStack {
             ForEach(items) { item in
-                itemCell(for: item)
+                itemCell(for: item, isInactive: isInactive)
                     .frame(maxWidth: .infinity)
                     .animation(.default, value: viewModel.display)
             }
@@ -226,22 +275,25 @@ private extension SecureLinkListView {
         }
     }
 
-    func menu(item: SecureLinkListUIModel) -> some View {
+    func menu(item: SecureLinkListUIModel, isInactive: Bool) -> some View {
         Menu {
-            Button { viewModel.copyLink(item) } label: {
-                Label(title: {
-                    Text("Copy link")
-                }, icon: {
-                    Image(uiImage: IconProvider.squares)
-                        .renderingMode(.template)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                })
+            if !isInactive {
+                Button { viewModel.copyLink(item) } label: {
+                    Label(title: {
+                        Text("Copy link")
+                    }, icon: {
+                        Image(uiImage: IconProvider.squares)
+                            .renderingMode(.template)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                    })
+                }
+                Divider()
             }
             Button(role: .destructive,
                    action: { viewModel.deleteLink(link: item) },
                    label: {
                        Label(title: {
-                           Text("Remove link")
+                           Text(isInactive ? "Remove inactive link" : "Remove link")
                        }, icon: {
                            Image(uiImage: IconProvider.crossCircle)
                        })
