@@ -45,19 +45,25 @@ struct CreateEditItemToolbar: ToolbarContent {
                          backgroundColor: itemContentType.normMinor1Color,
                          accessibilityLabel: "Close",
                          action: onGoBack)
+                .animation(.default, value: isSaving)
+                .disabled(isSaving)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            if shouldUpgrade {
-                UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
-                              action: onUpgrade)
-            } else {
-                if isSaving {
-                    ProgressView()
+            Group {
+                if shouldUpgrade {
+                    UpgradeButton(backgroundColor: itemContentType.normMajor1Color,
+                                  action: onUpgrade)
+                        .disabled(isSaving)
                 } else {
-                    buttons
+                    if isSaving {
+                        ProgressView()
+                    } else {
+                        buttons
+                    }
                 }
             }
+            .animation(.default, value: isSaving)
         }
     }
 }

@@ -75,12 +75,10 @@ private enum SectionsSheetStates: MultipleSheetsDisplaying {
 
 struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
-    @Environment(\.dismiss) private var dismiss
     @State private var sheetState: SectionsSheetStates = .none
     @State private var showCustomTitleAlert = false
     @State private var showSectionTitleModification = false
     @State private var showDeleteCustomSectionAlert = false
-    @State private var isShowingDiscardAlert = false
     @FocusState private var focusedField: Field?
 
     init(viewModel: CreateEditIdentityViewModel) {
@@ -200,26 +198,7 @@ private extension CreateEditIdentityView {
         .scrollViewEmbeded(maxWidth: .infinity)
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
-        .background(PassColor.backgroundNorm.toColor)
-        .tint(viewModel.itemContentType().normMajor1Color.toColor)
-        .toolbar {
-            CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
-                                  isSaveable: viewModel.isSaveable,
-                                  isSaving: viewModel.isSaving,
-                                  canScanDocuments: viewModel.canScanDocuments,
-                                  vault: viewModel.editableVault,
-                                  itemContentType: viewModel.itemContentType(),
-                                  shouldUpgrade: false,
-                                  isPhone: viewModel.isPhone,
-                                  onSelectVault: { viewModel.changeVault() },
-                                  onGoBack: { isShowingDiscardAlert.toggle() },
-                                  onUpgrade: { /* Not applicable */ },
-                                  onScan: { viewModel.openScanner() },
-                                  onSave: {
-                                      viewModel.save()
-                                  })
-        }
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .itemCreateEditSetUp(viewModel)
         .alert("Custom section", isPresented: $showCustomTitleAlert) {
             TextField("Title", text: $viewModel.customSectionTitle)
                 .autocorrectionDisabled()

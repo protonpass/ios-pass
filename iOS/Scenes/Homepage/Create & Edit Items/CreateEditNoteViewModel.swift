@@ -26,13 +26,13 @@ import Entities
 import ProtonCoreLogin
 import SwiftUI
 
-final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published var title = ""
     @Published var note = ""
 
-    var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool { !title.isEmpty }
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
