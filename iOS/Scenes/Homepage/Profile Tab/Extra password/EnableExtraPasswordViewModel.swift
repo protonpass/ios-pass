@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Core
 import Factory
 import Foundation
@@ -48,7 +47,6 @@ enum EnableExtraPasswordViewState {
 
 @MainActor
 final class EnableExtraPasswordViewModel: ObservableObject {
-    @Published private(set) var canContinue = false
     @Published private(set) var canSetExtraPassword = false
     @Published private(set) var protonPasswordVerificationError: (any Error)?
     @Published private(set) var enableExtraPasswordError: (any Error)?
@@ -62,28 +60,13 @@ final class EnableExtraPasswordViewModel: ObservableObject {
     @Published var extraPassword = ""
 
     private var definedExtraPassword = ""
-    private var cancellables = Set<AnyCancellable>()
 
     private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
     private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    init() {
-        $extraPassword
-            .removeDuplicates()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] password in
-                guard let self else { return }
-                switch state {
-                case .defining:
-                    canContinue = password.count >= Constants.ExtraPassword.minLength
-                case .repeating:
-                    canContinue = password.count >= Constants.ExtraPassword.minLength &&
-                        password == definedExtraPassword
-                }
-            }
-            .store(in: &cancellables)
-    }
+    init() {}
 }
 
 extension EnableExtraPasswordViewModel {
@@ -112,10 +95,22 @@ extension EnableExtraPasswordViewModel {
     func `continue`() {
         switch state {
         case .defining:
+            let minLength = Constants.ExtraPassword.minLength
+            guard extraPassword.count >= minLength else {
+                let errorMessage = #localized("Extra password must have at least %lld characters", minLength)
+                router.display(element: .errorMessage(errorMessage))
+                return
+            }
             definedExtraPassword = extraPassword
             extraPassword = ""
             state = .repeating
+
         case .repeating:
+            guard extraPassword == definedExtraPassword else {
+                let errorMessage = #localized("Passwords do not match")
+                router.display(element: .errorMessage(errorMessage))
+                return
+            }
             showLogOutAlert = true
         }
     }
