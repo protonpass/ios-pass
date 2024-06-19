@@ -58,7 +58,6 @@ struct EnableExtraPasswordView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle(viewModel.state.navigationTitle)
         .toolbar { toolbarContent }
-        .animation(.default, value: viewModel.canContinue)
         .animation(.default, value: viewModel.canSetExtraPassword)
         .animation(.default, value: viewModel.state)
         .tint(PassColor.interactionNormMajor1.toColor)
@@ -126,13 +125,10 @@ private extension EnableExtraPasswordView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: #localized("Continue"),
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.interactionNormMajor1,
-                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: !viewModel.canContinue,
-                                        action: { viewModel.continue() })
+            CapsuleTextButton(title: #localized("Continue"),
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNormMajor1,
+                              action: { viewModel.continue() })
                 .hidden(!viewModel.canSetExtraPassword)
         }
     }
