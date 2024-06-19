@@ -242,10 +242,10 @@ struct ProfileTabView: View {
 
     @ViewBuilder
     private var secureLinkSection: some View {
-        let isFreeUser = viewModel.plan?.isFreeUser ?? true
+        let isFreeUser = viewModel.plan?.isFreeUser
         VStack(spacing: 0) {
             OptionRow(action: {
-                          if isFreeUser {
+                          if let isFreeUser, isFreeUser {
                               viewModel.upsell(entryPoint: .secureLink)
                           } else {
                               viewModel.showSecureLinkList()
@@ -259,7 +259,7 @@ struct ProfileTabView: View {
 
                               Spacer()
 
-                              if !isFreeUser, let secureLinks = viewModel.secureLinks {
+                              if let isFreeUser, !isFreeUser, let secureLinks = viewModel.secureLinks {
                                   CapsuleCounter(count: secureLinks.count,
                                                  foregroundStyle: PassColor.textNorm.toColor,
                                                  background: PassColor.backgroundMedium.toColor)
@@ -267,7 +267,7 @@ struct ProfileTabView: View {
                           }
                       },
                       trailing: {
-                          if isFreeUser {
+                          if let isFreeUser, isFreeUser {
                               Image(uiImage: PassIcon.passSubscriptionBadge)
                                   .resizable()
                                   .scaledToFit()

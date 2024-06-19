@@ -98,6 +98,10 @@ private extension UseCasesContainer {
     var secureLinkManager: any SecureLinkManagerProtocol {
         ServiceContainer.shared.secureLinkManager()
     }
+
+    var remoteSecureLinkDatasource: any RemoteSecureLinkDatasourceProtocol {
+        SharedRepositoryContainer.shared.remoteSecureLinkDatasource()
+    }
 }
 
 // MARK: User report
@@ -519,7 +523,7 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var createSecureLink: Factory<any CreateSecureLinkUseCase> {
-        self { CreateSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+        self { CreateSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 getSecureLinkKeys: self.getSecureLinkKeys(),
                                 manager: self.secureLinkManager) }
     }
@@ -529,11 +533,18 @@ extension UseCasesContainer {
     }
 
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
-        self { DeleteSecureLink(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+        self { DeleteSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 manager: self.secureLinkManager) }
     }
 
     var recreateSecureLink: Factory<any RecreateSecureLinkUseCase> {
         self { RecreateSecureLink(passKeyManager: self.passKeyManager) }
+    }
+
+    var deleteAllInactiveSecureLinks: Factory<any DeleteAllInactiveSecureLinksUseCase> {
+        self {
+            DeleteAllInactiveSecureLinks(datasource: self.remoteSecureLinkDatasource,
+                                         manager: self.secureLinkManager)
+        }
     }
 }
