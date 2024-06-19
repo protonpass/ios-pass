@@ -52429,6 +52429,16 @@
         }
       }
     },
+    "Inactive links" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inactive links"
+          }
+        }
+      }
+    },
     "Include for monitoring" : {
       "localizations" : {
         "be" : {
@@ -80315,6 +80325,16 @@
         }
       }
     },
+    "Remove all inactive links" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove all inactive links"
+          }
+        }
+      }
+    },
     "Remove custom section" : {
       "localizations" : {
         "be" : {
@@ -80743,6 +80763,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa trường"
+          }
+        }
+      }
+    },
+    "Remove inactive link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove inactive link"
           }
         }
       }
