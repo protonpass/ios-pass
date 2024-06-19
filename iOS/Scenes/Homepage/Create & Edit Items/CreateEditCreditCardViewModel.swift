@@ -25,7 +25,7 @@ import DocScanner
 import Entities
 import SwiftUI
 
-final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published var title = ""
@@ -39,9 +39,9 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override func itemContentType() -> ItemContentType { .creditCard }
 
-    var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool { !title.isEmpty }
 
-    var shouldUpgrade: Bool {
+    override var shouldUpgrade: Bool {
         // Free users can not create more credit cards but can only update
         if case .create = mode, isFreeUser {
             return true

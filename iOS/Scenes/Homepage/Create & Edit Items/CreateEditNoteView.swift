@@ -25,10 +25,8 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct CreateEditNoteView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var focusedField: Field?
-    @State private var isShowingDiscardAlert = false
     private let dummyId = UUID().uuidString
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -69,32 +67,13 @@ struct CreateEditNoteView: View {
                     proxy.scrollTo(dummyId)
                 }
             }
-            .background(PassColor.backgroundNorm.toColor)
-            .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {
                     focusedField = nil
                 }
             }
-            .toolbar {
-                CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
-                                      isSaveable: viewModel.isSaveable,
-                                      isSaving: viewModel.isSaving,
-                                      canScanDocuments: viewModel.canScanDocuments,
-                                      vault: viewModel.editableVault,
-                                      itemContentType: viewModel.itemContentType(),
-                                      shouldUpgrade: false,
-                                      isPhone: viewModel.isPhone,
-                                      onSelectVault: { viewModel.changeVault() },
-                                      onGoBack: { isShowingDiscardAlert.toggle() },
-                                      onUpgrade: { /* Not applicable */ },
-                                      onScan: { viewModel.openScanner() },
-                                      onSave: { viewModel.save() })
-            }
+            .itemCreateEditSetUp(viewModel)
         }
-        .tint(viewModel.itemContentType().normMajor1Color.toColor)
-        .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,
                       resultStream: viewModel.scanResponsePublisher)
