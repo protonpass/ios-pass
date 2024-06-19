@@ -24,10 +24,8 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct CreateEditCreditCardView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditCreditCardViewModel
     @FocusState private var focusedField: Field?
-    @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
 
@@ -43,8 +41,6 @@ struct CreateEditCreditCardView: View {
         NavigationStack {
             content
         }
-        .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
 }
 
@@ -73,28 +69,12 @@ private extension CreateEditCreditCardView {
                 .padding()
             }
         }
-        .background(PassColor.backgroundNorm.toColor)
-        .tint(tintColor.toColor)
         .onFirstAppear {
             if case .create = viewModel.mode {
                 focusedField = .title
             }
         }
-        .toolbar {
-            CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
-                                  isSaveable: viewModel.isSaveable,
-                                  isSaving: viewModel.isSaving,
-                                  canScanDocuments: viewModel.canScanDocuments,
-                                  vault: viewModel.editableVault,
-                                  itemContentType: viewModel.itemContentType(),
-                                  shouldUpgrade: viewModel.shouldUpgrade,
-                                  isPhone: viewModel.isPhone,
-                                  onSelectVault: { viewModel.changeVault() },
-                                  onGoBack: { isShowingDiscardAlert.toggle() },
-                                  onUpgrade: { viewModel.upgrade() },
-                                  onScan: { viewModel.openScanner() },
-                                  onSave: { viewModel.save() })
-        }
+        .itemCreateEditSetUp(viewModel)
         .scannerSheet(isPresented: $viewModel.isShowingScanner,
                       interpreter: viewModel.interpretor,
                       resultStream: viewModel.scanResponsePublisher)

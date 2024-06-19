@@ -39,7 +39,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 }
 
 @MainActor
-final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var canAddOrEdit2FAURI = true
@@ -86,7 +86,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let setUpEmailAndUsername = resolve(\SharedUseCasesContainer.setUpEmailAndUsername)
 
-    var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+    override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     var usernameFlagActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit)
@@ -234,6 +234,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             [.twoFaUpdate]
         } else {
             []
+        }
+    }
+
+    override func save() {
+        if validateURLs(), checkEmail() {
+            super.save()
         }
     }
 
