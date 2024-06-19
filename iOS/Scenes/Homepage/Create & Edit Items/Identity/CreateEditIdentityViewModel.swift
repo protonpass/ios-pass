@@ -101,7 +101,7 @@ struct HiddenStringValue: Sendable {
 }
 
 @MainActor
-final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, ObservableObject, Sendable {
+final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Sendable {
     @Published var title = ""
 
     /// Personal details
@@ -165,7 +165,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Observable
     private var customFieldSection: CreateEditIdentitySection?
     @Published var customSectionTitle = ""
 
-    var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool { !title.isEmpty }
 
     private(set) var selectedCustomSection: CreateEditIdentitySection?
 

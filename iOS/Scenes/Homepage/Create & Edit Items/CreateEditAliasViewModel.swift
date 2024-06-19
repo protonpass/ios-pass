@@ -77,7 +77,7 @@ final class MailboxSelection: ObservableObject, Equatable, Hashable {
 // MARK: - Initialization
 
 @MainActor
-final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
+final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published var title = ""
@@ -93,7 +93,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
 
-    var shouldUpgrade: Bool {
+    override var shouldUpgrade: Bool {
         if case .create = mode {
             return !canCreateAlias
         }
@@ -122,7 +122,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    var isSaveable: Bool {
+    override var isSaveable: Bool {
         switch mode {
         case .clone, .create:
             !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
