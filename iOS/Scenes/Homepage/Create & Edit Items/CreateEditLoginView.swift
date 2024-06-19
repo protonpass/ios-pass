@@ -30,11 +30,9 @@ import SwiftUI
 import TipKit
 
 struct CreateEditLoginView: View {
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
     @State private var lastFocusedField: Field?
-    @State private var isShowingDiscardAlert = false
     @Namespace private var usernameID
     @Namespace private var emailID
     @Namespace private var passwordID
@@ -127,8 +125,6 @@ struct CreateEditLoginView: View {
                     }
                 }
             }
-            .background(PassColor.backgroundNorm.toColor)
-            .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.isSaving) { isSaving in
                 if isSaving {
                     focusedField = nil
@@ -139,31 +135,9 @@ struct CreateEditLoginView: View {
                     focusedField = .title
                 }
             }
-            .toolbar {
-                CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
-                                      isSaveable: viewModel.isSaveable,
-                                      isSaving: viewModel.isSaving,
-                                      canScanDocuments: viewModel.canScanDocuments,
-                                      vault: viewModel.editableVault,
-                                      itemContentType: viewModel.itemContentType(),
-                                      shouldUpgrade: false,
-                                      isPhone: viewModel.isPhone,
-                                      onSelectVault: { viewModel.changeVault() },
-                                      onGoBack: { isShowingDiscardAlert.toggle() },
-                                      onUpgrade: { /* Not applicable */ },
-                                      onScan: { viewModel.openScanner() },
-                                      onSave: {
-                                          if viewModel.validateURLs(),
-                                             viewModel.checkEmail() {
-                                              viewModel.save()
-                                          }
-                                      })
-            }
             .toolbar { keyboardToolbar }
+            .itemCreateEditSetUp(viewModel)
         }
-        .tint(viewModel.itemContentType().normMajor2Color.toColor)
-        .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
 }
 

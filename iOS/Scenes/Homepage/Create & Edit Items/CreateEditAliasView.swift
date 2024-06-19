@@ -29,7 +29,6 @@ struct CreateEditAliasView: View {
     @FocusState private var focusedField: Field?
     @Namespace private var noteID
     @State private var isShowingAdvancedOptions = false
-    @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
 
@@ -59,8 +58,6 @@ struct CreateEditAliasView: View {
             .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
         }
-        .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
-        .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
 
     private var closeButtonToolbar: some ToolbarContent {
@@ -149,27 +146,12 @@ struct CreateEditAliasView: View {
                 }
             }
         }
-        .tint(tintColor.toColor)
         .onFirstAppear {
             if case .create = viewModel.mode {
                 focusedField = .title
             }
         }
-        .toolbar {
-            CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
-                                  isSaveable: viewModel.isSaveable,
-                                  isSaving: viewModel.isSaving,
-                                  canScanDocuments: viewModel.canScanDocuments,
-                                  vault: viewModel.editableVault,
-                                  itemContentType: viewModel.itemContentType(),
-                                  shouldUpgrade: viewModel.shouldUpgrade,
-                                  isPhone: viewModel.isPhone,
-                                  onSelectVault: { viewModel.changeVault() },
-                                  onGoBack: { isShowingDiscardAlert.toggle() },
-                                  onUpgrade: { viewModel.upgrade() },
-                                  onScan: { viewModel.openScanner() },
-                                  onSave: { viewModel.save() })
-        }
+        .itemCreateEditSetUp(viewModel)
     }
 
     private var aliasReadonlySection: some View {
