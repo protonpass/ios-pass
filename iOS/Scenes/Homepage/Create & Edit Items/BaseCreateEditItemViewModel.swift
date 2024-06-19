@@ -83,7 +83,7 @@ enum ItemCreationType: Equatable, Hashable {
 }
 
 @MainActor
-class BaseCreateEditItemViewModel: CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
+class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
@@ -93,6 +93,7 @@ class BaseCreateEditItemViewModel: CustomFieldAdditionDelegate, CustomFieldEditi
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
     @Published var isObsolete = false
+    @Published var isShowingDiscardAlert = false
 
     // Scanning
     @Published var isShowingScanner = false
@@ -111,6 +112,10 @@ class BaseCreateEditItemViewModel: CustomFieldAdditionDelegate, CustomFieldEditi
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
+
+    var isSaveable: Bool { true }
+
+    var shouldUpgrade: Bool { false }
 
     var isPhone: Bool {
         UIDevice.current.userInterfaceIdiom == .phone
@@ -334,6 +339,7 @@ extension BaseCreateEditItemViewModel {
         isShowingScanner = true
     }
 
+    @objc
     func save() {
         Task { [weak self] in
             guard let self else { return }
