@@ -35,7 +35,9 @@ struct CustomFieldTypesView: View {
     let onSelect: (CustomFieldType) -> Void
 
     var body: some View {
-        ScrollView {
+        ZStack {
+            PassColor.backgroundWeak.toColor
+                .ignoresSafeArea()
             VStack(spacing: 0) {
                 ForEach(CustomFieldType.cases(shouldShowTotp), id: \.self) { type in
                     row(for: type)
@@ -44,9 +46,9 @@ struct CustomFieldTypesView: View {
                     }
                 }
             }
-            .padding()
         }
-        .background(PassColor.backgroundWeak.toColor)
+        .padding()
+        .background(PassColor.backgroundWeak.toColor, ignoresSafeAreaEdges: .all)
     }
 
     private func row(for type: CustomFieldType) -> some View {
