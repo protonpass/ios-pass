@@ -42,6 +42,7 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
+    private let deleteAllInactiveSecureLinks = resolve(\UseCasesContainer.deleteAllInactiveSecureLinks)
     private let recreateSecureLink = resolve(\UseCasesContainer.recreateSecureLink)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
@@ -52,6 +53,14 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
 
     var searchSecureLink: Bool {
         UserDefaults.standard.bool(forKey: Constants.QA.searchAndListSecureLink)
+    }
+
+    var activeLinks: [SecureLinkListUIModel] {
+        secureLinks.filter(\.isActive)
+    }
+
+    var inactiveLinks: [SecureLinkListUIModel] {
+        secureLinks.filter { !$0.isActive }
     }
 
     var isGrid: Bool {
@@ -108,6 +117,19 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
 
     func copyLink(_ item: SecureLinkListUIModel) {
         router.action(.copyToClipboard(text: item.url, message: #localized("Secure link copied")))
+    }
+
+    func removeAllInactiveLinks() {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { loading = false }
+            loading = true
+            do {
+                try await deleteAllInactiveSecureLinks(linkIds: inactiveLinks.map(\.id))
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 

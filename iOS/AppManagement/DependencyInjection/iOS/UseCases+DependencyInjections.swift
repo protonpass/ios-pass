@@ -536,4 +536,11 @@ extension UseCasesContainer {
     var recreateSecureLink: Factory<any RecreateSecureLinkUseCase> {
         self { RecreateSecureLink(passKeyManager: self.passKeyManager) }
     }
+
+    var deleteAllInactiveSecureLinks: Factory<any DeleteAllInactiveSecureLinksUseCase> {
+        self {
+            DeleteAllInactiveSecureLinks(datasource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+                                         manager: self.secureLinkManager)
+        }
+    }
 }

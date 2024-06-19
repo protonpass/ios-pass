@@ -28,6 +28,7 @@ public struct SecureLink: Decodable, Equatable, Sendable, Identifiable, Hashable
     public let linkURL: String
     public let encryptedLinkKey: String
     public let linkKeyShareKeyRotation: Int64
+    public let active: Bool
 
     public var id: String {
         linkID
