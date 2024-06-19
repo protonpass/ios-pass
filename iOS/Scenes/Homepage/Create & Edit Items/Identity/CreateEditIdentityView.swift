@@ -540,7 +540,7 @@ private extension CreateEditIdentityView {
 
                 identityRow(title: IdentityFields.secondPhoneNumber.title,
                             value: $viewModel.secondPhoneNumber,
-                            keyboardType: .namePhonePad)
+                            keyboardType: .phonePad)
 
                 if viewModel.linkedIn.shouldShow {
                     PassSectionDivider()
@@ -791,6 +791,7 @@ private extension CreateEditIdentityView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
             }
+            Spacer()
         }
         .frame(maxHeight: .infinity)
         .padding(.horizontal, DesignConstant.sectionPadding)
