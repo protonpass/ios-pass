@@ -27,7 +27,7 @@ public protocol RefreshInvitationsUseCase: Sendable {
 }
 
 public extension RefreshInvitationsUseCase {
-    func callAsFunction() async throws {
+    @Sendable func callAsFunction() async throws {
         try await execute()
     }
 }

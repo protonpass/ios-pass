@@ -90,8 +90,6 @@ private extension IdentityDetailView {
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
-        .toolbarBackground(PassColor.backgroundNorm.toColor,
-                           for: .navigationBar)
     }
 }
 
