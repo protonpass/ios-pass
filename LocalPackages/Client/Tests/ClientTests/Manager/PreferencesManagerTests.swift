@@ -218,6 +218,7 @@ extension PreferencesManagerTest {
             let preferences = try await userPreferencesDatasource.getPreferences(for: userId)
             XCTAssertNil(preferences)
         }
+        XCTAssertNil(sut.userPreferences.value)
     }
 }
 
