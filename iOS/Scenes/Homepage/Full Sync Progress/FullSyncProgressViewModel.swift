@@ -22,12 +22,15 @@ import Client
 import Combine
 import Factory
 import Foundation
+import Macro
 
+@MainActor
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var isDoneSynching = false
     private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
     let mode: Mode
@@ -47,7 +50,7 @@ final class FullSyncProgressViewModel: ObservableObject {
                 guard let self else { return }
                 progresses = processVaultSyncEvent(event, with: progresses)
                 if case .done = event {
-                    isDoneSynching = true
+                    handleDoneEvent()
                 }
             }
             .store(in: &cancellables)
@@ -57,5 +60,17 @@ final class FullSyncProgressViewModel: ObservableObject {
 extension FullSyncProgressViewModel {
     func numberOfSyncedVaults() -> Int {
         progresses.filter(\.isDone).count
+    }
+}
+
+private extension FullSyncProgressViewModel {
+    func handleDoneEvent() {
+        isDoneSynching = true
+        if mode.isFullSync {
+            router.display(element: .infosMessage(#localized("Sync complete"),
+                                                  config: .init(dismissBeforeShowing: true)))
+        } else {
+            router.display(element: .infosMessage(#localized("The app is now ready to use")))
+        }
     }
 }

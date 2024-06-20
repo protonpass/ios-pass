@@ -41,7 +41,6 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.extraPassword
 
         _ = PassIcon.filterFilled
-        _ = PassIcon.fullSyncDone
 
         _ = PassIcon.infoBannerAliases
         _ = PassIcon.infoBannerAutoFill
