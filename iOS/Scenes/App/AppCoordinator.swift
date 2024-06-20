@@ -210,14 +210,18 @@ private extension AppCoordinator {
             guard let self else {
                 return
             }
-            if mode.extraPassword {
-                do {
+
+            do {
+                // Refresh cached preferences after every login
+                try await preferencesManager.setUp()
+                if mode.extraPassword {
                     try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
                                                                        value: true)
-                } catch {
-                    logger.error(error)
                 }
+            } catch {
+                logger.error(error)
             }
+
             await loginMethod.setLogInFlow(newState: mode.isManualLogin)
             let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
