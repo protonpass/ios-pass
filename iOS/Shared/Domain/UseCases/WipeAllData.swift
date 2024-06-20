@@ -74,9 +74,12 @@ final class WipeAllData: WipeAllDataUseCase {
         self.passMonitorRepository = passMonitorRepository
     }
 
+    // Order matters because we remove data base on current user ID
+    // so we shouldn't remove current user ID before removing data
     func execute() async {
         logger.info("Wiping all data")
 
+        try? await preferencesManager.reset()
         if let userID = try? userDataProvider.getUserId(), !userID.isEmpty {
             featureFlagsRepository.resetFlags(for: userID)
         }
@@ -85,7 +88,6 @@ final class WipeAllData: WipeAllDataUseCase {
         await passMonitorRepository.reset()
         appData.resetData()
         apiManager.clearCredentials()
-        try? await preferencesManager.reset()
         databaseService.resetContainer()
         UIPasteboard.general.items = []
         syncEventLoop.reset()
