@@ -47,8 +47,6 @@ public extension PassIcon {
     static let extraPassword = Self.icon(named: "ExtraPassword")
 
     static let filterFilled = Self.icon(named: "FilterFilled")
-    static let fullSyncDone = Self.icon(named: "FullSyncDone")
-
     static let infoBannerAliases = Self.icon(named: "InfoBannerAliases")
     static let infoBannerAutoFill = Self.icon(named: "InfoBannerAutoFill")
     static let infoBannerPass = Self.icon(named: "InfoBannerPass")
