@@ -257,7 +257,8 @@ extension SharedRepositoryContainer {
             ShareKeyRepository(localDatasource: self.localShareKeyDatasource(),
                                remoteDatasource: self.remoteShareKeyDatasource(),
                                logManager: self.logManager,
-                               userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider)
+                               symmetricKeyProvider: self.symmetricKeyProvider,
+                               userDataProvider: self.userDataProvider)
         }
     }
 
@@ -280,7 +281,8 @@ extension SharedRepositoryContainer {
 
     var itemRepository: Factory<any ItemRepositoryProtocol> {
         self {
-            ItemRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
+            ItemRepository(symmetricKeyProvider: self.symmetricKeyProvider,
+                           userDataProvider: self.userDataProvider,
                            localDatasource: self.localItemDatasource(),
                            remoteDatasource: self.remoteItemDatasource(),
                            shareEventIDRepository: self.shareEventIDRepository(),
@@ -305,7 +307,8 @@ extension SharedRepositoryContainer {
     }
 
     var shareRepository: Factory<any ShareRepositoryProtocol> {
-        self { ShareRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
+        self { ShareRepository(symmetricKeyProvider: self.userDataSymmetricKeyProvider,
+                               userDataProvider: self.userDataProvider,
                                localDatasource: self.localShareDatasource(),
                                remoteDatasouce: self.remoteShareDatasource(),
                                passKeyManager: self.passKeyManager(),

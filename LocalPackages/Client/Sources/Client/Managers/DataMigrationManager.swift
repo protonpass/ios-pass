@@ -33,7 +33,7 @@ public struct MigrationType: OptionSet, Sendable {
     public static let all: [MigrationType] = [.userAppData, .credentialsAppData]
 }
 
-public protocol DataMigrationManagerProtocol {
+public protocol DataMigrationManagerProtocol: Sendable {
     func addMigration(_ migration: MigrationType) async throws
     func hasMigrationOccurred(_ migration: MigrationType) async throws -> Bool
     func missingMigrations(_ migrations: [MigrationType]) async throws -> [MigrationType]

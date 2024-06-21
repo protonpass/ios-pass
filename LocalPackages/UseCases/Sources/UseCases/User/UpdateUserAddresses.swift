@@ -60,7 +60,7 @@ public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
                                    addresses: newAddresses,
                                    scopes: userdata.scopes)
 
-        userDataProvider.setUserData(newUserData)
+        userDataProvider.updateUserData(userId: nil, newUserData) // setUserData(newUserData)
         return newAddresses
     }
 }
