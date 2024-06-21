@@ -25,7 +25,8 @@ import ProtonCoreLogin
 // sourcery: AutoMockable
 public protocol UserDataProvider: Sendable {
     func getUserData() -> UserData?
-    func setUserData(_ userData: UserData?)
+    func updateUserData(userId: String?, _ userData: UserData?)
+//    func setUserData(_ userData: UserData?)
 }
 
 public extension UserDataProvider {

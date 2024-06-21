@@ -128,7 +128,7 @@ extension SharedToolingContainer {
     }
 
     // periphery:ignore
-    var userManager: Factory<any UserManagerProtocol> {
+    var userManager: Factory<any GlobalUserManager> {
         self {
             UserManager(userDataDatasource: SharedRepositoryContainer.shared.localUserDataDatasource(),
                         activeUserIdDatasource: SharedRepositoryContainer.shared.localActiveUserIdDatasource(),
