@@ -67,12 +67,14 @@ final class AppCoordinator {
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let appData = resolve(\SharedDataContainer.appData)
+    private let userManager = resolve(\SharedToolingContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
     private var corruptedSessionStream: AnyCancellable?
     private var featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private var pushNotificationService = resolve(\ServiceContainer.pushNotificationService)
+    private var dataMigrationManager = resolve(\SharedServiceContainer.dataMigrationManager)
 
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
@@ -89,13 +91,14 @@ final class AppCoordinator {
 
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
-        bindAppState()
+//        bindAppState()
 
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             resetAllData()
         }
 
+        //TODO: Should not be api manager that logs the user totatally out
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] sessionUID in
@@ -115,8 +118,7 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
-        appData.setUserData(nil)
-        appData.setCredential(nil)
+        appData.resetData()
     }
 
     private func bindAppState() {
@@ -127,6 +129,8 @@ final class AppCoordinator {
                 guard let self else { return }
                 switch appState {
                 case let .loggedOut(reason):
+                    
+                    //TODO: need to tweack this to not bring user to welcome screen if other user are still connceted
                     logger.info("Logged out \(reason)")
                     if reason != .noAuthSessionButUnauthSessionAvailable {
                         resetAllData()
@@ -141,7 +145,7 @@ final class AppCoordinator {
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
                     logger.info("Logged in manual")
-                    appData.setUserData(userData)
+                    userManager.updateUserData(userId: nil, userData)
                     connectToCorruptedSessionStream()
                     if extraPassword {
                         showHomeScene(mode: .manualLoginWithExtraPassword)
@@ -171,8 +175,12 @@ final class AppCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
+                // Should setup all tools
+                try await userManager.setUp()
                 try await preferencesManager.setUp()
+                try await migration()
                 window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+                bindAppState()
                 start()
             } catch {
                 appStateObserver.updateAppState(.loggedOut(.failedToInitializePreferences(error)))
@@ -262,7 +270,18 @@ private extension AppCoordinator {
         Task { [weak self] in
             guard let self else { return }
             await wipeAllData()
+            
+            //TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()
+        }
+    }
+
+    func migration() async throws {
+        let missingMigrations = try await dataMigrationManager.missingMigrations(MigrationType.all)
+
+        if let userData = (appData as? AppData)?.getUserData(), missingMigrations.contains(.userAppData) {
+            try await userManager.addAndMarkAsActive(userData: userData)
+            try await dataMigrationManager.addMigration(.userAppData)
         }
     }
 }

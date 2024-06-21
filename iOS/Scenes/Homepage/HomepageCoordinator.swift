@@ -881,12 +881,18 @@ extension HomepageCoordinator {
         guard let userData = userDataProvider.getUserData() else { return }
         var updatedUser = userData.user
         updatedUser.setNewKeys(userInfo.userKeys)
-        userDataProvider.setUserData(.init(credential: authCredential,
-                                           user: updatedUser,
-                                           salts: userData.salts,
-                                           passphrases: userData.passphrases,
-                                           addresses: userInfo.userAddresses,
-                                           scopes: userData.scopes))
+        userDataProvider.updateUserData(userId: nil, .init(credential: authCredential,
+                                                           user: updatedUser,
+                                                           salts: userData.salts,
+                                                           passphrases: userData.passphrases,
+                                                           addresses: userInfo.userAddresses,
+                                                           scopes: userData.scopes))
+//        setUserData(.init(credential: authCredential,
+//                                           user: updatedUser,
+//                                           salts: userData.salts,
+//                                           passphrases: userData.passphrases,
+//                                           addresses: userInfo.userAddresses,
+//                                           scopes: userData.scopes))
         dismissTopMostViewController { [weak self] in
             guard let self else { return }
             bannerManager.displayBottomInfoMessage(#localized("Password changed successfully"))

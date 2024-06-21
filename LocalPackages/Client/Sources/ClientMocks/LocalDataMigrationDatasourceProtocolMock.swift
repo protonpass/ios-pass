@@ -18,47 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
-//import Client
-//import Foundation
-//import CoreData
-//import Entities
-//
-//public final class LocalDataMigrationDatasourceProtocolMock: @unchecked Sendable, LocalDataMigrationDatasourceProtocol {
-//
-//    public init() {}
-//
-//    // MARK: - getMigrations
-//    public var getMigrationsThrowableError1: Error?
-//    public var closureGetMigrations: () -> () = {}
-//    public var invokedGetMigrationsfunction = false
-//    public var invokedGetMigrationsCount = 0
-//    public var stubbedGetMigrationsResult: MigrationStatus?
-//
-//    public func getMigrations() async throws -> MigrationStatus? {
-//        invokedGetMigrationsfunction = true
-//        invokedGetMigrationsCount += 1
-//        if let error = getMigrationsThrowableError1 {
-//            throw error
-//        }
-//        closureGetMigrations()
-//        return stubbedGetMigrationsResult
-//    }
-//    // MARK: - upsert
-//    public var upsertMigrationsThrowableError2: Error?
-//    public var closureUpsert: () -> () = {}
-//    public var invokedUpsertfunction = false
-//    public var invokedUpsertCount = 0
-//    public var invokedUpsertParameters: (migrations: MigrationStatus, Void)?
-//    public var invokedUpsertParametersList = [(migrations: MigrationStatus, Void)]()
-//
-//    public func upsert(migrations: MigrationStatus) async throws {
-//        invokedUpsertfunction = true
-//        invokedUpsertCount += 1
-//        invokedUpsertParameters = (migrations, ())
-//        invokedUpsertParametersList.append((migrations, ()))
-//        if let error = upsertMigrationsThrowableError2 {
-//            throw error
-//        }
-//        closureUpsert()
-//    }
-//}
+
+import Client
+import Entities
+
+public final class LocalDataMigrationDatasourceProtocolMock: @unchecked Sendable, LocalDataMigrationDatasourceProtocol {
+    private var currentMigrations = MigrationStatus(completedMigrations: 0)
+    
+    public init(currentMigrations: MigrationStatus = MigrationStatus(completedMigrations: 0)) {
+        self.currentMigrations = currentMigrations
+    }
+    
+    public func getMigrations() async throws -> MigrationStatus? {
+        return currentMigrations
+    }
+
+    public func upsert(migrations: MigrationStatus) async throws {
+        currentMigrations = migrations
+    }
+}
