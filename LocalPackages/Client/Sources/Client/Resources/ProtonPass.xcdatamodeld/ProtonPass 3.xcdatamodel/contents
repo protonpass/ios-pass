@@ -69,6 +69,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="MigrationStatusEntity" representedClassName="MigrationStatusEntity" syncable="YES">
+        <attribute name="completedMigrations" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="String" defaultValueString="migrationId"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="OrganizationEntity" representedClassName="OrganizationEntity" syncable="YES">
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
