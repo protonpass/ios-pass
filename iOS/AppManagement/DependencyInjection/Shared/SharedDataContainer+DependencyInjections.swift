@@ -60,7 +60,7 @@ extension SharedDataContainer {
     }
 
     var userDataProvider: Factory<any UserDataProvider> {
-        self { self.appData() }
+        self { SharedToolingContainer.shared.userManager() /* self.appData()*/ }
     }
 
     var credentialProvider: Factory<any CredentialProvider> {

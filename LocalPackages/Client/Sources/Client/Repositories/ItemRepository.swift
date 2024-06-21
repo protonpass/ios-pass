@@ -143,7 +143,8 @@ public extension ItemRepositoryProtocol {
 
 // swiftlint: disable discouraged_optional_self file_length
 public actor ItemRepository: ItemRepositoryProtocol {
-    private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let userDataProvider: any UserDataProvider
     private let localDatasource: any LocalItemDatasourceProtocol
     private let remoteDatasource: any RemoteItemDatasourceProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
@@ -153,17 +154,19 @@ public actor ItemRepository: ItemRepositoryProtocol {
     public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
     public let itemsWereUpdated: CurrentValueSubject<Void, Never> = .init(())
 
-    public init(userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider,
+    public init(symmetricKeyProvider: any SymmetricKeyProvider,
+                userDataProvider: any UserDataProvider,
                 localDatasource: any LocalItemDatasourceProtocol,
                 remoteDatasource: any RemoteItemDatasourceProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 logManager: any LogManagerProtocol) {
-        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
+        self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
+        self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)
         Task { [weak self] in
             guard let self else {
@@ -264,7 +267,7 @@ public extension ItemRepository {
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
         logger.trace("Refreshing last event ID for share \(shareId)")
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+        let userId = try userDataProvider.getUserId()
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
                                                         userId: userId,
                                                         shareId: shareId)
@@ -605,7 +608,7 @@ private extension ItemRepository {
 
 private extension ItemRepository {
     func getSymmetricKey() throws -> SymmetricKey {
-        try userDataSymmetricKeyProvider.getSymmetricKey()
+        try symmetricKeyProvider.getSymmetricKey()
     }
 
     func symmetricallyEncrypt(itemRevision: Item,

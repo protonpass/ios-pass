@@ -43,16 +43,19 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let localDatasource: any LocalShareKeyDatasourceProtocol
     private let remoteDatasource: any RemoteShareKeyDatasourceProtocol
     private let logger: Logger
-    private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let userDataProvider: any UserDataProvider
 
     public init(localDatasource: any LocalShareKeyDatasourceProtocol,
                 remoteDatasource: any RemoteShareKeyDatasourceProtocol,
                 logManager: any LogManagerProtocol,
-                userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider) {
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                userDataProvider: any UserDataProvider) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
-        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
+        self.symmetricKeyProvider = symmetricKeyProvider
+        self.userDataProvider = userDataProvider
     }
 }
 
@@ -102,11 +105,11 @@ public extension ShareKeyRepository {
 
 private extension ShareKeyRepository {
     func getSymmetricKey() throws -> CryptoKit.SymmetricKey {
-        try userDataSymmetricKeyProvider.getSymmetricKey()
+        try symmetricKeyProvider.getSymmetricKey()
     }
 
     func decrypt(_ encryptedKey: ShareKey, shareId: String) throws -> Data {
-        let userData = try userDataSymmetricKeyProvider.getUnwrappedUserData()
+        let userData = try userDataProvider.getUnwrappedUserData()
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")
 
