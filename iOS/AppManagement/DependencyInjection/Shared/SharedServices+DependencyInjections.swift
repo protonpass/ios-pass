@@ -46,6 +46,10 @@ extension SharedServiceContainer {
         self { NotificationService(logManager: self.logManager) }
     }
 
+    var dataMigrationManager: Factory<any DataMigrationManagerProtocol> {
+        self { DataMigrationManager(datasource: SharedRepositoryContainer.shared.localDataMigrationDatasource()) }
+    }
+
     var credentialManager: Factory<any CredentialManagerProtocol> {
         self { CredentialManager(logManager: self.logManager) }
     }
