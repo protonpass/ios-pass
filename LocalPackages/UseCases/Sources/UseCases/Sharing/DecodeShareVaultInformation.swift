@@ -39,16 +39,16 @@ public extension DecodeShareVaultInformationUseCase {
 }
 
 public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultInformationUseCase {
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
     private let updateUserAddresses: any UpdateUserAddressesUseCase
     private let logger: Logger
 
-    public init(userDataProvider: any UserDataProvider,
+    public init(userManager: any UserManagerProtocol,
                 getEmailPublicKey: any GetEmailPublicKeyUseCase,
                 updateUserAddresses: any UpdateUserAddressesUseCase,
                 logManager: any LogManagerProtocol) {
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses
         logger = .init(manager: logManager)
@@ -58,7 +58,9 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
         logger.trace("Start decoding invitation share information for invitee user \(userInvite.invitedEmail)")
 
         do {
-            let userData = try userDataProvider.getUnwrappedUserData()
+            guard let userData = try await userManager.getActiveUserData() else {
+                throw PassError.userManager(.activeUserDataNotFound)
+            }
             guard let vaultData = userInvite.vaultData,
                   let intermediateVaultKey = userInvite.keys
                   .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {

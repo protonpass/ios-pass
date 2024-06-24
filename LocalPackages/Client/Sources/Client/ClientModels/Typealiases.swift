@@ -22,7 +22,7 @@
 import Combine
 import Entities
 
-public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
+public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider /* & UserDataProvider */
 public typealias AppDataProtocol =
     CredentialProvider & CurrentUserIdProvider & Resettable & UserDataSymmetricKeyProvider
 public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>

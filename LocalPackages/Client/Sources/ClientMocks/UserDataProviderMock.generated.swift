@@ -18,38 +18,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Entities
-import ProtonCoreLogin
-
-public final class UserDataProviderMock: @unchecked Sendable, UserDataProvider {
-
-    public init() {}
-
-    // MARK: - getUserData
-    public var closureGetUserData: () -> () = {}
-    public var invokedGetUserDatafunction = false
-    public var invokedGetUserDataCount = 0
-    public var stubbedGetUserDataResult: UserData?
-
-    public func getUserData() -> UserData? {
-        invokedGetUserDatafunction = true
-        invokedGetUserDataCount += 1
-        closureGetUserData()
-        return stubbedGetUserDataResult
-    }
-    // MARK: - setUserData
-    public var closureSetUserData: () -> () = {}
-    public var invokedSetUserDatafunction = false
-    public var invokedSetUserDataCount = 0
-    public var invokedSetUserDataParameters: (userData: UserData?, Void)?
-    public var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
-
-    public func setUserData(_ userData: UserData?) {
-        invokedSetUserDatafunction = true
-        invokedSetUserDataCount += 1
-        invokedSetUserDataParameters = (userData, ())
-        invokedSetUserDataParametersList.append((userData, ()))
-        closureSetUserData()
-    }
-}
+//import Client
+//import Entities
+//import ProtonCoreLogin
+//
+//public final class UserDataProviderMock: @unchecked Sendable, UserDataProvider {
+//
+//    public init() {}
+//
+//    // MARK: - getUserData
+//    public var closureGetUserData: () -> () = {}
+//    public var invokedGetUserDatafunction = false
+//    public var invokedGetUserDataCount = 0
+//    public var stubbedGetUserDataResult: UserData?
+//
+//    public func getUserData() -> UserData? {
+//        invokedGetUserDatafunction = true
+//        invokedGetUserDataCount += 1
+//        closureGetUserData()
+//        return stubbedGetUserDataResult
+//    }
+//    // MARK: - updateUserData
+//    public var closureUpdateUserData: () -> () = {}
+//    public var invokedUpdateUserDatafunction = false
+//    public var invokedUpdateUserDataCount = 0
+//    public var invokedUpdateUserDataParameters: (userId: String?, userData: UserData?)?
+//    public var invokedUpdateUserDataParametersList = [(userId: String?, userData: UserData?)]()
+//
+//    public func updateUserData(userId: String?, _ userData: UserData?) {
+//        invokedUpdateUserDatafunction = true
+//        invokedUpdateUserDataCount += 1
+//        invokedUpdateUserDataParameters = (userId, userData)
+//        invokedUpdateUserDataParametersList.append((userId, userData))
+//        closureUpdateUserData()
+//    }
+//}

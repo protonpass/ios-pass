@@ -25,7 +25,7 @@ public struct MigrationStatus: Sendable {
         self.completedMigrations = completedMigrations
     }
 
-    static var `default`: MigrationStatus {
+    public static var `default`: MigrationStatus {
         MigrationStatus(completedMigrations: 0)
     }
 }

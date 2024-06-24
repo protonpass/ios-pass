@@ -41,7 +41,7 @@ public extension VerifyProtonPasswordUseCase {
 }
 
 public final class VerifyProtonPassword: Sendable, VerifyProtonPasswordUseCase {
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let doh: any DoHInterface
     private let appVer: String
 
@@ -51,17 +51,17 @@ public final class VerifyProtonPassword: Sendable, VerifyProtonPasswordUseCase {
 
     private var apiService: (any APIService)?
 
-    public init(userDataProvider: any UserDataProvider,
+    public init(userManager: any UserManagerProtocol,
                 doh: any DoHInterface,
                 appVer: String) {
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         self.doh = doh
         self.appVer = appVer
     }
 
     public func execute(_ password: String) async throws -> Bool {
-        guard let userData = userDataProvider.getUserData() else {
-            throw PassError.noUserData
+        guard let userData = try? await userManager.getActiveUserData() else {
+            throw PassError.userManager(.activeUserDataNotFound)
         }
 
         let authenticator = Authenticator(api: makeApiService())
