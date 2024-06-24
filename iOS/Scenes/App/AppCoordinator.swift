@@ -67,7 +67,7 @@ final class AppCoordinator {
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let appData = resolve(\SharedDataContainer.appData)
-    private let userManager = resolve(\SharedToolingContainer.userManager)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
@@ -98,7 +98,7 @@ final class AppCoordinator {
             resetAllData()
         }
 
-        //TODO: Should not be api manager that logs the user totatally out
+        // TODO: Should not be api manager that logs the user totatally out
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] sessionUID in
@@ -118,6 +118,7 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
+        // TODO: what to do with multiple users data ?
         appData.resetData()
     }
 
@@ -129,8 +130,8 @@ final class AppCoordinator {
                 guard let self else { return }
                 switch appState {
                 case let .loggedOut(reason):
-                    
-                    //TODO: need to tweack this to not bring user to welcome screen if other user are still connceted
+
+                    // TODO: need to tweack this to not bring user to welcome screen if other user are still connceted
                     logger.info("Logged out \(reason)")
                     if reason != .noAuthSessionButUnauthSessionAvailable {
                         resetAllData()
@@ -145,7 +146,7 @@ final class AppCoordinator {
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
                     logger.info("Logged in manual")
-                    userManager.updateUserData(userId: nil, userData)
+                    userManager.setUserData(userData, isActive: true) // .addAndMarkAsActive(userData: userData)
                     connectToCorruptedSessionStream()
                     if extraPassword {
                         showHomeScene(mode: .manualLoginWithExtraPassword)
@@ -270,8 +271,8 @@ private extension AppCoordinator {
         Task { [weak self] in
             guard let self else { return }
             await wipeAllData()
-            
-            //TODO: why did we reset the root view controller and banner manager ?
+
+            // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()
         }
     }

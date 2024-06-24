@@ -38,29 +38,29 @@ public extension UpdateUserAddressesUseCase {
 }
 
 public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let authenticator: any AuthenticatorInterface
 
-    public init(userDataProvider: any UserDataProvider,
+    public init(userManager: any UserManagerProtocol,
                 authenticator: any AuthenticatorInterface) {
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         self.authenticator = authenticator
     }
 
     public func execute() async throws -> [Address]? {
-        guard let userdata = userDataProvider.getUserData() else {
+        guard let userData = try await userManager.getActiveUserData() else {
             return nil
         }
-        let newAddresses = try await authenticator.getAddresses(userdata.getCredential)
+        let newAddresses = try await authenticator.getAddresses(userData.getCredential)
 
-        let newUserData = UserData(credential: userdata.credential,
-                                   user: userdata.user,
-                                   salts: userdata.salts,
-                                   passphrases: userdata.passphrases,
+        let newUserData = UserData(credential: userData.credential,
+                                   user: userData.user,
+                                   salts: userData.salts,
+                                   passphrases: userData.passphrases,
                                    addresses: newAddresses,
-                                   scopes: userdata.scopes)
+                                   scopes: userData.scopes)
 
-        userDataProvider.updateUserData(userId: nil, newUserData) // setUserData(newUserData)
+        try await userManager.add(userData: newUserData, isActive: false)
         return newAddresses
     }
 }

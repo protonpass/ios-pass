@@ -30,7 +30,7 @@ final class PaymentsManager {
 
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
-    private let userManager = resolve(\SharedToolingContainer.userManager)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
 
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)

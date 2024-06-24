@@ -36,16 +36,16 @@ public extension IndexItemsForSpotlightUseCase {
 }
 
 public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let datasource: any LocalSpotlightVaultDatasourceProtocol
     private let logger: Logger
 
-    public init(userDataProvider: any UserDataProvider,
+    public init(userManager: any UserManagerProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 datasource: any LocalSpotlightVaultDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         self.itemRepository = itemRepository
         self.datasource = datasource
         logger = .init(manager: logManager)
@@ -69,7 +69,7 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             selectedItems = allItems
             logger.trace("Indexing \(selectedItems.count) items in all vaults for Spotlight")
         case .selected:
-            let userId = try userDataProvider.getUserId()
+            let userId = try await userManager.getActiveUserId()
             let ids = try await datasource.getIds(for: userId)
             selectedItems = allItems.filter { ids.contains($0.shareId) }
             logger.trace("Indexing \(selectedItems.count) items in \(ids.count) vaults for Spotlight")

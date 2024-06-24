@@ -61,7 +61,7 @@ extension SharedServiceContainer {
                                  shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
                                  remoteSyncEventsDatasource: SharedRepositoryContainer.shared
                                      .remoteSyncEventsDatasource(),
-                                 userDataProvider: SharedDataContainer.shared.userDataProvider(),
+                                 userManager: self.userManager(),
                                  logManager: self.logManager) }
     }
 
@@ -104,8 +104,20 @@ extension SharedServiceContainer {
     }
 
     var totpManager: Factory<any TOTPManagerProtocol> {
-        self { TOTPManager(logManager: SharedToolingContainer.shared.logManager(),
+        self { TOTPManager(logManager: self.logManager,
                            totpService: self.totpService()) }
             .unique
+    }
+}
+
+// MARK: - User
+
+extension SharedServiceContainer {
+    var userManager: Factory<any UserManagerProtocol> {
+        self {
+            UserManager(userDataDatasource: SharedRepositoryContainer.shared.localUserDataDatasource(),
+                        activeUserIdDatasource: SharedRepositoryContainer.shared.localActiveUserIdDatasource(),
+                        logManager: self.logManager)
+        }
     }
 }
