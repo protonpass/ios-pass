@@ -42,18 +42,25 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     // TODO: Introduced in april 2024, can be removed several months later
     public var didMigratePreferences: Bool
 
+//    // swiftlint:disable:next todo
+//    // TODO: Introduced in april 2024, can be removed several months later
+//    public var didMigrateAppData: Bool
+
     public init(onboarded: Bool,
                 telemetryThreshold: TimeInterval?,
                 createdItemsCount: Int,
                 dismissedBannerIds: [String],
                 dismissedCustomDomainExplanation: Bool,
-                didMigratePreferences: Bool) {
+                didMigratePreferences: Bool // ,
+//                didMigrateAppData: Bool
+    ) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
         self.dismissedBannerIds = dismissedBannerIds
         self.dismissedCustomDomainExplanation = dismissedCustomDomainExplanation
         self.didMigratePreferences = didMigratePreferences
+//        self.didMigrateAppData = didMigrateAppData
     }
 }
 
@@ -65,6 +72,7 @@ private extension AppPreferences {
         static let dismissedBannerIds: [String] = []
         static let dismissedCustomDomainExplanation = false
         static let didMigratePreferences = false
+//        static let didMigrateAppData = false
     }
 
     enum CodingKeys: String, CodingKey {
@@ -74,6 +82,7 @@ private extension AppPreferences {
         case dismissedBannerIds
         case dismissedCustomDomainExplanation
         case didMigratePreferences
+//        case didMigrateAppData
     }
 }
 
@@ -89,13 +98,17 @@ public extension AppPreferences {
             try container.decodeIfPresent(Bool.self, forKey: .dismissedCustomDomainExplanation)
         let didMigratePreferences = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .didMigratePreferences)
+
+//        let didMigrateAppData = try container.decodeIfPresent(Bool.self,
+//                                                                  forKey: .didMigrateAppData)
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,
                   dismissedBannerIds: dismissedBannerIds ?? Default.dismissedBannerIds,
                   dismissedCustomDomainExplanation: dismissedCustomDomainExplanation ?? Default
                       .dismissedCustomDomainExplanation,
-                  didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences)
+                  didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences) // ,
+//                  didMigrateAppData: didMigrateAppData ?? Default.didMigrateAppData)
     }
 }
 
@@ -106,6 +119,7 @@ extension AppPreferences: Defaultable {
               createdItemsCount: Default.createdItemsCount,
               dismissedBannerIds: Default.dismissedBannerIds,
               dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
-              didMigratePreferences: Default.didMigratePreferences)
+              didMigratePreferences: Default.didMigratePreferences) // ,
+//              didMigrateAppData: Default.didMigrateAppData)
     }
 }

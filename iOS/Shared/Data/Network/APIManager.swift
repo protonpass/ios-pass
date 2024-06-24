@@ -35,6 +35,10 @@ import ProtonCoreLogin
 import ProtonCoreObservability
 import ProtonCoreServices
 
+// protocol ApiServiceProvider {
+//    var currentApiService: any APIService { get }
+// }
+
 final class APIManager {
     typealias SessionUID = String
 
@@ -51,6 +55,10 @@ final class APIManager {
     private(set) var humanHelper: HumanCheckHelper?
 
     let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
+
+//    var currentApiService: any APIService {
+//        apiService
+//    }
 
     init() {
         let trustKitDelegate = PassTrustKitDelegate()
@@ -95,9 +103,12 @@ final class APIManager {
         fetchUnauthSessionIfNeeded()
     }
 
+    // TODO: Need to move this in Session manager and need to update the next session to either a other locally registered or recreate an empty apiservice from scrAtch for a full logout
     func clearCredentials() {
-        appData.setUserData(nil)
-        appData.setCredential(nil)
+        // TODO: Have session manager remove all session link to session id and user with id link to this session
+//        appData.setUserData(nil)
+//        appData.setCredential(nil)
+//        appData.resetData()
         apiService.setSessionUID(uid: "")
     }
 }

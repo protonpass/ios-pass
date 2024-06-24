@@ -44,18 +44,18 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let remoteDatasource: any RemoteShareKeyDatasourceProtocol
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
 
     public init(localDatasource: any LocalShareKeyDatasourceProtocol,
                 remoteDatasource: any RemoteShareKeyDatasourceProtocol,
                 logManager: any LogManagerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
-                userDataProvider: any UserDataProvider) {
+                userManager: any UserManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
         self.symmetricKeyProvider = symmetricKeyProvider
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
     }
 }
 
@@ -80,10 +80,10 @@ public extension ShareKeyRepository {
         let keys = try await remoteDatasource.getKeys(shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
-        let encryptedKeys = try keys.map { key in
-            let decryptedKey = try decrypt(key, shareId: shareId)
-            let dencryptedKeyBase64 = decryptedKey.encodeBase64()
-            let symmetricallyEncryptedKey = try getSymmetricKey().encrypt(dencryptedKeyBase64)
+        let encryptedKeys = try await keys.asyncCompactMap { key in
+            let decryptedKey = try await decrypt(key, shareId: shareId)
+            let encryptedKeyBase64 = decryptedKey.encodeBase64()
+            let symmetricallyEncryptedKey = try await getSymmetricKey().encrypt(encryptedKeyBase64)
             return SymmetricallyEncryptedShareKey(encryptedKey: symmetricallyEncryptedKey,
                                                   shareId: shareId,
                                                   shareKey: key)
@@ -108,8 +108,10 @@ private extension ShareKeyRepository {
         try symmetricKeyProvider.getSymmetricKey()
     }
 
-    func decrypt(_ encryptedKey: ShareKey, shareId: String) throws -> Data {
-        let userData = try userDataProvider.getUnwrappedUserData()
+    func decrypt(_ encryptedKey: ShareKey, shareId: String) async throws -> Data {
+        guard let userData = try await userManager.getActiveUserData() else {
+            throw PassError.userManager(.activeUserDataNotFound)
+        }
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")
 

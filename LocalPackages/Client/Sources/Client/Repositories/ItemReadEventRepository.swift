@@ -34,20 +34,20 @@ public actor ItemReadEventRepository: ItemReadEventRepositoryProtocol {
     private let localDatasource: any LocalItemReadEventDatasourceProtocol
     private let remoteDatasource: any RemoteItemReadEventDatasourceProtocol
     private let currentDateProvider: any CurrentDateProviderProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let batchSize: Int
     private let logger: Logger
 
     public init(localDatasource: any LocalItemReadEventDatasourceProtocol,
                 remoteDatasource: any RemoteItemReadEventDatasourceProtocol,
                 currentDateProvider: any CurrentDateProviderProtocol,
-                userDataProvider: any UserDataProvider,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 batchSize: Int = Constants.Utils.batchSize) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.currentDateProvider = currentDateProvider
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         logger = .init(manager: logManager)
         self.batchSize = batchSize
     }
@@ -56,7 +56,7 @@ public actor ItemReadEventRepository: ItemReadEventRepositoryProtocol {
 public extension ItemReadEventRepository {
     func addEvent(for item: any ItemIdentifiable) async throws {
         let date = currentDateProvider.getCurrentDate()
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         let event = ItemReadEvent(uuid: UUID().uuidString,
                                   shareId: item.shareId,
                                   itemId: item.itemId,
@@ -66,13 +66,13 @@ public extension ItemReadEventRepository {
     }
 
     func getAllEvents() async throws -> [ItemReadEvent] {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         return try await localDatasource.getAllEvents(userId: userId)
     }
 
     func sendAllEvents() async throws {
         logger.info("Sending all item reads event")
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         while true {
             let events =
                 try await localDatasource.getOldestEvents(count: batchSize,
