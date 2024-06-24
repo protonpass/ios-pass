@@ -52,7 +52,8 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
     private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
     private let promoteNewUserInvite = resolve(\UseCasesContainer.promoteNewUserInvite)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
+
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -96,7 +97,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func isCurrentUser(_ invitee: any ShareInvitee) -> Bool {
-        userDataProvider.getUserData()?.user.email == invitee.email
+        userManager.getUserData()?.user.email == invitee.email
     }
 
     func shareWithMorePeople() {

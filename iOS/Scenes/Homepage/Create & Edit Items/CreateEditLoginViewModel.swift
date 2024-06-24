@@ -79,7 +79,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
@@ -99,7 +99,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
-        emailAddress = try userDataProvider.getUnwrappedUserData().addresses.first?.email ?? ""
+        emailAddress = try userManager.getUnwrappedUserData().addresses.first?
+            .email ?? ""
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)

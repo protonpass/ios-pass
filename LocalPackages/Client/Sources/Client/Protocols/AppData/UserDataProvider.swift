@@ -22,25 +22,26 @@
 import Entities
 import ProtonCoreLogin
 
-// sourcery: AutoMockable
-public protocol UserDataProvider: Sendable {
-    func getUserData() -> UserData?
-    func updateUserData(userId: String?, _ userData: UserData?)
-//    func setUserData(_ userData: UserData?)
-}
-
-public extension UserDataProvider {
-    func getUserId() throws -> String {
-        guard let userData = getUserData() else {
-            throw PassError.noUserData
-        }
-        return userData.user.ID
-    }
-
-    func getUnwrappedUserData() throws -> UserData {
-        guard let userData = getUserData() else {
-            throw PassError.noUserData
-        }
-        return userData
-    }
-}
+//// sourcery: AutoMockable
+// public protocol UserDataProvider: Sendable {
+//    func getUserData() -> UserData?
+////    func updateUserData(userId: String?, _ userData: UserData?)
+//    func setUserData(_ userData: UserData)
+//    func removeUserdata(userId: String)
+// }
+//
+// public extension UserDataProvider {
+//    func getUserId() throws -> String {
+//        guard let userData = getUserData() else {
+//            throw PassError.noUserData
+//        }
+//        return userData.user.ID
+//    }
+//
+//    func getUnwrappedUserData() throws -> UserData {
+//        guard let userData = getUserData() else {
+//            throw PassError.noUserData
+//        }
+//        return userData
+//    }
+// }

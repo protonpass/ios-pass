@@ -39,18 +39,18 @@ public final class SetUpCoreTelemetry: SetUpCoreTelemetryUseCase {
     private let telemetryService: any TelemetryServiceProtocol
     private let apiService: any APIService
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(telemetryService: any TelemetryServiceProtocol = TelemetryService.shared,
                 apiService: any APIService,
                 logManager: any LogManagerProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
-                userDataProvider: any UserDataProvider) {
+                userManager: any UserManagerProtocol) {
         self.telemetryService = telemetryService
         self.apiService = apiService
         self.userSettingsRepository = userSettingsRepository
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 
@@ -60,7 +60,7 @@ public final class SetUpCoreTelemetry: SetUpCoreTelemetryUseCase {
             telemetryService.setApiService(apiService: apiService)
             var telemetry = true
             do {
-                let userId = try userDataProvider.getUserId()
+                let userId = try await userManager.getActiveUserId()
                 telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
             } catch {
                 logger.error(error)

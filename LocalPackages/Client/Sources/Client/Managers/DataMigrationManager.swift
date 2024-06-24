@@ -48,7 +48,7 @@ public actor DataMigrationManager: DataMigrationManagerProtocol {
     }
 
     public func addMigration(_ migration: MigrationType) async throws {
-        var status = try await datasource.getMigrations() ?? MigrationStatus(completedMigrations: 0)
+        var status = try await datasource.getMigrations() ?? MigrationStatus.default
 
         status.completedMigrations |= migration.rawValue
 

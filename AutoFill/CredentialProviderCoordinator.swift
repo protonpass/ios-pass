@@ -54,6 +54,9 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
+    private var dataMigrationManager = resolve(\SharedServiceContainer.dataMigrationManager)
+    private let appData = resolve(\SharedDataContainer.appData)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -115,12 +118,22 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 try await preferencesManager.setUp()
+                try await userManager.setUp()
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
                 rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)
             } catch {
                 handle(error: error)
             }
+        }
+    }
+
+    func migration() async throws {
+        let missingMigrations = try await dataMigrationManager.missingMigrations(MigrationType.all)
+
+        if let userData = (appData as? AppData)?.getUserData(), missingMigrations.contains(.userAppData) {
+            try await userManager.addAndMarkAsActive(userData: userData)
+            try await dataMigrationManager.addMigration(.userAppData)
         }
     }
 }
@@ -357,6 +370,7 @@ private extension CredentialProviderCoordinator {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
             await revokeCurrentSession()
+
             await wipeAllData()
             showNotLoggedInView()
             completion?()
