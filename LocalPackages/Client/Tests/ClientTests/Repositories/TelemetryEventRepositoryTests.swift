@@ -118,7 +118,7 @@ private final class MockedBusinessPlanRepository: AccessRepositoryProtocol {
 final class TelemetryEventRepositoryTests: XCTestCase {
     var localDatasource: LocalTelemetryEventDatasourceProtocol!
     var thresholdProvider: TelemetryThresholdProviderMock!
-    var userDataProviderMock: UserDataProviderMock!
+    var userManager: UserManagerProtocolMock!
     var itemReadEventRepository: ItemReadEventRepositoryProtocolMock!
     var sut: TelemetryEventRepositoryProtocol!
 
@@ -126,15 +126,17 @@ final class TelemetryEventRepositoryTests: XCTestCase {
         super.setUp()
         localDatasource = LocalTelemetryEventDatasource(databaseService: DatabaseService(inMemory: true))
         thresholdProvider = TelemetryThresholdProviderMock()
-        userDataProviderMock = UserDataProviderMock()
-        userDataProviderMock.stubbedGetUserDataResult = .preview
+        userManager = UserManagerProtocolMock()
+//        let user = UserData.preview
+        userManager.stubbedGetUserDataResult = .preview
+        userManager.stubbedGetActiveUserIdResult = userManager.stubbedGetUserDataResult!.user.ID
         itemReadEventRepository = .init()
     }
 
     override func tearDown() {
         localDatasource = nil
         thresholdProvider = nil
-        userDataProviderMock = nil
+        userManager = nil
         sut = nil
         super.tearDown()
     }
@@ -143,7 +145,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
 extension TelemetryEventRepositoryTests {
     func testAddNewEvents() async throws {
         // Given
-        let givenUserId = try userDataProviderMock.getUserId()
+        let givenUserId = try await userManager.getActiveUserId()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
@@ -153,7 +155,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         try await sut.addNewEvent(type: .create(.login))
@@ -181,7 +183,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
         var threshold = await sut.scheduler.getThreshold()
         XCTAssertNil(threshold)
 
@@ -212,7 +214,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         let sendResult = try await sut.sendAllEventsIfApplicable()
@@ -225,7 +227,7 @@ extension TelemetryEventRepositoryTests {
 
     func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
         // Given
-        let givenUserId = try userDataProviderMock.getUserId()
+        let givenUserId = try await userManager.getActiveUserId()
         let givenCurrentDate = Date.now
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
@@ -242,7 +244,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock,
+                                       userManager: userManager,
                                        batchSize: 1)
 
         // When
@@ -291,7 +293,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         try await sut.addNewEvent(type: .create(.login))
@@ -340,7 +342,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         let sendResult = try await sut.sendAllEventsIfApplicable()
@@ -367,7 +369,7 @@ extension TelemetryEventRepositoryTests {
                                         itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock,
+                                       userManager: userManager,
                                        batchSize: 1)
 
         // When
