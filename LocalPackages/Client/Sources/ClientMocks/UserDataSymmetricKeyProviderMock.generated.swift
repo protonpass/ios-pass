@@ -18,58 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-    import Client
-import Combine
-import Entities
-import CryptoKit
-import ProtonCoreLogin
-
-public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider /*UserDataProvider*/ {
-
-    public init() {}
-
-    // MARK: - ⚡️ SymmetricKeyProvider
-    // MARK: - getSymmetricKey
-    public var getSymmetricKeyThrowableError1: Error?
-    public var closureGetSymmetricKey: () -> () = {}
-    public var invokedGetSymmetricKeyfunction = false
-    public var invokedGetSymmetricKeyCount = 0
-    public var stubbedGetSymmetricKeyResult: SymmetricKey!
-
-    public func getSymmetricKey() throws -> SymmetricKey {
-        invokedGetSymmetricKeyfunction = true
-        invokedGetSymmetricKeyCount += 1
-        if let error = getSymmetricKeyThrowableError1 {
-            throw error
-        }
-        closureGetSymmetricKey()
-        return stubbedGetSymmetricKeyResult
-    }
-    // MARK: - ⚡️ UserDataProvider
-    // MARK: - getUserData
-    public var closureGetUserData: () -> () = {}
-    public var invokedGetUserDatafunction = false
-    public var invokedGetUserDataCount = 0
-    public var stubbedGetUserDataResult: UserData?
-
-    public func getUserData() -> UserData? {
-        invokedGetUserDatafunction = true
-        invokedGetUserDataCount += 1
-        closureGetUserData()
-        return stubbedGetUserDataResult
-    }
-    // MARK: - setUserData
-    public var closureSetUserData: () -> () = {}
-    public var invokedSetUserDatafunction = false
-    public var invokedSetUserDataCount = 0
-    public var invokedSetUserDataParameters: (userData: UserData?, Void)?
-    public var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
-
-    public func setUserData(_ userData: UserData?) {
-        invokedSetUserDatafunction = true
-        invokedSetUserDataCount += 1
-        invokedSetUserDataParameters = (userData, ())
-        invokedSetUserDataParametersList.append((userData, ()))
-        closureSetUserData()
-    }
-}
+//import Client
+//import Combine
+//import Entities
+//import CryptoKit
+//import ProtonCoreLogin
+//
+//public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider {
+//
+//    public init() {}
+//
+//    // MARK: - ⚡️ SymmetricKeyProvider
+//    // MARK: - getSymmetricKey
+//    public var getSymmetricKeyThrowableError1: Error?
+//    public var closureGetSymmetricKey: () -> () = {}
+//    public var invokedGetSymmetricKeyfunction = false
+//    public var invokedGetSymmetricKeyCount = 0
+//    public var stubbedGetSymmetricKeyResult: SymmetricKey!
+//
+//    public func getSymmetricKey() throws -> SymmetricKey {
+//        invokedGetSymmetricKeyfunction = true
+//        invokedGetSymmetricKeyCount += 1
+//        if let error = getSymmetricKeyThrowableError1 {
+//            throw error
+//        }
+//        closureGetSymmetricKey()
+//        return stubbedGetSymmetricKeyResult
+//    }
+//}

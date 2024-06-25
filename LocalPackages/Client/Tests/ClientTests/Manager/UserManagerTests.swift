@@ -199,7 +199,8 @@ extension UserManagerTests {
         // Then
         XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
         XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == activeUserId }))
-        XCTAssertNil(sut.activeUserId.value)
+        let getAllUsers = try await sut.getAllUser()
+        XCTAssertEqual(sut.activeUserId.value, getAllUsers.first!.user.ID)
     }
 
     func testRemoveInactiveUser() async throws {
@@ -232,6 +233,39 @@ extension UserManagerTests {
         XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == inactiveUserId }))
         XCTAssertEqual(sut.activeUserId.value, activeUserId)
     }
+    
+    
+    func testSwitchActiveUser() async throws {
+        // Given
+        let User1 = UserData.random()
+        let User2 = UserData.random()
+        let User3 = UserData.random()
+        var allUserDatas: [UserData] = []
+        userDataDatasource.closureGetAll = { [weak self] in
+            guard let self else { return }
+            userDataDatasource.stubbedGetAllResult = allUserDatas
+        }
+        try await sut.setUp()
+     
+        try await sut.addAndMarkAsActive(userData: User1)
+        
+        
+        XCTAssertEqual(sut.activeUserId.value, User1.user.ID)
+        
+        try await sut.addAndMarkAsActive(userData: User2)
+        
+        
+        XCTAssertEqual(sut.activeUserId.value, User2.user.ID)
+        
+        try await sut.addAndMarkAsActive(userData: User3)
+        
+        
+        XCTAssertEqual(sut.activeUserId.value, User3.user.ID)
+        
+        allUserDatas.append(contentsOf: [User1,User2,User3])
+        try await sut.switchActiveUser(with: User1.user.ID)
+        XCTAssertEqual(sut.activeUserId.value, User1.user.ID)
+    }
 }
 
 private extension Error {
@@ -244,3 +278,4 @@ private extension Error {
         return false
     }
 }
+
