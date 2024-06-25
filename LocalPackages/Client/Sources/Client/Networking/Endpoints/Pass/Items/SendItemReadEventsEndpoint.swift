@@ -26,15 +26,24 @@ import ProtonCoreNetworking
 struct ItemTime: Sendable, Encodable {
     let itemID: String
     let timestamp: Int
+
+    enum CodingKeys: String, CodingKey {
+        case itemID = "ItemID"
+        case timestamp = "Timestamp"
+    }
 }
 
 struct SendItemReadEventsRequest: Sendable, Encodable {
     let itemTimes: [ItemTime]
+
+    enum CodingKeys: String, CodingKey {
+        case itemTimes = "ItemTimes"
+    }
 }
 
 struct SendItemReadEventsEndpoint: Endpoint {
     typealias Body = SendItemReadEventsRequest
-    typealias Response = PinItemResponse
+    typealias Response = CodeOnlyResponse
 
     var debugDescription: String
     var path: String
