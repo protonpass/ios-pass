@@ -49,7 +49,7 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = (try? await userManager.getActiveUserId()) ?? ""
+                let userId = await (try? userManager.getActiveUserId()) ?? ""
 
                 featureFlagsRepository.setUserId(userId)
 
