@@ -156,6 +156,10 @@ extension AccountViewModel {
         featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
     }
 
+    var canShowSecurityKeys: Bool {
+        featureFlagsRepository.isEnabled(CoreFeatureFlagType.fidoKeys, reloadValue: true)
+    }
+
     var canChangeMailboxPassword: Bool {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
         else { return false }
@@ -174,6 +178,10 @@ extension AccountViewModel {
 
     func openAccountSettings() {
         router.present(for: .accountSettings)
+    }
+
+    func showSecurityKeys() {
+        router.present(for: .securityKeys)
     }
 
     func enableExtraPassword() {
