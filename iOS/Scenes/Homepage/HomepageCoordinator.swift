@@ -872,7 +872,7 @@ extension HomepageCoordinator {
     }
 
     func presentSecurityKeys() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             guard let self else { return }
             let viewController = LoginUIModule
                 .makeSecurityKeysViewController(apiService: apiManager.apiService,
