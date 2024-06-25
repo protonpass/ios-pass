@@ -46,7 +46,8 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
     }
 
     public func execute() {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let userId = userDataProvider.getUserData()?.user.ID ?? ""
 
