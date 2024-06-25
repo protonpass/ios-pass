@@ -119,6 +119,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             do {
                 try await preferencesManager.setUp()
                 try await userManager.setUp()
+                try await migration()
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
                 rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)
