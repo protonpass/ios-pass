@@ -20,18 +20,18 @@
 
 import UIKit
 
-@MainActor
 protocol OpenAutoFillSettingsUseCase: Sendable {
+    @MainActor
     func execute()
 }
 
 extension OpenAutoFillSettingsUseCase {
+    @MainActor
     func callAsFunction() {
         execute()
     }
 }
 
-@MainActor
 final class OpenAutoFillSettings: OpenAutoFillSettingsUseCase {
     private let router: MainUIKitSwiftUIRouter
 
@@ -39,6 +39,7 @@ final class OpenAutoFillSettings: OpenAutoFillSettingsUseCase {
         self.router = router
     }
 
+    @MainActor
     func execute() {
         if ProcessInfo.processInfo.isiOSAppOnMac {
             router.present(for: .autoFillInstructions)
