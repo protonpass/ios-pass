@@ -49,11 +49,9 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = try await userManager.getActiveUserId()
+                let userId = (try? await userManager.getActiveUserId()) ?? ""
 
-                if !userId.isEmpty {
-                    featureFlagsRepository.setUserId(userId)
-                }
+                featureFlagsRepository.setUserId(userId)
 
                 logger.trace("Refreshing feature flags for user \(userId)")
                 try await featureFlagsRepository.fetchFlags()
