@@ -420,7 +420,11 @@ extension HomepageCoordinator {
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault, itemContent):
                     if vault.vault.shared {
-                        presentManageShareVault(with: vault.vault, dismissal: .none)
+                        if isSecureLinkActive {
+                            presentCreateSecureLinkView(for: itemContent, dismissal: .none)
+                        } else {
+                            presentManageShareVault(with: vault.vault, dismissal: .none)
+                        }
                     } else {
                         presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
                     }
@@ -477,7 +481,7 @@ extension HomepageCoordinator {
                 case let .changePassword(mode):
                     presentChangePassword(mode: mode)
                 case let .createSecureLink(item):
-                    presentCreateSecureLinkView(for: item)
+                    presentCreateSecureLinkView(for: item, dismissal: .topMost)
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
                 case .secureLinks:
@@ -824,8 +828,8 @@ extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentCreateSecureLinkView(for item: ItemContent) {
-        dismissTopMostViewController { [weak self] in
+    func presentCreateSecureLinkView(for item: ItemContent, dismissal: SheetDismissal) {
+        let presentCreateSecureLinkView: () -> Void = { [weak self] in
             guard let self else { return }
             let viewModel = CreateSecureLinkViewModel(itemContent: item)
             let view = CreateSecureLinkView(viewModel: viewModel)
@@ -835,6 +839,16 @@ extension HomepageCoordinator {
             viewController.sheetPresentationController?.prefersGrabberVisible = true
             viewModel.sheetPresentation = viewController.sheetPresentationController
             present(viewController)
+        }
+
+        switch dismissal {
+        case .none:
+            presentCreateSecureLinkView()
+        case .topMost:
+            dismissTopMostViewController(completion: presentCreateSecureLinkView)
+        case .all:
+            assertionFailure("Not applicable")
+            presentCreateSecureLinkView()
         }
     }
 
