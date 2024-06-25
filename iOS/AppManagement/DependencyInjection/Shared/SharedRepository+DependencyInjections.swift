@@ -71,10 +71,6 @@ private extension SharedRepositoryContainer {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
 
-    var userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider {
-        SharedDataContainer.shared.appData()
-    }
-
     var keychain: any KeychainProtocol {
         SharedToolingContainer.shared.keychain()
     }
@@ -307,7 +303,7 @@ extension SharedRepositoryContainer {
     }
 
     var shareRepository: Factory<any ShareRepositoryProtocol> {
-        self { ShareRepository(symmetricKeyProvider: self.userDataSymmetricKeyProvider,
+        self { ShareRepository(symmetricKeyProvider: self.symmetricKeyProvider,
                                userManager: self.userManager,
                                localDatasource: self.localShareDatasource(),
                                remoteDatasouce: self.remoteShareDatasource(),
