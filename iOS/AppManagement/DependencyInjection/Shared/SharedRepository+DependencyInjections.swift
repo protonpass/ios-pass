@@ -399,6 +399,6 @@ extension SharedRepositoryContainer {
 
 extension SharedRepositoryContainer {
     var localDataMigrationDatasource: Factory<any LocalDataMigrationDatasourceProtocol> {
-        self { LocalDataMigrationDatasource(databaseService: self.databaseService) }
+        self { LocalDataMigrationDatasource(userDefault: kSharedUserDefaults) }
     }
 }
