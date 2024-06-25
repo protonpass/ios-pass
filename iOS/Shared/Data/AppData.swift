@@ -166,7 +166,7 @@ final class AppData: AppDataProtocol {
 
 private extension AppData {
     // Should be removed after session forking
-
+    // swiftlint:disable:next todo
     // TODO: This should become obsolete as user data should not be in app data anymore
     func useCredentialInUserDataForBothAppAndExtension() {
         if let userData {

@@ -69,7 +69,8 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         }
         let vault = try await getVault(from: baseInfo)
         let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
-        let inviteesData = try await infos.asyncCompactMap { try await generateInviteeData(from: $0, vault: vault,
+        let inviteesData = try await infos.asyncCompactMap { try await generateInviteeData(from: $0,
+                                                                                           vault: vault,
                                                                                            vaultKey: vaultKey) }
         let invited = try await shareInviteRepository.sendInvites(shareId: vault.shareId,
                                                                   inviteesData: inviteesData,

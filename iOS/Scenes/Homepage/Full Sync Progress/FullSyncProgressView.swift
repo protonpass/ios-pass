@@ -24,14 +24,13 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct FullSyncProgressView: View {
-    @Environment(\.dismiss) private var dismiss
     @State private var isShowingDetail = false
     @StateObject private var viewModel: FullSyncProgressViewModel
-    var onContinue: (() -> Void)?
+    var onFinish: (() -> Void)?
 
-    init(mode: FullSyncProgressViewModel.Mode, onContinue: (() -> Void)? = nil) {
+    init(mode: FullSyncProgressViewModel.Mode, onFinish: (() -> Void)? = nil) {
         _viewModel = .init(wrappedValue: .init(mode: mode))
-        self.onContinue = onContinue
+        self.onFinish = onFinish
     }
 
     var body: some View {
@@ -48,21 +47,7 @@ struct FullSyncProgressView: View {
 }
 
 private extension FullSyncProgressView {
-    @ViewBuilder
     var realBody: some View {
-        ZStack {
-            if viewModel.isDoneSynching {
-                doneView
-            } else {
-                inProgressView
-            }
-        }
-        .animation(.default, value: viewModel.isDoneSynching)
-    }
-}
-
-private extension FullSyncProgressView {
-    var inProgressView: some View {
         VStack {
             Spacer()
             overallProgressView
@@ -76,6 +61,9 @@ private extension FullSyncProgressView {
             }
         }
         .animation(.default, value: isShowingDetail)
+        .onChange(of: viewModel.isDoneSynching) { _ in
+            onFinish?()
+        }
     }
 }
 
@@ -153,47 +141,5 @@ private extension FullSyncProgressView {
             .animation(.default, value: viewModel.progresses.count)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-private extension FullSyncProgressView {
-    var doneView: some View {
-        VStack {
-            Spacer()
-
-            Image(uiImage: PassIcon.fullSyncDone)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 156)
-
-            Text("Sync complete")
-                .font(.title2.bold())
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .padding(.vertical)
-
-            if !viewModel.mode.isFullSync {
-                Text("The app is now ready to use")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-            }
-
-            Spacer()
-
-            CapsuleTextButton(title: #localized("Continue"),
-                              titleColor: PassColor.textInvert,
-                              backgroundColor: PassColor.interactionNormMajor1,
-                              action: { handleContinuation() })
-                .padding()
-        }
-    }
-}
-
-private extension FullSyncProgressView {
-    func handleContinuation() {
-        switch viewModel.mode {
-        case .fullSync:
-            dismiss()
-        case .logIn:
-            onContinue?()
-        }
     }
 }
