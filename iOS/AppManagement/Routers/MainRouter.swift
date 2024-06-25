@@ -101,6 +101,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case editSpotlightVaults
     case passkeyDetail(Passkey)
     case securityDetail(SecurityWeakness)
+    case securityKeys
     case passwordReusedItemList(ItemContent)
     case changePassword(PasswordChangeModule.PasswordChangeMode)
     case createSecureLink(ItemContent)
