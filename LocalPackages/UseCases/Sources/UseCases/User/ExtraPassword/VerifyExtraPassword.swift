@@ -39,7 +39,6 @@ public extension VerifyExtraPasswordUseCase {
 
 public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
     private let repository: any ExtraPasswordRepositoryProtocol
-    private var authData: SrpAuthenticationData?
 
     public init(repository: any ExtraPasswordRepositoryProtocol) {
         self.repository = repository
@@ -48,7 +47,7 @@ public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
     public func execute(username: String,
                         password: String) async throws -> ExtraPasswordVerificationResult {
         // Step 1: initiate the process
-        let authData = try await getAuthData()
+        let authData = try await repository.initiateSrpAuthentication()
 
         // Step 2: cryptographic voodoo
         guard let auth = CryptoGo.SrpAuth(authData.version,
@@ -87,16 +86,5 @@ public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
             }
             throw error
         }
-    }
-}
-
-private extension VerifyExtraPassword {
-    func getAuthData() async throws -> SrpAuthenticationData {
-        if let authData {
-            return authData
-        }
-        let authData = try await repository.initiateSrpAuthentication()
-        self.authData = authData
-        return authData
     }
 }
