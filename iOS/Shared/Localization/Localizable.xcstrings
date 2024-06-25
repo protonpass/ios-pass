@@ -88669,6 +88669,16 @@
         }
       }
     },
+    "Security keys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security keys"
+          }
+        }
+      }
+    },
     "See all" : {
       "comment" : "Last button on the home page for pinned items. This will redirect the user to a search screen for pinned items",
       "localizations" : {
