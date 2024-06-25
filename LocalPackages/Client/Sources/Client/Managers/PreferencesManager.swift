@@ -271,6 +271,7 @@ public extension PreferencesManager {
         }
         logger.trace("Removing user preferences for user \(userId)")
         try await userPreferencesDatasource.removePreferences(for: userId)
+        userPreferences.send(nil)
         logger.info("Removed user preferences for user \(userId)")
     }
 }

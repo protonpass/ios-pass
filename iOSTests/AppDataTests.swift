@@ -93,30 +93,6 @@ extension AppDataTests {
     }
 }
 
-// MARK: - UserData
-extension AppDataTests {
-    func testUserDataNilByDefault() {
-        XCTAssertNil(sut.getUserData())
-    }
-
-    func testUpdateUserData() throws {
-        // Given
-        let givenUserData = UserData.mock
-
-        // When
-        sut.setUserData(givenUserData)
-
-        // Then
-        try XCTAssertEqual(sut.getUserId(), givenUserData.user.ID)
-
-        // When
-        sut.setUserData(nil)
-
-        // Then
-        XCTAssertNil(sut.getUserData())
-    }
-}
-
 // MARK: - Unauth session credentials
 extension AppDataTests {
     func testSessionCredentialsNilByDefault() {

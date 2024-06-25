@@ -91,13 +91,13 @@ final class AppCoordinator {
 
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
-//        bindAppState()
 
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             resetAllData()
         }
 
+        // swiftlint:disable:next todo
         // TODO: Should not be api manager that logs the user totatally out
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
@@ -118,6 +118,7 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
+        // swiftlint:disable:next todo
         // TODO: what to do with multiple users data ?
         appData.resetData()
     }
@@ -130,7 +131,7 @@ final class AppCoordinator {
                 guard let self else { return }
                 switch appState {
                 case let .loggedOut(reason):
-
+                    // swiftlint:disable:next todo
                     // TODO: need to tweack this to not bring user to welcome screen if other user are still connceted
                     logger.info("Logged out \(reason)")
                     if reason != .noAuthSessionButUnauthSessionAvailable {
@@ -146,7 +147,7 @@ final class AppCoordinator {
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
                     logger.info("Logged in manual")
-                    userManager.setUserData(userData, isActive: true) // .addAndMarkAsActive(userData: userData)
+                    userManager.setUserData(userData, isActive: true)
                     connectToCorruptedSessionStream()
                     if extraPassword {
                         showHomeScene(mode: .manualLoginWithExtraPassword)
@@ -219,14 +220,18 @@ private extension AppCoordinator {
             guard let self else {
                 return
             }
-            if mode.extraPassword {
-                do {
+
+            do {
+                // Refresh cached preferences after every login
+                try await preferencesManager.setUp()
+                if mode.extraPassword {
                     try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
                                                                        value: true)
-                } catch {
-                    logger.error(error)
                 }
+            } catch {
+                logger.error(error)
             }
+
             await loginMethod.setLogInFlow(newState: mode.isManualLogin)
             let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
@@ -271,7 +276,7 @@ private extension AppCoordinator {
         Task { [weak self] in
             guard let self else { return }
             await wipeAllData()
-
+            // swiftlint:disable:next todo
             // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()
         }

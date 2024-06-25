@@ -28,6 +28,7 @@ import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
+// sourcery:AutoMockable
 public protocol UserManagerProtocol: Sendable {
     var userDatas: CurrentValueSubject<[UserData], Never> { get }
     var currentActiveUser: CurrentValueSubject<UserData?, Never> { get }
@@ -46,24 +47,6 @@ public protocol UserManagerProtocol: Sendable {
     nonisolated func getUnwrappedUserData() throws -> UserData
 }
 
-// public extension UserManagerProtocol {
-//    nonisolated func getActiveUserIdNonisolated() throws -> String {
-//        guard let activeUserId = activeUserId.value else {
-//            throw PassError.noUserData
-//        }
-//        return activeUserId
-//    }
-//
-//    nonisolated func getUnwrappedUserData() throws -> UserData {
-//        guard let userData = currentActiveUser.value else {
-//            throw PassError.noUserData
-//        }
-//        return userData
-//    }
-// }
-
-// public typealias GlobalUserManager = UserDataProvider & UserManagerProtocol
-
 public extension UserManagerProtocol {
     func addAndMarkAsActive(userData: UserData) async throws {
         try await add(userData: userData, isActive: true)
@@ -73,17 +56,6 @@ public extension UserManagerProtocol {
         try await add(userData: userData, isActive: isActive)
     }
 }
-
-// TODO:
-// - split credential and user data for fork and multi account as api service return update credential and not user
-// data
-// -
-
-// user infos
-//
-// plan infos
-//
-// credential infos
 
 public actor UserManager: UserManagerProtocol {
     public let userDatas = CurrentValueSubject<[UserData], Never>([])
@@ -103,27 +75,6 @@ public actor UserManager: UserManagerProtocol {
         logger = .init(manager: logManager)
     }
 }
-
-// extension UserManager: CredentialProvider {
-//    public nonisolated func getCredential() -> AuthCredential? {
-//        currentActiveUser.value?.credential
-//    }
-//
-//    public nonisolated func setCredential(_ credential: AuthCredential?) {
-////        let userData = userDatas.value.
-//    }
-// }
-
-// extension UserData {
-//    func updated(credential: AuthCredential) -> UserData {
-//        UserData(credential: self.credential.updatedKeepingKeyAndPasswordDataIntact(credential: credential),
-//                 user: user,
-//                 salts: salts,
-//                 passphrases: passphrases,
-//                 addresses: addresses,
-//                 scopes: credential.scopes)
-//    }
-// }
 
 public extension UserManager {
     func setUp() async throws {
@@ -220,26 +171,10 @@ public extension UserManager {
     }
 }
 
-public extension UserManager /*: UserDataProvider */ {
+public extension UserManager {
     nonisolated func getUserData() -> UserData? {
         currentActiveUser.value
     }
-
-//    public nonisolated func updateUserData(userId: String?, _ userData: UserData?) {
-//        currentActiveUser.send(userData)
-//
-//        Task {
-//            do {
-//                if let userData {
-//                    try await add(userData: userData, isActive: false)
-//                } else if let userId {
-//                    try await remove(userId: userId)
-//                }
-//            } catch {
-//                logger.error(error)
-//            }
-//        }
-//    }
 
     nonisolated func setUserData(_ userData: UserData, isActive: Bool = false) {
         Task {
@@ -278,6 +213,8 @@ public extension UserManager /*: UserDataProvider */ {
 
 private extension UserManager {
     func assertDidSetUp() async {
+        // swiftlint:disable:next todo
+        // TODO: this should not setup and only assert. We should spread repo lazy loading in the app
         if !didSetUp {
             do {
                 try await setUp()
@@ -286,9 +223,6 @@ private extension UserManager {
             }
             logger.error("UserManager not set up")
         }
-//        if !didSetUp {
-//            logger.error("UserManager not set up")
-//        }
     }
 
     func updateNewActiveUser(users: [UserData]) {
@@ -301,78 +235,3 @@ private extension UserManager {
         activeUserId.send(id)
     }
 }
-
-//
-//
-// func setUp() async throws {
-//    logger.trace("Setting up preferences manager")
-//
-//    // App preferences
-//    if let preferences = try appPreferencesDatasource.getPreferences() {
-//        appPreferences.send(preferences)
-//    } else {
-//        let preferences = AppPreferences.default
-//        try appPreferencesDatasource.upsertPreferences(preferences)
-//        appPreferences.send(preferences)
-//        // When entering this code path, the app might be reinstalled
-//        // so we remove shared preferences which survives because it's stored in Keychain
-//        try sharedPreferencesDatasource.removePreferences()
-//    }
-//
-//    // Shared preferences
-//    if let preferences = try sharedPreferencesDatasource.getPreferences() {
-//        sharedPreferences.send(preferences)
-//    } else {
-//        let preferences = SharedPreferences.default
-//        try sharedPreferencesDatasource.upsertPreferences(preferences)
-//        sharedPreferences.send(preferences)
-//    }
-//
-//    // User's preferences
-//    if let userId = try await currentUserIdProvider.getCurrentUserId() {
-//        if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
-//            userPreferences.send(preferences)
-//        } else {
-//            let preferences = UserPreferences.default
-//            try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-//            userPreferences.send(preferences)
-//        }
-//    }
-//
-//    // Migrations
-//    if !appPreferences.unwrapped().didMigratePreferences {
-//        logger.trace("Migrating preferences")
-//        let (app, shared, user) = preferencesMigrator.migratePreferences()
-//
-//        try appPreferencesDatasource.upsertPreferences(app)
-//        appPreferences.send(app)
-//
-//        try sharedPreferencesDatasource.upsertPreferences(shared)
-//        sharedPreferences.send(shared)
-//
-//        if let userId = try await currentUserIdProvider.getCurrentUserId() {
-//            try await userPreferencesDatasource.upsertPreferences(user, for: userId)
-//            userPreferences.send(user)
-//        }
-//
-//        logger.trace("Migrated preferences")
-//    }
-//
-//    logger.info("Set up preferences manager")
-//    didSetUp = true
-// }
-//
-// func reset() async throws {
-//    guard didSetUp else { return }
-//    try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
-//    try await updateSharedPreferences(\.pinCode, value: nil)
-//    try await updateSharedPreferences(\.failedAttemptCount, value: 0)
-//    try await removeUserPreferences()
-// }
-//
-// func assertDidSetUp() {
-//    assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
-//    if !didSetUp {
-//        logger.error("PreferencesManager not set up")
-//    }
-// }

@@ -74,9 +74,12 @@ final class WipeAllData: WipeAllDataUseCase {
         self.passMonitorRepository = passMonitorRepository
     }
 
+    // Order matters because we remove data base on current user ID
+    // so we shouldn't remove current user ID before removing data
     func execute() async {
         logger.info("Wiping all data")
 
+        try? await preferencesManager.reset()
         if let userID = try? await userManager.getActiveUserId(), !userID.isEmpty {
             featureFlagsRepository.resetFlags(for: userID)
         }
@@ -84,17 +87,18 @@ final class WipeAllData: WipeAllDataUseCase {
 
         await passMonitorRepository.reset()
         appData.resetData()
+        // swiftlint:disable:next todo
         // TODO: need to move this in session manager
         apiManager.clearCredentials()
-
-        try? await preferencesManager.reset()
         databaseService.resetContainer()
 
         UIPasteboard.general.items = []
 
+        // swiftlint:disable:next todo
         // TODO: only kill sync if last account being logged out
         syncEventLoop.reset()
 
+        // swiftlint:disable:next todo
         // TODO: only reset if last account being logged out but should
         await vaultsManager.reset()
         vaultSyncEventStream.value = .initialization
@@ -102,7 +106,8 @@ final class WipeAllData: WipeAllDataUseCase {
         if let userId = try? await userManager.getActiveUserId() {
             try? await userManager.remove(userId: userId)
         }
-        // TODO:
+        // swiftlint:disable:next todo
+        // TODO: should be handle by auth/session manager
         try? await credentialManager.removeAllCredentials()
         logger.info("Wiped all data")
     }

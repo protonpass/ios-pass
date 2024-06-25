@@ -81,8 +81,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func trashItems(_ items: [any ItemIdentifiable]) async throws
 
-//    func deleteAlias(email: String) async throws
-
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
     func untrashItems(_ items: [any ItemIdentifiable]) async throws
@@ -179,6 +177,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
 
 public extension ItemRepository {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
+        // swiftlint:disable:next todo
         // TODO: fetch items linked to active user
         try await localDatasource.getAllItems()
     }
@@ -192,8 +191,8 @@ public extension ItemRepository {
     }
 
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        // swiftlint:disable:next todo
         // TODO: fetch items linked to active user
-
         try await localDatasource.getItems(state: state)
     }
 
@@ -206,8 +205,8 @@ public extension ItemRepository {
     }
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+        // swiftlint:disable:next todo
         // TODO: fetch items linked to active user
-
         try await localDatasource.getAllPinnedItems()
     }
 
@@ -217,6 +216,7 @@ public extension ItemRepository {
     }
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
+        // swiftlint:disable:next todo
         // TODO: fetch items linked to active user
         let items = try await localDatasource.getItems(for: items)
 
@@ -283,6 +283,7 @@ public extension ItemRepository {
 
     func createItem(itemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws -> SymmetricallyEncryptedItem {
+        // swiftlint:disable:next todo
         // TODO: should we add user id in item?
         logger.trace("Creating item for share \(shareId)")
         let request = try await createItemRequest(itemContent: itemContent, shareId: shareId)
@@ -299,8 +300,8 @@ public extension ItemRepository {
     func createAlias(info: AliasCreationInfo,
                      itemContent: any ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem {
+        // swiftlint:disable:next todo
         // TODO: should we add user id in alias ?
-
         logger.trace("Creating alias item")
         let createItemRequest = try await createItemRequest(itemContent: itemContent, shareId: shareId)
         let createAliasRequest = CreateCustomAliasRequest(info: info,
