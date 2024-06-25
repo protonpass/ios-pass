@@ -23,8 +23,6 @@ import ClientMocks
 import Entities
 import XCTest
 
-
-
 final class MigrationManagerTests: XCTestCase {
     var migrationDatasource: LocalDataMigrationDatasourceProtocol!
     var sut: DataMigrationManagerProtocol!

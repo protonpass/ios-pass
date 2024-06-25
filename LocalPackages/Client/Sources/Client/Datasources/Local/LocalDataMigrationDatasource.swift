@@ -22,30 +22,33 @@ import CoreData
 import Entities
 import Foundation
 
+private let kGlobalMigrationsKey = "GlobalMigrations"
+
 public protocol LocalDataMigrationDatasourceProtocol: Sendable {
     func getMigrations() async throws -> MigrationStatus?
     func upsert(migrations: MigrationStatus) async throws
 }
 
-public final class LocalDataMigrationDatasource: LocalDatasource, LocalDataMigrationDatasourceProtocol {}
+public actor LocalDataMigrationDatasource: LocalDataMigrationDatasourceProtocol {
+    private let userDefault: UserDefaults
+
+    public init(userDefault: UserDefaults) {
+        self.userDefault = userDefault
+    }
+}
 
 public extension LocalDataMigrationDatasource {
-    func getMigrations() async throws -> MigrationStatus? {
-        let taskContext = newTaskContext(type: .fetch)
-        let fetchRequest = MigrationStatusEntity.fetchRequest()
-        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return entities.compactMap { MigrationStatus(completedMigrations: Int($0.completedMigrations)) }.first
+    func upsert(migrations: MigrationStatus) throws {
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(migrations)
+        userDefault.set(data, forKey: kGlobalMigrationsKey)
     }
 
-    func upsert(migrations: MigrationStatus) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: MigrationStatusEntity.entity(context: taskContext),
-                                  sourceItems: [migrations]) { managedObject, migration in
-                (managedObject as? MigrationStatusEntity)?
-                    .hydrate(completedMigrations: migration.completedMigrations)
-            }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+    func getMigrations() throws -> MigrationStatus? {
+        guard let data = userDefault.data(forKey: kGlobalMigrationsKey) else {
+            return nil
+        }
+        let decoder = JSONDecoder()
+        return try decoder.decode(MigrationStatus.self, from: data)
     }
 }
