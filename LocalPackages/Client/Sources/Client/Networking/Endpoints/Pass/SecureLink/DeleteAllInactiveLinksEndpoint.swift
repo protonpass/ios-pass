@@ -27,9 +27,5 @@ struct DeleteAllInactiveLinksEndpoint: Endpoint {
 
     let debugDescription = "Delete all inactive secure links for current user"
     let path = "/pass/v1/public_link/inactive"
-    var method: HTTPMethod
-
-    init() {
-        method = .delete
-    }
+    let method: HTTPMethod = .delete
 }
