@@ -64,7 +64,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userManager = resolve(\SharedServiceContainer.userManager)
-//    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     // Lazily initialised properties
@@ -868,9 +867,7 @@ extension HomepageCoordinator {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                guard let userData = try await userManager.getActiveUserData() else {
-                    throw PassError.userManager(.activeUserDataNotFound)
-                }
+                let userData = try await userManager.getUnwrappedActiveUserData()
                 let userInfo = try await filledUserInfo(userData: userData)
                 let viewController = PasswordChangeModule
                     .makePasswordChangeViewController(mode: mode,

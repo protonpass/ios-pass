@@ -34,10 +34,10 @@ public struct MigrationType: OptionSet, Sendable {
 }
 
 public protocol DataMigrationManagerProtocol: Sendable {
-    func addMigration(_ migration: MigrationType) async throws
-    func hasMigrationOccurred(_ migration: MigrationType) async throws -> Bool
-    func missingMigrations(_ migrations: [MigrationType]) async throws -> [MigrationType]
-    func revertMigration(_ migration: MigrationType) async throws
+    func addMigration(_ migration: MigrationType) async
+    func hasMigrationOccurred(_ migration: MigrationType) async -> Bool
+    func missingMigrations(_ migrations: [MigrationType]) async -> [MigrationType]
+    func revertMigration(_ migration: MigrationType) async
 }
 
 public actor DataMigrationManager: DataMigrationManagerProtocol {
@@ -47,37 +47,30 @@ public actor DataMigrationManager: DataMigrationManagerProtocol {
         self.datasource = datasource
     }
 
-    public func addMigration(_ migration: MigrationType) async throws {
-        var status = try await datasource.getMigrations() ?? MigrationStatus.default
+    public func addMigration(_ migration: MigrationType) async {
+        var status = await datasource.getMigrations()
 
-        status.completedMigrations |= migration.rawValue
+        status |= migration.rawValue
 
-        try await datasource.upsert(migrations: status)
+        await datasource.upsert(migrations: status)
     }
 
-    public func hasMigrationOccurred(_ migration: MigrationType) async throws -> Bool {
-        guard let status = try await datasource.getMigrations() else {
-            return false
-        }
+    public func hasMigrationOccurred(_ migration: MigrationType) async -> Bool {
+        let status = await datasource.getMigrations()
 
-        return status.completedMigrations & migration.rawValue == migration.rawValue
+        return status & migration.rawValue == migration.rawValue
     }
 
-    public func missingMigrations(_ migrations: [MigrationType]) async throws -> [MigrationType] {
-        guard let status = try await datasource.getMigrations() else {
-            return migrations
-        }
+    public func missingMigrations(_ migrations: [MigrationType]) async -> [MigrationType] {
+        let status = await datasource.getMigrations()
 
-        return migrations.filter { (status.completedMigrations & $0.rawValue) != $0.rawValue }
+        return migrations.filter { (status & $0.rawValue) != $0.rawValue }
     }
 
-    public func revertMigration(_ migration: MigrationType) async throws {
-        guard var status = try await datasource.getMigrations() else {
-            return
-        }
+    public func revertMigration(_ migration: MigrationType) async {
+        var status = await datasource.getMigrations()
+        status &= ~migration.rawValue
 
-        status.completedMigrations &= ~migration.rawValue
-
-        try await datasource.upsert(migrations: status)
+        await datasource.upsert(migrations: status)
     }
 }

@@ -40,18 +40,18 @@ final class LocalDataMigrationDatasourceTests: XCTestCase {
 
 extension LocalDataMigrationDatasourceTests {
     func testGetUpdateRemoveActiveUserId() async throws {
-        let noMigration = try await sut.getMigrations()
-        XCTAssertNil(noMigration)
+        let noMigration = await sut.getMigrations()
+        XCTAssertEqual(noMigration, 0)
 
-        try await sut.upsert(migrations: MigrationStatus(completedMigrations: 0))
-        let migration1 = try await XCTUnwrapAsync(try await sut.getMigrations())
-        XCTAssertEqual(migration1.completedMigrations, 0)
+        await sut.upsert(migrations: 0)
+        let migration1 = try await XCTUnwrapAsync( await sut.getMigrations())
+        XCTAssertEqual(migration1, 0)
 
-        try await sut.upsert(migrations: MigrationStatus(completedMigrations: 1))
+         await sut.upsert(migrations: 1)
 
-        let migration2 = try await XCTUnwrapAsync(try await sut.getMigrations())
+        let migration2 = try await XCTUnwrapAsync( await sut.getMigrations())
 
-        XCTAssertEqual(migration2.completedMigrations, 1)
+        XCTAssertEqual(migration2, 1)
     }
 }
 
