@@ -99,9 +99,7 @@ private extension SendVaultShareInvite {
     func generateInviteeData(from info: SharingInfos,
                              vault: Vault,
                              vaultKey: DecryptedShareKey) async throws -> InviteeData {
-        guard let userData = try await userManager.getActiveUserData() else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let email = info.email
         if let key = info.receiverPublicKeys?.first {
             let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,

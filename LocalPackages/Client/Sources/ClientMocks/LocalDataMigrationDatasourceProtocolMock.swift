@@ -23,17 +23,17 @@ import Client
 import Entities
 
 public final class LocalDataMigrationDatasourceProtocolMock: @unchecked Sendable, LocalDataMigrationDatasourceProtocol {
-    private var currentMigrations = MigrationStatus(completedMigrations: 0)
+    private var currentMigrations = 0
     
-    public init(currentMigrations: MigrationStatus = MigrationStatus(completedMigrations: 0)) {
+    public init(currentMigrations: MigrationStatus = 0) {
         self.currentMigrations = currentMigrations
     }
     
-    public func getMigrations() async throws -> MigrationStatus? {
+    public func getMigrations() async -> MigrationStatus {
         return currentMigrations
     }
 
-    public func upsert(migrations: MigrationStatus) async throws {
+    public func upsert(migrations: MigrationStatus) async {
         currentMigrations = migrations
     }
 }

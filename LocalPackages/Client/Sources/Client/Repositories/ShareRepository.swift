@@ -252,9 +252,7 @@ public extension ShareRepository {
     }
 
     func createVault(_ vault: VaultProtobuf) async throws -> Share {
-        guard let userData = try await userManager.getActiveUserData() else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
@@ -267,9 +265,7 @@ public extension ShareRepository {
     }
 
     func edit(oldVault: Vault, newVault: VaultProtobuf) async throws {
-        guard let userData = try await userManager.getActiveUserData() else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         logger.trace("Editing vault \(oldVault.id) for user \(userId)")
         let shareId = oldVault.shareId

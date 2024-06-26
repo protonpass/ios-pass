@@ -66,7 +66,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any AccountViewModelDelegate)?
 
-    var username: String { userManager.getUserData()?.user.email ?? "" }
+    var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
 
     var extraPasswordSupported: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAccessKeyV1)
@@ -189,7 +189,7 @@ extension AccountViewModel {
     }
 
     func disableExtraPassword() {
-        guard let username = userManager.getUserData()?.credential.userName else {
+        guard let username = userManager.currentActiveUser.value?.credential.userName else {
             let errorMessage = #localized("Missing username")
             router.display(element: .errorMessage(errorMessage))
             logger.error("Failed to disable extra password. Missing username")

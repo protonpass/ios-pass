@@ -30,26 +30,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
 
     public init() {}
 
-    // MARK: - userDatas
-    public var invokedUserDatasSetter = false
-    public var invokedUserDatasSetterCount = 0
-    public var invokedUserDatas: CurrentValueSubject<[UserData], Never>?
-    public var invokedUserDatasList = [CurrentValueSubject<[UserData], Never>?]()
-    public var invokedUserDatasGetter = false
-    public var invokedUserDatasGetterCount = 0
-    public var stubbedUserDatas: CurrentValueSubject<[UserData], Never>!
-    public var userDatas: CurrentValueSubject<[UserData], Never> {
-        set {
-            invokedUserDatasSetter = true
-            invokedUserDatasSetterCount += 1
-            invokedUserDatas = newValue
-            invokedUserDatasList.append(newValue)
-        } get {
-            invokedUserDatasGetter = true
-            invokedUserDatasGetterCount += 1
-            return stubbedUserDatas
-        }
-    }
     // MARK: - currentActiveUser
     public var invokedCurrentActiveUserSetter = false
     public var invokedCurrentActiveUserSetterCount = 0
@@ -68,26 +48,6 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
             invokedCurrentActiveUserGetter = true
             invokedCurrentActiveUserGetterCount += 1
             return stubbedCurrentActiveUser
-        }
-    }
-    // MARK: - activeUserId
-    public var invokedActiveUserIdSetter = false
-    public var invokedActiveUserIdSetterCount = 0
-    public var invokedActiveUserId: CurrentValueSubject<String?, Never>?
-    public var invokedActiveUserIdList = [CurrentValueSubject<String?, Never>?]()
-    public var invokedActiveUserIdGetter = false
-    public var invokedActiveUserIdGetterCount = 0
-    public var stubbedActiveUserId: CurrentValueSubject<String?, Never>!
-    public var activeUserId: CurrentValueSubject<String?, Never> {
-        set {
-            invokedActiveUserIdSetter = true
-            invokedActiveUserIdSetterCount += 1
-            invokedActiveUserId = newValue
-            invokedActiveUserIdList.append(newValue)
-        } get {
-            invokedActiveUserIdGetter = true
-            invokedActiveUserIdGetterCount += 1
-            return stubbedActiveUserId
         }
     }
     // MARK: - setUp
@@ -120,8 +80,24 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         closureGetActiveUserData()
         return stubbedGetActiveUserDataResult
     }
+    // MARK: - getUnwrappedActiveUserData
+    public var getUnwrappedActiveUserDataThrowableError3: Error?
+    public var closureGetUnwrappedActiveUserData: () -> () = {}
+    public var invokedGetUnwrappedActiveUserDatafunction = false
+    public var invokedGetUnwrappedActiveUserDataCount = 0
+    public var stubbedGetUnwrappedActiveUserDataResult: UserData!
+
+    public func getUnwrappedActiveUserData() async throws -> UserData {
+        invokedGetUnwrappedActiveUserDatafunction = true
+        invokedGetUnwrappedActiveUserDataCount += 1
+        if let error = getUnwrappedActiveUserDataThrowableError3 {
+            throw error
+        }
+        closureGetUnwrappedActiveUserData()
+        return stubbedGetUnwrappedActiveUserDataResult
+    }
     // MARK: - add
-    public var addUserDataIsActiveThrowableError3: Error?
+    public var addUserDataIsActiveThrowableError4: Error?
     public var closureAdd: () -> () = {}
     public var invokedAddfunction = false
     public var invokedAddCount = 0
@@ -133,13 +109,13 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedAddCount += 1
         invokedAddParameters = (userData, isActive)
         invokedAddParametersList.append((userData, isActive))
-        if let error = addUserDataIsActiveThrowableError3 {
+        if let error = addUserDataIsActiveThrowableError4 {
             throw error
         }
         closureAdd()
     }
     // MARK: - switchActiveUser
-    public var switchActiveUserWithThrowableError4: Error?
+    public var switchActiveUserWithThrowableError5: Error?
     public var closureSwitchActiveUser: () -> () = {}
     public var invokedSwitchActiveUserfunction = false
     public var invokedSwitchActiveUserCount = 0
@@ -151,13 +127,13 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedSwitchActiveUserCount += 1
         invokedSwitchActiveUserParameters = (userId, ())
         invokedSwitchActiveUserParametersList.append((userId, ()))
-        if let error = switchActiveUserWithThrowableError4 {
+        if let error = switchActiveUserWithThrowableError5 {
             throw error
         }
         closureSwitchActiveUser()
     }
     // MARK: - getAllUser
-    public var getAllUserThrowableError5: Error?
+    public var getAllUserThrowableError6: Error?
     public var closureGetAllUser: () -> () = {}
     public var invokedGetAllUserfunction = false
     public var invokedGetAllUserCount = 0
@@ -166,14 +142,14 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public func getAllUser() async throws -> [UserData] {
         invokedGetAllUserfunction = true
         invokedGetAllUserCount += 1
-        if let error = getAllUserThrowableError5 {
+        if let error = getAllUserThrowableError6 {
             throw error
         }
         closureGetAllUser()
         return stubbedGetAllUserResult
     }
     // MARK: - remove
-    public var removeUserIdThrowableError6: Error?
+    public var removeUserIdThrowableError7: Error?
     public var closureRemove: () -> () = {}
     public var invokedRemovefunction = false
     public var invokedRemoveCount = 0
@@ -185,13 +161,13 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedRemoveCount += 1
         invokedRemoveParameters = (userId, ())
         invokedRemoveParametersList.append((userId, ()))
-        if let error = removeUserIdThrowableError6 {
+        if let error = removeUserIdThrowableError7 {
             throw error
         }
         closureRemove()
     }
     // MARK: - getActiveUserId
-    public var getActiveUserIdThrowableError7: Error?
+    public var getActiveUserIdThrowableError8: Error?
     public var closureGetActiveUserId: () -> () = {}
     public var invokedGetActiveUserIdfunction = false
     public var invokedGetActiveUserIdCount = 0
@@ -200,7 +176,7 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public func getActiveUserId() async throws -> String {
         invokedGetActiveUserIdfunction = true
         invokedGetActiveUserIdCount += 1
-        if let error = getActiveUserIdThrowableError7 {
+        if let error = getActiveUserIdThrowableError8 {
             throw error
         }
         closureGetActiveUserId()
@@ -231,37 +207,5 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedSetUserDataParameters = (userData, isActive)
         invokedSetUserDataParametersList.append((userData, isActive))
         closureSetUserData()
-    }
-    // MARK: - getActiveUserIdNonisolated
-    public var getActiveUserIdNonisolatedThrowableError10: Error?
-    public var closureGetActiveUserIdNonisolated: () -> () = {}
-    public var invokedGetActiveUserIdNonisolatedfunction = false
-    public var invokedGetActiveUserIdNonisolatedCount = 0
-    public var stubbedGetActiveUserIdNonisolatedResult: String!
-
-    public func getActiveUserIdNonisolated() throws -> String {
-        invokedGetActiveUserIdNonisolatedfunction = true
-        invokedGetActiveUserIdNonisolatedCount += 1
-        if let error = getActiveUserIdNonisolatedThrowableError10 {
-            throw error
-        }
-        closureGetActiveUserIdNonisolated()
-        return stubbedGetActiveUserIdNonisolatedResult
-    }
-    // MARK: - getUnwrappedUserData
-    public var getUnwrappedUserDataThrowableError11: Error?
-    public var closureGetUnwrappedUserData: () -> () = {}
-    public var invokedGetUnwrappedUserDatafunction = false
-    public var invokedGetUnwrappedUserDataCount = 0
-    public var stubbedGetUnwrappedUserDataResult: UserData!
-
-    public func getUnwrappedUserData() throws -> UserData {
-        invokedGetUnwrappedUserDatafunction = true
-        invokedGetUnwrappedUserDataCount += 1
-        if let error = getUnwrappedUserDataThrowableError11 {
-            throw error
-        }
-        closureGetUnwrappedUserData()
-        return stubbedGetUnwrappedUserDataResult
     }
 }

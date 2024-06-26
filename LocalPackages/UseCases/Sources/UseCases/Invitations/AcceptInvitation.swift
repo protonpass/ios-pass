@@ -69,9 +69,7 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
 private extension AcceptInvitation {
     func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
         do {
-            guard let userData = try await userManager.getActiveUserData() else {
-                throw PassError.userManager(.activeUserDataNotFound)
-            }
+            let userData = try await userManager.getUnwrappedActiveUserData()
             guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
                 throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
             }

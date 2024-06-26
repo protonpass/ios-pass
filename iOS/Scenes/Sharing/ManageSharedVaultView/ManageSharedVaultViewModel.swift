@@ -97,7 +97,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func isCurrentUser(_ invitee: any ShareInvitee) -> Bool {
-        userManager.getUserData()?.user.email == invitee.email
+        userManager.currentActiveUser.value?.user.email == invitee.email
     }
 
     func shareWithMorePeople() {

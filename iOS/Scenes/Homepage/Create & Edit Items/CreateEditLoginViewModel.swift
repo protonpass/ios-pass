@@ -99,8 +99,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
-        emailAddress = try userManager.getUnwrappedUserData().addresses.first?
-            .email ?? ""
+        emailAddress = userManager.currentActiveUser.value?.addresses.first?.email ?? ""
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)

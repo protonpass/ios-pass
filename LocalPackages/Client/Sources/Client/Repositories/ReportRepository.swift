@@ -62,9 +62,7 @@ public extension ReportRepository {
     func sendBug(with title: String,
                  and description: String,
                  optional logs: [String: URL]) async throws -> Bool {
-        guard let userData = try await userManager.getActiveUserData() else {
-            throw ReportRepositoryError.noUserData
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let request = await BugReportRequest(with: title, and: description, userData: userData)
         let endpoint = ReportsBugEndpoint(request: request)
         if !logs.isEmpty {

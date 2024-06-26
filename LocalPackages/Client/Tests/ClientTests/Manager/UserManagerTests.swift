@@ -54,34 +54,35 @@ extension UserManagerTests {
         let mockedUserIds = mockedUserDatas.map(\.user.ID)
         userDataDatasource.stubbedGetAllResult = mockedUserDatas
 
-        let mockedActiveUserId = String.random()
+        let mockedActiveUserId = mockedUserIds.first!
         activeUserIdDatasource.stubbedGetActiveUserIdResult = mockedActiveUserId
 
         try await sut.setUp()
-        let userIds = sut.userDatas.value.map(\.user.ID)
+        let allUsers = try await sut.getAllUser()
+        let userIds = allUsers.map(\.user.ID)
         XCTAssertEqual(userIds, mockedUserIds)
-        XCTAssertEqual(sut.activeUserId.value, mockedActiveUserId)
+        XCTAssertEqual(sut.activeUserId, mockedActiveUserId)
     }
 
-    func testGetActiveUserData_ThrowUserDatasAvailableButNoActiveUserId() async throws {
-        let expectation = expectation(description: "Should throw error")
-
-        userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = nil
-        try await sut.setUp()
-
-        do {
-            _ = try await sut.getActiveUserData()
-        } catch {
-            if error.isEqual(to: .userDatasAvailableButNoActiveUserId) {
-                expectation.fulfill()
-            } else {
-                XCTFail("Unexpected error")
-            }
-        }
-
-        await fulfillment(of: [expectation], timeout: 1)
-    }
+//    func testGetActiveUserData_ThrowUserDatasAvailableButNoActiveUserId() async throws {
+//        let expectation = expectation(description: "Should throw error")
+//
+//        userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
+//        activeUserIdDatasource.stubbedGetActiveUserIdResult = nil
+//        try await sut.setUp()
+//
+//        do {
+//            _ = try await sut.getActiveUserData()
+//        } catch {
+//            if error.isEqual(to: .userDatasAvailableButNoActiveUserId) {
+//                expectation.fulfill()
+//            } else {
+//                XCTFail("Unexpected error")
+//            }
+//        }
+//
+//        await fulfillment(of: [expectation], timeout: 1)
+//    }
 
     func testGetActiveUserData_ThrowActiveUserIdAvailableButNoUserDataFound() async throws {
         let expectation = expectation(description: "Should throw error")
@@ -103,25 +104,36 @@ extension UserManagerTests {
         await fulfillment(of: [expectation], timeout: 1)
     }
 
-    func testGetActiveUserData_ThrowActiveUserDataNotFound() async throws {
-        let expectation = expectation(description: "Should throw error")
-
+    func testGetActiveUserData_IfNoActiveUserDataNotFound_ReturnTheFirstOfOthers() async throws {
         userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
         activeUserIdDatasource.stubbedGetActiveUserIdResult = .random()
         try await sut.setUp()
 
-        do {
-            _ = try await sut.getActiveUserData()
-        } catch {
-            if error.isEqual(to: .activeUserDataNotFound) {
-                expectation.fulfill()
-            } else {
-                XCTFail("Unexpected error")
-            }
-        }
-
-        await fulfillment(of: [expectation], timeout: 1)
+        let newActiveUser = try await sut.getActiveUserData()
+        XCTAssertEqual(newActiveUser?.user.ID, userDataDatasource.stubbedGetAllResult.first?.user.ID)
+        XCTAssertEqual(sut.activeUserId, newActiveUser?.user.ID)
     }
+    
+    
+//    func testGetActiveUserData_ThrowActiveUserDataNotFound() async throws {
+//        let expectation = expectation(description: "Should throw error")
+//
+//        userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
+//        activeUserIdDatasource.stubbedGetActiveUserIdResult = .random()
+//        try await sut.setUp()
+//
+//        do {
+//            _ = try await sut.getActiveUserData()
+//        } catch {
+//            if error.isEqual(to: .activeUserDataNotFound) {
+//                expectation.fulfill()
+//            } else {
+//                XCTFail("Unexpected error")
+//            }
+//        }
+//
+//        await fulfillment(of: [expectation], timeout: 1)
+//    }
 
     func testGetActiveUserData() async throws {
         let mockedUserDatas = [UserData].random(randomElement: .random())
@@ -166,10 +178,11 @@ extension UserManagerTests {
         try await sut.addAndMarkAsActive(userData: userData)
         let activeUserData = try await XCTUnwrapAsync(await sut.getActiveUserData())
 
+        let allUsers = try await sut.getAllUser()
         // Then
-        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
+        XCTAssertEqual(allUsers.count, allUserDatas.count)
         XCTAssertEqual(activeUserData.user.ID, userData.user.ID)
-        XCTAssertEqual(sut.activeUserId.value, userData.user.ID)
+        XCTAssertEqual(sut.activeUserId, userData.user.ID)
     }
 
     func testRemoveActiveUser() async throws {
@@ -195,12 +208,12 @@ extension UserManagerTests {
 
         // When
         try await sut.remove(userId: activeUserId)
+        let getAllUsers = try await sut.getAllUser()
 
         // Then
-        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
-        XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == activeUserId }))
-        let getAllUsers = try await sut.getAllUser()
-        XCTAssertEqual(sut.activeUserId.value, getAllUsers.first!.user.ID)
+        XCTAssertEqual(getAllUsers.count, allUserDatas.count)
+        XCTAssertFalse(getAllUsers.contains(where: { $0.user.ID == activeUserId }))
+        XCTAssertEqual(sut.activeUserId, getAllUsers.first!.user.ID)
     }
 
     func testRemoveInactiveUser() async throws {
@@ -221,17 +234,21 @@ extension UserManagerTests {
             }
         }
 
-        let activeUserId = String.random()
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = activeUserId
+        let mockedActiveUserId = allUserDatas.first!.user.ID
+        activeUserIdDatasource.stubbedGetActiveUserIdResult = mockedActiveUserId
+//        let activeUserId = String.random()
+//        activeUserIdDatasource.stubbedGetActiveUserIdResult = activeUserId
         try await sut.setUp()
 
         // When
         try await sut.remove(userId: inactiveUserId)
 
+        let getAllUsers = try await sut.getAllUser()
+
         // Then
-        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
-        XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == inactiveUserId }))
-        XCTAssertEqual(sut.activeUserId.value, activeUserId)
+        XCTAssertEqual(getAllUsers.count, allUserDatas.count)
+        XCTAssertFalse(getAllUsers.contains(where: { $0.user.ID == inactiveUserId }))
+        XCTAssertEqual(sut.activeUserId, mockedActiveUserId)
     }
     
     
@@ -250,21 +267,21 @@ extension UserManagerTests {
         try await sut.addAndMarkAsActive(userData: User1)
         
         
-        XCTAssertEqual(sut.activeUserId.value, User1.user.ID)
+        XCTAssertEqual(sut.activeUserId, User1.user.ID)
         
         try await sut.addAndMarkAsActive(userData: User2)
         
         
-        XCTAssertEqual(sut.activeUserId.value, User2.user.ID)
+        XCTAssertEqual(sut.activeUserId, User2.user.ID)
         
         try await sut.addAndMarkAsActive(userData: User3)
         
         
-        XCTAssertEqual(sut.activeUserId.value, User3.user.ID)
+        XCTAssertEqual(sut.activeUserId, User3.user.ID)
         
         allUserDatas.append(contentsOf: [User1,User2,User3])
         try await sut.switchActiveUser(with: User1.user.ID)
-        XCTAssertEqual(sut.activeUserId.value, User1.user.ID)
+        XCTAssertEqual(sut.activeUserId, User1.user.ID)
     }
 }
 

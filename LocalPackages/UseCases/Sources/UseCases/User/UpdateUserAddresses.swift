@@ -48,9 +48,7 @@ public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
     }
 
     public func execute() async throws -> [Address]? {
-        guard let userData = try await userManager.getActiveUserData() else {
-            return nil
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let newAddresses = try await authenticator.getAddresses(userData.getCredential)
 
         let newUserData = UserData(credential: userData.credential,
