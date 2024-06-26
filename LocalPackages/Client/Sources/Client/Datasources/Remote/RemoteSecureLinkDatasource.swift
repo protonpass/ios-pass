@@ -29,6 +29,7 @@ public protocol RemoteSecureLinkDatasourceProtocol: Sendable {
     func deleteLink(linkId: String) async throws
     func getAllLinks() async throws -> [SecureLink]
     func getLinkContent(linkToken: String) async throws -> SecureLinkContent
+    func deleteAllInactiveLinks() async throws
 }
 
 public final class RemoteSecureLinkDatasource: RemoteDatasource, RemoteSecureLinkDatasourceProtocol {}
@@ -63,5 +64,10 @@ public extension RemoteSecureLinkDatasource {
         let endpoint = GetSecureLinkContentEndpoint(linkToken: linkToken)
         let response = try await exec(endpoint: endpoint)
         return response.publicLinkContent
+    }
+
+    func deleteAllInactiveLinks() async throws {
+        let endpoint = DeleteAllInactiveLinksEndpoint()
+        _ = try await exec(endpoint: endpoint)
     }
 }
