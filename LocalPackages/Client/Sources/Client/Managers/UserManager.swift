@@ -30,37 +30,32 @@ import ProtonCoreNetworking
 
 // sourcery:AutoMockable
 public protocol UserManagerProtocol: Sendable {
-    var userDatas: CurrentValueSubject<[UserData], Never> { get }
     var currentActiveUser: CurrentValueSubject<UserData?, Never> { get }
-    var activeUserId: CurrentValueSubject<String?, Never> { get }
 
     func setUp() async throws
     func getActiveUserData() async throws -> UserData?
+    func getUnwrappedActiveUserData() async throws -> UserData
     func add(userData: UserData, isActive: Bool) async throws
     func switchActiveUser(with userId: String) async throws
     func getAllUser() async throws -> [UserData]
     func remove(userId: String) async throws
     func getActiveUserId() async throws -> String
-    func getUserData() -> UserData?
     nonisolated func setUserData(_ userData: UserData, isActive: Bool)
-    nonisolated func getActiveUserIdNonisolated() throws -> String
-    nonisolated func getUnwrappedUserData() throws -> UserData
 }
 
 public extension UserManagerProtocol {
-    func addAndMarkAsActive(userData: UserData) async throws {
-        try await add(userData: userData, isActive: true)
+    var activeUserId: String? {
+        currentActiveUser.value?.user.ID
     }
 
-    func add(userData: UserData, isActive: Bool = true) async throws {
-        try await add(userData: userData, isActive: isActive)
+    func addAndMarkAsActive(userData: UserData) async throws {
+        try await add(userData: userData, isActive: true)
     }
 }
 
 public actor UserManager: UserManagerProtocol {
-    public let userDatas = CurrentValueSubject<[UserData], Never>([])
     public let currentActiveUser = CurrentValueSubject<UserData?, Never>(nil)
-    public let activeUserId = CurrentValueSubject<String?, Never>(nil)
+    private var userDatas = [UserData]()
 
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let activeUserIdDatasource: any LocalActiveUserIdDatasourceProtocol
@@ -78,68 +73,69 @@ public actor UserManager: UserManagerProtocol {
 
 public extension UserManager {
     func setUp() async throws {
-        let userDatas = try await userDataDatasource.getAll()
-        self.userDatas.send(userDatas)
+        userDatas = try await userDataDatasource.getAll()
 
         let activeUserId = activeUserIdDatasource.getActiveUserId()
-        self.activeUserId.send(activeUserId)
-        currentActiveUser.send(userDatas.first(where: { $0.user.ID == activeUserId }))
+        currentActiveUser.send(userDatas.getActiveUser(userId: activeUserId))
         didSetUp = true
     }
 
     func getActiveUserData() async throws -> UserData? {
         await assertDidSetUp()
-        let userDatas = userDatas.value
-
-        guard let activeId = activeUserIdDatasource.getActiveUserId() else {
-            if !userDatas.isEmpty {
-                throw PassError.userManager(.userDatasAvailableButNoActiveUserId)
-            }
-            return nil
-        }
 
         if userDatas.isEmpty {
             activeUserIdDatasource.removeActiveUserId()
             throw PassError.userManager(.activeUserIdAvailableButNoUserDataFound)
         }
 
-        guard let activeUserData = userDatas.first(where: { $0.user.ID == activeId }) else {
+        guard let activeUserId else {
+            return updateNewActiveUser()
+        }
+
+        guard let activeUserData = userDatas.getActiveUser(userId: activeUserId) else {
             throw PassError.userManager(.activeUserDataNotFound)
         }
-        currentActiveUser.send(activeUserData)
+        if currentActiveUser.value?.user.ID != activeUserData.user.ID {
+            currentActiveUser.send(activeUserData)
+        }
         return activeUserData
+    }
+
+    func getUnwrappedActiveUserData() async throws -> UserData {
+        guard let userData = try await getActiveUserData() else {
+            throw PassError.userManager(.activeUserDataNotFound)
+        }
+        return userData
     }
 
     func add(userData: UserData, isActive: Bool = true) async throws {
         await assertDidSetUp()
 
         try await userDataDatasource.upsert(userData)
-        let userDatas = try await userDataDatasource.getAll()
-        self.userDatas.send(userDatas)
+        userDatas = try await userDataDatasource.getAll()
 
-        if let currentUserId = currentActiveUser.value?.user.ID,
-           currentUserId == userData.user.ID {
+        // User data is being updated and should be updated in currentActiveUser
+        if let activeUserId,
+           activeUserId == userData.user.ID, !isActive {
             currentActiveUser.send(userData)
         }
 
         guard isActive else {
             return
         }
-        let id = userData.user.ID
-        activeUserIdDatasource.updateActiveUserId(id)
-        activeUserId.send(id)
+        currentActiveUser.send(userData)
+        activeUserIdDatasource.updateActiveUserId(userData.user.ID)
     }
 
     func remove(userId: String) async throws {
         await assertDidSetUp()
 
         try await userDataDatasource.remove(userId: userId)
-        let updatedUserDatas = try await userDataDatasource.getAll()
-        userDatas.send(updatedUserDatas)
+        userDatas = try await userDataDatasource.getAll()
 
-        if activeUserId.value == userId {
+        if activeUserId == userId {
             activeUserIdDatasource.removeActiveUserId()
-            updateNewActiveUser(users: updatedUserDatas)
+            updateNewActiveUser()
         }
     }
 
@@ -147,13 +143,11 @@ public extension UserManager {
         await assertDidSetUp()
 
         let userDatas = try await userDataDatasource.getAll()
-        guard let activeUserData = userDatas.first(where: { $0.user.ID == newActiveUserId }) else {
+        guard let activeUserData = userDatas.getActiveUser(userId: newActiveUserId) else {
             throw PassError.userManager(.activeUserDataNotFound)
         }
         currentActiveUser.send(activeUserData)
-        let id = activeUserData.user.ID
-        activeUserIdDatasource.updateActiveUserId(id)
-        activeUserId.send(id)
+        activeUserIdDatasource.updateActiveUserId(newActiveUserId)
     }
 
     func getAllUser() async throws -> [UserData] {
@@ -172,10 +166,6 @@ public extension UserManager {
 }
 
 public extension UserManager {
-    nonisolated func getUserData() -> UserData? {
-        currentActiveUser.value
-    }
-
     nonisolated func setUserData(_ userData: UserData, isActive: Bool = false) {
         Task {
             do {
@@ -195,20 +185,6 @@ public extension UserManager {
             }
         }
     }
-
-    nonisolated func getActiveUserIdNonisolated() throws -> String {
-        guard let activeUserId = activeUserId.value else {
-            throw PassError.noUserData
-        }
-        return activeUserId
-    }
-
-    nonisolated func getUnwrappedUserData() throws -> UserData {
-        guard let userData = currentActiveUser.value else {
-            throw PassError.noUserData
-        }
-        return userData
-    }
 }
 
 private extension UserManager {
@@ -225,13 +201,20 @@ private extension UserManager {
         }
     }
 
-    func updateNewActiveUser(users: [UserData]) {
-        let newActiveUser = users.first
+    @discardableResult
+    func updateNewActiveUser() -> UserData? {
+        let newActiveUser = userDatas.first
         currentActiveUser.send(newActiveUser)
         let id = newActiveUser?.user.ID
         if let id {
             activeUserIdDatasource.updateActiveUserId(id)
         }
-        activeUserId.send(id)
+        return newActiveUser
+    }
+}
+
+private extension [UserData] {
+    func getActiveUser(userId: String?) -> UserData? {
+        self.first { $0.user.ID == userId }
     }
 }

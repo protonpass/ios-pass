@@ -109,9 +109,7 @@ private extension ShareKeyRepository {
     }
 
     func decrypt(_ encryptedKey: ShareKey, shareId: String) async throws -> Data {
-        guard let userData = try await userManager.getActiveUserData() else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")
 

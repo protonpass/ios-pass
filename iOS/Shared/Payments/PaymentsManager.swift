@@ -148,11 +148,11 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var activeUsername: String? {
-        userManager.getUserData()?.user.name
+        userManager.currentActiveUser.value?.user.name
     }
 
     var userId: String? {
-        userManager.getUserData()?.user.ID
+        userManager.currentActiveUser.value?.user.ID
     }
 }
 
