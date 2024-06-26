@@ -1586,7 +1586,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                         return
                     }
                     await banner.dismiss()
-                    await itemContextMenuHandler.restore(item)
+                    itemContextMenuHandler.restore(item)
                 }
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,

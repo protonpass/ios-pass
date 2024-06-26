@@ -68,7 +68,6 @@ extension SharedServiceContainer {
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
     }
 
-    @MainActor
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
         self { ItemContextMenuHandler() }
     }
