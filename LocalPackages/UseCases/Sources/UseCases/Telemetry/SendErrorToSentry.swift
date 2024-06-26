@@ -40,7 +40,7 @@ public final class SendErrorToSentry: SendErrorToSentryUseCase {
     }
 
     public func execute(_ error: any Error, sessionId: String?) {
-        let userId = userManager.activeUserId.value
+        let userId = userManager.activeUserId
         SentrySDK.capture(error: error) { scope in
             if let sessionId {
                 scope.setTag(value: sessionId, key: "sessionUID")

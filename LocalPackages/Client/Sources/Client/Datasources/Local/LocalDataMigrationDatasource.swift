@@ -25,8 +25,8 @@ import Foundation
 private let kGlobalMigrationsKey = "GlobalMigrations"
 
 public protocol LocalDataMigrationDatasourceProtocol: Sendable {
-    func getMigrations() async throws -> MigrationStatus?
-    func upsert(migrations: MigrationStatus) async throws
+    func getMigrations() async -> MigrationStatus
+    func upsert(migrations: MigrationStatus) async
 }
 
 public actor LocalDataMigrationDatasource: LocalDataMigrationDatasourceProtocol {
@@ -38,17 +38,11 @@ public actor LocalDataMigrationDatasource: LocalDataMigrationDatasourceProtocol 
 }
 
 public extension LocalDataMigrationDatasource {
-    func upsert(migrations: MigrationStatus) throws {
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(migrations)
-        userDefault.set(data, forKey: kGlobalMigrationsKey)
+    func upsert(migrations: MigrationStatus) async {
+        userDefault.set(migrations, forKey: kGlobalMigrationsKey)
     }
 
-    func getMigrations() throws -> MigrationStatus? {
-        guard let data = userDefault.data(forKey: kGlobalMigrationsKey) else {
-            return nil
-        }
-        let decoder = JSONDecoder()
-        return try decoder.decode(MigrationStatus.self, from: data)
+    func getMigrations() async -> MigrationStatus {
+        userDefault.integer(forKey: kGlobalMigrationsKey)
     }
 }

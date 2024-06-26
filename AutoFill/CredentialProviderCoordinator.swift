@@ -130,11 +130,11 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func migration() async throws {
-        let missingMigrations = try await dataMigrationManager.missingMigrations(MigrationType.all)
+        let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)
 
         if let userData = (appData as? AppData)?.getUserData(), missingMigrations.contains(.userAppData) {
             try await userManager.addAndMarkAsActive(userData: userData)
-            try await dataMigrationManager.addMigration(.userAppData)
+            await dataMigrationManager.addMigration(.userAppData)
         }
     }
 }

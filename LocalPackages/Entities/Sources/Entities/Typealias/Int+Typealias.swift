@@ -1,6 +1,6 @@
 //
-// MigrationStatus.swift
-// Proton Pass - Created on 21/06/2024.
+// Int+Typealias.swift
+// Proton Pass - Created on 26/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,14 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct MigrationStatus: Sendable, Codable {
-    public var completedMigrations: Int
+import Foundation
 
-    public init(completedMigrations: Int) {
-        self.completedMigrations = completedMigrations
-    }
-
-    public static var `default`: MigrationStatus {
-        MigrationStatus(completedMigrations: 0)
-    }
-}
+public typealias MigrationStatus = Int

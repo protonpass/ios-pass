@@ -58,9 +58,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
         logger.trace("Start decoding invitation share information for invitee user \(userInvite.invitedEmail)")
 
         do {
-            guard let userData = try await userManager.getActiveUserData() else {
-                throw PassError.userManager(.activeUserDataNotFound)
-            }
+            let userData = try await userManager.getUnwrappedActiveUserData()
             guard let vaultData = userInvite.vaultData,
                   let intermediateVaultKey = userInvite.keys
                   .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {

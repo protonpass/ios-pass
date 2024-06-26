@@ -49,9 +49,7 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
     }
 
     public func execute(vault: Vault, inviteId: String, email: String) async throws {
-        guard let userData = try await userManager.getActiveUserData() else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {
             throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
