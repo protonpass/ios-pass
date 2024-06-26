@@ -21,12 +21,12 @@
 import Client
 
 public protocol DeleteAllInactiveSecureLinksUseCase: Sendable {
-    func execute(linkIds: [String]) async throws
+    func execute() async throws
 }
 
 public extension DeleteAllInactiveSecureLinksUseCase {
-    func callAsFunction(linkIds: [String]) async throws {
-        try await execute(linkIds: linkIds)
+    func callAsFunction() async throws {
+        try await execute()
     }
 }
 
@@ -40,18 +40,8 @@ public final class DeleteAllInactiveSecureLinks: DeleteAllInactiveSecureLinksUse
         self.manager = manager
     }
 
-    public func execute(linkIds: [String]) async throws {
-        try await withThrowingTaskGroup(of: Void.self) { [weak self] group in
-            guard let self else { return }
-
-            for linkId in linkIds {
-                group.addTask {
-                    try await self.datasource.deleteLink(linkId: linkId)
-                }
-            }
-
-            try await group.waitForAll()
-        }
+    public func execute() async throws {
+        try await datasource.deleteAllInactiveLinks()
         try await manager.updateSecureLinks()
     }
 }
