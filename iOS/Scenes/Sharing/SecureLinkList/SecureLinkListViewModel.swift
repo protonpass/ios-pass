@@ -125,7 +125,7 @@ final class SecureLinkListViewModel: ObservableObject, Sendable {
             defer { loading = false }
             loading = true
             do {
-                try await deleteAllInactiveSecureLinks(linkIds: inactiveLinks.map(\.id))
+                try await deleteAllInactiveSecureLinks()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
