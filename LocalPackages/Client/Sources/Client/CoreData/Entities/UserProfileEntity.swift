@@ -40,7 +40,6 @@ extension UserProfileEntity {
 
     @NSManaged var userID: String
     @NSManaged var updateTime: Int64
-    @NSManaged var lastActiveTimestamp: Int64
     @NSManaged var isActive: Bool
 
     /// Symmetrically encrypted
@@ -52,7 +51,7 @@ extension UserProfileEntity {
         let data = try key.decrypt(encryptedData)
         let userData = try JSONDecoder().decode(UserData.self, from: data)
 
-        return UserProfile(userdata: userData, isActive: isActive, lastActiveTime: Double(lastActiveTimestamp))
+        return UserProfile(userdata: userData, isActive: isActive, updateTime: Double(updateTime))
     }
 }
 
@@ -63,14 +62,12 @@ extension UserProfileEntity {
         updateTime = Int64(Date.now.timeIntervalSince1970)
         encryptedData = try key.encrypt(data)
         isActive = isActive
-        lastActiveTimestamp = lastActiveTimestamp
     }
 
     func hydrate(isActive: Bool) throws {
         encryptedData = encryptedData
         userID = userID
         updateTime = Int64(Date.now.timeIntervalSince1970)
-        lastActiveTimestamp = isActive ? Int64(Date.now.timeIntervalSince1970) : lastActiveTimestamp
         self.isActive = isActive
     }
 }
