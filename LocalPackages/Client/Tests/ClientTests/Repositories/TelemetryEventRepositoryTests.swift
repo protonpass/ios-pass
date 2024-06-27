@@ -24,6 +24,8 @@ import Combine
 import Core
 import Entities
 import XCTest
+import ProtonCoreLogin
+import ProtonCoreNetworking
 
 private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtocol {
     func send(events: [EventInfo]) async throws {}
@@ -127,9 +129,8 @@ final class TelemetryEventRepositoryTests: XCTestCase {
         localDatasource = LocalTelemetryEventDatasource(databaseService: DatabaseService(inMemory: true))
         thresholdProvider = TelemetryThresholdProviderMock()
         userManager = UserManagerProtocolMock()
-//        let user = UserData.preview
-        userManager.stubbedGetUserDataResult = .preview
-        userManager.stubbedGetActiveUserIdResult = userManager.stubbedGetUserDataResult!.user.ID
+        let user = UserData.preview
+        userManager.stubbedGetActiveUserIdResult = user.user.ID
         itemReadEventRepository = .init()
     }
 
