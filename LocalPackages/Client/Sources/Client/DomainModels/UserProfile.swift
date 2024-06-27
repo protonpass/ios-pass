@@ -24,23 +24,23 @@ import ProtonCoreLogin
 public struct UserProfile: Sendable, Identifiable {
     public let userdata: UserData
     public let isActive: Bool
-    public let lastActiveTime: TimeInterval
+    public let updateTime: TimeInterval
 
     public var id: String {
         userdata.user.ID
     }
 
-    public init(userdata: UserData, isActive: Bool, lastActiveTime: TimeInterval) {
+    public init(userdata: UserData, isActive: Bool, updateTime: TimeInterval) {
         self.userdata = userdata
         self.isActive = isActive
-        self.lastActiveTime = lastActiveTime
+        self.updateTime = updateTime
     }
 
     public func copy(userData: UserData) -> UserProfile {
-        UserProfile(userdata: userData, isActive: isActive, lastActiveTime: lastActiveTime)
+        UserProfile(userdata: userData, isActive: isActive, updateTime: updateTime)
     }
 
     public func copy(isActive: Bool) -> UserProfile {
-        UserProfile(userdata: userdata, isActive: isActive, lastActiveTime: lastActiveTime)
+        UserProfile(userdata: userdata, isActive: isActive, updateTime: updateTime)
     }
 }

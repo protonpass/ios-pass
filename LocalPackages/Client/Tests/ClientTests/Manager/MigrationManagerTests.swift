@@ -38,29 +38,29 @@ final class MigrationManagerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testNoMigrationSet() async throws {
-        let missingMigration = try await sut.missingMigrations(MigrationType.all)
+    func testNoMigrationSet() async {
+        let missingMigration = await sut.missingMigrations(MigrationType.all)
         XCTAssertEqual(missingMigration, MigrationType.all)
     }
     
-    func testAddOneMigration() async throws {
-        try await sut.addMigration(.userAppData)
-        let userAppDataMigrationDone = try await sut.hasMigrationOccurred(.userAppData)
-        let missingMigration = try await sut.missingMigrations(MigrationType.all)
+    func testAddOneMigration() async {
+        await sut.addMigration(.userAppData)
+        let userAppDataMigrationDone =  await sut.hasMigrationOccurred(.userAppData)
+        let missingMigration =  await sut.missingMigrations(MigrationType.all)
        
         XCTAssertTrue(userAppDataMigrationDone)
         XCTAssertEqual(missingMigration, [MigrationType.credentialsAppData])
     }
     
-    func testRevertAMigration() async throws {
-        try await sut.addMigration(.userAppData)
-        let userAppDataMigrationDone = try await sut.hasMigrationOccurred(.userAppData)
+    func testRevertAMigration() async {
+        await sut.addMigration(.userAppData)
+        let userAppDataMigrationDone = await sut.hasMigrationOccurred(.userAppData)
         XCTAssertTrue(userAppDataMigrationDone)
 
-        try await sut.revertMigration(.userAppData)
-        let userAppDataMigrationUnDone = try await sut.hasMigrationOccurred(.userAppData)
+        await sut.revertMigration(.userAppData)
+        let userAppDataMigrationUnDone = await sut.hasMigrationOccurred(.userAppData)
        
-        let missingMigration = try await sut.missingMigrations(MigrationType.all)
+        let missingMigration = await sut.missingMigrations(MigrationType.all)
        
         XCTAssertFalse(userAppDataMigrationUnDone)
         XCTAssertEqual(missingMigration, MigrationType.all)
