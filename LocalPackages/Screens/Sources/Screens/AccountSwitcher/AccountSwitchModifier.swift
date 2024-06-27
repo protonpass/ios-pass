@@ -26,20 +26,26 @@ public struct AccountSwitchModifier: ViewModifier {
     let activeId: String
     @Binding var showSwitcher: Bool
     let animationNamespace: Namespace.ID
-    let onSelectAccountId: (String) -> Void
+    let onSelect: (String) -> Void
+    let onSignOut: (String) -> Void
+    let onDelete: (String) -> Void
     let onAddAccount: () -> Void
 
     public init(details: [any AccountCellDetail],
                 activeId: String,
                 showSwitcher: Binding<Bool>,
                 animationNamespace: Namespace.ID,
-                onSelectAccountId: @escaping (String) -> Void,
+                onSelect: @escaping (String) -> Void,
+                onSignOut: @escaping (String) -> Void,
+                onDelete: @escaping (String) -> Void,
                 onAddAccount: @escaping () -> Void) {
         self.details = details
         self.activeId = activeId
         _showSwitcher = showSwitcher
         self.animationNamespace = animationNamespace
-        self.onSelectAccountId = onSelectAccountId
+        self.onSelect = onSelect
+        self.onSignOut = onSignOut
+        self.onDelete = onDelete
         self.onAddAccount = onAddAccount
     }
 
@@ -62,7 +68,9 @@ public struct AccountSwitchModifier: ViewModifier {
                                 AccountList(details: details,
                                             activeId: activeId,
                                             animationNamespace: animationNamespace,
-                                            onSelectAccountId: onSelectAccountId,
+                                            onSelect: onSelect,
+                                            onSignOut: onSignOut,
+                                            onDelete: onDelete,
                                             onAddAccount: onAddAccount)
                                 Spacer()
                             }

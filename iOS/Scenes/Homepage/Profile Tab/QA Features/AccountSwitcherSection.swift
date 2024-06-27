@@ -81,25 +81,35 @@ private struct AccountSwitcherView: View {
                                         activeId: eric.id,
                                         showSwitcher: $showSwitcher,
                                         animationNamespace: namespace,
-                                        onSelectAccountId: { handleAccountSelection($0) },
+                                        onSelect: { handleSelection($0) },
+                                        onSignOut: { handleSignOut($0) },
+                                        onDelete: { handleDelete($0) },
                                         onAddAccount: { handleAddAccount() }))
     }
 }
 
+@MainActor
 private extension AccountSwitcherView {
-    @MainActor
-    func handleAccountSelection(_ id: String) {
-        withAnimation {
-            showSwitcher.toggle()
-        }
-        router.display(element: .infosMessage("Select \(id)"))
+    func handleSelection(_ id: String) {
+        dismissAccountSwitcherAndDisplay(message: "Select \(id)")
     }
 
-    @MainActor
+    func handleSignOut(_ id: String) {
+        dismissAccountSwitcherAndDisplay(message: "Sign out \(id)")
+    }
+
+    func handleDelete(_ id: String) {
+        dismissAccountSwitcherAndDisplay(message: "Delete \(id)")
+    }
+
     func handleAddAccount() {
+        dismissAccountSwitcherAndDisplay(message: "Add new account")
+    }
+
+    func dismissAccountSwitcherAndDisplay(message: String) {
         withAnimation {
             showSwitcher.toggle()
         }
-        router.display(element: .infosMessage("Add new account"))
+        router.display(element: .infosMessage(message))
     }
 }
