@@ -52,34 +52,26 @@ private extension AccountList {
         let isActive = detail.id == activeId
         HStack {
             HStack {
-                ZStack {
-                    PassColor.interactionNormMajor2.toColor
-                    Text(verbatim: detail.initials)
-                        .foregroundStyle(PassColor.textInvert.toColor)
-                        .fontWeight(.medium)
-                }
-                .frame(width: 36, height: 36)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .if(isActive) { view in
-                    view
-                        .matchedGeometryEffect(id: AccountCell.EffectID.initials, in: animationNamespace)
-                }
+                AccountCell.viewForInitials(detail.initials)
+                    .if(isActive) { view in
+                        view
+                            .matchedGeometryEffect(id: AccountCell.EffectID.initials,
+                                                   in: animationNamespace)
+                    }
 
                 VStack(alignment: .leading) {
-                    Text(verbatim: detail.displayName)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                    AccountCell.viewForDisplayName(detail.displayName)
                         .if(isActive) { view in
                             view
                                 .matchedGeometryEffect(id: AccountCell.EffectID.displayName,
                                                        in: animationNamespace)
                         }
 
-                    Text(verbatim: detail.email)
-                        .font(.caption)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                    AccountCell.viewForEmail(detail.email)
                         .if(isActive) { view in
                             view
-                                .matchedGeometryEffect(id: AccountCell.EffectID.email, in: animationNamespace)
+                                .matchedGeometryEffect(id: AccountCell.EffectID.email,
+                                                       in: animationNamespace)
                         }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -91,7 +83,8 @@ private extension AccountList {
                          foregroundColor: PassColor.interactionNormMajor2)
                         .if(isActive) { view in
                             view
-                                .matchedGeometryEffect(id: AccountCell.EffectID.chevron, in: animationNamespace)
+                                .matchedGeometryEffect(id: AccountCell.EffectID.chevron,
+                                                       in: animationNamespace)
                         }
                 }
             }
@@ -125,10 +118,6 @@ private extension AccountList {
     }
 
     func icon(with uiImage: UIImage, foregroundColor: UIColor) -> some View {
-        Image(uiImage: uiImage)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 24)
-            .foregroundStyle(foregroundColor.toColor)
+        SwiftUIImage(image: uiImage, width: 24, tintColor: foregroundColor)
     }
 }
