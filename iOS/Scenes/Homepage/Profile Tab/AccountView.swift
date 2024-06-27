@@ -259,7 +259,7 @@ private extension AccountView {
         OptionRow(action: { viewModel.enableExtraPassword() },
                   height: .tall,
                   content: {
-                      Text(verbatim: "Set extra password for Proton Pass")
+                      Text("Set extra password for Proton Pass")
                           .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                   })
                   .roundedEditableSection()
@@ -270,7 +270,7 @@ private extension AccountView {
         OptionRow(height: .tall,
                   content: {
                       VStack(alignment: .leading) {
-                          Text(verbatim: "Extra password for Proton Pass")
+                          Text("Extra password for Proton Pass")
                               .foregroundStyle(PassColor.textNorm.toColor)
                           Text("Active")
                               .font(.callout)
