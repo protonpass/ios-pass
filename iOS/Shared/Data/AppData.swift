@@ -91,12 +91,6 @@ final class AppData: AppDataProtocol {
         }
     }
 
-//    func setUserData(_ userData: UserData?) {
-//        self.userData = userData
-//        // Should be removed after session forking
-//        useCredentialInUserDataForBothAppAndExtension()
-//    }
-
     func getUserData() -> UserData? {
         userData
     }

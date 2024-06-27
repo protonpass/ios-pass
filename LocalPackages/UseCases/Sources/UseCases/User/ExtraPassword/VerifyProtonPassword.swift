@@ -60,10 +60,7 @@ public final class VerifyProtonPassword: Sendable, VerifyProtonPasswordUseCase {
     }
 
     public func execute(_ password: String) async throws -> Bool {
-        guard let userData = try? await userManager.getActiveUserData() else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
-
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let authenticator = Authenticator(api: makeApiService())
         return try await withCheckedThrowingContinuation { continuation in
             authenticator.authenticate(username: userData.credential.userName,

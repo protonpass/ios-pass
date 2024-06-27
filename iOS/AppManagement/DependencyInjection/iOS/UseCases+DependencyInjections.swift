@@ -43,10 +43,6 @@ private extension UseCasesContainer {
         ServiceContainer.shared.shareInviteService()
     }
 
-//    var userDataProvider: any UserDataProvider {
-//        SharedDataContainer.shared.userDataProvider()
-//    }
-
     var userManager: any UserManagerProtocol {
         SharedServiceContainer.shared.userManager()
     }

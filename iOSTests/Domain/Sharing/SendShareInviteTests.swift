@@ -59,7 +59,7 @@ final class SendShareInviteTests: XCTestCase {
     func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
-        userManager.stubbedGetUnwrappedActiveUserDataResult = .preview
+        userManager.stubbedGetActiveUserDataResult = .preview
         let infos = SharingInfos(vault: .existing(.random()),
                                  email: "Test@test.com",
                                  role: .read,
