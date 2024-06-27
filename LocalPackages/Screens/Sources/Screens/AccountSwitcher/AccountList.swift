@@ -24,6 +24,8 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct AccountList: View {
+    @State private var animated = false
+
     let details: [any AccountCellDetail]
     let activeId: String
     let animationNamespace: Namespace.ID
@@ -33,23 +35,30 @@ struct AccountList: View {
     var body: some View {
         VStack(spacing: DesignConstant.sectionPadding / 2) {
             ForEach(details, id: \.id) { detail in
-                row(for: detail)
-                PassDivider()
-                    .padding(.vertical, DesignConstant.sectionPadding / 2)
+                let isActive = detail.id == activeId
+                if isActive || (!isActive && animated) {
+                    row(for: detail, isActive: isActive)
+                    PassDivider()
+                        .padding(.vertical, DesignConstant.sectionPadding / 2)
+                }
             }
 
-            addAcountRow
+            if animated {
+                addAcountRow
+            }
         }
         .padding(DesignConstant.sectionPadding)
         .background(PassColor.backgroundNorm.toColor)
         .roundedEditableSection()
+        .animation(.default, value: animated)
+        .onAppear {
+            animated.toggle()
+        }
     }
 }
 
 private extension AccountList {
-    @ViewBuilder
-    func row(for detail: any AccountCellDetail) -> some View {
-        let isActive = detail.id == activeId
+    func row(for detail: any AccountCellDetail, isActive: Bool) -> some View {
         HStack {
             HStack {
                 AccountCell.viewForInitials(detail.initials)
