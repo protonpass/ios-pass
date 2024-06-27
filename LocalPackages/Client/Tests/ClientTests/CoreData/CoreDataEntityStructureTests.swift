@@ -177,8 +177,6 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "encryptedData", on: sut, hasType: .binaryData)
         verifyAttribute(named: "isActive", on: sut, hasType: .boolean)
-        verifyAttribute(named: "lastActiveTimestamp", on: sut, hasType: .integer64)
-
     }
 
     func testItemReadEventEntity() {

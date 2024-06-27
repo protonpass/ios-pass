@@ -87,6 +87,7 @@ public extension LocalUserDataDatasource {
         fetchRequest.predicate = .init(format: "isActive = %d", true)
         let userDataEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         let key = try symmetricKeyProvider.getSymmetricKey()
+        assert(userDataEntities.count <= 1, "Should not have more than 1 active profile")
         return try userDataEntities.map { try $0.toUserProfile(key) }.first
     }
 
@@ -94,15 +95,15 @@ public extension LocalUserDataDatasource {
         let context = newTaskContext(type: .insert)
         try await context.perform {
             let request = UserProfileEntity.fetchRequest()
-            let items = try context.fetch(request)
+            let profiles = try context.fetch(request)
 
-            if let currentItem = items.first(where: { $0.isActive }) {
-                currentItem.isActive = false
+            if let activeProfile = profiles.first(where: { $0.isActive }) {
+                activeProfile.isActive = false
             }
 
             // Find the new item by its ID and set it to active
-            if let newItem = items.first(where: { $0.userID == userId }) {
-                newItem.isActive = true
+            if let newActiveProfile = profiles.first(where: { $0.userID == userId }) {
+                newActiveProfile.isActive = true
             }
 
             // Save the context to persist changes

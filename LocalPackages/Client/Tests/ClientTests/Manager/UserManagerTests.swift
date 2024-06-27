@@ -56,7 +56,7 @@ private extension [UserProfile] {
 
 extension UserManagerTests {
     func testSetUp() async throws {
-        var mockedUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, lastActiveTime: 0))
+        var mockedUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
         mockedUserDatas.markLastProfileActive()
         let mockedUserIds = mockedUserDatas.map(\.userdata.user.ID)
         userDataDatasource.stubbedGetAllResult = mockedUserDatas
@@ -75,7 +75,7 @@ extension UserManagerTests {
         
         userDataDatasource.closureGetAll = { [weak self] in
             guard let self else { return }
-            userDataDatasource.stubbedGetAllResult = [UserProfile(userdata: .random(), isActive: false, lastActiveTime: 0)]
+            userDataDatasource.stubbedGetAllResult = [UserProfile(userdata: .random(), isActive: false, updateTime: 0)]
         }
         
         try await sut.setUp()
@@ -117,7 +117,7 @@ extension UserManagerTests {
     }
     
     func testGetActiveUserData() async throws {
-        var mockedUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, lastActiveTime: 0))
+        var mockedUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
         mockedUserDatas.markLastProfileActive()
         userDataDatasource.stubbedGetAllResult = mockedUserDatas
         
@@ -129,7 +129,7 @@ extension UserManagerTests {
     
     func testAddAndMarkAsActive() async throws {
         // Given
-        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, lastActiveTime: 0))
+        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
         
         userDataDatasource.closureGetAll = { [weak self] in
             guard let self else { return }
@@ -139,7 +139,7 @@ extension UserManagerTests {
         userDataDatasource.closureUpsert = { [weak self] in
             guard let self else { return }
             if let newUserData = userDataDatasource.invokedUpsertParameters?.0 {
-                allUserDatas.append(UserProfile(userdata: newUserData, isActive: false, lastActiveTime: 0) )
+                allUserDatas.append(UserProfile(userdata: newUserData, isActive: false, updateTime: 0) )
             }
         }
         
@@ -169,11 +169,11 @@ extension UserManagerTests {
     
     func testRemoveInactiveUser() async throws {
         // Given
-        let inactiveUserData = UserProfile(userdata: .random(), isActive: false, lastActiveTime: 0)
+        let inactiveUserData = UserProfile(userdata: .random(), isActive: false, updateTime: 0)
         let inactiveUserId = inactiveUserData.userdata.user.ID
         
         
-        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, lastActiveTime: 0))
+        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
         allUserDatas.markLastProfileActive()
         allUserDatas.append(inactiveUserData)
         
@@ -204,7 +204,7 @@ extension UserManagerTests {
     
     func testRemoveActiveUser() async throws {
         // Given
-        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, lastActiveTime: 0))
+        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
         allUserDatas.markLastProfileActive()
         let activeUserId = allUserDatas.last!.userdata.user.ID
         userDataDatasource.closureGetAll = { [weak self] in
@@ -261,7 +261,7 @@ extension UserManagerTests {
         userDataDatasource.closureUpsert = { [weak self] in
             guard let self else { return }
             if let newUserData = userDataDatasource.invokedUpsertParameters?.0 {
-                allUserDatas.append( UserProfile(userdata: newUserData, isActive: false, lastActiveTime: 0))
+                allUserDatas.append( UserProfile(userdata: newUserData, isActive: false, updateTime: 0))
             }
         }
         
