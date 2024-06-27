@@ -32,9 +32,9 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
     public var closureGetAll: () -> () = {}
     public var invokedGetAllfunction = false
     public var invokedGetAllCount = 0
-    public var stubbedGetAllResult: [UserData]!
+    public var stubbedGetAllResult: [UserProfile]!
 
-    public func getAll() async throws -> [UserData] {
+    public func getAll() async throws -> [UserProfile] {
         invokedGetAllfunction = true
         invokedGetAllCount += 1
         if let error = getAllThrowableError1 {
@@ -78,5 +78,39 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
             throw error
         }
         closureUpsert()
+    }
+    // MARK: - updateNewActiveUser
+    public var updateNewActiveUserUserIdThrowableError4: Error?
+    public var closureUpdateNewActiveUser: () -> () = {}
+    public var invokedUpdateNewActiveUserfunction = false
+    public var invokedUpdateNewActiveUserCount = 0
+    public var invokedUpdateNewActiveUserParameters: (userId: String, Void)?
+    public var invokedUpdateNewActiveUserParametersList = [(userId: String, Void)]()
+
+    public func updateNewActiveUser(userId: String) async throws {
+        invokedUpdateNewActiveUserfunction = true
+        invokedUpdateNewActiveUserCount += 1
+        invokedUpdateNewActiveUserParameters = (userId, ())
+        invokedUpdateNewActiveUserParametersList.append((userId, ()))
+        if let error = updateNewActiveUserUserIdThrowableError4 {
+            throw error
+        }
+        closureUpdateNewActiveUser()
+    }
+    // MARK: - getActiveUser
+    public var getActiveUserThrowableError5: Error?
+    public var closureGetActiveUser: () -> () = {}
+    public var invokedGetActiveUserfunction = false
+    public var invokedGetActiveUserCount = 0
+    public var stubbedGetActiveUserResult: UserProfile?
+
+    public func getActiveUser() async throws -> UserProfile? {
+        invokedGetActiveUserfunction = true
+        invokedGetActiveUserCount += 1
+        if let error = getActiveUserThrowableError5 {
+            throw error
+        }
+        closureGetActiveUser()
+        return stubbedGetActiveUserResult
     }
 }

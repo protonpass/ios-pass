@@ -43,7 +43,7 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
 public actor AccessRepository: AccessRepositoryProtocol {
     private let localDatasource: any LocalAccessDatasourceProtocol
     private let remoteDatasource: any RemoteAccessDatasourceProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public nonisolated let access: CurrentValueSubject<Access?, Never> = .init(nil)
@@ -51,18 +51,18 @@ public actor AccessRepository: AccessRepositoryProtocol {
 
     public init(localDatasource: any LocalAccessDatasourceProtocol,
                 remoteDatasource: any RemoteAccessDatasourceProtocol,
-                userDataProvider: any UserDataProvider,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
 
 public extension AccessRepository {
     func getAccess() async throws -> Access {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
@@ -75,14 +75,14 @@ public extension AccessRepository {
     }
 
     func getPlan() async throws -> Plan {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting plan for user \(userId)")
         return try await getAccess().plan
     }
 
     @discardableResult
     func refreshAccess() async throws -> Access {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess()
         access.send(remoteAccess)
@@ -111,7 +111,7 @@ public extension AccessRepository {
 
 private extension AccessRepository {
     func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Updating monitor state for user \(userId)")
         var access = try await getAccess()
         let updatedMonitor = try await remoteDatasource.updatePassMonitorState(request)

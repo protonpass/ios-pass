@@ -1,6 +1,6 @@
-//
-// UserDataProvider.swift
-// Proton Pass - Created on 03/11/2023.
+// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// DO NOT EDIT
+// Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,27 +19,21 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
-import ProtonCoreLogin
 
-// sourcery: AutoMockable
-public protocol UserDataProvider: Sendable {
-    func getUserData() -> UserData?
-    func setUserData(_ userData: UserData?)
-}
-
-public extension UserDataProvider {
-    func getUserId() throws -> String {
-        guard let userData = getUserData() else {
-            throw PassError.noUserData
-        }
-        return userData.user.ID
+public final class LocalDataMigrationDatasourceProtocolMock: @unchecked Sendable, LocalDataMigrationDatasourceProtocol {
+    private var currentMigrations = 0
+    
+    public init(currentMigrations: MigrationStatus = 0) {
+        self.currentMigrations = currentMigrations
+    }
+    
+    public func getMigrations() async -> MigrationStatus {
+        return currentMigrations
     }
 
-    func getUnwrappedUserData() throws -> UserData {
-        guard let userData = getUserData() else {
-            throw PassError.noUserData
-        }
-        return userData
+    public func upsert(migrations: MigrationStatus) async {
+        currentMigrations = migrations
     }
 }
