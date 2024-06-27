@@ -34,7 +34,6 @@ public protocol UserManagerProtocol: Sendable {
 
     func setUp() async throws
     func getActiveUserData() async throws -> UserData?
-    func getUnwrappedActiveUserData() async throws -> UserData
     func addAndMarkAsActive(userData: UserData) async throws
     func update(userData: UserData) async throws
     func switchActiveUser(with userId: String) async throws
@@ -47,6 +46,13 @@ public protocol UserManagerProtocol: Sendable {
 public extension UserManagerProtocol {
     var activeUserId: String? {
         currentActiveUser.value?.user.ID
+    }
+
+    func getUnwrappedActiveUserData() async throws -> UserData {
+        guard let userData = try await getActiveUserData() else {
+            throw PassError.userManager(.activeUserDataNotFound)
+        }
+        return userData
     }
 }
 
@@ -86,13 +92,6 @@ public extension UserManager {
             currentActiveUser.send(activeUserData)
         }
         return activeUserData
-    }
-
-    func getUnwrappedActiveUserData() async throws -> UserData {
-        guard let userData = try await getActiveUserData() else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
-        return userData
     }
 
     func getAllUser() async -> [UserData] {
