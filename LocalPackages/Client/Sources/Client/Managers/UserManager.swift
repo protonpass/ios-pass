@@ -165,19 +165,6 @@ public extension UserManager {
             }
         }
     }
-
-    nonisolated func remove(userId: String) {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                try await remove(userId: userId)
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
 }
 
 private extension UserManager {
