@@ -7480,7 +7480,7 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld view"
                 }
               },
@@ -42846,120 +42846,24 @@
         }
       }
     },
-    "Expires in %@" : {
+    "Expired %@" : {
+      "comment" : "Inform that a link is expired. The later part is localized by the system (\"relative date format\" as technical references). Please note that the system takes care of adding \"in\" or \"ago\" depending on whether the date is in the future or past. Example in English \"Expires 2 days ago\"",
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Дзейнічаюць да %@"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Udløber om %@"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Λήγει σε %@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Expires in %@"
+            "value" : "Expired %@"
           }
-        },
-        "es" : {
+        }
+      }
+    },
+    "Expires %@" : {
+      "comment" : "Inform that a link is still active. The later part is localized by the system (\"relative date format\" as technical references). Please note that the system takes care of adding \"in\" or \"ago\" depending on whether the date is in the future or past. Example in English \"Expires in 2 days\"",
+      "localizations" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Expira en %@"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expira en %@"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expire dans %@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kedaluwarsa dalam %@"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scade tra %@"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ვადა %@"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@에 만료"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utløper om %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wygasa za %@"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expira em %@"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expiră peste %@"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vyprší o %@"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Löper ut om %@"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ sonra geçerlilik süresi dolacak"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hết hạn trong %@"
+            "value" : "Expires %@"
           }
         }
       }
@@ -43374,6 +43278,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mật khẩu phụ chưa được kích hoạt"
+          }
+        }
+      }
+    },
+    "Extra password for Proton Pass" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra password for Proton Pass"
           }
         }
       }
@@ -90893,6 +90807,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thiết lập mật khẩu phụ"
+          }
+        }
+      }
+    },
+    "Set extra password for Proton Pass" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set extra password for Proton Pass"
           }
         }
       }

@@ -60,17 +60,6 @@ private extension CreateSecureLinkView {
                 .padding(.bottom, DesignConstant.sectionPadding)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(PassColor.backgroundNorm.toColor)
-                .toolbar { toolbarContent }
-        }
-    }
-}
-
-private extension CreateSecureLinkView {
-    @ToolbarContentBuilder
-    var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            Text("Share Secure Link")
-                .navigationTitleText()
         }
     }
 }
@@ -78,6 +67,11 @@ private extension CreateSecureLinkView {
 private extension CreateSecureLinkView {
     var createLink: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
+            Spacer()
+
+            Text("Share Secure Link")
+                .navigationTitleText()
+
             HStack {
                 Text("Link expires after")
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -126,7 +120,6 @@ private extension CreateSecureLinkView {
                               backgroundColor: PassColor.interactionNormMajor1,
                               height: 48,
                               action: { viewModel.createLink() })
-            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
