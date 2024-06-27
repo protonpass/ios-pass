@@ -1,5 +1,5 @@
 //
-// UserDataEntity.swift
+// UserProfileEntity.swift
 // Proton Pass - Created on 14/05/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -27,35 +27,47 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-@objc(UserDataEntity)
-final class UserDataEntity: NSManagedObject {}
+@objc(UserProfileEntity)
+final class UserProfileEntity: NSManagedObject {}
 
-extension UserDataEntity: Identifiable {}
+extension UserProfileEntity: Identifiable {}
 
-extension UserDataEntity {
+extension UserProfileEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<UserDataEntity> {
-        NSFetchRequest<UserDataEntity>(entityName: "UserDataEntity")
+    public class func fetchRequest() -> NSFetchRequest<UserProfileEntity> {
+        NSFetchRequest<UserProfileEntity>(entityName: "UserProfileEntity")
     }
 
     @NSManaged var userID: String
     @NSManaged var updateTime: Int64
+    @NSManaged var isActive: Bool
+
     /// Symmetrically encrypted
     @NSManaged var encryptedData: Data
 }
 
-extension UserDataEntity {
-    func toUserData(_ key: SymmetricKey) throws -> UserData {
+extension UserProfileEntity {
+    func toUserProfile(_ key: SymmetricKey) throws -> UserProfile {
         let data = try key.decrypt(encryptedData)
-        return try JSONDecoder().decode(UserData.self, from: data)
+        let userData = try JSONDecoder().decode(UserData.self, from: data)
+
+        return UserProfile(userdata: userData, isActive: isActive, updateTime: Double(updateTime))
     }
 }
 
-extension UserDataEntity {
+extension UserProfileEntity {
     func hydrate(userData: UserData, key: SymmetricKey) throws {
         let data = try JSONEncoder().encode(userData)
         userID = userData.user.ID
         updateTime = Int64(Date.now.timeIntervalSince1970)
         encryptedData = try key.encrypt(data)
+        isActive = isActive
+    }
+
+    func hydrate(isActive: Bool) throws {
+        encryptedData = encryptedData
+        userID = userID
+        updateTime = Int64(Date.now.timeIntervalSince1970)
+        self.isActive = isActive
     }
 }

@@ -30,6 +30,8 @@ final class PaymentsManager {
 
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
+
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let payments: Payments
@@ -146,11 +148,11 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var activeUsername: String? {
-        appData.getUserData()?.user.name
+        userManager.currentActiveUser.value?.user.name
     }
 
     var userId: String? {
-        appData.getUserData()?.user.ID
+        userManager.currentActiveUser.value?.user.ID
     }
 }
 

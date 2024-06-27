@@ -63,7 +63,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     // Lazily initialised properties
@@ -294,7 +294,7 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = try userDataProvider.getUserId()
+                let userId = try await userManager.getActiveUserId()
                 try await refreshUserSettings(for: userId)
             } catch {
                 logger.error(error)
@@ -865,8 +865,9 @@ extension HomepageCoordinator {
 
     func presentChangePassword(mode: PasswordChangeModule.PasswordChangeMode) {
         Task { @MainActor [weak self] in
-            guard let self, let userData = userDataProvider.getUserData() else { return }
+            guard let self else { return }
             do {
+                let userData = try await userManager.getUnwrappedActiveUserData()
                 let userInfo = try await filledUserInfo(userData: userData)
                 let viewController = PasswordChangeModule
                     .makePasswordChangeViewController(mode: mode,
@@ -897,7 +898,7 @@ extension HomepageCoordinator {
     }
 
     private func filledUserInfo(userData: UserData) async throws -> UserInfo {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         let settings = await userSettingsRepository.getSettings(for: userId)
         let userInfo = userData.toUserInfo
         userInfo.twoFactor = settings.twoFactor.type.rawValue
@@ -906,18 +907,21 @@ extension HomepageCoordinator {
     }
 
     private func processPasswordChange(authCredential: AuthCredential, userInfo: UserInfo) {
-        guard let userData = userDataProvider.getUserData() else { return }
-        var updatedUser = userData.user
-        updatedUser.setNewKeys(userInfo.userKeys)
-        userDataProvider.setUserData(.init(credential: authCredential,
-                                           user: updatedUser,
-                                           salts: userData.salts,
-                                           passphrases: userData.passphrases,
-                                           addresses: userInfo.userAddresses,
-                                           scopes: userData.scopes))
-        dismissTopMostViewController { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(#localized("Password changed successfully"))
+        Task { [weak self] in
+            guard let self, let userData = try? await userManager.getActiveUserData() else { return }
+            var updatedUser = userData.user
+            updatedUser.setNewKeys(userInfo.userKeys)
+            try? await userManager.update(userData: .init(credential: authCredential,
+                                                          user: updatedUser,
+                                                          salts: userData.salts,
+                                                          passphrases: userData.passphrases,
+                                                          addresses: userInfo.userAddresses,
+                                                          scopes: userData.scopes))
+
+            dismissTopMostViewController { [weak self] in
+                guard let self else { return }
+                bannerManager.displayBottomInfoMessage(#localized("Password changed successfully"))
+            }
         }
     }
 

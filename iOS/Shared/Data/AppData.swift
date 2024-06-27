@@ -91,16 +91,6 @@ final class AppData: AppDataProtocol {
         }
     }
 
-//    func removeSymmetricKey() {
-//        symmetricKey = nil
-//    }
-
-    func setUserData(_ userData: UserData?) {
-        self.userData = userData
-        // Should be removed after session forking
-        useCredentialInUserDataForBothAppAndExtension()
-    }
-
     func getUserData() -> UserData? {
         userData
     }
@@ -170,6 +160,8 @@ final class AppData: AppDataProtocol {
 
 private extension AppData {
     // Should be removed after session forking
+    // swiftlint:disable:next todo
+    // TODO: This should become obsolete as user data should not be in app data anymore
     func useCredentialInUserDataForBothAppAndExtension() {
         if let userData {
             let credential = userData.credential

@@ -33,14 +33,14 @@ public extension SendErrorToSentryUseCase {
 }
 
 public final class SendErrorToSentry: SendErrorToSentryUseCase {
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
 
-    public init(userDataProvider: any UserDataProvider) {
-        self.userDataProvider = userDataProvider
+    public init(userManager: any UserManagerProtocol) {
+        self.userManager = userManager
     }
 
     public func execute(_ error: any Error, sessionId: String?) {
-        let userId = userDataProvider.getUserData()?.user.ID
+        let userId = userManager.activeUserId
         SentrySDK.capture(error: error) { scope in
             if let sessionId {
                 scope.setTag(value: sessionId, key: "sessionUID")

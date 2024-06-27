@@ -27,98 +27,161 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
+// sourcery:AutoMockable
 public protocol UserManagerProtocol: Sendable {
-    var userDatas: CurrentValueSubject<[UserData], Never> { get }
-    var activeUserId: CurrentValueSubject<String?, Never> { get }
+    var currentActiveUser: CurrentValueSubject<UserData?, Never> { get }
 
     func setUp() async throws
     func getActiveUserData() async throws -> UserData?
     func addAndMarkAsActive(userData: UserData) async throws
+    func update(userData: UserData) async throws
+    func switchActiveUser(with userId: String) async throws
+    func getAllUsers() async throws -> [UserData]
     func remove(userId: String) async throws
+    func getActiveUserId() async throws -> String
+    nonisolated func setUserData(_ userData: UserData)
 }
 
-public actor UserManager: Sendable, UserManagerProtocol {
-    public let userDatas = CurrentValueSubject<[UserData], Never>([])
-    public let activeUserId = CurrentValueSubject<String?, Never>(nil)
+public extension UserManagerProtocol {
+    var activeUserId: String? {
+        currentActiveUser.value?.user.ID
+    }
+
+    func getUnwrappedActiveUserData() async throws -> UserData {
+        guard let userData = try await getActiveUserData() else {
+            throw PassError.userManager(.activeUserDataNotFound)
+        }
+        return userData
+    }
+}
+
+public actor UserManager: UserManagerProtocol {
+    public let currentActiveUser = CurrentValueSubject<UserData?, Never>(nil)
+    private var userProfiles = [UserProfile]()
 
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
-    private let activeUserIdDatasource: any LocalActiveUserIdDatasourceProtocol
     private let logger: Logger
     private var didSetUp = false
 
     public init(userDataDatasource: any LocalUserDataDatasourceProtocol,
-                activeUserIdDatasource: any LocalActiveUserIdDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
         self.userDataDatasource = userDataDatasource
-        self.activeUserIdDatasource = activeUserIdDatasource
         logger = .init(manager: logManager)
     }
 }
 
 public extension UserManager {
     func setUp() async throws {
-        let userDatas = try await userDataDatasource.getAll()
-        self.userDatas.send(userDatas)
-
-        let activeUserId = activeUserIdDatasource.getActiveUserId()
-        self.activeUserId.send(activeUserId)
-
+        userProfiles = try await userDataDatasource.getAll()
+        currentActiveUser.send(userProfiles.activeUser?.userdata)
         didSetUp = true
     }
 
     func getActiveUserData() async throws -> UserData? {
-        assertDidSetUp()
-        let userDatas = userDatas.value
+        await assertDidSetUp()
 
-        guard let activeId = activeUserIdDatasource.getActiveUserId() else {
-            if !userDatas.isEmpty {
-                throw PassError.userManager(.userDatasAvailableButNoActiveUserId)
-            }
-            return nil
+        if userProfiles.isEmpty {
+            throw PassError.userManager(.noUserDataFound)
         }
 
-        if userDatas.isEmpty {
-            activeUserIdDatasource.removeActiveUserId()
-            throw PassError.userManager(.activeUserIdAvailableButNoUserDataFound)
+        guard let activeUserData = userProfiles.activeUser?.userdata else {
+            throw PassError.userManager(.userDatasAvailableButNoActiveUserId)
         }
-
-        guard let activeUserData = userDatas.first(where: { $0.user.ID == activeId }) else {
-            throw PassError.userManager(.activeUserDataNotFound)
+        if currentActiveUser.value?.user.ID != activeUserData.user.ID {
+            currentActiveUser.send(activeUserData)
         }
         return activeUserData
     }
 
-    func addAndMarkAsActive(userData: UserData) async throws {
-        assertDidSetUp()
+    func getAllUsers() async -> [UserData] {
+        await assertDidSetUp()
 
-        try await userDataDatasource.upsert(userData)
-        let userDatas = try await userDataDatasource.getAll()
-        self.userDatas.send(userDatas)
-
-        let id = userData.user.ID
-        activeUserIdDatasource.updateActiveUserId(id)
-        activeUserId.send(id)
+        return userProfiles.map(\.userdata)
     }
 
+    func getActiveUserId() async throws -> String {
+        await assertDidSetUp()
+        guard let id = try await getActiveUserData()?.user.ID else {
+            throw PassError.userManager(.activeUserDataNotFound)
+        }
+        return id
+    }
+
+    func addAndMarkAsActive(userData: UserData) async throws {
+        await assertDidSetUp()
+
+        try await userDataDatasource.upsert(userData)
+        try await switchActiveUser(with: userData.user.ID)
+    }
+
+    func update(userData: UserData) async throws {
+        try await userDataDatasource.upsert(userData)
+        userProfiles = try await userDataDatasource.getAll()
+        if let activeUserId,
+           activeUserId == userData.user.ID {
+            currentActiveUser.send(userData)
+        }
+    }
+
+    /// Remove user profile from database and memory. If the user being removed if the current active user it sets
+    /// a new active user
+    /// - Parameter userId: The id of the user to remove
     func remove(userId: String) async throws {
-        assertDidSetUp()
+        await assertDidSetUp()
 
         try await userDataDatasource.remove(userId: userId)
-        let userDatas = try await userDataDatasource.getAll()
-        self.userDatas.send(userDatas)
+        userProfiles = try await userDataDatasource.getAll()
 
-        if activeUserId.value == userId {
-            activeUserIdDatasource.removeActiveUserId()
-            activeUserId.send(nil)
+        if userProfiles.activeUser == nil, let newActiveUser = userProfiles.first {
+            try await switchActiveUser(with: newActiveUser.userdata.user.ID)
+        }
+    }
+
+    func switchActiveUser(with newActiveUserId: String) async throws {
+        await assertDidSetUp()
+
+        try await userDataDatasource.updateNewActiveUser(userId: newActiveUserId)
+
+        userProfiles = try await userDataDatasource.getAll()
+        guard let activeUserData = userProfiles.activeUser?.userdata else {
+            throw PassError.userManager(.activeUserDataNotFound)
+        }
+        currentActiveUser.send(activeUserData)
+    }
+}
+
+public extension UserManager {
+    nonisolated func setUserData(_ userData: UserData) {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await addAndMarkAsActive(userData: userData)
+            } catch {
+                logger.error(error)
+            }
         }
     }
 }
 
 private extension UserManager {
-    func assertDidSetUp() {
-        assert(didSetUp, "UserManager not set up. Call setUp() function as soon as possible.")
+    func assertDidSetUp() async {
+        // swiftlint:disable:next todo
+        // TODO: this should not setup and only assert. We should spread repo lazy loading in the app
         if !didSetUp {
+            do {
+                try await setUp()
+            } catch {
+                assert(didSetUp, "UserManager not set up. Call setUp() function as soon as possible.")
+            }
             logger.error("UserManager not set up")
         }
+    }
+}
+
+private extension [UserProfile] {
+    var activeUser: UserProfile? {
+        self.first { $0.isActive }
     }
 }

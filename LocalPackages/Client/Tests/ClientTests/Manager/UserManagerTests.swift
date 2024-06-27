@@ -28,48 +28,58 @@ import XCTest
 
 final class UserManagerTests: XCTestCase {
     var userDataDatasource: LocalUserDataDatasourceProtocolMock!
-    var activeUserIdDatasource: LocalActiveUserIdDatasourceProtocolMock!
     var sut: UserManagerProtocol!
-
+    
     override func setUp() {
         super.setUp()
         userDataDatasource = .init()
-        activeUserIdDatasource = .init()
         sut = UserManager(userDataDatasource: userDataDatasource,
-                          activeUserIdDatasource: activeUserIdDatasource,
                           logManager: LogManagerProtocolMock())
     }
-
+    
     override func tearDown() {
         userDataDatasource = nil
-        activeUserIdDatasource = nil
         sut = nil
         super.tearDown()
     }
 }
 
+private extension [UserProfile] {
+    mutating func markLastProfileActive() {
+        guard !self.isEmpty else { return }
+        
+        for index in 0..<self.count {
+            self[index] = self[index].copy(isActive: (index == self.count - 1))
+        }
+    }
+}
+
 extension UserManagerTests {
     func testSetUp() async throws {
-        let mockedUserDatas = [UserData].random(randomElement: .random())
-        let mockedUserIds = mockedUserDatas.map(\.user.ID)
+        var mockedUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
+        mockedUserDatas.markLastProfileActive()
+        let mockedUserIds = mockedUserDatas.map(\.userdata.user.ID)
         userDataDatasource.stubbedGetAllResult = mockedUserDatas
-
-        let mockedActiveUserId = String.random()
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = mockedActiveUserId
-
+        
+        let mockedActiveUserId = mockedUserDatas.last!.userdata.user.ID
+        
         try await sut.setUp()
-        let userIds = sut.userDatas.value.map(\.user.ID)
+        let allUsers = try await sut.getAllUsers()
+        let userIds = allUsers.map(\.user.ID)
         XCTAssertEqual(userIds, mockedUserIds)
-        XCTAssertEqual(sut.activeUserId.value, mockedActiveUserId)
+        XCTAssertEqual(sut.activeUserId, mockedActiveUserId)
     }
-
+    
     func testGetActiveUserData_ThrowUserDatasAvailableButNoActiveUserId() async throws {
         let expectation = expectation(description: "Should throw error")
-
-        userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = nil
+        
+        userDataDatasource.closureGetAll = { [weak self] in
+            guard let self else { return }
+            userDataDatasource.stubbedGetAllResult = [UserProfile(userdata: .random(), isActive: false, updateTime: 0)]
+        }
+        
         try await sut.setUp()
-
+        
         do {
             _ = try await sut.getActiveUserData()
         } catch {
@@ -79,136 +89,94 @@ extension UserManagerTests {
                 XCTFail("Unexpected error")
             }
         }
-
+        
         await fulfillment(of: [expectation], timeout: 1)
     }
-
+    
     func testGetActiveUserData_ThrowActiveUserIdAvailableButNoUserDataFound() async throws {
         let expectation = expectation(description: "Should throw error")
-
-        userDataDatasource.stubbedGetAllResult = []
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = .random()
+        
+        userDataDatasource.closureGetAll = { [weak self] in
+            guard let self else { return }
+            userDataDatasource.stubbedGetAllResult = []
+        }
+        
         try await sut.setUp()
-
+        
         do {
             _ = try await sut.getActiveUserData()
         } catch {
-            if error.isEqual(to: .activeUserIdAvailableButNoUserDataFound) {
+            if error.isEqual(to: .noUserDataFound) {
                 expectation.fulfill()
             } else {
                 XCTFail("Unexpected error")
             }
         }
-
+        
         await fulfillment(of: [expectation], timeout: 1)
     }
-
-    func testGetActiveUserData_ThrowActiveUserDataNotFound() async throws {
-        let expectation = expectation(description: "Should throw error")
-
-        userDataDatasource.stubbedGetAllResult = .random(randomElement: .random())
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = .random()
-        try await sut.setUp()
-
-        do {
-            _ = try await sut.getActiveUserData()
-        } catch {
-            if error.isEqual(to: .activeUserDataNotFound) {
-                expectation.fulfill()
-            } else {
-                XCTFail("Unexpected error")
-            }
-        }
-
-        await fulfillment(of: [expectation], timeout: 1)
-    }
-
+    
     func testGetActiveUserData() async throws {
-        let mockedUserDatas = [UserData].random(randomElement: .random())
-        let givenActiveUserData = try XCTUnwrap(mockedUserDatas.randomElement())
+        var mockedUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
+        mockedUserDatas.markLastProfileActive()
         userDataDatasource.stubbedGetAllResult = mockedUserDatas
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = givenActiveUserData.user.ID
-
+        
         try await sut.setUp()
-
+        
         let activeUserData = try await sut.getActiveUserData()
-        XCTAssertEqual(activeUserData?.user.ID, givenActiveUserData.user.ID)
+        XCTAssertEqual(activeUserData?.user.ID, mockedUserDatas.last?.userdata.user.ID)
     }
-
+    
     func testAddAndMarkAsActive() async throws {
         // Given
-        var allUserDatas = [UserData].random(randomElement: .random())
+        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
+        
         userDataDatasource.closureGetAll = { [weak self] in
             guard let self else { return }
             userDataDatasource.stubbedGetAllResult = allUserDatas
         }
+        
         userDataDatasource.closureUpsert = { [weak self] in
             guard let self else { return }
             if let newUserData = userDataDatasource.invokedUpsertParameters?.0 {
-                allUserDatas.append(newUserData)
+                allUserDatas.append(UserProfile(userdata: newUserData, isActive: false, updateTime: 0) )
             }
         }
-
-        var activeUserId: String?
-        activeUserIdDatasource.closureGetActiveUserId = { [weak self] in
+        
+        userDataDatasource.closureUpdateNewActiveUser  = { [weak self] in
             guard let self else { return }
-            activeUserIdDatasource.stubbedGetActiveUserIdResult = activeUserId
+            if let newUserId = userDataDatasource.invokedUpdateNewActiveUserParameters?.0,
+               let index = allUserDatas.firstIndex(where: { $0.userdata.user.ID == newUserId }) {
+                allUserDatas[index] = allUserDatas[index].copy(isActive: true)
+            }
         }
-        activeUserIdDatasource.closureUpdateActiveUserId = { [weak self] in
-            guard let self else { return }
-            activeUserId = activeUserIdDatasource.invokedUpdateActiveUserIdParameters?.0
-        }
-
+        
         let userData = UserData.random()
         try await sut.setUp()
-
+        
         // When
         try await sut.addAndMarkAsActive(userData: userData)
         let activeUserData = try await XCTUnwrapAsync(await sut.getActiveUserData())
-
+        let unwrappedUserData = try await sut.getUnwrappedActiveUserData()
+        
+        let allUsers = try await sut.getAllUsers()
         // Then
-        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
+        XCTAssertEqual(allUsers.count, allUserDatas.count)
         XCTAssertEqual(activeUserData.user.ID, userData.user.ID)
-        XCTAssertEqual(sut.activeUserId.value, userData.user.ID)
+        XCTAssertEqual(sut.activeUserId, userData.user.ID)
+        XCTAssertEqual(unwrappedUserData.user.ID, activeUserData.user.ID)
     }
-
-    func testRemoveActiveUser() async throws {
-        // Given
-        let activeUserData = UserData.random()
-        let activeUserId = activeUserData.user.ID
-        var allUserDatas = [UserData].random(randomElement: .random())
-        allUserDatas.append(activeUserData)
-
-        userDataDatasource.closureGetAll = { [weak self] in
-            guard let self else { return }
-            userDataDatasource.stubbedGetAllResult = allUserDatas
-        }
-        userDataDatasource.closureRemove = { [weak self] in
-            guard let self else { return }
-            if let userId = userDataDatasource.invokedRemoveParameters?.0 {
-                allUserDatas.removeAll { $0.user.ID == userId }
-            }
-        }
-
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = activeUserId
-        try await sut.setUp()
-
-        // When
-        try await sut.remove(userId: activeUserId)
-
-        // Then
-        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
-        XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == activeUserId }))
-        XCTAssertNil(sut.activeUserId.value)
-    }
-
+    
     func testRemoveInactiveUser() async throws {
         // Given
-        let inactiveUserData = UserData.random()
-        let inactiveUserId = inactiveUserData.user.ID
-        var allUserDatas = [UserData].random(randomElement: .random())
+        let inactiveUserData = UserProfile(userdata: .random(), isActive: false, updateTime: 0)
+        let inactiveUserId = inactiveUserData.userdata.user.ID
+        
+        
+        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
+        allUserDatas.markLastProfileActive()
         allUserDatas.append(inactiveUserData)
-
+        
         userDataDatasource.closureGetAll = { [weak self] in
             guard let self else { return }
             userDataDatasource.stubbedGetAllResult = allUserDatas
@@ -216,21 +184,106 @@ extension UserManagerTests {
         userDataDatasource.closureRemove = { [weak self] in
             guard let self else { return }
             if let userId = userDataDatasource.invokedRemoveParameters?.0 {
-                allUserDatas.removeAll { $0.user.ID == userId }
+                allUserDatas.removeAll { $0.userdata.user.ID == userId }
             }
         }
-
-        let activeUserId = String.random()
-        activeUserIdDatasource.stubbedGetActiveUserIdResult = activeUserId
+        
         try await sut.setUp()
-
+        
         // When
         try await sut.remove(userId: inactiveUserId)
-
+        
+        let getAllUsers = try await sut.getAllUsers()
+        
         // Then
-        XCTAssertEqual(sut.userDatas.value.count, allUserDatas.count)
-        XCTAssertFalse(sut.userDatas.value.contains(where: { $0.user.ID == inactiveUserId }))
-        XCTAssertEqual(sut.activeUserId.value, activeUserId)
+        XCTAssertEqual(getAllUsers.count, allUserDatas.count)
+        XCTAssertFalse(getAllUsers.contains(where: { $0.user.ID == inactiveUserId }))
+        XCTAssertEqual(sut.activeUserId, allUserDatas.last?.userdata.user.ID)
+        XCTAssertEqual(sut.currentActiveUser.value?.user.ID, allUserDatas.last?.userdata.user.ID)
+    }
+    
+    func testRemoveActiveUser() async throws {
+        // Given
+        var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
+        allUserDatas.markLastProfileActive()
+        let activeUserId = allUserDatas.last!.userdata.user.ID
+        userDataDatasource.closureGetAll = { [weak self] in
+            guard let self else { return }
+            userDataDatasource.stubbedGetAllResult = allUserDatas
+        }
+        userDataDatasource.closureRemove = { [weak self] in
+            guard let self else { return }
+            if let userId = userDataDatasource.invokedRemoveParameters?.0 {
+                allUserDatas.removeAll { $0.userdata.user.ID == userId }
+            }
+        }
+        userDataDatasource.closureUpdateNewActiveUser  = { [weak self] in
+            guard let self else { return }
+            allUserDatas[0] = allUserDatas[0].copy(isActive: true)
+        }
+        
+        try await sut.setUp()
+        
+        
+        // When
+        try await sut.remove(userId: activeUserId)
+        let getAllUsers = try await sut.getAllUsers()
+        
+        // Then
+        XCTAssertEqual(getAllUsers.count, allUserDatas.count)
+        XCTAssertFalse(getAllUsers.contains(where: { $0.user.ID == activeUserId }))
+        XCTAssertEqual(sut.activeUserId, getAllUsers.first?.user.ID)
+        XCTAssertEqual(sut.currentActiveUser.value?.user.ID, getAllUsers.first?.user.ID)
+    }
+    
+    func testSwitchActiveUser() async throws {
+        // Given
+        var allUserDatas = [UserProfile]()
+        
+        let user1 = UserData.random()
+        let user2 = UserData.random()
+        let user3 = UserData.random()
+        
+        userDataDatasource.closureGetAll = { [weak self] in
+            guard let self else { return }
+            userDataDatasource.stubbedGetAllResult = allUserDatas
+        }
+        
+        userDataDatasource.closureUpdateNewActiveUser = { [weak self] in
+            guard let self else { return }
+            allUserDatas = allUserDatas.map { $0.copy(isActive: false) }
+            if let newUserId = userDataDatasource.invokedUpdateNewActiveUserParameters?.0,
+               let index = allUserDatas.firstIndex(where: { $0.userdata.user.ID == newUserId }) {
+                allUserDatas[index] = allUserDatas[index].copy(isActive: true)
+            }
+        }
+        
+        userDataDatasource.closureUpsert = { [weak self] in
+            guard let self else { return }
+            if let newUserData = userDataDatasource.invokedUpsertParameters?.0 {
+                allUserDatas.append( UserProfile(userdata: newUserData, isActive: false, updateTime: 0))
+            }
+        }
+        
+        try await sut.setUp()
+        
+        try await sut.addAndMarkAsActive(userData: user1)
+        
+        
+        XCTAssertEqual(sut.activeUserId, user1.user.ID)
+        
+        try await sut.addAndMarkAsActive(userData: user2)
+        
+        
+        XCTAssertEqual(sut.activeUserId, user2.user.ID)
+        
+        try await sut.addAndMarkAsActive(userData: user3)
+        
+        
+        XCTAssertEqual(sut.activeUserId, user3.user.ID)
+        
+        try await sut.switchActiveUser(with: user1.user.ID)
+        XCTAssertEqual(sut.activeUserId, user1.user.ID)
     }
 }
 

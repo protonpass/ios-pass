@@ -95,9 +95,12 @@ final class APIManager {
         fetchUnauthSessionIfNeeded()
     }
 
+    // swiftlint:disable:next todo
+    // TODO: Need to move this in Session manager and need to update the next session to either a other locally registered or recreate an empty apiservice from scrAtch for a full logout
     func clearCredentials() {
-        appData.setUserData(nil)
-        appData.setCredential(nil)
+        // swiftlint:disable:next todo
+        // TODO: Have session manager remove all session link to session id and user with id link to this session
+        appData.resetData()
         apiService.setSessionUID(uid: "")
     }
 }

@@ -44,7 +44,7 @@ final class WipeAllData: WipeAllDataUseCase {
     private let vaultsManager: VaultsManager
     private let vaultSyncEventStream: VaultSyncEventStream
     private let credentialManager: any CredentialManagerProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
 
@@ -57,7 +57,7 @@ final class WipeAllData: WipeAllDataUseCase {
          vaultsManager: VaultsManager,
          vaultSyncEventStream: VaultSyncEventStream,
          credentialManager: any CredentialManagerProtocol,
-         userDataProvider: any UserDataProvider,
+         userManager: any UserManagerProtocol,
          featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
          passMonitorRepository: any PassMonitorRepositoryProtocol) {
         logger = .init(manager: logManager)
@@ -69,7 +69,7 @@ final class WipeAllData: WipeAllDataUseCase {
         self.vaultsManager = vaultsManager
         self.vaultSyncEventStream = vaultSyncEventStream
         self.credentialManager = credentialManager
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         self.featureFlagsRepository = featureFlagsRepository
         self.passMonitorRepository = passMonitorRepository
     }
@@ -80,19 +80,34 @@ final class WipeAllData: WipeAllDataUseCase {
         logger.info("Wiping all data")
 
         try? await preferencesManager.reset()
-        if let userID = try? userDataProvider.getUserId(), !userID.isEmpty {
+        if let userID = try? await userManager.getActiveUserId(), !userID.isEmpty {
             featureFlagsRepository.resetFlags(for: userID)
         }
         featureFlagsRepository.clearUserId()
 
         await passMonitorRepository.reset()
         appData.resetData()
+        // swiftlint:disable:next todo
+        // TODO: need to move this in session manager
         apiManager.clearCredentials()
         databaseService.resetContainer()
+
         UIPasteboard.general.items = []
+
+        // swiftlint:disable:next todo
+        // TODO: only kill sync if last account being logged out
         syncEventLoop.reset()
+
+        // swiftlint:disable:next todo
+        // TODO: only reset if last account being logged out but should
         await vaultsManager.reset()
         vaultSyncEventStream.value = .initialization
+
+        if let userId = try? await userManager.getActiveUserId() {
+            try? await userManager.remove(userId: userId)
+        }
+        // swiftlint:disable:next todo
+        // TODO: should be handle by auth/session manager
         try? await credentialManager.removeAllCredentials()
         logger.info("Wiped all data")
     }

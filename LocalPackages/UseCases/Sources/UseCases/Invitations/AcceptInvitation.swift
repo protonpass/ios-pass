@@ -41,18 +41,18 @@ public extension AcceptInvitationUseCase {
 
 public final class AcceptInvitation: AcceptInvitationUseCase {
     private let repository: any InviteRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
     private let updateUserAddresses: any UpdateUserAddressesUseCase
     private let logger: Logger
 
     public init(repository: any InviteRepositoryProtocol,
-                userDataProvider: any UserDataProvider,
+                userManager: any UserManagerProtocol,
                 getEmailPublicKey: any GetEmailPublicKeyUseCase,
                 updateUserAddresses: any UpdateUserAddressesUseCase,
                 logManager: any LogManagerProtocol) {
         self.repository = repository
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses
         logger = .init(manager: logManager)
@@ -69,7 +69,7 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
 private extension AcceptInvitation {
     func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
         do {
-            let userData = try userDataProvider.getUnwrappedUserData()
+            let userData = try await userManager.getUnwrappedActiveUserData()
             guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
                 throw PassError.sharing(.invalidAddress(userInvite.invitedEmail))
             }

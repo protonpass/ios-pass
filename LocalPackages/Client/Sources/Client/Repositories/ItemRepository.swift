@@ -81,8 +81,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func trashItems(_ items: [any ItemIdentifiable]) async throws
 
-//    func deleteAlias(email: String) async throws
-
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
     func untrashItems(_ items: [any ItemIdentifiable]) async throws
@@ -143,7 +141,8 @@ public extension ItemRepositoryProtocol {
 
 // swiftlint: disable discouraged_optional_self file_length
 public actor ItemRepository: ItemRepositoryProtocol {
-    private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let userManager: any UserManagerProtocol
     private let localDatasource: any LocalItemDatasourceProtocol
     private let remoteDatasource: any RemoteItemDatasourceProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
@@ -153,17 +152,19 @@ public actor ItemRepository: ItemRepositoryProtocol {
     public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
     public let itemsWereUpdated: CurrentValueSubject<Void, Never> = .init(())
 
-    public init(userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider,
+    public init(symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol,
                 localDatasource: any LocalItemDatasourceProtocol,
                 remoteDatasource: any RemoteItemDatasourceProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 logManager: any LogManagerProtocol) {
-        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
+        self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
+        self.userManager = userManager
         logger = .init(manager: logManager)
         Task { [weak self] in
             guard let self else {
@@ -176,6 +177,8 @@ public actor ItemRepository: ItemRepositoryProtocol {
 
 public extension ItemRepository {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
+        // swiftlint:disable:next todo
+        // TODO: fetch items linked to active user
         try await localDatasource.getAllItems()
     }
 
@@ -188,6 +191,8 @@ public extension ItemRepository {
     }
 
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        // swiftlint:disable:next todo
+        // TODO: fetch items linked to active user
         try await localDatasource.getItems(state: state)
     }
 
@@ -200,6 +205,8 @@ public extension ItemRepository {
     }
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+        // swiftlint:disable:next todo
+        // TODO: fetch items linked to active user
         try await localDatasource.getAllPinnedItems()
     }
 
@@ -209,6 +216,8 @@ public extension ItemRepository {
     }
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
+        // swiftlint:disable:next todo
+        // TODO: fetch items linked to active user
         let items = try await localDatasource.getItems(for: items)
 
         let itemsContent: [ItemContent] = try await items.asyncCompactMap { [weak self] item in
@@ -264,7 +273,7 @@ public extension ItemRepository {
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
         logger.trace("Refreshing last event ID for share \(shareId)")
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
                                                         userId: userId,
                                                         shareId: shareId)
@@ -274,6 +283,8 @@ public extension ItemRepository {
 
     func createItem(itemContent: any ProtobufableItemContentProtocol,
                     shareId: String) async throws -> SymmetricallyEncryptedItem {
+        // swiftlint:disable:next todo
+        // TODO: should we add user id in item?
         logger.trace("Creating item for share \(shareId)")
         let request = try await createItemRequest(itemContent: itemContent, shareId: shareId)
         let createdItemRevision = try await remoteDatasource.createItem(shareId: shareId,
@@ -289,6 +300,8 @@ public extension ItemRepository {
     func createAlias(info: AliasCreationInfo,
                      itemContent: any ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem {
+        // swiftlint:disable:next todo
+        // TODO: should we add user id in alias ?
         logger.trace("Creating alias item")
         let createItemRequest = try await createItemRequest(itemContent: itemContent, shareId: shareId)
         let createAliasRequest = CreateCustomAliasRequest(info: info,
@@ -353,15 +366,6 @@ public extension ItemRepository {
         logger.info("Trashed \(items.count) items")
         itemsWereUpdated.send()
     }
-
-//    func deleteAlias(email: String) async throws {
-//        logger.trace("Deleting alias item \(email)")
-//        guard let item = try await localDatasource.getAliasItem(email: email) else {
-//            logger.trace("Failed to delete alias item. No alias item found for \(email)")
-//            return
-//        }
-//        try await deleteItems([item], skipTrash: true)
-//    }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
         let count = items.count
@@ -605,7 +609,7 @@ private extension ItemRepository {
 
 private extension ItemRepository {
     func getSymmetricKey() throws -> SymmetricKey {
-        try userDataSymmetricKeyProvider.getSymmetricKey()
+        try symmetricKeyProvider.getSymmetricKey()
     }
 
     func symmetricallyEncrypt(itemRevision: Item,
