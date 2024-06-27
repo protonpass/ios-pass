@@ -69,8 +69,7 @@ private final class ItemReadEventRepositoryTests: XCTestCase {
 extension ItemReadEventRepositoryTests {
     func testAddEvents() async throws {
         let userData = UserData.test
-        userManager.stubbedGetUserDataResult = userData
-        userManager.stubbedGetActiveUserIdResult = userManager.stubbedGetUserDataResult!.user.ID
+        userManager.stubbedGetActiveUserIdResult = userData.user.ID
 
         let shareId1 = String.random()
         let event1 = try await givenAddedEvent(shareId: shareId1, timestamp: 5)

@@ -58,7 +58,7 @@ public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
                                    addresses: newAddresses,
                                    scopes: userData.scopes)
 
-        try await userManager.add(userData: newUserData, isActive: false)
+        try await userManager.update(userData: newUserData)
         return newAddresses
     }
 }

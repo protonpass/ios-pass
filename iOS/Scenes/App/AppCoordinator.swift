@@ -147,7 +147,7 @@ final class AppCoordinator {
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
                     logger.info("Logged in manual")
-                    userManager.setUserData(userData, isActive: true)
+                    userManager.setUserData(userData)
                     connectToCorruptedSessionStream()
                     if extraPassword {
                         showHomeScene(mode: .manualLoginWithExtraPassword)
