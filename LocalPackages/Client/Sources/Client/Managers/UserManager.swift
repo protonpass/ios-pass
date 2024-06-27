@@ -36,7 +36,7 @@ public protocol UserManagerProtocol: Sendable {
     func addAndMarkAsActive(userData: UserData) async throws
     func update(userData: UserData) async throws
     func switchActiveUser(with userId: String) async throws
-    func getAllUser() async throws -> [UserData]
+    func getAllUsers() async throws -> [UserData]
     func remove(userId: String) async throws
     func getActiveUserId() async throws -> String
     nonisolated func setUserData(_ userData: UserData)
@@ -93,7 +93,7 @@ public extension UserManager {
         return activeUserData
     }
 
-    func getAllUser() async -> [UserData] {
+    func getAllUsers() async -> [UserData] {
         await assertDidSetUp()
 
         return userProfiles.map(\.userdata)
