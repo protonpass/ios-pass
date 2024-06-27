@@ -35,7 +35,7 @@ public struct AccountCell: View {
     let showSwitcher: Bool
     let animationNamespace: Namespace.ID
 
-    public enum EffectID: String {
+    enum EffectID: String {
         case initials
         case displayName
         case email
