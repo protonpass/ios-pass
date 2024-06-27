@@ -39,7 +39,7 @@ final class LocalDataMigrationDatasourceTests: XCTestCase {
 }
 
 extension LocalDataMigrationDatasourceTests {
-    func testGetUpdateRemoveActiveUserId() async throws {
+    func testMigrationStatusUpdate() async throws {
         let noMigration = await sut.getMigrations()
         XCTAssertEqual(noMigration, 0)
 
