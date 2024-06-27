@@ -45,7 +45,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let accountRepository = resolve(\SharedRepositoryContainer.accountRepository)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -66,7 +66,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any AccountViewModelDelegate)?
 
-    var username: String { userDataProvider.getUserData()?.user.email ?? "" }
+    var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
 
     var extraPasswordSupported: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAccessKeyV1)
@@ -122,7 +122,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let userId = try userDataProvider.getUserId()
+                let userId = try await userManager.getActiveUserId()
                 let settings = await userSettingsRepository.getSettings(for: userId)
                 passwordMode = settings.password.mode
             } catch {
@@ -189,7 +189,7 @@ extension AccountViewModel {
     }
 
     func disableExtraPassword() {
-        guard let username = userDataProvider.getUserData()?.credential.userName else {
+        guard let username = userManager.currentActiveUser.value?.credential.userName else {
             let errorMessage = #localized("Missing username")
             router.display(element: .errorMessage(errorMessage))
             logger.error("Failed to disable extra password. Missing username")

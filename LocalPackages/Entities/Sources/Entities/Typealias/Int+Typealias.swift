@@ -1,7 +1,7 @@
 //
-// Typealiases.swift
-// Proton Pass - Created on 22/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Int+Typealias.swift
+// Proton Pass - Created on 26/06/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,14 +17,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Combine
-import Entities
+import Foundation
 
-public typealias AppDataProtocol =
-    CredentialProvider & CurrentUserIdProvider & Resettable & SymmetricKeyProvider
-public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
-public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
-public typealias MonitorStateStream = CurrentValueSubject<MonitorState, Never>
-public typealias ShareID = String
+public typealias MigrationStatus = Int

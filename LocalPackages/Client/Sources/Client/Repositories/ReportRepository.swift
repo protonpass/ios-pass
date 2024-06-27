@@ -40,12 +40,12 @@ public protocol ReportRepositoryProtocol: Sendable {
 
 public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
     private let apiService: any APIService
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
 
     public init(apiService: any APIService,
-                userDataProvider: any UserDataProvider) {
+                userManager: any UserManagerProtocol) {
         self.apiService = apiService
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
     }
 }
 
@@ -62,9 +62,7 @@ public extension ReportRepository {
     func sendBug(with title: String,
                  and description: String,
                  optional logs: [String: URL]) async throws -> Bool {
-        guard let userData = userDataProvider.getUserData() else {
-            throw ReportRepositoryError.noUserData
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let request = await BugReportRequest(with: title, and: description, userData: userData)
         let endpoint = ReportsBugEndpoint(request: request)
         if !logs.isEmpty {

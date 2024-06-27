@@ -54,7 +54,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
     private let shareKeyRepository: any ShareKeyRepositoryProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(shareRepository: any ShareRepositoryProtocol,
@@ -62,14 +62,14 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                 shareKeyRepository: any ShareKeyRepositoryProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol,
-                userDataProvider: any UserDataProvider,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.shareKeyRepository = shareKeyRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 
@@ -223,7 +223,7 @@ private extension EventSynchronizer {
 
     /// Sync a single share. Can be a recursion if share has many events
     func sync(share: Share) async throws -> Bool {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         let shareId = share.shareID
         logger.trace("Syncing share \(shareId)")
         return try await performSyncOperations(userId: userId, shareId: shareId)

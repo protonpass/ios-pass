@@ -60,7 +60,7 @@ private extension RepositoryContainer {
 extension RepositoryContainer {
     var reportRepository: Factory<any ReportRepositoryProtocol> {
         self { ReportRepository(apiService: self.apiService,
-                                userDataProvider: SharedDataContainer.shared.userDataProvider()) }
+                                userManager: SharedServiceContainer.shared.userManager()) }
     }
 
     var inviteRepository: Factory<any InviteRepositoryProtocol> {

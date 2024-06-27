@@ -37,23 +37,23 @@ public protocol OrganizationRepositoryProtocol: Sendable {
 public actor OrganizationRepository: OrganizationRepositoryProtocol {
     private let localDatasource: any LocalOrganizationDatasourceProtocol
     private let remoteDatasource: any RemoteOrganizationDatasourceProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(localDatasource: any LocalOrganizationDatasourceProtocol,
                 remoteDatasource: any RemoteOrganizationDatasourceProtocol,
-                userDataProvider: any UserDataProvider,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
 
 public extension OrganizationRepository {
     func getOrganization() async throws -> Organization? {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting organization for userId \(userId)")
         if let organization = try await localDatasource.getOrganization(userId: userId) {
             logger.info("Found local organization for userId \(userId)")
@@ -65,7 +65,7 @@ public extension OrganizationRepository {
     }
 
     func refreshOrganization() async throws -> Organization? {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Refreshing organization for userId \(userId)")
         if let organization = try await remoteDatasource.getOrganization() {
             logger.trace("Refreshed organization for userId \(userId). Upserting to local database.")
