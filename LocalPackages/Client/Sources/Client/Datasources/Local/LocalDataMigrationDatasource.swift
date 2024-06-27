@@ -1,6 +1,6 @@
 //
-// LocalActiveUserIdDatasource.swift
-// Proton Pass - Created on 16/05/2024.
+// LocalDataMigrationDatasource.swift
+// Proton Pass - Created on 20/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,22 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-// Remove later
-// periphery:ignore:all
+import CoreData
+import Entities
 import Foundation
 
-private let kActiveUserIdKey = "ActiveUserId"
+private let kGlobalMigrationsKey = "GlobalMigrations"
 
-// sourcery: AutoMockable
-public protocol LocalActiveUserIdDatasourceProtocol: Sendable {
-    func getActiveUserId() -> String?
-    func updateActiveUserId(_ id: String)
-    func removeActiveUserId()
+public protocol LocalDataMigrationDatasourceProtocol: Sendable {
+    func getMigrations() async -> MigrationStatus
+    func upsert(migrations: MigrationStatus) async
 }
 
-public final class LocalActiveUserIdDatasource: LocalActiveUserIdDatasourceProtocol {
+public actor LocalDataMigrationDatasource: LocalDataMigrationDatasourceProtocol {
     private let userDefault: UserDefaults
 
     public init(userDefault: UserDefaults) {
@@ -40,16 +37,12 @@ public final class LocalActiveUserIdDatasource: LocalActiveUserIdDatasourceProto
     }
 }
 
-public extension LocalActiveUserIdDatasource {
-    func getActiveUserId() -> String? {
-        userDefault.string(forKey: kActiveUserIdKey)
+public extension LocalDataMigrationDatasource {
+    func upsert(migrations: MigrationStatus) async {
+        userDefault.set(migrations, forKey: kGlobalMigrationsKey)
     }
 
-    func updateActiveUserId(_ id: String) {
-        userDefault.set(id, forKey: kActiveUserIdKey)
-    }
-
-    func removeActiveUserId() {
-        userDefault.set(nil, forKey: kActiveUserIdKey)
+    func getMigrations() async -> MigrationStatus {
+        userDefault.integer(forKey: kGlobalMigrationsKey)
     }
 }

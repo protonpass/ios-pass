@@ -35,16 +35,16 @@ public extension ToggleSentinelUseCase {
 
 public final class ToggleSentinel: ToggleSentinelUseCase {
     private let settingsService: any UserSettingsRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
 
     public init(userSettingsProtocol: any UserSettingsRepositoryProtocol,
-                userDataProvider: any UserDataProvider) {
+                userManager: any UserManagerProtocol) {
         settingsService = userSettingsProtocol
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
     }
 
     public func execute() async throws -> Bool {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         let userSettings = await settingsService.getSettings(for: userId)
         guard userSettings.highSecurity.eligible else {
             throw PassError.sentinelNotEligible

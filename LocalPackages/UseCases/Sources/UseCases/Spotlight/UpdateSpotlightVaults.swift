@@ -34,17 +34,17 @@ public extension UpdateSpotlightVaultsUseCase {
 }
 
 public final class UpdateSpotlightVaults: UpdateSpotlightVaultsUseCase {
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let datasource: any LocalSpotlightVaultDatasourceProtocol
 
-    public init(userDataProvider: any UserDataProvider,
+    public init(userManager: any UserManagerProtocol,
                 datasource: any LocalSpotlightVaultDatasourceProtocol) {
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         self.datasource = datasource
     }
 
     public func execute(for vaults: [Vault]) async throws {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         try await datasource.removeAll(for: userId)
         try await datasource.setIds(for: userId, ids: vaults.map(\.shareId))
     }

@@ -34,14 +34,14 @@ public extension RefreshFeatureFlagsUseCase {
 
 public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase {
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(repository: any FeatureFlagsRepositoryProtocol,
-                userDataProvider: any UserDataProvider,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         featureFlagsRepository = repository
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 
@@ -49,7 +49,7 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = userDataProvider.getUserData()?.user.ID ?? ""
+                let userId = await (try? userManager.getActiveUserId()) ?? ""
 
                 featureFlagsRepository.setUserId(userId)
 

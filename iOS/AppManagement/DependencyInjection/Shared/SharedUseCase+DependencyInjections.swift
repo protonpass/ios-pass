@@ -53,8 +53,8 @@ private extension SharedUseCasesContainer {
         SharedRepositoryContainer.shared.itemRepository()
     }
 
-    var userDataProvider: any UserDataProvider {
-        SharedDataContainer.shared.userDataProvider()
+    var userManager: any UserManagerProtocol {
+        SharedServiceContainer.shared.userManager()
     }
 
     var symmetricKeyProvider: any SymmetricKeyProvider {
@@ -114,7 +114,7 @@ extension SharedUseCasesContainer {
     }
 
     var sendErrorToSentry: Factory<any SendErrorToSentryUseCase> {
-        self { SendErrorToSentry(userDataProvider: self.userDataProvider) }
+        self { SendErrorToSentry(userManager: self.userManager) }
     }
 
     var setCoreLoggerEnvironment: Factory<any SetCoreLoggerEnvironmentUseCase> {
@@ -125,7 +125,7 @@ extension SharedUseCasesContainer {
         self { SetUpCoreTelemetry(apiService: SharedToolingContainer.shared.apiManager().apiService,
                                   logManager: self.logManager,
                                   userSettingsRepository: self.userSettingsRepository,
-                                  userDataProvider: self.userDataProvider) }
+                                  userManager: self.userManager) }
     }
 }
 
@@ -154,7 +154,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var indexItemsForSpotlight: Factory<any IndexItemsForSpotlightUseCase> {
-        self { IndexItemsForSpotlight(userDataProvider: self.userDataProvider,
+        self { IndexItemsForSpotlight(userManager: self.userManager,
                                       itemRepository: self.itemRepository,
                                       datasource: SharedRepositoryContainer.shared
                                           .localSpotlightVaultDatasource(),
@@ -254,7 +254,7 @@ extension SharedUseCasesContainer {
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                            vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager(),
-                           userDataProvider: self.userDataProvider,
+                           userManager: self.userManager,
                            featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                            passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository()) }
     }
@@ -319,12 +319,12 @@ extension SharedUseCasesContainer {
 
     var toggleSentinel: Factory<any ToggleSentinelUseCase> {
         self { ToggleSentinel(userSettingsProtocol: self.userSettingsRepository,
-                              userDataProvider: self.userDataProvider) }
+                              userManager: self.userManager) }
     }
 
     var getSentinelStatus: Factory<any GetSentinelStatusUseCase> {
         self { GetSentinelStatus(userSettingsProtocol: self.userSettingsRepository,
-                                 userDataProvider: self.userDataProvider) }
+                                 userManager: self.userManager) }
     }
 
     var getUserPlan: Factory<any GetUserPlanUseCase> {
