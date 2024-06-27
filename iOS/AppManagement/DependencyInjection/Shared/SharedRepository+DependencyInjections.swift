@@ -230,10 +230,6 @@ extension SharedRepositoryContainer {
         self { LocalUserDataDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
                                        databaseService: self.databaseService) }
     }
-
-    var localActiveUserIdDatasource: Factory<any LocalActiveUserIdDatasourceProtocol> {
-        self { LocalActiveUserIdDatasource(userDefault: kSharedUserDefaults) }
-    }
 }
 
 // MARK: Repositories
