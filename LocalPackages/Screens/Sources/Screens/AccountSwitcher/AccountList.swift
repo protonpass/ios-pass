@@ -29,7 +29,9 @@ struct AccountList: View {
     let details: [any AccountCellDetail]
     let activeId: String
     let animationNamespace: Namespace.ID
-    let onSelectAccountId: (String) -> Void
+    let onSelect: (String) -> Void
+    let onSignOut: (String) -> Void
+    let onDelete: (String) -> Void
     let onAddAccount: () -> Void
 
     var body: some View {
@@ -99,14 +101,20 @@ private extension AccountList {
             }
             .contentShape(.rect)
             .onTapGesture {
-                onSelectAccountId(detail.id)
+                onSelect(detail.id)
             }
 
             Menu(content: {
-                Button(action: {},
-                       label: { Text(verbatim: "Action 1") })
-                Button(action: {},
-                       label: { Text(verbatim: "Action 2") })
+                Button(action: { onSignOut(detail.id) },
+                       label: { Label(title: { Text(verbatim: "Sign out") },
+                                      icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
+
+                Divider()
+
+                Button(role: .destructive,
+                       action: { onDelete(detail.id) },
+                       label: { Label(title: { Text(verbatim: "Delete account") },
+                                      icon: { Image(uiImage: IconProvider.trashCrossFilled) }) })
             }, label: {
                 icon(with: IconProvider.threeDotsVertical,
                      foregroundColor: PassColor.textWeak)
