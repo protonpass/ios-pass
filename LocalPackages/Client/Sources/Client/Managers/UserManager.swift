@@ -26,7 +26,6 @@ import Core
 import Entities
 import Foundation
 import ProtonCoreLogin
-import ProtonCoreNetworking
 
 // sourcery:AutoMockable
 public protocol UserManagerProtocol: Sendable {
@@ -58,7 +57,7 @@ public extension UserManagerProtocol {
 
 public actor UserManager: UserManagerProtocol {
     public let currentActiveUser = CurrentValueSubject<UserData?, Never>(nil)
-    private var userDatas = [UserProfile]()
+    private var userProfiles = [UserProfile]()
 
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let logger: Logger
@@ -73,19 +72,19 @@ public actor UserManager: UserManagerProtocol {
 
 public extension UserManager {
     func setUp() async throws {
-        userDatas = try await userDataDatasource.getAll()
-        currentActiveUser.send(userDatas.getActiveUser?.userdata)
+        userProfiles = try await userDataDatasource.getAll()
+        currentActiveUser.send(userProfiles.activeUser?.userdata)
         didSetUp = true
     }
 
     func getActiveUserData() async throws -> UserData? {
         await assertDidSetUp()
 
-        if userDatas.isEmpty {
+        if userProfiles.isEmpty {
             throw PassError.userManager(.noUserDataFound)
         }
 
-        guard let activeUserData = userDatas.getActiveUser?.userdata else {
+        guard let activeUserData = userProfiles.activeUser?.userdata else {
             throw PassError.userManager(.userDatasAvailableButNoActiveUserId)
         }
         if currentActiveUser.value?.user.ID != activeUserData.user.ID {
@@ -97,7 +96,7 @@ public extension UserManager {
     func getAllUser() async -> [UserData] {
         await assertDidSetUp()
 
-        return userDatas.map(\.userdata)
+        return userProfiles.map(\.userdata)
     }
 
     func getActiveUserId() async throws -> String {
@@ -117,7 +116,7 @@ public extension UserManager {
 
     func update(userData: UserData) async throws {
         try await userDataDatasource.upsert(userData)
-        userDatas = try await userDataDatasource.getAll()
+        userProfiles = try await userDataDatasource.getAll()
         if let activeUserId,
            activeUserId == userData.user.ID {
             currentActiveUser.send(userData)
@@ -131,9 +130,9 @@ public extension UserManager {
         await assertDidSetUp()
 
         try await userDataDatasource.remove(userId: userId)
-        userDatas = try await userDataDatasource.getAll()
+        userProfiles = try await userDataDatasource.getAll()
 
-        if userDatas.getActiveUser == nil, let newActiveUser = userDatas.first {
+        if userProfiles.activeUser == nil, let newActiveUser = userProfiles.first {
             try await switchActiveUser(with: newActiveUser.userdata.user.ID)
         }
     }
@@ -143,8 +142,8 @@ public extension UserManager {
 
         try await userDataDatasource.updateNewActiveUser(userId: newActiveUserId)
 
-        userDatas = try await userDataDatasource.getAll()
-        guard let activeUserData = userDatas.getActiveUser?.userdata else {
+        userProfiles = try await userDataDatasource.getAll()
+        guard let activeUserData = userProfiles.activeUser?.userdata else {
             throw PassError.userManager(.activeUserDataNotFound)
         }
         currentActiveUser.send(activeUserData)
@@ -182,7 +181,7 @@ private extension UserManager {
 }
 
 private extension [UserProfile] {
-    var getActiveUser: UserProfile? {
+    var activeUser: UserProfile? {
         self.first { $0.isActive }
     }
 }
