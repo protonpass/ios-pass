@@ -97,11 +97,12 @@ public struct AccountCell: View {
     }
 }
 
-private extension AccountCell {
-    var initials: some View {
+/// Reusable views for `AccountCell` & `AccountList`
+extension AccountCell {
+    static func viewForInitials(_ text: String) -> some View {
         ZStack {
             PassColor.interactionNormMajor2.toColor
-            Text(verbatim: detail.initials)
+            Text(verbatim: text)
                 .foregroundStyle(PassColor.textInvert.toColor)
                 .fontWeight(.medium)
         }
@@ -109,22 +110,34 @@ private extension AccountCell {
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
-    var displayName: some View {
-        Text(verbatim: detail.displayName)
+    static func viewForDisplayName(_ text: String) -> some View {
+        Text(verbatim: text)
             .foregroundStyle(PassColor.textNorm.toColor)
     }
 
-    var email: some View {
-        Text(verbatim: detail.email)
+    static func viewForEmail(_ text: String) -> some View {
+        Text(verbatim: text)
             .font(.caption)
             .foregroundStyle(PassColor.textWeak.toColor)
     }
+}
+
+private extension AccountCell {
+    var initials: some View {
+        Self.viewForInitials(detail.initials)
+    }
+
+    var displayName: some View {
+        Self.viewForDisplayName(detail.displayName)
+    }
+
+    var email: some View {
+        Self.viewForEmail(detail.email)
+    }
 
     var chevron: some View {
-        Image(uiImage: IconProvider.chevronDown)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 20)
-            .foregroundStyle(PassColor.textWeak.toColor)
+        SwiftUIImage(image: IconProvider.chevronDown,
+                     width: 20,
+                     tintColor: PassColor.textWeak)
     }
 }
