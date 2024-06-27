@@ -154,7 +154,10 @@ public extension UserManager {
 
 public extension UserManager {
     nonisolated func setUserData(_ userData: UserData) {
-        Task {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
             do {
                 try await addAndMarkAsActive(userData: userData)
             } catch {
@@ -164,7 +167,10 @@ public extension UserManager {
     }
 
     nonisolated func remove(userId: String) {
-        Task {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
             do {
                 try await remove(userId: userId)
             } catch {
