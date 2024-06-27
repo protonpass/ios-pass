@@ -35,6 +35,8 @@ final class MigrationManagerTests: XCTestCase {
     }
 
     override func tearDown() {
+        sut = nil
+        migrationDatasource = nil
         super.tearDown()
     }
     

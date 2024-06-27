@@ -81,19 +81,20 @@ extension LocalUserDataDatasourceTests {
         XCTAssertNil(noActiveUser)
         
         try await sut.updateNewActiveUser(userId: userData1.user.ID)
-        let activeUser1 = try await sut.getActiveUser()
-        XCTAssertTrue(activeUser1!.isActive)
-        XCTAssertEqual(activeUser1?.userdata.user.ID, userData1.user.ID)
+        let activeUser1 = try await XCTUnwrapAsync(await sut.getActiveUser())
+        XCTAssertTrue(activeUser1.isActive)
+        XCTAssertEqual(activeUser1.userdata.user.ID, userData1.user.ID)
         
         let userData2 = UserData.random()
         try await sut.upsert(userData2)
-        let activeUser = try await sut.getActiveUser()
-        XCTAssertEqual(activeUser?.userdata.user.ID, userData1.user.ID)
+        let activeUser = try await XCTUnwrapAsync(await sut.getActiveUser())
+
+        XCTAssertEqual(activeUser.userdata.user.ID, userData1.user.ID)
         
         try await sut.updateNewActiveUser(userId: userData2.user.ID)
-        let activeUser2 = try await sut.getActiveUser()
-        XCTAssertTrue(activeUser2!.isActive)
-        XCTAssertEqual(activeUser2?.userdata.user.ID, userData2.user.ID)
+        let activeUser2 = try await XCTUnwrapAsync(await sut.getActiveUser())
+        XCTAssertTrue(activeUser2.isActive)
+        XCTAssertEqual(activeUser2.userdata.user.ID, userData2.user.ID)
     }
 }
 
