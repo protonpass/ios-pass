@@ -207,7 +207,9 @@ private extension SecureLinkListView {
                     cellTitle(item: item)
 
                     VStack {
-                        Text("Expires in \(item.relativeTimeRemaining)")
+                        Text(isInactive ?
+                            "Expired \(item.relativeTimeRemaining)" :
+                            "Expires \(item.relativeTimeRemaining)")
                             .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id,
                                                    in: animation)
 
@@ -241,7 +243,9 @@ private extension SecureLinkListView {
                     .padding(.bottom, 5)
 
                 HStack {
-                    Text("Expires in \(item.relativeTimeRemaining)")
+                    Text(isInactive ?
+                        "Expired \(item.relativeTimeRemaining)" :
+                        "Expires \(item.relativeTimeRemaining)")
                         .matchedGeometryEffect(id: GeoMatchIds.expire(item.id).id, in: animation)
                     if let readCount = item.secureLink.readCount {
                         Text(verbatim: "/")
