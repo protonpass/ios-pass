@@ -64,7 +64,7 @@ extension UserManagerTests {
         let mockedActiveUserId = mockedUserDatas.last!.userdata.user.ID
         
         try await sut.setUp()
-        let allUsers = try await sut.getAllUser()
+        let allUsers = try await sut.getAllUsers()
         let userIds = allUsers.map(\.user.ID)
         XCTAssertEqual(userIds, mockedUserIds)
         XCTAssertEqual(sut.activeUserId, mockedActiveUserId)
@@ -159,7 +159,7 @@ extension UserManagerTests {
         let activeUserData = try await XCTUnwrapAsync(await sut.getActiveUserData())
         let unwrappedUserData = try await sut.getUnwrappedActiveUserData()
         
-        let allUsers = try await sut.getAllUser()
+        let allUsers = try await sut.getAllUsers()
         // Then
         XCTAssertEqual(allUsers.count, allUserDatas.count)
         XCTAssertEqual(activeUserData.user.ID, userData.user.ID)
@@ -193,7 +193,7 @@ extension UserManagerTests {
         // When
         try await sut.remove(userId: inactiveUserId)
         
-        let getAllUsers = try await sut.getAllUser()
+        let getAllUsers = try await sut.getAllUsers()
         
         // Then
         XCTAssertEqual(getAllUsers.count, allUserDatas.count)
@@ -227,13 +227,13 @@ extension UserManagerTests {
         
         // When
         try await sut.remove(userId: activeUserId)
-        let getAllUsers = try await sut.getAllUser()
+        let getAllUsers = try await sut.getAllUsers()
         
         // Then
         XCTAssertEqual(getAllUsers.count, allUserDatas.count)
         XCTAssertFalse(getAllUsers.contains(where: { $0.user.ID == activeUserId }))
-        XCTAssertEqual(sut.activeUserId, getAllUsers.first!.user.ID)
-        XCTAssertEqual(sut.currentActiveUser.value?.user.ID, getAllUsers.first!.user.ID)
+        XCTAssertEqual(sut.activeUserId, getAllUsers.first?.user.ID)
+        XCTAssertEqual(sut.currentActiveUser.value?.user.ID, getAllUsers.first?.user.ID)
     }
     
     func testSwitchActiveUser() async throws {
