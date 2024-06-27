@@ -21,10 +21,14 @@
 import Foundation
 import ProtonCoreLogin
 
-public struct UserProfile: Sendable {
+public struct UserProfile: Sendable, Identifiable {
     public let userdata: UserData
     public let isActive: Bool
     public let lastActiveTime: TimeInterval
+
+    public var id: String {
+        userdata.user.ID
+    }
 
     public init(userdata: UserData, isActive: Bool, lastActiveTime: TimeInterval) {
         self.userdata = userdata

@@ -80,7 +80,7 @@ public extension UserManager {
         }
 
         guard let activeUserData = userDatas.getActiveUser?.userdata else {
-            throw PassError.userManager(.activeUserDataNotFound)
+            throw PassError.userManager(.userDatasAvailableButNoActiveUserId)
         }
         if currentActiveUser.value?.user.ID != activeUserData.user.ID {
             currentActiveUser.send(activeUserData)
@@ -125,6 +125,9 @@ public extension UserManager {
         }
     }
 
+    /// Remove user profile from database and memory. If the user being removed if the current active user it sets
+    /// a new active user
+    /// - Parameter userId: The id of the user to remove
     func remove(userId: String) async throws {
         await assertDidSetUp()
 
