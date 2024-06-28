@@ -343,6 +343,7 @@
 		3585DE522B591035008AFD9F /* ImportExportWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585DE512B591035008AFD9F /* ImportExportWebView.swift */; };
 		3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586478129F825E0003487B1 /* TelemetryEventsSection.swift */; };
 		358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68252A68067B006E720F /* SetPINCodeViewModel.swift */; };
+		358FB6DD2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */; };
 		3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
 		35951DCE2B8CCC48006616BE /* GenerateAuthorizationCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */; };
 		35951DD02B8D226A006616BE /* ASCredentialRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35951DCF2B8D226A006616BE /* ASCredentialRequest+Extensions.swift */; };
@@ -863,6 +864,7 @@
 		3585DE512B591035008AFD9F /* ImportExportWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportWebView.swift; sourceTree = "<group>"; };
 		3586478129F825E0003487B1 /* TelemetryEventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventsSection.swift; sourceTree = "<group>"; };
 		358C68252A68067B006E720F /* SetPINCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeViewModel.swift; sourceTree = "<group>"; };
+		358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSwitcherSection.swift; sourceTree = "<group>"; };
 		3590A3382A9F9C2600622F45 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAuthorizationCredential.swift; sourceTree = "<group>"; };
 		35951DCF2B8D226A006616BE /* ASCredentialRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCredentialRequest+Extensions.swift"; sourceTree = "<group>"; };
@@ -1207,6 +1209,7 @@
 		353739DF29EAE84000A3255E /* QA Features */ = {
 			isa = PBXGroup;
 			children = (
+				358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */,
 				3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */,
 				356CE7722A2289C80043DC62 /* BannersSection.swift */,
 				353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */,
@@ -3299,6 +3302,7 @@
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				5B6639612B4D9A4F0029F8DA /* ItemDetailHistorySection.swift in Sources */,
 				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
+				358FB6DD2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
 				3559BA9D2A5B32550020E172 /* Browser+Extensions.swift in Sources */,
