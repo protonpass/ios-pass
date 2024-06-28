@@ -87,7 +87,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
@@ -102,10 +101,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var authenticated = false
-
-    var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
-    }
 
     weak var delegate: (any HomepageCoordinatorDelegate)?
     weak var homepageTabDelegate: (any HomepageTabDelegate)?
@@ -419,15 +414,7 @@ extension HomepageCoordinator {
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault, itemContent):
-                    if vault.vault.shared {
-                        if isSecureLinkActive {
-                            presentCreateSecureLinkView(for: itemContent, dismissal: .none)
-                        } else {
-                            presentManageShareVault(with: vault.vault, dismissal: .none)
-                        }
-                    } else {
-                        presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
-                    }
+                    presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
                 case let .customizeNewVault(vault, itemContent):
                     presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
                 case .vaultSelection:
@@ -481,7 +468,7 @@ extension HomepageCoordinator {
                 case let .changePassword(mode):
                     presentChangePassword(mode: mode)
                 case let .createSecureLink(item):
-                    presentCreateSecureLinkView(for: item, dismissal: .topMost)
+                    presentCreateSecureLinkView(for: item)
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
                 case .secureLinks:
@@ -712,11 +699,11 @@ extension HomepageCoordinator {
     }
 
     func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
-        let view = ShareOrCreateNewVaultView(vault: vault, itemContent: itemContent)
+        let viewModel = ShareOrCreateNewVaultViewModel(vault: vault, itemContent: itemContent)
+        let view = ShareOrCreateNewVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        let height: CGFloat = isSecureLinkActive ? 400 : 310
 
-        viewController.setDetentType(.custom(height),
+        viewController.setDetentType(.custom(viewModel.sheetHeight),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
@@ -828,7 +815,7 @@ extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentCreateSecureLinkView(for item: ItemContent, dismissal: SheetDismissal) {
+    func presentCreateSecureLinkView(for item: ItemContent) {
         let presentCreateSecureLinkView: () -> Void = { [weak self] in
             guard let self else { return }
             let viewModel = CreateSecureLinkViewModel(itemContent: item)
@@ -840,16 +827,7 @@ extension HomepageCoordinator {
             viewModel.sheetPresentation = viewController.sheetPresentationController
             present(viewController)
         }
-
-        switch dismissal {
-        case .none:
-            presentCreateSecureLinkView()
-        case .topMost:
-            dismissTopMostViewController(completion: presentCreateSecureLinkView)
-        case .all:
-            assertionFailure("Not applicable")
-            presentCreateSecureLinkView()
-        }
+        dismissTopMostViewController(completion: presentCreateSecureLinkView)
     }
 
     func handleFailedLocalAuthentication() {

@@ -99586,6 +99586,28 @@
         }
       }
     },
+    "The item's vault is currently shared with %lld users" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "The item's vault is currently shared with %lld user"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "The item's vault is currently shared with %lld users"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Theme" : {
       "localizations" : {
         "be" : {
