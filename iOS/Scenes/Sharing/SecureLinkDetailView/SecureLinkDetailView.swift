@@ -30,13 +30,22 @@ struct SecureLinkDetailView: View {
     var body: some View {
         let uiModel = viewModel.uiModel
         VStack(spacing: DesignConstant.sectionPadding) {
-            GeneralItemRow(thumbnailView: {
-                               ItemSquircleThumbnail(data: uiModel.itemContent.thumbnailData())
-                           },
-                           title: uiModel.itemContent.title,
-                           description: uiModel.itemContent.loginItem?.authIdentifier ?? "")
-                .frame(height: 70)
-                .padding(.top, 45)
+            HStack {
+                GeneralItemRow(thumbnailView: {
+                                   ItemSquircleThumbnail(data: uiModel.itemContent.thumbnailData())
+                               },
+                               title: uiModel.itemContent.title,
+                               description: uiModel.itemContent.loginItem?.authIdentifier ?? "")
+                if viewModel.uiModel.mode == .edit {
+                    CircleButton(icon: IconProvider.chevronRight,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "View details",
+                                 action: { viewModel.viewItemDetail() })
+                }
+            }
+            .frame(height: 70)
+            .padding(.top, 45)
 
             HStack {
                 infoCell(title: #localized("Expires in:"),
@@ -60,14 +69,14 @@ struct SecureLinkDetailView: View {
                 .background(PassColor.interactionNormMinor1.toColor)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            CapsuleTextButton(title: "Copy link",
+            CapsuleTextButton(title: #localized("Copy link"),
                               titleColor: PassColor.interactionNormMinor1,
                               backgroundColor: PassColor.interactionNormMajor2,
                               height: 48,
                               action: { viewModel.copyLink() })
 
             ShareLink(item: uiModel.url) {
-                CapsuleTextButton(title: "Share link",
+                CapsuleTextButton(title: #localized("Share link"),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   height: 48)
