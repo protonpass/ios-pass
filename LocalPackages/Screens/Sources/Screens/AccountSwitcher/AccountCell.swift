@@ -32,7 +32,8 @@ public protocol AccountCellDetail: Sendable {
 
 public struct AccountCell: View {
     let detail: any AccountCellDetail
-    let showSwitcher: Bool
+    let isActive: Bool
+    let showInactiveIcon: Bool
     let animationNamespace: Namespace.ID
 
     enum EffectID: String {
@@ -40,69 +41,65 @@ public struct AccountCell: View {
         case displayName
         case email
         case chevron
+
+        func fullId(itemId: String) -> String {
+            "\(rawValue)\(itemId)"
+        }
     }
 
     public init(detail: any AccountCellDetail,
-                showSwitcher: Bool,
+                isActive: Bool,
+                showInactiveIcon: Bool,
                 animationNamespace: Namespace.ID) {
         self.detail = detail
-        self.showSwitcher = showSwitcher
+        self.isActive = isActive
+        self.showInactiveIcon = showInactiveIcon
         self.animationNamespace = animationNamespace
     }
 
     public var body: some View {
         HStack {
             initials
-                .opacity(0)
-                .overlay {
-                    if !showSwitcher {
-                        initials
-                            .matchedGeometryEffect(id: EffectID.initials, in: animationNamespace)
-                    }
-                }
+                .matchedGeometryEffect(id: EffectID.initials.fullId(itemId: detail.id),
+                                       in: animationNamespace)
 
             VStack(alignment: .leading) {
                 displayName
-                    .opacity(0)
-                    .overlay {
-                        if !showSwitcher {
-                            displayName
-                                .matchedGeometryEffect(id: EffectID.displayName, in: animationNamespace)
-                        }
-                    }
+                    .matchedGeometryEffect(id: EffectID.displayName.fullId(itemId: detail.id),
+                                           in: animationNamespace)
 
                 email
-                    .opacity(0)
-                    .overlay {
-                        if !showSwitcher {
-                            email
-                                .matchedGeometryEffect(id: EffectID.email, in: animationNamespace)
-                        }
-                    }
+                    .matchedGeometryEffect(id: EffectID.email.fullId(itemId: detail.id),
+                                           in: animationNamespace)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            chevron
-                .opacity(0)
-                .overlay {
-                    if !showSwitcher {
-                        chevron
-                            .matchedGeometryEffect(id: EffectID.chevron, in: animationNamespace)
-                    }
-                }
+            Spacer()
+
+            SwiftUIImage(image: isActive ? IconProvider.checkmark : IconProvider.chevronDown,
+                         width: isActive ? 24 : 20,
+                         tintColor: isActive ? PassColor.interactionNormMajor2 : PassColor.textWeak)
+                .matchedGeometryEffect(id: AccountCell.EffectID.chevron.fullId(itemId: detail.id),
+                                       in: animationNamespace)
+                .hidden(!showIcon)
         }
-        .padding()
-        .roundedEditableSection()
-        .animation(.default, value: showSwitcher)
+        .contentShape(.rect)
+    }
+
+    var showIcon: Bool {
+        if isActive || showInactiveIcon {
+            return true
+        }
+
+        return false
     }
 }
 
-/// Reusable views for `AccountCell` & `AccountList`
-extension AccountCell {
-    static func viewForInitials(_ text: String) -> some View {
+private extension AccountCell {
+    var initials: some View {
         ZStack {
             PassColor.interactionNormMajor2.toColor
-            Text(verbatim: text)
+            Text(verbatim: detail.initials)
                 .foregroundStyle(PassColor.textInvert.toColor)
                 .fontWeight(.medium)
         }
@@ -110,34 +107,14 @@ extension AccountCell {
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
-    static func viewForDisplayName(_ text: String) -> some View {
-        Text(verbatim: text)
+    var displayName: some View {
+        Text(verbatim: detail.displayName)
             .foregroundStyle(PassColor.textNorm.toColor)
     }
 
-    static func viewForEmail(_ text: String) -> some View {
-        Text(verbatim: text)
+    var email: some View {
+        Text(verbatim: detail.email)
             .font(.caption)
             .foregroundStyle(PassColor.textWeak.toColor)
-    }
-}
-
-private extension AccountCell {
-    var initials: some View {
-        Self.viewForInitials(detail.initials)
-    }
-
-    var displayName: some View {
-        Self.viewForDisplayName(detail.displayName)
-    }
-
-    var email: some View {
-        Self.viewForEmail(detail.email)
-    }
-
-    var chevron: some View {
-        SwiftUIImage(image: IconProvider.chevronDown,
-                     width: 20,
-                     tintColor: PassColor.textWeak)
     }
 }
