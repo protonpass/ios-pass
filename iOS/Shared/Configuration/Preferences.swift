@@ -177,7 +177,8 @@ extension Preferences: PreferencesMigrator {
         let user = UserPreferences(spotlightEnabled: spotlightEnabled,
                                    spotlightSearchableContent: spotlightSearchableContent,
                                    spotlightSearchableVaults: spotlightSearchableVaults,
-                                   extraPasswordEnabled: false)
+                                   extraPasswordEnabled: false,
+                                   protonPasswordFailedVerificationCount: 0)
         return (app, shared, user)
     }
 }
