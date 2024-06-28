@@ -42,6 +42,14 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
     }
 
+    var sheetHeight: CGFloat {
+        if vault.vault.shared {
+            isSecureLinkActive ? 260 : 200
+        } else {
+            isSecureLinkActive ? 400 : 310
+        }
+    }
+
     init(vault: VaultListUiModel, itemContent: ItemContent) {
         self.vault = vault
         self.itemContent = itemContent
@@ -71,6 +79,10 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     func secureLinkSharing() {
         router.present(for: .createSecureLink(itemContent))
+    }
+
+    func manageAccess() {
+        router.present(for: .manageShareVault(vault.vault, .topMost))
     }
 
     private func complete(with vault: SharingVaultData) {
