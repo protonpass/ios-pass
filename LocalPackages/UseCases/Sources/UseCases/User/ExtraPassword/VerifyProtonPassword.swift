@@ -42,12 +42,21 @@ public extension VerifyProtonPasswordUseCase {
 
 public final class VerifyProtonPassword: Sendable, VerifyProtonPasswordUseCase {
     private let userDataProvider: any UserDataProvider
-    private let apiService: any APIService
+    private let doh: any DoHInterface
+    private let appVer: String
+
+    // Required by `AuthDelegate`
+    // swiftlint:disable:next identifier_name
+    public var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
+
+    private var apiService: (any APIService)?
 
     public init(userDataProvider: any UserDataProvider,
-                apiService: any APIService) {
+                doh: any DoHInterface,
+                appVer: String) {
         self.userDataProvider = userDataProvider
-        self.apiService = apiService
+        self.doh = doh
+        self.appVer = appVer
     }
 
     public func execute(_ password: String) async throws -> Bool {
@@ -55,7 +64,7 @@ public final class VerifyProtonPassword: Sendable, VerifyProtonPasswordUseCase {
             throw PassError.noUserData
         }
 
-        let authenticator = Authenticator(api: apiService)
+        let authenticator = Authenticator(api: makeApiService())
         return try await withCheckedThrowingContinuation { continuation in
             authenticator.authenticate(username: userData.credential.userName,
                                        password: password,
@@ -82,4 +91,57 @@ public final class VerifyProtonPassword: Sendable, VerifyProtonPasswordUseCase {
             }
         }
     }
+}
+
+private extension VerifyProtonPassword {
+    func makeApiService() -> any APIService {
+        if let apiService {
+            return apiService
+        }
+        // Create an unauth api service on the fly otherwise wrong verifications
+        // would expire the current session (log the user out)
+        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
+                                                                          challenge: .init())
+        let apiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                                     challengeParametersProvider: challengeProvider)
+        apiService.serviceDelegate = self
+        apiService.authDelegate = self
+        self.apiService = apiService
+        return apiService
+    }
+}
+
+// MARK: APIServiceDelegate
+
+extension VerifyProtonPassword: APIServiceDelegate {
+    public var appVersion: String { appVer }
+    public var userAgent: String? { UserAgent.default.ua }
+    public var locale: String { Locale.autoupdatingCurrent.identifier }
+    public var additionalHeaders: [String: String]? { nil }
+
+    public func onDohTroubleshot() {}
+
+    public func onUpdate(serverTime: Int64) {
+        CryptoGo.CryptoUpdateTime(serverTime)
+    }
+
+    public func isReachable() -> Bool {
+        true
+    }
+}
+
+// MARK: AuthDelegate
+
+/// Do nothing, just to make the `APIService` happy because it expectes an `AuthDelegate`
+extension VerifyProtonPassword: AuthDelegate {
+    public func authCredential(sessionUID: String) -> AuthCredential? { nil }
+    public func credential(sessionUID: String) -> Credential? { nil }
+    public func onUpdate(credential: Credential, sessionUID: String) {}
+    public func onSessionObtaining(credential: Credential) {}
+    public func onAdditionalCredentialsInfoObtained(sessionUID: String,
+                                                    password: String?,
+                                                    salt: String?,
+                                                    privateKey: String?) {}
+    public func onAuthenticatedSessionInvalidated(sessionUID: String) {}
+    public func onUnauthenticatedSessionInvalidated(sessionUID: String) {}
 }
