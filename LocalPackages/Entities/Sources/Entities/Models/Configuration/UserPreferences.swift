@@ -32,16 +32,22 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// Spotlight indexable vaults
     public var spotlightSearchableVaults: SpotlightSearchableVaults
 
+    /// Whether the user has extra password enabled or not
     public var extraPasswordEnabled: Bool
+
+    /// Keep track of failed Proton password verification attempts (to enable extra password)
+    public var protonPasswordFailedVerificationCount: Int
 
     public init(spotlightEnabled: Bool,
                 spotlightSearchableContent: SpotlightSearchableContent,
                 spotlightSearchableVaults: SpotlightSearchableVaults,
-                extraPasswordEnabled: Bool) {
+                extraPasswordEnabled: Bool,
+                protonPasswordFailedVerificationCount: Int) {
         self.spotlightEnabled = spotlightEnabled
         self.spotlightSearchableContent = spotlightSearchableContent
         self.spotlightSearchableVaults = spotlightSearchableVaults
         self.extraPasswordEnabled = extraPasswordEnabled
+        self.protonPasswordFailedVerificationCount = protonPasswordFailedVerificationCount
     }
 }
 
@@ -51,6 +57,7 @@ private extension UserPreferences {
         static let spotlightSearchableContent: SpotlightSearchableContent = .title
         static let spotlightSearchableVaults: SpotlightSearchableVaults = .all
         static let extraPasswordEnabled = false
+        static let protonPasswordFailedVerificationCount = 0
     }
 
     enum CodingKeys: String, CodingKey {
@@ -58,6 +65,7 @@ private extension UserPreferences {
         case spotlightSearchableContent
         case spotlightSearchableVaults
         case extraPasswordEnabled
+        case protonPasswordFailedVerificationCount
     }
 }
 
@@ -71,10 +79,14 @@ public extension UserPreferences {
                                                                       forKey: .spotlightSearchableVaults)
         let extraPasswordEnabled = try container.decodeIfPresent(Bool.self,
                                                                  forKey: .extraPasswordEnabled)
+        let protonPasswordFailedVerificationCount =
+            try container.decodeIfPresent(Int.self, forKey: .protonPasswordFailedVerificationCount)
         self.init(spotlightEnabled: spotlightEnabled ?? Default.spotlightEnabled,
                   spotlightSearchableContent: spotlightSearchableContent ?? Default.spotlightSearchableContent,
                   spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults,
-                  extraPasswordEnabled: extraPasswordEnabled ?? Default.extraPasswordEnabled)
+                  extraPasswordEnabled: extraPasswordEnabled ?? Default.extraPasswordEnabled,
+                  protonPasswordFailedVerificationCount: protonPasswordFailedVerificationCount
+                      ?? Default.protonPasswordFailedVerificationCount)
     }
 }
 
@@ -83,7 +95,8 @@ extension UserPreferences: Defaultable {
         .init(spotlightEnabled: Default.spotlightEnabled,
               spotlightSearchableContent: Default.spotlightSearchableContent,
               spotlightSearchableVaults: Default.spotlightSearchableVaults,
-              extraPasswordEnabled: Default.extraPasswordEnabled)
+              extraPasswordEnabled: Default.extraPasswordEnabled,
+              protonPasswordFailedVerificationCount: Default.protonPasswordFailedVerificationCount)
     }
 }
 
