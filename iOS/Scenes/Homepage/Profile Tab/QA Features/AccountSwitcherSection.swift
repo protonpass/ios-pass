@@ -55,8 +55,12 @@ private struct AccountSwitcherView: View {
             VStack {
                 Text(verbatim: "Account switcher")
                 AccountCell(detail: eric,
-                            showSwitcher: showSwitcher,
+                            isActive: false,
+                            showInactiveIcon: true,
                             animationNamespace: namespace)
+                    .padding()
+                    .roundedEditableSection()
+                    .animation(.default, value: showSwitcher)
                     .onTapGesture {
                         withAnimation {
                             showSwitcher.toggle()
