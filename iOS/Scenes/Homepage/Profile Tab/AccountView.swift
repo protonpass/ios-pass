@@ -218,7 +218,9 @@ struct AccountView: View {
                    Button(role: .destructive,
                           action: { viewModel.disableExtraPassword() },
                           label: { Text("Remove extra password") })
-                   Button(role: .cancel, label: { Text("Cancel") })
+                   Button(role: .cancel,
+                          action: { viewModel.extraPassword = "" },
+                          label: { Text("Cancel") })
                })
         .alert("You will be signed out",
                isPresented: $isShowingSignOutConfirmation,
