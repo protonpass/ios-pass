@@ -39391,6 +39391,16 @@
         }
       }
     },
+    "Enable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable"
+          }
+        }
+      }
+    },
     "Enable AutoFill" : {
       "localizations" : {
         "be" : {
@@ -47244,6 +47254,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo mật khẩu"
+          }
+        }
+      }
+    },
+    "Generate secure link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate secure link"
           }
         }
       }
@@ -91942,6 +91962,16 @@
         }
       }
     },
+    "Share link" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share link"
+          }
+        }
+      }
+    },
     "Share Secure Link" : {
       "localizations" : {
         "be" : {
@@ -112286,6 +112316,16 @@
         }
       }
     },
+    "View details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View details"
+          }
+        }
+      }
+    },
     "View history" : {
       "localizations" : {
         "be" : {
@@ -112442,6 +112482,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xem lịch sử"
+          }
+        }
+      }
+    },
+    "View item history" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View item history"
           }
         }
       }
