@@ -62,47 +62,13 @@ struct AccountList: View {
 private extension AccountList {
     func row(for detail: any AccountCellDetail, isActive: Bool) -> some View {
         HStack {
-            HStack {
-                AccountCell.viewForInitials(detail.initials)
-                    .if(isActive) { view in
-                        view
-                            .matchedGeometryEffect(id: AccountCell.EffectID.initials,
-                                                   in: animationNamespace)
-                    }
-
-                VStack(alignment: .leading) {
-                    AccountCell.viewForDisplayName(detail.displayName)
-                        .if(isActive) { view in
-                            view
-                                .matchedGeometryEffect(id: AccountCell.EffectID.displayName,
-                                                       in: animationNamespace)
-                        }
-
-                    AccountCell.viewForEmail(detail.email)
-                        .if(isActive) { view in
-                            view
-                                .matchedGeometryEffect(id: AccountCell.EffectID.email,
-                                                       in: animationNamespace)
-                        }
+            AccountCell(detail: detail,
+                        isActive: isActive,
+                        showInactiveIcon: isActive,
+                        animationNamespace: animationNamespace)
+                .onTapGesture {
+                    onSelect(detail.id)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Spacer()
-
-                if isActive {
-                    icon(with: IconProvider.checkmark,
-                         foregroundColor: PassColor.interactionNormMajor2)
-                        .if(isActive) { view in
-                            view
-                                .matchedGeometryEffect(id: AccountCell.EffectID.chevron,
-                                                       in: animationNamespace)
-                        }
-                }
-            }
-            .contentShape(.rect)
-            .onTapGesture {
-                onSelect(detail.id)
-            }
 
             Menu(content: {
                 Button(action: { onSignOut(detail.id) },
