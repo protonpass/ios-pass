@@ -115,7 +115,7 @@ private extension CreateSecureLinkView {
                 Spacer()
             }
 
-            CapsuleTextButton(title: "Generate secure link",
+            CapsuleTextButton(title: #localized("Generate secure link"),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNormMajor1,
                               height: 48,
