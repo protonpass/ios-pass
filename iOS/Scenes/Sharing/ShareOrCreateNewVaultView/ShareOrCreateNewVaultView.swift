@@ -26,11 +26,7 @@ import SwiftUI
 
 @MainActor
 struct ShareOrCreateNewVaultView: View {
-    private let viewModel: ShareOrCreateNewVaultViewModel
-
-    init(vault: VaultListUiModel, itemContent: ItemContent) {
-        viewModel = .init(vault: vault, itemContent: itemContent)
-    }
+    let viewModel: ShareOrCreateNewVaultViewModel
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -42,23 +38,27 @@ struct ShareOrCreateNewVaultView: View {
 
             if viewModel.isSecureLinkActive, !viewModel.itemContent.isAlias {
                 secureLink
-                    .padding(.top, 12)
-
-                PassDivider()
-                    .padding(.vertical, 24)
             }
 
-            currentVault
+            if viewModel.vault.vault.shared {
+                manageAccessButton
+                    .padding(.vertical)
+            } else {
+                PassDivider()
+                    .padding(.vertical)
 
-            createNewVaultButton
-                .padding(.vertical, 12)
+                currentVault
 
-            Text("The item will be moved to the new vault")
-                .frame(maxWidth: .infinity, alignment: .center)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .font(.callout)
-                .fixedSize(horizontal: false, vertical: true)
+                createNewVaultButton
+                    .padding(.vertical, 12)
+
+                Text("The item will be moved to the new vault")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .font(.callout)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             Spacer()
         }
@@ -104,6 +104,33 @@ private extension ShareOrCreateNewVaultView {
         }
         .padding()
         .roundedEditableSection()
+    }
+}
+
+private extension ShareOrCreateNewVaultView {
+    var manageAccessButton: some View {
+        HStack {
+            SquircleThumbnail(data: .icon(IconProvider.users),
+                              tintColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1)
+            VStack(alignment: .leading) {
+                Text(viewModel.vault.vault.canEdit ? "Manage access" : "View members")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("The item's vault is currently shared with \(viewModel.vault.vault.members) users")
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .lineLimit(2)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .contentShape(.rect)
+        .padding()
+        .roundedEditableSection()
+        .onTapGesture { viewModel.manageAccess() }
     }
 }
 
