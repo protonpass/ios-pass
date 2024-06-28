@@ -53,13 +53,11 @@ struct ItemDetailToolbar: ToolbarContent {
                                        isDisabled: !viewModel.isAllowedToEdit,
                                        action: { viewModel.edit() })
 
-                    if viewModel.isAllowedToShare {
-                        CircleButton(icon: IconProvider.usersPlus,
-                                     iconColor: itemContentType.normMajor2Color,
-                                     backgroundColor: itemContentType.normMinor1Color,
-                                     accessibilityLabel: "Share",
-                                     action: { viewModel.share() })
-                    }
+                    CircleButton(icon: IconProvider.usersPlus,
+                                 iconColor: itemContentType.normMajor2Color,
+                                 backgroundColor: itemContentType.normMinor1Color,
+                                 accessibilityLabel: "Share",
+                                 action: { viewModel.share() })
 
                     Menu(content: {
                         Label("Move to another vault", uiImage: IconProvider.folderArrowIn)
