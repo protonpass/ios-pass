@@ -36,10 +36,16 @@ extension HomepageCoordinator {
 
 private extension HomepageCoordinator {
     func presentEnableExtraPasswordView() {
-        let view = EnableExtraPasswordView { [weak self] in
+        let onFailure: () -> Void = { [weak self] in
+            guard let self else { return }
+            handleFailedLocalAuthentication()
+        }
+        let onSuccess: () -> Void = { [weak self] in
             guard let self else { return }
             bannerManager.displayBottomInfoMessage(#localized("Extra password set"))
         }
+        let view = EnableExtraPasswordView(onProtonPasswordVerificationFailure: onFailure,
+                                           onExtraPasswordEnabled: onSuccess)
         present(view)
     }
 }

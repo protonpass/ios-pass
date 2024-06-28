@@ -56,10 +56,12 @@ final class EnableExtraPasswordViewModel: ObservableObject {
     @Published var showWrongProtonPasswordAlert = false
     @Published var showProtonPasswordConfirmationAlert = true
     @Published var extraPasswordEnabled = false
+    @Published var failedToVerifyProtonPassword = false
     @Published var protonPassword = ""
     @Published var extraPassword = ""
 
     private var definedExtraPassword = ""
+    private var protonPasswordFailedVerificationCount = 0
 
     private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
     private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
@@ -79,7 +81,12 @@ extension EnableExtraPasswordViewModel {
                 if try await doVerifyProtonPassword(protonPassword) {
                     canSetExtraPassword = true
                 } else {
-                    showWrongProtonPasswordAlert = true
+                    protonPasswordFailedVerificationCount += 1
+                    if protonPasswordFailedVerificationCount < 5 {
+                        showWrongProtonPasswordAlert = true
+                    } else {
+                        failedToVerifyProtonPassword = true
+                    }
                 }
             } catch {
                 protonPasswordVerificationError = error

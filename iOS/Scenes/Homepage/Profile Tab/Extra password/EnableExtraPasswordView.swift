@@ -27,6 +27,7 @@ struct EnableExtraPasswordView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EnableExtraPasswordViewModel()
     @FocusState private var focused
+    let onProtonPasswordVerificationFailure: () -> Void
     let onExtraPasswordEnabled: () -> Void
 
     var body: some View {
@@ -67,6 +68,10 @@ struct EnableExtraPasswordView: View {
         .onChange(of: viewModel.extraPasswordEnabled) { _ in
             dismiss()
             onExtraPasswordEnabled()
+        }
+        .onChange(of: viewModel.failedToVerifyProtonPassword) { _ in
+            dismiss()
+            onProtonPasswordVerificationFailure()
         }
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
