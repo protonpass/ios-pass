@@ -62,7 +62,10 @@ struct AccountList: View {
 private extension AccountList {
     func row(for detail: any AccountCellDetail, isActive: Bool) -> some View {
         HStack {
-            AccountCell(detail: detail, isActive: isActive, animationNamespace: animationNamespace)
+            AccountCell(detail: detail,
+                        isActive: isActive,
+                        showInactiveIcon: isActive,
+                        animationNamespace: animationNamespace)
                 .onTapGesture {
                     onSelect(detail.id)
                 }
