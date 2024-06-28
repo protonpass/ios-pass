@@ -63,19 +63,11 @@ class BaseItemDetailViewModel: ObservableObject {
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
-
-    var isAllowedToShare: Bool {
-        guard let vault else {
-            return false
-        }
-        return getUserShareStatus(for: vault.vault) != .cantShare
-    }
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -132,11 +124,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func share() {
         guard let vault else { return }
-        if getUserShareStatus(for: vault.vault) == .canShare {
-            router.present(for: .shareVaultFromItemDetail(vault, itemContent))
-        } else {
-            router.present(for: .upselling(.default))
-        }
+        router.present(for: .shareVaultFromItemDetail(vault, itemContent))
     }
 
     func refresh() {
