@@ -71,15 +71,16 @@ final class AppCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
-    private var corruptedSessionStream: AnyCancellable?
     private var featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private var pushNotificationService = resolve(\ServiceContainer.pushNotificationService)
-    private var dataMigrationManager = resolve(\SharedServiceContainer.dataMigrationManager)
 
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
+    @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+
+    private var corruptedSessionStream: AnyCancellable?
 
     private var theme: Theme {
         preferencesManager.sharedPreferences.unwrapped().theme
@@ -180,7 +181,7 @@ final class AppCoordinator {
                 // Should setup all tools
                 try await userManager.setUp()
                 try await preferencesManager.setUp()
-                try await migration()
+                try await applyAppMigration()
                 window.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 bindAppState()
                 start()
@@ -279,15 +280,6 @@ private extension AppCoordinator {
             // swiftlint:disable:next todo
             // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()
-        }
-    }
-
-    func migration() async throws {
-        let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)
-
-        if let userData = (appData as? AppData)?.getUserData(), missingMigrations.contains(.userAppData) {
-            try await userManager.addAndMarkAsActive(userData: userData)
-            await dataMigrationManager.addMigration(.userAppData)
         }
     }
 }
