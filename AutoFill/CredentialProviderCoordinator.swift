@@ -54,9 +54,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private var dataMigrationManager = resolve(\SharedServiceContainer.dataMigrationManager)
-    private let appData = resolve(\SharedDataContainer.appData)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -70,6 +67,8 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -119,22 +118,13 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             do {
                 try await preferencesManager.setUp()
                 try await userManager.setUp()
-                try await migration()
+                try await applyAppMigration()
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
                 rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)
             } catch {
                 handle(error: error)
             }
-        }
-    }
-
-    func migration() async throws {
-        let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)
-
-        if let userData = (appData as? AppData)?.getUserData(), missingMigrations.contains(.userAppData) {
-            try await userManager.addAndMarkAsActive(userData: userData)
-            await dataMigrationManager.addMigration(.userAppData)
         }
     }
 }
