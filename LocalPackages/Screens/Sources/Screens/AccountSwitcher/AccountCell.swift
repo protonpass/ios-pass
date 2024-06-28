@@ -33,6 +33,7 @@ public protocol AccountCellDetail: Sendable {
 public struct AccountCell: View {
     let detail: any AccountCellDetail
     let isActive: Bool
+    let showInactiveIcon: Bool
     let animationNamespace: Namespace.ID
 
     enum EffectID: String {
@@ -48,9 +49,11 @@ public struct AccountCell: View {
 
     public init(detail: any AccountCellDetail,
                 isActive: Bool,
+                showInactiveIcon: Bool,
                 animationNamespace: Namespace.ID) {
         self.detail = detail
         self.isActive = isActive
+        self.showInactiveIcon = showInactiveIcon
         self.animationNamespace = animationNamespace
     }
 
@@ -73,13 +76,22 @@ public struct AccountCell: View {
 
             Spacer()
 
-            icon(with: isActive ? IconProvider.checkmark : IconProvider.chevronDown,
-                 width: isActive ? 24 : 20,
-                 foregroundColor: isActive ? PassColor.interactionNormMajor2 : PassColor.textWeak)
+            SwiftUIImage(image: isActive ? IconProvider.checkmark : IconProvider.chevronDown,
+                         width: isActive ? 24 : 20,
+                         tintColor: isActive ? PassColor.interactionNormMajor2 : PassColor.textWeak)
                 .matchedGeometryEffect(id: AccountCell.EffectID.chevron.fullId(itemId: detail.id),
                                        in: animationNamespace)
+                .hidden(!showIcon)
         }
         .contentShape(.rect)
+    }
+
+    var showIcon: Bool {
+        if isActive || showInactiveIcon {
+            return true
+        }
+
+        return false
     }
 }
 
@@ -104,9 +116,5 @@ private extension AccountCell {
         Text(verbatim: detail.email)
             .font(.caption)
             .foregroundStyle(PassColor.textWeak.toColor)
-    }
-
-    func icon(with uiImage: UIImage, width: CGFloat = 24, foregroundColor: UIColor) -> some View {
-        SwiftUIImage(image: uiImage, width: width, tintColor: foregroundColor)
     }
 }
