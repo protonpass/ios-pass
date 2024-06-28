@@ -56,6 +56,7 @@ private struct AccountSwitcherView: View {
                 Text(verbatim: "Account switcher")
                 AccountCell(detail: eric,
                             isActive: false,
+                            showInactiveIcon: true,
                             animationNamespace: namespace)
                     .padding()
                     .roundedEditableSection()
