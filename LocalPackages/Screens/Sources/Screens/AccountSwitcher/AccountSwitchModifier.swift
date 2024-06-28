@@ -51,33 +51,37 @@ public struct AccountSwitchModifier: ViewModifier {
 
     public func body(content: Content) -> some View {
         content
-            .animation(.default, value: showSwitcher)
-            .if(showSwitcher) { view in
-                view
-                    .overlay {
-                        ZStack {
-                            Color.black.opacity(0.5)
-                                .ignoresSafeArea()
-                                .onTapGesture {
-                                    withAnimation {
-                                        showSwitcher.toggle()
-                                    }
-                                }
-
-                            VStack {
-                                AccountList(details: details,
-                                            activeId: activeId,
-                                            animationNamespace: animationNamespace,
-                                            onSelect: onSelect,
-                                            onSignOut: onSignOut,
-                                            onDelete: onDelete,
-                                            onAddAccount: onAddAccount)
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
+            .overlay {
+                overlayContent
             }
+            .animation(.default, value: showSwitcher)
+    }
+
+    @ViewBuilder
+    var overlayContent: some View {
+        if showSwitcher {
+            ZStack {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            showSwitcher.toggle()
+                        }
+                    }
+
+                VStack {
+                    AccountList(details: details,
+                                activeId: activeId,
+                                animationNamespace: animationNamespace,
+                                onSelect: onSelect,
+                                onSignOut: onSignOut,
+                                onDelete: onDelete,
+                                onAddAccount: onAddAccount)
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
 }
