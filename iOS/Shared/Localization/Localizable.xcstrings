@@ -9928,7 +9928,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Актыўна"
+            "value" : "Актыўны"
           }
         },
         "cs" : {
@@ -21242,6 +21242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Intrång upptäckta"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verilerin ele geçirilmesi olayı bulundu"
           }
         }
       }
@@ -47810,6 +47816,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generera säker länk"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Güvenli bağlantı oluştur"
           }
         }
       }
@@ -91589,6 +91601,12 @@
             "value" : "Imposta la password aggiuntiva per Proton Pass"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დააყენეთ დამატებითი პაროლი Proton Pass-სთვის"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92780,6 +92798,12 @@
             "value" : "Partager le lien"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bagikan tautan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92802,6 +92826,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dela länk"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantıyı paylaş"
           }
         }
       }
@@ -94654,6 +94684,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa anpassat fält"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel alanı görüntüle"
           }
         }
       }
@@ -100607,6 +100643,24 @@
               }
             }
           }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bu ögenin bulunduğu kasa %lld adlı kullanıcı ile paylaşılmakta"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bu ögenin bulunduğu kasa %lld adlı kullanıcılar ile paylaşılmakta"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -106131,6 +106185,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "高度なセキュリティ機能と詳細なログのロックを解除して、オンライン プレゼンスを保護します。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "განბლოკეთ დამატებითი უსაფრთხოების ფუნქციები და დეტალური ჟურნალი, რომ დაიცვათ თქვენი კვალი ინტერნეტში."
           }
         },
         "ko" : {
@@ -113407,6 +113467,12 @@
             "state" : "translated",
             "value" : "Visa detaljer"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayrıntıları görüntüle"
+          }
         }
       }
     },
@@ -113636,6 +113702,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa objekthistorik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge geçmişini görüntüle"
           }
         }
       }
