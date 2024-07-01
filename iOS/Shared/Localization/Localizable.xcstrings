@@ -43099,6 +43099,12 @@
             "value" : "Scaduto %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვადაგასულია %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43115,6 +43121,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Löpte ut %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçerlilik süresi dolmuş %@"
           }
         }
       }
@@ -43176,6 +43188,12 @@
             "value" : "Scade %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვადა იწურება %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43186,6 +43204,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Löpte ut om %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçerlilik süresi sonu %@"
           }
         }
       }
@@ -47768,6 +47792,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Genera un link sicuro"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generer sikker kobling"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerar link seguro"
           }
         },
         "sv" : {
@@ -89264,6 +89300,12 @@
             "state" : "translated",
             "value" : "Güvenlik anahtarları"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ключі безпеки"
+          }
         }
       }
     },
@@ -91523,6 +91565,12 @@
             "value" : "Configure una contraseña adicional para Proton Pass"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aseta lisäsalasana Proton Passille"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91563,6 +91611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ställ in extra lösenord för Proton Pass"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass ek parolasını ayarlayın"
           }
         }
       }
@@ -92730,6 +92784,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Condividi il link"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del kobling"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhar link"
           }
         },
         "sv" : {
@@ -100501,6 +100567,42 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "L'elemento della cassaforte è attualmente condiviso con %lld utenti"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elementets hvelv er for øyeblikket delt med %lld bruker"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elementets hvelv er for øyeblikket delt med %lld brukere"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Objektets valv delas för närvarande med %lld användare"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Objektets valv delas för närvarande med %lld användare"
                 }
               }
             }
@@ -113288,6 +113390,18 @@
             "value" : "Visualizza i dettagli"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis detaljer"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver detalhes"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113504,6 +113618,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza la cronologia dell'elemento"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis elementhistorikk"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizar histórico do item"
           }
         },
         "sv" : {
