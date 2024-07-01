@@ -27,6 +27,7 @@ struct EnableExtraPasswordView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EnableExtraPasswordViewModel()
     @FocusState private var focused
+    @State private var showPassword = false
     let onProtonPasswordVerificationFailure: () -> Void
     let onExtraPasswordEnabled: () -> Void
 
@@ -35,10 +36,26 @@ struct EnableExtraPasswordView: View {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
             VStack(alignment: .leading) {
-                SecureField("Extra password",
-                            text: $viewModel.extraPassword,
-                            prompt: Text(viewModel.state.placeholder))
-                    .focused($focused)
+                HStack {
+                    if showPassword {
+                        TextField("Extra password",
+                                  text: $viewModel.extraPassword,
+                                  prompt: Text(viewModel.state.placeholder))
+                            .focused($focused)
+                    } else {
+                        SecureField("Extra password",
+                                    text: $viewModel.extraPassword,
+                                    prompt: Text(viewModel.state.placeholder))
+                            .focused($focused)
+                    }
+
+                    SwiftUIImage(image: showPassword ? IconProvider.eyeSlash : IconProvider.eye,
+                                 width: 24,
+                                 tintColor: viewModel.extraPassword.isEmpty ?
+                                     PassColor.textWeak : PassColor.interactionNormMajor1)
+                        .buttonEmbeded { showPassword.toggle() }
+                }
+                .animation(.default, value: showPassword)
 
                 PassDivider()
                     .padding(.vertical)
