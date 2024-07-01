@@ -138,6 +138,7 @@ public extension LocalItemDatasource {
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "aliasEmail = %@", email)
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        assert(itemEntities.count <= 1, "Could not have more than 1 matched alias item")
         return try itemEntities.map { try $0.toEncryptedItem() }.first
     }
 
