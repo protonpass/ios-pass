@@ -67,8 +67,12 @@ final class ItemRepositoryTests: XCTestCase {
 extension ItemRepositoryTests {
     
     func testGetAllPinnedItem() async throws {
-        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(item:.random(pinned: true)))
-        
+    let currentUserId = "test"
+
+        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(userId: currentUserId,
+                                                                                                                               item:.random(pinned: true)))
+        userManager.stubbedGetActiveUserIdResult = currentUserId
+
         sut = ItemRepository(symmetricKeyProvider: symmetricKeyProvider, 
                              userManager: userManager,
                              localDatasource: localDatasource,
@@ -76,6 +80,7 @@ extension ItemRepositoryTests {
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)
+        
         let expectation = expectation(description: "Init of ItemRepository")
         
         let pinnedItems = try await sut.getAllPinnedItems()

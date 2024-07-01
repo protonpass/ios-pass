@@ -97,6 +97,8 @@ public extension ShareKeyRepository {
     }
 
     func deleteAllKeysLocally() async throws {
+        // swiftlint:disable:next todo
+        // TODO: Add user ref in keys
         logger.trace("Deleting all local share keys")
         try await localDatasource.removeAllKeys()
         logger.trace("Deleted all local share keys")
