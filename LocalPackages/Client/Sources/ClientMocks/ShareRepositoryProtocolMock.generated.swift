@@ -64,19 +64,19 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         closureGetRemoteShares()
         return stubbedGetRemoteSharesResult
     }
-    // MARK: - deleteAllSharesLocally
-    public var deleteAllSharesLocallyThrowableError3: Error?
-    public var closureDeleteAllSharesLocally: () -> () = {}
-    public var invokedDeleteAllSharesLocallyfunction = false
-    public var invokedDeleteAllSharesLocallyCount = 0
+    // MARK: - deleteAllCurrentUserSharesLocally
+    public var deleteAllCurrentUserSharesLocallyThrowableError3: Error?
+    public var closureDeleteAllCurrentUserSharesLocally: () -> () = {}
+    public var invokedDeleteAllCurrentUserSharesLocallyfunction = false
+    public var invokedDeleteAllCurrentUserSharesLocallyCount = 0
 
-    public func deleteAllSharesLocally() async throws {
-        invokedDeleteAllSharesLocallyfunction = true
-        invokedDeleteAllSharesLocallyCount += 1
-        if let error = deleteAllSharesLocallyThrowableError3 {
+    public func deleteAllCurrentUserSharesLocally() async throws {
+        invokedDeleteAllCurrentUserSharesLocallyfunction = true
+        invokedDeleteAllCurrentUserSharesLocallyCount += 1
+        if let error = deleteAllCurrentUserSharesLocallyThrowableError3 {
             throw error
         }
-        closureDeleteAllSharesLocally()
+        closureDeleteAllCurrentUserSharesLocally()
     }
     // MARK: - deleteShareLocally
     public var deleteShareLocallyShareIdThrowableError4: Error?

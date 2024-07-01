@@ -391,7 +391,8 @@ extension SharedUseCasesContainer {
     var applyAppMigration: Factory<any ApplyAppMigrationUseCase> {
         self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
                                  userManager: self.userManager,
-                                 appData: SharedDataContainer.shared.appData()) }
+                                 appData: SharedDataContainer.shared.appData(),
+                                 itemRepository: self.itemRepository) }
     }
 }
 
