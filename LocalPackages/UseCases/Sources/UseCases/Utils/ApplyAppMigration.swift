@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 
 public protocol ApplyAppMigrationUseCase: Sendable {
     func execute() async throws
@@ -37,27 +38,38 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     private let userManager: any UserManagerProtocol
     private let appData: any AppDataProtocol
     private let itemRepository: any ItemRepositoryProtocol
+    private let logger: Logger
 
     public init(dataMigrationManager: any DataMigrationManagerProtocol,
                 userManager: any UserManagerProtocol,
                 appData: any AppDataProtocol,
-                itemRepository: any ItemRepositoryProtocol) {
+                itemRepository: any ItemRepositoryProtocol,
+                logManager: any LogManagerProtocol) {
         self.dataMigrationManager = dataMigrationManager
         self.userManager = userManager
         self.appData = appData
         self.itemRepository = itemRepository
+        logger = .init(manager: logManager)
     }
 
     public func execute() async throws {
+        logger.trace("Check if any migration should be applied to account")
+
         let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)
+       
+        logger.trace("The following migration are missing: \(missingMigrations)")
 
         if let userData = appData.getUserData(), missingMigrations.contains(.userAppData) {
+            logger.trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
             try await userManager.addAndMarkAsActive(userData: userData)
+            logger.trace("User data migration done for user id : \(userData.user.ID)")
             await dataMigrationManager.addMigration(.userAppData)
         }
 
         if missingMigrations.contains(.userIdInItems) {
+            logger.trace("Starting adding user id to local items")
             try await itemRepository.updateLocalItemsWithUserId()
+            logger.trace("Finished adding user id to local items")
             await dataMigrationManager.addMigration(.userIdInItems)
         }
     }
