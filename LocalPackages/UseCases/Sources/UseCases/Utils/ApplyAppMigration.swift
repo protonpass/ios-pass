@@ -56,11 +56,12 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
         logger.trace("Check if any migration should be applied to account")
 
         let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)
-       
+
         logger.trace("The following migration are missing: \(missingMigrations)")
 
         if let userData = appData.getUserData(), missingMigrations.contains(.userAppData) {
-            logger.trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
+            logger
+                .trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
             try await userManager.addAndMarkAsActive(userData: userData)
             logger.trace("User data migration done for user id : \(userData.user.ID)")
             await dataMigrationManager.addMigration(.userAppData)
