@@ -136,7 +136,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
 
-    /// This function should be removed in the future as this is used to update all items to take into account multiple users from a single user state
+    /// This function should be removed in the future as this is used to update all items to take into account
+    /// multiple users from a single user state
     /// It could be removed in 1 years from now around July 25
     func updateLocalItemsWithUserId() async throws
 }
@@ -260,9 +261,11 @@ public extension ItemRepository {
 
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
-        
+
         for (index, itemRevision) in itemRevisions.enumerated() {
-            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId, userId: userId)
+            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
+                                                              shareId: shareId,
+                                                              userId: userId)
             eventStream?.send(.decryptItems(.init(shareId: shareId,
                                                   total: itemRevisions.count,
                                                   decrypted: index + 1)))
@@ -293,7 +296,9 @@ public extension ItemRepository {
         let createdItemRevision = try await remoteDatasource.createItem(shareId: shareId,
                                                                         request: request)
         logger.trace("Saving newly created item \(createdItemRevision.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId, userId: userId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision,
+                                                           shareId: shareId,
+                                                           userId: userId)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(createdItemRevision.itemID) to local database")
 
@@ -312,7 +317,9 @@ public extension ItemRepository {
             try await remoteDatasource.createAlias(shareId: shareId,
                                                    request: createAliasRequest)
         logger.trace("Saving newly created alias \(createdItemRevision.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId, userId: userId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision,
+                                                           shareId: shareId,
+                                                           userId: userId)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
         return encryptedItem
@@ -333,8 +340,12 @@ public extension ItemRepository {
                                                                           request: request)
         logger.trace("Saving newly created alias & other item to local database")
         let userId = try await userManager.getActiveUserId()
-            let encryptedAlias = try await symmetricallyEncrypt(itemRevision: bundle.alias, shareId: shareId, userId: userId)
-            let encryptedOtherItem = try await symmetricallyEncrypt(itemRevision: bundle.item, shareId: shareId, userId: userId)
+        let encryptedAlias = try await symmetricallyEncrypt(itemRevision: bundle.alias,
+                                                            shareId: shareId,
+                                                            userId: userId)
+        let encryptedOtherItem = try await symmetricallyEncrypt(itemRevision: bundle.item,
+                                                                shareId: shareId,
+                                                                userId: userId)
         try await localDatasource.upsertItems([encryptedAlias, encryptedOtherItem])
         logger.trace("Saved alias & other item to local database")
         return (encryptedAlias, encryptedOtherItem)
@@ -477,7 +488,9 @@ public extension ItemRepository {
                                                   request: request)
         logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
         let userId = try await userManager.getActiveUserId()
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId, userId: userId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision,
+                                                           shareId: shareId,
+                                                           userId: userId)
         try await localDatasource.upsertItems([encryptedItem])
         itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
@@ -528,7 +541,9 @@ public extension ItemRepository {
                                                       fromShareId: item.shareId,
                                                       request: request)
         let userId = try await userManager.getActiveUserId()
-        let newEncryptedItem = try await symmetricallyEncrypt(itemRevision: newItem, shareId: toShareId, userId: userId)
+        let newEncryptedItem = try await symmetricallyEncrypt(itemRevision: newItem,
+                                                              shareId: toShareId,
+                                                              userId: userId)
         try await localDatasource.deleteItems([oldEncryptedItem])
         try await localDatasource.upsertItems([newEncryptedItem])
         try await refreshPinnedItemDataStream()
@@ -586,7 +601,9 @@ public extension ItemRepository {
         let pinItemRevision = try await remoteDatasource.pin(item: item)
         logger.trace("Updating item \(pinItemRevision.itemID) to local database")
         let userId = try await userManager.getActiveUserId()
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision, shareId: item.shareId, userId: userId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision,
+                                                           shareId: item.shareId,
+                                                           userId: userId)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(pinItemRevision.itemID) to local database")
         try await refreshPinnedItemDataStream()
@@ -600,8 +617,7 @@ public extension ItemRepository {
         let userId = try await userManager.getActiveUserId()
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision,
                                                            shareId: item.shareId,
-                                                           userId: userId
-        )
+                                                           userId: userId)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
         try await refreshPinnedItemDataStream()
@@ -620,7 +636,7 @@ public extension ItemRepository {
                                                                               request: request)
         logger.trace("Updating item \(itemWithUpdatedFlags.itemID) to local database")
         let userId = try await userManager.getActiveUserId()
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemWithUpdatedFlags, 
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemWithUpdatedFlags,
                                                            shareId: shareId,
                                                            userId: userId)
         try await localDatasource.upsertItems([encryptedItem])
