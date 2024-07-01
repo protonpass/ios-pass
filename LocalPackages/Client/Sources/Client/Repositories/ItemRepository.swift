@@ -111,6 +111,10 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Delete all local items
     func deleteAllItemsLocally() async throws
 
+    /// Delete all local items for current active user
+    /// This should only be used for a complete nuke of local data for all users
+    func deleteAllCurrentUserItemsLocally() async throws
+
     /// Delete items locally after sync events
     func deleteAllItemsLocally(shareId: String) async throws
 
@@ -131,6 +135,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
+
+    func updateLocalItemsWithUserId() async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -177,9 +183,8 @@ public actor ItemRepository: ItemRepositoryProtocol {
 
 public extension ItemRepository {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
-        // swiftlint:disable:next todo
-        // TODO: fetch items linked to active user
-        try await localDatasource.getAllItems()
+        let userId = try await userManager.getActiveUserId()
+        return try await localDatasource.getAllItems(userId: userId)
     }
 
     func getAllItemContents() async throws -> [ItemContent] {
@@ -191,9 +196,8 @@ public extension ItemRepository {
     }
 
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        // swiftlint:disable:next todo
-        // TODO: fetch items linked to active user
-        try await localDatasource.getItems(state: state)
+        let userId = try await userManager.getActiveUserId()
+        return try await localDatasource.getItems(userId: userId, state: state)
     }
 
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
@@ -205,9 +209,8 @@ public extension ItemRepository {
     }
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
-        // swiftlint:disable:next todo
-        // TODO: fetch items linked to active user
-        try await localDatasource.getAllPinnedItems()
+        let userId = try await userManager.getActiveUserId()
+        return try await localDatasource.getAllPinnedItems(userId: userId)
     }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
@@ -434,6 +437,14 @@ public extension ItemRepository {
         logger.trace("Deleted all items locally")
     }
 
+    func deleteAllCurrentUserItemsLocally() async throws {
+        logger.trace("Deleting all items locally")
+        let userId = try await userManager.getActiveUserId()
+        try await localDatasource.removeAllItems(userId: userId)
+        try await refreshPinnedItemDataStream()
+        logger.trace("Deleted all items locally")
+    }
+
     func deleteAllItemsLocally(shareId: String) async throws {
         logger.trace("Deleting all items locally for share \(shareId)")
         try await localDatasource.removeAllItems(shareId: shareId)
@@ -547,9 +558,19 @@ public extension ItemRepository {
 
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {
         logger.trace("Getting local active log in items for all shares")
-        let logInItems = try await localDatasource.getActiveLogInItems()
+        let userId = try await userManager.getActiveUserId()
+        let logInItems = try await localDatasource.getActiveLogInItems(userId: userId)
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
+    }
+
+    func updateLocalItemsWithUserId() async throws {
+        let userId = try await userManager.getActiveUserId()
+        let allItems = try await localDatasource.getAllItems(userId: "")
+        let updateItems = allItems.map { $0.copy(newUserId: userId) }
+        try await localDatasource.removeAllItems(userId: "")
+        try await localDatasource.upsertItems(updateItems)
+        try await refreshPinnedItemDataStream()
     }
 }
 
@@ -600,7 +621,8 @@ public extension ItemRepository {
 
 private extension ItemRepository {
     func refreshPinnedItemDataStream() async throws {
-        let pinnedItems = try await localDatasource.getAllPinnedItems()
+        let userId = try await userManager.getActiveUserId()
+        let pinnedItems = try await localDatasource.getAllPinnedItems(userId: userId)
         currentlyPinnedItems.send(pinnedItems)
     }
 }
@@ -614,6 +636,7 @@ private extension ItemRepository {
 
     func symmetricallyEncrypt(itemRevision: Item,
                               shareId: String) async throws -> SymmetricallyEncryptedItem {
+        let userId = try await userManager.getActiveUserId()
         let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
         let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey)
@@ -626,6 +649,7 @@ private extension ItemRepository {
         }
 
         return .init(shareId: shareId,
+                     userId: userId,
                      item: itemRevision,
                      encryptedContent: encryptedContent,
                      isLogInItem: isLogInItem)
@@ -642,7 +666,9 @@ private extension ItemRepository {
 
 public extension ItemRepository {
     func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64? {
-        let items = try await localDatasource.getAllItems()
+        let userId = try await userManager.getActiveUserId()
+
+        let items = try await localDatasource.getAllItems(userId: userId)
 
         let loginItemsWithTotp =
             try items
@@ -758,6 +784,16 @@ private extension ItemRepository {
                                                             keyRotation: item.keyRotation)
         let contentProtobuf = try item.getContentProtobuf(vaultKey: vaultKey)
         return ItemContent(shareId: shareId, item: item, contentProtobuf: contentProtobuf)
+    }
+}
+
+private extension SymmetricallyEncryptedItem {
+    func copy(newUserId: String) -> SymmetricallyEncryptedItem {
+        SymmetricallyEncryptedItem(shareId: shareId,
+                                   userId: newUserId,
+                                   item: item,
+                                   encryptedContent: encryptedContent,
+                                   isLogInItem: isLogInItem)
     }
 }
 
