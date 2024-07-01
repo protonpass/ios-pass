@@ -50,8 +50,6 @@ public final class DeleteLocalDataBeforeFullSync: DeleteLocalDataBeforeFullSyncU
     }
 
     public func execute() async throws {
-        // swiftlint:disable:next todo
-        // TODO: maybe add user id at this level
         try await itemRepository.deleteAllCurrentUserItemsLocally()
         try await shareRepository.deleteAllCurrentUserSharesLocally()
         // swiftlint:disable:next todo
