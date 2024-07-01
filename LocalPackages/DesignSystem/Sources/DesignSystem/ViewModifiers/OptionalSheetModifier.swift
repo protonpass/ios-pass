@@ -1,6 +1,6 @@
 //
-// MultipleSheetDisplaying.swift
-// Proton Pass - Created on 27/05/2024.
+// OptionalSheetModifier.swift
+// Proton Pass - Created on 01/07/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,30 +17,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import SwiftUI
 
-public protocol MultipleSheetsDisplaying where Self: Equatable {
-    // This the none displaying modal enum case. Should always be present
-    static var none: Self { get }
+struct OptionalSheetModifier<Wrapped, Sheet: View>: ViewModifier {
+    let optionalBinding: Binding<Wrapped?>
+    let sheet: (Wrapped) -> Sheet
 
-    // This is the binding boolean used to toggle the sheet display
-    var shouldDisplay: Bool { get set }
+    func body(content: Content) -> some View {
+        content
+            .sheet(isPresented: optionalBinding.mappedToBool()) {
+                if let value = optionalBinding.wrappedValue {
+                    sheet(value)
+                }
+            }
+    }
 }
 
-public extension MultipleSheetsDisplaying {
-    var shouldDisplay: Bool {
-        get {
-            switch self {
-            case .none:
-                false
-            default:
-                true
-            }
-        }
-
-        set(newValue) {
-            self = newValue ? self : .none
-        }
+public extension View {
+    func optionalSheet<Wrapped>(binding: Binding<Wrapped?>,
+                                sheet: @escaping (Wrapped) -> some View) -> some View {
+        modifier(OptionalSheetModifier(optionalBinding: binding, sheet: sheet))
     }
 }
