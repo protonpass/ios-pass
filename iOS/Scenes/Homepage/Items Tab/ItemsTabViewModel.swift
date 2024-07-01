@@ -45,8 +45,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var pinnedItems: [ItemUiModel]?
     @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
+    @Published private(set) var shouldShowSyncProgress = false
     @Published var isEditMode = false
-    @Published var shouldShowSyncProgress = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
         didSet {
             if itemToBePermanentlyDeleted != nil {
@@ -57,6 +57,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @Published var showingPermanentDeletionAlert = false
 
+    private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
@@ -110,6 +111,16 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
+        vaultSyncEventStream
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in
+                guard let self else { return }
+                if case .done = event {
+                    shouldShowSyncProgress = false
+                }
+            }
+            .store(in: &cancellables)
 
         Task { [weak self] in
             guard let self else { return }
