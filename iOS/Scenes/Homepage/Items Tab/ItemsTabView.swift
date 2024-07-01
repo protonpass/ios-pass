@@ -65,9 +65,7 @@ struct ItemsTabView: View {
     }
 
     private var fullSyncProgressView: some View {
-        FullSyncProgressView(mode: .logIn) {
-            viewModel.shouldShowSyncProgress = false
-        }
+        FullSyncProgressView(mode: .logIn)
     }
 
     @ViewBuilder
