@@ -25,6 +25,8 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
 
     public var itemId: String { item.itemID }
 
+    public var userId: String
+
     /// Original item revision object as returned by the server
     public let item: Item
 
@@ -34,9 +36,10 @@ public struct SymmetricallyEncryptedItem: Equatable, ItemIdentifiable, Sendable,
     /// Whether the item is type log in or not
     public let isLogInItem: Bool
 
-    public init(shareId: String, item: Item, encryptedContent: String, isLogInItem: Bool) {
+    public init(shareId: String, userId: String, item: Item, encryptedContent: String, isLogInItem: Bool) {
         self.shareId = shareId
         self.item = item
+        self.userId = userId
         self.encryptedContent = encryptedContent
         self.isLogInItem = isLogInItem
     }

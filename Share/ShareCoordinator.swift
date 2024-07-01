@@ -78,15 +78,14 @@ final class ShareCoordinator {
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private var dataMigrationManager = resolve(\SharedServiceContainer.dataMigrationManager)
-    private let appData = resolve(\SharedDataContainer.appData)
 
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
+    @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -134,7 +133,7 @@ extension ShareCoordinator {
         do {
             try await userManager.setUp()
             try await preferencesManager.setUp()
-            try await migration()
+            try await applyAppMigration()
             if credentialProvider.isAuthenticated {
                 await parseSharedContentAndBeginShareFlow()
             } else {
@@ -145,15 +144,6 @@ extension ShareCoordinator {
                 guard let self else { return }
                 dismissExtension()
             }
-        }
-    }
-
-    func migration() async throws {
-        let missingMigrations = await dataMigrationManager.missingMigrations(MigrationType.all)
-
-        if let userData = (appData as? AppData)?.getUserData(), missingMigrations.contains(.userAppData) {
-            try await userManager.addAndMarkAsActive(userData: userData)
-            await dataMigrationManager.addMigration(.userAppData)
         }
     }
 }

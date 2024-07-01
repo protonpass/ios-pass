@@ -387,6 +387,14 @@ extension SharedUseCasesContainer {
         self { SetUpEmailAndUsername(featureFlags: self.getFeatureFlagStatus(),
                                      emailValidator: self.validateEmail()) }
     }
+
+    var applyAppMigration: Factory<any ApplyAppMigrationUseCase> {
+        self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
+                                 userManager: self.userManager,
+                                 appData: SharedDataContainer.shared.appData(),
+                                 itemRepository: self.itemRepository,
+                                 logManager: self.logManager) }
+    }
 }
 
 // MARK: - Dark web monitor
