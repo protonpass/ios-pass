@@ -39,7 +39,7 @@
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="flags" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isLogInItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="itemID" attributeType="String"/>
+        <attribute name="itemID" attributeType="String" defaultValueString=""/>
         <attribute name="itemKey" optional="YES" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="lastUseTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -50,6 +50,7 @@
         <attribute name="shareID" attributeType="String"/>
         <attribute name="state" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="symmetricallyEncryptedContent" attributeType="String"/>
+        <attribute name="userID" attributeType="String" defaultValueString=""/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="itemID"/>

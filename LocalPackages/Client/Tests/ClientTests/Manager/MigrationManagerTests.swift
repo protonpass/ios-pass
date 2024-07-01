@@ -51,7 +51,7 @@ final class MigrationManagerTests: XCTestCase {
         let missingMigration =  await sut.missingMigrations(MigrationType.all)
        
         XCTAssertTrue(userAppDataMigrationDone)
-        XCTAssertEqual(missingMigration, [MigrationType.credentialsAppData])
+        XCTAssertEqual(missingMigration, [MigrationType.credentialsAppData, MigrationType.userIdInItems])
     }
     
     func testRevertAMigration() async {

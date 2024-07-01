@@ -30,7 +30,8 @@ public struct MigrationType: OptionSet, Sendable {
 
     public static let userAppData = MigrationType(rawValue: 1 << 0)
     public static let credentialsAppData = MigrationType(rawValue: 1 << 1)
-    public static let all: [MigrationType] = [.userAppData, .credentialsAppData]
+    public static let userIdInItems = MigrationType(rawValue: 1 << 2)
+    public static let all: [MigrationType] = [.userAppData, .credentialsAppData, .userIdInItems]
 }
 
 public protocol DataMigrationManagerProtocol: Sendable {
