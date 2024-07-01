@@ -28,14 +28,13 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 // swiftlint:disable file_length
-private enum SectionsSheetStates: MultipleSheetsDisplaying {
-    case none
+private enum SectionsSheetState {
     case personal(CreateEditIdentitySection)
     case address(CreateEditIdentitySection)
     case contact(CreateEditIdentitySection)
     case work(CreateEditIdentitySection)
 
-    var title: LocalizedStringKey? {
+    var title: LocalizedStringKey {
         switch self {
         case .personal:
             "Personal details"
@@ -45,8 +44,6 @@ private enum SectionsSheetStates: MultipleSheetsDisplaying {
             "Contact details"
         case .work:
             "Work details"
-        default:
-            nil
         }
     }
 
@@ -58,24 +55,20 @@ private enum SectionsSheetStates: MultipleSheetsDisplaying {
             280
         case .work:
             350
-        default:
-            0
         }
     }
 
-    var section: CreateEditIdentitySection? {
+    var section: CreateEditIdentitySection {
         switch self {
         case let .address(section), let .contact(section), let .personal(section), let .work(section):
             section
-        default:
-            nil
         }
     }
 }
 
 struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
-    @State private var sheetState: SectionsSheetStates = .none
+    @State private var sheetState: SectionsSheetState?
     @State private var showCustomTitleAlert = false
     @State private var showSectionTitleModification = false
     @State private var showDeleteCustomSectionAlert = false
@@ -135,9 +128,9 @@ struct CreateEditIdentityView: View {
 
     var body: some View {
         mainContainer
-            .sheet(isPresented: $sheetState.shouldDisplay) {
-                sheetContent
-                    .presentationDetents([.height(sheetState.height)])
+            .optionalSheet(binding: $sheetState) { state in
+                sheetContent(for: state)
+                    .presentationDetents([.height(state.height)])
                     .presentationDragIndicator(.visible)
             }
             .navigationStackEmbeded()
@@ -675,7 +668,7 @@ private extension CreateEditIdentityView {
         .animation(.default, value: focusedField)
     }
 
-    var sheetContent: some View {
+    func sheetContent(for state: SectionsSheetState) -> some View {
         VStack {
             Text("Add field")
                 .font(.footnote)
@@ -684,13 +677,11 @@ private extension CreateEditIdentityView {
                 .frame(maxWidth: .infinity)
                 .padding(.top, DesignConstant.sectionPadding)
 
-            if let title = sheetState.title {
-                Text(title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity)
-            }
+            Text(state.title)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .frame(maxWidth: .infinity)
 
-            switch sheetState {
+            switch state {
             case .personal:
                 sheetOption("First name", value: $viewModel.firstName)
                 PassSectionDivider()
@@ -739,9 +730,6 @@ private extension CreateEditIdentityView {
 
                 sheetOption("Work email", value: $viewModel.workEmail)
                 PassSectionDivider()
-
-            default:
-                EmptyView()
             }
             if viewModel.canAddMoreCustomFields {
                 Text("Custom field")
@@ -749,9 +737,7 @@ private extension CreateEditIdentityView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, DesignConstant.sectionPadding)
                     .buttonEmbeded {
-                        if let section = sheetState.section {
-                            viewModel.addCustomField(to: section)
-                        }
+                        viewModel.addCustomField(to: state.section)
                     }
             } else {
                 Button { viewModel.upgrade() } label: {
