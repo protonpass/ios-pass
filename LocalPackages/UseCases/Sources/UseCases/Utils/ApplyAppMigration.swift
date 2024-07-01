@@ -36,13 +36,16 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     private let dataMigrationManager: any DataMigrationManagerProtocol
     private let userManager: any UserManagerProtocol
     private let appData: any AppDataProtocol
+    private let itemRepository: any ItemRepositoryProtocol
 
     public init(dataMigrationManager: any DataMigrationManagerProtocol,
                 userManager: any UserManagerProtocol,
-                appData: any AppDataProtocol) {
+                appData: any AppDataProtocol,
+                itemRepository: any ItemRepositoryProtocol) {
         self.dataMigrationManager = dataMigrationManager
         self.userManager = userManager
         self.appData = appData
+        self.itemRepository = itemRepository
     }
 
     public func execute() async throws {
@@ -51,6 +54,11 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
         if let userData = appData.getUserData(), missingMigrations.contains(.userAppData) {
             try await userManager.addAndMarkAsActive(userData: userData)
             await dataMigrationManager.addMigration(.userAppData)
+        }
+
+        if missingMigrations.contains(.userIdInItems) {
+            try await itemRepository.updateLocalItemsWithUserId()
+            await dataMigrationManager.addMigration(.userIdInItems)
         }
     }
 }

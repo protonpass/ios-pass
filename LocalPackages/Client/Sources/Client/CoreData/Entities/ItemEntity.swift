@@ -49,6 +49,7 @@ extension ItemEntity {
     @NSManaged var pinned: Bool
     @NSManaged var symmetricallyEncryptedContent: String? // Custom field
     @NSManaged var flags: Int64
+    @NSManaged var userID: String
 }
 
 extension ItemEntity {
@@ -86,6 +87,7 @@ extension ItemEntity {
                         flags: Int(flags))
 
         return .init(shareId: shareID,
+                     userId: userID,
                      item: item,
                      encryptedContent: symmetricallyEncryptedContent,
                      isLogInItem: isLogInItem)
@@ -107,6 +109,7 @@ extension ItemEntity {
         revision = item.revision
         revisionTime = item.revisionTime
         shareID = symmetricallyEncryptedItem.shareId
+        userID = symmetricallyEncryptedItem.userId
         state = item.state
         symmetricallyEncryptedContent = symmetricallyEncryptedItem.encryptedContent
         flags = Int64(item.flags)
