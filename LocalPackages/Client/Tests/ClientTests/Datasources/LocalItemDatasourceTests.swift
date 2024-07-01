@@ -38,26 +38,30 @@ final class LocalItemDatasourceTests: XCTestCase {
 
 extension LocalItemDatasourceTests {
     func testGetAllItems() async throws {
+        let currentUserId = "test"
         // Given
-        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
+        var givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random(userId: currentUserId))
+        givenItems.append(.random())
         try await sut.upsertItems(givenItems)
         
         // When
-        let items = try await sut.getAllItems()
+        let items = try await sut.getAllItems(userId: currentUserId)
         
         // Then
-        XCTAssertEqual(items.count, givenItems.count)
-        XCTAssertEqual(Set(items.map(\.itemId)), Set(givenItems.map(\.itemId)))
+        XCTAssertEqual(items.count, givenItems.count - 1)
+        XCTAssertNotEqual(Set(items.map(\.itemId)), Set(givenItems.map(\.itemId)))
     }
     
     func testGetAllItemsByState() async throws {
+        let currentUserId = "test"
+
         // Given
-        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
+        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random(userId: currentUserId))
         try await sut.upsertItems(givenItems)
         
         // When
-        let activeItems = try await sut.getItems(state: .active)
-        let trashedItems = try await sut.getItems(state: .trashed)
+        let activeItems = try await sut.getItems(userId: currentUserId, state: .active)
+        let trashedItems = try await sut.getItems(userId: currentUserId, state: .trashed)
         let allItems = activeItems + trashedItems
         
         // Then
@@ -68,25 +72,33 @@ extension LocalItemDatasourceTests {
     
 
     func testGetAllPinnedItems() async throws {
+        let currentUserId = "test"
+
         // Given
-        var givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
-        givenItems.append(SymmetricallyEncryptedItem.random(item: .random(pinned: true)))
+        var givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random(userId: currentUserId))
+        givenItems.append(SymmetricallyEncryptedItem.random(userId: currentUserId,  item: .random(pinned: true)))
         try await sut.upsertItems(givenItems)
         
         // When
-        let pinnedItems = try await sut.getAllPinnedItems()
+        let pinnedItems = try await sut.getAllPinnedItems(userId: currentUserId)
         
         // Then
         XCTAssertEqual(pinnedItems.count, 1)
         
-        givenItems.append(SymmetricallyEncryptedItem.random(item: .random(pinned: true)))
+        givenItems.append(SymmetricallyEncryptedItem.random(userId: currentUserId, item: .random(pinned: true)))
         try await sut.upsertItems(givenItems)
         
         // When
-        let pinnedItems2 = try await sut.getAllPinnedItems()
+        let pinnedItems2 = try await sut.getAllPinnedItems(userId: currentUserId)
         
         // Then
         XCTAssertEqual(pinnedItems2.count, 2)
+        
+        // When
+        let pinnedItems3 = try await sut.getAllPinnedItems(userId: "other user")
+        
+        // Then
+        XCTAssertTrue(pinnedItems3.isEmpty)
     }
     
     func testGetItem() async throws {
@@ -257,13 +269,14 @@ extension LocalItemDatasourceTests {
     }
     
     func testRemoveAllItems() async throws {
+        let currentUserId = "test"
         // Given
-        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
+        let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random(userId: currentUserId))
         try await sut.upsertItems(givenItems)
         
         // When
-        try await sut.removeAllItems()
-        let items = try await sut.getAllItems()
+        try await sut.removeAllItems(userId: currentUserId)
+        let items = try await sut.getAllItems(userId: currentUserId)
         
         // Then
         XCTAssertTrue(items.isEmpty)
@@ -324,62 +337,76 @@ extension LocalItemDatasourceTests {
      */
 
     func testGetActiveLogInItems() async throws {
+        let currentUserId = "test"
+
         // Given
         let givenShareId = String.random()
         // 2 trashed log in items
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .trashed,
                                             isLogInItem: true)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .trashed,
                                             isLogInItem: true)
         
         // 3 trashed other items
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .trashed,
                                             isLogInItem: false)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .trashed,
                                             isLogInItem: false)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .trashed,
                                             isLogInItem: false)
         
         // 4 active log in items
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .active,
                                             isLogInItem: true)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .active,
                                             isLogInItem: true)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .active,
                                             isLogInItem: true)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .active,
                                             isLogInItem: true)
         
         // 4 active other items
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .active,
                                             isLogInItem: false)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .active,
                                             isLogInItem: false)
         
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
+                                            userId: currentUserId,
                                             state: .active,
                                             isLogInItem: false)
         
         // When
-        let activeLogInItems = try await sut.getActiveLogInItems()
+        let activeLogInItems = try await sut.getActiveLogInItems(userId: currentUserId)
         
         // Then
         XCTAssertEqual(activeLogInItems.count, 4)
@@ -414,6 +441,7 @@ extension LocalItemDatasourceTests {
 extension LocalItemDatasource {
     func givenInsertedItem(itemId: String? = nil,
                            shareId: String? = nil,
+                           userId: String? = nil,
                            state: ItemState? = nil,
                            encryptedContent: String? = nil,
                            aliasEmail: String? = nil,
@@ -427,7 +455,8 @@ extension LocalItemDatasource {
                                                aliasEmail: aliasEmail,
                                                modifyTime: modifyTime)
         let encryptedContent = encryptedContent ?? .random()
-        let item = SymmetricallyEncryptedItem(shareId: shareId,
+        let item = SymmetricallyEncryptedItem(shareId: shareId, 
+                                              userId: userId ?? .random(),
                                               item: itemRevision,
                                               encryptedContent: encryptedContent,
                                               isLogInItem: isLogInItem)

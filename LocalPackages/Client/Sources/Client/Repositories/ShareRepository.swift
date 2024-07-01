@@ -34,7 +34,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getRemoteShares(updateEventStream: Bool) async throws -> [Share]
 
     /// Delete all local shares
-    func deleteAllSharesLocally() async throws
+    func deleteAllCurrentUserSharesLocally() async throws
 
     /// Delete locally a given share
     func deleteShareLocally(shareId: String) async throws
@@ -143,7 +143,7 @@ public extension ShareRepository {
         }
     }
 
-    func deleteAllSharesLocally() async throws {
+    func deleteAllCurrentUserSharesLocally() async throws {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Deleting all local shares for user \(userId)")
         try await localDatasource.removeAllShares(userId: userId)
