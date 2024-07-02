@@ -26,11 +26,9 @@ import SwiftUI
 struct FullSyncProgressView: View {
     @State private var isShowingDetail = false
     @StateObject private var viewModel: FullSyncProgressViewModel
-    var onFinish: (() -> Void)?
 
-    init(mode: FullSyncProgressViewModel.Mode, onFinish: (() -> Void)? = nil) {
+    init(mode: FullSyncProgressViewModel.Mode) {
         _viewModel = .init(wrappedValue: .init(mode: mode))
-        self.onFinish = onFinish
     }
 
     var body: some View {
@@ -61,9 +59,6 @@ private extension FullSyncProgressView {
             }
         }
         .animation(.default, value: isShowingDetail)
-        .onChange(of: viewModel.isDoneSynching) { _ in
-            onFinish?()
-        }
     }
 }
 

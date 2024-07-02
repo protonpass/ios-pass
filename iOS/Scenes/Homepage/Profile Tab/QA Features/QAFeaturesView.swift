@@ -41,6 +41,7 @@ struct QAFeaturesView: View {
                 OnboardSection()
                 HapticFeedbacksSection()
                 Section {
+                    AccountSwitcherSection()
                     CachedFavIconsSection()
                     TelemetryEventsSection()
                     ItemReadEventsSection()

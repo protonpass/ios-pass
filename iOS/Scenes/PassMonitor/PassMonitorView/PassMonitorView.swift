@@ -359,7 +359,7 @@ private extension PassMonitorView {
                         borderColor: .clear)
                 }
 
-                CapsuleTextButton(title: isBreached ? "View Details" : "Enable",
+                CapsuleTextButton(title: isBreached ? #localized("View details") : #localized("Enable"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: isBreached ? PassColor
                                       .passwordInteractionNormMajor2 : PassColor.interactionNormMajor2,
@@ -428,7 +428,7 @@ private extension PassMonitorView {
                     }
                 }
 
-                CapsuleTextButton(title: "View details",
+                CapsuleTextButton(title: #localized("View details"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.passwordInteractionNormMajor2,
                                   action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })

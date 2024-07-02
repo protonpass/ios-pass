@@ -89,7 +89,8 @@ final class PreferencesTests: XCTestCase {
             spotlightEnabled: UserPreferences.default.spotlightEnabled,
             spotlightSearchableContent: .allExceptSensitiveData,
             spotlightSearchableVaults: UserPreferences.default.spotlightSearchableVaults, 
-            extraPasswordEnabled: UserPreferences.default.extraPasswordEnabled)
+            extraPasswordEnabled: UserPreferences.default.extraPasswordEnabled, 
+            protonPasswordFailedVerificationCount: UserPreferences.default.protonPasswordFailedVerificationCount)
         try decodeAndAssert(UserPreferences.self, json: json, expectation: expectation)
     }
 
