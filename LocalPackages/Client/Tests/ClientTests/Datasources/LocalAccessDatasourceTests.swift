@@ -37,7 +37,7 @@ final class LocalAccessDatasourceTests: XCTestCase {
 }
 
 extension LocalAccessDatasourceTests {
-    func testUpsertAndGetPlans() async throws {
+    func testUpsertGetAndRemove() async throws {
         // Given
         let givenUserId = String.random()
         let givenAccess = Access(plan: .init(type: "free",
@@ -54,10 +54,9 @@ extension LocalAccessDatasourceTests {
                                  minVersionUpgrade: nil)
         // When
         try await sut.upsert(access: givenAccess, userId: givenUserId)
-        let retrievedAccess1 = try await sut.getAccess(userId: givenUserId)
 
         // Then
-        XCTAssertEqual(retrievedAccess1, givenAccess)
+        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), givenAccess)
 
         // Given
         let updatedAccess = Access(plan: .init(type: "plus",
@@ -75,9 +74,14 @@ extension LocalAccessDatasourceTests {
 
         // When
         try await sut.upsert(access: updatedAccess, userId: givenUserId)
-        let retrievedAccess2 = try await sut.getAccess(userId: givenUserId)
 
         // Then
-        XCTAssertEqual(retrievedAccess2, updatedAccess)
+        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), updatedAccess)
+
+        // When
+        try await sut.removeAccess(userId: givenUserId)
+
+        // Then
+        try await XCTAssertNilAsync(await sut.getAccess(userId: givenUserId))
     }
 }
