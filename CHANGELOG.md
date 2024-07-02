@@ -1,3 +1,16 @@
+# Version 1.12.0
+Features:
+- Added support for secure links
+- Added support for extra password
+
+Others:
+- Bumped core 25.2.0
+- Bumped Rust library 0.7.13
+- Removed Pass Monitor flag check
+- Disabled editing functionality during the creation and save operations
+- [B2B] Send item read events to the BE
+- Removed "Sync complete" screen and show a toast message instead
+
 # Version 1.11.3
 Fixed crashes when revealing passwords on iOS 18
 

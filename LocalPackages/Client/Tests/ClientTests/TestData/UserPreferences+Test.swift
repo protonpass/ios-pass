@@ -26,6 +26,7 @@ extension UserPreferences {
         .init(spotlightEnabled: .random(),
               spotlightSearchableContent: .random()!,
               spotlightSearchableVaults: .random()!,
-              extraPasswordEnabled: .random())
+              extraPasswordEnabled: .random(),
+              protonPasswordFailedVerificationCount: .random(in: 1...10))
     }
 }

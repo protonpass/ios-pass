@@ -56,17 +56,26 @@ final class EnableExtraPasswordViewModel: ObservableObject {
     @Published var showWrongProtonPasswordAlert = false
     @Published var showProtonPasswordConfirmationAlert = true
     @Published var extraPasswordEnabled = false
+    @Published var failedToVerifyProtonPassword = false
     @Published var protonPassword = ""
     @Published var extraPassword = ""
 
     private var definedExtraPassword = ""
+    private var protonPasswordFailedVerificationCount = 0
 
     private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
     private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    init() {}
+    init() {
+        Task { [weak self] in
+            guard let self else { return }
+            protonPasswordFailedVerificationCount =
+                preferencesManager.userPreferences.unwrapped().protonPasswordFailedVerificationCount
+        }
+    }
 }
 
 extension EnableExtraPasswordViewModel {
@@ -77,9 +86,18 @@ extension EnableExtraPasswordViewModel {
             do {
                 loading = true
                 if try await doVerifyProtonPassword(protonPassword) {
+                    try await updateUserPreferences(\.protonPasswordFailedVerificationCount,
+                                                    value: 0)
                     canSetExtraPassword = true
                 } else {
-                    showWrongProtonPasswordAlert = true
+                    protonPasswordFailedVerificationCount += 1
+                    try await updateUserPreferences(\.protonPasswordFailedVerificationCount,
+                                                    value: protonPasswordFailedVerificationCount)
+                    if protonPasswordFailedVerificationCount < 5 {
+                        showWrongProtonPasswordAlert = true
+                    } else {
+                        failedToVerifyProtonPassword = true
+                    }
                 }
             } catch {
                 protonPasswordVerificationError = error
