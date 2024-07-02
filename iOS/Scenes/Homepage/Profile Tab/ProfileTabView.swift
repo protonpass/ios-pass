@@ -18,25 +18,45 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreLogin
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-struct UserAccountDetail: AccountCellDetail, Identifiable {
+private struct FillerUserAccountDetail: AccountCellDetail, Identifiable {
     let id: String
     let initials: String
     let displayName: String
     let email: String
 
-    static var empty: UserAccountDetail {
-        UserAccountDetail(id: UUID().uuidString,
-                          initials: "",
-                          displayName: "",
-                          email: "")
+    static var empty: FillerUserAccountDetail {
+        FillerUserAccountDetail(id: UUID().uuidString,
+                                initials: "",
+                                displayName: "",
+                                email: "")
+    }
+}
+
+extension UserData: AccountCellDetail {
+    public var id: String {
+        user.ID
+    }
+
+    public var initials: String {
+        user.name?.initials() ?? ""
+    }
+
+    public var displayName: String {
+        user.displayName ?? ""
+    }
+
+    public var email: String {
+        user.email ?? ""
     }
 }
 
@@ -45,7 +65,7 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
     @State private var showSwitcher = false
-    @State private var accountToSignOut: UserAccountDetail?
+    @State private var accountToSignOut: UserData?
 
     var body: some View {
         mainContainer
@@ -69,7 +89,7 @@ struct ProfileTabView: View {
             }
             .alert(item: $accountToSignOut) { user in
                 Alert(title: Text("You will be signed out"),
-                      message: Text("Account name: \(user.displayName) and email: \(user.email)"),
+                      message: Text(verbatim: "\(user.email)"),
                       primaryButton: .destructive(Text("Yes, sign me out")) {
                           viewModel.signOut(user: user)
                       }, secondaryButton: .cancel())
@@ -136,7 +156,7 @@ struct ProfileTabView: View {
 
     func handleSignOut(_ id: any AccountCellDetail) {
         dismissAccountSwitcherAndDisplay()
-        accountToSignOut = id as? UserAccountDetail
+        accountToSignOut = id as? UserData
     }
 
     func handleAddAccount() {
@@ -172,7 +192,10 @@ struct ProfileTabView: View {
                     .profileSectionTitle()
 
                 Group {
-                    if !showSwitcher {
+                    if showSwitcher {
+                        AccountCell(detail: FillerUserAccountDetail.empty,
+                                    animationNamespace: animationNamespace)
+                    } else {
                         AccountCell(detail: activeUser,
                                     animationNamespace: animationNamespace)
                             .animation(.default, value: showSwitcher)
@@ -185,9 +208,6 @@ struct ProfileTabView: View {
                                     viewModel.showAccountMenu()
                                 }
                             }
-                    } else {
-                        AccountCell(detail: UserAccountDetail.empty,
-                                    animationNamespace: animationNamespace)
                     }
                 }
                 .padding()

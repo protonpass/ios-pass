@@ -75,8 +75,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
     @Published private(set) var secureLinks: [SecureLink]?
-    @Published private(set) var currentActiveUser: UserAccountDetail?
-    @Published private(set) var userAccounts = [UserAccountDetail]()
+    @Published private(set) var currentActiveUser: UserData?
+    @Published private(set) var userAccounts = [UserData]()
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -247,13 +247,12 @@ extension ProfileTabViewModel {
             do {
                 try await userManager.switchActiveUser(with: userId)
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
 
-    func signOut(user: UserAccountDetail) {
+    func signOut(user: UserData) {
         Task { [weak self] in
             guard let self else { return }
             await revokeCurrentSession()
@@ -345,12 +344,12 @@ private extension ProfileTabViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 guard let self else { return }
-                currentActiveUser = user?.toUserAccountDetail
+                currentActiveUser = user
                 Task { [weak self] in
                     guard let self else {
                         return
                     }
-                    userAccounts = await (try? userManager.getAllUsers().map(\.toUserAccountDetail)) ?? []
+                    userAccounts = await (try? userManager.getAllUsers()) ?? []
                 }
             }
             .store(in: &cancellables)
@@ -413,14 +412,5 @@ private extension ProfileTabViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-private extension UserData {
-    var toUserAccountDetail: UserAccountDetail {
-        UserAccountDetail(id: user.ID,
-                          initials: user.name?.initials() ?? "",
-                          displayName: user.displayName ?? "",
-                          email: user.email ?? "")
     }
 }
