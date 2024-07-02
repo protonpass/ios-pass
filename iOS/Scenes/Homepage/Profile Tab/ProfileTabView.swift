@@ -101,10 +101,10 @@ struct ProfileTabView: View {
 
                 if viewModel.isSecureLinkActive {
                     secureLinkSection
-                        .padding(.vertical)
+                        .padding(.top)
                 }
 
-                accountAndSettingsSection
+                settingsSection
                     .padding(.vertical)
 
                 aboutSection
@@ -379,39 +379,11 @@ struct ProfileTabView: View {
         .padding(.horizontal)
     }
 
-    private var accountAndSettingsSection: some View {
-        VStack(spacing: 0) {
-            OptionRow(action: { viewModel.showAccountMenu() },
-                      content: {
-                          HStack {
-                              Text("Account")
-                                  .foregroundStyle(PassColor.textNorm.toColor)
-
-                              Spacer()
-
-                              if let associatedPlanInfo = viewModel.plan?.associatedPlanInfo {
-                                  Label(title: {
-                                      Text(associatedPlanInfo.title)
-                                          .font(.callout)
-                                  }, icon: {
-                                      Image(uiImage: associatedPlanInfo.icon)
-                                          .resizable()
-                                          .scaledToFit()
-                                          .frame(maxWidth: associatedPlanInfo.iconWidth)
-                                  })
-                                  .foregroundStyle(associatedPlanInfo.tintColor.toColor)
-                                  .padding(.horizontal)
-                              }
-                          }
-                      },
-                      trailing: { ChevronRight() })
-
-            PassSectionDivider()
-
-            TextOptionRow(title: #localized("Settings"), action: { viewModel.showSettingsMenu() })
-        }
-        .roundedEditableSection()
-        .padding(.horizontal)
+    private var settingsSection: some View {
+        TextOptionRow(title: #localized("Settings"), action: { viewModel.showSettingsMenu() })
+            .frame(height: 75)
+            .roundedEditableSection()
+            .padding(.horizontal)
     }
 
     private var aboutSection: some View {
