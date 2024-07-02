@@ -61,6 +61,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
 
     // Injected properties
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -117,12 +118,15 @@ private extension SearchViewModel {
         guard let vaultSelection = searchMode.vaultSelection else {
             return
         }
-        var shareId: String?
+
+        let searchEntries: [SearchEntry]
         if case let .precise(vault) = vaultSelection {
-            shareId = vault.shareId
+            searchEntries = try await searchEntryDatasource.getAllEntries(shareId: vault.shareId)
+        } else {
+            let userId = try await userManager.getActiveUserId()
+            searchEntries = try await searchEntryDatasource.getAllEntries(userId: userId)
         }
 
-        let searchEntries = try await searchEntryDatasource.getAllEntries(shareId: shareId)
         history = searchEntries.compactMap { entry in
             guard let item = searchableItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID
@@ -240,9 +244,10 @@ extension SearchViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
+                let userId = try await userManager.getActiveUserId()
                 if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                              itemId: item.itemId) {
-                    try await searchEntryDatasource.upsert(item: item, date: .now)
+                    try await searchEntryDatasource.upsert(item: item, userId: userId, date: .now)
                     try await refreshSearchHistory()
                     addTelemetryEvent(with: .searchClick)
                     router.present(for: .itemDetail(itemContent, automaticDisplay: false))
@@ -270,9 +275,15 @@ extension SearchViewModel {
 
     func removeAllSearchHistory() {
         Task { [weak self] in
-            guard let self else { return }
+            guard let self, let vaultSelection = searchMode.vaultSelection else { return }
+
             do {
-                try await searchEntryDatasource.removeAllEntries()
+                if case let .precise(vault) = vaultSelection {
+                    try await searchEntryDatasource.removeAllEntries(shareId: vault.shareId)
+                } else {
+                    let userId = try await userManager.getActiveUserId()
+                    try await searchEntryDatasource.removeAllEntries(userId: userId)
+                }
                 try await refreshSearchHistory()
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -304,6 +315,7 @@ private extension SearchViewModel {
     func setup() {
         $query
             .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .dropFirst()
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
