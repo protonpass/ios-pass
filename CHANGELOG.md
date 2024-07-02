@@ -1,3 +1,8 @@
+# Version 1.12.1
+Improvements:
+- Fixed the issue where the homepage gets stuck in a loading state when switching to another tab while items are not fully synced
+- Added the ability to show/hide extra passwords during definition
+
 # Version 1.12.0
 Features:
 - Added support for secure links
