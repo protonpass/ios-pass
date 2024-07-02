@@ -167,16 +167,7 @@ public extension UserManager {
 
 private extension UserManager {
     func assertDidSetUp() async {
-        // swiftlint:disable:next todo
-        // TODO: this should not setup and only assert. We should spread repo lazy loading in the app
-        if !didSetUp {
-            do {
-                try await setUp()
-            } catch {
-                assert(didSetUp, "UserManager not set up. Call setUp() function as soon as possible.")
-            }
-            logger.error("UserManager not set up")
-        }
+        assert(didSetUp, "UserManager not set up. Call setUp() function as soon as possible.")
     }
 }
 
