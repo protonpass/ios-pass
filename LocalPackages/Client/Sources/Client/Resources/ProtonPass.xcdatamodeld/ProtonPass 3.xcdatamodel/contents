@@ -90,6 +90,7 @@
         <attribute name="itemID" attributeType="String"/>
         <attribute name="shareID" attributeType="String"/>
         <attribute name="time" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userID" attributeType="String" defaultValueString=""/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="itemID"/>
