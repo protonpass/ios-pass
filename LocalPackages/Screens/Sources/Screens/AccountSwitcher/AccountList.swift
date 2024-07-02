@@ -30,8 +30,8 @@ struct AccountList: View {
     let activeId: String
     let animationNamespace: Namespace.ID
     let onSelect: (String) -> Void
-    let onSignOut: (String) -> Void
-    let onDelete: (String) -> Void
+    let onManage: (any AccountCellDetail) -> Void
+    let onSignOut: (any AccountCellDetail) -> Void
     let onAddAccount: () -> Void
 
     var body: some View {
@@ -70,21 +70,22 @@ private extension AccountList {
                     onSelect(detail.id)
                 }
 
-            Menu(content: {
-                Button(action: { onSignOut(detail.id) },
-                       label: { Label(title: { Text(verbatim: "Sign out") },
-                                      icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
+            if isActive {
+                Menu(content: {
+                    Button(action: { onManage(detail) },
+                           label: { Label(title: { Text(verbatim: "Manage account") },
+                                          icon: { Image(uiImage: IconProvider.cogWheel) }) })
 
-                Divider()
+                    Divider()
 
-                Button(role: .destructive,
-                       action: { onDelete(detail.id) },
-                       label: { Label(title: { Text(verbatim: "Delete account") },
-                                      icon: { Image(uiImage: IconProvider.trashCrossFilled) }) })
-            }, label: {
-                icon(with: IconProvider.threeDotsVertical,
-                     foregroundColor: PassColor.textWeak)
-            })
+                    Button(action: { onSignOut(detail) },
+                           label: { Label(title: { Text(verbatim: "Sign out") },
+                                          icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
+                }, label: {
+                    icon(with: IconProvider.threeDotsVertical,
+                         foregroundColor: PassColor.textWeak)
+                })
+            }
         }
     }
 
