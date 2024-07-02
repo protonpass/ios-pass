@@ -39,6 +39,7 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     private let appData: any AppDataProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let searchEntryDatasource: any LocalSearchEntryDatasourceProtocol
+    private let shareKeyDatasource: any LocalShareKeyDatasourceProtocol
     private let logger: Logger
 
     public init(dataMigrationManager: any DataMigrationManagerProtocol,
@@ -46,12 +47,14 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
                 appData: any AppDataProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 searchEntryDatasource: any LocalSearchEntryDatasourceProtocol,
+                shareKeyDatasource: any LocalShareKeyDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
         self.dataMigrationManager = dataMigrationManager
         self.userManager = userManager
         self.appData = appData
         self.itemRepository = itemRepository
         self.searchEntryDatasource = searchEntryDatasource
+        self.shareKeyDatasource = shareKeyDatasource
         logger = .init(manager: logManager)
     }
 
@@ -85,6 +88,11 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
             logger.trace("Starting adding user id to local search entries")
             try await (searchEntryDatasource as? LocalSearchEntryDatasource)?.updateSearchEntries(with: userId)
             logger.trace("Finished adding user id to local search entries")
+
+            // Migrate share keys
+            logger.trace("Starting adding user id to local share keys")
+            try await (shareKeyDatasource as? LocalShareKeyDatasource)?.updateKeys(with: userId)
+            logger.trace("Finished adding user id to local share keys")
 
             await dataMigrationManager.addMigration(.userIdInItemsSearchEntriesAndShareKeys)
         }
