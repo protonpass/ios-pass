@@ -27,7 +27,7 @@ public struct AccountSwitchModifier: ViewModifier {
     @Binding var showSwitcher: Bool
     let animationNamespace: Namespace.ID
     let onSelect: (String) -> Void
-    let onManage: (String) -> Void
+    let onManage: (any AccountCellDetail) -> Void
     let onSignOut: (any AccountCellDetail) -> Void
     let onAddAccount: () -> Void
 
@@ -36,7 +36,7 @@ public struct AccountSwitchModifier: ViewModifier {
                 showSwitcher: Binding<Bool>,
                 animationNamespace: Namespace.ID,
                 onSelect: @escaping (String) -> Void,
-                onManage: @escaping (String) -> Void,
+                onManage: @escaping (any AccountCellDetail) -> Void,
                 onSignOut: @escaping (any AccountCellDetail) -> Void,
                 onAddAccount: @escaping () -> Void) {
         self.details = details

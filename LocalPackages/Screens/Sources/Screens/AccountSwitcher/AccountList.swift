@@ -30,7 +30,7 @@ struct AccountList: View {
     let activeId: String
     let animationNamespace: Namespace.ID
     let onSelect: (String) -> Void
-    let onManage: (String) -> Void
+    let onManage: (any AccountCellDetail) -> Void
     let onSignOut: (any AccountCellDetail) -> Void
     let onAddAccount: () -> Void
 
@@ -72,7 +72,7 @@ private extension AccountList {
 
             if isActive {
                 Menu(content: {
-                    Button(action: { onManage(detail.id) },
+                    Button(action: { onManage(detail) },
                            label: { Label(title: { Text(verbatim: "Manage account") },
                                           icon: { Image(uiImage: IconProvider.cogWheel) }) })
 
