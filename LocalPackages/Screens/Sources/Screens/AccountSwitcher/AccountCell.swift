@@ -23,7 +23,7 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public protocol AccountCellDetail: Sendable {
+public protocol AccountCellDetail: Sendable, Identifiable {
     var id: String { get }
     var initials: String { get }
     var displayName: String { get }
@@ -48,8 +48,8 @@ public struct AccountCell: View {
     }
 
     public init(detail: any AccountCellDetail,
-                isActive: Bool,
-                showInactiveIcon: Bool,
+                isActive: Bool = false,
+                showInactiveIcon: Bool = true,
                 animationNamespace: Namespace.ID) {
         self.detail = detail
         self.isActive = isActive
