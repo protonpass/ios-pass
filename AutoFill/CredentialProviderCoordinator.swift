@@ -52,13 +52,13 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     // Use cases
     private let completeConfiguration = resolve(\AutoFillUseCaseContainer.completeConfiguration)
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
+    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
