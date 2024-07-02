@@ -23,63 +23,129 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
+struct UserAccountDetail: AccountCellDetail, Identifiable {
+    let id: String
+    let initials: String
+    let displayName: String
+    let email: String
+
+    static var empty: UserAccountDetail {
+        UserAccountDetail(id: UUID().uuidString,
+                          initials: "",
+                          displayName: "",
+                          email: "")
+    }
+}
+
+// swiftlint:disable:next type_body_length
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
+    @Namespace private var animationNamespace
+    @State private var showSwitcher = false
+    @State private var accountToSignOut: UserAccountDetail?
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack {
-                    itemCountSection
-
-                    securitySection
-                        .padding(.vertical)
-
-                    if viewModel.autoFillEnabled {
-                        autoFillEnabledSection
-                    } else {
-                        autoFillDisabledSection
-                    }
-
-                    if viewModel.isSecureLinkActive {
-                        secureLinkSection
-                            .padding(.vertical)
-                    }
-
-                    accountAndSettingsSection
-                        .padding(.vertical)
-
-                    aboutSection
-
-                    helpCenterSection
-                        .padding(.vertical)
-
-                    if Bundle.main.isQaBuild {
-                        qaFeaturesSection
-                    }
-
-                    Text("Version \(Bundle.main.displayedAppVersion)")
-                        .sectionTitleText()
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    Spacer()
-                }
-                .padding(.top)
-                .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
-                .animation(.default, value: viewModel.localAuthenticationMethod)
-            }
+        mainContainer
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
+            .if(viewModel.currentActiveUser) { view, currentActiveUser in
+                view
+                    .modifier(AccountSwitchModifier(details: viewModel.userAccounts,
+                                                    activeId: currentActiveUser.id,
+                                                    showSwitcher: $showSwitcher,
+                                                    animationNamespace: animationNamespace,
+                                                    onSelect: { viewModel.switchUser(userId: $0) },
+                                                    onManage: { _ in
+                                                        handleManage()
+                                                    },
+                                                    onSignOut: { handleSignOut($0) },
+                                                    onAddAccount: { handleAddAccount() }))
+            }
+            .alert(item: $accountToSignOut) { user in
+                Alert(title: Text("You will be signed out"),
+                      message: Text("Account name: \(user.displayName) and email: \(user.email)"),
+                      primaryButton: .destructive(Text("Yes, sign me out")) {
+                          viewModel.signOut(user: user)
+                      }, secondaryButton: .cancel())
+            }
+            .navigationStackEmbeded()
+            .task {
+                await viewModel.refreshPlan()
+            }
+            .onAppear {
+                viewModel.fetchSecureLinks()
+            }
+    }
+
+    var mainContainer: some View {
+        ScrollView {
+            VStack {
+                accountSection
+
+                itemCountSection
+
+                securitySection
+                    .padding(.vertical)
+
+                if viewModel.autoFillEnabled {
+                    autoFillEnabledSection
+                } else {
+                    autoFillDisabledSection
+                }
+
+                if viewModel.isSecureLinkActive {
+                    secureLinkSection
+                        .padding(.vertical)
+                }
+
+                accountAndSettingsSection
+                    .padding(.vertical)
+
+                aboutSection
+
+                helpCenterSection
+                    .padding(.vertical)
+
+                if Bundle.main.isQaBuild {
+                    qaFeaturesSection
+                }
+
+                Text("Version \(Bundle.main.displayedAppVersion)")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .center)
+                Spacer()
+            }
+            .padding(.top)
+            .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
+            .animation(.default, value: viewModel.localAuthenticationMethod)
         }
-        .task {
-            await viewModel.refreshPlan()
+    }
+
+    func handleManage() {
+        dismissAccountSwitcherAndDisplay()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            viewModel.showAccountMenu()
         }
-        .onAppear {
-            viewModel.fetchSecureLinks()
+    }
+
+    func handleSignOut(_ id: any AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay()
+        accountToSignOut = id as? UserAccountDetail
+    }
+
+    func handleAddAccount() {
+        dismissAccountSwitcherAndDisplay()
+    }
+
+    func dismissAccountSwitcherAndDisplay() {
+        withAnimation {
+            showSwitcher.toggle()
         }
     }
 
@@ -95,6 +161,38 @@ struct ProfileTabView: View {
             } else {
                 EmptyView()
             }
+        }
+    }
+
+    @ViewBuilder
+    private var accountSection: some View {
+        if let activeUser = viewModel.currentActiveUser {
+            VStack {
+                Text("Account")
+                    .profileSectionTitle()
+
+                Group {
+                    if !showSwitcher {
+                        AccountCell(detail: activeUser,
+                                    animationNamespace: animationNamespace)
+                            .animation(.default, value: showSwitcher)
+                            .onTapGesture {
+                                if viewModel.isMultiAccountActive {
+                                    withAnimation {
+                                        showSwitcher.toggle()
+                                    }
+                                } else {
+                                    viewModel.showAccountMenu()
+                                }
+                            }
+                    } else {
+                        AccountCell(detail: UserAccountDetail.empty,
+                                    animationNamespace: animationNamespace)
+                    }
+                }
+                .padding()
+                .roundedEditableSection()
+            }.padding()
         }
     }
 

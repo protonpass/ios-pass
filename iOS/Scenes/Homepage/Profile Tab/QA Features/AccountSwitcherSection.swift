@@ -86,8 +86,8 @@ private struct AccountSwitcherView: View {
                                         showSwitcher: $showSwitcher,
                                         animationNamespace: namespace,
                                         onSelect: { handleSelection($0) },
-                                        onSignOut: { handleSignOut($0) },
-                                        onDelete: { handleDelete($0) },
+                                        onManage: { handleSignOut($0) },
+                                        onSignOut: { handleDelete($0) },
                                         onAddAccount: { handleAddAccount() }))
     }
 }
@@ -102,8 +102,8 @@ private extension AccountSwitcherView {
         dismissAccountSwitcherAndDisplay(message: "Sign out \(id)")
     }
 
-    func handleDelete(_ id: String) {
-        dismissAccountSwitcherAndDisplay(message: "Delete \(id)")
+    func handleDelete(_ user: any AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay(message: "Delete \(user)")
     }
 
     func handleAddAccount() {

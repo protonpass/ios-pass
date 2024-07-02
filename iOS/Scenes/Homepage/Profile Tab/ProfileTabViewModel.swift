@@ -24,7 +24,9 @@ import Core
 import Entities
 import Factory
 import Macro
+import ProtonCoreLogin
 import SwiftUI
+import UseCases
 
 @MainActor
 protocol ProfileTabViewModelDelegate: AnyObject {
@@ -58,6 +60,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
+    @LazyInjected(\SharedUseCasesContainer
+        .revokeCurrentSession) private var revokeCurrentSession: any RevokeCurrentSessionUseCase
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -70,12 +75,18 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
     @Published private(set) var secureLinks: [SecureLink]?
+    @Published private(set) var currentActiveUser: UserAccountDetail?
+    @Published private(set) var userAccounts = [UserAccountDetail]()
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
     var isSecureLinkActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+    }
+
+    var isMultiAccountActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
@@ -227,6 +238,28 @@ extension ProfileTabViewModel {
     func qaFeatures() {
         delegate?.profileTabViewModelWantsToQaFeatures()
     }
+
+    func switchUser(userId: String) {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await userManager.switchActiveUser(with: userId)
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func signOut(user: UserAccountDetail) {
+        Task { [weak self] in
+            guard let self else { return }
+            await revokeCurrentSession()
+            router.action(.signOut(userId: user.id))
+        }
+    }
 }
 
 // MARK: - Secure link
@@ -306,6 +339,21 @@ private extension ProfileTabViewModel {
                 secureLinks = newLinks
             }
             .store(in: &cancellables)
+
+        userManager
+            .currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                guard let self else { return }
+                currentActiveUser = user?.toUserAccountDetail
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    userAccounts = await (try? userManager.getAllUsers().map(\.toUserAccountDetail)) ?? []
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func refresh() {
@@ -365,5 +413,14 @@ private extension ProfileTabViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
+    }
+}
+
+private extension UserData {
+    var toUserAccountDetail: UserAccountDetail {
+        UserAccountDetail(id: user.ID,
+                          initials: user.name?.initials() ?? "",
+                          displayName: user.displayName ?? "",
+                          email: user.email ?? "")
     }
 }
