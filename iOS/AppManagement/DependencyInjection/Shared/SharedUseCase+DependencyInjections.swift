@@ -393,6 +393,8 @@ extension SharedUseCasesContainer {
                                  userManager: self.userManager,
                                  appData: SharedDataContainer.shared.appData(),
                                  itemRepository: self.itemRepository,
+                                 searchEntryDatasource: SharedRepositoryContainer.shared
+                                     .localSearchEntryDatasource(),
                                  logManager: self.logManager) }
     }
 }

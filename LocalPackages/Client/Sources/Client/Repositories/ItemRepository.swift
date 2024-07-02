@@ -135,11 +135,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
-
-    /// This function should be removed in the future as this is used to update all items to take into account
-    /// multiple users from a single user state
-    /// It could be removed in 1 years from now around July 25
-    func updateLocalItemsWithUserId() async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -581,10 +576,8 @@ public extension ItemRepository {
         return logInItems
     }
 
-    func updateLocalItemsWithUserId() async throws {
-        guard let userId = try? await userManager.getActiveUserId() else {
-            return
-        }
+    /// Temporary migration, can be remove after july 2025
+    func updateLocalItems(with userId: String) async throws {
         logger.trace("Adding current user id to all local items with user id: \(userId)")
         let allItems = try await localDatasource.getAllItems(userId: "")
         let updatedItems = allItems.map { $0.copy(newUserId: userId) }
