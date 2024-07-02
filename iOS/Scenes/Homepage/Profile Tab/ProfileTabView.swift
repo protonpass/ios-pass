@@ -445,34 +445,6 @@ private extension View {
     }
 }
 
-private struct AssociatedPlanInfo {
-    let title: String
-    let icon: UIImage
-    let iconWidth: CGFloat
-    let tintColor: UIColor
-}
-
-private extension Plan {
-    var associatedPlanInfo: AssociatedPlanInfo? {
-        switch planType {
-        case .free:
-            nil
-
-        case .trial:
-            .init(title: #localized("Free trial"),
-                  icon: PassIcon.badgeTrial,
-                  iconWidth: 12,
-                  tintColor: PassColor.interactionNormMajor2)
-
-        case .business, .plus:
-            .init(title: displayName,
-                  icon: PassIcon.badgePaid,
-                  iconWidth: 16,
-                  tintColor: PassColor.noteInteractionNormMajor2)
-        }
-    }
-}
-
 @MainActor
 struct SentinelSheetView: View {
     @Binding var isPresented: Bool
