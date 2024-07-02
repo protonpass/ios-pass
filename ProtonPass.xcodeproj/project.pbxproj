@@ -921,6 +921,7 @@
 		35C9B8322B5EA8890062D787 /* SharedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContentView.swift; sourceTree = "<group>"; };
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
 		35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsCoordinator.swift; sourceTree = "<group>"; };
+		35CEC82B2C3416790093EAB8 /* TestingToolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TestingToolkit; path = LocalPackages/TestingToolkit; sourceTree = "<group>"; };
 		35D3861C2BD9299D00532323 /* MonitorIncludedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorIncludedEmailView.swift; sourceTree = "<group>"; };
 		35D708F72B6B8517001CBB03 /* EditSpotlightVaultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsView.swift; sourceTree = "<group>"; };
 		35D708F92B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotlightVaultsViewModel.swift; sourceTree = "<group>"; };
@@ -1704,6 +1705,7 @@
 				35A2F8B52AD6B2D80051C7AF /* PassRustCore */,
 				5BFD5D052AE145E70025185B /* Screens */,
 				359F80B42AB48C70007AC0F4 /* UseCases */,
+				35CEC82B2C3416790093EAB8 /* TestingToolkit */,
 			);
 			sourceTree = "<group>";
 		};
