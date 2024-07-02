@@ -77,6 +77,8 @@ final class AppCoordinator {
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
+    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
+    @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
@@ -92,6 +94,7 @@ final class AppCoordinator {
 
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
+        bindAppState()
 
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
@@ -174,20 +177,18 @@ final class AppCoordinator {
     }
 
     /// Necessary set up like initializing preferences before starting user flow
-    func setUpAndStart() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                // Should setup all tools
-                try await userManager.setUp()
-                try await preferencesManager.setUp()
-                try await applyAppMigration()
-                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
-                bindAppState()
-                start()
-            } catch {
-                appStateObserver.updateAppState(.loggedOut(.failedToInitializePreferences(error)))
-            }
+    func setUpAndStart() async {
+        do {
+            // Should setup all tools
+            try await userManager.setUp()
+            try await preferencesManager.setUp()
+            try await applyAppMigration()
+            window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            start()
+            refreshFeatureFlags()
+            setUpCoreTelemetry()
+        } catch {
+            appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
         }
     }
 }
@@ -349,7 +350,7 @@ private extension AppCoordinator {
         case .failedBiometricAuthentication:
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
-        case let .failedToInitializePreferences(error):
+        case let .failedToSetUpAppCoordinator(error):
             alert(title: #localized("Error occurred"), message: error.localizedDescription)
         case .tooManyWrongExtraPasswordAttempts:
             alert(title: #localized("Failed to authenticate"),
