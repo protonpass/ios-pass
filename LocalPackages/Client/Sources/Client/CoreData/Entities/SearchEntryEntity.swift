@@ -35,6 +35,7 @@ extension SearchEntryEntity {
     @NSManaged var itemID: String
     @NSManaged var shareID: String
     @NSManaged var time: Int64
+    @NSManaged var userID: String
 }
 
 extension SearchEntryEntity {
@@ -42,9 +43,10 @@ extension SearchEntryEntity {
         .init(itemID: itemID, shareID: shareID, time: time)
     }
 
-    func hydrate(from item: any ItemIdentifiable, date: Date) {
+    func hydrate(from item: any ItemIdentifiable, userId: String, date: Date) {
         itemID = item.itemId
         shareID = item.shareId
         time = Int64(date.timeIntervalSince1970)
+        userID = userId
     }
 }
