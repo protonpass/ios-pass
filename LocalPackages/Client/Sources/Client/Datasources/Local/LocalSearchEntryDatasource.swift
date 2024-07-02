@@ -22,40 +22,69 @@ import CoreData
 import Entities
 
 public protocol LocalSearchEntryDatasourceProtocol: Sendable {
-    /// Get entries of all vaults if `shareId` is `null`
-    func getAllEntries(shareId: String?) async throws -> [SearchEntry]
-    func upsert(item: any ItemIdentifiable, date: Date) async throws
-    func removeAllEntries() async throws
+    /// Get all entries related to a share
+    func getAllEntries(shareId: String) async throws -> [SearchEntry]
+
+    /// Get all entries related to a user
+    func getAllEntries(userId: String) async throws -> [SearchEntry]
+
+    func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws
+
+    /// Remove all entries related to a share
+    func removeAllEntries(shareId: String) async throws
+
+    /// Remove all entries related to a user
+    func removeAllEntries(userId: String) async throws
+
+    /// Remove a single entry
     func remove(item: any ItemIdentifiable) async throws
 }
 
 public final class LocalSearchEntryDatasource: LocalDatasource, LocalSearchEntryDatasourceProtocol {}
 
 public extension LocalSearchEntryDatasource {
-    func getAllEntries(shareId: String?) async throws -> [SearchEntry] {
+    func getAllEntries(shareId: String) async throws -> [SearchEntry] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = SearchEntryEntity.fetchRequest()
-        if let shareId {
-            fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-        }
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
         fetchRequest.sortDescriptors = [.init(key: "time", ascending: false)]
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return entities.map { $0.toSearchEntry() }
     }
 
-    func upsert(item: any ItemIdentifiable, date: Date) async throws {
+    func getAllEntries(userId: String) async throws -> [SearchEntry] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = SearchEntryEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
+        fetchRequest.sortDescriptors = [.init(key: "time", ascending: false)]
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return entities.map { $0.toSearchEntry() }
+    }
+
+    func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
             newBatchInsertRequest(entity: SearchEntryEntity.entity(context: taskContext),
                                   sourceItems: [item]) { managedObject, item in
-                (managedObject as? SearchEntryEntity)?.hydrate(from: item, date: date)
+                (managedObject as? SearchEntryEntity)?.hydrate(from: item,
+                                                               userId: userId,
+                                                               date: date)
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    func removeAllEntries() async throws {
+    func removeAllEntries(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "SearchEntryEntity")
+        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
+    func removeAllEntries(userId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "SearchEntryEntity")
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

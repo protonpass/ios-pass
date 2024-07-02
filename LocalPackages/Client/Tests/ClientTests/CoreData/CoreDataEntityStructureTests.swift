@@ -123,6 +123,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .integer64)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
     func testTelemetryEventEntity() {
