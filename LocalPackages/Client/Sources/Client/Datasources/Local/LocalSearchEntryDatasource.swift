@@ -100,7 +100,7 @@ public extension LocalSearchEntryDatasource {
                           context: taskContext)
     }
 
-    /// Temporary migration, can be remove after july 2025
+    /// Temporary migration, can be removed after july 2025
     func updateSearchEntries(with userId: String) async throws {
         let entries = try await getAllEntries(userId: "")
         try await removeAllEntries(userId: userId)

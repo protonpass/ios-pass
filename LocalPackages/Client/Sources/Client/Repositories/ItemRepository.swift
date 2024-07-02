@@ -576,7 +576,7 @@ public extension ItemRepository {
         return logInItems
     }
 
-    /// Temporary migration, can be remove after july 2025
+    /// Temporary migration, can be removed after july 2025
     func updateLocalItems(with userId: String) async throws {
         logger.trace("Adding current user id to all local items with user id: \(userId)")
         let allItems = try await localDatasource.getAllItems(userId: "")

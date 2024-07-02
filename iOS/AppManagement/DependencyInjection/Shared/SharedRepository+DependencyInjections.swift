@@ -88,10 +88,6 @@ private extension SharedRepositoryContainer {
                                      eventStream: self.corruptedSessionEventStream) }
     }
 
-    var localShareKeyDatasource: Factory<any LocalShareKeyDatasourceProtocol> {
-        self { LocalShareKeyDatasource(databaseService: self.databaseService) }
-    }
-
     var remoteShareKeyDatasource: Factory<any RemoteShareKeyDatasourceProtocol> {
         self { RemoteShareKeyDatasource(apiService: self.apiService,
                                         eventStream: self.corruptedSessionEventStream) }
@@ -203,6 +199,10 @@ private extension SharedRepositoryContainer {
 // MARK: Public datasources
 
 extension SharedRepositoryContainer {
+    var localShareKeyDatasource: Factory<any LocalShareKeyDatasourceProtocol> {
+        self { LocalShareKeyDatasource(databaseService: self.databaseService) }
+    }
+
     var localSpotlightVaultDatasource: Factory<any LocalSpotlightVaultDatasourceProtocol> {
         self { LocalSpotlightVaultDatasource(databaseService: self.databaseService) }
     }
