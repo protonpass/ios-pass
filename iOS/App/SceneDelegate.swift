@@ -29,7 +29,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var appCoverView: UIView?
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
     private let saveAllLogs = resolve(\SharedUseCasesContainer.saveAllLogs)
-    private let deepLinkRoutingService = resolve(\RouterContainer.deepLinkRoutingService)
+    @LazyInjected(\RouterContainer.deepLinkRoutingService) var deepLinkRoutingService
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -40,10 +40,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
         AppearanceSettings.apply()
-        appCoordinator.setUpAndStart()
+        Task { [weak self] in
+            guard let self else { return }
+            await appCoordinator.setUpAndStart()
 
-        deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
-        deepLinkRoutingService.handle(userActivities: connectionOptions.userActivities)
+            deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
+            deepLinkRoutingService.handle(userActivities: connectionOptions.userActivities)
+        }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
