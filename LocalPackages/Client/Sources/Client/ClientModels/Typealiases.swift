@@ -23,7 +23,7 @@ import Combine
 import Entities
 
 public typealias AppDataProtocol =
-    CredentialProvider & CurrentUserIdProvider & Resettable & SymmetricKeyProvider & UserDataMigrationProtocol
+    CredentialProvider & Resettable & SymmetricKeyProvider & UserDataMigrationProtocol
 public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
 public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
 public typealias MonitorStateStream = CurrentValueSubject<MonitorState, Never>
