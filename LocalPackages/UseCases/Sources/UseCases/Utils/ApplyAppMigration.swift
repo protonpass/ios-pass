@@ -38,17 +38,20 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     private let userManager: any UserManagerProtocol
     private let appData: any AppDataProtocol
     private let itemRepository: any ItemRepositoryProtocol
+    private let searchEntryDatasource: any LocalSearchEntryDatasourceProtocol
     private let logger: Logger
 
     public init(dataMigrationManager: any DataMigrationManagerProtocol,
                 userManager: any UserManagerProtocol,
                 appData: any AppDataProtocol,
                 itemRepository: any ItemRepositoryProtocol,
+                searchEntryDatasource: any LocalSearchEntryDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
         self.dataMigrationManager = dataMigrationManager
         self.userManager = userManager
         self.appData = appData
         self.itemRepository = itemRepository
+        self.searchEntryDatasource = searchEntryDatasource
         logger = .init(manager: logManager)
     }
 
@@ -67,11 +70,23 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
             await dataMigrationManager.addMigration(.userAppData)
         }
 
-        if missingMigrations.contains(.userIdInItems) {
+        if missingMigrations.contains(.userIdInItemsSearchEntriesAndShareKeys) {
+            guard let userId = try? await userManager.getActiveUserId() else {
+                logger.debug("Skip user ID migrations. No active user ID found.")
+                await dataMigrationManager.addMigration(.userIdInItemsSearchEntriesAndShareKeys)
+                return
+            }
+            // Migrate items
             logger.trace("Starting adding user id to local items")
-            try await itemRepository.updateLocalItemsWithUserId()
+            try await (itemRepository as? ItemRepository)?.updateLocalItems(with: userId)
             logger.trace("Finished adding user id to local items")
-            await dataMigrationManager.addMigration(.userIdInItems)
+
+            // Migrate search entries
+            logger.trace("Starting adding user id to local search entries")
+            try await (searchEntryDatasource as? LocalSearchEntryDatasource)?.updateSearchEntries(with: userId)
+            logger.trace("Finished adding user id to local search entries")
+
+            await dataMigrationManager.addMigration(.userIdInItemsSearchEntriesAndShareKeys)
         }
     }
 }
