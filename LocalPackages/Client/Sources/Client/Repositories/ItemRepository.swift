@@ -582,7 +582,9 @@ public extension ItemRepository {
     }
 
     func updateLocalItemsWithUserId() async throws {
-        let userId = try await userManager.getActiveUserId()
+        guard let userId = try? await userManager.getActiveUserId() else {
+            return
+        }
         logger.trace("Adding current user id to all local items with user id: \(userId)")
         let allItems = try await localDatasource.getAllItems(userId: "")
         let updatedItems = allItems.map { $0.copy(newUserId: userId) }
