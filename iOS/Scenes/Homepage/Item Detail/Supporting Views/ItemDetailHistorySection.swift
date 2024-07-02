@@ -98,7 +98,7 @@ struct ItemDetailHistorySection: View {
 
             infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
 
-            CapsuleTextButton(title: "View Item history",
+            CapsuleTextButton(title: #localized("View item history"),
                               titleColor: item.contentData.type.normMajor2Color,
                               backgroundColor: item.contentData.type.normMinor1Color,
                               action: action)
