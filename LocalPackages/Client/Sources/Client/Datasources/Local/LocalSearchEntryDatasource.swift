@@ -99,4 +99,15 @@ public extension LocalSearchEntryDatasource {
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
+
+    /// Temporary migration, can be remove after july 2025
+    func updateSearchEntries(with userId: String) async throws {
+        let entries = try await getAllEntries(userId: "")
+        try await removeAllEntries(userId: userId)
+        for entry in entries {
+            try await upsert(item: entry,
+                             userId: userId,
+                             date: Date(timeIntervalSince1970: TimeInterval(entry.time)))
+        }
+    }
 }
