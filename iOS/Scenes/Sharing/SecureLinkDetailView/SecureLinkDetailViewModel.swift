@@ -112,6 +112,10 @@ final class SecureLinkDetailViewModel: ObservableObject {
         router.present(for: .secureLinks)
     }
 
+    func viewItemDetail() {
+        router.present(for: .itemDetail(uiModel.itemContent))
+    }
+
     func deleteLink(link: SecureLinkDetailUiModel) {
         Task { [weak self] in
             guard let self else { return }

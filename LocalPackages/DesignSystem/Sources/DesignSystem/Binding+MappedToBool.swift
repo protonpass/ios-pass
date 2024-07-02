@@ -1,6 +1,6 @@
-//  
-// UserPreferences+Test.swift
-// Proton Pass - Created on 29/03/2024.
+//
+// Binding+MappedToBool.swift
+// Proton Pass - Created on 01/07/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,14 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Entities
+import SwiftUI
 
-extension UserPreferences {
-    static func random() -> Self {
-        .init(spotlightEnabled: .random(),
-              spotlightSearchableContent: .random()!,
-              spotlightSearchableVaults: .random()!,
-              extraPasswordEnabled: .random(),
-              protonPasswordFailedVerificationCount: .random(in: 1...10))
+public extension Binding where Value == Bool {
+    init(bindingOptional: Binding<(some Any)?>) {
+        self.init(get: {
+                      bindingOptional.wrappedValue != nil
+                  },
+                  set: { newValue in
+                      guard newValue == false else { return }
+                      bindingOptional.wrappedValue = nil
+                  })
+    }
+}
+
+public extension Binding {
+    func mappedToBool<Wrapped>() -> Binding<Bool> where Value == Wrapped? {
+        Binding<Bool>(bindingOptional: self)
     }
 }
