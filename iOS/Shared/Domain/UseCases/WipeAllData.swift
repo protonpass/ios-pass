@@ -23,6 +23,7 @@ import Core
 import Foundation
 import ProtonCoreFeatureFlags
 import UIKit
+import UseCases
 
 protocol WipeAllDataUseCase: Sendable {
     func execute() async
@@ -39,7 +40,6 @@ final class WipeAllData: WipeAllDataUseCase {
     private let appData: any AppDataProtocol
     private let apiManager: APIManager
     private let preferencesManager: any PreferencesManagerProtocol
-    private let databaseService: any DatabaseServiceProtocol
     private let syncEventLoop: any SyncEventLoopProtocol
     private let vaultsManager: VaultsManager
     private let vaultSyncEventStream: VaultSyncEventStream
@@ -47,24 +47,24 @@ final class WipeAllData: WipeAllDataUseCase {
     private let userManager: any UserManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
+    private let removeUserLocalData: any RemoveUserLocalDataUseCase
 
     init(logManager: any LogManagerProtocol,
          appData: any AppDataProtocol,
          apiManager: APIManager,
          preferencesManager: any PreferencesManagerProtocol,
-         databaseService: any DatabaseServiceProtocol,
          syncEventLoop: any SyncEventLoopProtocol,
          vaultsManager: VaultsManager,
          vaultSyncEventStream: VaultSyncEventStream,
          credentialManager: any CredentialManagerProtocol,
          userManager: any UserManagerProtocol,
          featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
-         passMonitorRepository: any PassMonitorRepositoryProtocol) {
+         passMonitorRepository: any PassMonitorRepositoryProtocol,
+         removeUserLocalData: any RemoveUserLocalDataUseCase) {
         logger = .init(manager: logManager)
         self.appData = appData
         self.apiManager = apiManager
         self.preferencesManager = preferencesManager
-        self.databaseService = databaseService
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
         self.vaultSyncEventStream = vaultSyncEventStream
@@ -72,6 +72,7 @@ final class WipeAllData: WipeAllDataUseCase {
         self.userManager = userManager
         self.featureFlagsRepository = featureFlagsRepository
         self.passMonitorRepository = passMonitorRepository
+        self.removeUserLocalData = removeUserLocalData
     }
 
     // Order matters because we remove data base on current user ID
@@ -82,6 +83,7 @@ final class WipeAllData: WipeAllDataUseCase {
         try? await preferencesManager.reset()
         if let userID = try? await userManager.getActiveUserId(), !userID.isEmpty {
             featureFlagsRepository.resetFlags(for: userID)
+            try? await removeUserLocalData(userId: userID)
         }
         featureFlagsRepository.clearUserId()
 
@@ -90,7 +92,6 @@ final class WipeAllData: WipeAllDataUseCase {
         // swiftlint:disable:next todo
         // TODO: need to move this in session manager
         apiManager.clearCredentials()
-        databaseService.resetContainer()
 
         UIPasteboard.general.items = []
 

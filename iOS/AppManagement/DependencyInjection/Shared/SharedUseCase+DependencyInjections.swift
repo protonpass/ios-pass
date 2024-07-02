@@ -249,14 +249,14 @@ extension SharedUseCasesContainer {
                            appData: SharedDataContainer.shared.appData(),
                            apiManager: SharedToolingContainer.shared.apiManager(),
                            preferencesManager: self.preferencesManager,
-                           databaseService: SharedServiceContainer.shared.databaseService(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                            vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager(),
                            userManager: self.userManager,
                            featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository()) }
+                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                           removeUserLocalData: self.removeUserLocalData()) }
     }
 }
 
@@ -329,6 +329,25 @@ extension SharedUseCasesContainer {
 
     var getUserPlan: Factory<any GetUserPlanUseCase> {
         self { GetUserPlan(repository: SharedRepositoryContainer.shared.accessRepository()) }
+    }
+
+    var removeUserLocalData: Factory<any RemoveUserLocalDataUseCase> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            return RemoveUserLocalData(accessDatasource: container.localAccessDatasource(),
+                                       authCredentialDatasource: container.localAuthCredentialDatasource(),
+                                       itemDatasource: container.localItemDatasource(),
+                                       itemReadEventDatasource: container.localItemReadEventDatasource(),
+                                       organizationDatasource: container.localOrganizationDatasource(),
+                                       searchEntryDatasource: container.localSearchEntryDatasource(),
+                                       shareDatasource: container.localShareDatasource(),
+                                       shareEventIdDatasource: container.localShareEventIDDatasource(),
+                                       shareKeyDatasource: container.localShareKeyDatasource(),
+                                       spotlightVaultDatasource: container.localSpotlightVaultDatasource(),
+                                       telemetryEventDatasource: container.localTelemetryEventDatasource(),
+                                       userDataDatasource: container.localUserDataDatasource(),
+                                       userPreferencesDatasource: container.userPreferencesDatasource())
+        }
     }
 }
 
