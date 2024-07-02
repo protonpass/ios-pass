@@ -36,7 +36,7 @@ public protocol ShareKeyRepositoryProtocol: Sendable {
     @discardableResult
     func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
-    func deleteAllKeysLocally() async throws
+    func deleteAllCurrentUserShareKeysLocally() async throws
 }
 
 public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
@@ -75,7 +75,8 @@ public extension ShareKeyRepository {
     }
 
     func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
-        logger.trace("Refreshing keys for share \(shareId)")
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Refreshing keys for share \(shareId), user \(userId)")
 
         let keys = try await remoteDatasource.getKeys(shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
@@ -86,21 +87,21 @@ public extension ShareKeyRepository {
             let symmetricallyEncryptedKey = try await getSymmetricKey().encrypt(encryptedKeyBase64)
             return SymmetricallyEncryptedShareKey(encryptedKey: symmetricallyEncryptedKey,
                                                   shareId: shareId,
+                                                  userId: userId,
                                                   shareKey: key)
         }
 
         try await localDatasource.upsertKeys(encryptedKeys)
-        logger.trace("Saved \(keys.count) keys to local database for share \(shareId)")
+        logger.trace("Saved \(keys.count) keys to local database for share \(shareId), user \(userId)")
 
-        logger.trace("Refreshed keys for share \(shareId)")
+        logger.trace("Refreshed keys for share \(shareId), user \(userId)")
         return encryptedKeys
     }
 
-    func deleteAllKeysLocally() async throws {
-        // swiftlint:disable:next todo
-        // TODO: Add user ref in keys
-        logger.trace("Deleting all local share keys")
-        try await localDatasource.removeAllKeys()
+    func deleteAllCurrentUserShareKeysLocally() async throws {
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Deleting all local share keys of user \(userId)")
+        try await localDatasource.removeAllKeys(userId: userId)
         logger.trace("Deleted all local share keys")
     }
 }

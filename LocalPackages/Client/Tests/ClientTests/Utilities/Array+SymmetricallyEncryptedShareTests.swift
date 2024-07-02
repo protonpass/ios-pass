@@ -27,18 +27,21 @@ final class ArrayPlusSymmetricallyEncryptedShareTests: XCTestCase {
         // Given
         let key1 = SymmetricallyEncryptedShareKey(encryptedKey: .random(),
                                                   shareId: .random(),
+                                                  userId: .random(),
                                                   shareKey: .init(createTime: .random(in: 1_000_000...10_000_000),
                                                                   key: .random(),
                                                                   keyRotation: 13,
                                                                   userKeyID: .random()))
         let key2 = SymmetricallyEncryptedShareKey(encryptedKey: .random(),
-                                                  shareId: .random(),
+                                                  shareId: .random(), 
+                                                  userId: .random(),
                                                   shareKey: .init(createTime: .random(in: 1_000_000...10_000_000),
                                                                   key: .random(),
                                                                   keyRotation: 578,
                                                                   userKeyID: .random()))
         let key3 = SymmetricallyEncryptedShareKey(encryptedKey: .random(),
-                                                  shareId: .random(),
+                                                  shareId: .random(), 
+                                                  userId: .random(),
                                                   shareKey: .init(createTime: .random(in: 1_000_000...10_000_000),
                                                                   key: .random(),
                                                                   keyRotation: 182,

@@ -27,12 +27,8 @@ public protocol LocalShareKeyDatasourceProtocol: Sendable {
     /// Insert or update if exist keys
     func upsertKeys(_ keys: [SymmetricallyEncryptedShareKey]) async throws
 
-    // periphery:ignore
-    /// Remove all keys of a share
-    func removeAllKeys(shareId: String) async throws
-
-    /// Remove all keys for all shares
-    func removeAllKeys() async throws
+    /// Remove all keys for all shares related to a user
+    func removeAllKeys(userId: String) async throws
 }
 
 public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol {}
@@ -56,17 +52,10 @@ public extension LocalShareKeyDatasource {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    func removeAllKeys(shareId: String) async throws {
+    func removeAllKeys(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareKeyEntity")
-        fetchRequest.predicate = .init(format: "shareID = %@", shareId)
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: taskContext)
-    }
-
-    func removeAllKeys() async throws {
-        let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareKeyEntity")
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

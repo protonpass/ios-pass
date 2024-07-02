@@ -29,6 +29,9 @@ public struct SymmetricallyEncryptedShareKey: Hashable, Sendable {
     /// ID of the share that the key belongs to
     public let shareId: String
 
+    /// The user ID of the share key
+    public let userId: String
+
     /// Original `ShareKey` object as returned by the server
     public let shareKey: ShareKey
 }

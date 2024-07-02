@@ -86,6 +86,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "symmetricallyEncryptedKey", on: sut, hasType: .string)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "userKeyID", on: sut, hasType: .string)
     }
 
