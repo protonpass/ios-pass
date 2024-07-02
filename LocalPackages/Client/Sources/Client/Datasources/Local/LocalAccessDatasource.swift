@@ -24,6 +24,7 @@ import Entities
 public protocol LocalAccessDatasourceProtocol: Sendable {
     func getAccess(userId: String) async throws -> Access?
     func upsert(access: Access, userId: String) async throws
+    func removeAccess(userId: String) async throws
 }
 
 public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol {}
@@ -40,7 +41,7 @@ public extension LocalAccessDatasource {
 
     func upsert(access: Access, userId: String) async throws {
         // Work-around core data bug that doesn't update boolean values
-        try await deleteAccess(for: userId)
+        try await removeAccess(userId: userId)
 
         let taskContext = newTaskContext(type: .insert)
 
@@ -51,10 +52,8 @@ public extension LocalAccessDatasource {
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
-}
 
-private extension LocalAccessDatasource {
-    func deleteAccess(for userId: String) async throws {
+    func removeAccess(userId: String) async throws {
         let deleteContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "AccessEntity")
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
