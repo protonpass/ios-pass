@@ -86,6 +86,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "symmetricallyEncryptedKey", on: sut, hasType: .string)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "userKeyID", on: sut, hasType: .string)
     }
 
@@ -122,6 +123,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .integer64)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
     func testTelemetryEventEntity() {
