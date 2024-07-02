@@ -9923,6 +9923,16 @@
         }
       }
     },
+    "Account name: %@ and email: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account name: %1$@ and email: %2$@"
+          }
+        }
+      }
+    },
     "Active" : {
       "localizations" : {
         "be" : {

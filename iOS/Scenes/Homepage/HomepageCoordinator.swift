@@ -524,6 +524,8 @@ extension HomepageCoordinator {
                     copyToClipboard(text, bannerMessage: message, bannerDisplay: bannerManager)
                 case let .back(isShownAsSheet):
                     itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
+                case let signOut:
+                    accountViewModelWantsToSignOut()
                 }
             }
             .store(in: &cancellables)
