@@ -79,20 +79,14 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
                 await dataMigrationManager.addMigration(.userIdInItemsSearchEntriesAndShareKeys)
                 return
             }
-            // Migrate items
-            logger.trace("Starting adding user id to local items")
-            try await (itemRepository as? ItemRepository)?.updateLocalItems(with: userId)
-            logger.trace("Finished adding user id to local items")
 
-            // Migrate search entries
-            logger.trace("Starting adding user id to local search entries")
-            try await (searchEntryDatasource as? LocalSearchEntryDatasource)?.updateSearchEntries(with: userId)
-            logger.trace("Finished adding user id to local search entries")
-
-            // Migrate share keys
-            logger.trace("Starting adding user id to local share keys")
-            try await (shareKeyDatasource as? LocalShareKeyDatasource)?.updateKeys(with: userId)
-            logger.trace("Finished adding user id to local share keys")
+            logger.trace("Start adding user id to items, search entries & share keys")
+            async let items: ()? = (itemRepository as? ItemRepository)?.updateLocalItems(with: userId)
+            async let searchEntries: ()? = (searchEntryDatasource as? LocalSearchEntryDatasource)?
+                .updateSearchEntries(with: userId)
+            async let shareKeys: ()? = (shareKeyDatasource as? LocalShareKeyDatasource)?.updateKeys(with: userId)
+            _ = try await (items, searchEntries, shareKeys)
+            logger.trace("Finish adding user id to items, search entries & share keys")
 
             await dataMigrationManager.addMigration(.userIdInItemsSearchEntriesAndShareKeys)
         }
