@@ -142,6 +142,7 @@
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String"/>
         <attribute name="symmetricallyEncryptedKey" attributeType="String"/>
+        <attribute name="userID" attributeType="String" defaultValueString=""/>
         <attribute name="userKeyID" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

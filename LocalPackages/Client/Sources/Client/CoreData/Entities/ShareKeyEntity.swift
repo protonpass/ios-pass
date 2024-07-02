@@ -37,6 +37,7 @@ extension ShareKeyEntity {
     @NSManaged var keyRotation: Int64
     @NSManaged var shareID: String
     @NSManaged var symmetricallyEncryptedKey: String
+    @NSManaged var userID: String
     @NSManaged var userKeyID: String
 }
 
@@ -44,6 +45,7 @@ extension ShareKeyEntity {
     func toSymmetricallyEncryptedShareKey() -> SymmetricallyEncryptedShareKey {
         .init(encryptedKey: symmetricallyEncryptedKey,
               shareId: shareID,
+              userId: userID,
               shareKey: .init(createTime: createTime,
                               key: key,
                               keyRotation: keyRotation,
@@ -56,6 +58,7 @@ extension ShareKeyEntity {
         keyRotation = symmetricallyEncryptedShareKey.shareKey.keyRotation
         shareID = symmetricallyEncryptedShareKey.shareId
         symmetricallyEncryptedKey = symmetricallyEncryptedShareKey.encryptedKey
+        userID = symmetricallyEncryptedShareKey.userId
         userKeyID = symmetricallyEncryptedShareKey.shareKey.userKeyID
     }
 }
