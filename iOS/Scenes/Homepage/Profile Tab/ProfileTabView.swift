@@ -33,7 +33,6 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
     @State private var showSwitcher = false
-    @State private var accountToSignOut: AccountCellDetail?
 
     var body: some View {
         mainContainer
@@ -50,15 +49,8 @@ struct ProfileTabView: View {
                                                     animationNamespace: animationNamespace,
                                                     onSelect: { viewModel.switch(to: $0) },
                                                     onManage: { handleManage($0) },
-                                                    onSignOut: { accountToSignOut = $0 },
+                                                    onSignOut: { viewModel.signOut(account: $0) },
                                                     onAddAccount: { handleAddAccount() }))
-            }
-            .alert(item: $accountToSignOut) { account in
-                Alert(title: Text("You will be signed out"),
-                      message: Text(verbatim: "\(account.email)"),
-                      primaryButton: .destructive(Text("Yes, sign me out")) {
-                          viewModel.signOut(account: account)
-                      }, secondaryButton: .cancel())
             }
             .navigationStackEmbeded()
             .task {
