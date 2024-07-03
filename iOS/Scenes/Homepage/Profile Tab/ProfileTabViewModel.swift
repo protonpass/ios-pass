@@ -25,6 +25,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreLogin
+import Screens
 import SwiftUI
 import UseCases
 
@@ -44,6 +45,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let localAccessDatasource = resolve(\SharedRepositoryContainer.localAccessDatasource)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
@@ -75,8 +77,33 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
     @Published private(set) var secureLinks: [SecureLink]?
-    @Published private(set) var currentActiveUser: UserData?
-    @Published private(set) var userAccounts = [UserData]()
+
+    // Accounts management
+    @Published private var currentActiveUser: UserData?
+    var activeAccountDetail: AccountCellDetail? {
+        if let currentActiveUser {
+            .init(id: currentActiveUser.userId,
+                  isPremium: isPremiumUser(currentActiveUser.userId),
+                  initials: currentActiveUser.initials,
+                  displayName: currentActiveUser.displayName,
+                  email: currentActiveUser.email)
+        } else {
+            nil
+        }
+    }
+
+    /// User data of all logged in accounts
+    @Published private var userAccounts = [UserData]()
+    var accountDetails: [AccountCellDetail] {
+        userAccounts.map { .init(id: $0.userId,
+                                 isPremium: isPremiumUser($0.userId),
+                                 initials: $0.initials,
+                                 displayName: $0.displayName,
+                                 email: $0.email) }
+    }
+
+    /// Accesses of all logged in accounts
+    @Published private var accesses = [UserAccess]()
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -114,6 +141,7 @@ extension ProfileTabViewModel {
 
     func refreshPlan() async {
         do {
+            accesses = try await localAccessDatasource.getAllAccesses()
             // First get local plan to optimistically display it
             // and then try to refresh the plan to have it updated
             plan = try await accessRepository.getPlan()
@@ -239,24 +267,25 @@ extension ProfileTabViewModel {
         delegate?.profileTabViewModelWantsToQaFeatures()
     }
 
-    func switchUser(userId: String) {
+    func `switch`(to account: AccountCellDetail) {
+        guard account.id != currentActiveUser?.userId else { return }
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
-                try await userManager.switchActiveUser(with: userId)
+                try await userManager.switchActiveUser(with: account.id)
             } catch {
                 handle(error: error)
             }
         }
     }
 
-    func signOut(user: UserData) {
+    func signOut(account: AccountCellDetail) {
         Task { [weak self] in
             guard let self else { return }
             await revokeCurrentSession()
-            router.action(.signOut(userId: user.id))
+            router.action(.signOut(userId: account.id))
         }
     }
 }
@@ -409,8 +438,19 @@ private extension ProfileTabViewModel {
         logger.info("Reindexed credentials")
     }
 
+    func isPremiumUser(_ userId: String) -> Bool {
+        accesses.first(where: { $0.userId == userId })?.access.plan.isFreeUser == false
+    }
+
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
+}
+
+private extension UserData {
+    var userId: String { user.ID }
+    var displayName: String { user.name ?? "?" }
+    var email: String { user.email ?? "?" }
+    var initials: String { user.name?.initials() ?? user.email?.initials() ?? "?" }
 }
