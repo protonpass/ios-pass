@@ -53,7 +53,7 @@ struct AccountList: View {
         .background(PassColor.backgroundNorm.toColor)
         .roundedEditableSection()
         .animation(.default, value: animated)
-        .onAppear {
+        .onFirstAppear {
             animated.toggle()
         }
     }

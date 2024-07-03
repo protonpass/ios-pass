@@ -84,7 +84,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         if let currentActiveUser {
             .init(id: currentActiveUser.userId,
                   isPremium: isPremiumUser(currentActiveUser.userId),
-                  initials: currentActiveUser.initials,
+                  initial: currentActiveUser.initial,
                   displayName: currentActiveUser.displayName,
                   email: currentActiveUser.email)
         } else {
@@ -97,7 +97,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     var accountDetails: [AccountCellDetail] {
         userAccounts.map { .init(id: $0.userId,
                                  isPremium: isPremiumUser($0.userId),
-                                 initials: $0.initials,
+                                 initial: $0.initial,
                                  displayName: $0.displayName,
                                  email: $0.email) }
     }
@@ -452,5 +452,5 @@ private extension UserData {
     var userId: String { user.ID }
     var displayName: String { user.name ?? "?" }
     var email: String { user.email ?? "?" }
-    var initials: String { user.name?.initials() ?? user.email?.initials() ?? "?" }
+    var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
 }
