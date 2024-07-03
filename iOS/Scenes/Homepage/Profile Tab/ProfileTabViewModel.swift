@@ -284,7 +284,9 @@ extension ProfileTabViewModel {
     func signOut(account: AccountCellDetail) {
         Task { [weak self] in
             guard let self else { return }
+            router.display(element: .globalLoading(shouldShow: true))
             await revokeCurrentSession()
+            router.display(element: .globalLoading(shouldShow: false))
             router.action(.signOut(userId: account.id))
         }
     }
