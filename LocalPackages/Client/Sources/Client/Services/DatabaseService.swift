@@ -23,14 +23,7 @@ import CoreData
 import Foundation
 
 public protocol DatabaseServiceProtocol: Sendable {
-    func resetContainer(inMemory: Bool)
     func getContainer() -> NSPersistentContainer
-}
-
-public extension DatabaseServiceProtocol {
-    func resetContainer(inMemory: Bool = false) {
-        resetContainer(inMemory: inMemory)
-    }
 }
 
 public final class DatabaseService: DatabaseServiceProtocol, @unchecked Sendable {
@@ -45,31 +38,6 @@ public final class DatabaseService: DatabaseServiceProtocol, @unchecked Sendable
             logger = nil
         }
         container = DatabaseService.build(name: kProtonPassContainerName, inMemory: inMemory)
-    }
-
-    public func resetContainer(inMemory: Bool = false) {
-        lock.lock()
-
-        defer {
-            lock.unlock()
-        }
-
-        do {
-            logger?.info("Recreating Store")
-            // Delete existing persistent stores
-            let storeContainer = container.persistentStoreCoordinator
-            for store in storeContainer.persistentStores {
-                if let url = store.url {
-                    try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
-                }
-            }
-
-            // Re-create persistent container
-            container = DatabaseService.build(name: kProtonPassContainerName, inMemory: inMemory)
-            logger?.info("Nuked local data")
-        } catch {
-            logger?.error(message: "Failed to reset database container", error: error)
-        }
     }
 
     public func getContainer() -> NSPersistentContainer {

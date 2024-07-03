@@ -28,7 +28,7 @@ import Entities
 import XCTest
 
 final class PreferencesManagerTest: XCTestCase {
-    var currentUserIdProvider: CurrentUserIdProviderMock!
+    var userManager: UserManagerProtocolMock!
     var keychainMockProvider: KeychainProtocolMockProvider!
     var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
     var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocolMock!
@@ -41,8 +41,8 @@ final class PreferencesManagerTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        currentUserIdProvider = .init()
-        currentUserIdProvider.stubbedGetCurrentUserIdResult = .random()
+        userManager = .init()
+        userManager.stubbedGetActiveUserIdResult = .random()
 
         keychainMockProvider = .init()
         keychainMockProvider.setUp()
@@ -74,7 +74,7 @@ final class PreferencesManagerTest: XCTestCase {
 
         cancellables = .init()
 
-        sut = PreferencesManager(currentUserIdProvider: currentUserIdProvider,
+        sut = PreferencesManager(userManager: userManager,
                                  appPreferencesDatasource: appPreferencesDatasource,
                                  sharedPreferencesDatasource: sharedPreferencesDatasource,
                                  userPreferencesDatasource: userPreferencesDatasource, 
@@ -214,7 +214,7 @@ extension PreferencesManagerTest {
     func testRemoveUserPreferences() async throws {
         try await sut.setUp()
         try await sut.removeUserPreferences()
-        if let userId = try await currentUserIdProvider.getCurrentUserId() {
+        if let userId = try? await userManager.getActiveUserId() {
             let preferences = try await userPreferencesDatasource.getPreferences(for: userId)
             XCTAssertNil(preferences)
         }

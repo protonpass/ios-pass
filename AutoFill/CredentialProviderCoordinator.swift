@@ -52,13 +52,13 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     // Use cases
     private let completeConfiguration = resolve(\AutoFillUseCaseContainer.completeConfiguration)
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
+    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
@@ -67,8 +67,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -116,9 +115,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await preferencesManager.setUp()
-                try await userManager.setUp()
-                try await applyAppMigration()
+                try await setUpBeforeLaunching()
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
                 rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)

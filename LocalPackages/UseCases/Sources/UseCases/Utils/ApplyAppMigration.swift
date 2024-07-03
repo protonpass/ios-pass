@@ -37,7 +37,7 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     private let dataMigrationManager: any DataMigrationManagerProtocol
     private let userManager: any UserManagerProtocol
     private let appData: any AppDataProtocol
-    private let itemRepository: any ItemRepositoryProtocol
+    private let itemDatasource: any LocalItemDatasourceProtocol
     private let searchEntryDatasource: any LocalSearchEntryDatasourceProtocol
     private let shareKeyDatasource: any LocalShareKeyDatasourceProtocol
     private let logger: Logger
@@ -45,14 +45,14 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     public init(dataMigrationManager: any DataMigrationManagerProtocol,
                 userManager: any UserManagerProtocol,
                 appData: any AppDataProtocol,
-                itemRepository: any ItemRepositoryProtocol,
+                itemDatasource: any LocalItemDatasourceProtocol,
                 searchEntryDatasource: any LocalSearchEntryDatasourceProtocol,
                 shareKeyDatasource: any LocalShareKeyDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
         self.dataMigrationManager = dataMigrationManager
         self.userManager = userManager
         self.appData = appData
-        self.itemRepository = itemRepository
+        self.itemDatasource = itemDatasource
         self.searchEntryDatasource = searchEntryDatasource
         self.shareKeyDatasource = shareKeyDatasource
         logger = .init(manager: logManager)
@@ -81,7 +81,7 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
             }
 
             logger.trace("Start adding user id to items, search entries & share keys")
-            async let items: ()? = (itemRepository as? ItemRepository)?.updateLocalItems(with: userId)
+            async let items: ()? = (itemDatasource as? LocalItemDatasource)?.updateLocalItems(with: userId)
             async let searchEntries: ()? = (searchEntryDatasource as? LocalSearchEntryDatasource)?
                 .updateSearchEntries(with: userId)
             async let shareKeys: ()? = (shareKeyDatasource as? LocalShareKeyDatasource)?.updateKeys(with: userId)

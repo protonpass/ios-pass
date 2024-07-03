@@ -35,6 +35,9 @@ public protocol LocalItemReadEventDatasourceProtocol: Sendable {
 
     /// Remove events already sent to the BE
     func removeEvents(_ events: [ItemReadEvent]) async throws
+
+    /// Remove all events related to a user
+    func removeEvents(userId: String) async throws
 }
 
 public final class LocalItemReadEventDatasource: LocalDatasource, LocalItemReadEventDatasourceProtocol {}
@@ -86,5 +89,13 @@ public extension LocalItemReadEventDatasource {
             }
             try context.save()
         }
+    }
+
+    func removeEvents(userId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemReadEventEntity")
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
     }
 }
