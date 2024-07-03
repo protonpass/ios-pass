@@ -28,44 +28,12 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-private struct FillerUserAccountDetail: AccountCellDetail, Identifiable {
-    let id: String
-    let initials: String
-    let displayName: String
-    let email: String
-
-    static var empty: FillerUserAccountDetail {
-        FillerUserAccountDetail(id: UUID().uuidString,
-                                initials: "",
-                                displayName: "",
-                                email: "")
-    }
-}
-
-extension UserData: AccountCellDetail {
-    public var id: String {
-        user.ID
-    }
-
-    public var initials: String {
-        user.name?.initials() ?? ""
-    }
-
-    public var displayName: String {
-        user.displayName ?? ""
-    }
-
-    public var email: String {
-        user.email ?? ""
-    }
-}
-
 // swiftlint:disable:next type_body_length
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
     @State private var showSwitcher = false
-    @State private var accountToSignOut: UserData?
+    @State private var accountToSignOut: AccountCellDetail?
 
     var body: some View {
         mainContainer
@@ -74,24 +42,22 @@ struct ProfileTabView: View {
             .navigationBarTitleDisplayMode(.large)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
-            .if(viewModel.currentActiveUser) { view, currentActiveUser in
+            .if(viewModel.activeAccountDetail) { view, activeAccount in
                 view
-                    .modifier(AccountSwitchModifier(details: viewModel.userAccounts,
-                                                    activeId: currentActiveUser.id,
+                    .modifier(AccountSwitchModifier(details: viewModel.accountDetails,
+                                                    activeId: activeAccount.id,
                                                     showSwitcher: $showSwitcher,
                                                     animationNamespace: animationNamespace,
-                                                    onSelect: { viewModel.switchUser(userId: $0) },
-                                                    onManage: { _ in
-                                                        handleManage()
-                                                    },
-                                                    onSignOut: { handleSignOut($0) },
+                                                    onSelect: { viewModel.switch(to: $0) },
+                                                    onManage: { handleManage($0) },
+                                                    onSignOut: { accountToSignOut = $0 },
                                                     onAddAccount: { handleAddAccount() }))
             }
-            .alert(item: $accountToSignOut) { user in
+            .alert(item: $accountToSignOut) { account in
                 Alert(title: Text("You will be signed out"),
-                      message: Text(verbatim: "\(user.email)"),
+                      message: Text(verbatim: "\(account.email)"),
                       primaryButton: .destructive(Text("Yes, sign me out")) {
-                          viewModel.signOut(user: user)
+                          viewModel.signOut(account: account)
                       }, secondaryButton: .cancel())
             }
             .navigationStackEmbeded()
@@ -147,26 +113,12 @@ struct ProfileTabView: View {
         }
     }
 
-    func handleManage() {
-        dismissAccountSwitcherAndDisplay()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            viewModel.showAccountMenu()
-        }
-    }
-
-    func handleSignOut(_ id: any AccountCellDetail) {
-        dismissAccountSwitcherAndDisplay()
-        accountToSignOut = id as? UserData
+    func handleManage(_ account: AccountCellDetail) {
+        viewModel.showAccountMenu()
     }
 
     func handleAddAccount() {
-        dismissAccountSwitcherAndDisplay()
-    }
-
-    func dismissAccountSwitcherAndDisplay() {
-        withAnimation {
-            showSwitcher.toggle()
-        }
+        print(#function)
     }
 
     @ToolbarContentBuilder
@@ -186,14 +138,14 @@ struct ProfileTabView: View {
 
     @ViewBuilder
     private var accountSection: some View {
-        if let activeUser = viewModel.currentActiveUser {
+        if let activeUser = viewModel.activeAccountDetail {
             VStack {
                 Text("Account")
                     .profileSectionTitle()
 
                 Group {
                     if showSwitcher {
-                        AccountCell(detail: FillerUserAccountDetail.empty,
+                        AccountCell(detail: AccountCellDetail.empty,
                                     animationNamespace: animationNamespace)
                     } else {
                         AccountCell(detail: activeUser,

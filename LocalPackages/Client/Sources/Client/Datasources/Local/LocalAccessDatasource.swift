@@ -23,6 +23,7 @@ import Entities
 
 public protocol LocalAccessDatasourceProtocol: Sendable {
     func getAccess(userId: String) async throws -> UserAccess?
+    func getAllAccesses() async throws -> [UserAccess]
     func upsert(access: UserAccess) async throws
     func removeAccess(userId: String) async throws
 }
@@ -36,7 +37,15 @@ public extension LocalAccessDatasource {
         let fetchRequest = AccessEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        assert(entities.count <= 1, "Should have maximum 1 access per user")
         return entities.compactMap { $0.toUserAccess() }.first
+    }
+
+    func getAllAccesses() async throws -> [UserAccess] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = AccessEntity.fetchRequest()
+        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return entities.compactMap { $0.toUserAccess() }
     }
 
     func upsert(access: UserAccess) async throws {

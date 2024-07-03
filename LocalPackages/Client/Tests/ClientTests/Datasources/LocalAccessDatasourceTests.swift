@@ -23,11 +23,11 @@ import Entities
 import XCTest
 
 final class LocalAccessDatasourceTests: XCTestCase {
-    var sut: LocalAccessDatasource!
+    var sut: LocalAccessDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
-        sut = .init(databaseService: DatabaseService(inMemory: true))
+        sut = LocalAccessDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {
@@ -85,5 +85,39 @@ extension LocalAccessDatasourceTests {
 
         // Then
         try await XCTAssertNilAsync(await sut.getAccess(userId: givenUserId))
+    }
+
+    func testGetAllAccess() async throws {
+        // Given
+        let access1 = UserAccess.random()
+        let access2 = UserAccess.random()
+        let access3 = UserAccess.random()
+
+        try await sut.upsert(access: access1)
+        try await sut.upsert(access: access2)
+        try await sut.upsert(access: access3)
+
+        // When
+        let accesses = try await sut.getAllAccesses()
+
+        // Then
+        XCTAssertEqual(accesses.count, 3)
+        XCTAssertTrue(accesses.contains(where: { $0 == access1 }))
+        XCTAssertTrue(accesses.contains(where: { $0 == access2 }))
+        XCTAssertTrue(accesses.contains(where: { $0 == access3 }))
+    }
+}
+
+private extension UserAccess {
+    static func random() -> Self {
+        .init(userId: .random(),
+              access: .init(plan: .init(type: .random(),
+                                        internalName: .random(),
+                                        displayName: .random(),
+                                        hideUpgrade: .random()),
+                            monitor: .init(protonAddress: .random(), aliases: .random()),
+                            pendingInvites: .random(in: 1...100),
+                            waitingNewUserInvites: .random(in: 1...100),
+                            minVersionUpgrade: .random()))
     }
 }

@@ -26,12 +26,12 @@ import SwiftUI
 struct AccountList: View {
     @State private var animated = false
 
-    let details: [any AccountCellDetail]
+    let details: [AccountCellDetail]
     let activeId: String
     let animationNamespace: Namespace.ID
-    let onSelect: (String) -> Void
-    let onManage: (any AccountCellDetail) -> Void
-    let onSignOut: (any AccountCellDetail) -> Void
+    let onSelect: (AccountCellDetail) -> Void
+    let onManage: (AccountCellDetail) -> Void
+    let onSignOut: (AccountCellDetail) -> Void
     let onAddAccount: () -> Void
 
     var body: some View {
@@ -60,14 +60,14 @@ struct AccountList: View {
 }
 
 private extension AccountList {
-    func row(for detail: any AccountCellDetail, isActive: Bool) -> some View {
+    func row(for detail: AccountCellDetail, isActive: Bool) -> some View {
         HStack {
             AccountCell(detail: detail,
                         isActive: isActive,
                         showInactiveIcon: isActive,
                         animationNamespace: animationNamespace)
                 .onTapGesture {
-                    onSelect(detail.id)
+                    onSelect(detail)
                 }
 
             if isActive {
