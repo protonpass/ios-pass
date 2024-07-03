@@ -113,7 +113,7 @@ struct ProfileTabView: View {
         }
     }
 
-    func handleManage(_ account: AccountCellDetail) {
+    func handleManage(_ _: AccountCellDetail) {
         viewModel.showAccountMenu()
     }
 
