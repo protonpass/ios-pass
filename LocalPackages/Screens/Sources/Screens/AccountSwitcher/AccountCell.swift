@@ -23,15 +23,36 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public protocol AccountCellDetail: Sendable, Identifiable {
-    var id: String { get }
-    var initials: String { get }
-    var displayName: String { get }
-    var email: String { get }
+public struct AccountCellDetail: Identifiable {
+    public let id: String
+    public let isPremium: Bool
+    public let initials: String
+    public let displayName: String
+    public let email: String
+
+    public init(id: String,
+                isPremium: Bool,
+                initials: String,
+                displayName: String,
+                email: String) {
+        self.id = id
+        self.isPremium = isPremium
+        self.initials = initials
+        self.displayName = displayName
+        self.email = email
+    }
+
+    public static var empty: Self {
+        .init(id: UUID().uuidString,
+              isPremium: false,
+              initials: "",
+              displayName: "",
+              email: "")
+    }
 }
 
 public struct AccountCell: View {
-    let detail: any AccountCellDetail
+    let detail: AccountCellDetail
     let isActive: Bool
     let showInactiveIcon: Bool
     let animationNamespace: Namespace.ID
@@ -47,7 +68,7 @@ public struct AccountCell: View {
         }
     }
 
-    public init(detail: any AccountCellDetail,
+    public init(detail: AccountCellDetail,
                 isActive: Bool = false,
                 showInactiveIcon: Bool = true,
                 animationNamespace: Namespace.ID) {
