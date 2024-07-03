@@ -76,7 +76,7 @@ final class AppCoordinator {
 
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
-    @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
+    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
 
@@ -179,10 +179,7 @@ final class AppCoordinator {
     /// Necessary set up like initializing preferences before starting user flow
     func setUpAndStart() async {
         do {
-            // Should setup all tools
-            try await userManager.setUp()
-            try await preferencesManager.setUp()
-            try await applyAppMigration()
+            try await setUpBeforeLaunching()
             window.overrideUserInterfaceStyle = theme.userInterfaceStyle
             start()
             refreshFeatureFlags()
