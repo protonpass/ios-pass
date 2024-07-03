@@ -96,8 +96,6 @@ private extension AccountSwitchModifier {
                 completion()
             }
         } else {
-            // Stick to SwiftUI's default animation duration
-            // https://developer.apple.com/documentation/swiftui/animation/linear#
             let duration = DesignConstant.animationDuration
             withAnimation(.linear(duration: duration)) {
                 showSwitcher.toggle()
