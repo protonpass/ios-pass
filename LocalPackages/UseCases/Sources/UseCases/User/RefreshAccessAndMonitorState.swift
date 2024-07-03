@@ -62,7 +62,7 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         let breachedAliases = aliases.filter(\.item.isBreachedAndMonitored)
         var breachCount = userBreaches.emailsCount
 
-        if access.monitor.aliases {
+        if access.access.monitor.aliases {
             breachCount += breachedAliases.count
         }
 
@@ -79,7 +79,7 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
             }
         }
 
-        updateState(isFreeUser: access.plan.isFreeUser,
+        updateState(isFreeUser: access.access.plan.isFreeUser,
                     breachCount: breachCount,
                     hasWeaknesses: hasWeaknesses,
                     latestBreach: latestBreach)

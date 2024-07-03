@@ -117,7 +117,7 @@ extension ProfileTabViewModel {
             // First get local plan to optimistically display it
             // and then try to refresh the plan to have it updated
             plan = try await accessRepository.getPlan()
-            plan = try await accessRepository.refreshAccess().plan
+            plan = try await accessRepository.refreshAccess().access.plan
         } catch {
             handle(error: error)
         }
