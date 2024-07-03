@@ -70,6 +70,16 @@ private extension SharedUseCasesContainer {
     }
 }
 
+// MARK: App
+
+extension SharedUseCasesContainer {
+    var setUpBeforeLaunching: Factory<any SetUpBeforeLaunchingUseCase> {
+        self { SetUpBeforeLaunching(userManager: self.userManager,
+                                    prefererencesManager: self.preferencesManager,
+                                    applyMigration: self.applyAppMigration()) }
+    }
+}
+
 // MARK: Permission
 
 extension SharedUseCasesContainer {
@@ -411,7 +421,7 @@ extension SharedUseCasesContainer {
         self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
                                  userManager: self.userManager,
                                  appData: SharedDataContainer.shared.appData(),
-                                 itemRepository: self.itemRepository,
+                                 itemDatasource: SharedRepositoryContainer.shared.localItemDatasource(),
                                  searchEntryDatasource: SharedRepositoryContainer.shared
                                      .localSearchEntryDatasource(),
                                  shareKeyDatasource: SharedRepositoryContainer.shared.localShareKeyDatasource(),
