@@ -37,13 +37,13 @@ private struct AccountSwitcherView: View {
 
     private let eric = AccountCellDetail(id: UUID().uuidString,
                                          isPremium: true,
-                                         initials: "EN",
+                                         initial: "E",
                                          displayName: "Eric Norbert",
                                          email: "eric.norbert@proton.me")
 
     private let john = AccountCellDetail(id: UUID().uuidString,
                                          isPremium: false,
-                                         initials: "JD",
+                                         initial: "J",
                                          displayName: "John Doe",
                                          email: "john.doe@proton.me")
 
