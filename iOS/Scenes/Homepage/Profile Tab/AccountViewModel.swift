@@ -97,7 +97,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
                 // First get local plan to optimistically display it
                 // and then try to refresh the plan to have it updated
                 plan = try await accessRepository.getPlan()
-                plan = try await accessRepository.refreshAccess().plan
+                plan = try await accessRepository.refreshAccess().access.plan
             } catch {
                 logger.error(error)
             }

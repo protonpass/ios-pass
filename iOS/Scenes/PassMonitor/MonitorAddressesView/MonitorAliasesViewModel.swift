@@ -52,7 +52,7 @@ final class MonitorAliasesViewModel: ObservableObject {
     }
 
     init(infos: [AliasMonitorInfo]) {
-        access = accessRepository.access.value
+        access = accessRepository.access.value?.access
         dismissedCustomDomainExplanation = getAppPreferences().dismissedCustomDomainExplanation
         self.infos = infos
         setUp()
@@ -130,7 +130,7 @@ private extension MonitorAliasesViewModel {
             .compactMap { $0 }
             .sink { [weak self] newValue in
                 guard let self else { return }
-                access = newValue
+                access = newValue.access
             }
             .store(in: &cancellables)
     }

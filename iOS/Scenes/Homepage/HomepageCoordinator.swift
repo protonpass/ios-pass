@@ -1065,7 +1065,7 @@ extension HomepageCoordinator {
         Task { [weak self] in
             guard let self,
                   await loginMethod.isManualLogIn() else { return }
-            if let access = try? await accessRepository.getAccess(),
+            if let access = try? await accessRepository.getAccess().access,
                access.waitingNewUserInvites > 0 {
                 // New user just registered after an invitation
                 presentAwaitAccessConfirmationView()

@@ -52,11 +52,12 @@ extension LocalAccessDatasourceTests {
                                  pendingInvites: 1,
                                  waitingNewUserInvites: 2,
                                  minVersionUpgrade: nil)
+        let givenUserAccess = UserAccess(userId: givenUserId, access: givenAccess)
         // When
-        try await sut.upsert(access: givenAccess, userId: givenUserId)
+        try await sut.upsert(access: givenUserAccess)
 
         // Then
-        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), givenAccess)
+        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), givenUserAccess)
 
         // Given
         let updatedAccess = Access(plan: .init(type: "plus",
@@ -71,12 +72,13 @@ extension LocalAccessDatasourceTests {
                                    pendingInvites: 3,
                                    waitingNewUserInvites: 4,
                                    minVersionUpgrade: nil)
+        let updatedUserAccess = UserAccess(userId: givenUserId, access: updatedAccess)
 
         // When
-        try await sut.upsert(access: updatedAccess, userId: givenUserId)
+        try await sut.upsert(access: updatedUserAccess)
 
         // Then
-        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), updatedAccess)
+        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), updatedUserAccess)
 
         // When
         try await sut.removeAccess(userId: givenUserId)
