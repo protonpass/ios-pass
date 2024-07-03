@@ -172,9 +172,3 @@ private extension AppData {
         }
     }
 }
-
-extension AppData {
-    func getCurrentUserId() async throws -> String? {
-        userData?.user.ID
-    }
-}
