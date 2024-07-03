@@ -26,6 +26,8 @@ import UIKit
 import UseCases
 
 protocol WipeAllDataUseCase: Sendable {
+    // swiftlint:disable:next todo
+    // TODO: Remove the dependance on `UserManagerProtocol` and inject `userId`
     func execute() async
 }
 
