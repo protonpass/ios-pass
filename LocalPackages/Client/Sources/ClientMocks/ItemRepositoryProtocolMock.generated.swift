@@ -712,22 +712,8 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
-    // MARK: - updateLocalItemsWithUserId
-    public var updateLocalItemsWithUserIdThrowableError36: Error?
-    public var closureUpdateLocalItemsWithUserId: () -> () = {}
-    public var invokedUpdateLocalItemsWithUserIdfunction = false
-    public var invokedUpdateLocalItemsWithUserIdCount = 0
-
-    public func updateLocalItemsWithUserId() async throws {
-        invokedUpdateLocalItemsWithUserIdfunction = true
-        invokedUpdateLocalItemsWithUserIdCount += 1
-        if let error = updateLocalItemsWithUserIdThrowableError36 {
-            throw error
-        }
-        closureUpdateLocalItemsWithUserId()
-    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError37: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError36: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -740,7 +726,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError37 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError36 {
             throw error
         }
         closureTotpCreationDateThreshold()
