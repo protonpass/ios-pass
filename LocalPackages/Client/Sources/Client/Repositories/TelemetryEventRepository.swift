@@ -100,7 +100,7 @@ public extension TelemetryEventRepository {
         let telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
 
         logger.trace("Refreshing user access")
-        let plan = try await accessRepository.refreshAccess().plan
+        let plan = try await accessRepository.refreshAccess().access.plan
 
         try await sendAllItemReadEvents(plan: plan)
 
@@ -122,7 +122,7 @@ public extension TelemetryEventRepository {
     func forceSendAllEvents() async throws {
         logger.debug("Force sending all events")
         let userId = try await userManager.getActiveUserId()
-        let plan = try await accessRepository.refreshAccess().plan
+        let plan = try await accessRepository.refreshAccess().access.plan
         try await sendAllItemReadEvents(plan: plan)
         try await sendAllTelemetryEvents(userId: userId, plan: plan)
         logger.info("Force sent all events")
