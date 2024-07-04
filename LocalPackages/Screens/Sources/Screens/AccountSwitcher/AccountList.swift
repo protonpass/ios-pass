@@ -25,7 +25,6 @@ import SwiftUI
 
 struct AccountList: View {
     @State private var animated = false
-    @State private var accountToManage: AccountCellDetail?
 
     let details: [AccountCellDetail]
     let activeId: String
@@ -72,17 +71,6 @@ struct AccountList: View {
         .onFirstAppear {
             animated.toggle()
         }
-        .alert(Text("Manage account"),
-               isPresented: $accountToManage.mappedToBool(),
-               presenting: accountToManage,
-               actions: { account in
-                   Button(action: { onManage(account) },
-                          label: { Text("Yes, switch account") })
-                   Button(role: .cancel, label: { Text("Cancel") })
-               },
-               message: { account in
-                   Text("You need to switch to \(account.email) in order to manage it")
-               })
     }
 }
 
@@ -98,7 +86,7 @@ private extension AccountList {
                 }
 
             Menu(content: {
-                Button(action: { handleManage(detail) },
+                Button(action: { onManage(detail) },
                        label: { Label(title: { Text("Manage account") },
                                       icon: { Image(uiImage: IconProvider.cogWheel) }) })
 
@@ -128,15 +116,5 @@ private extension AccountList {
 
     func icon(with uiImage: UIImage, foregroundColor: UIColor) -> some View {
         SwiftUIImage(image: uiImage, width: 24, tintColor: foregroundColor)
-    }
-}
-
-private extension AccountList {
-    func handleManage(_ account: AccountCellDetail) {
-        if account.id == activeId {
-            onManage(account)
-        } else {
-            accountToManage = account
-        }
     }
 }

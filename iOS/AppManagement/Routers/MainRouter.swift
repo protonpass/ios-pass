@@ -130,6 +130,7 @@ enum AlertDestination: Sendable {
 enum ActionDestination: Sendable {
     case copyToClipboard(text: String, message: String)
     case back(isShownAsSheet: Bool)
+    case manage(userId: String)
     case signOut(userId: String)
 }
 
