@@ -38,19 +38,19 @@ extension HomepageCoordinator {
 
                 // Scenario 1: Only 1 user
                 if !multiAccounts {
-                    signOutScenario1(user)
+                    signOutSingleUser(user)
                     return
                 }
 
                 // Scenario 2: Sign out active user when multiple users
                 if isActive {
-                    try signOutScenario2(userToSignOut: user, allUsers: users)
+                    try signOutActiveUser(userToSignOut: user, allUsers: users)
                     return
                 }
 
                 // Scenario 3: Sign out inactive user when multiple users
                 if !isActive {
-                    signOutScenario3(user)
+                    signOutInactive(user)
                     return
                 }
 
@@ -80,7 +80,7 @@ private extension HomepageCoordinator {
     /// Step 4: Remove all local data
     /// Step 5: Reset repositories' on-memory caches
     /// Step 6: Back to welcome screen
-    func signOutScenario1(_ userData: UserData) {
+    func signOutSingleUser(_ userData: UserData) {
         let handler: () -> Void = { [weak self] in
             Task { [weak self] in
                 guard let self else { return }
@@ -102,7 +102,7 @@ private extension HomepageCoordinator {
     /// Step 5: Activate to the latest inactive user
     /// Step 6: Reinit event loop with the new user
     /// Step 7: Reload items
-    func signOutScenario2(userToSignOut: UserData, allUsers: [UserData]) throws {
+    func signOutActiveUser(userToSignOut: UserData, allUsers: [UserData]) throws {
         let otherUsers = allUsers.filter { $0.user.ID != userToSignOut.user.ID }
         guard let accountToActivate = otherUsers.first else {
             throw PassError.userManager(.noInactiveUserFound)
@@ -117,7 +117,7 @@ private extension HomepageCoordinator {
     /// Step 1: Revoke the session
     /// Step 2: Remove all local data
     /// Step 3: Remove cached credentials
-    func signOutScenario3(_ userData: UserData) {
+    func signOutInactive(_ userData: UserData) {
         let alert = signOutAlert(accountToSignOut: userData,
                                  accountToActivate: nil,
                                  onSignOut: { print(#function) })
