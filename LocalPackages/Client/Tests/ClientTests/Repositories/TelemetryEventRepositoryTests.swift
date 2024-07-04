@@ -70,7 +70,7 @@ private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepository
 }
 
 private final class MockedFreePlanRepository: AccessRepositoryProtocol {
-    let access: CurrentValueSubject<Access?, Never> = .init(nil)
+    let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
     let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     let mockedAccess = Access(plan: .init(type: "free",
@@ -86,15 +86,15 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
                               waitingNewUserInvites: 1,
                               minVersionUpgrade: nil)
 
-    func getAccess() async throws -> Access { mockedAccess }
+    func getAccess() async throws -> UserAccess { .init(userId: .random(), access: mockedAccess) }
     func getPlan() async throws -> Plan { mockedAccess.plan }
-    func refreshAccess() async throws -> Access { mockedAccess }
+    func refreshAccess() async throws -> UserAccess { .init(userId: .random(), access: mockedAccess)  }
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws {}
     func updateAliasesMonitor(_ monitored: Bool) async throws {}
 }
 
 private final class MockedBusinessPlanRepository: AccessRepositoryProtocol {
-    let access: CurrentValueSubject<Access?, Never> = .init(nil)
+    let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
     let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     let mockedAccess = Access(plan: .init(type: "business",
@@ -110,9 +110,9 @@ private final class MockedBusinessPlanRepository: AccessRepositoryProtocol {
                               waitingNewUserInvites: 1,
                               minVersionUpgrade: nil)
 
-    func getAccess() async throws -> Access { mockedAccess }
+    func getAccess() async throws -> UserAccess { .init(userId: .random(), access: mockedAccess) }
     func getPlan() async throws -> Plan { mockedAccess.plan }
-    func refreshAccess() async throws -> Access { mockedAccess }
+    func refreshAccess() async throws -> UserAccess { .init(userId: .random(),  access: mockedAccess) }
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws {}
     func updateAliasesMonitor(_ monitored: Bool) async throws {}
 }

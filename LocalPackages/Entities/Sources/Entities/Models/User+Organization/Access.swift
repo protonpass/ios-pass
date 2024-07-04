@@ -52,3 +52,13 @@ public extension Access {
         }
     }
 }
+
+public struct UserAccess: Equatable, Sendable {
+    public let userId: String
+    public var access: Access
+
+    public init(userId: String, access: Access) {
+        self.userId = userId
+        self.access = access
+    }
+}
