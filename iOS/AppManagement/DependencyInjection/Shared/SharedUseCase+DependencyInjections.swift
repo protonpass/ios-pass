@@ -70,6 +70,16 @@ private extension SharedUseCasesContainer {
     }
 }
 
+// MARK: App
+
+extension SharedUseCasesContainer {
+    var setUpBeforeLaunching: Factory<any SetUpBeforeLaunchingUseCase> {
+        self { SetUpBeforeLaunching(userManager: self.userManager,
+                                    prefererencesManager: self.preferencesManager,
+                                    applyMigration: self.applyAppMigration()) }
+    }
+}
+
 // MARK: Permission
 
 extension SharedUseCasesContainer {
@@ -249,14 +259,14 @@ extension SharedUseCasesContainer {
                            appData: SharedDataContainer.shared.appData(),
                            apiManager: SharedToolingContainer.shared.apiManager(),
                            preferencesManager: self.preferencesManager,
-                           databaseService: SharedServiceContainer.shared.databaseService(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                            vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager(),
                            userManager: self.userManager,
                            featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository()) }
+                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                           removeUserLocalData: self.removeUserLocalData()) }
     }
 }
 
@@ -330,6 +340,25 @@ extension SharedUseCasesContainer {
     var getUserPlan: Factory<any GetUserPlanUseCase> {
         self { GetUserPlan(repository: SharedRepositoryContainer.shared.accessRepository()) }
     }
+
+    var removeUserLocalData: Factory<any RemoveUserLocalDataUseCase> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            return RemoveUserLocalData(accessDatasource: container.localAccessDatasource(),
+                                       authCredentialDatasource: container.localAuthCredentialDatasource(),
+                                       itemDatasource: container.localItemDatasource(),
+                                       itemReadEventDatasource: container.localItemReadEventDatasource(),
+                                       organizationDatasource: container.localOrganizationDatasource(),
+                                       searchEntryDatasource: container.localSearchEntryDatasource(),
+                                       shareDatasource: container.localShareDatasource(),
+                                       shareEventIdDatasource: container.localShareEventIDDatasource(),
+                                       shareKeyDatasource: container.localShareKeyDatasource(),
+                                       spotlightVaultDatasource: container.localSpotlightVaultDatasource(),
+                                       telemetryEventDatasource: container.localTelemetryEventDatasource(),
+                                       userDataDatasource: container.localUserDataDatasource(),
+                                       userPreferencesDatasource: container.userPreferencesDatasource())
+        }
+    }
 }
 
 // MARK: Passkey
@@ -392,7 +421,7 @@ extension SharedUseCasesContainer {
         self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
                                  userManager: self.userManager,
                                  appData: SharedDataContainer.shared.appData(),
-                                 itemRepository: self.itemRepository,
+                                 itemDatasource: SharedRepositoryContainer.shared.localItemDatasource(),
                                  searchEntryDatasource: SharedRepositoryContainer.shared
                                      .localSearchEntryDatasource(),
                                  shareKeyDatasource: SharedRepositoryContainer.shared.localShareKeyDatasource(),

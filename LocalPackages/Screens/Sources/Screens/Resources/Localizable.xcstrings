@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Add account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add account"
+          }
+        }
+      }
+    },
     "Add username field" : {
       "localizations" : {
         "be" : {
@@ -1599,6 +1609,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm hiểu thêm về Pass"
+          }
+        }
+      }
+    },
+    "Manage account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage account"
           }
         }
       }
@@ -3525,6 +3545,16 @@
         }
       }
     },
+    "Sign out" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
+          }
+        }
+      }
+    },
     "Signed out" : {
       "localizations" : {
         "be" : {
@@ -4002,6 +4032,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các gợi ý"
+          }
+        }
+      }
+    },
+    "Switch to" : {
+      "comment" : "Section title of the list of other logged in accounts to switch to",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch to"
           }
         }
       }
