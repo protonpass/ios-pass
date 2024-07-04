@@ -54,7 +54,9 @@ private extension HomepageCoordinator {
                                       preferredStyle: .alert)
         alert.addAction(.init(title: #localized("Switch and manage"),
                               style: .default,
-                              handler: { _ in print(#function) }))
+                              handler: { _ in
+                                  // Switch and then show account menu by calling showAccountMenu()
+                              }))
         alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
         present(alert)
     }
