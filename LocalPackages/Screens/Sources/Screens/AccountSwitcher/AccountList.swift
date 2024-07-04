@@ -70,7 +70,7 @@ private extension AccountList {
                     onSelect(detail.id)
                 }
 
-            if isActive {
+            if animated, isActive {
                 Menu(content: {
                     Button(action: { onManage(detail) },
                            label: { Label(title: { Text(verbatim: "Manage account") },

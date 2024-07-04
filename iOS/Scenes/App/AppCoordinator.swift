@@ -71,14 +71,14 @@ final class AppCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
-    private var featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private var pushNotificationService = resolve(\ServiceContainer.pushNotificationService)
 
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
     @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
+    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
@@ -100,16 +100,6 @@ final class AppCoordinator {
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             resetAllData()
         }
-
-        // swiftlint:disable:next todo
-        // TODO: Should not be api manager that logs the user totatally out
-        apiManager.sessionWasInvalidated
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] sessionUID in
-                guard let self else { return }
-                captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
-            }
-            .store(in: &cancellables)
     }
 
     deinit {
@@ -187,6 +177,16 @@ final class AppCoordinator {
             start()
             refreshFeatureFlags()
             setUpCoreTelemetry()
+
+            // swiftlint:disable:next todo
+            // TODO: Should not be api manager that logs the user totatally out
+            apiManager.sessionWasInvalidated
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] sessionUID in
+                    guard let self else { return }
+                    captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
+                }
+                .store(in: &cancellables)
         } catch {
             appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
         }
