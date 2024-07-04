@@ -138,9 +138,6 @@ final class AppCoordinator {
                     // swiftlint:disable:next todo
                     // TODO: need to tweack this to not bring user to welcome screen if other user are still connceted
                     logger.info("Logged out \(reason)")
-                    if reason != .noAuthSessionButUnauthSessionAvailable {
-                        resetAllData()
-                    }
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")

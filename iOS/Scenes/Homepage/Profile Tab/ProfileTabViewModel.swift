@@ -25,12 +25,12 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreLogin
+import Screens
 import SwiftUI
 import UseCases
 
 @MainActor
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
@@ -44,6 +44,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let localAccessDatasource = resolve(\SharedRepositoryContainer.localAccessDatasource)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
@@ -61,8 +62,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
-    @LazyInjected(\SharedUseCasesContainer
-        .revokeCurrentSession) private var revokeCurrentSession: any RevokeCurrentSessionUseCase
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -75,8 +74,33 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
     @Published private(set) var secureLinks: [SecureLink]?
-    @Published private(set) var currentActiveUser: UserData?
-    @Published private(set) var userAccounts = [UserData]()
+
+    // Accounts management
+    @Published private var currentActiveUser: UserData?
+    var activeAccountDetail: AccountCellDetail? {
+        if let currentActiveUser {
+            .init(id: currentActiveUser.userId,
+                  isPremium: isPremiumUser(currentActiveUser.userId),
+                  initial: currentActiveUser.initial,
+                  displayName: currentActiveUser.displayName,
+                  email: currentActiveUser.email)
+        } else {
+            nil
+        }
+    }
+
+    /// User data of all logged in accounts
+    @Published private var userAccounts = [UserData]()
+    var accountDetails: [AccountCellDetail] {
+        userAccounts.map { .init(id: $0.userId,
+                                 isPremium: isPremiumUser($0.userId),
+                                 initial: $0.initial,
+                                 displayName: $0.displayName,
+                                 email: $0.email) }
+    }
+
+    /// Accesses of all logged in accounts
+    @Published private var accesses = [UserAccess]()
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -90,6 +114,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
+        plan = accessRepository.access.value?.access.plan
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
@@ -114,10 +139,8 @@ extension ProfileTabViewModel {
 
     func refreshPlan() async {
         do {
-            // First get local plan to optimistically display it
-            // and then try to refresh the plan to have it updated
-            plan = try await accessRepository.getPlan()
-            plan = try await accessRepository.refreshAccess().plan
+            accesses = try await localAccessDatasource.getAllAccesses()
+            plan = try await accessRepository.refreshAccess().access.plan
         } catch {
             handle(error: error)
         }
@@ -207,8 +230,8 @@ extension ProfileTabViewModel {
         }
     }
 
-    func showAccountMenu() {
-        delegate?.profileTabViewModelWantsToShowAccountMenu()
+    func manageAccount(_ account: AccountCellDetail) {
+        router.action(.manage(userId: account.id))
     }
 
     func showSettingsMenu() {
@@ -239,25 +262,22 @@ extension ProfileTabViewModel {
         delegate?.profileTabViewModelWantsToQaFeatures()
     }
 
-    func switchUser(userId: String) {
+    func `switch`(to account: AccountCellDetail) {
+        guard account.id != currentActiveUser?.userId else { return }
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
-                try await userManager.switchActiveUser(with: userId)
+                try await userManager.switchActiveUser(with: account.id)
             } catch {
                 handle(error: error)
             }
         }
     }
 
-    func signOut(user: UserData) {
-        Task { [weak self] in
-            guard let self else { return }
-            await revokeCurrentSession()
-            router.action(.signOut(userId: user.id))
-        }
+    func signOut(account: AccountCellDetail) {
+        router.action(.signOut(userId: account.id))
     }
 }
 
@@ -409,8 +429,19 @@ private extension ProfileTabViewModel {
         logger.info("Reindexed credentials")
     }
 
+    func isPremiumUser(_ userId: String) -> Bool {
+        accesses.first(where: { $0.userId == userId })?.access.plan.isFreeUser == false
+    }
+
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
+}
+
+private extension UserData {
+    var userId: String { user.ID }
+    var displayName: String { user.name ?? "?" }
+    var email: String { user.email ?? "?" }
+    var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
 }

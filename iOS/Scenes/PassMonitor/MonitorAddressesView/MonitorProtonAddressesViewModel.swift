@@ -46,7 +46,7 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     }
 
     init(addresses: [ProtonAddress]) {
-        access = accessRepository.access.value
+        access = accessRepository.access.value?.access
         allAddresses = addresses
         setUp()
     }
@@ -89,7 +89,7 @@ private extension MonitorProtonAddressesViewModel {
             .compactMap { $0 }
             .sink { [weak self] newValue in
                 guard let self else { return }
-                access = newValue
+                access = newValue.access
             }
             .store(in: &cancellables)
 
