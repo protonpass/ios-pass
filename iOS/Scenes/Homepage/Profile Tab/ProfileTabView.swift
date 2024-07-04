@@ -94,6 +94,12 @@ struct ProfileTabView: View {
                           viewModel.signOut(user: user)
                       }, secondaryButton: .cancel())
             }
+            .sheet(isPresented: $viewModel.showLoginFlow) {
+                LoginView(apiService: viewModel.getApiService(),
+                          theme: SharedToolingContainer.shared.preferencesManager().sharedPreferences.unwrapped()
+                              .theme,
+                          loginData: $viewModel.newLoggedUser)
+            }
             .navigationStackEmbeded()
             .task {
                 await viewModel.refreshPlan()
@@ -161,6 +167,7 @@ struct ProfileTabView: View {
 
     func handleAddAccount() {
         dismissAccountSwitcherAndDisplay()
+        viewModel.showLoginFlow.toggle()
     }
 
     func dismissAccountSwitcherAndDisplay() {

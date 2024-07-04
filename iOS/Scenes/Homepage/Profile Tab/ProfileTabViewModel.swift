@@ -25,6 +25,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreLogin
+import ProtonCoreServices
 import SwiftUI
 import UseCases
 
@@ -60,9 +61,15 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let apiManager = resolve(\SharedToolingContainer.apiManager)
+
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer
         .revokeCurrentSession) private var revokeCurrentSession: any RevokeCurrentSessionUseCase
+
+    @LazyInjected(\UseCasesContainer
+        .createApiService) private var createApiService: any CreateApiServiceUseCase
+//    UseCasesContainer.shared.createApiService().execute()
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -78,6 +85,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var currentActiveUser: UserData?
     @Published private(set) var userAccounts = [UserData]()
 
+    @Published var showLoginFlow = false
+    @Published var newLoggedUser: UserData?
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -87,6 +97,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     var isMultiAccountActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
+    }
+
+    func getApiService() -> any APIService {
+        createApiService()
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
@@ -246,6 +260,7 @@ extension ProfileTabViewModel {
             }
             do {
                 try await userManager.switchActiveUser(with: userId)
+//                apiManager.updateCurrentSession(sessionId: userId)
             } catch {
                 handle(error: error)
             }
@@ -350,6 +365,35 @@ private extension ProfileTabViewModel {
                         return
                     }
                     userAccounts = await (try? userManager.getAllUsers()) ?? []
+                    if let user {
+                        apiManager.updateCurrentSession(userId: user.id)
+//                        apiManager.updateCurrentSession(sessionId: user.id)
+                    }
+                }
+            }
+            .store(in: &cancellables)
+
+        $newLoggedUser
+            .dropFirst()
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newUser in
+                guard let self else { return }
+//                print("woot new user logged in: \(newUser.credential.sessionID)")
+                Task { [weak self] in
+                    guard let self else { return }
+                    defer {
+                        newLoggedUser = nil
+                        showLoginFlow = false
+                    }
+                    do {
+                        try await userManager.addAndMarkAsActive(userData: newUser)
+
+//                        apiManager.updateCurrentSession(sessionId: newUser.user.ID)
+                        // updateCurrentSession(sessionId: newUser.credential.sessionID)
+                    } catch {
+                        handle(error: error)
+                    }
                 }
             }
             .store(in: &cancellables)
