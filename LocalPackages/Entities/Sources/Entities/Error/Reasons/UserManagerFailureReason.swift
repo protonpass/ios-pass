@@ -27,6 +27,7 @@ public extension PassError {
         case activeUserIdAvailableButNoUserDataFound
         case activeUserDataNotFound
         case noUserDataFound
+        case noInactiveUserFound
 
         public var debugDescription: String {
             switch self {
@@ -38,6 +39,8 @@ public extension PassError {
                 "Active user data not found"
             case .noUserDataFound:
                 "No user data found"
+            case .noInactiveUserFound:
+                "No inactivate user found"
             }
         }
     }
