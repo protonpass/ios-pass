@@ -521,6 +521,8 @@ extension HomepageCoordinator {
                     copyToClipboard(text, bannerMessage: message, bannerDisplay: bannerManager)
                 case let .back(isShownAsSheet):
                     itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
+                case let .manage(userId):
+                    handleManageAccount(userId: userId)
                 case let .signOut(userId):
                     handleSignOut(userId: userId)
                 }
@@ -1228,7 +1230,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowAccountMenu() {
+    func showAccountMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self

@@ -83,7 +83,7 @@ private extension HomepageCoordinator {
 
     func profileTab() {
         if !isCollapsed() {
-            profileTabViewModelWantsToShowAccountMenu()
+            showAccountMenu()
         }
     }
 }

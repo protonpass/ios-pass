@@ -48,7 +48,7 @@ struct ProfileTabView: View {
                                                     showSwitcher: $showSwitcher,
                                                     animationNamespace: animationNamespace,
                                                     onSelect: { viewModel.switch(to: $0) },
-                                                    onManage: { handleManage($0) },
+                                                    onManage: { viewModel.manageAccount($0) },
                                                     onSignOut: { viewModel.signOut(account: $0) },
                                                     onAddAccount: { handleAddAccount() }))
             }
@@ -105,10 +105,6 @@ struct ProfileTabView: View {
         }
     }
 
-    func handleManage(_ _: AccountCellDetail) {
-        viewModel.showAccountMenu()
-    }
-
     func handleAddAccount() {
         print(#function)
     }
@@ -149,7 +145,7 @@ struct ProfileTabView: View {
                                         showSwitcher.toggle()
                                     }
                                 } else {
-                                    viewModel.showAccountMenu()
+                                    viewModel.manageAccount(activeUser)
                                 }
                             }
                     }

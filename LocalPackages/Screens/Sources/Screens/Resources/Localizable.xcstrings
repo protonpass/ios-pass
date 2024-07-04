@@ -4366,27 +4366,6 @@
           }
         }
       }
-    },
-    "Yes, switch account" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yes, switch account"
-          }
-        }
-      }
-    },
-    "You need to switch to %@ in order to manage it" : {
-      "comment" : "Placeholder is an email address",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You need to switch to %@ in order to manage it"
-          }
-        }
-      }
     }
   },
   "version" : "1.0"
