@@ -23,21 +23,42 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public protocol AccountCellDetail: Sendable, Identifiable {
-    var id: String { get }
-    var initials: String { get }
-    var displayName: String { get }
-    var email: String { get }
+public struct AccountCellDetail: Identifiable {
+    public let id: String
+    public let isPremium: Bool
+    public let initial: String
+    public let displayName: String
+    public let email: String
+
+    public init(id: String,
+                isPremium: Bool,
+                initial: String,
+                displayName: String,
+                email: String) {
+        self.id = id
+        self.isPremium = isPremium
+        self.initial = initial
+        self.displayName = displayName
+        self.email = email
+    }
+
+    public static var empty: Self {
+        .init(id: UUID().uuidString,
+              isPremium: false,
+              initial: "",
+              displayName: "",
+              email: "")
+    }
 }
 
 public struct AccountCell: View {
-    let detail: any AccountCellDetail
+    let detail: AccountCellDetail
     let isActive: Bool
     let showInactiveIcon: Bool
     let animationNamespace: Namespace.ID
 
     enum EffectID: String {
-        case initials
+        case initial
         case displayName
         case email
         case chevron
@@ -47,7 +68,7 @@ public struct AccountCell: View {
         }
     }
 
-    public init(detail: any AccountCellDetail,
+    public init(detail: AccountCellDetail,
                 isActive: Bool = false,
                 showInactiveIcon: Bool = true,
                 animationNamespace: Namespace.ID) {
@@ -59,9 +80,10 @@ public struct AccountCell: View {
 
     public var body: some View {
         HStack {
-            initials
-                .matchedGeometryEffect(id: EffectID.initials.fullId(itemId: detail.id),
+            initial
+                .matchedGeometryEffect(id: EffectID.initial.fullId(itemId: detail.id),
                                        in: animationNamespace)
+                .padding(.trailing)
 
             VStack(alignment: .leading) {
                 displayName
@@ -96,15 +118,32 @@ public struct AccountCell: View {
 }
 
 private extension AccountCell {
-    var initials: some View {
+    var initial: some View {
         ZStack {
-            PassColor.interactionNormMajor2.toColor
-            Text(verbatim: detail.initials)
+            if detail.isPremium {
+                RectangleBottomRightCornerCut()
+                    .fill(PassColor.interactionNormMajor2.toColor)
+            } else {
+                PassColor.interactionNormMajor2.toColor
+            }
+
+            Text(verbatim: detail.initial)
                 .foregroundStyle(PassColor.textInvert.toColor)
                 .fontWeight(.medium)
         }
         .frame(width: 36, height: 36)
         .clipShape(RoundedRectangle(cornerRadius: 8))
+        .if(detail.isPremium) { view in
+            view.overlay {
+                SwiftUIImage(image: PassIcon.badgePaid,
+                             width: 10,
+                             tintColor: PassColor.textInvert)
+                    .padding(4)
+                    .background(PassColor.noteInteractionNormMajor2.toColor)
+                    .clipShape(.circle)
+                    .offset(x: 16, y: 16)
+            }
+        }
     }
 
     var displayName: some View {
@@ -116,5 +155,19 @@ private extension AccountCell {
         Text(verbatim: detail.email)
             .font(.caption)
             .foregroundStyle(PassColor.textWeak.toColor)
+    }
+}
+
+private struct RectangleBottomRightCornerCut: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let offset: CGFloat = 3 / 5
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.maxX * offset, y: rect.maxY))
+        path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.maxY * offset),
+                          control: CGPoint(x: rect.maxX * offset, y: rect.maxY * offset))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        return path
     }
 }

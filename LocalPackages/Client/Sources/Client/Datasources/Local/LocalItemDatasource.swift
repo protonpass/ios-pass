@@ -286,3 +286,23 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 }
+
+public extension LocalItemDatasource {
+    /// Temporary migration, can be removed after july 2025
+    func updateLocalItems(with userId: String) async throws {
+        let allItems = try await getAllItems(userId: "")
+        let updatedItems = allItems.map { $0.copy(newUserId: userId) }
+        try await removeAllItems(userId: "")
+        try await upsertItems(updatedItems)
+    }
+}
+
+private extension SymmetricallyEncryptedItem {
+    func copy(newUserId: String) -> SymmetricallyEncryptedItem {
+        SymmetricallyEncryptedItem(shareId: shareId,
+                                   userId: newUserId,
+                                   item: item,
+                                   encryptedContent: encryptedContent,
+                                   isLogInItem: isLogInItem)
+    }
+}

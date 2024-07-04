@@ -52,7 +52,7 @@ extension AccessEntity {
 }
 
 extension AccessEntity {
-    func toAccess() -> Access {
+    func toUserAccess() -> UserAccess {
         let plan = Plan(type: type,
                         internalName: internalName,
                         displayName: displayName,
@@ -61,26 +61,29 @@ extension AccessEntity {
                         vaultLimit: vaultLimit == -1 ? nil : Int(vaultLimit),
                         aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
                         totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
-        return .init(plan: plan,
-                     monitor: .init(protonAddress: monitorProtonAddress, aliases: monitorAliases),
-                     pendingInvites: Int(pendingInvites),
-                     waitingNewUserInvites: Int(waitingNewUserInvites),
-                     minVersionUpgrade: minVersionUpgrade.nilIfEmpty)
+        let access = Access(plan: plan,
+                            monitor: .init(protonAddress: monitorProtonAddress, aliases: monitorAliases),
+                            pendingInvites: Int(pendingInvites),
+                            waitingNewUserInvites: Int(waitingNewUserInvites),
+                            minVersionUpgrade: minVersionUpgrade.nilIfEmpty)
+        return .init(userId: userID, access: access)
     }
 
-    func hydrate(from access: Access, userId: String) {
-        let plan = access.plan
+    func hydrate(from userAccess: UserAccess) {
+        let access = userAccess.access
+        let plan = userAccess.access.plan
+        let monitor = userAccess.access.monitor
         displayName = plan.displayName
         internalName = plan.internalName
         hideUpgrade = plan.hideUpgrade
         type = plan.type
-        userID = userId
+        userID = userAccess.userId
         aliasLimit = Int64(plan.aliasLimit ?? -1)
         totpLimit = Int64(plan.totpLimit ?? -1)
         trialEnd = Int64(plan.trialEnd ?? -1)
         vaultLimit = Int64(plan.vaultLimit ?? -1)
-        monitorProtonAddress = access.monitor.protonAddress
-        monitorAliases = access.monitor.aliases
+        monitorProtonAddress = monitor.protonAddress
+        monitorAliases = monitor.aliases
 
         pendingInvites = Int64(access.pendingInvites)
         waitingNewUserInvites = Int64(access.waitingNewUserInvites)

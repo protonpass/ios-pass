@@ -23,11 +23,11 @@ import Entities
 import XCTest
 
 final class LocalAccessDatasourceTests: XCTestCase {
-    var sut: LocalAccessDatasource!
+    var sut: LocalAccessDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
-        sut = .init(databaseService: DatabaseService(inMemory: true))
+        sut = LocalAccessDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {
@@ -37,7 +37,7 @@ final class LocalAccessDatasourceTests: XCTestCase {
 }
 
 extension LocalAccessDatasourceTests {
-    func testUpsertAndGetPlans() async throws {
+    func testUpsertGetAndRemove() async throws {
         // Given
         let givenUserId = String.random()
         let givenAccess = Access(plan: .init(type: "free",
@@ -52,12 +52,12 @@ extension LocalAccessDatasourceTests {
                                  pendingInvites: 1,
                                  waitingNewUserInvites: 2,
                                  minVersionUpgrade: nil)
+        let givenUserAccess = UserAccess(userId: givenUserId, access: givenAccess)
         // When
-        try await sut.upsert(access: givenAccess, userId: givenUserId)
-        let retrievedAccess1 = try await sut.getAccess(userId: givenUserId)
+        try await sut.upsert(access: givenUserAccess)
 
         // Then
-        XCTAssertEqual(retrievedAccess1, givenAccess)
+        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), givenUserAccess)
 
         // Given
         let updatedAccess = Access(plan: .init(type: "plus",
@@ -72,12 +72,52 @@ extension LocalAccessDatasourceTests {
                                    pendingInvites: 3,
                                    waitingNewUserInvites: 4,
                                    minVersionUpgrade: nil)
+        let updatedUserAccess = UserAccess(userId: givenUserId, access: updatedAccess)
 
         // When
-        try await sut.upsert(access: updatedAccess, userId: givenUserId)
-        let retrievedAccess2 = try await sut.getAccess(userId: givenUserId)
+        try await sut.upsert(access: updatedUserAccess)
 
         // Then
-        XCTAssertEqual(retrievedAccess2, updatedAccess)
+        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), updatedUserAccess)
+
+        // When
+        try await sut.removeAccess(userId: givenUserId)
+
+        // Then
+        try await XCTAssertNilAsync(await sut.getAccess(userId: givenUserId))
+    }
+
+    func testGetAllAccess() async throws {
+        // Given
+        let access1 = UserAccess.random()
+        let access2 = UserAccess.random()
+        let access3 = UserAccess.random()
+
+        try await sut.upsert(access: access1)
+        try await sut.upsert(access: access2)
+        try await sut.upsert(access: access3)
+
+        // When
+        let accesses = try await sut.getAllAccesses()
+
+        // Then
+        XCTAssertEqual(accesses.count, 3)
+        XCTAssertTrue(accesses.contains(where: { $0 == access1 }))
+        XCTAssertTrue(accesses.contains(where: { $0 == access2 }))
+        XCTAssertTrue(accesses.contains(where: { $0 == access3 }))
+    }
+}
+
+private extension UserAccess {
+    static func random() -> Self {
+        .init(userId: .random(),
+              access: .init(plan: .init(type: .random(),
+                                        internalName: .random(),
+                                        displayName: .random(),
+                                        hideUpgrade: .random()),
+                            monitor: .init(protonAddress: .random(), aliases: .random()),
+                            pendingInvites: .random(in: 1...100),
+                            waitingNewUserInvites: .random(in: 1...100),
+                            minVersionUpgrade: .random()))
     }
 }

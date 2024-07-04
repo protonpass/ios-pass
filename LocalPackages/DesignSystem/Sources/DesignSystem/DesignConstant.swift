@@ -26,6 +26,10 @@ public enum DesignConstant {
     public static let searchBarHeight: CGFloat = 48
     public static let previewBreachItemCount = 10
 
+    // SwiftUI's default animation duration is 0.35
+    // https://developer.apple.com/documentation/swiftui/animation/linear#
+    public static let animationDuration: CGFloat = 0.35
+
     public enum Icons {
         public static let defaultIconSize: CGFloat = 20
     }

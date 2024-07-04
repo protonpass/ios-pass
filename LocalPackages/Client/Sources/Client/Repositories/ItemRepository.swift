@@ -575,17 +575,6 @@ public extension ItemRepository {
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
     }
-
-    /// Temporary migration, can be removed after july 2025
-    func updateLocalItems(with userId: String) async throws {
-        logger.trace("Adding current user id to all local items with user id: \(userId)")
-        let allItems = try await localDatasource.getAllItems(userId: "")
-        let updatedItems = allItems.map { $0.copy(newUserId: userId) }
-        try await localDatasource.removeAllItems(userId: "")
-        try await localDatasource.upsertItems(updatedItems)
-        try await refreshPinnedItemDataStream()
-        logger.trace("Finished adding the current user id to all items")
-    }
 }
 
 // MARK: - item Pinning functionalities
@@ -808,16 +797,6 @@ private extension ItemRepository {
                                                             keyRotation: item.keyRotation)
         let contentProtobuf = try item.getContentProtobuf(vaultKey: vaultKey)
         return ItemContent(shareId: shareId, item: item, contentProtobuf: contentProtobuf)
-    }
-}
-
-private extension SymmetricallyEncryptedItem {
-    func copy(newUserId: String) -> SymmetricallyEncryptedItem {
-        SymmetricallyEncryptedItem(shareId: shareId,
-                                   userId: newUserId,
-                                   item: item,
-                                   encryptedContent: encryptedContent,
-                                   isLogInItem: isLogInItem)
     }
 }
 
