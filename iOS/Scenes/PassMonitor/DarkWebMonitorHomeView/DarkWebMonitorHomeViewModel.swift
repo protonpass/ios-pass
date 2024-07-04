@@ -53,7 +53,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     private var fetchSuggestedEmailsTask: Task<Void, Never>?
 
     init(userBreaches: UserBreaches) {
-        access = accessRepository.access.value
+        access = accessRepository.access.value?.access
         self.userBreaches = userBreaches
         customEmailsState = .fetched(userBreaches.customEmails)
         setUp()
@@ -177,7 +177,7 @@ private extension DarkWebMonitorHomeViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
-                access = newValue
+                access = newValue?.access
             }
             .store(in: &cancellables)
     }
