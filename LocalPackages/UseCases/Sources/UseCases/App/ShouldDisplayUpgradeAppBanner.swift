@@ -51,6 +51,6 @@ public final class ShouldDisplayUpgradeAppBanner: ShouldDisplayUpgradeAppBannerU
         if bundle.isQaBuild, userDefaults.bool(forKey: Constants.QA.forceDisplayUpgradeAppBanner) {
             return true
         }
-        return access.minVersionUpgrade != nil
+        return access.access.minVersionUpgrade != nil
     }
 }

@@ -30,23 +30,20 @@ struct AccountSwitcherSection: View {
     }
 }
 
-private struct AccountDetailImpl: AccountCellDetail {
-    let id = UUID().uuidString
-    let initials: String
-    let displayName: String
-    let email: String
-}
-
 private struct AccountSwitcherView: View {
     @State private var showSwitcher = false
     @Namespace private var namespace
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private let eric = AccountDetailImpl(initials: "E",
+    private let eric = AccountCellDetail(id: UUID().uuidString,
+                                         isPremium: true,
+                                         initial: "E",
                                          displayName: "Eric Norbert",
                                          email: "eric.norbert@proton.me")
 
-    private let john = AccountDetailImpl(initials: "J",
+    private let john = AccountCellDetail(id: UUID().uuidString,
+                                         isPremium: false,
+                                         initial: "J",
                                          displayName: "John Doe",
                                          email: "john.doe@proton.me")
 
@@ -94,16 +91,16 @@ private struct AccountSwitcherView: View {
 
 @MainActor
 private extension AccountSwitcherView {
-    func handleSelection(_ id: String) {
-        dismissAccountSwitcherAndDisplay(message: "Select \(id)")
+    func handleSelection(_ account: AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay(message: "Select \(account.id)")
     }
 
-    func handleSignOut(_ user: any AccountCellDetail) {
-        dismissAccountSwitcherAndDisplay(message: "Sign out \(user)")
+    func handleSignOut(_ account: AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay(message: "Sign out \(account)")
     }
 
-    func handleManage(_ user: any AccountCellDetail) {
-        dismissAccountSwitcherAndDisplay(message: "Manage \(user)")
+    func handleManage(_ account: AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay(message: "Manage \(account)")
     }
 
     func handleAddAccount() {

@@ -26,7 +26,7 @@ import SwiftUI
 struct ItemReadEventsSection: View {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     var enabled: Bool {
-        accessRepository.access.value?.plan.isBusinessUser == true
+        accessRepository.access.value?.access.plan.isBusinessUser == true
     }
 
     var body: some View {

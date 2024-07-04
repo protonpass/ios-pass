@@ -92,7 +92,7 @@ public actor PreferencesManager: PreferencesManagerProtocol {
     public nonisolated let userPreferences = CurrentValueSubject<UserPreferences?, Never>(nil)
     public nonisolated let userPreferencesUpdates = PassthroughSubject<UserPreferencesUpdate, Never>()
 
-    private let currentUserIdProvider: any CurrentUserIdProvider
+    private let userManager: any UserManagerProtocol
     private let appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol
     private let sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
@@ -102,13 +102,13 @@ public actor PreferencesManager: PreferencesManagerProtocol {
 
     private let preferencesMigrator: any PreferencesMigrator
 
-    public init(currentUserIdProvider: any CurrentUserIdProvider,
+    public init(userManager: any UserManagerProtocol,
                 appPreferencesDatasource: any LocalAppPreferencesDatasourceProtocol,
                 sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
                 logManager: any LogManagerProtocol,
                 preferencesMigrator: any PreferencesMigrator) {
-        self.currentUserIdProvider = currentUserIdProvider
+        self.userManager = userManager
         self.appPreferencesDatasource = appPreferencesDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.sharedPreferencesDatasource = sharedPreferencesDatasource
@@ -143,7 +143,7 @@ public extension PreferencesManager {
         }
 
         // User's preferences
-        if let userId = try await currentUserIdProvider.getCurrentUserId() {
+        if let userId = try? await userManager.getActiveUserId() {
             if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
                 userPreferences.send(preferences)
             } else {
@@ -164,7 +164,7 @@ public extension PreferencesManager {
             try sharedPreferencesDatasource.upsertPreferences(shared)
             sharedPreferences.send(shared)
 
-            if let userId = try await currentUserIdProvider.getCurrentUserId() {
+            if let userId = try? await userManager.getActiveUserId() {
                 try await userPreferencesDatasource.upsertPreferences(user, for: userId)
                 userPreferences.send(user)
             }
@@ -245,12 +245,7 @@ public extension PreferencesManager {
 public extension PreferencesManager {
     func updateUserPreferences<T: Sendable>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                             value: T) async throws {
-        guard let userId = try await currentUserIdProvider.getCurrentUserId() else {
-            let errorMessage = "Failed to upsert user's preferences. No current user ID found."
-            assertionFailure(errorMessage)
-            logger.error(errorMessage)
-            return
-        }
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Updating user preferences \(keyPath) for user \(userId)")
         assertDidSetUp()
         guard var preferences = userPreferences.value else {
@@ -264,11 +259,7 @@ public extension PreferencesManager {
     }
 
     func removeUserPreferences() async throws {
-        guard let userId = try await currentUserIdProvider.getCurrentUserId() else {
-            let errorMessage = "Failed to remove user's preferences. No current user ID found."
-            logger.error(errorMessage)
-            return
-        }
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Removing user preferences for user \(userId)")
         try await userPreferencesDatasource.removePreferences(for: userId)
         userPreferences.send(nil)
