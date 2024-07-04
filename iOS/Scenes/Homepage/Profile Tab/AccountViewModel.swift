@@ -33,7 +33,6 @@ import ProtonCorePasswordChange
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
-    func accountViewModelWantsToSignOut()
     func accountViewModelWantsToDeleteAccount()
     func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void)
 }
@@ -47,7 +46,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
@@ -74,6 +72,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
+        plan = accessRepository.access.value?.access.plan
         extraPasswordEnabled = preferencesManager.userPreferences.unwrapped().extraPasswordEnabled
         refreshUserPlan()
         refreshAccountRecovery()
@@ -94,9 +93,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         Task { [weak self] in
             guard let self else { return }
             do {
-                // First get local plan to optimistically display it
-                // and then try to refresh the plan to have it updated
-                plan = try await accessRepository.getPlan()
                 plan = try await accessRepository.refreshAccess().access.plan
             } catch {
                 logger.error(error)
@@ -213,8 +209,7 @@ extension AccountViewModel {
                     router.display(element: .errorMessage(errorMessage))
                 }
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -222,10 +217,12 @@ extension AccountViewModel {
     func signOut() {
         Task { [weak self] in
             guard let self else { return }
-            isLoading = true
-            await revokeCurrentSession()
-            isLoading = false
-            delegate?.accountViewModelWantsToSignOut()
+            do {
+                let userId = try await userManager.getActiveUserId()
+                router.action(.signOut(userId: userId))
+            } catch {
+                handle(error: error)
+            }
         }
     }
 
@@ -257,5 +254,10 @@ private extension AccountViewModel {
         case let .failure(error):
             logger.error(error)
         }
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }

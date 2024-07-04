@@ -63,8 +63,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
-    @LazyInjected(\SharedUseCasesContainer
-        .revokeCurrentSession) private var revokeCurrentSession: any RevokeCurrentSessionUseCase
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -117,6 +115,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
+        plan = accessRepository.access.value?.access.plan
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
@@ -142,9 +141,6 @@ extension ProfileTabViewModel {
     func refreshPlan() async {
         do {
             accesses = try await localAccessDatasource.getAllAccesses()
-            // First get local plan to optimistically display it
-            // and then try to refresh the plan to have it updated
-            plan = try await accessRepository.getPlan()
             plan = try await accessRepository.refreshAccess().access.plan
         } catch {
             handle(error: error)
@@ -282,13 +278,7 @@ extension ProfileTabViewModel {
     }
 
     func signOut(account: AccountCellDetail) {
-        Task { [weak self] in
-            guard let self else { return }
-            router.display(element: .globalLoading(shouldShow: true))
-            await revokeCurrentSession()
-            router.display(element: .globalLoading(shouldShow: false))
-            router.action(.signOut(userId: account.id))
-        }
+        router.action(.signOut(userId: account.id))
     }
 }
 

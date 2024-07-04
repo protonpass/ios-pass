@@ -26,7 +26,6 @@ import SwiftUI
 struct AccountList: View {
     @State private var animated = false
     @State private var accountToManage: AccountCellDetail?
-    @State private var accountToSignOut: AccountCellDetail?
 
     let details: [AccountCellDetail]
     let activeId: String
@@ -84,18 +83,6 @@ struct AccountList: View {
                message: { account in
                    Text("You need to switch to \(account.email) in order to manage it")
                })
-        .alert(Text("Sign out"),
-               isPresented: $accountToSignOut.mappedToBool(),
-               presenting: accountToSignOut,
-               actions: { account in
-                   Button(role: .destructive,
-                          action: { onSignOut(account) },
-                          label: { Text("Yes, sign out") })
-                   Button(role: .cancel, label: { Text("Cancel") })
-               },
-               message: { account in
-                   Text("Sign out from \(account.email)?")
-               })
     }
 }
 
@@ -117,7 +104,7 @@ private extension AccountList {
 
                 Divider()
 
-                Button(action: { accountToSignOut = detail },
+                Button(action: { onSignOut(detail) },
                        label: { Label(title: { Text("Sign out") },
                                       icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
             }, label: {

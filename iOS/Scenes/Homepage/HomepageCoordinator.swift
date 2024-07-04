@@ -51,7 +51,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
@@ -63,7 +63,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
+    let userManager = resolve(\SharedServiceContainer.userManager)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     // Lazily initialised properties
@@ -74,7 +74,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
+    let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
@@ -82,6 +82,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
     private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+
+    let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -339,11 +341,6 @@ private extension HomepageCoordinator {
             }
         }
     }
-
-    func handle(error: any Error) {
-        logger.error(error)
-        bannerManager.displayTopErrorMessage(error)
-    }
 }
 
 // MARK: - Navigation & Routing & View presentation
@@ -524,11 +521,16 @@ extension HomepageCoordinator {
                     copyToClipboard(text, bannerMessage: message, bannerDisplay: bannerManager)
                 case let .back(isShownAsSheet):
                     itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
-                case let signOut:
-                    accountViewModelWantsToSignOut()
+                case let .signOut(userId):
+                    handleSignOut(userId: userId)
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 
     // MARK: - UI view presenting functions
@@ -1296,11 +1298,6 @@ extension HomepageCoordinator: AccountViewModelDelegate {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func accountViewModelWantsToSignOut() {
-        eventLoop.stop()
-        delegate?.homepageCoordinatorWantsToLogOut()
-    }
-
     func accountViewModelWantsToDeleteAccount() {
         let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
@@ -1318,7 +1315,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                                switch result {
                                                                case .success:
                                                                    logger.trace("Account deletion successful")
-                                                                   accountViewModelWantsToSignOut()
+                                                                   wipeAllDataAndSignoutActiveUser()
                                                                case .failure(AccountDeletionError.closedByUser):
                                                                    logger
                                                                        .trace("Accpunt deletion form closed by user")
