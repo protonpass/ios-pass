@@ -25,7 +25,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct AccountView: View {
-    @State private var isShowingSignOutConfirmation = false
     @StateObject var viewModel: AccountViewModel
     @State private var showDisableExtraPasswordAlert = false
 
@@ -166,7 +165,7 @@ struct AccountView: View {
                         .sectionTitleText()
                 }
 
-                OptionRow(action: { isShowingSignOutConfirmation.toggle() },
+                OptionRow(action: { viewModel.signOut() },
                           height: .tall,
                           content: {
                               Text("Sign out")
@@ -221,15 +220,6 @@ struct AccountView: View {
                    Button(role: .cancel,
                           action: { viewModel.extraPassword = "" },
                           label: { Text("Cancel") })
-               })
-        .alert("You will be signed out",
-               isPresented: $isShowingSignOutConfirmation,
-               actions: {
-                   Button(role: .destructive,
-                          action: { viewModel.signOut() },
-                          label: { Text("Yes, sign me out") })
-
-                   Button(role: .cancel, label: { Text("Cancel") })
                })
     }
 

@@ -80,9 +80,9 @@ private extension SharedRepositoryContainer {
     }
 }
 
-// MARK: Private datasources
+// MARK: Datasources
 
-private extension SharedRepositoryContainer {
+extension SharedRepositoryContainer {
     var remoteAliasDatasource: Factory<any RemoteAliasDatasourceProtocol> {
         self { RemoteAliasDatasource(apiService: self.apiService,
                                      eventStream: self.corruptedSessionEventStream) }
@@ -194,11 +194,7 @@ private extension SharedRepositoryContainer {
         self { RemoteItemReadEventDatasource(apiService: self.apiService,
                                              eventStream: self.corruptedSessionEventStream) }
     }
-}
 
-// MARK: Public datasources
-
-extension SharedRepositoryContainer {
     var localShareKeyDatasource: Factory<any LocalShareKeyDatasourceProtocol> {
         self { LocalShareKeyDatasource(databaseService: self.databaseService) }
     }
@@ -229,6 +225,11 @@ extension SharedRepositoryContainer {
     var localUserDataDatasource: Factory<any LocalUserDataDatasourceProtocol> {
         self { LocalUserDataDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
                                        databaseService: self.databaseService) }
+    }
+
+    var localAuthCredentialDatasource: Factory<any LocalAuthCredentialDatasourceProtocol> {
+        self { LocalAuthCredentialDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
+                                             databaseService: self.databaseService) }
     }
 }
 

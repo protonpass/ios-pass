@@ -70,22 +70,20 @@ enum SharedItemType: CaseIterable {
 @MainActor
 final class ShareCoordinator {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
-    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
+    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
-    @LazyInjected(\SharedUseCasesContainer.applyAppMigration) private var applyAppMigration
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -131,9 +129,7 @@ final class ShareCoordinator {
 extension ShareCoordinator {
     func start() async {
         do {
-            try await userManager.setUp()
-            try await preferencesManager.setUp()
-            try await applyAppMigration()
+            try await setUpBeforeLaunching()
             if credentialProvider.isAuthenticated {
                 await parseSharedContentAndBeginShareFlow()
             } else {

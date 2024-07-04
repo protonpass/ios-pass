@@ -26,26 +26,41 @@ import SwiftUI
 struct AccountList: View {
     @State private var animated = false
 
-    let details: [any AccountCellDetail]
+    let details: [AccountCellDetail]
     let activeId: String
     let animationNamespace: Namespace.ID
-    let onSelect: (String) -> Void
-    let onManage: (any AccountCellDetail) -> Void
-    let onSignOut: (any AccountCellDetail) -> Void
+    let onSelect: (AccountCellDetail) -> Void
+    let onManage: (AccountCellDetail) -> Void
+    let onSignOut: (AccountCellDetail) -> Void
     let onAddAccount: () -> Void
 
     var body: some View {
-        VStack(spacing: DesignConstant.sectionPadding / 2) {
+        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
             ForEach(details, id: \.id) { detail in
                 let isActive = detail.id == activeId
                 if isActive || (!isActive && animated) {
                     row(for: detail, isActive: isActive)
-                    PassDivider()
-                        .padding(.vertical, DesignConstant.sectionPadding / 2)
+
+                    if isActive, details.count > 1 {
+                        Text("Switch to")
+                            .font(.callout.bold())
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.vertical, DesignConstant.sectionPadding)
+                    }
+
+                    if !isActive {
+                        PassDivider()
+                            .padding(.vertical, DesignConstant.sectionPadding / 2)
+                    }
                 }
             }
 
             if animated {
+                if details.count == 1 {
+                    PassDivider()
+                        .padding(.vertical, DesignConstant.sectionPadding / 2)
+                }
                 addAcountRow
             }
         }
@@ -53,39 +68,37 @@ struct AccountList: View {
         .background(PassColor.backgroundNorm.toColor)
         .roundedEditableSection()
         .animation(.default, value: animated)
-        .onAppear {
+        .onFirstAppear {
             animated.toggle()
         }
     }
 }
 
 private extension AccountList {
-    func row(for detail: any AccountCellDetail, isActive: Bool) -> some View {
+    func row(for detail: AccountCellDetail, isActive: Bool) -> some View {
         HStack {
             AccountCell(detail: detail,
                         isActive: isActive,
                         showInactiveIcon: isActive,
                         animationNamespace: animationNamespace)
                 .onTapGesture {
-                    onSelect(detail.id)
+                    onSelect(detail)
                 }
 
-            if animated, isActive {
-                Menu(content: {
-                    Button(action: { onManage(detail) },
-                           label: { Label(title: { Text(verbatim: "Manage account") },
-                                          icon: { Image(uiImage: IconProvider.cogWheel) }) })
+            Menu(content: {
+                Button(action: { onManage(detail) },
+                       label: { Label(title: { Text("Manage account") },
+                                      icon: { Image(uiImage: IconProvider.cogWheel) }) })
 
-                    Divider()
+                Divider()
 
-                    Button(action: { onSignOut(detail) },
-                           label: { Label(title: { Text(verbatim: "Sign out") },
-                                          icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
-                }, label: {
-                    icon(with: IconProvider.threeDotsVertical,
-                         foregroundColor: PassColor.textWeak)
-                })
-            }
+                Button(action: { onSignOut(detail) },
+                       label: { Label(title: { Text("Sign out") },
+                                      icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
+            }, label: {
+                icon(with: IconProvider.threeDotsVertical,
+                     foregroundColor: PassColor.textWeak)
+            })
         }
     }
 
@@ -93,7 +106,7 @@ private extension AccountList {
         HStack {
             icon(with: IconProvider.userPlus,
                  foregroundColor: PassColor.textNorm)
-            Text(verbatim: "Add account")
+            Text("Add account")
                 .foregroundStyle(PassColor.textNorm.toColor)
             Spacer()
         }
