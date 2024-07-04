@@ -425,6 +425,12 @@ extension UseCasesContainer {
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
         self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
     }
+
+    var createApiService: Factory<any CreateApiServiceUseCase> {
+        self { CreateApiService(doh: SharedToolingContainer.shared.doh(),
+                                appVer: SharedToolingContainer.shared.appVersion(),
+                                authManager: SharedToolingContainer.shared.authManager()) }
+    }
 }
 
 // MARK: - App
