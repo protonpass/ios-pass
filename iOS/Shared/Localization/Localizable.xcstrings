@@ -98382,6 +98382,17 @@
         }
       }
     },
+    "Switch and manage" : {
+      "comment" : "Confirm button to switch to another account and go to manage account page",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch and manage"
+          }
+        }
+      }
+    },
     "Sync complete" : {
       "localizations" : {
         "be" : {
@@ -119822,6 +119833,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn đã đạt giới hạn số lượng kho lưu trữ. Nâng cấp để có thể tạo nhiều kho lưu trữ."
+          }
+        }
+      }
+    },
+    "You need to switch to %@ in order to manage it" : {
+      "comment" : "Placeholder is an email address",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You need to switch to %@ in order to manage it"
           }
         }
       }
