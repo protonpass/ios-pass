@@ -56,7 +56,7 @@ private extension GetUserPlan {
             // First get local plan to optimistically display it
             // and then try to refresh the plan to have it updated
             plan.send(localPlan)
-            let newPlan = try? await repository.refreshAccess().plan
+            let newPlan = try? await repository.refreshAccess().access.plan
             guard newPlan != localPlan else {
                 return
             }

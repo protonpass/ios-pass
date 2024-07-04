@@ -24,17 +24,17 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
-    var access: CurrentValueSubject<Access?, Never> { get }
+    var access: CurrentValueSubject<UserAccess?, Never> { get }
     var didUpdateToNewPlan: PassthroughSubject<Void, Never> { get }
 
     /// Get from local, refresh if not exist
-    func getAccess() async throws -> Access
+    func getAccess() async throws -> UserAccess
 
     /// Conveniently get the plan of current access
     func getPlan() async throws -> Plan
 
     @discardableResult
-    func refreshAccess() async throws -> Access
+    func refreshAccess() async throws -> UserAccess
 
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws
     func updateAliasesMonitor(_ monitored: Bool) async throws
@@ -46,7 +46,7 @@ public actor AccessRepository: AccessRepositoryProtocol {
     private let userManager: any UserManagerProtocol
     private let logger: Logger
 
-    public nonisolated let access: CurrentValueSubject<Access?, Never> = .init(nil)
+    public nonisolated let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
     public nonisolated let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: any LocalAccessDatasourceProtocol,
@@ -61,7 +61,7 @@ public actor AccessRepository: AccessRepositoryProtocol {
 }
 
 public extension AccessRepository {
-    func getAccess() async throws -> Access {
+    func getAccess() async throws -> UserAccess {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
@@ -77,27 +77,28 @@ public extension AccessRepository {
     func getPlan() async throws -> Plan {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting plan for user \(userId)")
-        return try await getAccess().plan
+        return try await getAccess().access.plan
     }
 
     @discardableResult
-    func refreshAccess() async throws -> Access {
+    func refreshAccess() async throws -> UserAccess {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess()
-        access.send(remoteAccess)
+        let userAccess = UserAccess(userId: userId, access: remoteAccess)
+        access.send(userAccess)
 
         if let localAccess = try await localDatasource.getAccess(userId: userId),
-           localAccess.plan != remoteAccess.plan {
+           localAccess.access.plan != remoteAccess.plan {
             logger.info("New plan found")
             didUpdateToNewPlan.send()
         }
 
         logger.trace("Upserting access for user \(userId)")
-        try await localDatasource.upsert(access: remoteAccess, userId: userId)
+        try await localDatasource.upsert(access: userAccess)
 
         logger.info("Refreshed access for user \(userId)")
-        return remoteAccess
+        return userAccess
     }
 
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws {
@@ -115,10 +116,10 @@ private extension AccessRepository {
         logger.trace("Updating monitor state for user \(userId)")
         var access = try await getAccess()
         let updatedMonitor = try await remoteDatasource.updatePassMonitorState(request)
-        access.monitor = updatedMonitor
+        access.access.monitor = updatedMonitor
 
         logger.trace("Upserting access for user \(userId)")
-        try await localDatasource.upsert(access: access, userId: userId)
+        try await localDatasource.upsert(access: access)
         logger.trace("Upserted monitor state for user \(userId)")
         self.access.send(access)
     }
