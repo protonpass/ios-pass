@@ -20,6 +20,6 @@
 
 import Foundation
 
-public enum PassModule: String, CaseIterable, Sendable {
+public enum PassModule: String, CaseIterable, Sendable, Codable, Hashable {
     case hostApp, autoFillExtension, shareExtension
 }

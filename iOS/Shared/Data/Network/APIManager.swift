@@ -45,6 +45,7 @@ final class APIManager {
     private let theme = resolve(\SharedToolingContainer.theme)
     private let trustKitDelegate: any TrustKitDelegate
     let authHelper: any AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
+    let userManager = SharedServiceContainer.shared.userManager()
 
     private(set) var apiService: any APIService
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
@@ -60,7 +61,8 @@ final class APIManager {
         let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
-        if let credential = appData.getCredential() {
+        if let activeUserId = userManager.activeUserId,
+           let credential = authHelper.getCredential(userId: activeUserId) /* appData.getCredential() */ {
             apiService = PMAPIService.createAPIService(doh: doh,
                                                        sessionUID: credential.sessionID,
                                                        challengeParametersProvider: challengeProvider)
@@ -102,6 +104,17 @@ final class APIManager {
         // TODO: Have session manager remove all session link to session id and user with id link to this session
         appData.resetData()
         apiService.setSessionUID(uid: "")
+    }
+
+    func updateCurrentSession(sessionId: String) {
+        apiService.setSessionUID(uid: sessionId)
+    }
+
+    func updateCurrentSession(userId: String) {
+        guard let session = authHelper.getCredential(userId: userId) else {
+            return
+        }
+        apiService.setSessionUID(uid: session.sessionID)
     }
 }
 
