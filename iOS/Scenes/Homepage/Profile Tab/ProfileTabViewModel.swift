@@ -31,7 +31,6 @@ import UseCases
 
 @MainActor
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
@@ -231,8 +230,8 @@ extension ProfileTabViewModel {
         }
     }
 
-    func showAccountMenu() {
-        delegate?.profileTabViewModelWantsToShowAccountMenu()
+    func manageAccount(_ account: AccountCellDetail) {
+        router.action(.manage(userId: account.id))
     }
 
     func showSettingsMenu() {
