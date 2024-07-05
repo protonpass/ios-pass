@@ -79,6 +79,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
@@ -115,6 +116,8 @@ final class AppCoordinator {
         // swiftlint:disable:next todo
         // TODO: what to do with multiple users data ?
         appData.resetData()
+        let keychain = SharedToolingContainer.shared.keychain()
+        try? keychain.removeOrError(forKey: "authManagerStorageKey")
     }
 
     private func bindAppState() {
@@ -133,7 +136,8 @@ final class AppCoordinator {
                     logger.info("Already logged in")
                     connectToCorruptedSessionStream()
                     showHomeScene(mode: .alreadyLoggedIn)
-                    if let sessionID = appData.getCredential()?.sessionID {
+                    if let userId = userManager.activeUserId,
+                       let sessionID = authManager.getCredential(userId: userId)?.sessionID {
                         registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
@@ -189,9 +193,11 @@ final class AppCoordinator {
 
 private extension AppCoordinator {
     func start() {
-        if appData.isAuthenticated {
+        if let userId = userManager.activeUserId,
+           authManager.isAuthenticated(userId: userId) {
             appStateObserver.updateAppState(.alreadyLoggedIn)
-        } else if appData.getCredential() != nil {
+        } else if let userId = userManager.activeUserId,
+                  authManager.getCredential(userId: userId) != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
