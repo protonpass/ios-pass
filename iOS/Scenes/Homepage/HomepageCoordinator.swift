@@ -65,6 +65,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
 
     // Lazily initialised properties
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
@@ -94,6 +95,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var customCoordinator: (any CustomCoordinator)?
+
+    weak var secureLinkDetailViewController: UIViewController?
+
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Navigation Router
@@ -305,6 +309,12 @@ private extension HomepageCoordinator {
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
         createEditItemCoordinator?.refresh()
+
+        secureLinkDetailViewController?.dismiss(animated: true)
+        Task { [weak self] in
+            guard let self else { return }
+            _ = try? await secureLinkManager.updateSecureLinks()
+        }
     }
 
     func addNewEvent(type: TelemetryEventType) {
