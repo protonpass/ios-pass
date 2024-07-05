@@ -68,7 +68,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\UseCasesContainer
         .createApiService) private var createApiService: any CreateApiServiceUseCase
-//    UseCasesContainer.shared.createApiService().execute()
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime

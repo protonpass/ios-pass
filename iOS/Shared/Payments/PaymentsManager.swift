@@ -31,6 +31,7 @@ final class PaymentsManager {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
     private let userManager = resolve(\SharedServiceContainer.userManager)
+    private let authManager = resolve(\SharedToolingContainer.authManager)
 
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
@@ -144,7 +145,11 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var isSignedIn: Bool {
-        appData.isAuthenticated
+        guard let activeUserId = userManager.activeUserId else {
+            return false
+        }
+        return authManager.isAuthenticated(userId: activeUserId)
+//        appData.isAuthenticated
     }
 
     var activeUsername: String? {

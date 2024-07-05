@@ -68,6 +68,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -151,7 +152,8 @@ private extension CredentialProviderCoordinator {
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
 
-        guard credentialProvider.isAuthenticated else {
+        guard let activeUserId = userManager.activeUserId,
+              credentialProvider.isAuthenticated(userId: activeUserId) else {
             showNotLoggedInView()
             return
         }
@@ -231,7 +233,8 @@ private extension CredentialProviderCoordinator {
 private extension CredentialProviderCoordinator {
     func configureExtension() {
         guard let context else { return }
-        guard credentialProvider.isAuthenticated else {
+        guard let activeUserId = userManager.activeUserId,
+              credentialProvider.isAuthenticated(userId: activeUserId) else {
             showNotLoggedInView()
             return
         }

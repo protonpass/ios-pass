@@ -22,18 +22,25 @@
 import ProtonCoreNetworking
 
 public protocol CredentialProvider: Sendable {
-    func getCredential() -> AuthCredential?
+    func getCredential(userId: String) -> AuthCredential?
     func setCredential(_ credential: AuthCredential?)
 
-    var isAuthenticated: Bool { get }
+    func isAuthenticated(userId: String) -> Bool
 
     // Should be removed after session forking
 //    func migrateToSeparatedCredentialsIfNeccessary()
 }
 
 public extension CredentialProvider {
-    var isAuthenticated: Bool {
-        guard let credential = getCredential() else {
+//    var isAuthenticated: Bool {
+//        guard let credential = getCredential() else {
+//            return false
+//        }
+//        return !credential.isForUnauthenticatedSession
+//    }
+//
+    func isAuthenticated(userId: String) -> Bool {
+        guard let credential = getCredential(userId: userId) else {
             return false
         }
         return !credential.isForUnauthenticatedSession
