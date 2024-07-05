@@ -42,6 +42,7 @@ struct SearchResultChips: View {
                 chip(for: .alias, count: itemCount.alias)
                 chip(for: .creditCard, count: itemCount.creditCard)
                 chip(for: .note, count: itemCount.note)
+                chip(for: .identity, count: itemCount.identity)
             }
             .padding(.horizontal)
         }
