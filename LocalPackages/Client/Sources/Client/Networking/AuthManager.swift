@@ -99,6 +99,12 @@ private struct AuthElement: Hashable {
         hasher.combine(module)
         hasher.combine(credential.userID)
     }
+
+    func copy(newAuthCredential: AuthCredential) -> AuthElement {
+        AuthElement(credential: credential,
+                    authCredential: newAuthCredential,
+                    module: module)
+    }
 }
 
 struct PassCredential: Equatable, Codable {
@@ -138,7 +144,7 @@ struct PassCredential: Equatable, Codable {
 //    update(password: credential.mailboxPassword)
 // }
 
-public final class AuthManager: AuthManagerProtocol {
+public final class AuthManager: AuthManagerProtocol, CredentialProvider {
 //    private let credentialProvider: Atomic<any CredentialProvider>
 
     public private(set) weak var delegate: (any AuthHelperDelegate)?
@@ -177,7 +183,11 @@ public final class AuthManager: AuthManagerProtocol {
         self.delegate = delegate
     }
 
-    public func addCredential(credential: Credential) {}
+    public func setCredential(_ credential: AuthCredential?) {
+//        let credentials = cachedCredentials[sessionUID]
+    }
+
+    public func addCredential(credential: ProtonCoreNetworking.Credential) {}
 
     public func getCredential(userId: String) -> AuthCredential? {
         var hasher = Hasher()
@@ -231,8 +241,14 @@ public final class AuthManager: AuthManagerProtocol {
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
-        cachedCredentials[sessionUID] = getAuthElement(credential: credential)
+        var newCredentials = getAuthElement(credential: credential)
+        let newAuthCredential = newCredentials.authCredential
+            .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
+        cachedCredentials[sessionUID] = newCredentials.copy(newAuthCredential: newAuthCredential)
         saveLocalSessions()
+        delegate?.credentialsWereUpdated(authCredential: newAuthCredential,
+                                         credential: newCredentials.credential,
+                                         for: sessionUID)
 //        UserDefaults.standard.setCodable(cachedCredentials, forKey: key)
 //
 //        credentialProvider.mutate { credentialProviderUpdated in
@@ -265,8 +281,12 @@ public final class AuthManager: AuthManagerProtocol {
     }
 
     public func onSessionObtaining(credential: Credential) {
-        cachedCredentials[credential.UID] = getAuthElement(credential: credential)
+        let newCredentials = getAuthElement(credential: credential)
+        cachedCredentials[credential.UID] = newCredentials
         saveLocalSessions()
+        delegate?.credentialsWereUpdated(authCredential: newCredentials.authCredential,
+                                         credential: newCredentials.credential,
+                                         for: newCredentials.credential.UID)
 
 //        UserDefaults.standard.setCodable(cachedCredentials, forKey: key)
 
@@ -309,7 +329,7 @@ public final class AuthManager: AuthManagerProtocol {
 //                                         credential: authCredential.toCredential,
 //                                         for: sessionUID)
 
-        guard var element = cachedCredentials[sessionUID] else {
+        guard let element = cachedCredentials[sessionUID] else {
             return
         }
 
@@ -320,7 +340,6 @@ public final class AuthManager: AuthManagerProtocol {
         let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
         element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
         cachedCredentials[sessionUID] = element
-//                UserDefaults.standard.setCodable(cachedCredentials, forKey: key)
         delegate?.credentialsWereUpdated(authCredential: element.authCredential,
                                          credential: element.credential,
                                          for: sessionUID)
