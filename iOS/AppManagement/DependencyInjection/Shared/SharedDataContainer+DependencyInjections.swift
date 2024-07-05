@@ -60,7 +60,7 @@ extension SharedDataContainer {
     }
 
     var credentialProvider: Factory<any CredentialProvider> {
-        self { self.appData() }
+        self { /* self.appData() */ SharedToolingContainer.shared.authManager() }
     }
 
     var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {

@@ -52,17 +52,17 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
 
-    @LockedKeychainStorage(key: AppDataKey.mainCredential, defaultValue: nil)
-    private var mainCredential: AuthCredential?
+//    @LockedKeychainStorage(key: AppDataKey.mainCredential, defaultValue: nil)
+//    private var mainCredential: AuthCredential?
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
 
-    @LockedKeychainStorage(key: AppDataKey.hostAppCredential, defaultValue: nil)
-    private var hostAppCredential: AuthCredential?
-
-    @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
-    private var autofillExtensionCredential: AuthCredential?
+//    @LockedKeychainStorage(key: AppDataKey.hostAppCredential, defaultValue: nil)
+//    private var hostAppCredential: AuthCredential?
+//
+//    @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
+//    private var autofillExtensionCredential: AuthCredential?
 
     @LockedKeychainStorage(key: AppDataKey.shareExtensionCredential, defaultValue: nil)
     private var shareExtensionCredential: AuthCredential?
@@ -74,8 +74,8 @@ final class AppData: AppDataProtocol {
     init(module: PassModule, migrationStateProvider: any CredentialsMigrationStateProvider) {
         self.module = module
         self.migrationStateProvider = migrationStateProvider
-        migrateToSeparatedCredentialsIfNeccessary()
-        migrateCredentialsForShareExtensionIfNecessary()
+//        migrateToSeparatedCredentialsIfNeccessary()
+//        migrateCredentialsForShareExtensionIfNecessary()
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
@@ -95,80 +95,81 @@ final class AppData: AppDataProtocol {
         userData
     }
 
-    func getCredential() -> AuthCredential? {
-        migrateToSeparatedCredentialsIfNeccessary()
-        migrateCredentialsForShareExtensionIfNecessary()
-        switch module {
-        case .hostApp:
-            return hostAppCredential ?? mainCredential
-        case .autoFillExtension:
-            return autofillExtensionCredential ?? mainCredential
-        case .shareExtension:
-            return shareExtensionCredential ?? mainCredential
-        }
-    }
+//    func getCredential() -> AuthCredential? {
+//        migrateToSeparatedCredentialsIfNeccessary()
+//        migrateCredentialsForShareExtensionIfNecessary()
+//        switch module {
+//        case .hostApp:
+//            return hostAppCredential ?? mainCredential
+//        case .autoFillExtension:
+//            return autofillExtensionCredential ?? mainCredential
+//        case .shareExtension:
+//            return shareExtensionCredential ?? mainCredential
+//        }
+//    }
 
-    func setCredential(_ credential: AuthCredential?) {
-        switch module {
-        case .hostApp:
-            hostAppCredential = credential
-
-            // Should be removed after session forking
-            autofillExtensionCredential = credential
-            shareExtensionCredential = credential
-            mainCredential = credential
-
-        case .autoFillExtension:
-            autofillExtensionCredential = credential
-
-            // Should be removed after session forking
-            hostAppCredential = credential
-            mainCredential = credential
-            shareExtensionCredential = credential
-
-        case .shareExtension:
-            shareExtensionCredential = credential
-
-            // Should be removed after session forking
-            hostAppCredential = credential
-            mainCredential = credential
-            autofillExtensionCredential = credential
-        }
-    }
+//    func setCredential(_ credential: AuthCredential?) {
+//        switch module {
+//        case .hostApp:
+//            hostAppCredential = credential
+//
+//            // Should be removed after session forking
+//            autofillExtensionCredential = credential
+//            shareExtensionCredential = credential
+//            mainCredential = credential
+//
+//        case .autoFillExtension:
+//            autofillExtensionCredential = credential
+//
+//            // Should be removed after session forking
+//            hostAppCredential = credential
+//            mainCredential = credential
+//            shareExtensionCredential = credential
+//
+//        case .shareExtension:
+//            shareExtensionCredential = credential
+//
+//            // Should be removed after session forking
+//            hostAppCredential = credential
+//            mainCredential = credential
+//            autofillExtensionCredential = credential
+//        }
+//    }
 
     func resetData() {
         userData = nil
-        mainCredential = nil
-        hostAppCredential = nil
-        autofillExtensionCredential = nil
+//        mainCredential = nil
+//        hostAppCredential = nil
+//        autofillExtensionCredential = nil
         shareExtensionCredential = nil
     }
 
-    // Should be removed after session forking
-    func migrateToSeparatedCredentialsIfNeccessary() {
-        guard migrationStateProvider.shouldMigrateToSeparatedCredentials() else { return }
-        migrationStateProvider.markAsMigratedToSeparatedCredentials()
-        useCredentialInUserDataForBothAppAndExtension()
-    }
-
-    func migrateCredentialsForShareExtensionIfNecessary() {
-        guard migrationStateProvider.shouldMigrateCredentialsToShareExtension() else { return }
-        migrationStateProvider.markAsMigratedCredentialsToShareExtension()
-        shareExtensionCredential = mainCredential
-    }
+//    // Should be removed after session forking
+//    func migrateToSeparatedCredentialsIfNeccessary() {
+//        guard migrationStateProvider.shouldMigrateToSeparatedCredentials() else { return }
+//        migrationStateProvider.markAsMigratedToSeparatedCredentials()
+//        useCredentialInUserDataForBothAppAndExtension()
+//    }
+//
+//    func migrateCredentialsForShareExtensionIfNecessary() {
+//        guard migrationStateProvider.shouldMigrateCredentialsToShareExtension() else { return }
+//        migrationStateProvider.markAsMigratedCredentialsToShareExtension()
+//        shareExtensionCredential = mainCredential
+//    }
 }
 
-private extension AppData {
-    // Should be removed after session forking
-    // swiftlint:disable:next todo
-    // TODO: This should become obsolete as user data should not be in app data anymore
-    func useCredentialInUserDataForBothAppAndExtension() {
-        if let userData {
-            let credential = userData.credential
-            mainCredential = credential
-            hostAppCredential = credential
-            autofillExtensionCredential = credential
-            shareExtensionCredential = credential
-        }
-    }
-}
+//
+// private extension AppData {
+//    // Should be removed after session forking
+//    // swiftlint:disable:next todo
+//    // TODO: This should become obsolete as user data should not be in app data anymore
+//    func useCredentialInUserDataForBothAppAndExtension() {
+//        if let userData {
+//            let credential = userData.credential
+//            mainCredential = credential
+//            hostAppCredential = credential
+//            autofillExtensionCredential = credential
+//            shareExtensionCredential = credential
+//        }
+//    }
+// }
