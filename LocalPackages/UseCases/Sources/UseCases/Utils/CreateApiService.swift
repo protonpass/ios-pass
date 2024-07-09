@@ -75,6 +75,7 @@ public final class CreateApiService: CreateApiServiceUseCase {
 }
 
 // MARK: APIServiceDelegate
+
 extension CreateApiService: APIServiceDelegate {
     public var appVersion: String { appVer }
     public var userAgent: String? { protonCoreUserAgent.ua }
@@ -92,7 +93,8 @@ extension CreateApiService: APIServiceDelegate {
     }
 }
 
-//// MARK: AuthDelegate
+// MARK: AuthDelegate
+
 extension CreateApiService: AuthDelegate {
     public func authCredential(sessionUID: String) -> AuthCredential? {
         authManager.authCredential(sessionUID: sessionUID)
@@ -103,14 +105,16 @@ extension CreateApiService: AuthDelegate {
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
-        // As we use the main authManager this updates this update the main apiService with theses new credentials through apiManager as authManager is a a delegate off it
+        // As we use the main authManager this updates this update the main apiService with theses new credentials
+        // through apiManager as authManager is a a delegate off it
         // The function in authManager that update the main apiService is **credentialsWereUpdated**
         // This should be kept in mind as it can have some impact on the calls made by the main apiservice
         authManager.onUpdate(credential: credential, sessionUID: sessionUID)
     }
 
     public func onSessionObtaining(credential: Credential) {
-        // As we use the main authManager this updates this update the main apiMervice with theses new credentials through apiManager as authManager is a a delegate off it
+        // As we use the main authManager this updates this update the main apiMervice with theses new credentials
+        // through apiManager as authManager is a a delegate off it
         // The function in authManager that update the main apiService is **credentialsWereUpdated**
         // This should be kept in mind as it can have some impact on the calls made by the main apiservice
         authManager.onSessionObtaining(credential: credential)
