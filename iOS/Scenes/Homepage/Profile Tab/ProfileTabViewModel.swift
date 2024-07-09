@@ -65,6 +65,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager: any FullAuthManagerProtocol
+    @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync: any FullVaultsSyncUseCase
 
     @LazyInjected(\UseCasesContainer
         .createApiService) private var createApiService: any CreateApiServiceUseCase
@@ -109,7 +111,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private var accesses = [UserAccess]()
 
     @Published var showLoginFlow = false
-    @Published var newLoggedUser: UserData?
+    @Published var newLoggedUser: Result<UserData?, LoginViewError> = .success(nil)
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -384,8 +386,10 @@ private extension ProfileTabViewModel {
                     }
                     userAccounts = await (try? userManager.getAllUsers()) ?? []
                     if let user {
-                        apiManager.updateCurrentSession(userId: user.userId)
+                        await apiManager.updateCurrentSession(userId: user.userId)
                     }
+                    await refreshPlan()
+                    fetchSecureLinks()
                 }
             }
             .store(in: &cancellables)
@@ -394,22 +398,57 @@ private extension ProfileTabViewModel {
             .dropFirst()
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] newUser in
+            .sink { [weak self] result in
                 guard let self else { return }
-                Task { [weak self] in
-                    guard let self else { return }
-                    defer {
-                        newLoggedUser = nil
-                        showLoginFlow = false
+                showLoginFlow = false
+                newLoggedUser = .success(nil)
+
+                switch result {
+                case let .success(newUser):
+                    guard let newUser else {
+                        return
                     }
-                    do {
-                        try await userManager.addAndMarkAsActive(userData: newUser)
-                    } catch {
-                        handle(error: error)
+                    Task { [weak self] in
+                        guard let self else { return }
+                        do {
+                            // give the time to the login screen to dismiss
+                            try? await Task.sleep(for: .seconds(1))
+                            try await userManager.addAndMarkAsActive(userData: newUser)
+                            await apiManager.updateCurrentSession(userId: newUser.userId)
+                            try await preferencesManager.switchUserPreferences(userId: newUser.userId)
+                            try await forceSync()
+                            await refreshPlan()
+                            fetchSecureLinks()
+                        } catch {
+                            handle(error: error)
+                        }
+                    }
+                case let .failure(error):
+                    Task { [weak self] in
+                        guard let self else { return }
+                        do {
+                            let currentUserId = try await userManager.getActiveUserId()
+                            // This must be done as the authmanager sets the new session id in apimanger/apiservice
+                            // during the extra password flow
+                            // We must revert to previous user session id and remove all session in auth session
+                            // linked to the failed user
+                            await apiManager.updateCurrentSession(userId: currentUserId)
+                            authManager.clearSessions(userId: error.value)
+                        } catch {
+                            handle(error: error)
+                        }
                     }
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func forceSync() async throws {
+        router.present(for: .fullSync)
+        logger.info("Doing full sync")
+        try await fullVaultsSync()
+        logger.info("Done full sync")
+        router.display(element: .successMessage(config: .refresh))
     }
 
     func refresh() {
