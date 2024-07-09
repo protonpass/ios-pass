@@ -39,24 +39,15 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
     }
 }
 
-private extension SharedDataContainer {
-    var migrationStateProvider: any CredentialsMigrationStateProvider {
-        SharedToolingContainer.shared.preferences()
-    }
-}
-
 extension SharedDataContainer {
     var loginMethod: Factory<LoginMethodFlow> {
         self { LoginMethodFlow() }
     }
 
     var appData: Factory<any AppDataProtocol> {
-        self { AppData(module: .hostApp,
-                       migrationStateProvider: self.migrationStateProvider) }
-            .onArg(PassModule.autoFillExtension) { AppData(module: .autoFillExtension,
-                                                           migrationStateProvider: self.migrationStateProvider) }
-            .onArg(PassModule.shareExtension) { AppData(module: .shareExtension,
-                                                        migrationStateProvider: self.migrationStateProvider) }
+        self { AppData(module: .hostApp) }
+            .onArg(PassModule.autoFillExtension) { AppData(module: .autoFillExtension) }
+            .onArg(PassModule.shareExtension) { AppData(module: .shareExtension) }
     }
 
     var credentialProvider: Factory<any AuthManagerProtocol> {

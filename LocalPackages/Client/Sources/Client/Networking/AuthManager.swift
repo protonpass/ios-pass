@@ -264,6 +264,7 @@ private extension AuthManager {
 }
 
 // MARK: - Keychain codable wrappers for credential elements & extensions
+
 private struct AuthElement: Hashable {
     let credential: Credential
     let authCredential: AuthCredential

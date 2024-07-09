@@ -39,7 +39,6 @@ final class APIManager: Sendable, APIManagerProtocol {
 
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
-    private let appData = resolve(\SharedDataContainer.appData)
     private let doh = resolve(\SharedToolingContainer.doh)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let trustKitDelegate: any TrustKitDelegate

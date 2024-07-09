@@ -65,11 +65,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
-    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager: VaultsManager
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager: any AuthManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync: any FullVaultsSyncUseCase
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
-
     @LazyInjected(\UseCasesContainer
         .createApiService) private var createApiService: any CreateApiServiceUseCase
 
