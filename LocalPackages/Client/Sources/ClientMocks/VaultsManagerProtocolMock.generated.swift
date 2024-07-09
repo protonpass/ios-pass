@@ -110,6 +110,20 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         }
         closureFullSync()
     }
+    // MARK: - localFullSync
+    public var localFullSyncThrowableError3: Error?
+    public var closureLocalFullSync: () -> () = {}
+    public var invokedLocalFullSyncfunction = false
+    public var invokedLocalFullSyncCount = 0
+
+    public func localFullSync() async throws {
+        invokedLocalFullSyncfunction = true
+        invokedLocalFullSyncCount += 1
+        if let error = localFullSyncThrowableError3 {
+            throw error
+        }
+        closureLocalFullSync()
+    }
     // MARK: - getItems
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
@@ -139,7 +153,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         return stubbedGetAllVaultsResult
     }
     // MARK: - delete
-    public var deleteShareIdThrowableError5: Error?
+    public var deleteShareIdThrowableError6: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -151,7 +165,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         invokedDeleteCount += 1
         invokedDeleteParameters = (shareId, ())
         invokedDeleteParametersList.append((shareId, ()))
-        if let error = deleteShareIdThrowableError5 {
+        if let error = deleteShareIdThrowableError6 {
             throw error
         }
         closureDelete()

@@ -29,6 +29,7 @@ public protocol VaultsManagerProtocol: Sendable {
 
     func refresh()
     func fullSync() async throws
+    func localFullSync() async throws
     func getItems(for vault: Vault) -> [ItemUiModel]
 //    func getItemCount(for selection: Vault) -> Int
     func getAllVaults() -> [Vault]
