@@ -48,4 +48,24 @@ public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoop
         invokedResetCount += 1
         closureReset()
     }
+    // MARK: - start
+    public var closureStart: () -> () = {}
+    public var invokedStartfunction = false
+    public var invokedStartCount = 0
+
+    public func start() {
+        invokedStartfunction = true
+        invokedStartCount += 1
+        closureStart()
+    }
+    // MARK: - stop
+    public var closureStop: () -> () = {}
+    public var invokedStopfunction = false
+    public var invokedStopCount = 0
+
+    public func stop() {
+        invokedStopfunction = true
+        invokedStopCount += 1
+        closureStop()
+    }
 }

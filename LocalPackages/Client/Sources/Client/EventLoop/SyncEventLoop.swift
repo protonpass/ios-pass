@@ -91,6 +91,8 @@ private let kThresholdRange = 55...60
 public protocol SyncEventLoopProtocol: Sendable {
     func forceSync()
     func reset()
+    func start()
+    func stop()
 }
 
 public extension SyncEventLoop {

@@ -25,12 +25,25 @@ import ProtonCoreLoginUI
 import ProtonCoreServices
 import SwiftUI
 
+enum LoginViewError: Error {
+    case failedExtraPassword(String)
+
+    var value: String {
+        switch self {
+        case let .failedExtraPassword(value):
+            value
+        }
+    }
+}
+
 struct LoginView: UIViewControllerRepresentable {
-    @Binding private var loginData: LoginData?
+//    @Binding private var loginData: LoginData?
+
+    @Binding private var loginData: Result<UserData?, LoginViewError>
     private let apiService: any APIService
     private let theme: Theme
 
-    init(apiService: any APIService, theme: Theme, loginData: Binding<LoginData?>) {
+    init(apiService: any APIService, theme: Theme, loginData: Binding<Result<UserData?, LoginViewError>>) {
         self.apiService = apiService
         self.theme = theme
         _loginData = loginData
@@ -48,14 +61,17 @@ struct LoginView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: WelcomeViewController, context: Context) {}
 
-    class Coordinator: WelcomeViewControllerDelegate {
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+}
+
+// MARK: - Coordinator
+
+extension LoginView {
+    final class Coordinator: @unchecked Sendable, WelcomeViewControllerDelegate {
         weak var viewController: UIViewController?
         private let parent: LoginView
-
-        init(_ parent: LoginView) {
-            self.parent = parent
-        }
-
         private lazy var logInAndSignUp = makeLoginAndSignUp()
 
         private func makeLoginAndSignUp() -> LoginAndSignup {
@@ -74,6 +90,10 @@ struct LoginView: UIViewControllerRepresentable {
             })
         }
 
+        init(_ parent: LoginView) {
+            self.parent = parent
+        }
+
         func userWantsToLogIn(username: String?) {
             guard let viewController else {
                 return
@@ -89,8 +109,38 @@ struct LoginView: UIViewControllerRepresentable {
                 case let .loggedIn(logInData), let .signedUp(logInData):
                     logInAndSignUp = makeLoginAndSignUp()
 
-                    // TODO: IF scope is not full user has extra password need to take that into  account
-                    parent.loginData = logInData
+                    if logInData.scopes.contains(where: { $0 == "pass" }) {
+                        parent.loginData = .success(logInData)
+                    } else {
+                        Task { @MainActor [weak self] in
+                            guard let self else {
+                                return
+                            }
+
+                            let onSuccess: () -> Void = { [weak self] in
+                                guard let self else { return }
+                                parent.loginData = .success(logInData)
+                            }
+
+                            let onFailure: () -> Void = { [weak self] in
+                                guard let self else { return }
+                                parent.loginData = .failure(.failedExtraPassword(logInData.user.ID))
+
+                                DispatchQueue.main.async {
+                                    // TODO: Should logout and remove all info about the user
+                                    viewController.dismiss(animated: false)
+                                }
+                            }
+
+                            let username = logInData.credential.userName
+                            let view = ExtraPasswordLockView(email: logInData.user.email ?? username,
+                                                             username: username,
+                                                             onSuccess: onSuccess,
+                                                             onFailure: onFailure)
+                            let newViewController = UIHostingController(rootView: view)
+                            present(rootViewController: viewController, viewController: newViewController)
+                        }
+                    }
                 }
             }
         }
@@ -110,13 +160,36 @@ struct LoginView: UIViewControllerRepresentable {
                     }
                 case let .loggedIn(logInData), let .signedUp(logInData):
                     logInAndSignUp = makeLoginAndSignUp()
-                    parent.loginData = logInData
+                    parent.loginData = .success(logInData)
                 }
             }
         }
-    }
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        /// When `uniquenessTag` is set and there is a sheet that holds the same tag,
+        /// we dismiss the top most sheet and do nothing. Otherwise we present the sheet as normal
+        @MainActor
+        private func present(rootViewController: UIViewController,
+                             viewController: UIViewController,
+                             animated: Bool = true,
+                             dismissible: Bool = false,
+                             delay: TimeInterval = 0.1,
+                             uniquenessTag: (any RawRepresentable<Int>)? = nil) {
+            viewController.sheetPresentationController?.preferredCornerRadius = 16
+            viewController.isModalInPresentation = !dismissible
+            if let uniquenessTag {
+                viewController.view.tag = uniquenessTag.rawValue
+                if rootViewController.containsUniqueSheet(uniquenessTag) {
+                    rootViewController.topMostViewController.dismiss(animated: animated)
+                    return
+                }
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+                guard let self else {
+                    return
+                }
+                rootViewController.topMostViewController.present(viewController, animated: true)
+            }
+        }
     }
 }
