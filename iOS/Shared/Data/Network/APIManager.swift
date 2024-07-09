@@ -30,12 +30,11 @@ import ProtonCoreForceUpgrade
 import ProtonCoreFoundations
 import ProtonCoreHumanVerification
 import ProtonCoreLogin
-
 @preconcurrency import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreServices
 
-final class APIManager: Sendable {
+final class APIManager: Sendable, APIManagerProtocol {
     typealias SessionUID = String
 
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -44,7 +43,7 @@ final class APIManager: Sendable {
     private let doh = resolve(\SharedToolingContainer.doh)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let trustKitDelegate: any TrustKitDelegate
-    let authManager: any AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
+    private let authManager: any AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
     let userManager = SharedServiceContainer.shared.userManager()
 
     private(set) var apiService: any APIService
@@ -97,16 +96,6 @@ final class APIManager: Sendable {
         fetchUnauthSessionIfNeeded()
     }
 
-    // swiftlint:disable:next todo
-    // TODO: Need to move this in Session manager and need to update the next session to either a other locally registered or recreate an empty apiservice from scrAtch for a full logout
-    func clearCredentials(sessionID: String) {
-        // swiftlint:disable:next todo
-        // TODO: Have session manager remove all session link to session id and user with id link to this session
-//        appData.resetData()
-        apiService.setSessionUID(uid: "")
-        fetchUnauthSessionIfNeeded()
-    }
-
     func updateCurrentSession(sessionId: String) {
         apiService.setSessionUID(uid: sessionId)
     }
@@ -117,9 +106,6 @@ final class APIManager: Sendable {
             return
         }
         apiService.setSessionUID(uid: session.sessionID)
-        // We need to add this as setSessionUID seems to not be a synchronised function
-        // We noticed that if we return directly there is sometimes still the old session active
-//        try? await Task.sleep(for: .seconds(0.3))
     }
 
     func clearSession(sessionId: String) {
@@ -161,20 +147,21 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        clearCredentials(sessionID: sessionUID)
-
+        authManager.clearSessions(sessionId: sessionUID)
+        apiService.setSessionUID(uid: "")
+        fetchUnauthSessionIfNeeded()
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out.")
+            // swiftlint:disable:next todo
+            // TODO: check that this should only log out the user link to this session and not all users
             sessionWasInvalidated.send(sessionUID)
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
-//            fetchUnauthSessionIfNeeded()
         }
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
-//        appData.setCredential(authCredential)
         if apiService.sessionUID != sessionUID {
             apiService.setSessionUID(uid: sessionUID)
         }

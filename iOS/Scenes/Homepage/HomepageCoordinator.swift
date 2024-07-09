@@ -82,6 +82,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
     private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+    @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
 
     let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 

@@ -72,6 +72,10 @@ private extension SharedUseCasesContainer {
     var vaultsManager: any VaultsManagerProtocol {
         SharedServiceContainer.shared.vaultsManager()
     }
+
+    var apiManager: any APIManagerProtocol {
+        SharedToolingContainer.shared.apiManager()
+    }
 }
 
 // MARK: App
@@ -367,6 +371,13 @@ extension SharedUseCasesContainer {
                                        userDataDatasource: container.localUserDataDatasource(),
                                        userPreferencesDatasource: container.userPreferencesDatasource())
         }
+    }
+
+    var switchUser: Factory<any SwitchUserUseCase> {
+        self { SwitchUser(userManager: self.userManager,
+                          vaultsManager: self.vaultsManager,
+                          preferencesManager: self.preferencesManager,
+                          apiManager: self.apiManager) }
     }
 }
 

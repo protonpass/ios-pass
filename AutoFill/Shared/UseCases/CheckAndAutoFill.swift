@@ -40,13 +40,13 @@ extension CheckAndAutoFillUseCase {
 }
 
 final class CheckAndAutoFill: CheckAndAutoFillUseCase {
-    private let credentialProvider: any CredentialProvider
+    private let credentialProvider: any AuthManagerProtocol
     private let generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
     private let userManager: any UserManagerProtocol
 
-    init(credentialProvider: any CredentialProvider,
+    init(credentialProvider: any AuthManagerProtocol,
          userManager: any UserManagerProtocol,
          generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,

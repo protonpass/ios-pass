@@ -155,7 +155,7 @@ extension SharedToolingContainer {
 // MARK: Authentication
 
 extension SharedToolingContainer {
-    var authManager: Factory<any FullAuthManagerProtocol> {
+    var authManager: Factory<any AuthManagerProtocol> {
         self {
             AuthManager(keychain: SharedToolingContainer.shared.keychain(),
                         symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
@@ -168,5 +168,3 @@ extension SharedToolingContainer {
         self { .deviceOwnerAuthentication }
     }
 }
-
-typealias FullAuthManagerProtocol = AuthManagerProtocol & CredentialProvider

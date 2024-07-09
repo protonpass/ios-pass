@@ -42,7 +42,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
     private let currentSpotlightVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)
@@ -53,6 +52,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
+
+    @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
@@ -187,11 +188,9 @@ extension SettingsViewModel {
             guard let self else { return }
             do {
                 router.present(for: .fullSync)
-                syncEventLoop.stop()
                 logger.info("Doing full sync")
-                try await vaultsManager.fullSync()
+                try await fullVaultsSync()
                 logger.info("Done full sync")
-                syncEventLoop.start()
                 router.display(element: .successMessage(config: .refresh))
             } catch {
                 logger.error(error)

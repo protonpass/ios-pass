@@ -36,14 +36,17 @@ enum LoginViewError: Error {
     }
 }
 
-struct LoginView: UIViewControllerRepresentable {
-//    @Binding private var loginData: LoginData?
+struct LoginViewResult {
+    let userData: UserData
+    let hasExtraPassword: Bool
+}
 
-    @Binding private var loginData: Result<UserData?, LoginViewError>
+struct LoginView: UIViewControllerRepresentable {
+    @Binding private var loginData: Result<LoginViewResult?, LoginViewError>
     private let apiService: any APIService
     private let theme: Theme
 
-    init(apiService: any APIService, theme: Theme, loginData: Binding<Result<UserData?, LoginViewError>>) {
+    init(apiService: any APIService, theme: Theme, loginData: Binding<Result<LoginViewResult?, LoginViewError>>) {
         self.apiService = apiService
         self.theme = theme
         _loginData = loginData
@@ -110,7 +113,7 @@ extension LoginView {
                     logInAndSignUp = makeLoginAndSignUp()
 
                     if logInData.scopes.contains(where: { $0 == "pass" }) {
-                        parent.loginData = .success(logInData)
+                        parent.loginData = .success(LoginViewResult(userData: logInData, hasExtraPassword: false))
                     } else {
                         Task { @MainActor [weak self] in
                             guard let self else {
@@ -119,7 +122,8 @@ extension LoginView {
 
                             let onSuccess: () -> Void = { [weak self] in
                                 guard let self else { return }
-                                parent.loginData = .success(logInData)
+                                parent.loginData = .success(LoginViewResult(userData: logInData,
+                                                                            hasExtraPassword: true))
                             }
 
                             let onFailure: () -> Void = { [weak self] in
@@ -127,7 +131,6 @@ extension LoginView {
                                 parent.loginData = .failure(.failedExtraPassword(logInData.user.ID))
 
                                 DispatchQueue.main.async {
-                                    // TODO: Should logout and remove all info about the user
                                     viewController.dismiss(animated: false)
                                 }
                             }
@@ -146,23 +149,7 @@ extension LoginView {
         }
 
         func userWantsToSignUp() {
-            guard let viewController else {
-                return
-            }
-
-            logInAndSignUp.presentSignupFlow(over: viewController,
-                                             customization: customization) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .dismissed:
-                    DispatchQueue.main.async {
-                        viewController.dismiss(animated: false)
-                    }
-                case let .loggedIn(logInData), let .signedUp(logInData):
-                    logInAndSignUp = makeLoginAndSignUp()
-                    parent.loginData = .success(logInData)
-                }
-            }
+            assertionFailure("Should never be called")
         }
 
         /// When `uniquenessTag` is set and there is a sheet that holds the same tag,
@@ -184,10 +171,7 @@ extension LoginView {
                 }
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-                guard let self else {
-                    return
-                }
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 rootViewController.topMostViewController.present(viewController, animated: true)
             }
         }
