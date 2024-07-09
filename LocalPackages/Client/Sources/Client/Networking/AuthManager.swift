@@ -29,12 +29,13 @@ import ProtonCoreUtilities
 
 // swiftlint:disable file_length
 
-public protocol AuthManagerProtocol: AuthDelegate {
-    func setUpDelegate(_ delegate: any AuthHelperDelegate,
-                       callingItOn executor: CompletionBlockExecutor?)
+public protocol AuthManagerProtocol: Sendable, AuthDelegate {
+    func setUpDelegate(_ delegate: any AuthHelperDelegate)
 
     func addCredential(credential: Credential)
     func getCredential(userId: String) -> AuthCredential?
+    func clearSessions(sessionId: String)
+    func clearSessions(userId: String)
 }
 
 extension UserDefaults {
@@ -145,7 +146,7 @@ struct PassCredential: Equatable, Codable {
 // }
 
 public final class AuthManager: AuthManagerProtocol, CredentialProvider {
-//    private let credentialProvider: Atomic<any CredentialProvider>
+    private let serialAccessQueue = DispatchQueue(label: "me.pass.authmanager_queue")
 
     public private(set) weak var delegate: (any AuthHelperDelegate)?
     // swiftlint:disable:next identifier_name
@@ -165,21 +166,26 @@ public final class AuthManager: AuthManagerProtocol, CredentialProvider {
     public init(keychain: any KeychainProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 module: PassModule) {
-//        self.credentialProvider = .init(credentialProvider)
         self.keychain = keychain
         self.symmetricKeyProvider = symmetricKeyProvider
         self.module = module
         cachedCredentials = getLocalSessions()
     }
 
-    public func setUpDelegate(_ delegate: any AuthHelperDelegate,
-                              callingItOn executor: CompletionBlockExecutor? = nil) {
-        if let executor {
-            delegateExecutor = executor
-        } else {
-            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos: .userInitiated)
-            delegateExecutor = .asyncExecutor(dispatchQueue: dispatchQueue)
-        }
+//
+//    public func setUpDelegate(_ delegate: any AuthHelperDelegate,
+//                              callingItOn executor: CompletionBlockExecutor? = nil) {
+    ////        if let executor {
+    ////            delegateExecutor = executor
+    ////        } else {
+    ////            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos:
+    /// .userInitiated)
+    ////            delegateExecutor = .asyncExecutor(dispatchQueue: dispatchQueue)
+    ////        }
+//        self.delegate = delegate
+//    }
+
+    public func setUpDelegate(_ delegate: any AuthHelperDelegate) {
         self.delegate = delegate
     }
 
@@ -190,13 +196,15 @@ public final class AuthManager: AuthManagerProtocol, CredentialProvider {
     public func addCredential(credential: ProtonCoreNetworking.Credential) {}
 
     public func getCredential(userId: String) -> AuthCredential? {
-        var hasher = Hasher()
-        hasher.combine(module)
-        hasher.combine(userId)
-        guard let cred = cachedCredentials.firstValueForHash(matching: hasher.finalize()) else {
-            return nil
+        serialAccessQueue.sync {
+            var hasher = Hasher()
+            hasher.combine(module)
+            hasher.combine(userId)
+            guard let cred = cachedCredentials.firstValueForHash(matching: hasher.finalize()) else {
+                return nil
+            }
+            return cred.authCredential
         }
-        return cred.authCredential
     }
 
 //    private func getAuthManagerKey(sessionId: String) -> AuthManagerKey {
@@ -204,7 +212,11 @@ public final class AuthManager: AuthManagerProtocol, CredentialProvider {
 //    }
 
     public func credential(sessionUID: String) -> Credential? {
-        cachedCredentials[sessionUID]?.credential
+        serialAccessQueue.sync {
+            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
+
+            return cachedCredentials[key]?.credential
+        }
 
 //        credentialProvider.transform { credentialProvider in
 //            if let credential = cachedCredentials[sessionUID] {
@@ -223,11 +235,15 @@ public final class AuthManager: AuthManagerProtocol, CredentialProvider {
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
-        guard let cred = cachedCredentials[sessionUID]?.authCredential else {
-            return nil
-        }
+        serialAccessQueue.sync {
+            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
 
-        return cred
+            guard let cred = cachedCredentials[key]?.authCredential else {
+                return nil
+            }
+
+            return cred
+        }
 //        credentialProvider.transform { credentialProvider in
 //            guard let authCredential = credentialProvider.getCredential() else {
 //                return nil
@@ -241,187 +257,100 @@ public final class AuthManager: AuthManagerProtocol, CredentialProvider {
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
-        var newCredentials = getAuthElement(credential: credential)
-        let newAuthCredential = newCredentials.authCredential
-            .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
-        cachedCredentials[sessionUID] = newCredentials.copy(newAuthCredential: newAuthCredential)
-        saveLocalSessions()
-        delegate?.credentialsWereUpdated(authCredential: newAuthCredential,
-                                         credential: newCredentials.credential,
-                                         for: sessionUID)
-//        UserDefaults.standard.setCodable(cachedCredentials, forKey: key)
-//
-//        credentialProvider.mutate { credentialProviderUpdated in
-//            defer { cachedCredentials[sessionUID] = credential }
-//
-//            guard let authCredential = credentialProviderUpdated.getCredential() else {
-//                credentialProviderUpdated.setCredential(AuthCredential(credential))
-//                return
-//            }
-//
-//            guard authCredential.sessionID == sessionUID else {
-//                PMLog
-//                    .error("Asked for updating credentials of a wrong session. It should be investigated")
-//                return
-//            }
-//
-//            // we don't nil out the key and password to avoid loosing this information unintentionaly
-//            let updatedAuth = authCredential.updatedKeepingKeyAndPasswordDataIntact(credential:
-//                credential)
-//
-//            credentialProviderUpdated.setCredential(updatedAuth)
-//
-//            guard let delegate, let delegateExecutor else { return }
-//            delegateExecutor.execute {
-//                delegate.credentialsWereUpdated(authCredential: updatedAuth,
-//                                                credential: credential,
-//                                                for: sessionUID)
-//            }
-//        }
+        serialAccessQueue.sync {
+            // TODO: maybe update all module sessions
+            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
+            let newCredentials = getAuthElement(credential: credential)
+            let newAuthCredential = newCredentials.authCredential
+                .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
+            cachedCredentials[key] = newCredentials.copy(newAuthCredential: newAuthCredential)
+            saveLocalSessions()
+            delegate?.credentialsWereUpdated(authCredential: newAuthCredential,
+                                             credential: newCredentials.credential,
+                                             for: sessionUID)
+        }
     }
 
     public func onSessionObtaining(credential: Credential) {
-        let newCredentials = getAuthElement(credential: credential)
-        cachedCredentials[credential.UID] = newCredentials
-        saveLocalSessions()
-        delegate?.credentialsWereUpdated(authCredential: newCredentials.authCredential,
-                                         credential: newCredentials.credential,
-                                         for: newCredentials.credential.UID)
-
-//        UserDefaults.standard.setCodable(cachedCredentials, forKey: key)
-
-//        credentialProvider.mutate { credentialProvider in
-//            let sessionUID = credential.UID
-//
-//            defer { cachedCredentials[sessionUID] = credential }
-//
-//            let newCredentials = AuthCredential(credential)
-//
-//            credentialProvider.setCredential(newCredentials)
-//
-//            guard let delegate, let delegateExecutor else { return }
-//            delegateExecutor.execute {
-//                delegate.credentialsWereUpdated(authCredential: newCredentials,
-//                                                credential: credential,
-//                                                for: sessionUID)
-//            }
-//        }
+        serialAccessQueue.sync {
+            for passModule in PassModule.allCases {
+                let key = getCacheKeyFor(sessionId: credential.UID, currentModule: passModule)
+                let newCredentials = getAuthElement(credential: credential)
+                cachedCredentials[key] = newCredentials
+                if passModule == module {
+                    delegate?.credentialsWereUpdated(authCredential: newCredentials.authCredential,
+                                                     credential: newCredentials.credential,
+                                                     for: newCredentials.credential.UID)
+                }
+            }
+            saveLocalSessions()
+        }
     }
 
     public func onAdditionalCredentialsInfoObtained(sessionUID: String,
                                                     password: String?,
                                                     salt: String?,
                                                     privateKey: String?) {
-//        guard let credential = cachedCredentials[sessionUID]?.auth else {
-//            return
-//        }
-//
-//        if let password {
-//            authCredential.update(password: password)
-//        }
-//        let saltToUpdate = salt ?? authCredential.passwordKeySalt
-//        let privateKeyToUpdate = privateKey ?? authCredential.privateKey
-//
-//        authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-//        cachedCredentials[sessionUID] = getAuthElement(element: authCredential)
-//        UserDefaults.standard.setCodable(cachedCredentials, forKey: key)
-//        delegate?.credentialsWereUpdated(authCredential: authCredential,
-//                                         credential: authCredential.toCredential,
-//                                         for: sessionUID)
+        serialAccessQueue.sync {
+            // TODO: maybe update all module sessions
 
-        guard let element = cachedCredentials[sessionUID] else {
-            return
+            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
+            guard let element = cachedCredentials[key] else {
+                return
+            }
+
+            if let password {
+                element.authCredential.update(password: password)
+            }
+            let saltToUpdate = salt ?? element.authCredential.passwordKeySalt
+            let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
+            element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
+            cachedCredentials[key] = element
+            delegate?.credentialsWereUpdated(authCredential: element.authCredential,
+                                             credential: element.credential,
+                                             for: sessionUID)
         }
-
-        if let password {
-            element.authCredential.update(password: password)
-        }
-        let saltToUpdate = salt ?? element.authCredential.passwordKeySalt
-        let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
-        element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-        cachedCredentials[sessionUID] = element
-        delegate?.credentialsWereUpdated(authCredential: element.authCredential,
-                                         credential: element.credential,
-                                         for: sessionUID)
-
-//        credentialProvider.mutate { credentialProvider in
-//            guard let authCredential = credentialProvider.getCredential() else {
-//                return
-//            }
-//            guard authCredential.sessionID == sessionUID else {
-//                PMLog
-//                    .error("Asked for updating credentials of a wrong session. It should be investigated")
-//                return
-//            }
-//
-//            if let password {
-//                authCredential.update(password: password)
-//            }
-//            let saltToUpdate = salt ?? authCredential.passwordKeySalt
-//            let privateKeyToUpdate = privateKey ?? authCredential.privateKey
-//            authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-//            credentialProvider.setCredential(authCredential)
-//
-//            guard let delegate, let delegateExecutor else { return }
-//            delegateExecutor.execute {
-//                delegate.credentialsWereUpdated(authCredential: authCredential,
-//                                                credential: Credential(authCredential),
-//                                                for: sessionUID)
-//            }
-//        }
     }
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
-        cachedCredentials[sessionUID] = nil
-        saveLocalSessions()
-        delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
-
-//        credentialProvider.mutate { credentialProvider in
-//            guard let authCredential = credentialProvider.getCredential() else {
-//                return
-//            }
-//            guard authCredential.sessionID == sessionUID else {
-//                PMLog
-//                    .error("Asked for logout of wrong session. It should be investigated")
-//                return
-//            }
-//            credentialProvider.setCredential(nil)
-//
-//            delegateExecutor?.execute { [weak self] in
-//                guard let self else {
-//                    return
-//                }
-//                delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
-//            }
-//            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
-//                                                                                   isAuthenticatedSession: true)
-//        }
+        serialAccessQueue.sync {
+            // TODO: maybe delete all module sessions
+            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
+            cachedCredentials[key] = nil
+            saveLocalSessions()
+            delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
+            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
+                                                                                   isAuthenticatedSession: true)
+        }
     }
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
-        cachedCredentials[sessionUID] = nil
-        saveLocalSessions()
-        delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
-//        credentialProvider.mutate { credentialProvider in
-//            guard let authCredential = credentialProvider.getCredential() else {
-//                return
-//            }
-//            guard authCredential.sessionID == sessionUID else {
-//                PMLog
-//                    .error("Asked for erasing the credentials of a wrong session. It should be investigated")
-//                return
-//            }
-//            credentialProvider.setCredential(nil)
-//
-//            delegateExecutor?.execute { [weak self] in
-//                guard let self else {
-//                    return
-//                }
-//                delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
-//            }
-//            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
-//                                                                                   isAuthenticatedSession: false)
-//        }
+        serialAccessQueue.sync {
+            // TODO: maybe delete all module sessions
+            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
+            cachedCredentials[key] = nil
+            saveLocalSessions()
+            delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
+            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
+                                                                                   isAuthenticatedSession: false)
+        }
+    }
+
+    public func clearSessions(sessionId: String) {
+        serialAccessQueue.sync {
+            for module in PassModule.allCases {
+                let key = getCacheKeyFor(sessionId: sessionId, currentModule: module)
+                cachedCredentials[key] = nil
+            }
+            saveLocalSessions()
+        }
+    }
+
+    public func clearSessions(userId: String) {
+        serialAccessQueue.sync {
+            cachedCredentials = cachedCredentials.filter { $0.value.credential.userID != userId }
+            saveLocalSessions()
+        }
     }
 }
 
@@ -442,11 +371,10 @@ private extension AuthManager {
 private extension AuthManager {
     func saveLocalSessions() {
         do {
-//            let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-//            let codableContent = cachedCredentials.toSavedAuthElementDic
+            let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
             let data = try JSONEncoder().encode(cachedCredentials.toSavedAuthElementDic)
-//            let encryptedContent = try symmetricKey.encrypt(data.encodeBase64())
-            try keychain.setOrError(data, forKey: key)
+            let encryptedContent = try symmetricKey.encrypt(data.encodeBase64())
+            try keychain.setOrError(encryptedContent, forKey: key)
         } catch {
             // TODO: need to log
             print(error)
@@ -454,22 +382,27 @@ private extension AuthManager {
     }
 
     func getLocalSessions() -> [String: AuthElement] {
-        guard let encryptedContent = try? keychain.dataOrError(forKey: key),
+        guard let encryptedContent = try? keychain.stringOrError(forKey: key),
               let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else {
             return [:]
         }
 
         do {
-//            let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-//            guard let decryptedContentData = try decryptedContent.base64Decode() else {
-//                return [:]
-//            }
-            let content = try JSONDecoder().decode([String: SavedAuthElement].self, from: encryptedContent)
+            let decryptedContent = try symmetricKey.decrypt(encryptedContent)
+            guard let decryptedContentData = try decryptedContent.base64Decode() else {
+                return [:]
+            }
+            let content = try JSONDecoder().decode([String: SavedAuthElement].self, from: decryptedContentData)
             return content.toAuthElementDic
         } catch {
             try? keychain.removeOrError(forKey: key)
             return [:]
         }
+    }
+
+    // this is to differentiate sessions from app and extensions until we have forking in place
+    private func getCacheKeyFor(sessionId: String, currentModule: PassModule) -> String {
+        "\(currentModule.rawValue)\(sessionId)"
     }
 }
 
@@ -481,10 +414,8 @@ private struct SavedAuthElement: Codable {
 
 private extension [String: AuthElement] {
     func firstValueForHash(matching hash: Int) -> AuthElement? {
-        for (_, value) in self {
-            if value.hashValue == hash {
-                return value
-            }
+        for (_, value) in self where value.hashValue == hash {
+            return value
         }
         return nil
     }

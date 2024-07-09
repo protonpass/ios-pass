@@ -93,7 +93,7 @@ final class WipeAllData: WipeAllDataUseCase {
         appData.resetData()
         // swiftlint:disable:next todo
         // TODO: need to move this in session manager
-        apiManager.clearCredentials()
+//        apiManager.clearCredentials()
 
         UIPasteboard.general.items = []
 

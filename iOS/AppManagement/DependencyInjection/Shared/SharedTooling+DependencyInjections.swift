@@ -157,9 +157,6 @@ extension SharedToolingContainer {
 extension SharedToolingContainer {
     var authManager: Factory<any FullAuthManagerProtocol> {
         self {
-//            AuthManager(credentialProvider: SharedDataContainer.shared.credentialProvider(),
-//                           module: self.module())
-
             AuthManager(keychain: SharedToolingContainer.shared.keychain(),
                         symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
                         module: self.module())

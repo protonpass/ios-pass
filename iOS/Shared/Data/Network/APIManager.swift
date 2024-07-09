@@ -25,7 +25,7 @@ import Factory
 import Foundation
 import ProtonCoreAuthentication
 import ProtonCoreCryptoGoInterface
-import ProtonCoreEnvironment
+@preconcurrency import ProtonCoreEnvironment
 import ProtonCoreForceUpgrade
 import ProtonCoreFoundations
 import ProtonCoreHumanVerification
@@ -35,7 +35,7 @@ import ProtonCoreLogin
 import ProtonCoreObservability
 import ProtonCoreServices
 
-final class APIManager {
+final class APIManager: Sendable {
     typealias SessionUID = String
 
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -44,7 +44,7 @@ final class APIManager {
     private let doh = resolve(\SharedToolingContainer.doh)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let trustKitDelegate: any TrustKitDelegate
-    let authHelper: any AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
+    let authManager: any AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
     let userManager = SharedServiceContainer.shared.userManager()
 
     private(set) var apiService: any APIService
@@ -62,7 +62,7 @@ final class APIManager {
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
         if let activeUserId = userManager.activeUserId,
-           let credential = authHelper.getCredential(userId: activeUserId) {
+           let credential = authManager.getCredential(userId: activeUserId) {
             apiService = PMAPIService.createAPIService(doh: doh,
                                                        sessionUID: credential.sessionID,
                                                        challengeParametersProvider: challengeProvider)
@@ -71,8 +71,8 @@ final class APIManager {
                                                                      challengeParametersProvider: challengeProvider)
         }
         self.apiService = apiService
-        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-        self.apiService.authDelegate = authHelper
+        authManager.setUpDelegate(self)
+        self.apiService.authDelegate = authManager
         self.apiService.serviceDelegate = self
         apiService.loggingDelegate = self
 
@@ -99,22 +99,31 @@ final class APIManager {
 
     // swiftlint:disable:next todo
     // TODO: Need to move this in Session manager and need to update the next session to either a other locally registered or recreate an empty apiservice from scrAtch for a full logout
-    func clearCredentials() {
+    func clearCredentials(sessionID: String) {
         // swiftlint:disable:next todo
         // TODO: Have session manager remove all session link to session id and user with id link to this session
-        appData.resetData()
+//        appData.resetData()
         apiService.setSessionUID(uid: "")
+        fetchUnauthSessionIfNeeded()
     }
 
     func updateCurrentSession(sessionId: String) {
         apiService.setSessionUID(uid: sessionId)
     }
 
-    func updateCurrentSession(userId: String) {
-        guard let session = authHelper.getCredential(userId: userId) else {
+    func updateCurrentSession(userId: String) async {
+        guard let session = authManager.getCredential(userId: userId),
+              session.sessionID != apiService.sessionUID else {
             return
         }
         apiService.setSessionUID(uid: session.sessionID)
+        // We need to add this as setSessionUID seems to not be a synchronised function
+        // We noticed that if we return directly there is sometimes still the old session active
+//        try? await Task.sleep(for: .seconds(0.3))
+    }
+
+    func clearSession(sessionId: String) {
+        authManager.clearSessions(sessionId: sessionId)
     }
 }
 
@@ -152,20 +161,23 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        clearCredentials()
+        clearCredentials(sessionID: sessionUID)
 
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out.")
             sessionWasInvalidated.send(sessionUID)
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
-            fetchUnauthSessionIfNeeded()
+//            fetchUnauthSessionIfNeeded()
         }
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
 //        appData.setCredential(authCredential)
+        if apiService.sessionUID != sessionUID {
+            apiService.setSessionUID(uid: sessionUID)
+        }
     }
 }
 

@@ -241,6 +241,7 @@ extension VaultsManager {
     func fullSync() async throws {
         vaultSyncEventStream.send(.started)
 
+        // TODO: we cannot do this any more as this would remove items key and other from user that could still be
         // 1. Delete all local data
         try await deleteLocalDataBeforeFullSync()
 
