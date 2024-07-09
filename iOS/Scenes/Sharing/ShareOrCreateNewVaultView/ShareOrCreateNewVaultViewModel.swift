@@ -44,7 +44,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     var sheetHeight: CGFloat {
         if vault.vault.shared {
-            isSecureLinkActive ? 260 : 200
+            isSecureLinkActive ? 290 : 200
         } else {
             isSecureLinkActive ? 400 : 310
         }
