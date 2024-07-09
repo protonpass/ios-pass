@@ -148,7 +148,6 @@ extension PaymentsManager: StoreKitManagerDelegate {
             return false
         }
         return authManager.isAuthenticated(userId: activeUserId)
-//        appData.isAuthenticated
     }
 
     var activeUsername: String? {
