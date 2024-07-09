@@ -141,15 +141,21 @@ final class AppCoordinator {
                         registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
-                    logger.info("Logged in manual")
-                    userManager.setUserData(userData)
-                    connectToCorruptedSessionStream()
-                    if extraPassword {
-                        showHomeScene(mode: .manualLoginWithExtraPassword)
-                    } else {
-                        showHomeScene(mode: .manualLogin)
+                    Task { [weak self] in
+                        guard let self else {
+                            return
+                        }
+                        logger.info("Logged in manual")
+                        try? await userManager.addAndMarkAsActive(userData: userData)
+//                        userManager.setUserData(userData)
+                        connectToCorruptedSessionStream()
+                        if extraPassword {
+                            showHomeScene(mode: .manualLoginWithExtraPassword)
+                        } else {
+                            showHomeScene(mode: .manualLogin)
+                        }
+                        registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
                     }
-                    registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }

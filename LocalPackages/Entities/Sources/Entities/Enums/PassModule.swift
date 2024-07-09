@@ -21,5 +21,7 @@
 import Foundation
 
 public enum PassModule: String, CaseIterable, Sendable, Codable, Hashable {
-    case hostApp, autoFillExtension, shareExtension
+    case hostApp = "HostApp"
+    case autoFillExtension = "AutoFillExtension"
+    case shareExtension = "ShareExtension"
 }

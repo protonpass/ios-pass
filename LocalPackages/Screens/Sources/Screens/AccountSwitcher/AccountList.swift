@@ -36,7 +36,7 @@ struct AccountList: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
-            ForEach(details, id: \.id) { detail in
+            ForEach(details.sorted { $0.id == activeId && $1.id != activeId }, id: \.id) { detail in
                 let isActive = detail.id == activeId
                 if isActive || (!isActive && animated) {
                     row(for: detail, isActive: isActive)

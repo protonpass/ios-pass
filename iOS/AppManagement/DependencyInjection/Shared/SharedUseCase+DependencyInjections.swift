@@ -68,6 +68,10 @@ private extension SharedUseCasesContainer {
     var accessRepository: any AccessRepositoryProtocol {
         SharedRepositoryContainer.shared.accessRepository()
     }
+
+    var vaultsManager: any VaultsManagerProtocol {
+        SharedServiceContainer.shared.vaultsManager()
+    }
 }
 
 // MARK: App
@@ -180,7 +184,12 @@ extension SharedUseCasesContainer {
     }
 
     var getMainVault: Factory<any GetMainVaultUseCase> {
-        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+        self { GetMainVault(vaultsManager: self.vaultsManager) }
+    }
+
+    var fullVaultsSync: Factory<any FullVaultsSyncUseCase> {
+        self { FullVaultsSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                              vaultsManager: self.vaultsManager) }
     }
 }
 
@@ -188,7 +197,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var getCurrentSelectedShareId: Factory<any GetCurrentSelectedShareIdUseCase> {
-        self { GetCurrentSelectedShareId(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+        self { GetCurrentSelectedShareId(vaultsManager: self.vaultsManager,
                                          getMainVault: self.getMainVault()) }
     }
 }

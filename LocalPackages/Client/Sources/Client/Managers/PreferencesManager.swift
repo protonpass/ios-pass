@@ -67,6 +67,8 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
     var userPreferences: CurrentValueSubject<UserPreferences?, Never> { get }
     var userPreferencesUpdates: PassthroughSubject<UserPreferencesUpdate, Never> { get }
 
+    func switchUserPreferences(userId: String) async throws
+
     func updateUserPreferences<T>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                   value: T) async throws where T: Sendable
     func removeUserPreferences() async throws
@@ -144,13 +146,7 @@ public extension PreferencesManager {
 
         // User's preferences
         if let userId = try? await userManager.getActiveUserId() {
-            if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
-                userPreferences.send(preferences)
-            } else {
-                let preferences = UserPreferences.default
-                try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-                userPreferences.send(preferences)
-            }
+            try await setUserPreferences(userId: userId)
         }
 
         // Migrations
@@ -265,6 +261,10 @@ public extension PreferencesManager {
         userPreferences.send(nil)
         logger.info("Removed user preferences for user \(userId)")
     }
+
+    func switchUserPreferences(userId: String) async throws {
+        try await setUserPreferences(userId: userId)
+    }
 }
 
 public extension Publisher {
@@ -293,5 +293,19 @@ public extension Publisher {
         }
         .map { _ in () }
         .eraseToAnyPublisher()
+    }
+}
+
+// MARK: - Utils
+
+private extension PreferencesManager {
+    func setUserPreferences(userId: String) async throws {
+        if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
+            userPreferences.send(preferences)
+        } else {
+            let preferences = UserPreferences.default
+            try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
+            userPreferences.send(preferences)
+        }
     }
 }
