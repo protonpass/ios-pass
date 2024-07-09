@@ -59,8 +59,8 @@ extension SharedDataContainer {
                                                         migrationStateProvider: self.migrationStateProvider) }
     }
 
-    var credentialProvider: Factory<any CredentialProvider> {
-        self { /* self.appData() */ SharedToolingContainer.shared.authManager() }
+    var credentialProvider: Factory<any AuthManagerProtocol> {
+        self { SharedToolingContainer.shared.authManager() }
     }
 
     var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {

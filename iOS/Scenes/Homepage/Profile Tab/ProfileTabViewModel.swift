@@ -65,8 +65,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager: any FullAuthManagerProtocol
+    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager: VaultsManager
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager: any AuthManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync: any FullVaultsSyncUseCase
+    @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
 
     @LazyInjected(\UseCasesContainer
         .createApiService) private var createApiService: any CreateApiServiceUseCase
@@ -109,9 +111,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     /// Accesses of all logged in accounts
     @Published private var accesses = [UserAccess]()
-
     @Published var showLoginFlow = false
-    @Published var newLoggedUser: Result<UserData?, LoginViewError> = .success(nil)
+    @Published var newLoggedUser: Result<LoginViewResult?, LoginViewError> = .success(nil)
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -284,7 +285,7 @@ extension ProfileTabViewModel {
                 return
             }
             do {
-                try await userManager.switchActiveUser(with: account.id)
+                try await switchUser(userId: account.id)
             } catch {
                 handle(error: error)
             }
@@ -385,9 +386,6 @@ private extension ProfileTabViewModel {
                         return
                     }
                     userAccounts = await (try? userManager.getAllUsers()) ?? []
-                    if let user {
-                        await apiManager.updateCurrentSession(userId: user.userId)
-                    }
                     await refreshPlan()
                     fetchSecureLinks()
                 }
@@ -402,43 +400,7 @@ private extension ProfileTabViewModel {
                 guard let self else { return }
                 showLoginFlow = false
                 newLoggedUser = .success(nil)
-
-                switch result {
-                case let .success(newUser):
-                    guard let newUser else {
-                        return
-                    }
-                    Task { [weak self] in
-                        guard let self else { return }
-                        do {
-                            // give the time to the login screen to dismiss
-                            try? await Task.sleep(for: .seconds(1))
-                            try await userManager.addAndMarkAsActive(userData: newUser)
-                            await apiManager.updateCurrentSession(userId: newUser.userId)
-                            try await preferencesManager.switchUserPreferences(userId: newUser.userId)
-                            try await forceSync()
-                            await refreshPlan()
-                            fetchSecureLinks()
-                        } catch {
-                            handle(error: error)
-                        }
-                    }
-                case let .failure(error):
-                    Task { [weak self] in
-                        guard let self else { return }
-                        do {
-                            let currentUserId = try await userManager.getActiveUserId()
-                            // This must be done as the authmanager sets the new session id in apimanger/apiservice
-                            // during the extra password flow
-                            // We must revert to previous user session id and remove all session in auth session
-                            // linked to the failed user
-                            await apiManager.updateCurrentSession(userId: currentUserId)
-                            authManager.clearSessions(userId: error.value)
-                        } catch {
-                            handle(error: error)
-                        }
-                    }
-                }
+                parseNewUser(result: result)
             }
             .store(in: &cancellables)
     }
@@ -494,7 +456,7 @@ private extension ProfileTabViewModel {
 
     func reindexCredentials(_ indexable: Bool) async throws {
         // When not enabled, iOS already deleted the credential database.
-        // Atempting to populate this database will throw an error anyway so early exit here
+        // Attempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
         logger.trace("Reindexing credentials")
         if indexable {
@@ -520,4 +482,43 @@ private extension UserData {
     var displayName: String { user.name ?? "?" }
     var email: String { user.email ?? "?" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
+}
+
+// MARK: - New user login
+
+private extension ProfileTabViewModel {
+    func parseNewUser(result: Result<LoginViewResult?, LoginViewError>) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                switch result {
+                case let .success(newUser):
+                    guard let newUser else {
+                        return
+                    }
+                    // give the time to the login screen to dismiss
+                    try? await Task.sleep(for: .seconds(1))
+                    try await userManager.addAndMarkAsActive(userData: newUser.userData)
+                    await apiManager.updateCurrentSession(userId: newUser.userData.userId)
+                    try await preferencesManager.switchUserPreferences(userId: newUser.userData.userId)
+                    if newUser.hasExtraPassword {
+                        try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
+                                                                           value: true)
+                    }
+                    try await forceSync()
+                case let .failure(error):
+                    let currentUserId = try await userManager.getActiveUserId()
+
+                    // This must be done as the authManager sets the new session id in apimanger/apiservice
+                    // during the extra password flow
+                    // We must revert to previous user session id and remove all session in auth session
+                    // linked to the failed user
+                    await apiManager.updateCurrentSession(userId: currentUserId)
+                    authManager.clearSessions(userId: error.value)
+                }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
 }
