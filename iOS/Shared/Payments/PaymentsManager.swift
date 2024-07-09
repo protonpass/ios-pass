@@ -29,7 +29,6 @@ final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, any Error>
 
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let appData = resolve(\SharedDataContainer.appData)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let authManager = resolve(\SharedToolingContainer.authManager)
 

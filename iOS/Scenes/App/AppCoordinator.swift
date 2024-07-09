@@ -147,7 +147,6 @@ final class AppCoordinator {
                         }
                         logger.info("Logged in manual")
                         try? await userManager.addAndMarkAsActive(userData: userData)
-//                        userManager.setUserData(userData)
                         connectToCorruptedSessionStream()
                         if extraPassword {
                             showHomeScene(mode: .manualLoginWithExtraPassword)

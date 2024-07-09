@@ -20,8 +20,9 @@
 
 import Foundation
 
+// swiftlint:disable raw_value_for_camel_cased_codable_enum
 public enum PassModule: String, CaseIterable, Sendable, Codable, Hashable {
-    case hostApp = "HostApp"
-    case autoFillExtension = "AutoFillExtension"
-    case shareExtension = "ShareExtension"
+    case hostApp, autoFillExtension, shareExtension
 }
+
+// swiftlint:enable raw_value_for_camel_cased_codable_enum
