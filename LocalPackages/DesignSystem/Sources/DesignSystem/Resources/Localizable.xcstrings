@@ -489,6 +489,12 @@
             "value" : "Адбылася памылка"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Došlo k chybě"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
