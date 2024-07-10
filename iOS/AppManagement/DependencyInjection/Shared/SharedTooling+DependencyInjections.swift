@@ -94,7 +94,12 @@ extension SharedToolingContainer {
     }
 
     var apiManager: Factory<APIManager> {
-        self { APIManager() }
+        self { APIManager(authManager: SharedToolingContainer.shared.authManager(),
+                          userManager: SharedServiceContainer.shared.userManager(),
+                          preferencesManager: self.preferencesManager(),
+                          appVersion: self.appVersion(),
+                          doh: self.doh(),
+                          logManager: self.logManager()) }
     }
 }
 
