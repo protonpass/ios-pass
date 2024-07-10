@@ -1,6 +1,6 @@
-//
-// APIManagerProtocol.swift
-// Proton Pass - Created on 09/07/2024.
+//  
+// AuthManagerTests.swift
+// Proton Pass - Created on 10/07/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,8 +19,3 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-
-public protocol APIManagerProtocol: Sendable {
-    func updateCurrentSession(sessionId: String)
-    func updateCurrentSession(userId: String) async
-}
