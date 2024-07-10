@@ -1,7 +1,7 @@
 //
 // APIManager.swift
-// Proton Pass - Created on 08/02/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 10/07/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,43 +18,51 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Combine
 import Core
 import Factory
 import Foundation
 import ProtonCoreAuthentication
+import ProtonCoreChallenge
 import ProtonCoreCryptoGoInterface
+@preconcurrency import ProtonCoreDoh
 @preconcurrency import ProtonCoreEnvironment
 import ProtonCoreForceUpgrade
 import ProtonCoreFoundations
 import ProtonCoreHumanVerification
-import ProtonCoreLogin
 @preconcurrency import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreServices
 
-final class APIManager: Sendable, APIManagerProtocol {
-    typealias SessionUID = String
+public final class APIManager: Sendable, APIManagerProtocol {
+    public typealias SessionUID = String
 
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let appVer = resolve(\SharedToolingContainer.appVersion)
-    private let doh = resolve(\SharedToolingContainer.doh)
-    private let theme = resolve(\SharedToolingContainer.theme)
-    private let trustKitDelegate: any TrustKitDelegate
-    private let authManager: any AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
-    let userManager = SharedServiceContainer.shared.userManager()
+    private let logger: Logger
+    private let doh: any DoHInterface
+    private let preferencesManager: any PreferencesManagerProtocol
+    private let userManager: any UserManagerProtocol
+    private let authManager: any AuthManagerProtocol
+    private let appVer: String
+    private let humanHelper: HumanCheckHelper
+    private var forceUpgradeHelper: ForceUpgradeHelper?
 
-    private(set) var apiService: any APIService
-    private(set) var forceUpgradeHelper: ForceUpgradeHelper?
-    private(set) var humanHelper: HumanCheckHelper?
+    public private(set) var apiService: any APIService
+    public let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
 
-    let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
+    public init(authManager: any AuthManagerProtocol,
+                userManager: any UserManagerProtocol,
+                preferencesManager: any PreferencesManagerProtocol,
+                appVersion: String,
+                doh: any DoHInterface,
+                logManager: any LogManagerProtocol) {
+        self.authManager = authManager
+        self.userManager = userManager
+        self.preferencesManager = preferencesManager
+        appVer = appVersion
+        self.doh = doh
+        logger = .init(manager: logManager)
 
-    init() {
-        let trustKitDelegate = PassTrustKitDelegate()
-        APIManager.setUpCertificatePinning(trustKitDelegate: trustKitDelegate)
-        self.trustKitDelegate = trustKitDelegate
+        Self.setUpCertificatePinning()
 
         let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
@@ -69,16 +77,14 @@ final class APIManager: Sendable, APIManagerProtocol {
                                                                      challengeParametersProvider: challengeProvider)
         }
         self.apiService = apiService
-        authManager.setUpDelegate(self)
-        self.apiService.authDelegate = authManager
-        self.apiService.serviceDelegate = self
-        apiService.loggingDelegate = self
 
         humanHelper = HumanCheckHelper(apiService: apiService,
-                                       inAppTheme: { [theme] in theme.inAppTheme },
+                                       inAppTheme: {
+                                           preferencesManager.sharedPreferences.unwrapped().theme.inAppTheme
+                                       },
                                        clientApp: .pass)
-        apiService.humanDelegate = humanHelper
 
+        // This could also be tweaked as we only log 2 phrases as delegates of forceupgradeHelper
         if let appStoreUrl = URL(string: Constants.appStoreUrl) {
             forceUpgradeHelper = .init(config: .mobile(appStoreUrl), responseDelegate: self)
         } else {
@@ -89,34 +95,37 @@ final class APIManager: Sendable, APIManagerProtocol {
             forceUpgradeHelper = .init(config: .desktop, responseDelegate: self)
         }
 
+        apiService.humanDelegate = humanHelper
+
+        authManager.setUpDelegate(self)
+        self.apiService.authDelegate = authManager
+        self.apiService.serviceDelegate = self
+        apiService.loggingDelegate = self
         apiService.forceUpgradeDelegate = forceUpgradeHelper
 
         setUpCore()
         fetchUnauthSessionIfNeeded()
     }
 
-    func updateCurrentSession(sessionId: String) {
+    public func updateCurrentSession(sessionId: String) {
         apiService.setSessionUID(uid: sessionId)
     }
 
-    func updateCurrentSession(userId: String) async {
+    public func updateCurrentSession(userId: String) async {
         guard let session = authManager.getCredential(userId: userId),
               session.sessionID != apiService.sessionUID else {
             return
         }
         apiService.setSessionUID(uid: session.sessionID)
     }
-
-    func clearSession(sessionId: String) {
-        authManager.clearSessions(sessionId: sessionId)
-    }
 }
 
 // MARK: - Utils
 
 private extension APIManager {
-    static func setUpCertificatePinning(trustKitDelegate: any TrustKitDelegate) {
-        TrustKitWrapper.setUp(delegate: trustKitDelegate)
+    static func setUpCertificatePinning() {
+        // Removed trustkit delegate has we don't do anything with it and it is optional
+        TrustKitWrapper.setUp()
         let trustKit = TrustKitWrapper.current
         PMAPIService.trustKit = trustKit
         PMAPIService.noTrustKit = trustKit == nil
@@ -145,7 +154,7 @@ private extension APIManager {
 // MARK: - AuthHelperDelegate
 
 extension APIManager: AuthHelperDelegate {
-    func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+    public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
         authManager.clearSessions(sessionId: sessionUID)
         apiService.setSessionUID(uid: "")
         fetchUnauthSessionIfNeeded()
@@ -159,7 +168,9 @@ extension APIManager: AuthHelperDelegate {
         }
     }
 
-    func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
+    public func credentialsWereUpdated(authCredential: AuthCredential,
+                                       credential: Credential,
+                                       for sessionUID: String) {
         logger.info("Session credentials are updated")
         if apiService.sessionUID != sessionUID {
             apiService.setSessionUID(uid: sessionUID)
@@ -170,18 +181,18 @@ extension APIManager: AuthHelperDelegate {
 // MARK: - APIServiceDelegate
 
 extension APIManager: APIServiceDelegate {
-    var appVersion: String { appVer }
-    var userAgent: String? { UserAgent.default.ua }
-    var locale: String { Locale.autoupdatingCurrent.identifier }
-    var additionalHeaders: [String: String]? { nil }
+    public var appVersion: String { appVer }
+    public var userAgent: String? { UserAgent.default.ua }
+    public var locale: String { Locale.autoupdatingCurrent.identifier }
+    public var additionalHeaders: [String: String]? { nil }
 
-    func onDohTroubleshot() {}
+    public func onDohTroubleshot() {}
 
-    func onUpdate(serverTime: Int64) {
+    public func onUpdate(serverTime: Int64) {
         CryptoGo.CryptoUpdateTime(serverTime)
     }
 
-    func isReachable() -> Bool {
+    public func isReachable() -> Bool {
         // swiftlint:disable:next todo
         // TODO: Handle this
         true
@@ -191,11 +202,11 @@ extension APIManager: APIServiceDelegate {
 // MARK: - ForceUpgradeResponseDelegate
 
 extension APIManager: ForceUpgradeResponseDelegate {
-    func onQuitButtonPressed() {
+    public func onQuitButtonPressed() {
         logger.info("Quit force upgrade page")
     }
 
-    func onUpdateButtonPressed() {
+    public func onUpdateButtonPressed() {
         logger.info("Forced upgrade")
     }
 }
@@ -203,42 +214,24 @@ extension APIManager: ForceUpgradeResponseDelegate {
 // MARK: - APIServiceLoggingDelegate
 
 extension APIManager: APIServiceLoggingDelegate {
-    func accessTokenRefreshDidStart(for sessionID: String,
-                                    sessionType: APISessionTypeForLogging) {
+    public func accessTokenRefreshDidStart(for sessionID: String,
+                                           sessionType: APISessionTypeForLogging) {
         logger.info("Access token refresh did start for \(sessionType) session \(sessionID)")
     }
 
-    func accessTokenRefreshDidSucceed(for sessionID: String,
-                                      sessionType: APISessionTypeForLogging,
-                                      reason: APIServiceAccessTokenRefreshSuccessReasonForLogging) {
+    public func accessTokenRefreshDidSucceed(for sessionID: String,
+                                             sessionType: APISessionTypeForLogging,
+                                             reason: APIServiceAccessTokenRefreshSuccessReasonForLogging) {
         logger.info("""
         Access token refresh did succeed for \(sessionType) session \(sessionID)
         with reason \(reason)
         """)
     }
 
-    func accessTokenRefreshDidFail(for sessionID: String,
-                                   sessionType: APISessionTypeForLogging,
-                                   error: APIServiceAccessTokenRefreshErrorForLogging) {
+    public func accessTokenRefreshDidFail(for sessionID: String,
+                                          sessionType: APISessionTypeForLogging,
+                                          error: APIServiceAccessTokenRefreshErrorForLogging) {
         logger.error(message: "Access token refresh did fail for \(sessionType) session \(sessionID)",
                      error: error)
-    }
-}
-
-// MARK: - TrustKitDelegate
-
-private class PassTrustKitDelegate: TrustKitDelegate {
-    let logger = resolve(\SharedToolingContainer.logger)
-
-    init() {}
-
-    func onTrustKitValidationError(_ error: TrustKitError) {
-        // just logging right now
-        switch error {
-        case .failed:
-            logger.error("Trust kit validation failed")
-        case .hardfailed:
-            logger.error("Trust kit validation failed with hardfail")
-        }
     }
 }
