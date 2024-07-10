@@ -38,8 +38,13 @@ public typealias AppPreferencesUpdate = PreferencesUpdate<AppPreferences>
 public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
+// sourcery: AutoMockable
+public protocol ThemeProvider: Sendable {
+    var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> { get }
+}
+
 /// Manage all types of preferences: app-wide, shared between users and user's specific
-public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProviderProtocol {
+public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProviderProtocol, ThemeProvider {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 

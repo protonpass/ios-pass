@@ -85,5 +85,7 @@ let package = Package(name: "Client",
                                                      .product(name: "EntitiesMocks", package: "Entities"),
                                                      "ClientMocks",
                                                      .product(name: "ProtonCoreCryptoGoImplementation", package: "protoncore_ios"),
+                                                     .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios"),
+                                                     .product(name: "ProtonCoreTestingToolkitUnitTestsCore", package: "protoncore_ios"),
                                                     ])
                       ])
