@@ -39,7 +39,7 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
     private let logger: Logger
     private let doh: any DoHInterface
-    private let preferencesManager: any PreferencesManagerProtocol
+    private let themeProvider: any ThemeProvider
     private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let appVer: String
@@ -51,13 +51,13 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
-                preferencesManager: any PreferencesManagerProtocol,
+                themeProvider: any ThemeProvider,
                 appVersion: String,
                 doh: any DoHInterface,
                 logManager: any LogManagerProtocol) {
         self.authManager = authManager
         self.userManager = userManager
-        self.preferencesManager = preferencesManager
+        self.themeProvider = themeProvider
         appVer = appVersion
         self.doh = doh
         logger = .init(manager: logManager)
@@ -80,7 +80,7 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
         humanHelper = HumanCheckHelper(apiService: apiService,
                                        inAppTheme: {
-                                           preferencesManager.sharedPreferences.unwrapped().theme.inAppTheme
+                                           themeProvider.sharedPreferences.unwrapped().theme.inAppTheme
                                        },
                                        clientApp: .pass)
 
