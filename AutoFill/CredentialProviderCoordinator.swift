@@ -35,12 +35,10 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     /// Self-initialized properties
-    private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
-
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
@@ -69,6 +67,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -92,14 +91,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         AppearanceSettings.apply()
         setUpRouting()
 
-        apiManager.sessionWasInvalidated
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] sessionUID in
-                guard let self else { return }
-                logOut(error: PassError.unexpectedLogout, sessionId: sessionUID)
-            }
-            .store(in: &cancellables)
-
         corruptedSessionEventStream
             .removeDuplicates()
             .compactMap { $0 }
@@ -117,6 +108,15 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 try await setUpBeforeLaunching()
+                // This need to be set after user data is loaded as we now depend on active user id to set session
+                // to the api service
+                apiManager.sessionWasInvalidated
+                    .receive(on: DispatchQueue.main)
+                    .sink { [weak self] sessionUID in
+                        guard let self else { return }
+                        logOut(error: PassError.unexpectedLogout, sessionId: sessionUID)
+                    }
+                    .store(in: &cancellables)
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
                 rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)
