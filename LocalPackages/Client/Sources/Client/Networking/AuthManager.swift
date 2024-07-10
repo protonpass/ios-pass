@@ -22,6 +22,7 @@ import Core
 import Entities
 import Foundation
 import ProtonCoreAuthentication
+import ProtonCoreKeymaker
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
@@ -111,33 +112,31 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func onUpdate(credential: Credential, sessionUID: String) {
         serialAccessQueue.sync {
-            // swiftlint:disable:next todo
-            // TODO: maybe update all module sessions
-            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
-            let newCredentials = getAuthElement(credential: credential)
-            let newAuthCredential = newCredentials.authCredential
-                .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
-            cachedCredentials[key] = newCredentials.copy(newAuthCredential: newAuthCredential)
+            for passModule in PassModule.allCases {
+                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
+                let newCredentials = getAuthElement(credential: credential, module: passModule)
+                let newAuthCredential = newCredentials.authCredential
+                    .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
+                cachedCredentials[key] = AuthElement(credential: credential,
+                                                     authCredential: newAuthCredential,
+                                                     module: passModule)
+            }
             saveLocalSessions()
-            delegate?.credentialsWereUpdated(authCredential: newAuthCredential,
-                                             credential: newCredentials.credential,
-                                             for: sessionUID)
+            sendCredentialUpdateInfo(sessionId: sessionUID)
         }
     }
 
     public func onSessionObtaining(credential: Credential) {
         serialAccessQueue.sync {
+            // The forking of sessions should be done at this point in the future and any looping on Pass module
+            // should be removed
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: credential.UID, currentModule: passModule)
-                let newCredentials = getAuthElement(credential: credential)
+                let newCredentials = getAuthElement(credential: credential, module: passModule)
                 cachedCredentials[key] = newCredentials
-                if passModule == module {
-                    delegate?.credentialsWereUpdated(authCredential: newCredentials.authCredential,
-                                                     credential: newCredentials.credential,
-                                                     for: newCredentials.credential.UID)
-                }
             }
             saveLocalSessions()
+            sendCredentialUpdateInfo(sessionId: credential.UID)
         }
     }
 
@@ -146,49 +145,45 @@ public final class AuthManager: AuthManagerProtocol {
                                                     salt: String?,
                                                     privateKey: String?) {
         serialAccessQueue.sync {
-            // swiftlint:disable:next todo
-            // TODO: maybe update all module sessions
-            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
-            guard let element = cachedCredentials[key] else {
-                return
-            }
+            for passModule in PassModule.allCases {
+                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
+                guard let element = cachedCredentials[key] else {
+                    return
+                }
 
-            if let password {
-                element.authCredential.update(password: password)
+                if let password {
+                    element.authCredential.update(password: password)
+                }
+                let saltToUpdate = salt ?? element.authCredential.passwordKeySalt
+                let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
+                element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
+                cachedCredentials[key] = element
             }
-            let saltToUpdate = salt ?? element.authCredential.passwordKeySalt
-            let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
-            element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-            cachedCredentials[key] = element
-            delegate?.credentialsWereUpdated(authCredential: element.authCredential,
-                                             credential: element.credential,
-                                             for: sessionUID)
+            saveLocalSessions()
+            sendCredentialUpdateInfo(sessionId: sessionUID)
         }
     }
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
         serialAccessQueue.sync {
-            // swiftlint:disable:next todo
-            // TODO: maybe delete all module sessions
-            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
-            cachedCredentials[key] = nil
+            for passModule in PassModule.allCases {
+                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
+                cachedCredentials[key] = nil
+            }
+
             saveLocalSessions()
-            delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
-            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
-                                                                                   isAuthenticatedSession: true)
+            sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: true)
         }
     }
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
         serialAccessQueue.sync {
-            // swiftlint:disable:next todo
-            // TODO: maybe delete all module sessions
-            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
-            cachedCredentials[key] = nil
+            for passModule in PassModule.allCases {
+                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
+                cachedCredentials[key] = nil
+            }
             saveLocalSessions()
-            delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
-            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
-                                                                                   isAuthenticatedSession: false)
+            sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: false)
         }
     }
 
@@ -212,13 +207,31 @@ public final class AuthManager: AuthManagerProtocol {
 
 // MARK: - Utils
 
-import ProtonCoreKeymaker
-
 private extension AuthManager {
-    private func getAuthElement(credential: Credential, authCredential: AuthCredential? = nil) -> AuthElement {
+    func getAuthElement(credential: Credential,
+                        authCredential: AuthCredential? = nil,
+                        module: PassModule) -> AuthElement {
         AuthElement(credential: credential,
                     authCredential: authCredential ?? AuthCredential(credential),
                     module: module)
+    }
+
+    func sendCredentialUpdateInfo(sessionId: String) {
+        let key = getCacheKeyFor(sessionId: sessionId, currentModule: module)
+        guard let credentials = cachedCredentials[key] else {
+            return
+        }
+        delegate?.credentialsWereUpdated(authCredential: credentials.authCredential,
+                                         credential: credentials.credential,
+                                         for: sessionId)
+    }
+
+    func sendSessionInvalidationInfo(sessionId: String, isAuthenticatedSession: Bool) {
+        delegate?.sessionWasInvalidated(for: sessionId,
+                                        isAuthenticatedSession: isAuthenticatedSession)
+        authSessionInvalidatedDelegateForLoginAndSignup?
+            .sessionWasInvalidated(for: sessionId,
+                                   isAuthenticatedSession: isAuthenticatedSession)
     }
 }
 
