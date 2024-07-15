@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreAuthentication
 import ProtonCoreKeymaker
 import ProtonCoreLog
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUtilities
 
@@ -48,20 +48,16 @@ public extension AuthManagerProtocol {
 }
 
 public final class AuthManager: AuthManagerProtocol {
-    private let serialAccessQueue = DispatchQueue(label: "me.pass.authmanager_queue")
-
     public private(set) weak var delegate: (any AuthHelperDelegate)?
     // swiftlint:disable:next identifier_name
     public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
-    private var delegateExecutor: CompletionBlockExecutor?
-
+    public static let storageKey = "authManagerStorageKey"
+    private let serialAccessQueue = DispatchQueue(label: "me.pass.authmanager_queue")
     /// Work-around to keep track of `Credential` mostly for scopes check
     /// as we don't store `Credential` as-is but convert to `AuthCredential` which doesn't contains `scopes`
     /// A dictionary with `sessionUID` as keys
     private var cachedCredentials: [String: AuthElement] = [:]
-
-    private let key = "authManagerStorageKey"
-    let keychain: any KeychainProtocol
+    private let keychain: any KeychainProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let module: PassModule
 
@@ -221,6 +217,7 @@ private extension AuthManager {
         guard let credentials = cachedCredentials[key] else {
             return
         }
+
         delegate?.credentialsWereUpdated(authCredential: credentials.authCredential,
                                          credential: credentials.credential,
                                          for: sessionId)
@@ -243,7 +240,7 @@ private extension AuthManager {
             let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
             let data = try JSONEncoder().encode(cachedCredentials.toSavedAuthElementDic)
             let encryptedContent = try symmetricKey.encrypt(data.encodeBase64())
-            try keychain.setOrError(encryptedContent, forKey: key)
+            try keychain.setOrError(encryptedContent, forKey: Self.storageKey)
         } catch {
             // swiftlint:disable:next todo
             // TODO: need to log
@@ -252,7 +249,7 @@ private extension AuthManager {
     }
 
     func getLocalSessions() -> [String: AuthElement] {
-        guard let encryptedContent = try? keychain.stringOrError(forKey: key),
+        guard let encryptedContent = try? keychain.stringOrError(forKey: Self.storageKey),
               let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else {
             return [:]
         }
@@ -265,7 +262,7 @@ private extension AuthManager {
             let content = try JSONDecoder().decode([String: SavedAuthElement].self, from: decryptedContentData)
             return content.toAuthElementDic
         } catch {
-            try? keychain.removeOrError(forKey: key)
+            try? keychain.removeOrError(forKey: Self.storageKey)
             return [:]
         }
     }
@@ -278,7 +275,7 @@ private extension AuthManager {
 
 // MARK: - Keychain codable wrappers for credential elements & extensions
 
-private struct AuthElement: Hashable {
+private struct AuthElement: Hashable, Sendable {
     let credential: Credential
     let authCredential: AuthCredential
     let module: PassModule

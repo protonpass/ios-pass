@@ -496,7 +496,11 @@ private extension ProfileTabViewModel {
                     }
                     // give the time to the login screen to dismiss
                     try? await Task.sleep(for: .seconds(1))
+                    
+                    // We add the new user and credential to the user manager and the main authManager
+                    // We also update the main apiservice with the new session id through apiManager
                     try await userManager.addAndMarkAsActive(userData: newUser.userData)
+                    authManager.onSessionObtaining(credential: newUser.userData.getCredential)
                     await apiManager.updateCurrentSession(userId: newUser.userData.userId)
                     try await preferencesManager.switchUserPreferences(userId: newUser.userData.userId)
                     if newUser.hasExtraPassword {
@@ -505,14 +509,7 @@ private extension ProfileTabViewModel {
                     }
                     try await forceSync()
                 case let .failure(error):
-                    let currentUserId = try await userManager.getActiveUserId()
-
-                    // This must be done as the authManager sets the new session id in apimanger/apiservice
-                    // during the extra password flow
-                    // We must revert to previous user session id and remove all session in auth session
-                    // linked to the failed user
-                    await apiManager.updateCurrentSession(userId: currentUserId)
-                    authManager.clearSessions(userId: error.value)
+                    handle(error: error)
                 }
             } catch {
                 handle(error: error)
