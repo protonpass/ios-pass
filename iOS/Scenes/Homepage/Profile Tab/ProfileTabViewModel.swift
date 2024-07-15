@@ -499,6 +499,7 @@ private extension ProfileTabViewModel {
 
                     // We add the new user and credential to the user manager and the main authManager
                     // We also update the main apiservice with the new session id through apiManager
+                    //TODO: put this in a use case for new activated user
                     try await userManager.addAndMarkAsActive(userData: newUser.userData)
                     authManager.onSessionObtaining(credential: newUser.userData.getCredential)
                     await apiManager.updateCurrentSession(userId: newUser.userData.userId)
