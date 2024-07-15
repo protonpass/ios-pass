@@ -27,13 +27,6 @@ import SwiftUI
 
 enum LoginViewError: Error {
     case failedExtraPassword(String)
-
-    var value: String {
-        switch self {
-        case let .failedExtraPassword(value):
-            value
-        }
-    }
 }
 
 struct LoginViewResult {
