@@ -136,7 +136,7 @@ private extension APIManager {
     }
 
     func fetchUnauthSessionIfNeeded() {
-        apiService.acquireSessionIfNeeded { [ weak self]  result in
+        apiService.acquireSessionIfNeeded { [weak self] result in
             guard let self else {
                 return
             }
@@ -144,17 +144,16 @@ private extension APIManager {
             case let .success(value):
                 switch value {
                 case let .sessionAlreadyPresent(session), let .sessionFetchedAndAvailable(session):
-                    self.logger.trace("UnauthSession: \(session)")
+                    logger.trace("UnauthSession: \(session)")
                 case .sessionUnavailableAndNotFetched:
-                    self.logger.trace("session Unavailable And Not Fetched")
+                    logger.trace("session Unavailable And Not Fetched")
                 }
-                break
             // session was already available, or servers were
             // reached but returned 4xx/5xx.
             // In both cases we're done here
             case let .failure(error):
                 // servers not reachable
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }
