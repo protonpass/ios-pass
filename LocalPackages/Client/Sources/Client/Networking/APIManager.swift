@@ -136,13 +136,22 @@ private extension APIManager {
     }
 
     func fetchUnauthSessionIfNeeded() {
-        apiService.acquireSessionIfNeeded { result in
+        apiService.acquireSessionIfNeeded { [ weak self]  result in
+            guard let self else {
+                return
+            }
             switch result {
-            case .success:
-                // session was already available, or servers were
-                // reached but returned 4xx/5xx.
-                // In both cases we're done here
+            case let .success(value):
+                switch value {
+                case let .sessionAlreadyPresent(session), let .sessionFetchedAndAvailable(session):
+                    self.logger.trace("UnauthSession: \(session)")
+                case .sessionUnavailableAndNotFetched:
+                    self.logger.trace("session Unavailable And Not Fetched")
+                }
                 break
+            // session was already available, or servers were
+            // reached but returned 4xx/5xx.
+            // In both cases we're done here
             case let .failure(error):
                 // servers not reachable
                 self.logger.error(error)
@@ -155,7 +164,6 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        authManager.clearSessions(sessionId: sessionUID)
         apiService.setSessionUID(uid: "")
         fetchUnauthSessionIfNeeded()
         if isAuthenticatedSession {
