@@ -117,7 +117,7 @@ final class AppCoordinator {
         // TODO: what to do with multiple users data ?
         appData.resetData()
         let keychain = SharedToolingContainer.shared.keychain()
-        try? keychain.removeOrError(forKey: "authManagerStorageKey")
+        try? keychain.removeOrError(forKey: AuthManager.storageKey)
     }
 
     private func bindAppState() {

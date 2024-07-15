@@ -428,8 +428,7 @@ extension UseCasesContainer {
 
     var createApiService: Factory<any CreateApiServiceUseCase> {
         self { CreateApiService(doh: SharedToolingContainer.shared.doh(),
-                                appVer: SharedToolingContainer.shared.appVersion(),
-                                authManager: SharedToolingContainer.shared.authManager()) }
+                                appVer: SharedToolingContainer.shared.appVersion()) }
     }
 }
 
