@@ -106,9 +106,7 @@ extension LoginView {
                 guard let self else { return }
                 switch result {
                 case .dismissed:
-                    DispatchQueue.main.async {
-                        viewController.dismiss(animated: false)
-                    }
+                    return
                 case let .loggedIn(logInData), let .signedUp(logInData):
                     logInAndSignUp = makeLoginAndSignUp()
 
@@ -131,7 +129,7 @@ extension LoginView {
                                 parent.loginData = .failure(.failedExtraPassword(logInData.user.ID))
 
                                 DispatchQueue.main.async {
-                                    viewController.dismiss(animated: false)
+                                    viewController.dismiss(animated: true)
                                 }
                             }
 

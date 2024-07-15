@@ -38,12 +38,13 @@ public extension CreateApiServiceUseCase {
     }
 }
 
-public final class CreateApiService: CreateApiServiceUseCase {
+public final class CreateApiService: @unchecked Sendable, CreateApiServiceUseCase {
     private let doh: any DoHInterface
     private let appVer: String
     private let protonCoreUserAgent: UserAgent
     private let cryptoGo: any CryptoGoMethods
-    private let authManager: any AuthManagerProtocol
+    private let serialAccessQueue = DispatchQueue(label: "me.pass.createapiservice_queue")
+    private var credential: Credential?
 
     // Required by `AuthDelegate`
     // swiftlint:disable:next identifier_name
@@ -52,13 +53,11 @@ public final class CreateApiService: CreateApiServiceUseCase {
     public init(doh: any DoHInterface,
                 appVer: String,
                 protonCoreUserAgent: UserAgent = .default,
-                cryptoGo: any CryptoGoMethods = CryptoGo,
-                authManager: any AuthManagerProtocol) {
+                cryptoGo: any CryptoGoMethods = CryptoGo) {
         self.doh = doh
         self.protonCoreUserAgent = protonCoreUserAgent
         self.appVer = appVer
         self.cryptoGo = cryptoGo
-        self.authManager = authManager
     }
 
     public func execute() -> any APIService {
@@ -97,27 +96,36 @@ extension CreateApiService: APIServiceDelegate {
 
 extension CreateApiService: AuthDelegate {
     public func authCredential(sessionUID: String) -> AuthCredential? {
-        authManager.authCredential(sessionUID: sessionUID)
+        serialAccessQueue.sync {
+            guard let credential, credential.UID == sessionUID else {
+                return nil
+            }
+            return AuthCredential(credential)
+        }
     }
 
     public func credential(sessionUID: String) -> Credential? {
-        authManager.credential(sessionUID: sessionUID)
+        serialAccessQueue.sync {
+            guard let credential, credential.UID == sessionUID else {
+                return nil
+            }
+            return credential
+        }
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
-        // As we use the main authManager this updates this update the main apiService with theses new credentials
-        // through apiManager as authManager is a a delegate off it
-        // The function in authManager that update the main apiService is **credentialsWereUpdated**
-        // This should be kept in mind as it can have some impact on the calls made by the main apiservice
-        authManager.onUpdate(credential: credential, sessionUID: sessionUID)
+        serialAccessQueue.sync {
+            guard credential.UID == sessionUID else {
+                return
+            }
+            self.credential = credential
+        }
     }
 
     public func onSessionObtaining(credential: Credential) {
-        // As we use the main authManager this updates this update the main apiMervice with theses new credentials
-        // through apiManager as authManager is a a delegate off it
-        // The function in authManager that update the main apiService is **credentialsWereUpdated**
-        // This should be kept in mind as it can have some impact on the calls made by the main apiservice
-        authManager.onSessionObtaining(credential: credential)
+        serialAccessQueue.sync {
+            self.credential = credential
+        }
     }
 
     public func onAdditionalCredentialsInfoObtained(sessionUID: String,
