@@ -403,7 +403,7 @@ extension UseCasesContainer {
     }
 
     var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
-        self { VerifyExtraPassword(repository: self.extraPasswordRepository) }
+        self { VerifyExtraPassword() }
     }
 }
 
