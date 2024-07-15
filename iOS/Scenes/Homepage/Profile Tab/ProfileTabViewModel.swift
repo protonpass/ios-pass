@@ -496,7 +496,7 @@ private extension ProfileTabViewModel {
                     }
                     // give the time to the login screen to dismiss
                     try? await Task.sleep(for: .seconds(1))
-                    
+
                     // We add the new user and credential to the user manager and the main authManager
                     // We also update the main apiservice with the new session id through apiManager
                     try await userManager.addAndMarkAsActive(userData: newUser.userData)
