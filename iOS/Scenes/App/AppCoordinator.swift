@@ -134,7 +134,10 @@ final class AppCoordinator {
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
-                    connectToCorruptedSessionStream()
+                    
+                    //TODO: This should be removed as it was made for single user having 502 and not multiusers
+                    //we could end up having some wrong calls if users switch account during a event loop so this could end up logging out randomly
+                   connectToCorruptedSessionStream()
                     showHomeScene(mode: .alreadyLoggedIn)
                     if let userId = userManager.activeUserId,
                        let sessionID = authManager.getCredential(userId: userId)?.sessionID {
@@ -147,7 +150,11 @@ final class AppCoordinator {
                         }
                         logger.info("Logged in manual")
                         try? await userManager.addAndMarkAsActive(userData: userData)
-                        connectToCorruptedSessionStream()
+                        
+                        //TODO: This should be removed as it was made for single user having 502 and not multiusers
+                        //we could end up having some wrong calls if users switch account during a event loop so this could end up
+        
+//                        connectToCorruptedSessionStream()
                         if extraPassword {
                             showHomeScene(mode: .manualLoginWithExtraPassword)
                         } else {
