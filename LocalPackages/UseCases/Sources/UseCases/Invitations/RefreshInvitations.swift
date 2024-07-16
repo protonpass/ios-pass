@@ -40,6 +40,9 @@ public final class RefreshInvitations: RefreshInvitationsUseCase {
     }
 
     public func execute() async throws {
+        if Task.isCancelled {
+            return
+        }
         await inviteRepository.refreshInvites()
     }
 }
