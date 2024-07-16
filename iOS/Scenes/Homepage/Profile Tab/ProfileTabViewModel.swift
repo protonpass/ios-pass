@@ -70,6 +70,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
     @LazyInjected(\UseCasesContainer
         .createApiService) private var createApiService: any CreateApiServiceUseCase
+    @LazyInjected(\SharedServiceContainer
+        .syncEventLoop) private var syncEventLoop
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -488,6 +490,7 @@ private extension ProfileTabViewModel {
     func parseNewUser(result: Result<LoginViewResult?, LoginViewError>) {
         Task { [weak self] in
             guard let self else { return }
+            defer { syncEventLoop.start() }
             do {
                 switch result {
                 case let .success(newUser):
@@ -496,7 +499,7 @@ private extension ProfileTabViewModel {
                     }
                     // give the time to the login screen to dismiss
                     try? await Task.sleep(for: .seconds(1))
-
+                    syncEventLoop.stop()
                     // We add the new user and credential to the user manager and the main authManager
                     // We also update the main apiservice with the new session id through apiManager
                     try await userManager.addAndMarkAsActive(userData: newUser.userData)
