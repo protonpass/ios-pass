@@ -31,6 +31,7 @@ public final class RemoteInviteDatasource: RemoteDatasource, RemoteInviteDatasou
 public extension RemoteInviteDatasource {
     func getPendingInvitesForUser() async throws -> [UserInvite] {
         let getSharesEndpoint = GetPendingInviteForUserEndpoint()
+        try Task.checkCancellation()
         let getSharesResponse = try await exec(endpoint: getSharesEndpoint)
         return getSharesResponse.invites
     }
