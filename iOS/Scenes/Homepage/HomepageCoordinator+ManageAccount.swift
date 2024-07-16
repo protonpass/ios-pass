@@ -44,6 +44,14 @@ extension HomepageCoordinator {
             }
         }
     }
+
+    func showAccountMenu() {
+        let asSheet = shouldShowAsSheet()
+        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
+        viewModel.delegate = self
+        let view = AccountView(viewModel: viewModel)
+        showView(view: view, asSheet: asSheet)
+    }
 }
 
 private extension HomepageCoordinator {
