@@ -1231,14 +1231,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func showAccountMenu() {
-        let asSheet = shouldShowAsSheet()
-        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
-        viewModel.delegate = self
-        let view = AccountView(viewModel: viewModel)
-        showView(view: view, asSheet: asSheet)
-    }
-
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = SettingsViewModel(isShownAsSheet: asSheet)

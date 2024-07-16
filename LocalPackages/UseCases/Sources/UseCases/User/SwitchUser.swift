@@ -37,21 +37,26 @@ public final class SwitchUser: SwitchUserUseCase {
     private let vaultsManager: any VaultsManagerProtocol
     private let preferencesManager: any PreferencesManagerProtocol
     private let apiManager: any APIManagerProtocol
+    private let syncEventLoop: any SyncEventLoopActionProtocol
 
     public init(userManager: any UserManagerProtocol,
                 vaultsManager: any VaultsManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
-                apiManager: any APIManagerProtocol) {
+                apiManager: any APIManagerProtocol,
+                syncEventLoop: any SyncEventLoopActionProtocol) {
         self.userManager = userManager
         self.vaultsManager = vaultsManager
         self.preferencesManager = preferencesManager
         self.apiManager = apiManager
+        self.syncEventLoop = syncEventLoop
     }
 
     public func execute(userId: String) async throws {
+        syncEventLoop.stop()
         try await userManager.switchActiveUser(with: userId)
         await apiManager.updateCurrentSession(userId: userId)
         try await vaultsManager.localFullSync()
         try await preferencesManager.switchUserPreferences(userId: userId)
+        syncEventLoop.start()
     }
 }
