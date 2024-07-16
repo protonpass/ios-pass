@@ -377,7 +377,8 @@ extension SharedUseCasesContainer {
         self { SwitchUser(userManager: self.userManager,
                           vaultsManager: self.vaultsManager,
                           preferencesManager: self.preferencesManager,
-                          apiManager: self.apiManager) }
+                          apiManager: self.apiManager,
+                          syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 }
 
