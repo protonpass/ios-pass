@@ -24,28 +24,58 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 // swiftlint:disable multiple_closures_with_trailing_closure
-private final class TaskReference: @unchecked Sendable {
-    var task: URLSessionDataTask?
+protocol APIServiceCancellable: AnyObject {
+    func cancel()
 }
+
+private final class APIServiceTaskCanceller: @unchecked Sendable {
+    private let serialQueue = DispatchQueue(label: "me.pass.apiservicetaskcanceller_queue")
+    private var isCancelled = false
+    private weak var task: URLSessionDataTask?
+
+    func cancel() {
+        serialQueue.sync { [weak self] in
+            guard let self else {
+                return
+            }
+            isCancelled = true
+            task?.cancel()
+        }
+    }
+
+    func setCancellable(_ task: URLSessionDataTask) {
+        serialQueue.sync { [weak self, weak task] in
+            guard let self else {
+                return
+            }
+            if isCancelled == true {
+                task?.cancel()
+            }
+            task = task
+        }
+    }
+}
+
+extension URLSessionDataTask: APIServiceCancellable {}
 
 extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        let taskReference = TaskReference()
+        let canceller = APIServiceTaskCanceller()
 
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 NetworkDebugger.printDebugInfo(endpoint: endpoint)
                 perform(request: endpoint,
                         onDataTaskCreated: { task in
-                            taskReference.task = task
+                            canceller.setCancellable(task)
                         }) { task, result in
                     NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
                     continuation.resume(with: result)
                 }
             }
         } onCancel: {
-            taskReference.task?.cancel()
+            canceller.cancel()
         }
     }
 
@@ -76,7 +106,7 @@ extension APIService {
     /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
     /// from the error object.
     func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        let taskReference = TaskReference()
+        let canceller = APIServiceTaskCanceller()
 
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
@@ -84,7 +114,7 @@ extension APIService {
 
                 perform(request: endpoint,
                         onDataTaskCreated: { task in
-                            taskReference.task = task
+                            canceller.setCancellable(task)
                         }) { task, result in
                     NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
                     switch result {
@@ -104,7 +134,7 @@ extension APIService {
                 }
             }
         } onCancel: {
-            taskReference.task?.cancel()
+            canceller.cancel()
         }
     }
 }
