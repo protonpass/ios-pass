@@ -262,7 +262,8 @@ private extension AppCoordinator {
         }
 
         let username = userData.credential.userName
-        let view = ExtraPasswordLockView(email: userData.user.email ?? username,
+        let view = ExtraPasswordLockView(apiService: apiManager.apiService,
+                                         email: userData.user.email ?? username,
                                          username: username,
                                          onSuccess: onSuccess,
                                          onFailure: onFailure)
