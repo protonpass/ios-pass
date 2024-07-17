@@ -30,11 +30,16 @@ import ProtonCoreServices
 
 public protocol CreateApiServiceUseCase: Sendable {
     func execute() -> any APIService
+    func execute(sessionId: String?) -> any APIService
 }
 
 public extension CreateApiServiceUseCase {
     func callAsFunction() -> any APIService {
         execute()
+    }
+
+    func callAsFunction(sessionId: String?) -> any APIService {
+        execute(sessionId: sessionId)
     }
 }
 
@@ -69,6 +74,23 @@ public final class CreateApiService: @unchecked Sendable, CreateApiServiceUseCas
                                                                      challengeParametersProvider: challengeProvider)
         apiService.serviceDelegate = self
         apiService.authDelegate = self
+        return apiService
+    }
+
+    public func execute(sessionId: String?) -> any APIService {
+        // Create an unauth api service on the fly otherwise wrong verifications
+        // would expire the current session (log the user out)
+        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
+                                                                          challenge: .init())
+        var apiService: any APIService = if let sessionId {
+            PMAPIService.createAPIService(doh: doh,
+                                          sessionUID: sessionId,
+                                          challengeParametersProvider: challengeProvider)
+        } else {
+            PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                        challengeParametersProvider: challengeProvider)
+        }
+
         return apiService
     }
 }

@@ -19,8 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreServices
 
 public protocol APIManagerProtocol: Sendable {
     func updateCurrentSession(sessionId: String)
     func updateCurrentSession(userId: String) async
+
+    func createNewApiService() -> any APIService
 }

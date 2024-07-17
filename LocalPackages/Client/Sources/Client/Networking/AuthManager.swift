@@ -34,7 +34,7 @@ public protocol AuthManagerProtocol: Sendable, AuthDelegate {
     func getCredential(userId: String) -> AuthCredential?
     func clearSessions(sessionId: String)
     func clearSessions(userId: String)
-
+    func getAllCurrentCredentials() -> [Credential]
     func isAuthenticated(userId: String) -> Bool
 }
 
@@ -110,12 +110,14 @@ public final class AuthManager: AuthManagerProtocol {
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
-                let newCredentials = getAuthElement(credential: credential, module: passModule)
+                let newCredentials = getAuthElement(credential: credential, module: passModule,
+                                                    lastTimeUpdated: .now)
                 let newAuthCredential = newCredentials.authCredential
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
                 cachedCredentials[key] = AuthElement(credential: credential,
                                                      authCredential: newAuthCredential,
-                                                     module: passModule)
+                                                     module: passModule,
+                                                     lastTimeUpdated: .now)
             }
             saveLocalSessions()
             sendCredentialUpdateInfo(sessionId: sessionUID)
@@ -128,7 +130,8 @@ public final class AuthManager: AuthManagerProtocol {
             // should be removed
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: credential.UID, currentModule: passModule)
-                let newCredentials = getAuthElement(credential: credential, module: passModule)
+                let newCredentials = getAuthElement(credential: credential, module: passModule,
+                                                    lastTimeUpdated: .now)
                 cachedCredentials[key] = newCredentials
             }
             saveLocalSessions()
@@ -153,7 +156,7 @@ public final class AuthManager: AuthManagerProtocol {
                 let saltToUpdate = salt ?? element.authCredential.passwordKeySalt
                 let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
                 element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-                cachedCredentials[key] = element
+                cachedCredentials[key] = element.copy(lastTimeUpdated: .now)
             }
             saveLocalSessions()
             sendCredentialUpdateInfo(sessionId: sessionUID)
@@ -199,6 +202,15 @@ public final class AuthManager: AuthManagerProtocol {
             saveLocalSessions()
         }
     }
+
+    public func getAllCurrentCredentials() -> [Credential] {
+        cachedCredentials.compactMap { key, element -> Credential? in
+            guard key.contains(module.rawValue) else {
+                return nil
+            }
+            return element.credential
+        }
+    }
 }
 
 // MARK: - Utils
@@ -206,10 +218,12 @@ public final class AuthManager: AuthManagerProtocol {
 private extension AuthManager {
     func getAuthElement(credential: Credential,
                         authCredential: AuthCredential? = nil,
-                        module: PassModule) -> AuthElement {
+                        module: PassModule,
+                        lastTimeUpdated: Date) -> AuthElement {
         AuthElement(credential: credential,
                     authCredential: authCredential ?? AuthCredential(credential),
-                    module: module)
+                    module: module,
+                    lastTimeUpdated: lastTimeUpdated)
     }
 
     func sendCredentialUpdateInfo(sessionId: String) {
@@ -260,7 +274,7 @@ private extension AuthManager {
                 return [:]
             }
             let content = try JSONDecoder().decode([String: SavedAuthElement].self, from: decryptedContentData)
-            return content.toAuthElementDic
+            return content.toFilteredAuthElementDic
         } catch {
             try? keychain.removeOrError(forKey: Self.storageKey)
             return [:]
@@ -279,6 +293,7 @@ private struct AuthElement: Hashable, Sendable {
     let credential: Credential
     let authCredential: AuthCredential
     let module: PassModule
+    let lastTimeUpdated: Date
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(module)
@@ -288,7 +303,15 @@ private struct AuthElement: Hashable, Sendable {
     func copy(newAuthCredential: AuthCredential) -> AuthElement {
         AuthElement(credential: credential,
                     authCredential: newAuthCredential,
-                    module: module)
+                    module: module,
+                    lastTimeUpdated: .now)
+    }
+
+    func copy(lastTimeUpdated: Date) -> AuthElement {
+        AuthElement(credential: credential,
+                    authCredential: authCredential,
+                    module: module,
+                    lastTimeUpdated: lastTimeUpdated)
     }
 }
 
@@ -322,6 +345,7 @@ private struct SavedAuthElement: Codable {
     let credential: PassCredential
     let authCredential: AuthCredential
     let module: PassModule
+    let lastTimeUpdated: Date
 }
 
 private extension [String: AuthElement] {
@@ -342,12 +366,23 @@ private extension [String: AuthElement] {
 }
 
 private extension [String: SavedAuthElement] {
-    var toAuthElementDic: [String: AuthElement] {
+    var toFilteredAuthElementDic: [String: AuthElement] {
         var saved = [String: AuthElement]()
         for (key, value) in self {
-            saved[key] = value.toAuthElement
+            if !value.credential.userID.isEmpty || value.lastTimeUpdated.isWithinLastSevenDays {
+                saved[key] = value.toAuthElement
+            }
         }
         return saved
+    }
+}
+
+extension Date {
+    var isWithinLastSevenDays: Bool {
+        let calendar = Calendar.current
+        let now = Date()
+        let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: now)
+        return self >= (sevenDaysAgo ?? now)
     }
 }
 
@@ -355,7 +390,8 @@ private extension SavedAuthElement {
     var toAuthElement: AuthElement {
         AuthElement(credential: credential.toCredential,
                     authCredential: authCredential,
-                    module: module)
+                    module: module,
+                    lastTimeUpdated: lastTimeUpdated)
     }
 }
 
@@ -363,7 +399,8 @@ private extension AuthElement {
     var toSavedAuthElement: SavedAuthElement {
         SavedAuthElement(credential: credential.toPassCredential,
                          authCredential: authCredential,
-                         module: module)
+                         module: module,
+                         lastTimeUpdated: lastTimeUpdated)
     }
 }
 

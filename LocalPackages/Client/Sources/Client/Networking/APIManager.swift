@@ -43,10 +43,11 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let appVer: String
-    private let humanHelper: HumanCheckHelper
+    private var humanHelper: HumanCheckHelper?
     private var forceUpgradeHelper: ForceUpgradeHelper?
+    private var allCurrentApiServices = [any APIService]()
 
-    public private(set) var apiService: any APIService
+    public private(set) var apiService: (any APIService)!
     public let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
 
     public init(authManager: any AuthManagerProtocol,
@@ -64,25 +65,33 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
         Self.setUpCertificatePinning()
 
-        let apiService: PMAPIService
+        // TODO: create all apiservices for all current session recorded and set main apiservice
+        // also have function to switch main api service when user switch
+
+//        let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
-        if let activeUserId = userManager.activeUserId,
-           let credential = authManager.getCredential(userId: activeUserId) {
-            apiService = PMAPIService.createAPIService(doh: doh,
-                                                       sessionUID: credential.sessionID,
-                                                       challengeParametersProvider: challengeProvider)
-        } else {
-            apiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
-                                                                     challengeParametersProvider: challengeProvider)
-        }
-        self.apiService = apiService
 
-        humanHelper = HumanCheckHelper(apiService: apiService,
-                                       inAppTheme: {
-                                           themeProvider.sharedPreferences.unwrapped().theme.inAppTheme
-                                       },
-                                       clientApp: .pass)
+        for credential in authManager.getAllCurrentCredentials() {
+            let newApiService = PMAPIService.createAPIService(doh: doh,
+                                                              sessionUID: credential.UID,
+                                                              challengeParametersProvider: challengeProvider)
+            newApiService.authDelegate = authManager
+            newApiService.serviceDelegate = self
+            allCurrentApiServices.append(newApiService)
+            if let activeUserId = userManager.activeUserId, credential.userID == activeUserId {
+                apiService = newApiService
+            }
+        }
+
+        if allCurrentApiServices.isEmpty {
+            let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                                            challengeParametersProvider: challengeProvider)
+            newApiService.authDelegate = authManager
+            newApiService.serviceDelegate = self
+            allCurrentApiServices.append(newApiService)
+            apiService = newApiService
+        }
 
         // This could also be tweaked as we only log 2 phrases as delegates of forceupgradeHelper
         if let appStoreUrl = URL(string: Constants.appStoreUrl) {
@@ -95,12 +104,29 @@ public final class APIManager: Sendable, APIManagerProtocol {
             forceUpgradeHelper = .init(config: .desktop, responseDelegate: self)
         }
 
+//        if let activeUserId = userManager.activeUserId,
+//           let credential = authManager.getCredential(userId: activeUserId) {
+//            apiService = PMAPIService.createAPIService(doh: doh,
+//                                                       sessionUID: credential.sessionID,
+//                                                       challengeParametersProvider: challengeProvider)
+//        } else {
+//            apiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
+//                                                                     challengeParametersProvider: challengeProvider)
+//        }
+//        self.apiService = apiService
+
+        humanHelper = HumanCheckHelper(apiService: apiService,
+                                       inAppTheme: {
+                                           themeProvider.sharedPreferences.unwrapped().theme.inAppTheme
+                                       },
+                                       clientApp: .pass)
+
         apiService.humanDelegate = humanHelper
 
         authManager.setUpDelegate(self)
-        self.apiService.authDelegate = authManager
-        self.apiService.serviceDelegate = self
-        apiService.loggingDelegate = self
+//        self.apiService.authDelegate = authManager
+//        self.apiService.serviceDelegate = self
+        (apiService as? PMAPIService)?.loggingDelegate = self
         apiService.forceUpgradeDelegate = forceUpgradeHelper
 
         setUpCore()
@@ -108,15 +134,36 @@ public final class APIManager: Sendable, APIManagerProtocol {
     }
 
     public func updateCurrentSession(sessionId: String) {
-        apiService.setSessionUID(uid: sessionId)
+        guard let service = allCurrentApiServices.first(where: { $0.sessionUID == sessionId }) else {
+            return
+        }
+        apiService = service
+//        apiService.setSessionUID(uid: sessionId)
     }
 
     public func updateCurrentSession(userId: String) async {
         guard let session = authManager.getCredential(userId: userId),
-              session.sessionID != apiService.sessionUID else {
+              session.sessionID != apiService.sessionUID,
+              let service = allCurrentApiServices.first(where: { $0.sessionUID == session.sessionID }) else {
             return
         }
-        apiService.setSessionUID(uid: session.sessionID)
+//        apiService.setSessionUID(uid: session.sessionID)
+        apiService = service
+    }
+
+    public func createNewApiService() -> any APIService {
+        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
+                                                                          challenge: .init())
+        let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                                        challengeParametersProvider: challengeProvider)
+        newApiService.authDelegate = authManager
+        newApiService.serviceDelegate = self
+        allCurrentApiServices.append(newApiService)
+        apiService = newApiService
+        // TODO: human helper +
+        setUpCore()
+        fetchUnauthSessionIfNeeded()
+        return apiService
     }
 }
 
@@ -134,6 +181,12 @@ private extension APIManager {
     func setUpCore() {
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
+
+//    static func setUpApiServices(authManager: any AuthManagerProtocol) -> [any APIService] {
+//        for credential in authManager.getAllCurrentCredentials() {
+//
+//        }
+//    }
 
     func fetchUnauthSessionIfNeeded() {
         apiService.acquireSessionIfNeeded { [weak self] result in
@@ -179,9 +232,19 @@ extension APIManager: AuthHelperDelegate {
                                        credential: Credential,
                                        for sessionUID: String) {
         logger.info("Session credentials are updated")
-        if apiService.sessionUID != sessionUID {
-            apiService.setSessionUID(uid: sessionUID)
+        guard apiService.sessionUID != sessionUID,
+              let service = allCurrentApiServices.first(where: { $0.sessionUID == sessionUID }) else {
+            return
         }
+
+        apiService = service
+//        if apiService.sessionUID != sessionUID {
+//            apiService.setSessionUID(uid: sessionUID)
+//        }
+//
+//        guard let service = allCurrentApiServices.first(where: { $0.sessionUID == sessionId }) else {
+//            return
+//        }
     }
 }
 
@@ -208,6 +271,7 @@ extension APIManager: APIServiceDelegate {
 
 // MARK: - ForceUpgradeResponseDelegate
 
+// TODO: DO we need these logs ?
 extension APIManager: ForceUpgradeResponseDelegate {
     public func onQuitButtonPressed() {
         logger.info("Quit force upgrade page")
