@@ -55,14 +55,7 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
 
-    @LockedKeychainStorage(key: AppDataKey.shareExtensionCredential, defaultValue: nil)
-    private var shareExtensionCredential: AuthCredential?
-
-    private let module: PassModule
-
-    init(module: PassModule) {
-        self.module = module
-    }
+    init() {}
 
     func getSymmetricKey() throws -> SymmetricKey {
         if let symmetricKey {
@@ -83,6 +76,5 @@ final class AppData: AppDataProtocol {
 
     func resetData() {
         userData = nil
-        shareExtensionCredential = nil
     }
 }

@@ -75,7 +75,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
+    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
@@ -134,10 +134,11 @@ final class AppCoordinator {
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
-                    
-                    //TODO: This should be removed as it was made for single user having 502 and not multiusers
-                    //we could end up having some wrong calls if users switch account during a event loop so this could end up logging out randomly
-                   connectToCorruptedSessionStream()
+
+                    // TODO: This should be removed as it was made for single user having 502 and not multiusers
+                    // we could end up having some wrong calls if users switch account during a event loop so this
+                    // could end up logging out randomly
+                    connectToCorruptedSessionStream()
                     showHomeScene(mode: .alreadyLoggedIn)
                     if let userId = userManager.activeUserId,
                        let sessionID = authManager.getCredential(userId: userId)?.sessionID {
@@ -150,10 +151,11 @@ final class AppCoordinator {
                         }
                         logger.info("Logged in manual")
                         try? await userManager.addAndMarkAsActive(userData: userData)
-                        
-                        //TODO: This should be removed as it was made for single user having 502 and not multiusers
-                        //we could end up having some wrong calls if users switch account during a event loop so this could end up
-        
+
+                        // TODO: This should be removed as it was made for single user having 502 and not multiusers
+                        // we could end up having some wrong calls if users switch account during a event loop so
+                        // this could end up
+
 //                        connectToCorruptedSessionStream()
                         if extraPassword {
                             showHomeScene(mode: .manualLoginWithExtraPassword)
