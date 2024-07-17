@@ -279,16 +279,6 @@ extension UseCasesContainer {
     }
 }
 
-// MARK: - Flags
-
-extension UseCasesContainer {
-    var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
-        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   userManager: self.userManager,
-                                   logManager: self.logManager) }
-    }
-}
-
 // MARK: - Vaults
 
 extension UseCasesContainer {

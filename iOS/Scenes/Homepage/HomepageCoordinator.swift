@@ -72,7 +72,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
 
     // Use cases
-    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+    private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
@@ -1015,8 +1015,7 @@ extension HomepageCoordinator {
 // MARK: - Open webpages
 
 extension HomepageCoordinator {
-    
-    //TODO: do we need this ?
+    // TODO: do we need this ?
     func beginImportExportFlow() {
         Task { [weak self] in
             guard let self else { return }

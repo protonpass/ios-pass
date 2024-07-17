@@ -76,6 +76,10 @@ private extension SharedUseCasesContainer {
     var apiManager: any APIManagerProtocol {
         SharedToolingContainer.shared.apiManager()
     }
+
+    var syncEventLoop: any SyncEventLoopActionProtocol {
+        SharedServiceContainer.shared.syncEventLoop()
+    }
 }
 
 // MARK: App
@@ -378,7 +382,18 @@ extension SharedUseCasesContainer {
                           vaultsManager: self.vaultsManager,
                           preferencesManager: self.preferencesManager,
                           apiManager: self.apiManager,
-                          syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
+                          syncEventLoop: self.syncEventLoop,
+                          refreshFeatureFlags: self.refreshFeatureFlags()) }
+    }
+
+    var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
+        self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
+                                            userManager: self.userManager,
+                                            authManager: SharedToolingContainer.shared.authManager(),
+                                            preferencesManager: self.preferencesManager,
+                                            apiManager: self.apiManager,
+                                            fullVaultsSync: self.fullVaultsSync(),
+                                            refreshFeatureFlags: self.refreshFeatureFlags()) }
     }
 }
 
@@ -465,5 +480,15 @@ extension SharedUseCasesContainer {
 
     var getAllAliases: Factory<any GetAllAliasesUseCase> {
         self { GetAllAliases(itemRepository: self.itemRepository) }
+    }
+}
+
+// MARK: - Flags
+
+extension SharedUseCasesContainer {
+    var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
+        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   userManager: self.userManager,
+                                   logManager: self.logManager) }
     }
 }

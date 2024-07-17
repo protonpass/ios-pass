@@ -45,9 +45,7 @@ extension SharedDataContainer {
     }
 
     var appData: Factory<any AppDataProtocol> {
-        self { AppData(module: .hostApp) }
-            .onArg(PassModule.autoFillExtension) { AppData(module: .autoFillExtension) }
-            .onArg(PassModule.shareExtension) { AppData(module: .shareExtension) }
+        self { AppData() }
     }
 
     var credentialProvider: Factory<any AuthManagerProtocol> {

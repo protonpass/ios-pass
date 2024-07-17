@@ -360,10 +360,10 @@ private extension CredentialProviderCoordinator {
             if let error {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
-            //TODO: why do we revoke session as this seems to be linked to import esxport of data never really implemented in main app ?
+            // TODO: why do we revoke session as this seems to be linked to import esxport of data never really implemented in main app ?
             await revokeCurrentSession()
 
-            //TODO: need an ID for specific user logout
+            // TODO: need an ID for specific user logout
             await wipeAllData()
             showNotLoggedInView()
             completion?()
