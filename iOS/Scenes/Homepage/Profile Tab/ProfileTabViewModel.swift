@@ -62,16 +62,13 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private let apiManager = resolve(\SharedToolingContainer.apiManager)
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager: any AuthManagerProtocol
-    @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync: any FullVaultsSyncUseCase
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
     @LazyInjected(\UseCasesContainer
         .createApiService) private var createApiService: any CreateApiServiceUseCase
-    @LazyInjected(\SharedServiceContainer
-        .syncEventLoop) private var syncEventLoop
+    @LazyInjected(\SharedUseCasesContainer
+        .addAndSwitchToNewUserAccount) private var addAndSwitchToNewUserAccount: any AddAndSwitchToNewUserAccountUseCase
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -405,14 +402,6 @@ private extension ProfileTabViewModel {
             .store(in: &cancellables)
     }
 
-    func forceSync() async throws {
-        router.present(for: .fullSync)
-        logger.info("Doing full sync")
-        try await fullVaultsSync()
-        logger.info("Done full sync")
-        router.display(element: .successMessage(config: .refresh))
-    }
-
     func refresh() {
         Task { [weak self] in
             guard let self else { return }
@@ -490,7 +479,6 @@ private extension ProfileTabViewModel {
     func parseNewUser(result: Result<LoginViewResult?, LoginViewError>) {
         Task { [weak self] in
             guard let self else { return }
-            defer { syncEventLoop.start() }
             do {
                 switch result {
                 case let .success(newUser):
@@ -499,18 +487,12 @@ private extension ProfileTabViewModel {
                     }
                     // give the time to the login screen to dismiss
                     try? await Task.sleep(for: .seconds(1))
-                    syncEventLoop.stop()
-                    // We add the new user and credential to the user manager and the main authManager
-                    // We also update the main apiservice with the new session id through apiManager
-                    try await userManager.addAndMarkAsActive(userData: newUser.userData)
-                    authManager.onSessionObtaining(credential: newUser.userData.getCredential)
-                    await apiManager.updateCurrentSession(userId: newUser.userData.userId)
-                    try await preferencesManager.switchUserPreferences(userId: newUser.userData.userId)
-                    if newUser.hasExtraPassword {
-                        try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
-                                                                           value: true)
-                    }
-                    try await forceSync()
+                    router.present(for: .fullSync)
+                    logger.info("Doing full sync")
+                    try await addAndSwitchToNewUserAccount(userData: newUser.userData,
+                                                           hasExtraPassword: newUser.hasExtraPassword)
+                    logger.info("Done full sync")
+                    router.display(element: .successMessage(config: .refresh))
                 case let .failure(error):
                     handle(error: error)
                 }

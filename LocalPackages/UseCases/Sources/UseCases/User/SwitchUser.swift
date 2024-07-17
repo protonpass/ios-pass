@@ -38,17 +38,20 @@ public final class SwitchUser: SwitchUserUseCase {
     private let preferencesManager: any PreferencesManagerProtocol
     private let apiManager: any APIManagerProtocol
     private let syncEventLoop: any SyncEventLoopActionProtocol
+    private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
 
     public init(userManager: any UserManagerProtocol,
                 vaultsManager: any VaultsManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
                 apiManager: any APIManagerProtocol,
-                syncEventLoop: any SyncEventLoopActionProtocol) {
+                syncEventLoop: any SyncEventLoopActionProtocol,
+                refreshFeatureFlags: any RefreshFeatureFlagsUseCase) {
         self.userManager = userManager
         self.vaultsManager = vaultsManager
         self.preferencesManager = preferencesManager
         self.apiManager = apiManager
         self.syncEventLoop = syncEventLoop
+        self.refreshFeatureFlags = refreshFeatureFlags
     }
 
     public func execute(userId: String) async throws {
@@ -57,6 +60,7 @@ public final class SwitchUser: SwitchUserUseCase {
         await apiManager.updateCurrentSession(userId: userId)
         try await vaultsManager.localFullSync()
         try await preferencesManager.switchUserPreferences(userId: userId)
+        refreshFeatureFlags()
         syncEventLoop.start()
     }
 }
