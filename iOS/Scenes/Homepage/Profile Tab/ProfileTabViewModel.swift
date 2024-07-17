@@ -69,6 +69,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         .createApiService) private var createApiService: any CreateApiServiceUseCase
     @LazyInjected(\SharedUseCasesContainer
         .addAndSwitchToNewUserAccount) private var addAndSwitchToNewUserAccount: any AddAndSwitchToNewUserAccountUseCase
+    @LazyInjected(\SharedToolingContainer
+        .apiManager) private var apiManager: APIManager
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -123,7 +125,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     func getApiService() -> any APIService {
-        createApiService()
+        apiManager.createNewApiService()
+//        createApiService()
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
