@@ -57,7 +57,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @Published var showingPermanentDeletionAlert = false
 
-    private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
@@ -112,7 +111,7 @@ private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
 
-        vaultSyncEventStream
+        vaultsManager.vaultSyncEventStream
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }

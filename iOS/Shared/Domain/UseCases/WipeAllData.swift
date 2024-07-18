@@ -44,7 +44,6 @@ final class WipeAllData: WipeAllDataUseCase {
     private let preferencesManager: any PreferencesManagerProtocol
     private let syncEventLoop: any SyncEventLoopProtocol
     private let vaultsManager: VaultsManager
-    private let vaultSyncEventStream: VaultSyncEventStream
     private let credentialManager: any CredentialManagerProtocol
     private let userManager: any UserManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
@@ -57,7 +56,6 @@ final class WipeAllData: WipeAllDataUseCase {
          preferencesManager: any PreferencesManagerProtocol,
          syncEventLoop: any SyncEventLoopProtocol,
          vaultsManager: VaultsManager,
-         vaultSyncEventStream: VaultSyncEventStream,
          credentialManager: any CredentialManagerProtocol,
          userManager: any UserManagerProtocol,
          featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
@@ -69,7 +67,6 @@ final class WipeAllData: WipeAllDataUseCase {
         self.preferencesManager = preferencesManager
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
-        self.vaultSyncEventStream = vaultSyncEventStream
         self.credentialManager = credentialManager
         self.userManager = userManager
         self.featureFlagsRepository = featureFlagsRepository
@@ -104,7 +101,6 @@ final class WipeAllData: WipeAllDataUseCase {
         // swiftlint:disable:next todo
         // TODO: only reset if last account being logged out but should
         await vaultsManager.reset()
-        vaultSyncEventStream.value = .initialization
 
         if let userId = try? await userManager.getActiveUserId() {
             try? await userManager.remove(userId: userId)

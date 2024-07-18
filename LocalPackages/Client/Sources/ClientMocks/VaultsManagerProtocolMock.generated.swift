@@ -26,6 +26,26 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
 
     public init() {}
 
+    // MARK: - vaultSyncEventStream
+    public var invokedVaultSyncEventStreamSetter = false
+    public var invokedVaultSyncEventStreamSetterCount = 0
+    public var invokedVaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?
+    public var invokedVaultSyncEventStreamList = [CurrentValueSubject<VaultSyncProgressEvent, Never>?]()
+    public var invokedVaultSyncEventStreamGetter = false
+    public var invokedVaultSyncEventStreamGetterCount = 0
+    public var stubbedVaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>!
+    public var vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> {
+        set {
+            invokedVaultSyncEventStreamSetter = true
+            invokedVaultSyncEventStreamSetterCount += 1
+            invokedVaultSyncEventStream = newValue
+            invokedVaultSyncEventStreamList.append(newValue)
+        } get {
+            invokedVaultSyncEventStreamGetter = true
+            invokedVaultSyncEventStreamGetterCount += 1
+            return stubbedVaultSyncEventStream
+        }
+    }
     // MARK: - currentVaults
     public var invokedCurrentVaultsSetter = false
     public var invokedCurrentVaultsSetterCount = 0
