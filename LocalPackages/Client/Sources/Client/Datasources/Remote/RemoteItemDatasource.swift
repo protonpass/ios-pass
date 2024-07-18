@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import Combine
 import Core
 import Entities
 import Foundation
@@ -25,7 +26,8 @@ import Foundation
 // sourcery: AutoMockable
 public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
-    func getItems(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item]
+    func getItems(shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+        -> [Item]
     func getItemRevisions(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item>
     func createItem(shareId: String, request: CreateItemRequest) async throws -> Item
     func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> Item
@@ -47,7 +49,7 @@ public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceP
 
 public extension RemoteItemDatasource {
     func getItems(shareId: String,
-                  eventStream: VaultSyncEventStream?) async throws -> [Item] {
+                  eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
         var itemRevisions = [Item]()
         var sinceToken: String?
         while true {

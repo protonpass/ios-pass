@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Combine
 import Entities
 import Foundation
 
@@ -32,11 +33,11 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
     public var invokedGetItemsCount = 0
-    public var invokedGetItemsParameters: (shareId: String, eventStream: VaultSyncEventStream?)?
-    public var invokedGetItemsParametersList = [(shareId: String, eventStream: VaultSyncEventStream?)]()
+    public var invokedGetItemsParameters: (shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedGetItemsParametersList = [(shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
     public var stubbedGetItemsResult: [Item]!
 
-    public func getItems(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item] {
+    public func getItems(shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (shareId, eventStream)

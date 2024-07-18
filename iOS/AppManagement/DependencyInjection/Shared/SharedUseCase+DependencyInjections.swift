@@ -278,7 +278,6 @@ extension SharedUseCasesContainer {
                            preferencesManager: self.preferencesManager,
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                           vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager(),
                            userManager: self.userManager,
                            featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
