@@ -35,7 +35,9 @@ extension HomepageCoordinator {
 
                 let handler: () -> Void = { [weak self] in
                     guard let self else { return }
+                    showLoadingHud()
                     logginOutUser(userId: userId)
+                    hideLoadingHud()
                 }
 
                 let alert = signOutAlert(accountToSignOut: user,
@@ -46,7 +48,7 @@ extension HomepageCoordinator {
             }
         }
     }
-    
+
     func logginOutUser(userId: String) {
         Task { @MainActor [weak self] in
             guard let self else { return }

@@ -373,6 +373,15 @@ private extension ProfileTabViewModel {
             .store(in: &cancellables)
 
         userManager
+            .allUserAccounts
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] accounts in
+                guard let self else { return }
+                userAccounts = accounts
+            }
+            .store(in: &cancellables)
+
+        userManager
             .currentActiveUser
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
@@ -382,7 +391,6 @@ private extension ProfileTabViewModel {
                     guard let self else {
                         return
                     }
-                    userAccounts = await (try? userManager.getAllUsers()) ?? []
                     await refreshPlan()
                     fetchSecureLinks()
                 }

@@ -207,7 +207,7 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public var invokedResetfunction = false
     public var invokedResetCount = 0
 
-    public func reset() {
+    public func reset() async {
         invokedResetfunction = true
         invokedResetCount += 1
         closureReset()
