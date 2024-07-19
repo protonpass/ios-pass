@@ -391,10 +391,12 @@ private extension ProfileTabViewModel {
 
         $newLoggedUser
             .dropFirst()
-            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 guard let self else { return }
+                if case .success(nil) = result {
+                    return
+                }
                 showLoginFlow = false
                 newLoggedUser = .success(nil)
                 parseNewUser(result: result)
