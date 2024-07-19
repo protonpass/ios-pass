@@ -76,7 +76,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     }
 
     @MainActor
-    func reset() {
+    func reset() async {
         state = .loading
         vaultSelection = .all
         itemCount = .zero
@@ -302,10 +302,6 @@ extension VaultsManager {
         return vaults.first { $0.vault.id == vault.id }?.items ?? []
     }
 
-//    func getItemCount(for vault: Vault) -> Int {
-//        getItems(for: vault).count
-//    }
-
     func getItemCount(for selection: VaultSelection) -> Int {
         guard case let .loaded(vaults, trashedItems) = state else { return 0 }
         switch selection {
@@ -326,11 +322,6 @@ extension VaultsManager {
     func getAllEditableVaultContents() -> [VaultContentUiModel] {
         getAllVaultContents().filter(\.vault.canEdit)
     }
-
-//    func vaultHasTrashedItems(_ vault: Vault) -> Bool {
-//        guard case let .loaded(_, trashedItems) = state else { return false }
-//        return trashedItems.contains { $0.shareId == vault.shareId }
-//    }
 
     func delete(vault: Vault) async throws {
         let shareId = vault.shareId
