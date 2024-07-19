@@ -41,7 +41,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
+//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private weak var rootViewController: UIViewController?
     private weak var context: ASCredentialProviderExtensionContext?
@@ -56,7 +56,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     // which are not registered when the user is not logged in
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
-    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
+//    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
@@ -67,7 +67,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -91,15 +91,15 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         AppearanceSettings.apply()
         setUpRouting()
 
-        corruptedSessionEventStream
-            .removeDuplicates()
-            .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] reason in
-                guard let self else { return }
-                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
-            }
-            .store(in: &cancellables)
+//        corruptedSessionEventStream
+//            .removeDuplicates()
+//            .compactMap { $0 }
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] reason in
+//                guard let self else { return }
+//                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
+//            }
+//            .store(in: &cancellables)
     }
 
     /// Necessary set up like initializing preferences and theme before starting user flow
@@ -110,11 +110,13 @@ final class CredentialProviderCoordinator: DeinitPrintable {
                 try await setUpBeforeLaunching()
                 // This need to be set after user data is loaded as we now depend on active user id to set session
                 // to the api service
-                apiManager.sessionWasInvalidated
+                authManager.sessionWasInvalidated
                     .receive(on: DispatchQueue.main)
-                    .sink { [weak self] sessionUID in
-                        guard let self else { return }
-                        logOut(error: PassError.unexpectedLogout, sessionId: sessionUID)
+                    .sink { [weak self] sessionInfos in
+                        guard let self, let userId = sessionInfos.userId else { return }
+                        logOut(userId: userId,
+                               error: PassError.unexpectedLogout,
+                               sessionId: sessionInfos.sessionId)
                     }
                     .store(in: &cancellables)
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
@@ -244,7 +246,7 @@ private extension CredentialProviderCoordinator {
             completeConfiguration(context: context)
         }, onLogOut: { [weak self] in
             guard let self else { return }
-            logOut { [weak self] in
+            logOut(userId: activeUserId) { [weak self] in
                 guard let self else { return }
                 completeConfiguration(context: context)
             }
@@ -338,8 +340,13 @@ private extension CredentialProviderCoordinator {
             return
 
         case .failedToAuthenticate:
-            logOut { [weak self] in
+            guard let userId = userManager.activeUserId else {
+                return defaultHandler(error)
+            }
+            return logOut(userId: userId) { [weak self] in
                 guard let self else { return }
+                // TODO: should we always call the cancelAutoFill as we will be able to have multiple account for one user
+                // this means we should in some case only reload the data to remove the deleted content.
                 cancelAutoFill(reason: .failed, context: context)
             }
 
@@ -352,7 +359,8 @@ private extension CredentialProviderCoordinator {
         addTelemetryEvent(with: type)
     }
 
-    func logOut(error: (any Error)? = nil,
+    func logOut(userId: String,
+                error: (any Error)? = nil,
                 sessionId: String? = nil,
                 completion: (() -> Void)? = nil) {
         Task { [weak self] in
@@ -360,12 +368,14 @@ private extension CredentialProviderCoordinator {
             if let error {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
-            // TODO: why do we revoke session as this seems to be linked to import esxport of data never really implemented in main app ?
-            await revokeCurrentSession()
 
-            // TODO: need an ID for specific user logout
-            await wipeAllData()
-            showNotLoggedInView()
+//            // TODO: why do we revoke session as this seems to be linked to import esxport of data never really
+//            /implemented in main app ?
+//            await revokeCurrentSession()
+//
+//            // TODO: need an ID for specific user logout
+//            await wipeAllData()
+//            showNotLoggedInView()
             completion?()
         }
     }
@@ -467,7 +477,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToLogOut() {
-        logOut()
+        guard let userId = userManager.activeUserId else {
+            return
+        }
+        logOut(userId: userId)
     }
 
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,

@@ -271,18 +271,34 @@ extension SharedUseCasesContainer {
                                                  .shareKeyRepository()) }
     }
 
-    var wipeAllData: Factory<any WipeAllDataUseCase> {
-        self { WipeAllData(logManager: self.logManager,
-                           appData: SharedDataContainer.shared.appData(),
-                           apiManager: SharedToolingContainer.shared.apiManager(),
-                           preferencesManager: self.preferencesManager,
-                           syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
-                           vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                           credentialManager: SharedServiceContainer.shared.credentialManager(),
-                           userManager: self.userManager,
-                           featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-                           removeUserLocalData: self.removeUserLocalData()) }
+//    var wipeAllData: Factory<any WipeAllDataUseCase> {
+//        self { WipeAllData(logManager: self.logManager,
+//                           appData: SharedDataContainer.shared.appData(),
+//                           apiManager: SharedToolingContainer.shared.apiManager(),
+//                           preferencesManager: self.preferencesManager,
+//                           syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+//                           vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+//                           credentialManager: SharedServiceContainer.shared.credentialManager(),
+//                           userManager: self.userManager,
+//                           featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+//                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+//                           removeUserLocalData: self.removeUserLocalData()) }
+//    }
+//
+    var logOutUser: Factory<any LogOutUserUseCase> {
+        self {
+            LogOutUser(userManager: self.userManager,
+                       syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                       preferencesManager: self.preferencesManager,
+                       removeUserLocalData: self.removeUserLocalData(),
+                       featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                       passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                       vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                       apiManager: SharedToolingContainer.shared.apiManager(),
+                       authManager: SharedToolingContainer.shared.authManager(),
+                       credentialManager: SharedServiceContainer.shared.credentialManager(),
+                       switchUser: self.switchUser())
+        }
     }
 }
 

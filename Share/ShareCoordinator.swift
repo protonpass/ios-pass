@@ -69,22 +69,23 @@ enum SharedItemType: CaseIterable {
 
 @MainActor
 final class ShareCoordinator {
-    private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
-    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
+//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
-    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
+//    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
+    @LazyInjected(\SharedUseCasesContainer.logOutUser) private var logOutUser
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -105,23 +106,25 @@ final class ShareCoordinator {
         setUpRouter()
         setCoreLoggerEnvironment()
 
-        apiManager.sessionWasInvalidated
+        authManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] sessionUID in
-                guard let self else { return }
-                logOut(error: PassError.unexpectedLogout, sessionId: sessionUID)
+            .sink { [weak self] sessionInfos in
+                guard let self, let userId = sessionInfos.userId else { return }
+                logOut(userId: userId,
+                       error: PassError.unexpectedLogout,
+                       sessionId: sessionInfos.sessionId)
             }
             .store(in: &cancellables)
 
-        corruptedSessionEventStream
-            .removeDuplicates()
-            .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] reason in
-                guard let self else { return }
-                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
-            }
-            .store(in: &cancellables)
+//        corruptedSessionEventStream
+//            .removeDuplicates()
+//            .compactMap { $0 }
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] reason in
+//                guard let self else { return }
+//                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
+//            }
+//            .store(in: &cancellables)
     }
 }
 
@@ -131,12 +134,13 @@ extension ShareCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching()
-            let userId = try await userManager.getActiveUserId()
-            if credentialProvider.isAuthenticated(userId: userId) {
-                await parseSharedContentAndBeginShareFlow()
-            } else {
-                showNotLoggedInView()
-            }
+            try await beginFlow()
+//            let userId = try await userManager.getActiveUserId()
+//            if credentialProvider.isAuthenticated(userId: userId) {
+//                await parseSharedContentAndBeginShareFlow(userId: userId)
+//            } else {
+//                showNotLoggedInView()
+//            }
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }
@@ -227,7 +231,7 @@ private extension ShareCoordinator {
         return .unknown
     }
 
-    func parseSharedContentAndBeginShareFlow() async {
+    func parseSharedContentAndBeginShareFlow(userId: String) async {
         do {
             let content = try await parseSharedContent()
             let view = SharedContentView(content: content,
@@ -244,7 +248,7 @@ private extension ShareCoordinator {
                                                               onSuccess: {},
                                                               onFailure: { [weak self] in
                                                                   guard let self else { return }
-                                                                  logOut()
+                                                                  logOut(userId: userId)
                                                               })
             showView(view)
         } catch {
@@ -319,18 +323,36 @@ private extension ShareCoordinator {
         context?.completeRequest(returningItems: nil)
     }
 
-    func logOut(error: (any Error)? = nil,
-                sessionId: String? = nil,
-                completion: (() -> Void)? = nil) {
+    func logOut(userId: String,
+                error: (any Error)? = nil,
+                sessionId: String? = nil) {
         Task { [weak self] in
             guard let self else { return }
             if let error {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
-            await revokeCurrentSession()
-            await wipeAllData()
+
+            // show logged outscreen if no more account linked to user else reload new content
+            if try await logOutUser(userId: userId) {
+                showNotLoggedInView()
+            } else {
+                try? await beginFlow()
+            }
+
+            // TODO: should not show logout view as there can be other account
+            //            await revokeCurrentSession()
+            //            await wipeAllData()
+            //            showNotLoggedInView()
+            //            completion?()
+        }
+    }
+
+    func beginFlow() async throws {
+        let userId = try await userManager.getActiveUserId()
+        if credentialProvider.isAuthenticated(userId: userId) {
+            await parseSharedContentAndBeginShareFlow(userId: userId)
+        } else {
             showNotLoggedInView()
-            completion?()
         }
     }
 }
