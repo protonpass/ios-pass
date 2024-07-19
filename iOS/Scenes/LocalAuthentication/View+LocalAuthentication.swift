@@ -27,7 +27,6 @@ import SwiftUI
 
 struct LocalAuthenticationModifier: ViewModifier {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
     @State private var authenticated: Bool
 
@@ -48,13 +47,13 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
-    private var preferences: SharedPreferences { getSharedPreferences() }
+    private var preferences: SharedPreferences { preferencesManager.sharedPreferences.unwrapped() }
 
     init(delayed: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        let preferences = getSharedPreferences()
+        let preferences = preferencesManager.sharedPreferences.unwrapped()
         _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed

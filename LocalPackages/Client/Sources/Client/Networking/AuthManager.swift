@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import Entities
 import Foundation
@@ -29,13 +30,15 @@ import ProtonCoreServices
 import ProtonCoreUtilities
 
 public protocol AuthManagerProtocol: Sendable, AuthDelegate {
-    func setUpDelegate(_ delegate: any AuthHelperDelegate)
+    var sessionWasInvalidated: AnyPublisher<(sessionId: String, userId: String?), Never> { get }
 
+    func setUpDelegate(_ delegate: any AuthHelperDelegate)
     func getCredential(userId: String) -> AuthCredential?
     func clearSessions(sessionId: String)
     func clearSessions(userId: String)
     func getAllCurrentCredentials() -> [Credential]
     func isAuthenticated(userId: String) -> Bool
+    func removeCredentials(userId: String)
 }
 
 public extension AuthManagerProtocol {
@@ -47,12 +50,7 @@ public extension AuthManagerProtocol {
     }
 }
 
-public final class AuthManager: AuthManagerProtocol {
-    public private(set) weak var delegate: (any AuthHelperDelegate)?
-    // swiftlint:disable:next identifier_name
-    public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
-    public static let storageKey = "authManagerStorageKey"
-    private let serialAccessQueue = DispatchQueue(label: "me.pass.authmanager_queue")
+public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     /// Work-around to keep track of `Credential` mostly for scopes check
     /// as we don't store `Credential` as-is but convert to `AuthCredential` which doesn't contains `scopes`
     /// A dictionary with `sessionUID` as keys
@@ -60,22 +58,42 @@ public final class AuthManager: AuthManagerProtocol {
     private let keychain: any KeychainProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let module: PassModule
+    private let serialAccessQueue = DispatchQueue(label: "me.pass.authmanager_queue")
+    private let _sessionWasInvalidated: PassthroughSubject<(sessionId: String, userId: String?), Never> = .init()
+    private let logger: Logger
+
+    public private(set) weak var delegate: (any AuthHelperDelegate)?
+    // swiftlint:disable:next identifier_name
+    public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
+
+    // This exposes a read only publisher to the rest of the application as AnyPublisher has no send function
+    public var sessionWasInvalidated: AnyPublisher<(sessionId: String, userId: String?), Never> {
+        _sessionWasInvalidated.eraseToAnyPublisher()
+    }
+
+    public static let storageKey = "authManagerStorageKey"
 
     public init(keychain: any KeychainProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
-                module: PassModule) {
+                module: PassModule,
+                logManager: any LogManagerProtocol) {
         self.keychain = keychain
         self.symmetricKeyProvider = symmetricKeyProvider
         self.module = module
+        logger = .init(manager: logManager)
         cachedCredentials = getLocalSessions()
     }
 
     public func setUpDelegate(_ delegate: any AuthHelperDelegate) {
-        self.delegate = delegate
+        serialAccessQueue.sync {
+            self.delegate = delegate
+        }
     }
 
     public func getCredential(userId: String) -> AuthCredential? {
-        serialAccessQueue.sync {
+        logger.info("getting authCredential for userId id \(userId)")
+
+        return serialAccessQueue.sync {
             var hasher = Hasher()
             hasher.combine(module)
             hasher.combine(userId)
@@ -86,8 +104,21 @@ public final class AuthManager: AuthManagerProtocol {
         }
     }
 
-    public func credential(sessionUID: String) -> Credential? {
+    public func removeCredentials(userId: String) {
+        logger.info("Removing credential for userId id \(userId)")
+
         serialAccessQueue.sync {
+            cachedCredentials = cachedCredentials.filter { _, value in
+                value.credential.userID != userId
+            }
+            saveLocalSessions()
+        }
+    }
+
+    public func credential(sessionUID: String) -> Credential? {
+        logger.info("Getting credential for session id \(sessionUID)")
+
+        return serialAccessQueue.sync {
             let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
 
             return cachedCredentials[key]?.credential
@@ -95,7 +126,9 @@ public final class AuthManager: AuthManagerProtocol {
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
-        serialAccessQueue.sync {
+        logger.info("Getting authCredential for session id \(sessionUID)")
+
+        return serialAccessQueue.sync {
             let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
 
             guard let cred = cachedCredentials[key]?.authCredential else {
@@ -107,6 +140,8 @@ public final class AuthManager: AuthManagerProtocol {
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
+        logger.info("Update Session credentials with session id \(sessionUID)")
+
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
@@ -125,6 +160,8 @@ public final class AuthManager: AuthManagerProtocol {
     }
 
     public func onSessionObtaining(credential: Credential) {
+        logger.info("Obtained Session credentials with session id \(credential.UID)")
+
         serialAccessQueue.sync {
             // The forking of sessions should be done at this point in the future and any looping on Pass module
             // should be removed
@@ -143,6 +180,8 @@ public final class AuthManager: AuthManagerProtocol {
                                                     password: String?,
                                                     salt: String?,
                                                     privateKey: String?) {
+        logger.info("Additional credentials for session id \(sessionUID)")
+
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
@@ -164,7 +203,11 @@ public final class AuthManager: AuthManagerProtocol {
     }
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
+        logger.info("Authenticated session invalidated for session id \(sessionUID)")
+
         serialAccessQueue.sync {
+            let currentSession = cachedCredentials[getCacheKeyFor(sessionId: sessionUID, currentModule: module)]
+
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
                 cachedCredentials[key] = nil
@@ -172,21 +215,29 @@ public final class AuthManager: AuthManagerProtocol {
 
             saveLocalSessions()
             sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: true)
+            _sessionWasInvalidated.send((sessionId: sessionUID, userId: currentSession?.credential.userID))
         }
     }
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
+        logger.info("unauthenticated session invalidated for session id \(sessionUID)")
+
         serialAccessQueue.sync {
+            let currentSession = cachedCredentials[getCacheKeyFor(sessionId: sessionUID, currentModule: module)]
+
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
                 cachedCredentials[key] = nil
             }
             saveLocalSessions()
             sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: false)
+            _sessionWasInvalidated.send((sessionId: sessionUID, userId: currentSession?.credential.userID))
         }
     }
 
     public func clearSessions(sessionId: String) {
+        logger.info("Clear sessions for session id \(sessionId)")
+
         serialAccessQueue.sync {
             for module in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: sessionId, currentModule: module)
@@ -197,6 +248,8 @@ public final class AuthManager: AuthManagerProtocol {
     }
 
     public func clearSessions(userId: String) {
+        logger.info("Clear sessions for user id \(userId)")
+
         serialAccessQueue.sync {
             cachedCredentials = cachedCredentials.filter { $0.value.credential.userID != userId }
             saveLocalSessions()
@@ -256,9 +309,7 @@ private extension AuthManager {
             let encryptedContent = try symmetricKey.encrypt(data.encodeBase64())
             try keychain.setOrError(encryptedContent, forKey: Self.storageKey)
         } catch {
-            // swiftlint:disable:next todo
-            // TODO: need to log
-            print(error)
+            logger.error("Failed to saved user sessions in keychain: \(error)")
         }
     }
 
@@ -276,6 +327,7 @@ private extension AuthManager {
             let content = try JSONDecoder().decode([String: SavedAuthElement].self, from: decryptedContentData)
             return content.toFilteredAuthElementDic
         } catch {
+            logger.error("Failed to decrypted user sessions from keychain: \(error)")
             try? keychain.removeOrError(forKey: Self.storageKey)
             return [:]
         }

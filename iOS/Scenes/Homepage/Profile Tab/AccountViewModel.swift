@@ -33,7 +33,6 @@ import ProtonCorePasswordChange
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
-    func accountViewModelWantsToDeleteAccount()
     func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void)
 }
 
@@ -227,7 +226,15 @@ extension AccountViewModel {
     }
 
     func deleteAccount() {
-        delegate?.accountViewModelWantsToDeleteAccount()
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                router.action(.deleteAccount(userId: userId))
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     func openAccountRecovery() {

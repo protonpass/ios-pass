@@ -83,8 +83,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
-
-    let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
+    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -526,6 +525,8 @@ extension HomepageCoordinator {
                     handleManageAccount(userId: userId)
                 case let .signOut(userId):
                     handleSignOut(userId: userId)
+                case let .deleteAccount(userId):
+                    accountViewModelWantsToDeleteAccount(userId: userId)
                 }
             }
             .store(in: &cancellables)
@@ -1015,6 +1016,7 @@ extension HomepageCoordinator {
 // MARK: - Open webpages
 
 extension HomepageCoordinator {
+    // swiftlint:disable:next todo
     // TODO: do we need this ?
     func beginImportExportFlow() {
         Task { [weak self] in
@@ -1294,7 +1296,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func accountViewModelWantsToDeleteAccount() {
+    func accountViewModelWantsToDeleteAccount(userId: String) {
         let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
@@ -1311,7 +1313,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                                switch result {
                                                                case .success:
                                                                    logger.trace("Account deletion successful")
-                                                                   wipeAllDataAndSignoutActiveUser()
+                                                                   logginOutUser(userId: userId)
                                                                case .failure(AccountDeletionError.closedByUser):
                                                                    logger
                                                                        .trace("Accpunt deletion form closed by user")

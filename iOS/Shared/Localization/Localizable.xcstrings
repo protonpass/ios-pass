@@ -119794,17 +119794,6 @@
         }
       }
     },
-    "You will be switched to %@" : {
-      "comment" : "Placeholder is an email address. Message shown when switching to another account.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You will be switched to %@"
-          }
-        }
-      }
-    },
     "You're invited to a shared vault. Tap for details." : {
       "comment" : "The description of the banner when the user has a pending invitation to join a vault",
       "localizations" : {
