@@ -73,7 +73,6 @@ final class AppCoordinator {
 //    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
-//    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
@@ -115,8 +114,6 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
-        // swiftlint:disable:next todo
-        // TODO: what to do with multiple users data ?
         appData.resetData()
         let keychain = SharedToolingContainer.shared.keychain()
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
@@ -130,13 +127,12 @@ final class AppCoordinator {
                 guard let self else { return }
                 switch appState {
                 case let .loggedOut(reason):
-                    // swiftlint:disable:next todo
-                    // TODO: need to tweack this to not bring user to welcome screen if other user are still connceted
                     logger.info("Logged out \(reason)")
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
 
+                    // swiftlint:disable:next todo
                     // TODO: This should be removed as it was made for single user having 502 and not multiusers
                     // we could end up having some wrong calls if users switch account during a event loop so this
                     // could end up logging out randomly
@@ -154,6 +150,7 @@ final class AppCoordinator {
                         logger.info("Logged in manual")
                         try? await userManager.addAndMarkAsActive(userData: userData)
 
+                        // swiftlint:disable:next todo
                         // TODO: This should be removed as it was made for single user having 502 and not multiusers
                         // we could end up having some wrong calls if users switch account during a event loop so
                         // this could end up
@@ -192,26 +189,24 @@ final class AppCoordinator {
             refreshFeatureFlags()
             setUpCoreTelemetry()
 
-            // swiftlint:disable:next todo
-            // TODO: Should not be api manager that logs the user totatally out
             authManager.sessionWasInvalidated
                 .receive(on: DispatchQueue.main)
-                .sink { [weak self] _ in
+                .sink { [weak self] sessionInfos in
                     guard let self, task == nil else { return }
-//                    task = Task { [weak self] in
-//                        guard let self, let userId = sessionInfos.userId else { return }
-//                        defer { task = nil }
-//                        do {
-//                            if try await logOutUser(userId: userId) {
-//                                captureErrorAndLogOut(PassError.unexpectedLogout,
-//                                                      sessionId: sessionInfos.sessionId)
-//                            } else {
-//                                sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
-//                            }
-//                        } catch {
-//                            sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
-//                        }
-//                    }
+                    task = Task { [weak self] in
+                        guard let self, let userId = sessionInfos.userId else { return }
+                        defer { task = nil }
+                        do {
+                            if try await logOutUser(userId: userId) {
+                                captureErrorAndLogOut(PassError.unexpectedLogout,
+                                                      sessionId: sessionInfos.sessionId)
+                            } else {
+                                sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+                            }
+                        } catch {
+                            sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+                        }
+                    }
                 }
                 .store(in: &cancellables)
         } catch {
@@ -307,7 +302,6 @@ private extension AppCoordinator {
     func resetAllData() {
         Task { [weak self] in
             guard let self else { return }
-//            await wipeAllData()
             // swiftlint:disable:next todo
             // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()

@@ -81,7 +81,8 @@ final class AuthManagerTests: XCTestCase {
         authHelperDelegateMock = AuthHelperDelegateMock()
         sut = AuthManager(keychain: userDefaultsKeychainMock,
                                     symmetricKeyProvider: symmetricKeyProvider,
-                                    module: .hostApp)
+                          module: .hostApp, 
+                          logManager: LogManagerProtocolMock())
     }
 
     override func tearDown() {

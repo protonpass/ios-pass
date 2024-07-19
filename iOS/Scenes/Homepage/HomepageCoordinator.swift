@@ -1016,6 +1016,7 @@ extension HomepageCoordinator {
 // MARK: - Open webpages
 
 extension HomepageCoordinator {
+    // swiftlint:disable:next todo
     // TODO: do we need this ?
     func beginImportExportFlow() {
         Task { [weak self] in
