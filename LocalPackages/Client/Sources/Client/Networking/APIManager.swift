@@ -35,8 +35,6 @@ import ProtonCoreObservability
 import ProtonCoreServices
 
 public final class APIManager: Sendable, APIManagerProtocol {
-    public typealias SessionUID = String
-
     private let logger: Logger
     private let doh: any DoHInterface
     private let themeProvider: any ThemeProvider
@@ -48,7 +46,6 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private var allCurrentApiServices = [any APIService]()
 
     public private(set) var apiService: (any APIService)!
-    public let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
 
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
@@ -165,6 +162,13 @@ public final class APIManager: Sendable, APIManagerProtocol {
         fetchUnauthSessionIfNeeded()
         return apiService
     }
+
+    public func reset() {
+        // swiftlint:disable:next todo
+        // TODO: when multi api service is in place need to create a new apiservice instant of setting id to empty string
+        apiService.setSessionUID(uid: "")
+        fetchUnauthSessionIfNeeded()
+    }
 }
 
 // MARK: - Utils
@@ -216,16 +220,23 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        apiService.setSessionUID(uid: "")
-        fetchUnauthSessionIfNeeded()
-        if isAuthenticatedSession {
-            logger.info("Authenticated session is invalidated. Logging out.")
-            // swiftlint:disable:next todo
-            // TODO: check that this should only log out the user link to this session and not all users
-            sessionWasInvalidated.send(sessionUID)
-        } else {
-            logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
-        }
+        // swiftlint:disable:next todo
+        // TODO: I the futur when we have multiple api services should remove the api services link to session id/ user id
+        // if no more apiservice we should recreate a new one and execute fetchUnauthSessionIfNeeded on it as
+
+        // For now the switch of session id should be done by calling updateCurrentSession with user id through the
+        // logout user process
+
+//        apiService.setSessionUID(uid: "")
+//        fetchUnauthSessionIfNeeded()
+//        if isAuthenticatedSession {
+//            logger.info("Authenticated session is invalidated. Logging out.")
+//            // swiftlint:disable:next todo
+//            // TODO: check that this should only log out the user link to this session and not all users
+//            sessionWasInvalidated.send(sessionUID)
+//        } else {
+//            logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
+//        }
     }
 
     public func credentialsWereUpdated(authCredential: AuthCredential,

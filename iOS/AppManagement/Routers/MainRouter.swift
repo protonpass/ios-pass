@@ -132,6 +132,7 @@ enum ActionDestination: Sendable {
     case back(isShownAsSheet: Bool)
     case manage(userId: String)
     case signOut(userId: String)
+    case deleteAccount(userId: String)
 }
 
 enum DeeplinkDestination: Sendable {
