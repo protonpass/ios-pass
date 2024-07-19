@@ -202,4 +202,14 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         closureGetOldestOwnedVault()
         return stubbedGetOldestOwnedVaultResult
     }
+    // MARK: - reset
+    public var closureReset: () -> () = {}
+    public var invokedResetfunction = false
+    public var invokedResetCount = 0
+
+    public func reset() {
+        invokedResetfunction = true
+        invokedResetCount += 1
+        closureReset()
+    }
 }

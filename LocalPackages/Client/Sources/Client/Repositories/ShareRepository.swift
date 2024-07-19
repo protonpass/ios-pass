@@ -126,7 +126,8 @@ public extension ShareRepository {
         }
     }
 
-    func getRemoteShares(eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share] {
+    func getRemoteShares(eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+        -> [Share] {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all remote shares for user \(userId)")
         do {
