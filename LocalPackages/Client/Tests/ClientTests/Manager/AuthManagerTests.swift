@@ -51,14 +51,9 @@ final class AuthHelperDelegateMock: AuthHelperDelegate {
 }
 
 final class AuthManagerTests: XCTestCase {
-//    private var sessionPublisher: AnyCancellable?
     let key = SymmetricKey.random()
-//    var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
     let symmetricKeyProvider = SymmetricKeyProviderMock()
-//    var userManager: UserManagerProtocolMock!
     var sut: AuthManager!
-//    var authManager: AuthManagerProtocol!
-//    var stubbedCurrentActiveUser: CurrentValueSubject<UserData?, Never>!
     let userDefaultsKeychainMock =  UserDefaultsKeychainMock()
     
     var authHelperDelegateMock: AuthHelperDelegateMock!
@@ -68,13 +63,6 @@ final class AuthManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         injectDefaultCryptoImplementation()
-
-//        userManager = .init()
-//        stubbedCurrentActiveUser = .init(nil)
-//        userManager.stubbedGetActiveUserIdResult = ""
-//        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
-//        symmetricKeyProviderMockFactory = .init()
-//        symmetricKeyProviderMockFactory.setUp()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = key
         cancellables = .init()
 
