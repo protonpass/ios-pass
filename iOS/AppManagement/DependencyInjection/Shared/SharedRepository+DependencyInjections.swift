@@ -305,8 +305,7 @@ extension SharedRepositoryContainer {
                                localDatasource: self.localShareDatasource(),
                                remoteDatasouce: self.remoteShareDatasource(),
                                passKeyManager: self.passKeyManager(),
-                               logManager: self.logManager,
-                               eventStream: SharedDataStreamContainer.shared.vaultSyncEventStream()) }
+                               logManager: self.logManager) }
     }
 
     var publicKeyRepository: Factory<any PublicKeyRepositoryProtocol> {

@@ -39,14 +39,6 @@ public class RemoteDatasource: @unchecked Sendable {
         }
     }
 
-//    func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
-//        do {
-//            return try await apiService.exec(endpoint: endpoint, files: files)
-//        } catch {
-//            throw streamAndReturn(error: error)
-//        }
-//    }
-
     func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
         do {
             return try await apiService.execExpectingData(endpoint: endpoint)

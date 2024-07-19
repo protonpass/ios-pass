@@ -26,4 +26,5 @@ public protocol APIManagerProtocol: Sendable {
     func updateCurrentSession(userId: String) async
 
     func createNewApiService() -> any APIService
+    func reset()
 }

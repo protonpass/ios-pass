@@ -227,10 +227,10 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureRefreshItems: () -> () = {}
     public var invokedRefreshItemsfunction = false
     public var invokedRefreshItemsCount = 0
-    public var invokedRefreshItemsParameters: (shareId: String, eventStream: VaultSyncEventStream?)?
-    public var invokedRefreshItemsParametersList = [(shareId: String, eventStream: VaultSyncEventStream?)]()
+    public var invokedRefreshItemsParameters: (shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedRefreshItemsParametersList = [(shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
 
-    public func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws {
+    public func refreshItems(shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
         invokedRefreshItemsfunction = true
         invokedRefreshItemsCount += 1
         invokedRefreshItemsParameters = (shareId, eventStream)

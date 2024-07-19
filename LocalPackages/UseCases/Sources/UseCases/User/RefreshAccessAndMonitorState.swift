@@ -33,7 +33,7 @@ public extension RefreshAccessAndMonitorStateUseCase {
     }
 }
 
-public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUseCase {
+public final class RefreshAccessAndMonitorState: @unchecked Sendable, RefreshAccessAndMonitorStateUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let getAllAliases: any GetAllAliasesUseCase

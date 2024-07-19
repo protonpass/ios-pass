@@ -49,6 +49,26 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
             return stubbedCurrentActiveUser
         }
     }
+    // MARK: - allUserAccounts
+    public var invokedAllUserAccountsSetter = false
+    public var invokedAllUserAccountsSetterCount = 0
+    public var invokedAllUserAccounts: CurrentValueSubject<[UserData], Never>?
+    public var invokedAllUserAccountsList = [CurrentValueSubject<[UserData], Never>?]()
+    public var invokedAllUserAccountsGetter = false
+    public var invokedAllUserAccountsGetterCount = 0
+    public var stubbedAllUserAccounts: CurrentValueSubject<[UserData], Never>!
+    public var allUserAccounts: CurrentValueSubject<[UserData], Never> {
+        set {
+            invokedAllUserAccountsSetter = true
+            invokedAllUserAccountsSetterCount += 1
+            invokedAllUserAccounts = newValue
+            invokedAllUserAccountsList.append(newValue)
+        } get {
+            invokedAllUserAccountsGetter = true
+            invokedAllUserAccountsGetterCount += 1
+            return stubbedAllUserAccounts
+        }
+    }
     // MARK: - setUp
     public var setUpThrowableError1: Error?
     public var closureSetUp: () -> () = {}
