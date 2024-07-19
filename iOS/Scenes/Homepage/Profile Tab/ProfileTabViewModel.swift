@@ -36,6 +36,7 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
 }
+// swiftlint:disable cyclomatic_complexity
 
 @MainActor
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
@@ -512,3 +513,4 @@ private extension ProfileTabViewModel {
         }
     }
 }
+// swiftlint:enable cyclomatic_complexity
