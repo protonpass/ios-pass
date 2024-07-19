@@ -70,20 +70,22 @@ final class AppCoordinator {
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
+//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
-    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
+//    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
-    private var corruptedSessionStream: AnyCancellable?
+    private var task: Task<Void, Never>?
+//    private var corruptedSessionStream: AnyCancellable?
 
     private var theme: Theme {
         preferencesManager.sharedPreferences.unwrapped().theme
@@ -103,10 +105,10 @@ final class AppCoordinator {
         }
     }
 
-    deinit {
-        corruptedSessionStream?.cancel()
-        corruptedSessionStream = nil
-    }
+//    deinit {
+//        corruptedSessionStream?.cancel()
+//        corruptedSessionStream = nil
+//    }
 
     // swiftlint:disable:next todo
     // TODO: Remove preferences and this function once session migration is done
@@ -138,7 +140,7 @@ final class AppCoordinator {
                     // TODO: This should be removed as it was made for single user having 502 and not multiusers
                     // we could end up having some wrong calls if users switch account during a event loop so this
                     // could end up logging out randomly
-                    connectToCorruptedSessionStream()
+//                    connectToCorruptedSessionStream()
                     showHomeScene(mode: .alreadyLoggedIn)
                     if let userId = userManager.activeUserId,
                        let sessionID = authManager.getCredential(userId: userId)?.sessionID {
@@ -192,11 +194,24 @@ final class AppCoordinator {
 
             // swiftlint:disable:next todo
             // TODO: Should not be api manager that logs the user totatally out
-            apiManager.sessionWasInvalidated
+            authManager.sessionWasInvalidated
                 .receive(on: DispatchQueue.main)
-                .sink { [weak self] sessionUID in
-                    guard let self else { return }
-                    captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
+                .sink { [weak self] _ in
+                    guard let self, task == nil else { return }
+//                    task = Task { [weak self] in
+//                        guard let self, let userId = sessionInfos.userId else { return }
+//                        defer { task = nil }
+//                        do {
+//                            if try await logOutUser(userId: userId) {
+//                                captureErrorAndLogOut(PassError.unexpectedLogout,
+//                                                      sessionId: sessionInfos.sessionId)
+//                            } else {
+//                                sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+//                            }
+//                        } catch {
+//                            sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+//                        }
+//                    }
                 }
                 .store(in: &cancellables)
         } catch {
@@ -227,7 +242,7 @@ private extension AppCoordinator {
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
             handle(logOutReason: reason)
-            stopStream()
+//            stopStream()
         }
     }
 
@@ -292,7 +307,7 @@ private extension AppCoordinator {
     func resetAllData() {
         Task { [weak self] in
             guard let self else { return }
-            await wipeAllData()
+//            await wipeAllData()
             // swiftlint:disable:next todo
             // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()
@@ -302,28 +317,28 @@ private extension AppCoordinator {
 
 // MARK: - Utils
 
-private extension AppCoordinator {
-    func connectToCorruptedSessionStream() {
-        guard corruptedSessionStream == nil else {
-            return
-        }
-
-        corruptedSessionStream = corruptedSessionEventStream
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .compactMap { $0 }
-            .sink { [weak self] reason in
-                guard let self else { return }
-                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
-            }
-    }
-
-    func stopStream() {
-        corruptedSessionEventStream.send(nil)
-        corruptedSessionStream?.cancel()
-        corruptedSessionStream = nil
-    }
-}
+// private extension AppCoordinator {
+//    func connectToCorruptedSessionStream() {
+//        guard corruptedSessionStream == nil else {
+//            return
+//        }
+//
+//        corruptedSessionStream = corruptedSessionEventStream
+//            .receive(on: DispatchQueue.main)
+//            .removeDuplicates()
+//            .compactMap { $0 }
+//            .sink { [weak self] reason in
+//                guard let self else { return }
+//                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
+//            }
+//    }
+//
+//    func stopStream() {
+//        corruptedSessionEventStream.send(nil)
+//        corruptedSessionStream?.cancel()
+//        corruptedSessionStream = nil
+//    }
+// }
 
 private extension AppCoordinator {
     func registerForPushNotificationsIfNeededAndAddHandlers(uid: String) {

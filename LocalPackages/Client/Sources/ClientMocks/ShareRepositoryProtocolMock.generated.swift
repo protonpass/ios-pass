@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Core
 import Combine
+import Core
 import CryptoKit
 import Entities
 import ProtonCoreLogin
