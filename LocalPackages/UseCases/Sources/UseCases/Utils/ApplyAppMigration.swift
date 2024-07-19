@@ -69,6 +69,7 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
             logger
                 .trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
             try await userManager.addAndMarkAsActive(userData: userData)
+            appData.resetData()
             logger.trace("User data migration done for user id : \(userData.user.ID)")
             await dataMigrationManager.addMigration(.userAppData)
         }
