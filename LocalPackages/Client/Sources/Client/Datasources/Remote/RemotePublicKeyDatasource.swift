@@ -21,15 +21,15 @@
 import Entities
 
 public protocol RemotePublicKeyDatasourceProtocol: Sendable {
-    func getPublicKeys(email: String) async throws -> [PublicKey]
+    func getPublicKeys(userId: String, email: String) async throws -> [PublicKey]
 }
 
 public final class RemotePublicKeyDatasource: RemoteDatasource, RemotePublicKeyDatasourceProtocol {}
 
 public extension RemotePublicKeyDatasource {
-    func getPublicKeys(email: String) async throws -> [PublicKey] {
+    func getPublicKeys(userId: String, email: String) async throws -> [PublicKey] {
         let endpoint = GetPublicKeysEndpoint(email: email)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.address.keys
     }
 }

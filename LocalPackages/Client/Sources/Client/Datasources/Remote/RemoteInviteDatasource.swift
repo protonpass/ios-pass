@@ -21,30 +21,30 @@
 import Entities
 
 public protocol RemoteInviteDatasourceProtocol: Sendable {
-    func getPendingInvitesForUser() async throws -> [UserInvite]
-    func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool
-    func rejectInvite(inviteToken: String) async throws -> Bool
+    func getPendingInvitesForUser(userId: String) async throws -> [UserInvite]
+    func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Bool
+    func rejectInvite(userId: String, inviteToken: String) async throws -> Bool
 }
 
 public final class RemoteInviteDatasource: RemoteDatasource, RemoteInviteDatasourceProtocol {}
 
 public extension RemoteInviteDatasource {
-    func getPendingInvitesForUser() async throws -> [UserInvite] {
+    func getPendingInvitesForUser(userId: String) async throws -> [UserInvite] {
         let getSharesEndpoint = GetPendingInviteForUserEndpoint()
         try Task.checkCancellation()
-        let getSharesResponse = try await exec(endpoint: getSharesEndpoint)
+        let getSharesResponse = try await exec(userId: userId, endpoint: getSharesEndpoint)
         return getSharesResponse.invites
     }
 
-    func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool {
+    func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Bool {
         let endpoint = AcceptInviteEndpoint(with: inviteToken, and: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func rejectInvite(inviteToken: String) async throws -> Bool {
+    func rejectInvite(userId: String, inviteToken: String) async throws -> Bool {
         let endpoint = RejectInviteEndpoint(with: inviteToken)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 }

@@ -45,18 +45,18 @@ public actor UserSettingsRepository: UserSettingsRepositoryProtocol {
     }
 
     public func refreshSettings(for id: String) async throws {
-        let settings = try await remoteDatasource.getUserSettings()
+        let settings = try await remoteDatasource.getUserSettings(userId: id)
         updateSettings(settings: settings, and: id)
     }
 
     public func toggleSentinel(for id: String) async throws -> Bool {
         var isActive = false
-        var settings = try await remoteDatasource.getUserSettings()
+        var settings = try await remoteDatasource.getUserSettings(userId: id)
         if settings.highSecurity.value {
-            try await remoteDatasource.desactivateSentinel()
+            try await remoteDatasource.desactivateSentinel(userId: id)
             isActive = false
         } else {
-            try await remoteDatasource.activateSentinel()
+            try await remoteDatasource.activateSentinel(userId: id)
             isActive = true
         }
         settings.highSecurity.value = isActive

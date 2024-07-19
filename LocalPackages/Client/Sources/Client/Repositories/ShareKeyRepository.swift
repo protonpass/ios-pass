@@ -78,7 +78,7 @@ public extension ShareKeyRepository {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Refreshing keys for share \(shareId), user \(userId)")
 
-        let keys = try await remoteDatasource.getKeys(shareId: shareId)
+        let keys = try await remoteDatasource.getKeys(userId: userId, shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
         let encryptedKeys = try await keys.asyncCompactMap { key in

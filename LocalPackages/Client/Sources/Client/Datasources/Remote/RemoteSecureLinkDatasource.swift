@@ -25,17 +25,17 @@
 import Entities
 
 public protocol RemoteSecureLinkDatasourceProtocol: Sendable {
-    func createLink(configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink
-    func deleteLink(linkId: String) async throws
-    func getAllLinks() async throws -> [SecureLink]
-    func getLinkContent(linkToken: String) async throws -> SecureLinkContent
-    func deleteAllInactiveLinks() async throws
+    func createLink(userId: String, configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink
+    func deleteLink(userId: String, linkId: String) async throws
+    func getAllLinks(userId: String) async throws -> [SecureLink]
+    func getLinkContent(userId: String, linkToken: String) async throws -> SecureLinkContent
+    func deleteAllInactiveLinks(userId: String) async throws
 }
 
 public final class RemoteSecureLinkDatasource: RemoteDatasource, RemoteSecureLinkDatasourceProtocol {}
 
 public extension RemoteSecureLinkDatasource {
-    func createLink(configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink {
+    func createLink(userId: String, configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink {
         let request = CreateSecureLinkRequest(revision: configuration.revision,
                                               expirationTime: configuration.expirationTime,
                                               maxReadCount: configuration.maxReadCount,
@@ -45,29 +45,29 @@ public extension RemoteSecureLinkDatasource {
         let endpoint = CreatePublicLinkEndpoint(shareId: configuration.shareId,
                                                 itemId: configuration.itemId,
                                                 request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.publicLink
     }
 
-    func deleteLink(linkId: String) async throws {
+    func deleteLink(userId: String, linkId: String) async throws {
         let endpoint = DeleteSecureLinkEndpoint(linkId: linkId)
-        _ = try await exec(endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
-    func getAllLinks() async throws -> [SecureLink] {
+    func getAllLinks(userId: String) async throws -> [SecureLink] {
         let endpoint = GetAllPublicLinksForUserEndpoint()
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.publicLinks
     }
 
-    func getLinkContent(linkToken: String) async throws -> SecureLinkContent {
+    func getLinkContent(userId: String, linkToken: String) async throws -> SecureLinkContent {
         let endpoint = GetSecureLinkContentEndpoint(linkToken: linkToken)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.publicLinkContent
     }
 
-    func deleteAllInactiveLinks() async throws {
+    func deleteAllInactiveLinks(userId: String) async throws {
         let endpoint = DeleteAllInactiveLinksEndpoint()
-        _ = try await exec(endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }

@@ -22,15 +22,15 @@ import Entities
 import Foundation
 
 public protocol RemoteItemKeyDatasourceProtocol: Sendable {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey
+    func getLatestKey(userId: String, shareId: String, itemId: String) async throws -> ItemKey
 }
 
 public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol {}
 
 public extension RemoteItemKeyDatasource {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey {
+    func getLatestKey(userId: String, shareId: String, itemId: String) async throws -> ItemKey {
         let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.key
     }
 }

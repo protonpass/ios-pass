@@ -23,44 +23,44 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public class RemoteDatasource: @unchecked Sendable {
-    private let apiService: any APIService
+    private let apiServicing: any APIManagerProtocol
     private let eventStream: CorruptedSessionEventStream
 
-    public init(apiService: some APIService, eventStream: CorruptedSessionEventStream) {
-        self.apiService = apiService
+    public init(apiServicing: some APIManagerProtocol, eventStream: CorruptedSessionEventStream) {
+        self.apiServicing = apiServicing
         self.eventStream = eventStream
     }
 
-    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        do {
-            return try await apiService.exec(endpoint: endpoint)
-        } catch {
-            throw streamAndReturn(error: error)
-        }
+    func exec<E: Endpoint>(userId: String, endpoint: E) async throws -> E.Response {
+//        do {
+            return try await apiServicing.getApiService(userId:userId).exec(endpoint: endpoint)
+//        } catch {
+//            throw streamAndReturn(error: error)
+//        }
     }
 
-    func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        do {
-            return try await apiService.execExpectingData(endpoint: endpoint)
-        } catch {
-            throw streamAndReturn(error: error)
-        }
+    func execExpectingData(userId: String, endpoint: some Endpoint) async throws -> DataResponse {
+//        do {
+            return try await apiServicing.getApiService(userId:userId).execExpectingData(endpoint: endpoint)
+//        } catch {
+//            throw streamAndReturn(error: error)
+//        }
     }
 }
 
-private extension RemoteDatasource {
-    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
-    func streamAndReturn(error: any Error) -> any Error {
-        if let responseError = error as? ResponseError,
-           let httpCode = responseError.httpCode {
-            let sessionId = apiService.sessionUID
-            switch httpCode {
-            case 403:
-                eventStream.send(.unauthSessionMakingAuthRequests(sessionId))
-            default:
-                break
-            }
-        }
-        return error
-    }
-}
+//private extension RemoteDatasource {
+//    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
+//    func streamAndReturn(error: any Error) -> any Error {
+//        if let responseError = error as? ResponseError,
+//           let httpCode = responseError.httpCode {
+//            let sessionId = apiService.sessionUID
+//            switch httpCode {
+//            case 403:
+//                eventStream.send(.unauthSessionMakingAuthRequests(sessionId))
+//            default:
+//                break
+//            }
+//        }
+//        return error
+//    }
+//}

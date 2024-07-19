@@ -22,15 +22,15 @@ import Foundation
 import ProtonCoreDataModel
 
 public protocol RemoteAccountDatasourceProtocol: Sendable {
-    func getAccountRecoveryInfo() async throws -> AccountRecovery?
+    func getAccountRecoveryInfo(userId: String) async throws -> AccountRecovery?
 }
 
 public final class RemoteAccountDatasource: RemoteDatasource, RemoteAccountDatasourceProtocol {}
 
 public extension RemoteAccountDatasource {
-    func getAccountRecoveryInfo() async throws -> AccountRecovery? {
+    func getAccountRecoveryInfo(userId: String) async throws -> AccountRecovery? {
         let getUserEndpoint = GetUserEndpoint()
-        let getUserResponse = try await exec(endpoint: getUserEndpoint)
+        let getUserResponse = try await exec(userId: userId, endpoint: getUserEndpoint)
         return getUserResponse.user.accountRecovery
     }
 }

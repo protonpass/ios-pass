@@ -131,7 +131,7 @@ public extension ShareRepository {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all remote shares for user \(userId)")
         do {
-            let shares = try await remoteDatasouce.getShares()
+            let shares = try await remoteDatasouce.getShares(userId: userId)
             eventStream?.send(.downloadedShares(shares))
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
@@ -179,8 +179,9 @@ public extension ShareRepository {
     }
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId)")
-        let users = try await remoteDatasouce.getShareLinkedUsers(shareId: shareId)
+        let users = try await remoteDatasouce.getShareLinkedUsers(userId: userId, shareId: shareId)
         logger.trace("Got \(users.count) remote user for \(shareId)")
         return users
     }
@@ -220,7 +221,8 @@ public extension ShareRepository {
     func deleteShare(shareId: String) async throws -> Bool {
         let logInfo = "share \(shareId)"
         logger.trace("Deleting share \(logInfo)")
-        let deleted = try await remoteDatasouce.deleteShare(shareId: shareId)
+        let userId = try await userManager.getActiveUserId()
+        let deleted = try await remoteDatasouce.deleteShare(userId: userId, shareId: shareId)
         logger.trace("Deleted \(deleted) user share \(logInfo)")
         return deleted
     }
@@ -255,7 +257,7 @@ public extension ShareRepository {
         let userId = userData.user.ID
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
-        let createdVault = try await remoteDatasouce.createVault(request: request)
+        let createdVault = try await remoteDatasouce.createVault(userId: userId, request: request)
         let encryptedShare = try await symmetricallyEncrypt(createdVault)
         logger.trace("Saving newly created vault to local for user \(userId)")
         try await localDatasource.upsertShares([encryptedShare], userId: userId)
@@ -270,7 +272,7 @@ public extension ShareRepository {
         let shareId = oldVault.shareId
         let shareKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
         let request = try UpdateVaultRequest(vault: newVault, shareKey: shareKey)
-        let updatedVault = try await remoteDatasouce.updateVault(request: request, shareId: shareId)
+        let updatedVault = try await remoteDatasouce.updateVault(userId: userId, request: request, shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
         let encryptedShare = try await symmetricallyEncrypt(updatedVault)
         try await localDatasource.upsertShares([encryptedShare], userId: userId)
@@ -281,7 +283,7 @@ public extension ShareRepository {
         let userId = try await userManager.getActiveUserId()
         // Remote deletion
         logger.trace("Deleting remote vault \(shareId) for user \(userId)")
-        try await remoteDatasouce.deleteVault(shareId: shareId)
+        try await remoteDatasouce.deleteVault(userId: userId, shareId: shareId)
         logger.trace("Deleted remote vault \(shareId) for user \(userId)")
 
         // Local deletion
@@ -294,9 +296,10 @@ public extension ShareRepository {
 
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool {
         logger.trace("Setting new owner \(newOwnerShareId) for vault \(vaultShareId)")
-
+        let userId = try await userManager.getActiveUserId()
         let request = TransferOwnershipVaultRequest(newOwnerShareID: newOwnerShareId)
-        let updated = try await remoteDatasouce.transferVaultOwnership(vaultShareId: vaultShareId,
+        let updated = try await remoteDatasouce.transferVaultOwnership(userId: userId,
+                                                                       vaultShareId: vaultShareId,
                                                                        request: request)
         logger.info("Finished transfer of ownership")
         return updated
