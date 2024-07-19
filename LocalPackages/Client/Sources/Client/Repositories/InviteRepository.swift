@@ -27,7 +27,6 @@ import ProtonCoreLogin
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 
-//    func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool
 
     @discardableResult
@@ -37,14 +36,18 @@ public protocol InviteRepositoryProtocol: Sendable {
 }
 
 public actor InviteRepository: InviteRepositoryProtocol {
-    public let remoteInviteDatasource: any RemoteInviteDatasourceProtocol
-    public let logger: Logger
-    public nonisolated let currentPendingInvites: CurrentValueSubject<[UserInvite], Never> = .init([])
+    private let remoteInviteDatasource: any RemoteInviteDatasourceProtocol
+    private let logger: Logger
     private var refreshInviteTask: Task<Void, Never>?
+    private let userManager: any UserManagerProtocol
+
+    public nonisolated let currentPendingInvites: CurrentValueSubject<[UserInvite], Never> = .init([])
 
     public init(remoteInviteDatasource: any RemoteInviteDatasourceProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.remoteInviteDatasource = remoteInviteDatasource
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
@@ -53,7 +56,8 @@ public extension InviteRepository {
     func getPendingInvitesForUser() async throws -> [UserInvite] {
         logger.trace("Getting all pending invites for user")
         do {
-            let invites = try await remoteInviteDatasource.getPendingInvitesForUser()
+            let userId = try await userManager.getActiveUserId()
+            let invites = try await remoteInviteDatasource.getPendingInvitesForUser(userId: userId)
             logger.trace("Got \(invites.count) pending invites")
             return invites
         } catch {
@@ -65,7 +69,9 @@ public extension InviteRepository {
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool {
         logger.trace("Accepting invite \(inviteToken)")
         let request = AcceptInviteRequest(keys: keys)
-        let acceptStatus = try await remoteInviteDatasource.acceptInvite(inviteToken: inviteToken,
+        let userId = try await userManager.getActiveUserId()
+        let acceptStatus = try await remoteInviteDatasource.acceptInvite(userId: userId,
+                                                                         inviteToken: inviteToken,
                                                                          request: request)
         logger.trace("Invite acceptance status \(acceptStatus)")
         return acceptStatus
@@ -73,7 +79,8 @@ public extension InviteRepository {
 
     func rejectInvite(with inviteToken: String) async throws -> Bool {
         logger.trace("Reject invite \(inviteToken)")
-        let rejectedStatus = try await remoteInviteDatasource.rejectInvite(inviteToken: inviteToken)
+        let userId = try await userManager.getActiveUserId()
+        let rejectedStatus = try await remoteInviteDatasource.rejectInvite(userId: userId, inviteToken: inviteToken)
         logger.trace("Invite rejection status \(rejectedStatus)")
         return rejectedStatus
     }
