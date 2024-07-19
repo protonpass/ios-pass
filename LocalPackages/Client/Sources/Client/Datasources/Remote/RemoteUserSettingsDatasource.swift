@@ -19,31 +19,31 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public protocol RemoteUserSettingsDatasourceProtocol: Sendable {
-    func getUserSettings() async throws -> UserSettings
+    func getUserSettings(userId: String) async throws -> UserSettings
     @discardableResult
-    func activateSentinel() async throws -> Bool
+    func activateSentinel(userId: String) async throws -> Bool
     @discardableResult
-    func desactivateSentinel() async throws -> Bool
+    func desactivateSentinel(userId: String) async throws -> Bool
 }
 
 public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol {}
 
 public extension RemoteUserSettingsDatasource {
-    func getUserSettings() async throws -> UserSettings {
+    func getUserSettings(userId: String) async throws -> UserSettings {
         let endpoint = GetUserSettingsEndpoint()
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.userSettings
     }
 
-    func activateSentinel() async throws -> Bool {
+    func activateSentinel(userId: String) async throws -> Bool {
         let endpoint = ActivateSentinelEndpoint()
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func desactivateSentinel() async throws -> Bool {
+    func desactivateSentinel(userId: String) async throws -> Bool {
         let endpoint = DesactivateSentinelEndpoint()
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 }

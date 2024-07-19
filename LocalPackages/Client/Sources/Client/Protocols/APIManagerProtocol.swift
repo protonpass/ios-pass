@@ -22,9 +22,10 @@ import Foundation
 import ProtonCoreServices
 
 public protocol APIManagerProtocol: Sendable {
-    func updateCurrentSession(sessionId: String)
-    func updateCurrentSession(userId: String) async
+//    func updateCurrentSession(sessionId: String)
+//    func updateCurrentSession(userId: String) async
 
+    func getApiService(userId: String) throws -> any APIService
     func createNewApiService() -> any APIService
     func reset()
 }

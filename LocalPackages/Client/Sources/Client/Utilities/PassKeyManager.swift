@@ -63,18 +63,21 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 }
 
 public actor PassKeyManager {
-    public let shareKeyRepository: any ShareKeyRepositoryProtocol
-    public let itemKeyDatasource: any RemoteItemKeyDatasourceProtocol
-    public let logger: Logger
-    public let symmetricKeyProvider: any SymmetricKeyProvider
     private var decryptedShareKeys = Set<DecryptedShareKey>()
-
+    private let userManager: any UserManagerProtocol
+    private let shareKeyRepository: any ShareKeyRepositoryProtocol
+    private let itemKeyDatasource: any RemoteItemKeyDatasourceProtocol
+    private let logger: Logger
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+   
     public init(shareKeyRepository: any ShareKeyRepositoryProtocol,
                 itemKeyDatasource: any RemoteItemKeyDatasourceProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider) {
         self.shareKeyRepository = shareKeyRepository
         self.itemKeyDatasource = itemKeyDatasource
+        self.userManager = userManager
         logger = .init(manager: logManager)
         self.symmetricKeyProvider = symmetricKeyProvider
     }
@@ -107,7 +110,8 @@ extension PassKeyManager: PassKeyManagerProtocol {
     public func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
-        let latestItemKey = try await itemKeyDatasource.getLatestKey(shareId: shareId, itemId: itemId)
+        let userId = try await userManager.getActiveUserId()
+        let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId, shareId: shareId, itemId: itemId)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
 

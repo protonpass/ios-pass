@@ -22,79 +22,83 @@ import Entities
 import Foundation
 
 public protocol RemoteShareInviteDatasourceProtocol: Sendable {
-    func getPendingInvites(sharedId: String) async throws -> ShareInvites
-    func inviteMultipleProtonUsers(shareId: String, request: InviteMultipleUsersToShareRequest) async throws
+    func getPendingInvites(userId: String, sharedId: String) async throws -> ShareInvites
+    func inviteMultipleProtonUsers(userId: String, shareId: String, request: InviteMultipleUsersToShareRequest) async throws
         -> Bool
-    func inviteMultipleExternalUsers(shareId: String, request: InviteMultipleNewUsersToShareRequest) async throws
+    func inviteMultipleExternalUsers(userId: String, shareId: String, request: InviteMultipleNewUsersToShareRequest) async throws
         -> Bool
-    func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool
-    func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
-    func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool
-    func deleteShareNewUserInvite(shareId: String, inviteId: String) async throws -> Bool
-    func getInviteRecommendations(shareId: String,
+    func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool
+    func sendInviteReminder(userId: String, shareId: String, inviteId: String) async throws -> Bool
+    func deleteShareInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
+    func deleteShareNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
+    func getInviteRecommendations(userId: String,
+                                  shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations
     /// Check the list of emails if they can be invited, return the list of eligible emails
-    func checkAddresses(shareId: String, emails: [String]) async throws -> [String]
+    func checkAddresses(userId: String, shareId: String, emails: [String]) async throws -> [String]
 }
 
 public final class RemoteShareInviteDatasource: RemoteDatasource, RemoteShareInviteDatasourceProtocol {}
 
 public extension RemoteShareInviteDatasource {
-    func getPendingInvites(sharedId: String) async throws -> ShareInvites {
+    func getPendingInvites(userId: String, sharedId: String) async throws -> ShareInvites {
         let endpoint = GetPendingInvitesForShareEndpoint(for: sharedId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return .init(existingUserInvites: response.invites,
                      newUserInvites: response.newUserInvites)
     }
 
-    func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
+    func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
         let endpoint = PromoteNewUserInviteEndpoint(shareId: shareId, inviteId: inviteId, keys: keys)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool {
+    func sendInviteReminder(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         let endpoint = SendInviteReminderToUserEndpoint(shareId: shareId, inviteId: inviteId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool {
+    func deleteShareInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         let endpoint = DeleteShareInviteEndpoint(shareId: shareId, inviteId: inviteId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func deleteShareNewUserInvite(shareId: String, inviteId: String) async throws -> Bool {
+    func deleteShareNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool {
         let endpoint = DeleteShareNewUserInviteEndpoint(shareId: shareId, inviteId: inviteId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func getInviteRecommendations(shareId: String,
+    func getInviteRecommendations(userId: String,
+                                  shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations {
         let endpoint = GetInviteRecommendationsEndpoint(shareId: shareId, query: query)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.recommendation
     }
 
-    func inviteMultipleProtonUsers(shareId: String,
+    func inviteMultipleProtonUsers(userId: String,
+                                   shareId: String,
                                    request: InviteMultipleUsersToShareRequest) async throws -> Bool {
         let endpoint = InviteMultipleUserToShareEndpoint(shareId: shareId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func inviteMultipleExternalUsers(shareId: String,
+    func inviteMultipleExternalUsers(userId: String,
+                                     shareId: String,
                                      request: InviteMultipleNewUsersToShareRequest) async throws -> Bool {
         let endpoint = InviteMultipleNewUserToShareEndpoint(shareId: shareId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
+    func checkAddresses(userId: String, shareId: String, emails: [String]) async throws -> [String] {
         let endpoint = CheckAddressEndpoint(shareId: shareId, emails: emails)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.emails ?? []
     }
 }

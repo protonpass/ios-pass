@@ -22,31 +22,31 @@ import Entities
 import Foundation
 
 public protocol RemoteAliasDatasourceProtocol: Sendable {
-    func getAliasOptions(shareId: String) async throws -> AliasOptions
-    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
-    func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
+    func getAliasOptions(userId: String, shareId: String) async throws -> AliasOptions
+    func getAliasDetails(userId: String, shareId: String, itemId: String) async throws -> Alias
+    func changeMailboxes(userId: String, shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 }
 
 public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
 
 public extension RemoteAliasDatasource {
-    func getAliasOptions(shareId: String) async throws -> AliasOptions {
+    func getAliasOptions(userId: String, shareId: String) async throws -> AliasOptions {
         let endpoint = GetAliasOptionsEndpoint(shareId: shareId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.options
     }
 
-    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+    func getAliasDetails(userId: String, shareId: String, itemId: String) async throws -> Alias {
         let endpoint = GetAliasDetailsEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.alias
     }
 
-    func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
+    func changeMailboxes(userId: String, shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         let endpoint = ChangeMailboxesEndpoint(shareId: shareId,
                                                itemId: itemId,
                                                mailboxIDs: mailboxIDs)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.alias
     }
 }

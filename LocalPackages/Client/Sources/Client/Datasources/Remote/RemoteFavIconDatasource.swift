@@ -44,15 +44,15 @@ public enum FavIconError: Int, CaseIterable, Sendable {
 }
 
 public protocol RemoteFavIconDatasourceProtocol: Sendable {
-    func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult
+    func fetchFavIcon(userId: String, for domain: String) async throws -> FavIconFetchResult
 }
 
 public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatasourceProtocol {}
 
 public extension RemoteFavIconDatasource {
-    func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult {
+    func fetchFavIcon(userId: String, for domain: String) async throws -> FavIconFetchResult {
         let endpoint = GetLogoEndpoint(domain: domain)
-        let response = try await execExpectingData(endpoint: endpoint)
+        let response = try await execExpectingData(userId: userId, endpoint: endpoint)
         return try handle(dataResponse: response)
     }
 
