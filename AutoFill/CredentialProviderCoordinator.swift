@@ -56,18 +56,18 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     // which are not registered when the user is not logged in
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
-//    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
-    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
+//    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -345,6 +345,7 @@ private extension CredentialProviderCoordinator {
             }
             return logOut(userId: userId) { [weak self] in
                 guard let self else { return }
+                // swiftlint:disable:next todo
                 // TODO: should we always call the cancelAutoFill as we will be able to have multiple account for one user
                 // this means we should in some case only reload the data to remove the deleted content.
                 cancelAutoFill(reason: .failed, context: context)
@@ -369,13 +370,13 @@ private extension CredentialProviderCoordinator {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
 
-//            // TODO: why do we revoke session as this seems to be linked to import esxport of data never really
-//            /implemented in main app ?
-//            await revokeCurrentSession()
-//
-//            // TODO: need an ID for specific user logout
-//            await wipeAllData()
-//            showNotLoggedInView()
+            // swiftlint:disable:next todo
+            // TODO: why do we revoke session as this seems to be linked to import export of data never really implemented in main app ?
+            // await revokeCurrentSession()
+
+            if let wasLastAccount = try? await logOutUser(userId: userId), wasLastAccount {
+                showNotLoggedInView()
+            }
             completion?()
         }
     }

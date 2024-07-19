@@ -332,18 +332,12 @@ private extension ShareCoordinator {
                 sendErrorToSentry(error, sessionId: sessionId)
             }
 
-            // show logged outscreen if no more account linked to user else reload new content
+            // Show logged out screen if no more account linked to user else reload new content
             if try await logOutUser(userId: userId) {
                 showNotLoggedInView()
             } else {
                 try? await beginFlow()
             }
-
-            // TODO: should not show logout view as there can be other account
-            //            await revokeCurrentSession()
-            //            await wipeAllData()
-            //            showNotLoggedInView()
-            //            completion?()
         }
     }
 

@@ -116,6 +116,7 @@ public final class APIManager: Sendable, APIManagerProtocol {
     }
 
     public func reset() {
+        // swiftlint:disable:next todo
         // TODO: when multi api service is in place need to create a new apiservice instant of setting id to empty string
         apiService.setSessionUID(uid: "")
         fetchUnauthSessionIfNeeded()
@@ -165,6 +166,7 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        // swiftlint:disable:next todo
         // TODO: I the futur when we have multiple api services should remove the api services link to session id/ user id
         // if no more apiservice we should recreate a new one and execute fetchUnauthSessionIfNeeded on it as
 
