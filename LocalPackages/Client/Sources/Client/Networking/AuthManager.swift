@@ -34,8 +34,6 @@ public protocol AuthManagerProtocol: Sendable, AuthDelegate {
     func getCredential(userId: String) -> AuthCredential?
     func clearSessions(sessionId: String)
     func clearSessions(userId: String)
-
-    func isAuthenticated(userId: String) -> Bool
 }
 
 public extension AuthManagerProtocol {
@@ -51,12 +49,12 @@ public final class AuthManager: AuthManagerProtocol {
     public private(set) weak var delegate: (any AuthHelperDelegate)?
     // swiftlint:disable:next identifier_name
     public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
-    public static let storageKey = "authManagerStorageKey"
-    private let serialAccessQueue = DispatchQueue(label: "me.pass.authmanager_queue")
-    /// Work-around to keep track of `Credential` mostly for scopes check
-    /// as we don't store `Credential` as-is but convert to `AuthCredential` which doesn't contains `scopes`
-    /// A dictionary with `sessionUID` as keys
-    private var cachedCredentials: [String: AuthElement] = [:]
+    public static let storageKey = "AuthManagerStorageKey"
+    private let serialAccessQueue = DispatchQueue(label: "me.proton.pass.authmanager")
+
+    private typealias CachedCredentials = [CredentialsKey: Credentials]
+
+    private var cachedCredentials: CachedCredentials = [:]
     private let keychain: any KeychainProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let module: PassModule
@@ -67,7 +65,7 @@ public final class AuthManager: AuthManagerProtocol {
         self.keychain = keychain
         self.symmetricKeyProvider = symmetricKeyProvider
         self.module = module
-        cachedCredentials = getLocalSessions()
+        cachedCredentials = getCachedCredentials()
     }
 
     public func setUpDelegate(_ delegate: any AuthHelperDelegate) {
@@ -76,48 +74,38 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func getCredential(userId: String) -> AuthCredential? {
         serialAccessQueue.sync {
-            var hasher = Hasher()
-            hasher.combine(module)
-            hasher.combine(userId)
-            guard let cred = cachedCredentials.firstValueForHash(matching: hasher.finalize()) else {
-                return nil
-            }
-            return cred.authCredential
+            cachedCredentials
+                .first(where: { $0.key.module == module && $0.value.authCredential.userID == userId })?
+                .value.authCredential
         }
     }
 
     public func credential(sessionUID: String) -> Credential? {
         serialAccessQueue.sync {
-            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
-
+            let key = CredentialsKey(sessionId: sessionUID, module: module)
             return cachedCredentials[key]?.credential
         }
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
         serialAccessQueue.sync {
-            let key = getCacheKeyFor(sessionId: sessionUID, currentModule: module)
-
-            guard let cred = cachedCredentials[key]?.authCredential else {
-                return nil
-            }
-
-            return cred
+            let key = CredentialsKey(sessionId: sessionUID, module: module)
+            return cachedCredentials[key]?.authCredential
         }
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
-                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
-                let newCredentials = getAuthElement(credential: credential, module: passModule)
+                let key = CredentialsKey(sessionId: sessionUID, module: passModule)
+                let newCredentials = getCredentials(credential: credential, module: passModule)
                 let newAuthCredential = newCredentials.authCredential
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
-                cachedCredentials[key] = AuthElement(credential: credential,
+                cachedCredentials[key] = Credentials(credential: credential,
                                                      authCredential: newAuthCredential,
                                                      module: passModule)
             }
-            saveLocalSessions()
+            saveCachedCredentialsToKeychain()
             sendCredentialUpdateInfo(sessionId: sessionUID)
         }
     }
@@ -127,11 +115,11 @@ public final class AuthManager: AuthManagerProtocol {
             // The forking of sessions should be done at this point in the future and any looping on Pass module
             // should be removed
             for passModule in PassModule.allCases {
-                let key = getCacheKeyFor(sessionId: credential.UID, currentModule: passModule)
-                let newCredentials = getAuthElement(credential: credential, module: passModule)
+                let key = CredentialsKey(sessionId: credential.UID, module: passModule)
+                let newCredentials = getCredentials(credential: credential, module: passModule)
                 cachedCredentials[key] = newCredentials
             }
-            saveLocalSessions()
+            saveCachedCredentialsToKeychain()
             sendCredentialUpdateInfo(sessionId: credential.UID)
         }
     }
@@ -142,7 +130,7 @@ public final class AuthManager: AuthManagerProtocol {
                                                     privateKey: String?) {
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
-                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
+                let key = CredentialsKey(sessionId: sessionUID, module: passModule)
                 guard let element = cachedCredentials[key] else {
                     return
                 }
@@ -155,48 +143,38 @@ public final class AuthManager: AuthManagerProtocol {
                 element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
                 cachedCredentials[key] = element
             }
-            saveLocalSessions()
+            saveCachedCredentialsToKeychain()
             sendCredentialUpdateInfo(sessionId: sessionUID)
         }
     }
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
         serialAccessQueue.sync {
-            for passModule in PassModule.allCases {
-                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
-                cachedCredentials[key] = nil
-            }
-
-            saveLocalSessions()
+            removeCredentials(for: sessionUID)
+            saveCachedCredentialsToKeychain()
             sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: true)
         }
     }
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
         serialAccessQueue.sync {
-            for passModule in PassModule.allCases {
-                let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
-                cachedCredentials[key] = nil
-            }
-            saveLocalSessions()
+            removeCredentials(for: sessionUID)
+            saveCachedCredentialsToKeychain()
             sendSessionInvalidationInfo(sessionId: sessionUID, isAuthenticatedSession: false)
         }
     }
 
     public func clearSessions(sessionId: String) {
         serialAccessQueue.sync {
-            for module in PassModule.allCases {
-                let key = getCacheKeyFor(sessionId: sessionId, currentModule: module)
-                cachedCredentials[key] = nil
-            }
-            saveLocalSessions()
+            removeCredentials(for: sessionId)
+            saveCachedCredentialsToKeychain()
         }
     }
 
     public func clearSessions(userId: String) {
         serialAccessQueue.sync {
             cachedCredentials = cachedCredentials.filter { $0.value.credential.userID != userId }
-            saveLocalSessions()
+            saveCachedCredentialsToKeychain()
         }
     }
 }
@@ -204,16 +182,16 @@ public final class AuthManager: AuthManagerProtocol {
 // MARK: - Utils
 
 private extension AuthManager {
-    func getAuthElement(credential: Credential,
+    func getCredentials(credential: Credential,
                         authCredential: AuthCredential? = nil,
-                        module: PassModule) -> AuthElement {
-        AuthElement(credential: credential,
+                        module: PassModule) -> Credentials {
+        Credentials(credential: credential,
                     authCredential: authCredential ?? AuthCredential(credential),
                     module: module)
     }
 
     func sendCredentialUpdateInfo(sessionId: String) {
-        let key = getCacheKeyFor(sessionId: sessionId, currentModule: module)
+        let key = CredentialsKey(sessionId: sessionId, module: module)
         guard let credentials = cachedCredentials[key] else {
             return
         }
@@ -235,11 +213,11 @@ private extension AuthManager {
 // MARK: - Storage
 
 private extension AuthManager {
-    func saveLocalSessions() {
+    func saveCachedCredentialsToKeychain() {
         do {
             let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-            let data = try JSONEncoder().encode(cachedCredentials.toSavedAuthElementDic)
-            let encryptedContent = try symmetricKey.encrypt(data.encodeBase64())
+            let data = try JSONEncoder().encode(cachedCredentials)
+            let encryptedContent = try symmetricKey.encrypt(data)
             try keychain.setOrError(encryptedContent, forKey: Self.storageKey)
         } catch {
             // swiftlint:disable:next todo
@@ -248,145 +226,89 @@ private extension AuthManager {
         }
     }
 
-    func getLocalSessions() -> [String: AuthElement] {
-        guard let encryptedContent = try? keychain.stringOrError(forKey: Self.storageKey),
+    func getCachedCredentials() -> [CredentialsKey: Credentials] {
+        guard let encryptedContent = try? keychain.dataOrError(forKey: Self.storageKey),
               let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else {
             return [:]
         }
 
         do {
             let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-            guard let decryptedContentData = try decryptedContent.base64Decode() else {
-                return [:]
-            }
-            let content = try JSONDecoder().decode([String: SavedAuthElement].self, from: decryptedContentData)
-            return content.toAuthElementDic
+            return try JSONDecoder().decode(CachedCredentials.self, from: decryptedContent)
         } catch {
             try? keychain.removeOrError(forKey: Self.storageKey)
             return [:]
         }
     }
 
-    // This is to differentiate sessions from app and extensions until we have forking in place
-    func getCacheKeyFor(sessionId: String, currentModule: PassModule) -> String {
-        "\(currentModule.rawValue)\(sessionId)"
+    func removeCredentials(for sessionUID: String) {
+        for module in PassModule.allCases {
+            let key = CredentialsKey(sessionId: sessionUID, module: module)
+            cachedCredentials[key] = nil
+        }
     }
 }
 
 // MARK: - Keychain codable wrappers for credential elements & extensions
 
-private struct AuthElement: Hashable, Sendable {
+private struct Credentials: Hashable, Sendable, Codable {
     let credential: Credential
     let authCredential: AuthCredential
     let module: PassModule
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(module)
-        hasher.combine(credential.userID)
-    }
-
-    func copy(newAuthCredential: AuthCredential) -> AuthElement {
-        AuthElement(credential: credential,
-                    authCredential: newAuthCredential,
-                    module: module)
-    }
 }
 
-private struct PassCredential: Equatable, Codable {
-    var UID: String
-    var accessToken: String
-    var refreshToken: String
-    var userName: String
-    var userID: String
-    var scopes: [String]
-    var password: String
-
-    init(UID: String,
-         accessToken: String,
-         refreshToken: String,
-         userName: String,
-         userID: String,
-         scopes: [String],
-         password: String = "") {
-        self.UID = UID
-        self.accessToken = accessToken
-        self.refreshToken = refreshToken
-        self.userName = userName
-        self.userID = userID
-        self.scopes = scopes
-        self.password = password
-    }
-}
-
-private struct SavedAuthElement: Codable {
-    let credential: PassCredential
-    let authCredential: AuthCredential
+private struct CredentialsKey: Hashable, Codable {
+    let sessionId: String
     let module: PassModule
 }
 
-private extension [String: AuthElement] {
-    func firstValueForHash(matching hash: Int) -> AuthElement? {
-        for (_, value) in self where value.hashValue == hash {
-            return value
-        }
-        return nil
+extension Credential: Codable, Hashable {
+    private enum CodingKeys: String, CodingKey {
+        case UID
+        case accessToken
+        case refreshToken
+        case userName
+        case userID
+        case scopes
+        case mailboxPassword
     }
 
-    var toSavedAuthElementDic: [String: SavedAuthElement] {
-        var saved = [String: SavedAuthElement]()
-        for (key, value) in self {
-            saved[key] = value.toSavedAuthElement
-        }
-        return saved
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(UID)
+        hasher.combine(accessToken)
+        hasher.combine(refreshToken)
+        hasher.combine(userName)
+        hasher.combine(userID)
+        hasher.combine(scopes)
+        hasher.combine(mailboxPassword)
     }
-}
 
-private extension [String: SavedAuthElement] {
-    var toAuthElementDic: [String: AuthElement] {
-        var saved = [String: AuthElement]()
-        for (key, value) in self {
-            saved[key] = value.toAuthElement
-        }
-        return saved
+    public init(from decoder: any Decoder) throws {
+        self.init(UID: "",
+                  accessToken: "",
+                  refreshToken: "",
+                  userName: "",
+                  userID: "",
+                  scopes: [],
+                  mailboxPassword: "")
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        UID = try values.decode(String.self, forKey: .UID)
+        accessToken = try values.decode(String.self, forKey: .accessToken)
+        refreshToken = try values.decode(String.self, forKey: .refreshToken)
+        userName = try values.decode(String.self, forKey: .userName)
+        userID = try values.decode(String.self, forKey: .userID)
+        scopes = try values.decode([String].self, forKey: .scopes)
+        mailboxPassword = try values.decode(String.self, forKey: .mailboxPassword)
     }
-}
 
-private extension SavedAuthElement {
-    var toAuthElement: AuthElement {
-        AuthElement(credential: credential.toCredential,
-                    authCredential: authCredential,
-                    module: module)
-    }
-}
-
-private extension AuthElement {
-    var toSavedAuthElement: SavedAuthElement {
-        SavedAuthElement(credential: credential.toPassCredential,
-                         authCredential: authCredential,
-                         module: module)
-    }
-}
-
-private extension Credential {
-    var toPassCredential: PassCredential {
-        PassCredential(UID: UID,
-                       accessToken: accessToken,
-                       refreshToken: refreshToken,
-                       userName: userName,
-                       userID: userID,
-                       scopes: scopes,
-                       password: mailboxPassword)
-    }
-}
-
-private extension PassCredential {
-    var toCredential: Credential {
-        Credential(UID: UID,
-                   accessToken: accessToken,
-                   refreshToken: refreshToken,
-                   userName: userName,
-                   userID: userID,
-                   scopes: scopes,
-                   mailboxPassword: password)
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(UID, forKey: .UID)
+        try container.encode(accessToken, forKey: .accessToken)
+        try container.encode(refreshToken, forKey: .refreshToken)
+        try container.encode(userName, forKey: .userName)
+        try container.encode(userID, forKey: .userID)
+        try container.encode(scopes, forKey: .scopes)
+        try container.encode(mailboxPassword, forKey: .mailboxPassword)
     }
 }
