@@ -144,7 +144,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skannaa 2FA-koodi, maksukortti tai käsin kirjoitettu muistiinpano"
+            "value" : "Skannaa todennuskoodi, maksukortti tai käsin kirjoitettu muistiinpano"
           }
         },
         "fr" : {
