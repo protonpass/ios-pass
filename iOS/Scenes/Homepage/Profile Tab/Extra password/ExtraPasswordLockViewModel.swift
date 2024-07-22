@@ -38,9 +38,11 @@ final class ExtraPasswordLockViewModel: ObservableObject {
 
     private let verifyExtraPassword = resolve(\UseCasesContainer.verifyExtraPassword)
     private let extraPasswordRepository: any ExtraPasswordRepositoryProtocol
+    private let userId: String
 
-    init(apiService: any APIService) {
-        extraPasswordRepository = ExtraPasswordRepository(apiService: apiService)
+    init(apiService: any APIManagerProtocol, userId: String) {
+        self.userId = userId
+        extraPasswordRepository = ExtraPasswordRepository(apiServicing: apiService)
     }
 }
 
@@ -53,6 +55,7 @@ extension ExtraPasswordLockViewModel {
                 result = nil
                 loading = true
                 result = try await verifyExtraPassword(repository: extraPasswordRepository,
+                                                       userId: userId,
                                                        username: username,
                                                        password: extraPassword)
             } catch {

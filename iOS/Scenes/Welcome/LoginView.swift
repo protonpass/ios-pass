@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Entities
 import Macro
 import ProtonCoreLogin
@@ -36,11 +37,13 @@ struct LoginViewResult {
 
 struct LoginView: UIViewControllerRepresentable {
     @Binding private var loginData: Result<LoginViewResult?, LoginViewError>
-    private let apiService: any APIService
+    private let apiServicing: any APIManagerProtocol
+//    private let apiService: any APIService
     private let theme: Theme
 
-    init(apiService: any APIService, theme: Theme, loginData: Binding<Result<LoginViewResult?, LoginViewError>>) {
-        self.apiService = apiService
+    init(apiServicing: any APIManagerProtocol, theme: Theme,
+         loginData: Binding<Result<LoginViewResult?, LoginViewError>>) {
+        self.apiServicing = apiServicing
         self.theme = theme
         _loginData = loginData
     }
@@ -73,7 +76,7 @@ extension LoginView {
         private func makeLoginAndSignUp() -> LoginAndSignup {
             .init(appName: "Proton Pass",
                   clientApp: .pass,
-                  apiService: parent.apiService,
+                  apiService: parent.apiServicing.createNewApiService(),
                   minimumAccountType: .external,
                   paymentsAvailability: .notAvailable,
                   signupAvailability: .notAvailable)
@@ -127,10 +130,11 @@ extension LoginView {
                             }
 
                             let username = logInData.credential.userName
-            
-                            let view = ExtraPasswordLockView(apiService: parent.apiService,
+
+                            let view = ExtraPasswordLockView(apiService: parent.apiServicing,
                                                              email: logInData.user.email ?? username,
                                                              username: username,
+                                                             userId: logInData.user.ID,
                                                              onSuccess: onSuccess,
                                                              onFailure: onFailure)
                             let newViewController = UIHostingController(rootView: view)
