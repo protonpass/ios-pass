@@ -127,6 +127,7 @@ extension LoginView {
                             }
 
                             let username = logInData.credential.userName
+            
                             let view = ExtraPasswordLockView(apiService: parent.apiService,
                                                              email: logInData.user.email ?? username,
                                                              username: username,

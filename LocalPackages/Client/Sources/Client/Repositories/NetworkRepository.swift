@@ -22,7 +22,8 @@ import ProtonCoreServices
 
 public protocol NetworkRepositoryProtocol: Sendable {
     func revokeCurrentSession(userId: String) async throws
-    func forkSession(userId: String, payload: String?, childClientId: String, independent: Int) async throws -> String
+    func forkSession(userId: String, payload: String?, childClientId: String, independent: Int) async throws
+        -> String
 }
 
 public actor NetworkRepository: NetworkRepositoryProtocol {
@@ -38,7 +39,8 @@ public extension NetworkRepository {
         _ = try await apiServicing.getApiService(userId: userId).exec(endpoint: RevokeTokenEndpoint())
     }
 
-    func forkSession(userId: String, payload: String?, childClientId: String, independent: Int) async throws -> String {
+    func forkSession(userId: String, payload: String?, childClientId: String,
+                     independent: Int) async throws -> String {
         let request = ForkSessionRequest(payload: payload, childClientId: childClientId, independent: independent)
         let endpoint = ForkSessionEndpoint(request: request)
         let response = try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)

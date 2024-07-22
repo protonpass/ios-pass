@@ -73,7 +73,7 @@ private extension ShareEventIDRepository {
     func fetchLastEventIdFromRemoteAndSaveToLocal(userId: String, shareId: String) async throws -> String {
         logger.trace("Getting remote last event id of share \(shareId) of user \(userId)")
         let newLastEventId =
-        try await remoteDatasource.getLastEventId(userId: userId, shareId: shareId)
+            try await remoteDatasource.getLastEventId(userId: userId, shareId: shareId)
         logger.trace("Upserting remote last event id of share \(shareId) of user \(userId)")
         try await localDatasource.upsertLastEventId(userId: userId,
                                                     shareId: shareId,

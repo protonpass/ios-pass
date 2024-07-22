@@ -27,19 +27,19 @@ public final class RemoteItemReadEventDatasourceProtocolMock: @unchecked Sendabl
     public init() {}
 
     // MARK: - send
-    public var sendEventsShareIdThrowableError1: Error?
+    public var sendUserIdEventsShareIdThrowableError1: Error?
     public var closureSend: () -> () = {}
     public var invokedSendfunction = false
     public var invokedSendCount = 0
-    public var invokedSendParameters: (events: [ItemReadEvent], shareId: String)?
-    public var invokedSendParametersList = [(events: [ItemReadEvent], shareId: String)]()
+    public var invokedSendParameters: (userId: String, events: [ItemReadEvent], shareId: String)?
+    public var invokedSendParametersList = [(userId: String, events: [ItemReadEvent], shareId: String)]()
 
-    public func send(events: [ItemReadEvent], shareId: String) async throws {
+    public func send(userId: String, events: [ItemReadEvent], shareId: String) async throws {
         invokedSendfunction = true
         invokedSendCount += 1
-        invokedSendParameters = (events, shareId)
-        invokedSendParametersList.append((events, shareId))
-        if let error = sendEventsShareIdThrowableError1 {
+        invokedSendParameters = (userId, events, shareId)
+        invokedSendParametersList.append((userId, events, shareId))
+        if let error = sendUserIdEventsShareIdThrowableError1 {
             throw error
         }
         closureSend()
