@@ -213,7 +213,7 @@ public extension ShareInviteRepository {
     func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
         let userId = try await userManager.getActiveUserId()
         // The endpoint accepts 10 addresses at max so we check in batch
-       return try await withThrowingTaskGroup(of: [String].self, returning: [String].self) { [weak self] group in
+        return try await withThrowingTaskGroup(of: [String].self, returning: [String].self) { [weak self] group in
             guard let self else { return [] }
             for batch in emails.chunked(into: 10) {
                 group.addTask {

@@ -30,7 +30,7 @@ public protocol AliasRepositoryProtocol: Sendable {
 public actor AliasRepository: AliasRepositoryProtocol {
     private let remoteDatasouce: any RemoteAliasDatasourceProtocol
     private let userManager: any UserManagerProtocol
-    
+
     public init(remoteDatasouce: any RemoteAliasDatasourceProtocol,
                 userManager: any UserManagerProtocol) {
         self.remoteDatasouce = remoteDatasouce
@@ -51,6 +51,7 @@ public extension AliasRepository {
 
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         let userId = try await userManager.getActiveUserId()
-       return try await remoteDatasouce.changeMailboxes(userId: userId, shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
+        return try await remoteDatasouce.changeMailboxes(userId: userId, shareId: shareId, itemId: itemId,
+                                                         mailboxIDs: mailboxIDs)
     }
 }

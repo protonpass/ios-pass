@@ -80,7 +80,8 @@ public extension InviteRepository {
     func rejectInvite(with inviteToken: String) async throws -> Bool {
         logger.trace("Reject invite \(inviteToken)")
         let userId = try await userManager.getActiveUserId()
-        let rejectedStatus = try await remoteInviteDatasource.rejectInvite(userId: userId, inviteToken: inviteToken)
+        let rejectedStatus = try await remoteInviteDatasource.rejectInvite(userId: userId,
+                                                                           inviteToken: inviteToken)
         logger.trace("Invite rejection status \(rejectedStatus)")
         return rejectedStatus
     }

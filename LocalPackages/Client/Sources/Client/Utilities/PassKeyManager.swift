@@ -69,7 +69,7 @@ public actor PassKeyManager {
     private let itemKeyDatasource: any RemoteItemKeyDatasourceProtocol
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
-   
+
     public init(shareKeyRepository: any ShareKeyRepositoryProtocol,
                 itemKeyDatasource: any RemoteItemKeyDatasourceProtocol,
                 userManager: any UserManagerProtocol,
@@ -111,7 +111,8 @@ extension PassKeyManager: PassKeyManagerProtocol {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
         let userId = try await userManager.getActiveUserId()
-        let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId, shareId: shareId, itemId: itemId)
+        let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId, shareId: shareId,
+                                                                     itemId: itemId)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
 

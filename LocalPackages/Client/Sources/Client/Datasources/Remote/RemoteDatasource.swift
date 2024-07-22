@@ -33,7 +33,7 @@ public class RemoteDatasource: @unchecked Sendable {
 
     func exec<E: Endpoint>(userId: String, endpoint: E) async throws -> E.Response {
 //        do {
-            return try await apiServicing.getApiService(userId:userId).exec(endpoint: endpoint)
+        try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
 //        } catch {
 //            throw streamAndReturn(error: error)
 //        }
@@ -41,15 +41,16 @@ public class RemoteDatasource: @unchecked Sendable {
 
     func execExpectingData(userId: String, endpoint: some Endpoint) async throws -> DataResponse {
 //        do {
-            return try await apiServicing.getApiService(userId:userId).execExpectingData(endpoint: endpoint)
+        try await apiServicing.getApiService(userId: userId).execExpectingData(endpoint: endpoint)
 //        } catch {
 //            throw streamAndReturn(error: error)
 //        }
     }
 }
 
-//private extension RemoteDatasource {
-//    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
+// private extension RemoteDatasource {
+//    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as
+//    /normal
 //    func streamAndReturn(error: any Error) -> any Error {
 //        if let responseError = error as? ResponseError,
 //           let httpCode = responseError.httpCode {
@@ -63,4 +64,4 @@ public class RemoteDatasource: @unchecked Sendable {
 //        }
 //        return error
 //    }
-//}
+// }

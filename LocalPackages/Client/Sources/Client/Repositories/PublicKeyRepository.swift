@@ -48,12 +48,12 @@ public extension PublicKeyRepository {
         logger.trace("Getting public keys for email \(email)")
         let localPublicKeys = try await localPublicKeyDatasource.getPublicKeys(email: email)
         let currentUserId = try await userManager.getActiveUserId()
-        
+
         if localPublicKeys.isEmpty {
             logger.trace("No public keys in local for email \(email)")
             logger.trace("Fetching public keys from remote for email \(email)")
             let remotePublicKeys =
-            try await remotePublicKeyDatasource.getPublicKeys(userId: currentUserId, email: email)
+                try await remotePublicKeyDatasource.getPublicKeys(userId: currentUserId, email: email)
 
             let count = remotePublicKeys.count
             logger.trace("Fetched \(count) public keys from remote for email \(email)")

@@ -53,6 +53,7 @@ extension ServiceContainer {
     }
 
     var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
-        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource()) }
+        self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
+                                 userManager: SharedServiceContainer.shared.userManager()) }
     }
 }

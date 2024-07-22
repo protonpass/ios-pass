@@ -84,7 +84,7 @@ public extension AccessRepository {
     func refreshAccess() async throws -> UserAccess {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Refreshing access for user \(userId)")
-        let remoteAccess = try await remoteDatasource.getAccess()
+        let remoteAccess = try await remoteDatasource.getAccess(userId: userId)
         let userAccess = UserAccess(userId: userId, access: remoteAccess)
         access.send(userAccess)
 
@@ -115,7 +115,7 @@ private extension AccessRepository {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Updating monitor state for user \(userId)")
         var access = try await getAccess()
-        let updatedMonitor = try await remoteDatasource.updatePassMonitorState(request)
+        let updatedMonitor = try await remoteDatasource.updatePassMonitorState(userId: userId, request: request)
         access.access.monitor = updatedMonitor
 
         logger.trace("Upserting access for user \(userId)")
