@@ -195,7 +195,9 @@ extension AccountViewModel {
             defer { isLoading = false }
             isLoading = true
             do {
-                let result = try await doDisableExtraPassword(username: username,
+                let userId = try await userManager.getActiveUserId()
+                let result = try await doDisableExtraPassword(userId: userId,
+                                                              username: username,
                                                               password: extraPassword)
                 extraPassword = ""
                 switch result {

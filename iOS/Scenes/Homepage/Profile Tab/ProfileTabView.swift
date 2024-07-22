@@ -53,7 +53,7 @@ struct ProfileTabView: View {
                                                     onAddAccount: { handleAddAccount() }))
             }
             .sheet(isPresented: $viewModel.showLoginFlow) {
-                LoginView(apiService: viewModel.getApiService(),
+                LoginView(apiServicing: viewModel.apiManager,
                           theme: SharedToolingContainer.shared.preferencesManager().sharedPreferences.unwrapped()
                               .theme,
                           loginData: $viewModel.newLoggedUser)
