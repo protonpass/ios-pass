@@ -139,7 +139,7 @@ extension EnableExtraPasswordViewModel {
             defer { loading = false }
             do {
                 loading = true
-                try await enableExtraPassword(definedExtraPassword)
+                try await enableExtraPassword(userId: , password: definedExtraPassword)
                 try await updateUserPreferences(\.extraPasswordEnabled, value: true)
                 extraPasswordEnabled = true
             } catch {

@@ -33,15 +33,19 @@ public extension DeleteAllInactiveSecureLinksUseCase {
 public final class DeleteAllInactiveSecureLinks: DeleteAllInactiveSecureLinksUseCase {
     private let datasource: any RemoteSecureLinkDatasourceProtocol
     private let manager: any SecureLinkManagerProtocol
+    private let userManager: any UserManagerProtocol
 
     public init(datasource: any RemoteSecureLinkDatasourceProtocol,
+                userManager: any UserManagerProtocol,
                 manager: any SecureLinkManagerProtocol) {
         self.datasource = datasource
+        self.userManager = userManager
         self.manager = manager
     }
 
     public func execute() async throws {
-        try await datasource.deleteAllInactiveLinks()
+        let userId = try await userManager.getActiveUserId()
+        try await datasource.deleteAllInactiveLinks(userId: userId)
         try await manager.updateSecureLinks()
     }
 }

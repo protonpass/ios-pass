@@ -270,24 +270,29 @@ private extension AppCoordinator {
     }
 
     func showExtraPasswordLockScreen(_ userData: UserData) {
-        let onSuccess: () -> Void = { [weak self] in
-            guard let self else { return }
-            appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
+        do {
+            let onSuccess: () -> Void = { [weak self] in
+                guard let self else { return }
+                appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
+            }
+            
+            let onFailure: () -> Void = { [weak self] in
+                guard let self else { return }
+                appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
+            }
+            
+            let username = userData.credential.userName
+            let apiService = try apiManager.getApiService(userId: userData.user.ID)
+            let view = ExtraPasswordLockView(apiService: apiService,
+                                             email: userData.user.email ?? username,
+                                             username: username,
+                                             onSuccess: onSuccess,
+                                             onFailure: onFailure)
+            let viewController = UIHostingController(rootView: view)
+            animateUpdateRootViewController(viewController)
+        } catch {
+            logger.error(error)
         }
-
-        let onFailure: () -> Void = { [weak self] in
-            guard let self else { return }
-            appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
-        }
-
-        let username = userData.credential.userName
-        let view = ExtraPasswordLockView(apiService: apiManager.apiService,
-                                         email: userData.user.email ?? username,
-                                         username: username,
-                                         onSuccess: onSuccess,
-                                         onFailure: onFailure)
-        let viewController = UIHostingController(rootView: view)
-        animateUpdateRootViewController(viewController)
     }
 
     func animateUpdateRootViewController(_ newRootViewController: UIViewController,

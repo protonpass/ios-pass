@@ -26,7 +26,8 @@ public protocol RemoteShareKeyDatasourceProtocol: Sendable {
 }
 
 extension RemoteShareKeyDatasourceProtocol {
-    func getKeys(userId: String, shareId: String, pageSize: Int = Constants.Utils.defaultPageSize) async throws -> [ShareKey] {
+    func getKeys(userId: String, shareId: String,
+                 pageSize: Int = Constants.Utils.defaultPageSize) async throws -> [ShareKey] {
         try await getKeys(userId: userId, shareId: shareId, pageSize: pageSize)
     }
 }
@@ -34,7 +35,8 @@ extension RemoteShareKeyDatasourceProtocol {
 public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {}
 
 public extension RemoteShareKeyDatasource {
-    func getKeys(userId: String, shareId: String, pageSize: Int = Constants.Utils.defaultPageSize) async throws -> [ShareKey] {
+    func getKeys(userId: String, shareId: String,
+                 pageSize: Int = Constants.Utils.defaultPageSize) async throws -> [ShareKey] {
         var keys = [ShareKey]()
         var page = 0
         while true {

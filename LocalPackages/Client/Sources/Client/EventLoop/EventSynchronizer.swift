@@ -237,7 +237,8 @@ private extension EventSynchronizer {
                                                                           userId: userId,
                                                                           shareId: shareId)
         try Task.checkCancellation()
-        let events = try await remoteSyncEventsDatasource.getEvents(shareId: shareId,
+        let events = try await remoteSyncEventsDatasource.getEvents(userId: userId,
+                                                                    shareId: shareId,
                                                                     lastEventId: lastEventId)
         try Task.checkCancellation()
         try await shareEventIDRepository.upsertLastEventId(userId: userId,

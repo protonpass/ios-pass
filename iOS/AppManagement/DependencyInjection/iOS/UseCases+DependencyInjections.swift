@@ -519,6 +519,7 @@ extension UseCasesContainer {
     var createSecureLink: Factory<any CreateSecureLinkUseCase> {
         self { CreateSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 getSecureLinkKeys: self.getSecureLinkKeys(),
+                                userManager: self.userManager,
                                 manager: self.secureLinkManager) }
     }
 
@@ -528,6 +529,7 @@ extension UseCasesContainer {
 
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
         self { DeleteSecureLink(datasource: self.remoteSecureLinkDatasource,
+                                userManager: self.userManager,
                                 manager: self.secureLinkManager) }
     }
 
@@ -538,6 +540,7 @@ extension UseCasesContainer {
     var deleteAllInactiveSecureLinks: Factory<any DeleteAllInactiveSecureLinksUseCase> {
         self {
             DeleteAllInactiveSecureLinks(datasource: self.remoteSecureLinkDatasource,
+                                         userManager: self.userManager,
                                          manager: self.secureLinkManager)
         }
     }

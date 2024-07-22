@@ -23,11 +23,14 @@ import Foundation
 
 public protocol RemoteShareInviteDatasourceProtocol: Sendable {
     func getPendingInvites(userId: String, sharedId: String) async throws -> ShareInvites
-    func inviteMultipleProtonUsers(userId: String, shareId: String, request: InviteMultipleUsersToShareRequest) async throws
+    func inviteMultipleProtonUsers(userId: String, shareId: String,
+                                   request: InviteMultipleUsersToShareRequest) async throws
         -> Bool
-    func inviteMultipleExternalUsers(userId: String, shareId: String, request: InviteMultipleNewUsersToShareRequest) async throws
+    func inviteMultipleExternalUsers(userId: String, shareId: String,
+                                     request: InviteMultipleNewUsersToShareRequest) async throws
         -> Bool
-    func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool
+    func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws
+        -> Bool
     func sendInviteReminder(userId: String, shareId: String, inviteId: String) async throws -> Bool
     func deleteShareInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
     func deleteShareNewUserInvite(userId: String, shareId: String, inviteId: String) async throws -> Bool
@@ -48,7 +51,8 @@ public extension RemoteShareInviteDatasource {
                      newUserInvites: response.newUserInvites)
     }
 
-    func promoteNewUserInvite(userId: String, shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
+    func promoteNewUserInvite(userId: String, shareId: String, inviteId: String,
+                              keys: [ItemKey]) async throws -> Bool {
         let endpoint = PromoteNewUserInviteEndpoint(shareId: shareId, inviteId: inviteId, keys: keys)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
