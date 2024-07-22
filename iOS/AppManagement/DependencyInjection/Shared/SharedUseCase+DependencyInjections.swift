@@ -505,6 +505,7 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   apiServicing: self.apiManager,
                                    userManager: self.userManager,
                                    logManager: self.logManager) }
     }

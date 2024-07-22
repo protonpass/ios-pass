@@ -72,7 +72,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer
         .addAndSwitchToNewUserAccount) private var addAndSwitchToNewUserAccount: any AddAndSwitchToNewUserAccountUseCase
     @LazyInjected(\SharedToolingContainer
-        .apiManager) private var apiManager: APIManager
+        .apiManager) var apiManager: APIManager
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -126,10 +126,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
     }
 
-    func getApiService() -> any APIService {
-        apiManager.createNewApiService()
-//        createApiService()
-    }
+//    func getApiService() -> any APIService {
+//        apiManager.createNewApiService()
+    ////        createApiService()
+//    }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
         plan = accessRepository.access.value?.access.plan

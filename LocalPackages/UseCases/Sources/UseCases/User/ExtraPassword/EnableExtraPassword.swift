@@ -32,7 +32,8 @@ public protocol EnableExtraPasswordUseCase: Sendable {
 }
 
 public extension EnableExtraPasswordUseCase {
-    func callAsFunction(userId: String, password: String) async throws {
+    func callAsFunction(userId: String,
+                        password: String) async throws {
         try await execute(userId: userId, password: password)
     }
 }
@@ -44,7 +45,8 @@ public final class EnableExtraPassword: Sendable, EnableExtraPasswordUseCase {
         self.repository = repository
     }
 
-    public func execute(userId: String, password: String) async throws {
+    public func execute(userId: String,
+                        password: String) async throws {
         // Step 1: get modulus from the BE
         let modulus = try await repository.getModulus(userId: userId)
 
