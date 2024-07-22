@@ -242,7 +242,8 @@ extension SharedRepositoryContainer {
     }
 
     var aliasRepository: Factory<any AliasRepositoryProtocol> {
-        self { AliasRepository(remoteDatasouce: self.remoteAliasDatasource()) }
+        self { AliasRepository(remoteDatasouce: self.remoteAliasDatasource(),
+                               userManager: self.userManager) }
     }
 
     var shareKeyRepository: Factory<any ShareKeyRepositoryProtocol> {
@@ -267,6 +268,7 @@ extension SharedRepositoryContainer {
         self {
             PassKeyManager(shareKeyRepository: self.shareKeyRepository(),
                            itemKeyDatasource: self.remoteItemKeyDatasource(),
+                           userManager: self.userManager,
                            logManager: self.logManager,
                            symmetricKeyProvider: self.symmetricKeyProvider)
         }
@@ -295,7 +297,8 @@ extension SharedRepositoryContainer {
 
     var accountRepository: Factory<any AccountRepositoryProtocol> {
         self {
-            AccountRepository(remoteAccountDatasource: self.remoteAccountDatasource())
+            AccountRepository(remoteAccountDatasource: self.remoteAccountDatasource(),
+                              userManager: self.userManager)
         }
     }
 
@@ -312,12 +315,14 @@ extension SharedRepositoryContainer {
         self {
             PublicKeyRepository(localPublicKeyDatasource: self.localPublicKeyDatasource(),
                                 remotePublicKeyDatasource: self.remotePublicKeyDatasource(),
+                                userManager: self.userManager,
                                 logManager: self.logManager)
         }
     }
 
     var shareInviteRepository: Factory<any ShareInviteRepositoryProtocol> {
         self { ShareInviteRepository(remoteDataSource: self.remoteShareInviteDatasource(),
+                                     userManager: self.userManager,
                                      logManager: self.logManager) }
     }
 
@@ -336,14 +341,15 @@ extension SharedRepositoryContainer {
 
     var featureFlagsRepository: Factory<any FeatureFlagsRepositoryProtocol> {
         self {
-            return FeatureFlagsRepository.shared
+            FeatureFlagsRepository.shared
         }
     }
 
     var favIconRepository: Factory<any FavIconRepositoryProtocol> {
         self { FavIconRepository(datasource: self.remoteFavIconDatasource(),
                                  containerUrl: URL.favIconsContainerURL(),
-                                 symmetricKeyProvider: self.symmetricKeyProvider) }
+                                 symmetricKeyProvider: self.symmetricKeyProvider,
+                                 userManager: self.userManager) }
     }
 
     var localSearchEntryDatasource: Factory<any LocalSearchEntryDatasourceProtocol> {
@@ -387,7 +393,8 @@ extension SharedRepositoryContainer {
         self {
             PassMonitorRepository(itemRepository: self.itemRepository(),
                                   remoteDataSource: self.remoteBreachDataSource(),
-                                  symmetricKeyProvider: self.symmetricKeyProvider)
+                                  symmetricKeyProvider: self.symmetricKeyProvider,
+                                  userManager: self.userManager)
         }
     }
 }

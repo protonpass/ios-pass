@@ -32,7 +32,7 @@ public protocol SecureLinkManagerProtocol: Sendable {
 public final class SecureLinkManager: SecureLinkManagerProtocol, @unchecked Sendable {
     private let dataSource: any RemoteSecureLinkDatasourceProtocol
     private let userManager: any UserManagerProtocol
-    
+
     public let currentSecureLinks: CurrentValueSubject<[SecureLink]?, Never> = .init(nil)
 
     public init(dataSource: any RemoteSecureLinkDatasourceProtocol,

@@ -64,7 +64,9 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         // We also update the main apiservice with the new session id through apiManager
         try await userManager.addAndMarkAsActive(userData: userData)
         authManager.onSessionObtaining(credential: userData.getCredential)
-        await apiManager.updateCurrentSession(userId: userData.user.ID)
+        // TODO: check that apimanager now create new service directly and not use use case create apiaservice
+
+//        await apiManager.updateCurrentSession(userId: userData.user.ID)
         try await preferencesManager.switchUserPreferences(userId: userData.user.ID)
         refreshFeatureFlags()
         if hasExtraPassword {

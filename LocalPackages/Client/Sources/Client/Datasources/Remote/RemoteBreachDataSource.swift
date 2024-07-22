@@ -50,54 +50,54 @@ public extension RemoteBreachDataSource {
 
     func getAllCustomEmailForUser(userId: String) async throws -> [CustomEmail] {
         let endpoint = GetAllCustomEmailForUserEndpoint()
-        let response = try await exec(userId: userId,endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.emails.customEmails
     }
 
     func addEmailToBreachMonitoring(userId: String, email: String) async throws -> CustomEmail {
         let request = AddEmailToBreachMonitoringRequest(email: email)
         let endpoint = AddEmailToBreachMonitoringEndpoint(request: request)
-        let response = try await exec(userId: userId,endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.email
     }
 
     func verifyCustomEmail(userId: String, emailId: String, code: String) async throws {
         let request = VerifyCustomEmailRequest(code: code)
         let endpoint = VerifyCustomEmailEndpoint(customEmailId: emailId, request: request)
-        _ = try await exec(userId: userId,endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
     func getAllBreachesForEmail(userId: String, email: CustomEmail) async throws -> EmailBreaches {
         let endpoint = GetBreachesForCustomEmailEndpoint(emailId: email.customEmailID)
-        let response = try await exec(userId: userId,endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.breaches
     }
 
     func getAllBreachesForProtonAddress(userId: String, address: ProtonAddress) async throws -> EmailBreaches {
         let endpoint = GetAllBreachesForProtonAddressEndpoint(addressId: address.addressID)
-        let response = try await exec(userId: userId,endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.breaches
     }
 
     func removeEmailFromBreachMonitoring(userId: String, emailId: String) async throws {
         let endpoint = RemoveEmailFromBreachMonitoringEndpoint(emailId: emailId)
-        _ = try await exec(userId: userId,endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
     func getBreachesForAlias(userId: String, sharedId: String, itemId: String) async throws -> EmailBreaches {
         let endpoint = GetBreachesForAliasEndpoint(shareId: sharedId, itemId: itemId)
-        let response = try await exec(userId: userId,endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.breaches
     }
 
     func resendEmailVerification(userId: String, emailId: String) async throws {
         let endpoint = ResendEmailVerificationEndpoint(emailId: emailId)
-        _ = try await exec(userId: userId,endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
     func markAliasAsResolved(userId: String, sharedId: String, itemId: String) async throws {
         let endpoint = MarkAliasAsResolvedEndpoint(sharedId: sharedId, itemId: itemId)
-        _ = try await exec(userId: userId,endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
     func markProtonAddressAsResolved(userId: String, address: ProtonAddress) async throws {
@@ -107,7 +107,7 @@ public extension RemoteBreachDataSource {
 
     func markCustomEmailAsResolved(userId: String, email: CustomEmail) async throws -> CustomEmail {
         let endpoint = MarkCustomEmailAsResolvedEndpoint(customEmailId: email.customEmailID)
-        let result = try await exec(userId: userId,endpoint: endpoint)
+        let result = try await exec(userId: userId, endpoint: endpoint)
         return result.email
     }
 

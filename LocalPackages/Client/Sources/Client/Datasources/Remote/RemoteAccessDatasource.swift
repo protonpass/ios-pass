@@ -34,7 +34,8 @@ public extension RemoteAccessDatasource {
         return response.access
     }
 
-    func updatePassMonitorState(userId: String, request: UpdateMonitorStateRequest) async throws -> Access.Monitor {
+    func updatePassMonitorState(userId: String, request: UpdateMonitorStateRequest) async throws -> Access
+        .Monitor {
         let endpoint = UpdateMonitorStateEndpoint(request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.monitor

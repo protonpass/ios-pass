@@ -26,9 +26,11 @@ import Foundation
 // sourcery: AutoMockable
 public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
-    func getItems(userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+    func getItems(userId: String, shareId: String,
+                  eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
         -> [Item]
-    func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item>
+    func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
+        -> Paginated<Item>
     func createItem(userId: String, shareId: String, request: CreateItemRequest) async throws -> Item
     func createAlias(userId: String, shareId: String, request: CreateCustomAliasRequest) async throws -> Item
     func createAliasAndAnotherItem(userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest)
@@ -36,13 +38,16 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
     func trashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem]
     func untrashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem]
     func deleteItem(_ items: [Item], shareId: String, skipTrash: Bool, userId: String) async throws
-    func updateItem(userId: String, shareId: String, itemId: String, request: UpdateItemRequest) async throws -> Item
-    func updateLastUseTime(userId: String, shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> Item
+    func updateItem(userId: String, shareId: String, itemId: String, request: UpdateItemRequest) async throws
+        -> Item
+    func updateLastUseTime(userId: String, shareId: String, itemId: String,
+                           lastUseTime: TimeInterval) async throws -> Item
     func move(userId: String, itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> Item
     func move(userId: String, fromShareId: String, request: MoveItemsRequest) async throws -> [Item]
     func pin(userId: String, item: any ItemIdentifiable) async throws -> Item
     func unpin(userId: String, item: any ItemIdentifiable) async throws -> Item
-    func updateItemFlags(userId: String, itemId: String, shareId: String, request: UpdateItemFlagsRequest) async throws -> Item
+    func updateItemFlags(userId: String, itemId: String, shareId: String,
+                         request: UpdateItemFlagsRequest) async throws -> Item
 }
 
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
@@ -71,7 +76,8 @@ public extension RemoteItemDatasource {
         return itemRevisions
     }
 
-    func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item> {
+    func getItemRevisions(userId: String, shareId: String, itemId: String,
+                          lastToken: String?) async throws -> Paginated<Item> {
         let endpoint = GetItemRevisionsEndpoint(shareId: shareId, itemId: itemId, sinceToken: lastToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return Paginated(lastToken: response.revisions.lastToken,
@@ -94,7 +100,7 @@ public extension RemoteItemDatasource {
     func createAliasAndAnotherItem(userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest)
         async throws -> CreateAliasAndAnotherItemResponse.Bundle {
         let endpoint = CreateAliasAndAnotherItemEndpoint(shareId: shareId, request: request)
-            let response = try await exec(userId: userId, endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.bundle
     }
 
