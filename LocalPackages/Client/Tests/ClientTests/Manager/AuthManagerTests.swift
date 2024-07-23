@@ -69,7 +69,8 @@ final class AuthManagerTests: XCTestCase {
         authHelperDelegateMock = AuthHelperDelegateMock()
         sut = AuthManager(keychain: userDefaultsKeychainMock,
                           symmetricKeyProvider: symmetricKeyProvider,
-                          module: .hostApp)
+                          module: .hostApp,
+                          logManager: LogManagerProtocolMock())
     }
 
     override func tearDown() {
@@ -182,7 +183,9 @@ final class AuthManagerTests: XCTestCase {
         XCTAssertEqual(sut.getCredential(userId: baseCredentials.userID)?.sessionID, baseCredentials.UID)
 
         sut.setUpDelegate(authHelperDelegateMock)
-        let expectation = expectation(description: "Should receive invalite session event")
+        let expectation = XCTestExpectation(description: "Should receive invalidated session event")
+        let sessionWasInvalidatedExpectation = XCTestExpectation(description: "Session should be invalidated")
+
         authHelperDelegateMock.sessionWasInvalidatedSubject
             .sink { [weak self] value in
                 XCTAssertEqual(value.sessionUID, self?.baseCredentials.UID)
@@ -191,9 +194,17 @@ final class AuthManagerTests: XCTestCase {
             }
             .store(in: &cancellables)
 
+        sut.sessionWasInvalidated
+            .sink { [weak self] value in
+                XCTAssertEqual(value.sessionId, self?.baseCredentials.UID)
+                XCTAssertEqual(value.userId, self?.baseCredentials.userID)
+                sessionWasInvalidatedExpectation.fulfill()
+            }
+            .store(in: &cancellables)
+
         sut.onUnauthenticatedSessionInvalidated(sessionUID: baseCredentials.UID)
 
-        await fulfillment(of: [expectation], timeout: 1)
+        await fulfillment(of: [expectation, sessionWasInvalidatedExpectation], timeout: 1)
         XCTAssertNil(sut.credential(sessionUID: baseCredentials.UID))
         XCTAssertNil(sut.authCredential(sessionUID: baseCredentials.UID))
         XCTAssertNil(sut.getCredential(userId: baseCredentials.userID))

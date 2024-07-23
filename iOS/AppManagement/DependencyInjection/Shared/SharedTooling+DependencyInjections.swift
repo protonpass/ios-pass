@@ -164,7 +164,8 @@ extension SharedToolingContainer {
         self {
             AuthManager(keychain: SharedToolingContainer.shared.keychain(),
                         symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
-                        module: self.module())
+                        module: self.module(),
+                        logManager: self.logManager())
         }
     }
 

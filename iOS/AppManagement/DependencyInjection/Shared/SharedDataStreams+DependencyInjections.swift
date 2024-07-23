@@ -31,10 +31,6 @@ final class SharedDataStreamContainer: SharedContainer, AutoRegistering {
 }
 
 extension SharedDataStreamContainer {
-    var vaultSyncEventStream: Factory<VaultSyncEventStream> {
-        self { VaultSyncEventStream(.initialization) }
-    }
-
     var corruptedSessionEventStream: Factory<CorruptedSessionEventStream> {
         self { CorruptedSessionEventStream() }
     }

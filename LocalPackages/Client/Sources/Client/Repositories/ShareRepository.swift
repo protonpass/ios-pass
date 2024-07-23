@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import Combine
 import Core
 import CryptoKit
 import Entities
@@ -31,7 +32,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getShares() async throws -> [SymmetricallyEncryptedShare]
 
     /// Get all remote shares
-    func getRemoteShares(updateEventStream: Bool) async throws -> [Share]
+    func getRemoteShares(eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share]
 
     /// Delete all local shares
     func deleteAllCurrentUserSharesLocally() async throws
@@ -40,7 +41,8 @@ public protocol ShareRepositoryProtocol: Sendable {
     func deleteShareLocally(shareId: String) async throws
 
     /// Re-encrypt and then upserting shares, emit `decryptedVault` events if `eventStream` is provided
-    func upsertShares(_ shares: [Share], updateEventStream: Bool) async throws
+    func upsertShares(_ shares: [Share],
+                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
 
@@ -79,11 +81,11 @@ public protocol ShareRepositoryProtocol: Sendable {
 
 public extension ShareRepositoryProtocol {
     func getRemoteShares() async throws -> [Share] {
-        try await getRemoteShares(updateEventStream: false)
+        try await getRemoteShares(eventStream: nil)
     }
 
     func upsertShares(_ shares: [Share]) async throws {
-        try await upsertShares(shares, updateEventStream: false)
+        try await upsertShares(shares, eventStream: nil)
     }
 }
 
@@ -93,7 +95,6 @@ public actor ShareRepository: ShareRepositoryProtocol {
     private let localDatasource: any LocalShareDatasourceProtocol
     private let remoteDatasouce: any RemoteShareDatasourceProtocol
     private let passKeyManager: any PassKeyManagerProtocol
-    private let eventStream: VaultSyncEventStream
     private let logger: Logger
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,
@@ -101,13 +102,11 @@ public actor ShareRepository: ShareRepositoryProtocol {
                 localDatasource: any LocalShareDatasourceProtocol,
                 remoteDatasouce: any RemoteShareDatasourceProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
-                logManager: any LogManagerProtocol,
-                eventStream: VaultSyncEventStream) {
+                logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasouce = remoteDatasouce
         self.passKeyManager = passKeyManager
-        self.eventStream = eventStream
         logger = .init(manager: logManager)
         self.userManager = userManager
     }
@@ -127,14 +126,13 @@ public extension ShareRepository {
         }
     }
 
-    func getRemoteShares(updateEventStream: Bool = true) async throws -> [Share] {
+    func getRemoteShares(eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+        -> [Share] {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all remote shares for user \(userId)")
         do {
             let shares = try await remoteDatasouce.getShares()
-            if updateEventStream {
-                eventStream.send(.downloadedShares(shares))
-            }
+            eventStream?.send(.downloadedShares(shares))
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
         } catch {
@@ -157,7 +155,8 @@ public extension ShareRepository {
         logger.trace("Deleted local share \(shareId) for user \(userId)")
     }
 
-    func upsertShares(_ shares: [Share], updateEventStream: Bool = true) async throws {
+    func upsertShares(_ shares: [Share],
+                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
         let encryptedShares = try await shares
@@ -168,10 +167,10 @@ public extension ShareRepository {
             .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
-        if updateEventStream {
+        if eventStream != nil {
             for share in encryptedShares {
                 if let vault = try share.toVault(symmetricKey: getSymmetricKey()) {
-                    eventStream.send(.decryptedVault(vault))
+                    eventStream?.send(.decryptedVault(vault))
                 }
             }
         }
