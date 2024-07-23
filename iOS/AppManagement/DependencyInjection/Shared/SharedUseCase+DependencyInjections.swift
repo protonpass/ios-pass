@@ -271,20 +271,6 @@ extension SharedUseCasesContainer {
                                                  .shareKeyRepository()) }
     }
 
-//    var wipeAllData: Factory<any WipeAllDataUseCase> {
-//        self { WipeAllData(logManager: self.logManager,
-//                           appData: SharedDataContainer.shared.appData(),
-//                           apiManager: SharedToolingContainer.shared.apiManager(),
-//                           preferencesManager: self.preferencesManager,
-//                           syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
-//                           vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-//                           credentialManager: SharedServiceContainer.shared.credentialManager(),
-//                           userManager: self.userManager,
-//                           featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-//                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-//                           removeUserLocalData: self.removeUserLocalData()) }
-//    }
-//
     var logOutUser: Factory<any LogOutUserUseCase> {
         self {
             LogOutUser(userManager: self.userManager,
