@@ -53,13 +53,13 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private var forceUpgradeHelper: ForceUpgradeHelper!
     private var allCurrentApiServices = [APIManagerElements]()
 
-    public var apiService: any APIService {
-        guard let userId = userManager.activeUserId,
-              let service = try? getApiService(userId: userId) else {
-            return createNewApiService()
-        }
-        return service
-    }
+//    public var apiService: any APIService {
+//        guard let userId = userManager.activeUserId,
+//              let service = try? getApiService(userId: userId) else {
+//            return createNewApiService()
+//        }
+//        return service
+//    }
 
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
