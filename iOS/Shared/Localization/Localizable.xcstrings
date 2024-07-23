@@ -98073,6 +98073,17 @@
         }
       }
     },
+    "Switched to %@" : {
+      "comment" : "Placeholder is an email address. Message shown after switching to another account.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switched to %@"
+          }
+        }
+      }
+    },
     "Sync complete" : {
       "localizations" : {
         "be" : {

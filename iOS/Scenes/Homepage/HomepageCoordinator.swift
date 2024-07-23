@@ -140,8 +140,18 @@ private extension HomepageCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                logger.trace("Found new plan, refreshing credential database")
                 homepageTabDelegate?.refreshTabIcons()
+            }
+            .store(in: &cancellables)
+
+        userManager.currentActiveUser
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userData in
+                guard let self else { return }
+                homepageTabDelegate?.refreshTabIcons()
+                let message = #localized("Switched to %@", userData?.user.email ?? "")
+                bannerManager.displayBottomInfoMessage(message)
             }
             .store(in: &cancellables)
 

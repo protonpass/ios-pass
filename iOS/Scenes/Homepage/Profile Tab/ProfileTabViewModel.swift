@@ -94,6 +94,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
                   isPremium: isPremiumUser(currentActiveUser.userId),
                   initial: currentActiveUser.initial,
                   displayName: currentActiveUser.displayName,
+                  planName: planName(currentActiveUser.userId),
                   email: currentActiveUser.email)
         } else {
             nil
@@ -107,6 +108,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
                                  isPremium: isPremiumUser($0.userId),
                                  initial: $0.initial,
                                  displayName: $0.displayName,
+                                 planName: planName($0.userId),
                                  email: $0.email) }
     }
 
@@ -156,8 +158,8 @@ extension ProfileTabViewModel {
 
     func refreshPlan() async {
         do {
-            accesses = try await localAccessDatasource.getAllAccesses()
             plan = try await accessRepository.refreshAccess().access.plan
+            accesses = try await localAccessDatasource.getAllAccesses()
         } catch {
             handle(error: error)
         }
@@ -472,6 +474,10 @@ private extension ProfileTabViewModel {
 
     func isPremiumUser(_ userId: String) -> Bool {
         accesses.first(where: { $0.userId == userId })?.access.plan.isFreeUser == false
+    }
+
+    func planName(_ userId: String) -> String? {
+        accesses.first(where: { $0.userId == userId })?.access.plan.displayName
     }
 
     func handle(error: any Error) {
