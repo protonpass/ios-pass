@@ -22,7 +22,7 @@
 
 import Client
 import Entities
-import ProtonCoreFeatureFlags
+@preconcurrency import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import UIKit
 
@@ -77,24 +77,21 @@ public final class LogOutUser: LogOutUserUseCase {
 
     /// Logs out the user linked to the userId and return a boolean indicating if it's the last user of not
     /// - Parameter userId: The id of the user to logout
-    /// - Returns: A boolean indicating if this was the last account link to the meaning we should show login flow
-    /// or not log screens
+    /// - Returns: A boolean indicating if this was the last account to show the login flow or not
     public func execute(userId: String) async throws -> Bool {
         let users = try await userManager.getAllUsers()
         guard let user = users.first(where: { $0.user.ID == userId }) else {
             throw PassError.userManager(.noUserDataFound)
         }
 
-        let isActive = userManager.currentActiveUser.value?.user.ID == userId
-        let isLastUserAccount = users.count == 1
-
         syncEventLoop.stop()
-        if isLastUserAccount {
+        if users.count == 1 {
             // Scenario 1: Only 1 user
-            try await signOutLastUserAccount(user)
+            try await signOutLastUser(user)
             return true
         } else {
-            isActive ? try await signOutActiveUser(userData: user) : try await signOutInactive(user)
+            let isActive = userManager.currentActiveUser.value?.user.ID == userId
+            isActive ? try await signOutActiveUser(user) : try await signOutInactiveUser(user)
             syncEventLoop.start()
             return false
         }
@@ -110,7 +107,7 @@ private extension LogOutUser {
     /// Step 4: Remove all local data
     /// Step 5: Reset repositories' on-memory caches
     /// Step 6: Back to welcome screen
-    func signOutLastUserAccount(_ userData: UserData) async throws {
+    func signOutLastUser(_ userData: UserData) async throws {
         syncEventLoop.reset()
         featureFlagsRepository.clearUserId()
 
@@ -137,11 +134,11 @@ private extension LogOutUser {
     /// Step 5: Activate to the latest inactive user
     /// Step 6: Reinit event loop with the new user
     /// Step 7: Reload items
-    func signOutActiveUser(userData: UserData) async throws {
+    func signOutActiveUser(_ userData: UserData) async throws {
         try await commonDeletionActions(userId: userData.user.ID)
 
         // When removing active user userManager switches automatically to a new active user if possible
-        // We should now user the switch user use case to propagate the change of active user
+        // We should now use the switch user use case to propagate the change of active user
         let newActiveUserId = try await userManager.getActiveUserId()
         try await switchUser(userId: newActiveUserId)
     }
@@ -150,7 +147,7 @@ private extension LogOutUser {
     /// Step 1: Revoke the session
     /// Step 2: Remove all local data
     /// Step 3: Remove cached credentials
-    func signOutInactive(_ userData: UserData) async throws {
+    func signOutInactiveUser(_ userData: UserData) async throws {
         try await commonDeletionActions(userId: userData.user.ID)
     }
 
