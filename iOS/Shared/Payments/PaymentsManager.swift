@@ -18,12 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Factory
 import Foundation
 import ProtonCoreFeatureFlags
 import ProtonCorePayments
 import ProtonCorePaymentsUI
+
+enum PaymentsManagerError: Error {
+    case couldNotCreatePaymentStack
+}
 
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, any Error>
@@ -34,7 +39,7 @@ final class PaymentsManager {
 
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private let payments: Payments
+//    private let payments: Payments
 
     // Strongly reference to make the payment page responsive during payment flow
     // periphery:ignore
@@ -42,23 +47,28 @@ final class PaymentsManager {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let inMemoryTokenStorage: any PaymentTokenStorage
-
+    private let storage: UserDefaults
     // swiftlint:disable:next todo
     // TODO: should we provide the actual BugAlertHandler?
     init(storage: UserDefaults,
          bugAlertHandler: BugAlertHandler = nil) {
         inMemoryTokenStorage = InMemoryTokenStorage()
-        let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
-        let payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
-                                apiService: apiManager.apiService,
-                                localStorage: persistentDataStorage,
-                                reportBugAlertHandler: bugAlertHandler)
-        self.payments = payments
-        payments.storeKitManager.delegate = self
-        initializePaymentsStack()
+        self.storage = storage
+//        let userId = userManager.activeUserId
+//        let apiService = try? apiManager.getApiService(userId: userId)
+//
+//        payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
+//                            apiService: apiManager.apiService,
+//                            localStorage: persistentDataStorage,
+//                            reportBugAlertHandler: bugAlertHandler)
+//        payments.storeKitManager.delegate = self
+//        initializePaymentsStack()
     }
 
-    func createPaymentsUI() -> PaymentsUI {
+    func createPaymentsUI() -> PaymentsUI? {
+        guard let payments = initializePaymentsStack() else {
+            return nil
+        }
         let ui = PaymentsUI(payments: payments,
                             clientApp: PaymentsConstants.clientApp,
                             shownPlanNames: PaymentsConstants.shownPlanNames,
@@ -67,7 +77,18 @@ final class PaymentsManager {
         return ui
     }
 
-    private func initializePaymentsStack() {
+    private func initializePaymentsStack() -> Payments? {
+        guard let userId = userManager.activeUserId,
+              let apiService = try? apiManager.getApiService(userId: userId) else {
+            return nil
+        }
+        let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
+
+        let payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
+                                apiService: apiService,
+                                localStorage: persistentDataStorage,
+                                reportBugAlertHandler: nil)
+
         switch payments.planService {
         case let .left(service):
             service.currentSubscriptionChangeDelegate = self
@@ -85,12 +106,17 @@ final class PaymentsManager {
         } else {
             payments.storeKitManager.subscribeToPaymentQueue()
         }
+        return payments
     }
 
     func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
         guard !Bundle.main.isBetaBuild else { return }
 
-        let paymentsUI = createPaymentsUI()
+        guard let paymentsUI = createPaymentsUI() else {
+            completion(.failure(PaymentsManagerError.couldNotCreatePaymentStack))
+            return
+        }
+
         paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
             guard let self else { return }
             handlePaymentsResponse(result: result, completion: completion)
@@ -100,7 +126,10 @@ final class PaymentsManager {
     func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
         guard !Bundle.main.isBetaBuild else { return }
 
-        let paymentsUI = createPaymentsUI()
+        guard let paymentsUI = createPaymentsUI() else {
+            completion(.failure(PaymentsManagerError.couldNotCreatePaymentStack))
+            return
+        }
 
         paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
             guard let self else { return }

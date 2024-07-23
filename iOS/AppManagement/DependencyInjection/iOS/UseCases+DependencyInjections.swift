@@ -366,7 +366,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var updateUserAddresses: Factory<any UpdateUserAddressesUseCase> {
         self { UpdateUserAddresses(userManager: self.userManager,
-                                   authenticator: ServiceContainer.shared.authenticator()) }
+                                   apiServicing: SharedToolingContainer.shared.apiManager()) }
     }
 
     var refreshAccessAndMonitorState: Factory<any RefreshAccessAndMonitorStateUseCase> {

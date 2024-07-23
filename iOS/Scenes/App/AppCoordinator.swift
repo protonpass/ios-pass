@@ -77,7 +77,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
-    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
+//    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
 
@@ -229,7 +229,7 @@ private extension AppCoordinator {
     }
 
     func showWelcomeScene(reason: LogOutReason) {
-        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
+        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.createNewApiService(),
                                                     theme: theme)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
@@ -344,8 +344,8 @@ private extension AppCoordinator {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.pushNotifications, reloadValue: true)
         else { return }
 
-        pushNotificationService.setup()
-        pushNotificationService.registerForRemoteNotifications(uid: uid)
+//        pushNotificationService.setup()
+//        pushNotificationService.registerForRemoteNotifications(uid: uid)
 
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true)
         else { return }
@@ -357,9 +357,9 @@ private extension AppCoordinator {
             return .success
         }
 
-        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
-            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
-        }
+//        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
+//            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
+//        }
     }
 }
 
