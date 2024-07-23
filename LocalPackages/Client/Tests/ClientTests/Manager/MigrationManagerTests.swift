@@ -1,4 +1,4 @@
-//  
+//
 // MigrationManagerTests.swift
 // Proton Pass - Created on 21/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
@@ -29,7 +29,7 @@ final class MigrationManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-    
+
         migrationDatasource = LocalDataMigrationDatasourceProtocolMock()
         sut = DataMigrationManager(datasource: migrationDatasource)
     }
@@ -39,21 +39,21 @@ final class MigrationManagerTests: XCTestCase {
         migrationDatasource = nil
         super.tearDown()
     }
-    
+
     func testNoMigrationSet() async {
         let missingMigration = await sut.missingMigrations(MigrationType.all)
         XCTAssertEqual(missingMigration, MigrationType.all)
     }
-    
+
     func testAddOneMigration() async {
         await sut.addMigration(.userAppData)
         let userAppDataMigrationDone =  await sut.hasMigrationOccurred(.userAppData)
         let missingMigration =  await sut.missingMigrations(MigrationType.all)
-       
+
         XCTAssertTrue(userAppDataMigrationDone)
         XCTAssertEqual(missingMigration, [MigrationType.credentialsAppData, MigrationType.userIdInItemsSearchEntriesAndShareKeys])
     }
-    
+
     func testRevertAMigration() async {
         await sut.addMigration(.userAppData)
         let userAppDataMigrationDone = await sut.hasMigrationOccurred(.userAppData)
@@ -61,9 +61,9 @@ final class MigrationManagerTests: XCTestCase {
 
         await sut.revertMigration(.userAppData)
         let userAppDataMigrationUnDone = await sut.hasMigrationOccurred(.userAppData)
-       
+
         let missingMigration = await sut.missingMigrations(MigrationType.all)
-       
+
         XCTAssertFalse(userAppDataMigrationUnDone)
         XCTAssertEqual(missingMigration, MigrationType.all)
     }
