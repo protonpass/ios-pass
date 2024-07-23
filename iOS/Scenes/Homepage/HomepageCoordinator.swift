@@ -526,7 +526,7 @@ extension HomepageCoordinator {
                 case let .signOut(userId):
                     handleSignOut(userId: userId)
                 case let .deleteAccount(userId):
-                    accountViewModelWantsToDeleteAccount(userId: userId)
+                    deleteAccount(userId: userId)
                 }
             }
             .store(in: &cancellables)
@@ -1296,7 +1296,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func accountViewModelWantsToDeleteAccount(userId: String) {
+    func deleteAccount(userId: String) {
         let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
@@ -1313,7 +1313,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                                switch result {
                                                                case .success:
                                                                    logger.trace("Account deletion successful")
-                                                                   logginOutUser(userId: userId)
+                                                                   loggingOutUser(userId: userId)
                                                                case .failure(AccountDeletionError.closedByUser):
                                                                    logger
                                                                        .trace("Accpunt deletion form closed by user")

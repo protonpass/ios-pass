@@ -64,8 +64,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     let currentVaults: CurrentValueSubject<[Vault], Never> = .init([])
 
-    public nonisolated let vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> =
-        .init(.initialization)
+    let vaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>(.initialization)
 
     init() {
         setUp()
@@ -76,7 +75,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     }
 
     @MainActor
-    func reset() async {
+    func reset() {
         state = .loading
         vaultSelection = .all
         itemCount = .zero
