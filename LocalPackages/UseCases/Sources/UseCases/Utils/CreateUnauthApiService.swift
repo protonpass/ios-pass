@@ -1,6 +1,6 @@
 //
 //
-// CreateApiService.swift
+// CreateUnauthApiService.swift
 // Proton Pass - Created on 03/07/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -28,22 +28,22 @@ import ProtonCoreFoundations
 @preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 
-public protocol CreateApiServiceUseCase: Sendable {
+public protocol CreateUnauthApiServiceUseCase: Sendable {
     func execute() -> any APIService
 }
 
-public extension CreateApiServiceUseCase {
+public extension CreateUnauthApiServiceUseCase {
     func callAsFunction() -> any APIService {
         execute()
     }
 }
 
-public final class CreateApiService: @unchecked Sendable, CreateApiServiceUseCase {
+public final class CreateUnauthApiService: @unchecked Sendable, CreateUnauthApiServiceUseCase {
     private let doh: any DoHInterface
     private let appVer: String
     private let protonCoreUserAgent: UserAgent
     private let cryptoGo: any CryptoGoMethods
-    private let serialAccessQueue = DispatchQueue(label: "me.pass.createapiservice_queue")
+    private let serialAccessQueue = DispatchQueue(label: "me.proton.pass.createapiservice")
     private var credential: Credential?
 
     // Required by `AuthDelegate`
@@ -75,7 +75,7 @@ public final class CreateApiService: @unchecked Sendable, CreateApiServiceUseCas
 
 // MARK: APIServiceDelegate
 
-extension CreateApiService: APIServiceDelegate {
+extension CreateUnauthApiService: APIServiceDelegate {
     public var appVersion: String { appVer }
     public var userAgent: String? { protonCoreUserAgent.ua }
     public var locale: String { Locale.autoupdatingCurrent.identifier }
@@ -94,7 +94,7 @@ extension CreateApiService: APIServiceDelegate {
 
 // MARK: AuthDelegate
 
-extension CreateApiService: AuthDelegate {
+extension CreateUnauthApiService: AuthDelegate {
     public func authCredential(sessionUID: String) -> AuthCredential? {
         serialAccessQueue.sync {
             guard let credential, credential.UID == sessionUID else {
