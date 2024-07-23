@@ -23,4 +23,6 @@ import Foundation
 public protocol APIManagerProtocol: Sendable {
     func updateCurrentSession(sessionId: String)
     func updateCurrentSession(userId: String) async
+
+    func reset()
 }

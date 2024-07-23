@@ -33,106 +33,42 @@ extension HomepageCoordinator {
                     throw PassError.userManager(.noUserDataFound)
                 }
 
-                let isActive = userManager.currentActiveUser.value?.user.ID == userId
-                let multiAccounts = users.count > 1
-
-                // Scenario 1: Only 1 user
-                if !multiAccounts {
-                    signOutSingleUser(user)
-                    return
+                let handler: () -> Void = { [weak self] in
+                    guard let self else { return }
+                    showLoadingHud()
+                    loggingOutUser(userId: userId)
+                    hideLoadingHud()
                 }
 
-                // Scenario 2: Sign out active user when multiple users
-                if isActive {
-                    try signOutActiveUser(userToSignOut: user, allUsers: users)
-                    return
-                }
-
-                // Scenario 3: Sign out inactive user when multiple users
-                if !isActive {
-                    signOutInactive(user)
-                    return
-                }
-
-                assertionFailure("Not known sign out scenario")
+                let alert = signOutAlert(accountToSignOut: user,
+                                         onSignOut: handler)
+                present(alert)
             } catch {
                 handle(error: error)
             }
         }
     }
 
-    func wipeAllDataAndSignoutActiveUser() {
-        Task { [weak self] in
+    func loggingOutUser(userId: String) {
+        Task { @MainActor [weak self] in
             guard let self else { return }
-            await wipeAllData()
-            eventLoop.stop()
-            delegate?.homepageCoordinatorWantsToLogOut()
+            do {
+                if try await logOutUser(userId: userId) {
+                    delegate?.homepageCoordinatorWantsToLogOut()
+                }
+            } catch {
+                bannerManager
+                    .displayTopErrorMessage(error.localizedDescription)
+            }
         }
     }
 }
 
 private extension HomepageCoordinator {
-    /// Scenario 1: Only 1 user
-    /// Do not care if the user is active or not
-    /// Step 1: Revoke the session
-    /// Step 2: Stop the event loop
-    /// Step 3: Remove cached credentials
-    /// Step 4: Remove all local data
-    /// Step 5: Reset repositories' on-memory caches
-    /// Step 6: Back to welcome screen
-    func signOutSingleUser(_ userData: UserData) {
-        let handler: () -> Void = { [weak self] in
-            Task { [weak self] in
-                guard let self else { return }
-                await revokeCurrentSession()
-                wipeAllDataAndSignoutActiveUser()
-            }
-        }
-        let alert = signOutAlert(accountToSignOut: userData,
-                                 accountToActivate: nil,
-                                 onSignOut: handler)
-        present(alert)
-    }
-
-    /// Scenario 2: Sign out active user when multiple users
-    /// Step 1: Revoke the session
-    /// Step 2: Stop the event loop
-    /// Step 3: Remove cached credentials
-    /// Step 4: Remove all local data
-    /// Step 5: Activate to the latest inactive user
-    /// Step 6: Reinit event loop with the new user
-    /// Step 7: Reload items
-    func signOutActiveUser(userToSignOut: UserData, allUsers: [UserData]) throws {
-        let otherUsers = allUsers.filter { $0.user.ID != userToSignOut.user.ID }
-        guard let accountToActivate = otherUsers.first else {
-            throw PassError.userManager(.noInactiveUserFound)
-        }
-        let alert = signOutAlert(accountToSignOut: userToSignOut,
-                                 accountToActivate: accountToActivate,
-                                 onSignOut: { print(#function) })
-        present(alert)
-    }
-
-    /// Sign out inactive user when multiple users
-    /// Step 1: Revoke the session
-    /// Step 2: Remove all local data
-    /// Step 3: Remove cached credentials
-    func signOutInactive(_ userData: UserData) {
-        let alert = signOutAlert(accountToSignOut: userData,
-                                 accountToActivate: nil,
-                                 onSignOut: { print(#function) })
-        present(alert)
-    }
-
     func signOutAlert(accountToSignOut: UserData,
-                      accountToActivate: UserData?,
                       onSignOut: @escaping () -> Void) -> UIAlertController {
         let signOut = #localized("Sign out")
-        let message = if let accountToActivate {
-            #localized("You will be switched to %@", accountToActivate.user.email ?? "")
-        } else {
-            #localized("Are you sure you want to sign out %@?", accountToSignOut.user.email ?? "")
-        }
+        let message = #localized("Are you sure you want to sign out %@?", accountToSignOut.user.email ?? "")
         // Show as alert on iPad because action sheets on iPad are considered a popover
         // which requires additional set up otherwise it will crash
         let alert = UIAlertController(title: signOut,
