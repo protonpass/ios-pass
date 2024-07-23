@@ -1,7 +1,7 @@
 //
 // Theme+Extensions.swift
-// Proton Pass - Created on 21/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 10/07/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -35,7 +35,7 @@ extension Theme: CustomStringConvertible {
         }
     }
 
-    var icon: UIImage {
+    public var icon: UIImage {
         switch self {
         case .light:
             IconProvider.sun
@@ -46,7 +46,7 @@ extension Theme: CustomStringConvertible {
         }
     }
 
-    var inAppTheme: InAppTheme {
+    public var inAppTheme: InAppTheme {
         switch self {
         case .light:
             .light

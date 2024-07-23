@@ -84,6 +84,7 @@ final class ShareCoordinator {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -130,7 +131,8 @@ extension ShareCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching()
-            if credentialProvider.isAuthenticated {
+            let userId = try await userManager.getActiveUserId()
+            if credentialProvider.isAuthenticated(userId: userId) {
                 await parseSharedContentAndBeginShareFlow()
             } else {
                 showNotLoggedInView()

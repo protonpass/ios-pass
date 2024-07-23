@@ -94,7 +94,12 @@ extension SharedToolingContainer {
     }
 
     var apiManager: Factory<APIManager> {
-        self { APIManager() }
+        self { APIManager(authManager: SharedToolingContainer.shared.authManager(),
+                          userManager: SharedServiceContainer.shared.userManager(),
+                          themeProvider: self.preferencesManager(),
+                          appVersion: self.appVersion(),
+                          doh: self.doh(),
+                          logManager: self.logManager()) }
     }
 }
 
@@ -156,7 +161,11 @@ extension SharedToolingContainer {
 
 extension SharedToolingContainer {
     var authManager: Factory<any AuthManagerProtocol> {
-        self { AuthManager(credentialProvider: SharedDataContainer.shared.credentialProvider()) }
+        self {
+            AuthManager(keychain: SharedToolingContainer.shared.keychain(),
+                        symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                        module: self.module())
+        }
     }
 
     /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
