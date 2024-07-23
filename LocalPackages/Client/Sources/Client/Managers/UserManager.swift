@@ -76,7 +76,7 @@ public extension UserManager {
     func setUp() async throws {
         userProfiles = try await userDataDatasource.getAll()
         allUserAccounts.send(userProfiles.userDatas)
-        currentActiveUser.send(userProfiles.activeUser?.userdata)
+        await publishNewActiveUser(userProfiles.activeUser?.userdata)
         didSetUp = true
     }
 
@@ -91,7 +91,7 @@ public extension UserManager {
             throw PassError.userManager(.userDatasAvailableButNoActiveUserId)
         }
         if currentActiveUser.value?.user.ID != activeUserData.user.ID {
-            currentActiveUser.send(activeUserData)
+            await publishNewActiveUser(activeUserData)
         }
         return activeUserData
     }
@@ -123,7 +123,7 @@ public extension UserManager {
 
         if let activeUserId,
            activeUserId == userData.user.ID {
-            currentActiveUser.send(userData)
+            await publishNewActiveUser(userData)
         }
     }
 
@@ -152,7 +152,7 @@ public extension UserManager {
         guard let activeUserData = userProfiles.activeUser?.userdata else {
             throw PassError.userManager(.activeUserDataNotFound)
         }
-        currentActiveUser.send(activeUserData)
+        await publishNewActiveUser(activeUserData)
     }
 }
 
@@ -162,6 +162,12 @@ private extension UserManager {
     func updateCachedUserAccounts() async throws {
         userProfiles = try await userDataDatasource.getAll()
         allUserAccounts.send(userProfiles.userDatas)
+    }
+
+    /// Make sure to publish on main actor because other main actors listen to these changes and update the UI
+    @MainActor
+    func publishNewActiveUser(_ user: UserData?) {
+        currentActiveUser.send(user)
     }
 }
 
