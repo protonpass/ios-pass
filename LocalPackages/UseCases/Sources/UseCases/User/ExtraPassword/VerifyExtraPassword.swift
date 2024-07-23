@@ -26,25 +26,24 @@ import Foundation
 @preconcurrency import ProtonCoreCryptoGoInterface
 
 public protocol VerifyExtraPasswordUseCase: Sendable {
-    func execute(username: String,
+    func execute(repository: any ExtraPasswordRepositoryProtocol,
+                 username: String,
                  password: String) async throws -> ExtraPasswordVerificationResult
 }
 
 public extension VerifyExtraPasswordUseCase {
-    func callAsFunction(username: String,
+    func callAsFunction(repository: any ExtraPasswordRepositoryProtocol,
+                        username: String,
                         password: String) async throws -> ExtraPasswordVerificationResult {
-        try await execute(username: username, password: password)
+        try await execute(repository: repository, username: username, password: password)
     }
 }
 
 public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
-    private let repository: any ExtraPasswordRepositoryProtocol
+    public init() {}
 
-    public init(repository: any ExtraPasswordRepositoryProtocol) {
-        self.repository = repository
-    }
-
-    public func execute(username: String,
+    public func execute(repository: any ExtraPasswordRepositoryProtocol,
+                        username: String,
                         password: String) async throws -> ExtraPasswordVerificationResult {
         // Step 1: initiate the process
         let authData = try await repository.initiateSrpAuthentication()

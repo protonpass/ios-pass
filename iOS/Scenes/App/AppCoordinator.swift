@@ -71,14 +71,16 @@ final class AppCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
-    private var featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private var pushNotificationService = resolve(\ServiceContainer.pushNotificationService)
 
+    @LazyInjected(\SharedToolingContainer.keychain) private var keychain
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
+    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
+    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
@@ -100,16 +102,6 @@ final class AppCoordinator {
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             resetAllData()
         }
-
-        // swiftlint:disable:next todo
-        // TODO: Should not be api manager that logs the user totatally out
-        apiManager.sessionWasInvalidated
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] sessionUID in
-                guard let self else { return }
-                captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
-            }
-            .store(in: &cancellables)
     }
 
     deinit {
@@ -125,6 +117,7 @@ final class AppCoordinator {
         // swiftlint:disable:next todo
         // TODO: what to do with multiple users data ?
         appData.resetData()
+        try? keychain.removeOrError(forKey: AuthManager.storageKey)
     }
 
     private func bindAppState() {
@@ -143,19 +136,25 @@ final class AppCoordinator {
                     logger.info("Already logged in")
                     connectToCorruptedSessionStream()
                     showHomeScene(mode: .alreadyLoggedIn)
-                    if let sessionID = appData.getCredential()?.sessionID {
+                    if let userId = userManager.activeUserId,
+                       let sessionID = authManager.getCredential(userId: userId)?.sessionID {
                         registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
-                    logger.info("Logged in manual")
-                    userManager.setUserData(userData)
-                    connectToCorruptedSessionStream()
-                    if extraPassword {
-                        showHomeScene(mode: .manualLoginWithExtraPassword)
-                    } else {
-                        showHomeScene(mode: .manualLogin)
+                    Task { [weak self] in
+                        guard let self else {
+                            return
+                        }
+                        logger.info("Logged in manual")
+                        try? await userManager.addAndMarkAsActive(userData: userData)
+                        connectToCorruptedSessionStream()
+                        if extraPassword {
+                            showHomeScene(mode: .manualLoginWithExtraPassword)
+                        } else {
+                            showHomeScene(mode: .manualLogin)
+                        }
+                        registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
                     }
-                    registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
@@ -181,6 +180,16 @@ final class AppCoordinator {
             start()
             refreshFeatureFlags()
             setUpCoreTelemetry()
+
+            // swiftlint:disable:next todo
+            // TODO: Should not be api manager that logs the user totatally out
+            apiManager.sessionWasInvalidated
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] sessionUID in
+                    guard let self else { return }
+                    captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
+                }
+                .store(in: &cancellables)
         } catch {
             appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
         }
@@ -189,9 +198,11 @@ final class AppCoordinator {
 
 private extension AppCoordinator {
     func start() {
-        if appData.isAuthenticated {
+        if let userId = userManager.activeUserId,
+           authManager.isAuthenticated(userId: userId) {
             appStateObserver.updateAppState(.alreadyLoggedIn)
-        } else if appData.getCredential() != nil {
+        } else if let userId = userManager.activeUserId,
+                  authManager.getCredential(userId: userId) != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
@@ -251,7 +262,8 @@ private extension AppCoordinator {
         }
 
         let username = userData.credential.userName
-        let view = ExtraPasswordLockView(email: userData.user.email ?? username,
+        let view = ExtraPasswordLockView(apiService: apiManager.apiService,
+                                         email: userData.user.email ?? username,
                                          username: username,
                                          onSuccess: onSuccess,
                                          onFailure: onFailure)

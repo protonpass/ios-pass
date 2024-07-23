@@ -72,7 +72,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
 
     // Use cases
-    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+    private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
@@ -82,6 +82,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
     private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+    @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
 
     let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 
@@ -1230,14 +1231,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func showAccountMenu() {
-        let asSheet = shouldShowAsSheet()
-        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
-        viewModel.delegate = self
-        let view = AccountView(viewModel: viewModel)
-        showView(view: view, asSheet: asSheet)
-    }
-
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
