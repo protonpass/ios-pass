@@ -208,6 +208,7 @@ private extension SyncEventLoop {
             return
         }
 
+        // TODO: loop on all account (dic of task with user id)
         if ongoingTask != nil {
             delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished)
         } else {
