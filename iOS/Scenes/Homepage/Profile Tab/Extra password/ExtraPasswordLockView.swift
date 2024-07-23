@@ -21,9 +21,8 @@
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreServices
 import SwiftUI
-
-@preconcurrency import ProtonCoreServices
 
 struct ExtraPasswordLockView: View {
     @StateObject private var viewModel: ExtraPasswordLockViewModel

@@ -84,7 +84,7 @@ public extension UserManager {
         await assertDidSetUp()
 
         if userProfiles.isEmpty {
-            throw PassError.userManager(.noUserDataFound)
+            return nil
         }
 
         guard let activeUserData = userProfiles.activeUser?.userdata else {
