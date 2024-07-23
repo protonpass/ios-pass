@@ -23,13 +23,8 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-// swiftlint:disable multiple_closures_with_trailing_closure
-protocol APIServiceCancellable: AnyObject {
-    func cancel()
-}
-
 private final class APIServiceTaskCanceller: @unchecked Sendable {
-    private let serialQueue = DispatchQueue(label: "me.pass.apiservicetaskcanceller_queue")
+    private let serialQueue = DispatchQueue(label: "me.proton.pass.apiservicetaskcanceller")
     private var isCancelled = false
     private weak var task: URLSessionDataTask?
 
@@ -48,15 +43,13 @@ private final class APIServiceTaskCanceller: @unchecked Sendable {
             guard let self else {
                 return
             }
-            if isCancelled == true {
+            if isCancelled {
                 task?.cancel()
             }
             task = task
         }
     }
 }
-
-extension URLSessionDataTask: APIServiceCancellable {}
 
 extension APIService {
     /// Async variant that can take an `Endpoint`
@@ -69,10 +62,11 @@ extension APIService {
                 perform(request: endpoint,
                         onDataTaskCreated: { task in
                             canceller.setCancellable(task)
-                        }) { task, result in
-                    NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-                    continuation.resume(with: result)
-                }
+                        },
+                        decodableCompletion: { task, result in
+                            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                            continuation.resume(with: result)
+                        })
             }
         } onCancel: {
             canceller.cancel()
@@ -115,23 +109,24 @@ extension APIService {
                 perform(request: endpoint,
                         onDataTaskCreated: { task in
                             canceller.setCancellable(task)
-                        }) { task, result in
-                    NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-                    switch result {
-                    case .success:
-                        continuation.resume(throwing: PassError.errorExpected)
+                        },
+                        decodableCompletion: { task, result in
+                            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                            switch result {
+                            case .success:
+                                continuation.resume(throwing: PassError.errorExpected)
 
-                    case let .failure(error):
-                        if let responseError = error.underlyingError as? SessionResponseError,
-                           case let .responseBodyIsNotADecodableObject(body, _) = responseError {
-                            continuation.resume(returning: .init(httpCode: error.httpCode,
-                                                                 protonCode: error.responseCode,
-                                                                 data: body))
-                            return
-                        }
-                        continuation.resume(throwing: PassError.unexpectedError)
-                    }
-                }
+                            case let .failure(error):
+                                if let responseError = error.underlyingError as? SessionResponseError,
+                                   case let .responseBodyIsNotADecodableObject(body, _) = responseError {
+                                    continuation.resume(returning: .init(httpCode: error.httpCode,
+                                                                         protonCode: error.responseCode,
+                                                                         data: body))
+                                    return
+                                }
+                                continuation.resume(throwing: PassError.unexpectedError)
+                            }
+                        })
             }
         } onCancel: {
             canceller.cancel()
@@ -204,5 +199,3 @@ private enum NetworkDebugger {
         }
     }
 }
-
-// swiftlint:enable multiple_closures_with_trailing_closure
