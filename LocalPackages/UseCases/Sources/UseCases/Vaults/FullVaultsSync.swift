@@ -1,8 +1,8 @@
 //
 //
-// RefreshInvitations.swift
-// Proton Pass - Created on 31/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// FullVaultsSync.swift
+// Proton Pass - Created on 08/07/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -22,27 +22,29 @@
 
 import Client
 
-public protocol RefreshInvitationsUseCase: Sendable {
+public protocol FullVaultsSyncUseCase: Sendable {
     func execute() async throws
 }
 
-public extension RefreshInvitationsUseCase {
-    @Sendable func callAsFunction() async throws {
+public extension FullVaultsSyncUseCase {
+    func callAsFunction() async throws {
         try await execute()
     }
 }
 
-public final class RefreshInvitations: RefreshInvitationsUseCase {
-    private let inviteRepository: any InviteRepositoryProtocol
+public final class FullVaultsSync: FullVaultsSyncUseCase {
+    private let syncEventLoop: any SyncEventLoopProtocol
+    private let vaultsManager: any VaultsManagerProtocol
 
-    public init(inviteRepository: any InviteRepositoryProtocol) {
-        self.inviteRepository = inviteRepository
+    public init(syncEventLoop: any SyncEventLoopProtocol,
+                vaultsManager: any VaultsManagerProtocol) {
+        self.syncEventLoop = syncEventLoop
+        self.vaultsManager = vaultsManager
     }
 
     public func execute() async throws {
-        if Task.isCancelled {
-            return
-        }
-        await inviteRepository.refreshInvites()
+        syncEventLoop.stop()
+        try await vaultsManager.fullSync()
+        syncEventLoop.start()
     }
 }

@@ -1,7 +1,7 @@
 //
-// CredentialProvider.swift
-// Proton Pass - Created on 23/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// APIManagerProtocol.swift
+// Proton Pass - Created on 09/07/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,25 +17,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import ProtonCoreNetworking
+import Foundation
 
-public protocol CredentialProvider: Sendable {
-    func getCredential() -> AuthCredential?
-    func setCredential(_ credential: AuthCredential?)
-
-    var isAuthenticated: Bool { get }
-
-    // Should be removed after session forking
-//    func migrateToSeparatedCredentialsIfNeccessary()
-}
-
-public extension CredentialProvider {
-    var isAuthenticated: Bool {
-        guard let credential = getCredential() else {
-            return false
-        }
-        return !credential.isForUnauthenticatedSession
-    }
+public protocol APIManagerProtocol: Sendable {
+    func updateCurrentSession(sessionId: String)
+    func updateCurrentSession(userId: String) async
 }

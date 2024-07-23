@@ -23,14 +23,28 @@ import Entities
 import Macro
 import SwiftUI
 
+@preconcurrency import ProtonCoreServices
+
 struct ExtraPasswordLockView: View {
-    @StateObject private var viewModel = ExtraPasswordLockViewModel()
+    @StateObject private var viewModel: ExtraPasswordLockViewModel
     @FocusState private var focused
     @State private var showWrongPasswordError = false
     let email: String
     let username: String
     let onSuccess: () -> Void
     let onFailure: () -> Void
+
+    init(apiService: any APIService,
+         email: String,
+         username: String,
+         onSuccess: @escaping () -> Void,
+         onFailure: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(apiService: apiService))
+        self.email = email
+        self.username = username
+        self.onSuccess = onSuccess
+        self.onFailure = onFailure
+    }
 
     var body: some View {
         VStack(alignment: .center) {

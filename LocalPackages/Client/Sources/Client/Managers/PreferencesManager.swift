@@ -38,8 +38,13 @@ public typealias AppPreferencesUpdate = PreferencesUpdate<AppPreferences>
 public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
 
+// sourcery: AutoMockable
+public protocol ThemeProvider: Sendable {
+    var sharedPreferences: CurrentValueSubject<SharedPreferences?, Never> { get }
+}
+
 /// Manage all types of preferences: app-wide, shared between users and user's specific
-public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProviderProtocol {
+public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProviderProtocol, ThemeProvider {
     /// Load preferences or create with default values if not exist
     func setUp() async throws
 
@@ -66,6 +71,8 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
     // User's preferences
     var userPreferences: CurrentValueSubject<UserPreferences?, Never> { get }
     var userPreferencesUpdates: PassthroughSubject<UserPreferencesUpdate, Never> { get }
+
+    func switchUserPreferences(userId: String) async throws
 
     func updateUserPreferences<T>(_ keyPath: WritableKeyPath<UserPreferences, T>,
                                   value: T) async throws where T: Sendable
@@ -144,13 +151,7 @@ public extension PreferencesManager {
 
         // User's preferences
         if let userId = try? await userManager.getActiveUserId() {
-            if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
-                userPreferences.send(preferences)
-            } else {
-                let preferences = UserPreferences.default
-                try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
-                userPreferences.send(preferences)
-            }
+            try await setUserPreferences(userId: userId)
         }
 
         // Migrations
@@ -265,6 +266,10 @@ public extension PreferencesManager {
         userPreferences.send(nil)
         logger.info("Removed user preferences for user \(userId)")
     }
+
+    func switchUserPreferences(userId: String) async throws {
+        try await setUserPreferences(userId: userId)
+    }
 }
 
 public extension Publisher {
@@ -293,5 +298,19 @@ public extension Publisher {
         }
         .map { _ in () }
         .eraseToAnyPublisher()
+    }
+}
+
+// MARK: - Utils
+
+private extension PreferencesManager {
+    func setUserPreferences(userId: String) async throws {
+        if let preferences = try await userPreferencesDatasource.getPreferences(for: userId) {
+            userPreferences.send(preferences)
+        } else {
+            let preferences = UserPreferences.default
+            try await userPreferencesDatasource.upsertPreferences(preferences, for: userId)
+            userPreferences.send(preferences)
+        }
     }
 }

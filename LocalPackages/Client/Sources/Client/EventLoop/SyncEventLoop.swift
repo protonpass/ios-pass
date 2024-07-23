@@ -71,13 +71,12 @@ public protocol SyncEventLoopDelegate: AnyObject {
     func syncEventLoopDidFailedAdditionalTask(label: String, error: any Error)
 }
 
-// public protocol SyncEventLoopActionProtocol {
-//    func start()
-//    func stop()
-//    func forceSync()
-//    func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
-//    func removeAdditionalTask(label: String)
-// }
+public protocol SyncEventLoopActionProtocol: Sendable {
+    func start()
+    func stop()
+    func forceSync()
+    func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
+}
 
 public enum SyncEventLoopSkipReason {
     case noInternetConnection
@@ -91,6 +90,8 @@ private let kThresholdRange = 55...60
 public protocol SyncEventLoopProtocol: Sendable {
     func forceSync()
     func reset()
+    func start()
+    func stop()
 }
 
 public extension SyncEventLoop {
@@ -113,7 +114,8 @@ public extension SyncEventLoop {
 }
 
 /// A background event loop that keeps data up to date by synching after a random number of seconds
-public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unchecked Sendable {
+public final class SyncEventLoop: SyncEventLoopProtocol, SyncEventLoopActionProtocol, DeinitPrintable,
+    @unchecked Sendable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params
@@ -150,7 +152,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
 
 // MARK: - Public APIs
 
-public extension SyncEventLoop /*: SyncEventLoopActionProtocol */ {
+public extension SyncEventLoop {
     /// Start looping
     func start() {
         guard timer == nil else { return }
@@ -235,6 +237,9 @@ private extension SyncEventLoop {
                     for task in additionalTasks {
                         do {
                             delegate?.syncEventLoopDidBeginExecutingAdditionalTask(label: task.label)
+                            if Task.isCancelled {
+                                return
+                            }
                             try await task()
                             delegate?.syncEventLoopDidFinishAdditionalTask(label: task.label)
                         } catch {

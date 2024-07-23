@@ -280,6 +280,11 @@ extension VaultsManager {
         vaultSyncEventStream.send(.done)
     }
 
+    func localFullSync() async throws {
+        let vaults = try await shareRepository.getVaults()
+        try await loadContents(for: vaults)
+    }
+
     func select(_ selection: VaultSelection) {
         vaultSelection = selection
     }
