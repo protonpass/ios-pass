@@ -72,6 +72,7 @@ final class AppCoordinator {
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
+    @LazyInjected(\SharedToolingContainer.keychain) private var keychain
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
@@ -116,7 +117,6 @@ final class AppCoordinator {
         // swiftlint:disable:next todo
         // TODO: what to do with multiple users data ?
         appData.resetData()
-        let keychain = SharedToolingContainer.shared.keychain()
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
     }
 
