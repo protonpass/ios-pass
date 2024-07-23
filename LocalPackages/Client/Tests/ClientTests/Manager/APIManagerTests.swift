@@ -246,7 +246,7 @@ final class APIManagerTests: XCTestCase {
                          logManager: LogManagerProtocolMock())
 
         authManager.onUpdate(credential: unauthSessionCredentials,
-                                       sessionUID: userData.credential.sessionID)
+                             sessionUID: userData.credential.sessionID)
 
         let credential = authManager.credential(sessionUID: sut.apiService.sessionUID)
 
