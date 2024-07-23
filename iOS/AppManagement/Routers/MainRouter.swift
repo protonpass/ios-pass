@@ -108,6 +108,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case enableExtraPassword
     case secureLinks
     case secureLinkDetail(SecureLinkListUIModel)
+    case addAccount
 }
 
 enum GenericDestination {
