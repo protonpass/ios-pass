@@ -47,7 +47,8 @@ public final class DisableExtraPassword: Sendable, DisableExtraPasswordUseCase {
 
     public func execute(username: String,
                         password: String) async throws -> DisableExtraPasswordResult {
-        let verificationResult = try await verifyExtraPassword(username: username,
+        let verificationResult = try await verifyExtraPassword(repository: repository,
+                                                               username: username,
                                                                password: password)
         guard verificationResult.isSuccessful else {
             return verificationResult

@@ -44,6 +44,14 @@ extension HomepageCoordinator {
             }
         }
     }
+
+    func showAccountMenu() {
+        let asSheet = shouldShowAsSheet()
+        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
+        viewModel.delegate = self
+        let view = AccountView(viewModel: viewModel)
+        showView(view: view, asSheet: asSheet)
+    }
 }
 
 private extension HomepageCoordinator {
@@ -54,8 +62,20 @@ private extension HomepageCoordinator {
                                       preferredStyle: .alert)
         alert.addAction(.init(title: #localized("Switch and manage"),
                               style: .default,
-                              handler: { _ in
-                                  // Switch and then show account menu by calling showAccountMenu()
+                              handler: { [weak self] _ in
+                                  guard let self else {
+                                      return
+                                  }
+                                  Task { [weak self] in
+                                      guard let self else {
+                                          return
+                                      }
+                                      do {
+                                          try await switchUser(userId: userData.user.ID)
+                                      } catch {
+                                          handle(error: error)
+                                      }
+                                  }
                               }))
         alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
         present(alert)

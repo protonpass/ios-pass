@@ -25,6 +25,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreLogin
+import ProtonCoreServices
 import Screens
 import SwiftUI
 import UseCases
@@ -61,7 +62,15 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
+    @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
+
+    @LazyInjected(\UseCasesContainer.createUnauthApiService)
+    private var createApiService: any CreateUnauthApiServiceUseCase
+
+    @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
+    private var addAndSwitchToNewUserAccount: any AddAndSwitchToNewUserAccountUseCase
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
@@ -101,6 +110,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     /// Accesses of all logged in accounts
     @Published private var accesses = [UserAccess]()
+    @Published var showLoginFlow = false
+    @Published var newLoggedUser: Result<LoginViewResult?, LoginViewError> = .success(nil)
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -111,6 +122,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     var isMultiAccountActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
+    }
+
+    func getApiService() -> any APIService {
+        createApiService()
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
@@ -269,7 +284,7 @@ extension ProfileTabViewModel {
                 return
             }
             do {
-                try await userManager.switchActiveUser(with: account.id)
+                try await switchUser(userId: account.id)
             } catch {
                 handle(error: error)
             }
@@ -370,7 +385,23 @@ private extension ProfileTabViewModel {
                         return
                     }
                     userAccounts = await (try? userManager.getAllUsers()) ?? []
+                    await refreshPlan()
+                    fetchSecureLinks()
                 }
+            }
+            .store(in: &cancellables)
+
+        $newLoggedUser
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                guard let self else { return }
+                if case .success(nil) = result {
+                    return
+                }
+                showLoginFlow = false
+                newLoggedUser = .success(nil)
+                parseNewUser(result: result)
             }
             .store(in: &cancellables)
     }
@@ -418,7 +449,7 @@ private extension ProfileTabViewModel {
 
     func reindexCredentials(_ indexable: Bool) async throws {
         // When not enabled, iOS already deleted the credential database.
-        // Atempting to populate this database will throw an error anyway so early exit here
+        // Attempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
         logger.trace("Reindexing credentials")
         if indexable {
@@ -444,4 +475,34 @@ private extension UserData {
     var displayName: String { user.name ?? "?" }
     var email: String { user.email ?? "?" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
+}
+
+// MARK: - New user login
+
+private extension ProfileTabViewModel {
+    func parseNewUser(result: Result<LoginViewResult?, LoginViewError>) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                switch result {
+                case let .success(newUser):
+                    guard let newUser else {
+                        return
+                    }
+                    // give the time to the login screen to dismiss
+                    try? await Task.sleep(for: .seconds(1))
+                    router.present(for: .fullSync)
+                    logger.info("Doing full sync")
+                    try await addAndSwitchToNewUserAccount(userData: newUser.userData,
+                                                           hasExtraPassword: newUser.hasExtraPassword)
+                    logger.info("Done full sync")
+                    router.display(element: .successMessage(config: .refresh))
+                case let .failure(error):
+                    handle(error: error)
+                }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
 }

@@ -52,6 +52,12 @@ struct ProfileTabView: View {
                                                     onSignOut: { viewModel.signOut(account: $0) },
                                                     onAddAccount: { handleAddAccount() }))
             }
+            .sheet(isPresented: $viewModel.showLoginFlow) {
+                LoginView(apiService: viewModel.getApiService(),
+                          theme: SharedToolingContainer.shared.preferencesManager().sharedPreferences.unwrapped()
+                              .theme,
+                          loginData: $viewModel.newLoggedUser)
+            }
             .navigationStackEmbeded()
             .task {
                 await viewModel.refreshPlan()
@@ -106,7 +112,7 @@ struct ProfileTabView: View {
     }
 
     func handleAddAccount() {
-        print(#function)
+        viewModel.showLoginFlow.toggle()
     }
 
     @ToolbarContentBuilder

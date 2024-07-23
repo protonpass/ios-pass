@@ -68,6 +68,18 @@ private extension SharedUseCasesContainer {
     var accessRepository: any AccessRepositoryProtocol {
         SharedRepositoryContainer.shared.accessRepository()
     }
+
+    var vaultsManager: any VaultsManagerProtocol {
+        SharedServiceContainer.shared.vaultsManager()
+    }
+
+    var apiManager: any APIManagerProtocol {
+        SharedToolingContainer.shared.apiManager()
+    }
+
+    var syncEventLoop: any SyncEventLoopActionProtocol {
+        SharedServiceContainer.shared.syncEventLoop()
+    }
 }
 
 // MARK: App
@@ -180,7 +192,12 @@ extension SharedUseCasesContainer {
     }
 
     var getMainVault: Factory<any GetMainVaultUseCase> {
-        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+        self { GetMainVault(vaultsManager: self.vaultsManager) }
+    }
+
+    var fullVaultsSync: Factory<any FullVaultsSyncUseCase> {
+        self { FullVaultsSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                              vaultsManager: self.vaultsManager) }
     }
 }
 
@@ -188,7 +205,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var getCurrentSelectedShareId: Factory<any GetCurrentSelectedShareIdUseCase> {
-        self { GetCurrentSelectedShareId(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+        self { GetCurrentSelectedShareId(vaultsManager: self.vaultsManager,
                                          getMainVault: self.getMainVault()) }
     }
 }
@@ -359,6 +376,25 @@ extension SharedUseCasesContainer {
                                        userPreferencesDatasource: container.userPreferencesDatasource())
         }
     }
+
+    var switchUser: Factory<any SwitchUserUseCase> {
+        self { SwitchUser(userManager: self.userManager,
+                          vaultsManager: self.vaultsManager,
+                          preferencesManager: self.preferencesManager,
+                          apiManager: self.apiManager,
+                          syncEventLoop: self.syncEventLoop,
+                          refreshFeatureFlags: self.refreshFeatureFlags()) }
+    }
+
+    var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
+        self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
+                                            userManager: self.userManager,
+                                            authManager: SharedToolingContainer.shared.authManager(),
+                                            preferencesManager: self.preferencesManager,
+                                            apiManager: self.apiManager,
+                                            fullVaultsSync: self.fullVaultsSync(),
+                                            refreshFeatureFlags: self.refreshFeatureFlags()) }
+    }
 }
 
 // MARK: Passkey
@@ -444,5 +480,15 @@ extension SharedUseCasesContainer {
 
     var getAllAliases: Factory<any GetAllAliasesUseCase> {
         self { GetAllAliases(itemRepository: self.itemRepository) }
+    }
+}
+
+// MARK: - Flags
+
+extension SharedUseCasesContainer {
+    var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
+        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   userManager: self.userManager,
+                                   logManager: self.logManager) }
     }
 }

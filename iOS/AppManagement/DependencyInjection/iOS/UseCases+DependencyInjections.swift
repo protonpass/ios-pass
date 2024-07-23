@@ -279,16 +279,6 @@ extension UseCasesContainer {
     }
 }
 
-// MARK: - Flags
-
-extension UseCasesContainer {
-    var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
-        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   userManager: self.userManager,
-                                   logManager: self.logManager) }
-    }
-}
-
 // MARK: - Vaults
 
 extension UseCasesContainer {
@@ -403,7 +393,7 @@ extension UseCasesContainer {
     }
 
     var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
-        self { VerifyExtraPassword(repository: self.extraPasswordRepository) }
+        self { VerifyExtraPassword() }
     }
 }
 
@@ -424,6 +414,11 @@ extension UseCasesContainer {
 
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
         self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
+    }
+
+    var createUnauthApiService: Factory<any CreateUnauthApiServiceUseCase> {
+        self { CreateUnauthApiService(doh: SharedToolingContainer.shared.doh(),
+                                      appVer: SharedToolingContainer.shared.appVersion()) }
     }
 }
 
