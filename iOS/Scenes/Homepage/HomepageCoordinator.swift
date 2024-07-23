@@ -84,10 +84,14 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\UseCasesContainer.createUnauthApiService) var createUnauthApiService
+
+    @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
+    var addAndSwitchToNewUserAccount
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     // References
@@ -98,9 +102,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var customCoordinator: (any CustomCoordinator)?
     private var cancellables = Set<AnyCancellable>()
 
+    lazy var unauthApiService = createUnauthApiService()
+    lazy var logInAndSignUp = makeLoginAndSignUp()
+
     // MARK: - Navigation Router
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var authenticated = false
 
@@ -482,6 +489,8 @@ extension HomepageCoordinator {
                     presentSecureLinks()
                 case let .secureLinkDetail(link):
                     presentSecureLinkDetail(link: link)
+                case .addAccount:
+                    beginAddAccountFlow()
                 }
             }
             .store(in: &cancellables)
