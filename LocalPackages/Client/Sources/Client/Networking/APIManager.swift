@@ -117,7 +117,7 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
     public func reset() {
         // swiftlint:disable:next todo
-        // TODO: when multi api service is in place need to create a new apiservice instant of setting id to empty string
+        // TODO: when multi api service is in place need to create a new apiservice instead of setting id to empty string
         apiService.setSessionUID(uid: "")
         fetchUnauthSessionIfNeeded()
     }
