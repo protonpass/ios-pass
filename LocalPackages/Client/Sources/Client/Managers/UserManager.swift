@@ -30,6 +30,7 @@ import ProtonCoreLogin
 // sourcery:AutoMockable
 public protocol UserManagerProtocol: Sendable {
     var currentActiveUser: CurrentValueSubject<UserData?, Never> { get }
+    var allUserAccounts: CurrentValueSubject<[UserData], Never> { get }
 
     func setUp() async throws
     func getActiveUserData() async throws -> UserData?
@@ -57,8 +58,9 @@ public extension UserManagerProtocol {
 
 public actor UserManager: UserManagerProtocol {
     public let currentActiveUser = CurrentValueSubject<UserData?, Never>(nil)
-    private var userProfiles = [UserProfile]()
+    public let allUserAccounts: CurrentValueSubject<[UserData], Never> = .init([])
 
+    private var userProfiles = [UserProfile]()
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let logger: Logger
     private var didSetUp = false
@@ -73,6 +75,7 @@ public actor UserManager: UserManagerProtocol {
 public extension UserManager {
     func setUp() async throws {
         userProfiles = try await userDataDatasource.getAll()
+        allUserAccounts.send(userProfiles.userDatas)
         currentActiveUser.send(userProfiles.activeUser?.userdata)
         didSetUp = true
     }
@@ -96,7 +99,7 @@ public extension UserManager {
     func getAllUsers() async -> [UserData] {
         await assertDidSetUp()
 
-        return userProfiles.map(\.userdata)
+        return userProfiles.userDatas
     }
 
     func getActiveUserId() async throws -> String {
@@ -116,7 +119,8 @@ public extension UserManager {
 
     func update(userData: UserData) async throws {
         try await userDataDatasource.upsert(userData)
-        userProfiles = try await userDataDatasource.getAll()
+        try await updateCachedUserAccounts()
+
         if let activeUserId,
            activeUserId == userData.user.ID {
             currentActiveUser.send(userData)
@@ -130,7 +134,8 @@ public extension UserManager {
         await assertDidSetUp()
 
         try await userDataDatasource.remove(userId: userId)
-        userProfiles = try await userDataDatasource.getAll()
+
+        try await updateCachedUserAccounts()
 
         if userProfiles.activeUser == nil, let newActiveUser = userProfiles.first {
             try await switchActiveUser(with: newActiveUser.userdata.user.ID)
@@ -142,11 +147,21 @@ public extension UserManager {
 
         try await userDataDatasource.updateNewActiveUser(userId: newActiveUserId)
 
-        userProfiles = try await userDataDatasource.getAll()
+        try await updateCachedUserAccounts()
+
         guard let activeUserData = userProfiles.activeUser?.userdata else {
             throw PassError.userManager(.activeUserDataNotFound)
         }
         currentActiveUser.send(activeUserData)
+    }
+}
+
+// MARK: - Utils
+
+private extension UserManager {
+    func updateCachedUserAccounts() async throws {
+        userProfiles = try await userDataDatasource.getAll()
+        allUserAccounts.send(userProfiles.userDatas)
     }
 }
 
@@ -174,5 +189,9 @@ private extension UserManager {
 private extension [UserProfile] {
     var activeUser: UserProfile? {
         self.first { $0.isActive }
+    }
+
+    var userDatas: [UserData] {
+        self.map(\.userdata)
     }
 }

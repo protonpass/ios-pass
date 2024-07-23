@@ -59,7 +59,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
         -> Paginated<ItemContent>
 
     /// Full sync for a given `shareId`
-    func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws
+    func refreshItems(shareId: String,
+                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
 
     @discardableResult
     func createItem(itemContent: any ProtobufableItemContentProtocol,
@@ -246,7 +247,8 @@ public extension ItemRepository {
         try await localDatasource.getAliasItem(email: email)
     }
 
-    func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws {
+    func refreshItems(shareId: String,
+                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
         let userId = try await userManager.getActiveUserId()
 
         logger.trace("Refreshing share \(shareId)")
