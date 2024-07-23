@@ -855,9 +855,10 @@ extension HomepageCoordinator {
             do {
                 let userData = try await userManager.getUnwrappedActiveUserData()
                 let userInfo = try await filledUserInfo(userData: userData)
+                let apiService = try apiManager.getApiService(userId: userData.user.ID)
                 let viewController = PasswordChangeModule
                     .makePasswordChangeViewController(mode: mode,
-                                                      apiService: apiManager.apiService,
+                                                      apiService: apiService,
                                                       authCredential: userData.credential,
                                                       userInfo: userInfo,
                                                       showingDismissButton: true) { [weak self] cred, userInfo in
@@ -874,9 +875,12 @@ extension HomepageCoordinator {
 
     func presentSecurityKeys() {
         Task { [weak self] in
-            guard let self else { return }
+            guard let self,
+                  let userId = try? await userManager.getActiveUserId(),
+                  let apiService = try? apiManager.getApiService(userId: userId) else { return }
+
             let viewController = LoginUIModule
-                .makeSecurityKeysViewController(apiService: apiManager.apiService,
+                .makeSecurityKeysViewController(apiService: apiService,
                                                 clientApp: .pass)
             let navigationController = UINavigationController(rootViewController: viewController)
             present(navigationController)
@@ -1297,7 +1301,12 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToDeleteAccount(userId: String) {
-        let accountDeletion = AccountDeletionService(api: apiManager.apiService)
+        guard let userId = userManager.activeUserId,
+              let apiService = try? apiManager.getApiService(userId: userId)
+        else {
+            return
+        }
+        let accountDeletion = AccountDeletionService(api: apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
         accountDeletion.initiateAccountDeletionProcess(over: topMostViewController,
@@ -1328,9 +1337,14 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void) {
+        guard let userId = userManager.activeUserId,
+              let apiService = try? apiManager.getApiService(userId: userId)
+        else {
+            return
+        }
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountRecoveryView
-            .ViewModel(accountRepository: AccountRecoveryRepository(apiService: apiManager.apiService))
+            .ViewModel(accountRepository: AccountRecoveryRepository(apiService: apiService))
         viewModel.externalAccountRecoverySetter = { accountRecovery in
             completion(accountRecovery)
         }

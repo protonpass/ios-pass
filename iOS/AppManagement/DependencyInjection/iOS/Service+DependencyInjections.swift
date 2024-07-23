@@ -44,13 +44,13 @@ extension ServiceContainer {
         self { ShareInviteService() }
     }
 
-    var authenticator: Factory<any AuthenticatorInterface> {
-        self { Authenticator(api: SharedToolingContainer.shared.apiManager().apiService) }
-    }
-
-    var pushNotificationService: Factory<any PushNotificationServiceProtocol> {
-        self { PushNotificationService(apiService: SharedToolingContainer.shared.apiManager().apiService) }
-    }
+//    var authenticator: Factory<any AuthenticatorInterface> {
+//        self { Authenticator(api: SharedToolingContainer.shared.apiManager().apiService) }
+//    }
+//
+//    var pushNotificationService: Factory<any PushNotificationServiceProtocol> {
+//        self { PushNotificationService(apiService: SharedToolingContainer.shared.apiManager().apiService) }
+//    }
 
     var secureLinkManager: Factory<any SecureLinkManagerProtocol> {
         self { SecureLinkManager(dataSource: SharedRepositoryContainer.shared.remoteSecureLinkDatasource(),
