@@ -72,6 +72,7 @@ final class AppCoordinator {
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
 //    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
+    @LazyInjected(\SharedToolingContainer.keychain) private var keychain
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
@@ -115,7 +116,6 @@ final class AppCoordinator {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
         appData.resetData()
-        let keychain = SharedToolingContainer.shared.keychain()
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
     }
 
