@@ -37,7 +37,8 @@ public protocol RemoteShareDatasourceProtocol: Sendable {
     func createVault(userId: String, request: CreateVaultRequest) async throws -> Share
     func updateVault(userId: String, request: UpdateVaultRequest, shareId: String) async throws -> Share
     func deleteVault(userId: String, shareId: String) async throws
-    func transferVaultOwnership(userId: String, vaultShareId: String,
+    func transferVaultOwnership(userId: String,
+                                vaultShareId: String,
                                 request: TransferOwnershipVaultRequest) async throws -> Bool
 }
 

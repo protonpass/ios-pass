@@ -56,6 +56,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         logger = .init(manager: logManager)
     }
 
+    // swiftlint:disable:next todo
     // TODO: Will have to accept the credential of several accounts and not just one
     // will either have to take list of ids or not remove previous credentials
     public func execute(userId: String) async throws {

@@ -51,7 +51,8 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     /// - Returns: A tuple with the link and item encoded keys
     public func execute(item: ItemContent) async throws -> SecureLinkKeys {
         let userId = try await userManager.getActiveUserId()
-        let itemKeyInfo = try await passKeyManager.getLatestItemKey(userId: userId, shareId: item.shareId,
+        let itemKeyInfo = try await passKeyManager.getLatestItemKey(userId: userId,
+                                                                    shareId: item.shareId,
                                                                     itemId: item.itemId)
 
         let shareKeyInfo = try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)

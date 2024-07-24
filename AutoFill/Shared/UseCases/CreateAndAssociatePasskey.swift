@@ -63,8 +63,6 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                  context: ASCredentialProviderExtensionContext) async throws {
         guard let oldItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                            itemId: item.itemId),
-            let oldItem = try await itemRepository.getItem(shareId: item.shareId,
-                                                           itemId: item.itemId),
             let oldLoginData = oldItemContent.loginItem else {
             throw PassError.itemNotFound(item)
         }
@@ -88,14 +86,13 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                                              data: newLoginData,
                                              customFields: oldItemContent.customFields)
 
-        try await itemRepository.updateItem(userId: oldItem.userId,
+        try await itemRepository.updateItem(userId: oldItemContent.userId,
                                             oldItem: oldItemContent.item,
                                             newItemContent: newContent,
                                             shareId: item.shareId)
         if let updatedItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                             itemId: item.itemId) {
-            // TODO: this should actually take the user if of the items
-            try await updateLastUseTimeAndReindex(userId: oldItem.userId,
+            try await updateLastUseTimeAndReindex(userId: oldItemContent.userId,
                                                   item: updatedItemContent,
                                                   date: .now,
                                                   identifiers: [request.serviceIdentifier])

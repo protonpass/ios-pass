@@ -51,7 +51,9 @@ public extension AliasRepository {
 
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDatasouce.changeMailboxes(userId: userId, shareId: shareId, itemId: itemId,
+        return try await remoteDatasouce.changeMailboxes(userId: userId,
+                                                         shareId: shareId,
+                                                         itemId: itemId,
                                                          mailboxIDs: mailboxIDs)
     }
 }

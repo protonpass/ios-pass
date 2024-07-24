@@ -26,13 +26,11 @@ import UseCases
 
 /// Retrieve username/password or resolve passkey challenge
 protocol GenerateAuthorizationCredentialUseCase: Sendable {
-    func execute(_ request: AutoFillRequest) async throws
-        -> (userId: String, ItemContent, any ASAuthorizationCredential)
+    func execute(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential)
 }
 
 extension GenerateAuthorizationCredentialUseCase {
-    func callAsFunction(_ request: AutoFillRequest) async throws
-        -> (userId: String, ItemContent, any ASAuthorizationCredential) {
+    func callAsFunction(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential) {
         try await execute(request)
     }
 }
@@ -47,8 +45,7 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
         self.resolvePasskeyChallenge = resolvePasskeyChallenge
     }
 
-    func execute(_ request: AutoFillRequest) async throws
-        -> (userId: String, ItemContent, any ASAuthorizationCredential) {
+    func execute(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential) {
         guard let recordIdentifier = request.recordIdentifier else {
             throw ASExtensionError(.credentialIdentityNotFound)
         }
@@ -57,7 +54,6 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
 
         guard let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
                                                                         itemId: ids.itemId),
-            let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId),
             let logInData = itemContent.loginItem else {
             throw ASExtensionError(.credentialIdentityNotFound)
         }
@@ -90,7 +86,7 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
             }
         }
 
-        return (item.userId, itemContent, credential)
+        return (itemContent, credential)
     }
 }
 
