@@ -93,27 +93,13 @@ extension UserManagerTests {
         await fulfillment(of: [expectation], timeout: 1)
     }
     
-    func testGetActiveUserData_ThrowActiveUserIdAvailableButNoUserDataFound() async throws {
-        let expectation = expectation(description: "Should throw error")
-        
+    func testGetActiveUserData_FoundNil() async throws {
         userDataDatasource.closureGetAll = { [weak self] in
             guard let self else { return }
             userDataDatasource.stubbedGetAllResult = []
         }
-        
         try await sut.setUp()
-        
-        do {
-            _ = try await sut.getActiveUserData()
-        } catch {
-            if error.isEqual(to: .noUserDataFound) {
-                expectation.fulfill()
-            } else {
-                XCTFail("Unexpected error")
-            }
-        }
-        
-        await fulfillment(of: [expectation], timeout: 1)
+        try await XCTAssertNilAsync(await sut.getActiveUserData())
     }
     
     func testGetActiveUserData() async throws {
