@@ -58,7 +58,7 @@ public final class SwitchUser: SwitchUserUseCase {
         syncEventLoop.stop()
         try await userManager.switchActiveUser(with: userId)
 //        await apiManager.updateCurrentSession(userId: userId)
-        try await vaultsManager.localFullSync()
+        try await vaultsManager.localFullSync(userId: userId)
         try await preferencesManager.switchUserPreferences(userId: userId)
         refreshFeatureFlags()
         syncEventLoop.start()

@@ -52,7 +52,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
@@ -189,7 +189,8 @@ extension SettingsViewModel {
             do {
                 router.present(for: .fullSync)
                 logger.info("Doing full sync")
-                try await fullVaultsSync()
+                let userId = try await userManager.getActiveUserId()
+                try await fullVaultsSync(userId: userId)
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {

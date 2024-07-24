@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol GetActiveLoginItemsUseCase: Sendable {
-    func execute() async throws -> [ItemContent]
+    func execute(userId: String) async throws -> [ItemContent]
 }
 
 public extension GetActiveLoginItemsUseCase {
-    func callAsFunction() async throws -> [ItemContent] {
-        try await execute()
+    func callAsFunction(userId: String) async throws -> [ItemContent] {
+        try await execute(userId: userId)
     }
 }
 
@@ -43,9 +43,9 @@ public final class GetActiveLoginItems: GetActiveLoginItemsUseCase {
         self.repository = repository
     }
 
-    public func execute() async throws -> [ItemContent] {
+    public func execute(userId: String) async throws -> [ItemContent] {
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let encryptedItems = try await repository.getActiveLogInItems()
+        let encryptedItems = try await repository.getActiveLogInItems(userId: userId)
         return try encryptedItems.map { try $0.getItemContent(symmetricKey: symmetricKey) }
     }
 }

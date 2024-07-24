@@ -22,14 +22,17 @@ import Client
 import Entities
 
 public protocol GetCustomEmailSuggestionUseCase: Sendable {
-    func execute(monitoredCustomEmails: [CustomEmail],
+    func execute(userId: String,
+                 monitoredCustomEmails: [CustomEmail],
                  protonAddresses: [ProtonAddress]) async throws -> [SuggestedEmail]
 }
 
 public extension GetCustomEmailSuggestionUseCase {
-    func callAsFunction(monitoredCustomEmails: [CustomEmail],
+    func callAsFunction(userId: String,
+                        monitoredCustomEmails: [CustomEmail],
                         protonAddresses: [ProtonAddress]) async throws -> [SuggestedEmail] {
-        try await execute(monitoredCustomEmails: monitoredCustomEmails,
+        try await execute(userId: userId,
+                          monitoredCustomEmails: monitoredCustomEmails,
                           protonAddresses: protonAddresses)
     }
 }
@@ -47,14 +50,15 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
         self.validateEmailUseCase = validateEmailUseCase
     }
 
-    public func execute(monitoredCustomEmails: [CustomEmail],
+    public func execute(userId: String,
+                        monitoredCustomEmails: [CustomEmail],
                         protonAddresses: [ProtonAddress]) async throws -> [SuggestedEmail] {
         guard monitoredCustomEmails.count < 10 else {
             return []
         }
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
-        let items = try await itemRepository.getAllItems()
+        let items = try await itemRepository.getAllItems(userId: userId)
         let activeLoginItems = items.filter { $0.isLogInItem && $0.item.itemState == .active }
         let aliasAddresses = items.compactMap { $0.item.aliasEmail?.lowercased() }
         var excludedEmails = monitoredCustomEmails.map { $0.email.lowercased() }

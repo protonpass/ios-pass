@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol GetAllAliasMonitorInfoUseCase: Sendable {
-    func execute() async throws -> [AliasMonitorInfo]
+    func execute(userId: String) async throws -> [AliasMonitorInfo]
 }
 
 public extension GetAllAliasMonitorInfoUseCase {
-    func callAsFunction() async throws -> [AliasMonitorInfo] {
-        try await execute()
+    func callAsFunction(userId: String) async throws -> [AliasMonitorInfo] {
+        try await execute(userId: userId)
     }
 }
 
@@ -43,8 +43,8 @@ public final class GetAllAliasMonitorInfos: GetAllAliasMonitorInfoUseCase {
         self.repository = repository
     }
 
-    public func execute() async throws -> [AliasMonitorInfo] {
-        let aliases = try await getAllAliasesUseCase()
+    public func execute(userId: String) async throws -> [AliasMonitorInfo] {
+        let aliases = try await getAllAliasesUseCase(userId: userId)
 
         return try await withThrowingTaskGroup(of: AliasMonitorInfo.self,
                                                returning: [AliasMonitorInfo].self) { group in

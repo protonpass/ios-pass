@@ -101,6 +101,7 @@ final class CredentialsViewModel: ObservableObject {
     @LazyInjected(\AutoFillUseCaseContainer
         .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
@@ -143,7 +144,9 @@ extension CredentialsViewModel {
 
     func sync() async {
         do {
-            let hasNewEvents = try await eventSynchronizer.sync()
+            // TODO: will need to loo on all accounts
+            let userId = try await userManager.getActiveUserId()
+            let hasNewEvents = try await eventSynchronizer.sync(userId: userId)
             if hasNewEvents {
                 fetchItems()
             }
@@ -162,9 +165,12 @@ extension CredentialsViewModel {
                 if case .error = state {
                     state = .loading
                 }
+                // TODO: will need to loo on all accounts
+                let userId = try await userManager.getActiveUserId()
                 async let plan = accessRepository.getPlan()
-                async let vaults = shareRepository.getVaults()
-                async let results = fetchCredentials(identifiers: serviceIdentifiers,
+                async let vaults = shareRepository.getVaults(userId: userId)
+                async let results = fetchCredentials(userId: userId,
+                                                     identifiers: serviceIdentifiers,
                                                      params: passkeyRequestParams)
                 planType = try await plan.planType
                 self.vaults = try await vaults
@@ -272,6 +278,8 @@ private extension CredentialsViewModel {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
+            let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                        itemId: item.itemId),
             let loginData = itemContent.loginItem else {
             throw PassError.itemNotFound(item)
         }
@@ -287,6 +295,7 @@ private extension CredentialsViewModel {
             // Item has only 1 passkey => autofill right away
             try await autoFillPasskey(passkey,
                                       itemContent: itemContent,
+                                      userId: item.userId,
                                       identifiers: serviceIdentifiers,
                                       params: params,
                                       context: context)

@@ -45,6 +45,7 @@ final class SelectPasskeyViewModel: ObservableObject {
                 logger.debug("Autofilling with selected passkey \(passkey.keyID)")
                 try await autoFillPasskey(passkey,
                                           itemContent: info.itemContent,
+                                          userId: info.itemContent.userId,
                                           identifiers: info.identifiers,
                                           params: info.params,
                                           context: context)

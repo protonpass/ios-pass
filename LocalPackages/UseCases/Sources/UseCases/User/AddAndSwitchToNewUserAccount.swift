@@ -63,17 +63,13 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         // We add the new user and credential to the user manager and the main authManager
         // We also update the main apiservice with the new session id through apiManager
         try await userManager.addAndMarkAsActive(userData: userData)
-//        authManager.onSessionObtaining(credential: userData.getCredential)
-        // TODO: check that apimanager now create new service directly and not use use case create apiaservice
-
-//        await apiManager.updateCurrentSession(userId: userData.user.ID)
         try await preferencesManager.switchUserPreferences(userId: userData.user.ID)
         refreshFeatureFlags()
         if hasExtraPassword {
             try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
                                                                value: true)
         }
-        try await fullVaultsSync()
+        try await fullVaultsSync(userId: userData.user.ID)
         syncEventLoop.start()
     }
 }

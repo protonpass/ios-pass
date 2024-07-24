@@ -263,8 +263,9 @@ private extension ShareCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
+                let userId = try await userManager.getActiveUserId()
                 if vaultsManager.getAllVaultContents().isEmpty {
-                    try await vaultsManager.asyncRefresh()
+                    try await vaultsManager.asyncRefresh(userId: userId)
                 }
                 let shareId = await getMainVault()?.shareId ?? ""
                 let vaults = vaultsManager.getAllVaults()

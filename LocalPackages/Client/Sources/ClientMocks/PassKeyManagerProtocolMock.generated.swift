@@ -30,60 +30,60 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
     public init() {}
 
     // MARK: - getShareKey
-    public var getShareKeyShareIdKeyRotationThrowableError1: Error?
+    public var getShareKeyUserIdShareIdKeyRotationThrowableError1: Error?
     public var closureGetShareKey: () -> () = {}
     public var invokedGetShareKeyfunction = false
     public var invokedGetShareKeyCount = 0
-    public var invokedGetShareKeyParameters: (shareId: String, keyRotation: Int64)?
-    public var invokedGetShareKeyParametersList = [(shareId: String, keyRotation: Int64)]()
+    public var invokedGetShareKeyParameters: (userId: String, shareId: String, keyRotation: Int64)?
+    public var invokedGetShareKeyParametersList = [(userId: String, shareId: String, keyRotation: Int64)]()
     public var stubbedGetShareKeyResult: DecryptedShareKey!
 
-    public func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey {
+    public func getShareKey(userId: String, shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey {
         invokedGetShareKeyfunction = true
         invokedGetShareKeyCount += 1
-        invokedGetShareKeyParameters = (shareId, keyRotation)
-        invokedGetShareKeyParametersList.append((shareId, keyRotation))
-        if let error = getShareKeyShareIdKeyRotationThrowableError1 {
+        invokedGetShareKeyParameters = (userId, shareId, keyRotation)
+        invokedGetShareKeyParametersList.append((userId, shareId, keyRotation))
+        if let error = getShareKeyUserIdShareIdKeyRotationThrowableError1 {
             throw error
         }
         closureGetShareKey()
         return stubbedGetShareKeyResult
     }
     // MARK: - getLatestShareKey
-    public var getLatestShareKeyShareIdThrowableError2: Error?
+    public var getLatestShareKeyUserIdShareIdThrowableError2: Error?
     public var closureGetLatestShareKey: () -> () = {}
     public var invokedGetLatestShareKeyfunction = false
     public var invokedGetLatestShareKeyCount = 0
-    public var invokedGetLatestShareKeyParameters: (shareId: String, Void)?
-    public var invokedGetLatestShareKeyParametersList = [(shareId: String, Void)]()
+    public var invokedGetLatestShareKeyParameters: (userId: String, shareId: String)?
+    public var invokedGetLatestShareKeyParametersList = [(userId: String, shareId: String)]()
     public var stubbedGetLatestShareKeyResult: DecryptedShareKey!
 
-    public func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey {
+    public func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey {
         invokedGetLatestShareKeyfunction = true
         invokedGetLatestShareKeyCount += 1
-        invokedGetLatestShareKeyParameters = (shareId, ())
-        invokedGetLatestShareKeyParametersList.append((shareId, ()))
-        if let error = getLatestShareKeyShareIdThrowableError2 {
+        invokedGetLatestShareKeyParameters = (userId, shareId)
+        invokedGetLatestShareKeyParametersList.append((userId, shareId))
+        if let error = getLatestShareKeyUserIdShareIdThrowableError2 {
             throw error
         }
         closureGetLatestShareKey()
         return stubbedGetLatestShareKeyResult
     }
     // MARK: - getLatestItemKey
-    public var getLatestItemKeyShareIdItemIdThrowableError3: Error?
+    public var getLatestItemKeyUserIdShareIdItemIdThrowableError3: Error?
     public var closureGetLatestItemKey: () -> () = {}
     public var invokedGetLatestItemKeyfunction = false
     public var invokedGetLatestItemKeyCount = 0
-    public var invokedGetLatestItemKeyParameters: (shareId: String, itemId: String)?
-    public var invokedGetLatestItemKeyParametersList = [(shareId: String, itemId: String)]()
+    public var invokedGetLatestItemKeyParameters: (userId: String, shareId: String, itemId: String)?
+    public var invokedGetLatestItemKeyParametersList = [(userId: String, shareId: String, itemId: String)]()
     public var stubbedGetLatestItemKeyResult: DecryptedItemKey!
 
-    public func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey {
+    public func getLatestItemKey(userId: String, shareId: String, itemId: String) async throws -> DecryptedItemKey {
         invokedGetLatestItemKeyfunction = true
         invokedGetLatestItemKeyCount += 1
-        invokedGetLatestItemKeyParameters = (shareId, itemId)
-        invokedGetLatestItemKeyParametersList.append((shareId, itemId))
-        if let error = getLatestItemKeyShareIdItemIdThrowableError3 {
+        invokedGetLatestItemKeyParameters = (userId, shareId, itemId)
+        invokedGetLatestItemKeyParametersList.append((userId, shareId, itemId))
+        if let error = getLatestItemKeyUserIdShareIdItemIdThrowableError3 {
             throw error
         }
         closureGetLatestItemKey()

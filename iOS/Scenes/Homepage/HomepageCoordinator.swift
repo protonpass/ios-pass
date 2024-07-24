@@ -63,13 +63,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    let userManager = resolve(\SharedServiceContainer.userManager)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
     // Lazily initialised properties
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -255,7 +255,8 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await vaultsManager.asyncRefresh()
+                let userId = try await userManager.getActiveUserId()
+                try await vaultsManager.asyncRefresh(userId: userId)
                 eventLoop.start()
             } catch {
                 logger.error(error)
@@ -267,7 +268,8 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await refreshAccessAndMonitorState()
+                let userId = try await userManager.getActiveUserId()
+                try await refreshAccessAndMonitorState(userId: userId)
             } catch {
                 logger.error(error)
             }
@@ -300,13 +302,23 @@ private extension HomepageCoordinator {
     }
 
     func refresh(exitEditMode: Bool = true) {
-        vaultsManager.refresh()
-        if exitEditMode {
-            itemsTabViewModel?.isEditMode = false
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+                if exitEditMode {
+                    itemsTabViewModel?.isEditMode = false
+                }
+                searchViewModel?.refreshResults()
+                itemDetailCoordinator?.refresh()
+                createEditItemCoordinator?.refresh()
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
-        searchViewModel?.refreshResults()
-        itemDetailCoordinator?.refresh()
-        createEditItemCoordinator?.refresh()
     }
 
     func addNewEvent(type: TelemetryEventType) {
@@ -1471,33 +1483,53 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(type: ItemContentType) {
-        addNewEvent(type: .create(type))
-        dismissAllViewControllers(animated: true) { [weak self] in
-            // We have eventual crashes after creating items
-            // Looks like it's because the keyboard is not fully dismissed
-            // and in between we try to show a banner
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomInfoMessage(type.creationMessage)
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                addNewEvent(type: .create(type))
+                dismissAllViewControllers(animated: true) { [weak self] in
+                    // We have eventual crashes after creating items
+                    // Looks like it's because the keyboard is not fully dismissed
+                    // and in between we try to show a banner
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                        guard let self else { return }
+                        bannerManager.displayBottomInfoMessage(type.creationMessage)
+                    }
+                }
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+                homepageTabDelegate?.change(tab: .items)
+                increaseCreatedItemsCountAndAskForReviewIfNecessary()
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
             }
         }
-        vaultsManager.refresh()
-        homepageTabDelegate?.change(tab: .items)
-        increaseCreatedItemsCountAndAskForReviewIfNecessary()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType, updated: Bool) {
-        guard updated else {
-            dismissTopMostViewController()
-            return
-        }
-        addNewEvent(type: .update(type))
-        vaultsManager.refresh()
-        searchViewModel?.refreshResults()
-        itemDetailCoordinator?.refresh()
-        dismissTopMostViewController { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(type.updateMessage)
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                guard updated else {
+                    dismissTopMostViewController()
+                    return
+                }
+                addNewEvent(type: .update(type))
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+                searchViewModel?.refreshResults()
+                itemDetailCoordinator?.refresh()
+                dismissTopMostViewController { [weak self] in
+                    guard let self else { return }
+                    bannerManager.displayBottomInfoMessage(type.updateMessage)
+                }
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 }
@@ -1603,11 +1635,21 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     func createEditVaultViewModelDidEditVault() {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                dismissTopMostViewController(animated: true) { [weak self] in
+                    guard let self else { return }
+                    bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
+                }
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
-        vaultsManager.refresh()
     }
 }
 
