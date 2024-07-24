@@ -71,7 +71,9 @@ private extension HomepageCoordinator {
                                           return
                                       }
                                       do {
-                                          try await switchUser(userId: userData.user.ID)
+                                          let userId = userData.user.ID
+                                          try await switchUser(userId: userId)
+                                          handleManageAccount(userId: userId)
                                       } catch {
                                           handle(error: error)
                                       }
