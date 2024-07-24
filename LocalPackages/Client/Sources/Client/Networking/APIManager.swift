@@ -164,6 +164,8 @@ public final class APIManager: Sendable, APIManagerProtocol {
     }
 
     public func reset() {
+        // swiftlint:disable:next todo
+        // TODO: Should maybe remove all apiservices
         createNewApiService()
         if let apiService = allCurrentApiServices.first {
             setUpCore(apiService: apiService.apiService)
