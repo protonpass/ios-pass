@@ -43,8 +43,11 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
     private let createPasskey: any CreatePasskeyUseCase
     private let updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase
     private let completePasskeyRegistration: any CompletePasskeyRegistrationUseCase
+    private let userManager: any UserManagerProtocol
 
     init(itemRepository: any ItemRepositoryProtocol,
+         userManager: any UserManagerProtocol,
+
          createPasskey: any CreatePasskeyUseCase,
          updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
          completePasskeyRegistration: any CompletePasskeyRegistrationUseCase) {
@@ -52,6 +55,7 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
         self.createPasskey = createPasskey
         self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.completePasskeyRegistration = completePasskeyRegistration
+        self.userManager = userManager
     }
 
     func execute(item: any ItemIdentifiable,
@@ -59,6 +63,8 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                  context: ASCredentialProviderExtensionContext) async throws {
         guard let oldItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                            itemId: item.itemId),
+            let oldItem = try await itemRepository.getItem(shareId: item.shareId,
+                                                           itemId: item.itemId),
             let oldLoginData = oldItemContent.loginItem else {
             throw PassError.itemNotFound(item)
         }
@@ -81,12 +87,16 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                                              itemUuid: oldItemContent.itemUuid,
                                              data: newLoginData,
                                              customFields: oldItemContent.customFields)
-        try await itemRepository.updateItem(oldItem: oldItemContent.item,
+
+        try await itemRepository.updateItem(userId: oldItem.userId,
+                                            oldItem: oldItemContent.item,
                                             newItemContent: newContent,
                                             shareId: item.shareId)
         if let updatedItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                             itemId: item.itemId) {
-            try await updateLastUseTimeAndReindex(item: updatedItemContent,
+            // TODO: this should actually take the user if of the items
+            try await updateLastUseTimeAndReindex(userId: oldItem.userId,
+                                                  item: updatedItemContent,
                                                   date: .now,
                                                   identifiers: [request.serviceIdentifier])
         }
