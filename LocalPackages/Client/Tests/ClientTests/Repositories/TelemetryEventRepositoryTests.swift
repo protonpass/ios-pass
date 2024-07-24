@@ -28,6 +28,9 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 
 private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtocol {
+    func send(userId: String, events: [Client.EventInfo]) async throws {
+    }
+    
     func send(events: [EventInfo]) async throws {}
 }
 
