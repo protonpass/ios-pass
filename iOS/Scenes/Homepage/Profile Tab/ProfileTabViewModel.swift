@@ -37,8 +37,6 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToQaFeatures()
 }
 
-// swiftlint:disable cyclomatic_complexity
-
 @MainActor
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -68,12 +66,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
 
-    @LazyInjected(\UseCasesContainer.createUnauthApiService)
-    private var createApiService: any CreateUnauthApiServiceUseCase
-
-    @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
-    private var addAndSwitchToNewUserAccount: any AddAndSwitchToNewUserAccountUseCase
-
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
     @Published private(set) var canUpdateAppLockTime = true
@@ -94,6 +86,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
                   isPremium: isPremiumUser(currentActiveUser.userId),
                   initial: currentActiveUser.initial,
                   displayName: currentActiveUser.displayName,
+                  planName: planName(currentActiveUser.userId),
                   email: currentActiveUser.email)
         } else {
             nil
@@ -107,13 +100,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
                                  isPremium: isPremiumUser($0.userId),
                                  initial: $0.initial,
                                  displayName: $0.displayName,
+                                 planName: planName($0.userId),
                                  email: $0.email) }
     }
 
     /// Accesses of all logged in accounts
     @Published private var accesses = [UserAccess]()
-    @Published var showLoginFlow = false
-    @Published var newLoggedUser: Result<LoginViewResult?, LoginViewError> = .success(nil)
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -124,10 +116,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     var isMultiAccountActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
-    }
-
-    func getApiService() -> any APIService {
-        createApiService()
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
@@ -156,8 +144,8 @@ extension ProfileTabViewModel {
 
     func refreshPlan() async {
         do {
-            accesses = try await localAccessDatasource.getAllAccesses()
             plan = try await accessRepository.refreshAccess().access.plan
+            accesses = try await localAccessDatasource.getAllAccesses()
         } catch {
             handle(error: error)
         }
@@ -293,6 +281,10 @@ extension ProfileTabViewModel {
         }
     }
 
+    func addAccount() {
+        router.present(for: .addAccount)
+    }
+
     func signOut(account: AccountCellDetail) {
         router.action(.signOut(userId: account.id))
     }
@@ -400,20 +392,6 @@ private extension ProfileTabViewModel {
                 }
             }
             .store(in: &cancellables)
-
-        $newLoggedUser
-            .dropFirst()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] result in
-                guard let self else { return }
-                if case .success(nil) = result {
-                    return
-                }
-                showLoginFlow = false
-                newLoggedUser = .success(nil)
-                parseNewUser(result: result)
-            }
-            .store(in: &cancellables)
     }
 
     func refresh() {
@@ -474,6 +452,10 @@ private extension ProfileTabViewModel {
         accesses.first(where: { $0.userId == userId })?.access.plan.isFreeUser == false
     }
 
+    func planName(_ userId: String) -> String? {
+        accesses.first(where: { $0.userId == userId })?.access.plan.displayName
+    }
+
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
@@ -486,35 +468,3 @@ private extension UserData {
     var email: String { user.email ?? "?" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
 }
-
-// MARK: - New user login
-
-private extension ProfileTabViewModel {
-    func parseNewUser(result: Result<LoginViewResult?, LoginViewError>) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                switch result {
-                case let .success(newUser):
-                    guard let newUser else {
-                        return
-                    }
-                    // give the time to the login screen to dismiss
-                    try? await Task.sleep(for: .seconds(1))
-                    router.present(for: .fullSync)
-                    logger.info("Doing full sync")
-                    try await addAndSwitchToNewUserAccount(userData: newUser.userData,
-                                                           hasExtraPassword: newUser.hasExtraPassword)
-                    logger.info("Done full sync")
-                    router.display(element: .successMessage(config: .refresh))
-                case let .failure(error):
-                    handle(error: error)
-                }
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
-}
-
-// swiftlint:enable cyclomatic_complexity

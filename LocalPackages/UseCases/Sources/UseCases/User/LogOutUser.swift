@@ -112,17 +112,16 @@ private extension LogOutUser {
         featureFlagsRepository.clearUserId()
 
         async let preferenceReset: Void = preferencesManager.reset()
-        async let removeCommonUserData: Void = commonDeletionActions(userId: userData.user.ID)
         async let removeCredentials: Void = credentialManager.removeAllCredentials()
         async let cleanPassMonitor: Void = passMonitorRepository.reset()
         async let cleanVaultManager: Void = vaultsManager.reset()
 
         _ = try await (preferenceReset,
-                       removeCommonUserData,
                        removeCredentials,
                        cleanPassMonitor,
                        cleanVaultManager)
 
+        try await commonDeletionActions(userId: userData.user.ID)
         apiManager.reset()
     }
 
